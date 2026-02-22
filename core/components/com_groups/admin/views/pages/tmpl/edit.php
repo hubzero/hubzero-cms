@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +10,12 @@
 defined('_HZEXEC_') or die();
 
 // define base links
-$base = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn);
+$base = Route::url('index.php?option=' .
+    $this->option .
+    '&controller=' .
+    $this->controller .
+    '&gid=' .
+    $this->group->cn);
 
 // define title
 $text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') : Lang::txt('COM_GROUPS_PAGES_NEW_PAGE'));
@@ -38,13 +41,26 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                 <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="page[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
+                    <label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>: <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                    <input
+                        type="text"
+                        name="page[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></label><br />
-                    <input type="text" name="page[alias]" id="field-alias" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
+                    <?php $v1 = Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>
+                    <?php $v0 = Lang::txt('JOPTION_REQUIRED'); ?>
+                    <label for="field-alias"><?php echo $v1; ?>: <span class="required"><?php echo $v0; ?></label><br />
+                    <input
+                        type="text"
+                        name="page[alias]"
+                        id="field-alias"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
                 </div>
             </fieldset>
 
@@ -56,8 +72,14 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                     <select name="page[category]" id="field-category">
                         <option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_OPTION_NULL'); ?></option>
                         <?php foreach ($this->categories as $pageCategory) : ?>
-                            <?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-                            <option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
+                            <?php
+                            $sel = ($this->page->get('category') == $pageCategory->get('id'))
+                                ? 'selected="selected"' : '';
+                            ?>
+                            <?php $v2 = $sel; ?>
+                            <?php $v1 = $pageCategory->get('id'); ?>
+                            <?php $v0 = $pageCategory->get('title'); ?>
+                            <option <?php echo $v2; ?> value="<?php echo $v1; ?>"><?php echo $v0; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -73,7 +95,10 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                                 <?php if ($page->get('id') == $this->page->get('id')) {
                                     continue;
                                 } ?>
-                                <?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
+                                <?php
+                                $sel = ($this->page->get('parent') == $page->get('id'))
+                                    ? 'selected="selected"' : '';
+                                ?>
                                 <option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
                                     <?php echo $page->heirarchyIndicator(' &ndash; ') . $page->get('title'); ?>
                                 </option>
@@ -155,9 +180,21 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                 <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</span></label><br />
-                    <?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', array('buttons' => false)); ?>
-                    <input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
+                    <?php $txt = Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>
+                    <label for="field-content"><?php echo $txt; ?>:</span></label><br />
+                    <?php $val = $this->editor(
+                        'pageversion[content]',
+                        $this->escape(stripslashes($this->version->get('content'))),
+                        50,
+                        30,
+                        'field-content',
+                        array('buttons' => false)
+                    ); ?>
+                    <?php echo $val; ?>
+                    <input
+                        type="hidden"
+                        name="pageversion[version]"
+                        value="<?php echo $this->version->get('version'); ?>" />
                 </div>
             </fieldset>
         </div>
@@ -179,14 +216,18 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
-                            <td><?php echo Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
+                            <?php $val = Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?>
+                            <td><?php echo $val; ?></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->firstversion->get('created_by'));
-                                    echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    echo (is_object($profile)) ? $profile->get('name') .
+                                        ' (' .
+                                        $profile->get('id') .
+                                        ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
                         </tr>
@@ -199,7 +240,10 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->version->get('created_by'));
-                                    echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    echo (is_object($profile)) ? $profile->get('name') .
+                                        ' (' .
+                                        $profile->get('id') .
+                                        ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
                         </tr>
@@ -226,23 +270,39 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                                     <td>
                                         <?php
                                             $profile = User::getInstance($version->get('created_by'));
-                                            $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-                                            echo Lang::txt('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, Date::of($version->get('created'))->toLocal());
+                                            $name = ((is_object($profile)) ? $profile->
+                                                get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
+                                            echo Lang::txt(
+                                                'COM_GROUPS_PAGES_VERSION_CREATED_DETAILS',
+                                                $name,
+                                                Date::of($version->get('created'))->toLocal()
+                                            );
                                         ?>
                                     </td>
                                     <td>
                                         <?php
                                         if ($version->get('approved')) {
                                             $profile = User::getInstance($version->get('approved_by'));
-                                            $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-                                            echo Lang::txt('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, Date::of($version->get('approved_on'))->toLocal());
+                                            $name = ((is_object($profile)) ? $profile->
+                                                get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
+                                            echo Lang::txt(
+                                                'COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS',
+                                                $name,
+                                                Date::of($version->get('approved_on'))->toLocal()
+                                            );
                                         } else {
                                             echo Lang::txt('COM_GROUPS_PAGES_VERSION_NOT_APPROVED');
                                         }
                                         ?>
                                     </td>
                                     <td>
-                                        <a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;pageid=<?php echo $this->page->get('id'); ?>&amp;version=<?php echo $version->get('version'); ?>">
+                                        <?php $pid = $this->page->get('id'); ?>
+                                        <?php $ver = $version->get('version'); ?>
+                                        <?php $rawUrl = $base . '&amp;task=raw&amp;pageid='
+                                            . $pid . '&amp;version=' . $ver; ?>
+                                        <a
+                                            class="version"
+                                            href="<?php echo $rawUrl; ?>">
                                             <?php echo Lang::txt('COM_GROUPS_PAGES_VERSION_VIEW_RAW'); ?>
                                         </a>
                                     </td>

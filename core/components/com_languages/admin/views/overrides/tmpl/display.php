@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,19 +33,42 @@ $client    = $this->filters['client'] == 'site' ? Lang::txt('JSITE') : Lang::txt
 $language  = $this->filters['language'];
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
+
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_FILTER_SEARCH_DESC'); ?>" />
+            <label class="filter-search-lbl" for="filter_search">
+                <?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+            </label>
+            <?php
+            $searchVal = $this->escape($this->filters['search']);
+            $searchPlaceholder = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_FILTER_SEARCH_DESC');
+            ?>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $searchVal; ?>"
+                placeholder="<?php echo $searchPlaceholder; ?>"
+            />
 
             <button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
         <div class="filter-select fltrt">
             <select name="filter_language_client" class="inputbox filter filter-submit">
-                <?php echo Html::select('options', $this->languages, null, 'text', $this->filters['language_client']); ?>
+                <?php
+                echo Html::select(
+                    'options',
+                    $this->languages,
+                    null,
+                    'text',
+                    $this->filters['language_client']
+                );
+                ?>
             </select>
         </div>
     </fieldset>
@@ -62,7 +83,15 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                     <?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>
                 </th>
                 <th class="priority-3">
-                    <?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_TEXT', 'text', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_LANGUAGES_VIEW_OVERRIDES_TEXT',
+                        'text',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th class="priority-4">
                     <?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
@@ -93,7 +122,16 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                 </td>
                 <td>
                     <?php if ($canEdit) : ?>
-                        <a id="key[<?php echo $this->escape($key); ?>]" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $key); ?>"><?php echo $this->escape($key); ?></a>
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $key
+                        );
+                        ?>
+                        <a id="key[<?php echo $this->escape($key); ?>]" href="<?php echo $editUrl; ?>">
+                            <?php echo $this->escape($key); ?>
+                        </a>
                     <?php else : ?>
                         <?php echo $this->escape($key); ?>
                     <?php endif; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,6 +8,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$modBase = 'index.php?option=com_groups&cn=' .
+    $this->group->get('cn') . '&controller=modules&task=';
 
 // build array of positions
 $positions = array();
@@ -21,7 +22,8 @@ foreach ($this->modules as $module) {
 ?>
 <ul class="toolbar toolbar-modules">
     <li class="new">
-        <a class="btn icon-add" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=add'); ?>">
+        <?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
+        <a class="btn icon-add" href="<?php echo $url . '&controller=modules&task=add'; ?>">
             <?php echo Lang::txt('COM_GROUPS_PAGES_NEW_MODULE'); ?>
         </a>
     </li>
@@ -51,7 +53,8 @@ foreach ($this->modules as $module) {
             <li>
                 <div class="item-container <?php echo $class; ?>">
                     <div class="item-title">
-                        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>">
+                        <?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
+                        <a href="<?php echo $url . '&controller=modules&task=edit&moduleid=' . $module->get('id'); ?>">
                             <?php echo $module->get('title'); ?>
                         </a>
 
@@ -80,28 +83,46 @@ foreach ($this->modules as $module) {
                     <?php endif; ?>
 
                     <div class="item-state">
+                        <?php $mid = $module->get('id'); ?>
                         <?php if ($module->get('state') == 0) : ?>
-                            <a class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a>
+                            <?php $pubTxt = Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>
+                            <?php $pubUrl = Route::url($modBase . 'publish&moduleid=' . $mid); ?>
+                            <a class="unpublished tooltips"
+                                title="<?php echo $pubTxt; ?>"
+                                href="<?php echo $pubUrl; ?>"> <?php echo $pubTxt; ?></a>
                         <?php else : ?>
-                            <a class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a>
+                            <?php $unpubTxt = Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>
+                            <?php $unpubUrl = Route::url($modBase . 'unpublish&moduleid=' . $mid); ?>
+                            <a class="published tooltips"
+                                title="<?php echo $unpubTxt; ?>"
+                                href="<?php echo $unpubUrl; ?>"> <?php echo $unpubTxt; ?></a>
                         <?php endif; ?>
                     </div>
 
                     <div class="item-controls btn-group dropdown">
-                        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>" class="btn">
+                        <?php $val = Route::url($modBase . 'edit&moduleid=' . $mid); ?>
+                        <a href="<?php echo $val; ?>" class="btn">
                             <?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULE'); ?>
                         </a>
                         <span class="btn dropdown-toggle"></span>
                         <ul class="dropdown-menu">
-                            <li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE'); ?></a></li>
+                            <?php $val1 = Route::url($modBase . 'edit&moduleid=' . $mid); ?>
+                            <?php $val = Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE'); ?>
+                            <li><a class="icon-edit" href="<?php echo $val1; ?>"> <?php echo $val; ?></a></li>
                             <li class="divider"></li>
                             <?php if ($module->get('state') == 0) : ?>
-                                <li><a class="icon-ban-circle" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a></li>
+                                <?php $val1 = Route::url($modBase . 'publish&moduleid=' . $mid); ?>
+                                <?php $val = Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>
+                                <li><a class="icon-ban-circle" href="<?php echo $val1; ?>"> <?php echo $val; ?></a></li>
                             <?php else : ?>
-                                <li><a class="icon-success" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a></li>
+                                <?php $val1 = Route::url($modBase . 'unpublish&moduleid=' . $mid); ?>
+                                <?php $val = Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>
+                                <li><a class="icon-success" href="<?php echo $val1; ?>"> <?php echo $val; ?></a></li>
                             <?php endif; ?>
                             <li class="divider"></li>
-                            <li><a class="icon-delete" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=delete&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?></a></li>
+                            <?php $val1 = Route::url($modBase . 'delete&moduleid=' . $mid); ?>
+                            <?php $val = Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?>
+                            <li><a class="icon-delete" href="<?php echo $val1; ?>"> <?php echo $val; ?></a></li>
                         </ul>
                     </div>
                 </div>

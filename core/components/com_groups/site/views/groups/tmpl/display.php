@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,8 @@ $this->css('introduction.css', 'system')
     <?php if (User::authorise('core.create', $this->option)) : ?>
         <div id="content-header-extra">
             <p>
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                <?php $url = Route::url('index.php?option=' . $this->option . '&task=new'); ?>
+                <a class="icon-add add btn" href="<?php echo $url; ?>">
                     <?php echo Lang::txt('COM_GROUPS_NEW'); ?>
                 </a>
             </p>
@@ -37,22 +36,30 @@ foreach ($this->notifications as $notification) {
 ?>
 
 <section id="introduction" class="section">
-    <form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+    <?php $url = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+    <form class="section-inner" action="<?php echo $url; ?>" method="get">
         <div class="grid">
             <div class="col span8">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH'); ?>" />
+                    <?php $txt = Lang::txt('COM_GROUPS_BROWSE_SEARCH'); ?>
+                    <input class="entry-search-submit" type="submit" value="<?php echo $txt; ?>" />
                     <fieldset class="entry-search">
                         <label for="gsearch"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
-                        <input type="text" name="search" id="gsearch" value="" placeholder="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>" />
+                        <?php $txt = Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>
+                        <input type="text" name="search" id="gsearch" value="" placeholder="<?php echo $txt; ?>" />
                     </fieldset>
                 </div><!-- / .container -->
                 <p><?php echo Lang::txt('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
-                <p><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>"><?php echo Lang::txt('COM_GROUPS_INTRO_NEED_HELP'); ?></a></p>
+                <?php $val1 = Route::url(
+                    'index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'
+                ); ?>
+                <?php $val = Lang::txt('COM_GROUPS_INTRO_NEED_HELP'); ?>
+                <p><a class="popup" href="<?php echo $val1; ?>"><?php echo $val; ?></a></p>
             </div>
             <div class="col span3 offset1 omega">
                 <div>
-                    <a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+                    <?php $url = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                    <a class="btn icon-browse" href="<?php echo $url; ?>">
                         <?php echo Lang::txt('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
                     </a>
                 </div>
@@ -72,7 +79,14 @@ foreach ($this->notifications as $notification) {
                     </div>
                     <ul>
                         <?php foreach ($this->mygroups['invitees'] as $invite) : ?>
-                            <li><?php echo $invite->description; ?><a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $invite->cn . '&task=accept'); ?>">Accept Invite</a></li>
+                            <?php
+                            $url = Route::url(
+                                'index.php?option=com_groups&cn=' .
+                                $invite->cn .
+                                '&task=accept'
+                            );
+                            ?>
+                            <li><?php echo $invite->description; ?><a href="<?php echo $url; ?>">Accept Invite</a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -86,7 +100,14 @@ foreach ($this->notifications as $notification) {
                     </div>
                     <ul>
                         <?php foreach ($this->mygroups['applicants'] as $applicant) : ?>
-                            <li><?php echo $applicant->description; ?><a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $applicant->cn . '&task=cancel'); ?>">Cancel Request</a></li>
+                            <?php $cancelUrl = Route::url(
+                                'index.php?option=com_groups&cn=' .
+                                $applicant->cn . '&task=cancel'
+                            ); ?>
+                            <li>
+                                <?php echo $applicant->description; ?>
+                                <a href="<?php echo $cancelUrl; ?>">Cancel Request</a>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -96,7 +117,10 @@ foreach ($this->notifications as $notification) {
                 <h3><?php echo Lang::txt('COM_GROUPS_INTRO_MY_GROUPS_TITLE'); ?></h3>
 
                 <div class="groups-container">
-                    <?php $mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array(); ?>
+                    <?php
+                    $mygroups_members = (isset($this->mygroups['members']))
+                        ? $this->mygroups['members'] : array();
+                    ?>
                     <?php if (!count($mygroups_members)) : ?>
                         <div class="results-none">
                             <p><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>

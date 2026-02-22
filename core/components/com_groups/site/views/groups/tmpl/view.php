@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,8 +27,10 @@ $no_html = Request::getInt('no_html', 0);
         $link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn'));
         ?>
         <div id="page_identity">
-            <a href="<?php echo $link; ?>" title="<?php echo Lang::txt('COM_GROUPS_OVERVIEW_HOME', $this->group->get('description')); ?>">
-                <img src="<?php echo $this->group->getLogo(); ?>" alt="<?php echo Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->group->get('description')); ?>" />
+            <?php $txt = Lang::txt('COM_GROUPS_OVERVIEW_HOME', $this->group->get('description')); ?>
+            <a href="<?php echo $link; ?>" title="<?php echo $txt; ?>">
+                <?php $txt = Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->group->get('description')); ?>
+                <img src="<?php echo $this->group->getLogo(); ?>" alt="<?php echo $txt; ?>" />
             </a>
         </div><!-- /#page_identity -->
 

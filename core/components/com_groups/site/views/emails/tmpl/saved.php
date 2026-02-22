@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,62 +45,125 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
     </table>
     <!-- End Spacer -->
 
-    <table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid #e1e1e1; background: #f1f1f1; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
-                                        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
-                                        color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
-                                        to(transparent));
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-                                    -webkit-background-size: 30px 30px;
-                                    -moz-background-size: 30px 30px;
-                                    background-size: 30px 30px;">
+    <table
+        id="ticket-info"
+        width="650"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse: collapse; border: 1px solid #e1e1e1;
+            background: #f1f1f1; font-size: 0.9em; line-height: 1.6em;
+            background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+            color-stop(.25, rgba(255, 255, 255, .075)),
+            color-stop(.25, transparent),
+            color-stop(.5, transparent),
+            color-stop(.5, rgba(255, 255, 255, .075)),
+            color-stop(.75, rgba(255, 255, 255, .075)),
+            color-stop(.75, transparent), to(transparent));
+            background-image: -webkit-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -moz-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -ms-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -o-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            -webkit-background-size: 30px 30px;
+            -moz-background-size: 30px 30px;
+            background-size: 30px 30px;">
         <thead>
             <tr>
-                <th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
+                <th
+                    colspan="2"
+                    style="
+                        font-weight: bold; 
+                        border-bottom: 1px solid #e1e1e1; 
+                        padding: 8px; 
+                        text-align: left; 
+                        font-style: italic;"
+                    align="left">
                     <?php echo Lang::txt('Group Saved'); ?>
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
+                <td
+                    id="ticket-number"
+                    style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;"
+                    align="center">
                     <img src="<?php echo $base . DS . ltrim($this->group->getLogo(), DS); ?>" width="100px" />
                 </td>
                 <td width="100%" style="padding: 8px;">
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Group:'); ?></th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right"><?php echo Lang::txt('Group:'); ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->group->get('description'); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Alias:'); ?></th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right"><?php echo Lang::txt('Alias:'); ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->group->get('cn'); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Updated:'); ?></th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right"><?php echo Lang::txt('Updated:'); ?></th>
+                                <?php $v1 = Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?>
+                                <?php $v0 = Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                                <td
+                                    style="text-align: left; padding: 0 0.5em;"
+                                    align="left">@ <?php echo $v1; ?> on <?php echo $v0; ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Updated By:'); ?></th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right"><?php echo Lang::txt('Updated By:'); ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php
                                         echo $this->user->get('name') . ' (' . $this->user->get('email') . ')';
@@ -110,7 +171,14 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Link:'); ?></th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right"><?php echo Lang::txt('Link:'); ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $groupLink; ?>">
                                         <?php echo $groupLink; ?>
@@ -213,7 +281,9 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php if ($this->group->get('logo')) : ?>
-                                        <img src="<?php echo $base . DS . ltrim($this->group->getLogo(), DS); ?>" width="50px" />
+                                        <img src="<?php echo $base .
+                                            DS .
+                                            ltrim($this->group->getLogo(), DS); ?>" width="50px" />
                                     <?php else : ?>
                                         &#60;Not Set&#62;
                                     <?php endif; ?>
@@ -255,7 +325,6 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
                                     ?>
                                 </td>
                             </tr>
-
 
                             <tr>
                                 <td align="left">&#32;</td>
@@ -414,7 +483,14 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?php echo Config::get('sitename'); ?> sent this email because you are a group manager for this group. Visit our <a href="<?php echo rtrim($base, '/'); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, '/'); ?>/support">Support Center</a> if you have any questions.</span>
+                    <?php $footerV2 = Config::get('sitename'); ?>
+                    <?php $footerV1 = rtrim($base, '/'); ?>
+                    <?php $footerV0 = rtrim($base, '/'); ?>
+                    <span>
+                            <?php echo $footerV2; ?> sent this email because you are a group manager for this group.
+                            Visit our <a href="<?php echo $footerV1; ?>/legal/privacy">Privacy Policy</a> and <a
+                            href="<?php echo $footerV0; ?>/support">Support Center</a> if you have any questions.
+                        </span>
                 </td>
             </tr>
         </tbody>

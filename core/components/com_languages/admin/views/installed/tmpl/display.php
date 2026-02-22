@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,12 @@ if ($canDo->get('core.edit.state')) {
 
 if ($canDo->get('core.admin')) {
     // Add install languages link to the lang installer component
-    Toolbar::appendButton('Link', 'extension', 'COM_LANGUAGES_INSTALL', 'index.php?option=com_installer&view=languages');
+    Toolbar::appendButton(
+        'Link',
+        'extension',
+        'COM_LANGUAGES_INSTALL',
+        'index.php?option=com_installer&view=languages'
+    );
     Toolbar::divider();
 
     Toolbar::preferences('com_languages');
@@ -36,7 +39,12 @@ $client   = $this->filters['client_id'] ? Lang::txt('JADMINISTRATOR') : Lang::tx
 $clientId = $this->filters['client_id'];
 $pagination = $this->rows->pagination;
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=installed&client=' . $clientId); ?>" method="post" id="adminForm" name="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=installed&client=' . $clientId
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" id="adminForm" name="adminForm">
 
     <table class="adminlist">
         <thead>
@@ -99,7 +107,12 @@ $pagination = $this->rows->pagination;
                 <td>
                     <?php
                     if (!$row->missing) :
-                        echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" class="checkbox-toggle" title="' . ($i + 1) . '"/>';
+                        echo '<input type="radio"'
+                            . ' id="cb' . $i . '"'
+                            . ' name="cid"'
+                            . ' value="' . $this->escape($row->language) . '"'
+                            . ' class="checkbox-toggle"'
+                            . ' title="' . ($i + 1) . '"/>';
                     endif;
                     ?>
                 </td>

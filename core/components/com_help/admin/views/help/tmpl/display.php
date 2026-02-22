@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,10 @@ $this->js();
 ?>
 <div class="help-header" id="help-top">
     <?php if ($this->page != 'index') : ?>
-        <button id="back" class="back" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
+        <?php $goBack = Lang::txt('COM_HELP_GO_BACK'); ?>
+        <button id="back" class="back" title="<?php echo $goBack; ?>">
+            <?php echo $goBack; ?>
+        </button>
     <?php endif; ?>
 </div>
 
@@ -24,7 +25,8 @@ $this->js();
 <div class="help-footer">
     <a class="top" href="#help-top"><?php echo Lang::txt('COM_HELP_BACK_TO_TOP'); ?></a>
     <?php if ($this->page != 'index') : ?>
-        <a class="index" href="<?php echo Route::url('index.php?option=com_help&component=' . $this->component . '&page=index'); ?>">
+        <?php $indexUrl = Route::url('index.php?option=com_help&component=' . $this->component . '&page=index'); ?>
+        <a class="index" href="<?php echo $indexUrl; ?>">
             <?php echo Lang::txt('COM_HELP_INDEX'); ?>
         </a>
     <?php endif; ?>

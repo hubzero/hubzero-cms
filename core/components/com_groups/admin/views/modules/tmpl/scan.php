@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title($this->group->get('description') . ': ' . $this->module->get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'), 'groups.png');
+Toolbar::title($this->group->get('description') . ': ' . $this->module->
+    get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'), 'groups.png');
 Toolbar::custom('markscanned', 'check', 'check', 'COM_GROUPS_MODULES_MARK_SCANNED', false);
 Toolbar::spacer();
 Toolbar::custom('scanagain', 'check', 'check', 'COM_GROUPS_MODULES_SCAN_AGAIN', false);
@@ -28,7 +27,23 @@ $this->js();
 $content = $this->module->get('content');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-confirm="<?php echo Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formUrl = Route::url(
+    'index.php?option=' . $this->option .
+    '&controller=' . $this->controller .
+    '&gid=' . $this->group->cn
+);
+$confirmTxt = Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM');
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-confirm="<?php echo $confirmTxt; ?>"
+    data-invalid-msg="<?php echo $invalidMsg; ?>">
 
     <?php
         unset($this->issues->count);

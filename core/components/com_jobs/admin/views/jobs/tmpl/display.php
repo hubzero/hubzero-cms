@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,11 +31,24 @@ Toolbar::help('jobs');
 $this->css();
 
 Html::behavior('tooltip');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER'); ?>" />
+        <input
+            type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo $searchPlaceholder; ?>"
+        />
 
         <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_JOBS_GO'); ?>" />
     </fieldset>
@@ -46,17 +57,71 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_COL_CODE'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_EXPIRATION'); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?></th>
+                <th scope="col" class="priority-4">
+                    <?php echo Lang::txt('COM_JOBS_COL_CODE'); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_TITLE',
+                        'title',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby']
+                    ); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_COMPANY',
+                        'location',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_STATUS',
+                        'status',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby']
+                    ); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_OWNER',
+                        'adminposting',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby']
+                    ); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_ADDED',
+                        'added',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby']
+                    ); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Lang::txt('COM_JOBS_EXPIRATION'); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -92,7 +157,10 @@ Html::behavior('tooltip');
             $curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
 
             // Build some publishing info
-            $info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+            $addedDate = Date::of($row->added)->toLocal(
+                Lang::txt('DATE_FORMAT_HZ1')
+            );
+            $info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . $addedDate . '<br />';
             $info .= Lang::txt('COM_JOBS_FIELD_CREATOR') . ': ' . $row->addedBy;
             $info .= $admin ? ' ' . Lang::txt('COM_JOBS_ADMIN') : '';
             $info .= '<br />';
@@ -130,6 +198,17 @@ Html::behavior('tooltip');
                     $class = '';
                     break;
             }
+
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row->id
+            );
+            $publishInfo = Lang::txt('COM_JOBS_PUBLISH_INFO');
+            $rowAddedDate = Date::of($row->added)->toLocal(
+                Lang::txt('DATE_FORMAT_HZ1')
+            );
+            $neverExpires = Lang::txt('COM_JOBS_NEVER_EXPIRES');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
@@ -140,11 +219,18 @@ Html::behavior('tooltip');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
+                        <a
+                            class="editlinktip hasTip"
+                            href="<?php echo $editUrl; ?>"
+                            title="<?php echo $publishInfo; ?>::<?php echo $info; ?>"
+                        >
                             <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                         </a>
                     <?php } else { ?>
-                        <span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
+                        <span
+                            class="editlinktip hasTip"
+                            title="<?php echo $publishInfo; ?>::<?php echo $info; ?>"
+                        >
                             <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                         </span>
                     <?php } ?>
@@ -164,13 +250,22 @@ Html::behavior('tooltip');
                     </span>
                 </td>
                 <td class="priority-4">
-                    <time datetime="<?php echo $row->added; ?>"><?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                    <time datetime="<?php echo $row->added; ?>">
+                        <?php echo $rowAddedDate; ?>
+                    </time>
                 </td>
                 <td class="priority-4">
                     <?php if ($row->expiredate && $row->expiredate != "0000-00-00 00:00:00") : ?>
-                        <time datetime="<?php echo $row->expiredate; ?>"><?php echo Date::of($row->expiredate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                        <?php
+                        $expireDateFormatted = Date::of($row->expiredate)->toLocal(
+                            Lang::txt('DATE_FORMAT_HZ1')
+                        );
+                        ?>
+                        <time datetime="<?php echo $row->expiredate; ?>">
+                            <?php echo $expireDateFormatted; ?>
+                        </time>
                     <?php else : ?>
-                        <span><?php echo Lang::txt('COM_JOBS_NEVER_EXPIRES'); ?></span> 
+                        <span><?php echo $neverExpires; ?></span>
                     <?php endif; ?>
                 </td>
                 <td class="priority-2">

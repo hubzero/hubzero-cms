@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title($this->group->get('description') . ': ' . $this->module->get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_ERRORS'), 'groups.png');
+Toolbar::title($this->group->get('description') . ': ' . $this->module->
+    get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_ERRORS'), 'groups.png');
 Toolbar::custom('errorscheckagain', 'check', 'check', 'COM_GROUPS_MODULES_CHECK_AGAIN', false);
 Toolbar::cancel();
 
@@ -21,7 +20,17 @@ Toolbar::cancel();
 $content = $this->module->get('content');
 ?>
 
-<form action="i<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$url = Route::url(
+    'index.php?option=' .
+    $this->option .
+    '&controller=' .
+    $this->controller .
+    '&gid=' .
+    $this->group->cn
+);
+?>
+<form action="i<?php echo $url; ?>" method="post" name="adminForm" id="item-form">
 
     <p class="error">
         <?php echo Lang::txt('COM_GROUPS_MODULES_ERROR_LIST', $this->module->get('title'), $this->error); ?>

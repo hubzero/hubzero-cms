@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,8 @@ defined('_HZEXEC_') or die();
 $fileInfo = pathinfo($this->file);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=dorenamefile&no_html=1'); ?>" method="post" class="hubForm">
+<?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
+<form action="<?php echo $url . '&controller=media&task=dorenamefile&no_html=1'; ?>" method="post" class="hubForm">
     <fieldset>
         <legend><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_FILE'); ?></legend>
         <label>

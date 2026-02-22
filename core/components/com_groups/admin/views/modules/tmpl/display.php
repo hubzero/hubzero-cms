@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,7 +41,8 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
     <table class="adminlist attention">
         <thead>
             <tr>
-                <th scope="col">(<?php echo $this->needsAttention->count(); ?>) <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?></th>
+                <?php $txt = Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?>
+                <th scope="col">(<?php echo $this->needsAttention->count(); ?>) <?php echo $txt; ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>
@@ -58,13 +57,21 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                     <td>
                         <ol class="attention-view">
                             <li class="raw">
-                                <a class="version" href="<?php echo Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
+                                <?php $url = Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')); ?>
+                                <a class="version" href="<?php echo $url; ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW_RAW'); ?>
                                 </a>
                             </li>
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="preview">
-                                    <a class="preview" href="<?php echo Route::url($base . '&task=preview&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
+                                    <?php
+                                    $url = Route::url(
+                                        $base .
+                                        '&task=preview&moduleid=' .
+                                        $needsAttention->get('id')
+                                    );
+                                    ?>
+                                    <a class="preview" href="<?php echo $url; ?>" class="btn">
                                         <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
                                     </a>
                                 </li>
@@ -74,7 +81,8 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                                 </li>
                             <?php endif; ?>
                             <li class="edit">
-                                <a href="<?php echo Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')); ?>" class="btn">
+                                <?php $url = Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')); ?>
+                                <a href="<?php echo $url; ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_EDIT'); ?>
                                 </a>
                             </li>
@@ -85,14 +93,16 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                             <li class="<?php if ($needsAttention->get('checked_errors')) {
                                 echo 'completed';
                                        } ?>">
-                                <a href="<?php echo Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>" class="btn">
+                                <?php $url = Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>
+                                <a href="<?php echo $url; ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
                                 </a>
                             </li>
                             <li class="<?php if ($needsAttention->get('scanned')) {
                                 echo 'completed';
                                        } ?>">
-                                <a href="<?php echo Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>" class="btn">
+                                <?php $url = Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>
+                                <a href="<?php echo $url; ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
                                 </a>
                             </li>
@@ -103,12 +113,16 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                         <ol class="attention-actions">
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="approve">
-                                    <a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id')); ?>" class="btn">
-                                        <strong><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></strong>
+                                    <?php $nid = $needsAttention->get('id'); ?>
+                                    <?php $url = Route::url($base . '&task=approve&id=' . $nid); ?>
+                                    <a href="<?php echo $url; ?>" class="btn">
+                                        <?php $txt = Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?>
+                                        <strong><?php echo $txt; ?></strong>
                                     </a>
                                 </li>
                             <?php else : ?>
-                                <span><em><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT'); ?></em></span>
+                                <?php $txt = Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT'); ?>
+                                <span><em><?php echo $txt; ?></em></span>
                             <?php endif; ?>
                         </ol>
                     </td>
@@ -119,13 +133,29 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
     <br />
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
+<?php
+$url = Route::url(
+    'index.php?option=' .
+    $this->option .
+    '&controller=' .
+    $this->controller .
+    '&gid=' .
+    $this->group->cn
+);
+?>
+<form action="<?php echo $url; ?>" name="adminForm" id="adminForm" method="post">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
@@ -137,11 +167,27 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
     <?php foreach ($this->modules as $k => $module) : ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $k;?>" class="sr-only visually-hidden"><?php echo $module->get('id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" class="checkbox-toggle" />
+                    <?php $val = $k;?>" class="sr-only visually-hidden"><?php echo $module->get('id'); ?>
+                    <label for="cb<?php echo $val; ?></label>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')); ?>">
+                    <?php
+                    $url = Route::url(
+                        'index.php?option=' .
+                        $this->option .
+                        '&controller=' .
+                        $this->controller .
+                        '&task=edit&gid=' .
+                        $this->group->cn .
+                        '&id=' .
+                        $module->get('id')
+                    );
+                    ?>
+                    <a href="<?php echo $url; ?>">
                         <?php echo $this->escape($module->get('title')); ?>
                     </a><br />
                     <span class="hint">

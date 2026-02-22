@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,9 +24,14 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('categories');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -36,13 +39,31 @@ Toolbar::help('categories');
                     <input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" />
                 </th>
                 <th scope="col" class="priority-2">
-                    <?php echo Html::grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
                 </th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_ORDER',
+                        'ordernum',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
                 </th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_TITLE',
+                        'category',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
                 </th>
             </tr>
         </thead>
@@ -64,20 +85,37 @@ $k = 0;
 for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
     $row =& $this->rows[$i];
 
+    $editUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=edit&id=' . $row->id
+    );
     ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
                 </td>
                 <td class="priority-2">
                     <?php echo $row->id; ?>
                 </td>
                 <td class="order">
-                    <input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>" class="text_area aligh-center" />
+                    <input
+                        type="text"
+                        name="order[<?php echo $row->id; ?>]"
+                        size="5"
+                        value="<?php echo $row->ordernum; ?>"
+                        class="text_area aligh-center"
+                    />
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape(stripslashes($row->category)); ?></span>
                         </a>
                     <?php } else { ?>

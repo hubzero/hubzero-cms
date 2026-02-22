@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
     $this->js('customfields');
     $xml = \Components\Groups\Models\Orm\Field::toXml($this->customFields);
     $formInfo = array('control' => 'customfields');
@@ -16,10 +14,18 @@ foreach ($this->customFields as $field) {
     }
     if ($field->type == 'textarea') {
         $fieldName = $field->get('name');
-        $fieldValue = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->get('default_value', '');
+        $fieldValue = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->
+            get('default_value', '');
         $fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
         $fieldIdAttr = $formInfo['control'] . '_' . $fieldName;
-        echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, array('class' => 'minimal no-footer images macros'));
+        echo $this->editor(
+            $fieldNameAttr,
+            $this->escape($fieldValue),
+            35,
+            8,
+            $fieldIdAttr,
+            array('class' => 'minimal no-footer images macros')
+        );
     } else {
         echo $formfield->input;
     }

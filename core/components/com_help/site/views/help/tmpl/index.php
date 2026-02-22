@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,11 +23,20 @@ foreach ($this->pages as $component) {
         $content .= '<ul>';
         foreach ($component['pages'] as $page) {
             // bug: broken links
-            // correct value for layoutExt not propagated all the way here, see attempt to set in site/controllers/help.php that results in empty string
+            // correct value for layoutExt not propagated all
+            // the way here, see attempt to set in
+            // site/controllers/help.php that results in empty string
             // $name = str_replace('.' . $this->layoutExt, '', $page);
             // default value is .phtml; use that for now so links work
             $name = str_replace('.phtml', '', $page);
-            $content .= '<li><a href="' . Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) . '</a></li>';
+            $comp = str_replace('com_', '', $component['option']);
+            $url = Route::url(
+                'index.php?option=com_help&component=' . $comp
+                . '&page=' . $name
+            );
+            $label = ucwords(str_replace('_', ' ', $name));
+            $content .= '<li><a href="' . $url . '">'
+                . $label . '</a></li>';
         }
         $content .= '</ul>';
     } else {

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,9 +31,18 @@ if ($this->import->get('id')) { ?>
                         </label>
                     </td>
                     <td>
-                        <input type="hidden" name="mapping[<?php echo $mapping['name']; ?>][name]" value="<?php echo $this->escape($mapping['name']); ?>" />
-                        <input type="hidden" name="mapping[<?php echo $mapping['name']; ?>][label]" value="<?php echo $this->escape($mapping['label']); ?>" />
-                        <select name="mapping[<?php echo $mapping['name']; ?>][field]" id="mapping-<?php echo $mapping['name']; ?>">
+                        <?php $mName = $mapping['name']; ?>
+                        <input type="hidden"
+                            name="mapping[<?php echo $mName; ?>][name]"
+                            value="<?php echo $this->escape($mName); ?>"
+                        />
+                        <input type="hidden"
+                            name="mapping[<?php echo $mName; ?>][label]"
+                            value="<?php echo $this->escape($mapping['label']); ?>"
+                        />
+                        <select name="mapping[<?php echo $mName; ?>][field]"
+                            id="mapping-<?php echo $mName; ?>"
+                        >
                             <option value=""><?php echo Lang::txt('COM_GROUPS_UNKNOWN'); ?></option>
                             <?php
                             $columns = array(
@@ -68,7 +75,9 @@ if ($this->import->get('id')) { ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">
                                 <?php
-                                include_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'field.php';
+                                $path = Component::path('com_groups')
+                                    . DS . 'models' . DS . 'orm' . DS . 'field.php';
+                                include_once $path;
 
                                 $fields = \Components\Groups\Models\Orm\Field::all()
                                     ->ordered()
@@ -76,9 +85,10 @@ if ($this->import->get('id')) { ?>
 
                                 foreach ($fields as $field) {
                                     ?>
-                                    <option value="<?php echo $this->escape($field->get('name')); ?>" <?php if ($mapping['field'] == $field->get('name')) {
-                                        echo 'selected="selected"';
-                                                   } ?>><?php echo $this->escape($field->get('name')); ?></option>
+                                    <?php $fn = $this->escape($field->get('name')); ?>
+                                    <?php $sel = ($mapping['field'] == $field->get('name'))
+                                        ? ' selected="selected"' : ''; ?>
+                                    <option value="<?php echo $fn; ?>"<?php echo $sel; ?>><?php echo $fn; ?></option>
                                     <?php
                                 }
                                 ?>

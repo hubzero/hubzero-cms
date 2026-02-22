@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,10 +28,18 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
     <div id="content-header-extra">
         <ul id="useroptions">
             <li class="last">
-                <a class="icon-group group btn popup 1200x600" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component&path=/uploads'); ?>">
+                <?php $val = Route::url(
+                    'index.php?option=' .
+                        $this->option .
+                        '&cn=' .
+                        $this->group->get('cn') .
+                        '&controller=media&task=filebrowser&tmpl=component&path=/uploads'
+                ); ?>
+                <a class="icon-group group btn popup 1200x600" href="<?php echo $val; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_UPLOAD_MANAGER'); ?>
                 </a>
-                <a class="icon-group group btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>">
+                <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
+                <a class="icon-group group btn" href="<?php echo $url; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
                 </a>
             </li>
@@ -54,14 +60,27 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
 
     <div class="group-page-manager">
         <ul class="tabs clearfix">
-            <li><a data-tab="pages" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#pages'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
-            <li><a data-tab="categories" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#categories'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
+            <?php $val1 = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#pages'
+            ); ?>
+            <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGES'); ?>
+            <li><a data-tab="pages" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
+            <?php $val1 = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#categories'
+            ); ?>
+            <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?>
+            <li><a data-tab="categories" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
             <?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-                <li><a data-tab="modules" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#modules'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
+                <?php $val1 = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#modules'
+                ); ?>
+                <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?>
+                <li><a data-tab="modules" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
             <?php endif;?>
         </ul>
 
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=pages'); ?>" method="post" id="hubForm" class="full">
+        <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
+        <form action="<?php echo $url . '&task=pages'; ?>" method="post" id="hubForm" class="full">
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
             <input type="hidden" name="task" value="pages" />

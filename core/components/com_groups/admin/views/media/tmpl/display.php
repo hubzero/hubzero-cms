@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,17 @@ $this->css('media.css')
 ?>
 
 <div id="attachments">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=upload'); ?>" id="adminForm" method="post" enctype="multipart/form-data">
+    <?php
+    $url = Route::url(
+        'index.php?option=' .
+        $this->option .
+        '&tmpl=component&controller=' .
+        $this->controller .
+        '&gidNumber=' .
+        $this->group->get('gidNumber')
+    );
+    ?>
+    <form action="<?php echo $url . '&task=upload'; ?>" id="adminForm" method="post" enctype="multipart/form-data">
         <fieldset>
             <div class="grid">
                 <div class="col span4">
@@ -28,7 +36,8 @@ $this->css('media.css')
                 </div>
                 <div class="col span4">
                     <div class="input-wrap">
-                        <input type="text" name="foldername" id="foldername" placeholder="<?php echo Lang::txt('COM_GROUPS_MEDIA_CREATE_DIRECTORY'); ?>" />
+                        <?php $txt = Lang::txt('COM_GROUPS_MEDIA_CREATE_DIRECTORY'); ?>
+                        <input type="text" name="foldername" id="foldername" placeholder="<?php echo $txt; ?>" />
                     </div>
                 </div>
                 <div class="col span4">
@@ -41,8 +50,15 @@ $this->css('media.css')
             <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
             <input type="hidden" name="task" value="upload" />
-            <input type="hidden" name="gidNumber" value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
-            <input type="hidden" name="dir" id="currentdir" value="<?php echo $this->escape(urlencode($this->dir)); ?>" />
+            <input
+                type="hidden"
+                name="gidNumber"
+                value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
+            <input
+                type="hidden"
+                name="dir"
+                id="currentdir"
+                value="<?php echo $this->escape(urlencode($this->dir)); ?>" />
             <input type="hidden" name="tmpl" value="component" />
 
             <?php echo Html::input('token'); ?>
@@ -60,7 +76,19 @@ $this->css('media.css')
                 </label>
             </div>
 
-            <iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=list' . ($this->dir ? '&dir=' . $this->dir : '') . '&t=' . Date::toUnix()); ?>" name="filer" id="filer" width="98%" height="400"></iframe>
+            <?php $val = Route::url(
+                'index.php?option=' .
+                    $this->option .
+                    '&tmpl=component&controller=' .
+                    $this->controller .
+                    '&gidNumber=' .
+                    $this->group->get('gidNumber') .
+                    '&task=list' .
+                    ($this->dir ? '&dir=' . $this->dir : '') .
+                    '&t=' .
+                    Date::toUnix()
+            ); ?>
+            <iframe src="<?php echo $val; ?>" name="filer" id="filer" width="98%" height="400"></iframe>
         </div>
     </form>
 </div>

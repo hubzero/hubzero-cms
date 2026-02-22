@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,13 +24,25 @@ Toolbar::help('job');
 $now = Date::toSql();
 
 $usonly = $this->config->get('usonly');
-$this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : Lang::txt('COM_JOBS_USA');
-$this->row->code = !$this->isnew ? $this->row->code : Lang::txt('COM_JOBS_ISNEW');
+$this->row->companyLocationCountry = !$this->isnew
+    ? $this->row->companyLocationCountry
+    : Lang::txt('COM_JOBS_USA');
+$this->row->code = !$this->isnew
+    ? $this->row->code
+    : Lang::txt('COM_JOBS_ISNEW');
 
-$startdate = ($this->row->startdate && $this->row->startdate != '0000-00-00 00:00:00') ? Date::of($this->row->startdate)->toLocal('Y-m-d 00:00:00') : '';
-$closedate = ($this->row->closedate && $this->row->closedate != '0000-00-00 00:00:00') ? Date::of($this->row->closedate)->toLocal('Y-m-d 00:00:00') : '';
-$opendate  = ($this->row->opendate  && $this->row->opendate  != '0000-00-00 00:00:00') ? Date::of($this->row->opendate)->toLocal('Y-m-d 00:00:00')  : '';
-$expiredate  = ($this->row->expiredate && $this->row->expiredate != '0000-00-00 00:00:00') ? Date::of($this->row->expiredate)->toLocal('Y-m-d 00:00:00')  : '';
+$startdate = ($this->row->startdate && $this->row->startdate != '0000-00-00 00:00:00')
+    ? Date::of($this->row->startdate)->toLocal('Y-m-d 00:00:00')
+    : '';
+$closedate = ($this->row->closedate && $this->row->closedate != '0000-00-00 00:00:00')
+    ? Date::of($this->row->closedate)->toLocal('Y-m-d 00:00:00')
+    : '';
+$opendate = ($this->row->opendate && $this->row->opendate != '0000-00-00 00:00:00')
+    ? Date::of($this->row->opendate)->toLocal('Y-m-d 00:00:00')
+    : '';
+$expiredate = ($this->row->expiredate && $this->row->expiredate != '0000-00-00 00:00:00')
+    ? Date::of($this->row->expiredate)->toLocal('Y-m-d 00:00:00')
+    : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode
 
@@ -76,26 +86,92 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+);
+$requiredLabel = Lang::txt('JOPTION_REQUIRED');
+$companyNameValue = $this->escape(
+    stripslashes($this->row->companyName)
+);
+$companyWebsiteValue = $this->escape(
+    stripslashes($this->row->companyWebsite)
+);
+$companyLocationValue = $this->escape(
+    stripslashes($this->row->companyLocation)
+);
+$locationHint = Lang::txt('COM_JOBS_FIELD_LOCATION_HINT');
+$titleValue = $this->escape(stripslashes($this->row->title));
+$descHint = Lang::txt('COM_JOBS_FIELD_DESCRIPTION_HINT');
+$externalUrlHint = Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT');
+$applyExternalValue = $this->escape(
+    stripslashes($this->row->applyExternalUrl)
+);
+$contactNameValue = $this->escape(
+    stripslashes($this->row->contactName)
+);
+$contactEmailValue = $this->escape(
+    stripslashes($this->row->contactEmail)
+);
+$contactPhoneValue = $this->escape(
+    stripslashes($this->row->contactPhone)
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_JOBS_FIELDSET_COMPANY'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="companyName"><?php echo Lang::txt('COM_JOBS_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="companyName" id="companyName" class="required" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" />
+                    <label for="companyName">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_NAME'); ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="companyName"
+                        id="companyName"
+                        class="required"
+                        maxlength="200"
+                        value="<?php echo $companyNameValue; ?>"
+                    />
                 </div>
                 <div class="input-wrap">
-                    <label for="companyWebsite"><?php echo Lang::txt('COM_JOBS_FIELD_URL'); ?>:</label><br />
-                    <input type="text" name="companyWebsite" id="companyWebsite" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" />
+                    <label for="companyWebsite">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_URL'); ?>:
+                    </label><br />
+                    <input
+                        type="text"
+                        name="companyWebsite"
+                        id="companyWebsite"
+                        maxlength="200"
+                        value="<?php echo $companyWebsiteValue; ?>"
+                    />
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_JOBS_FIELD_LOCATION_HINT'); ?>">
-                    <label for="companyLocation"><?php echo Lang::txt('COM_JOBS_FIELD_LOCATION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="companyLocation" id="companyLocation" class="required" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_JOBS_FIELD_LOCATION_HINT'); ?></span>
+                <div class="input-wrap" data-hint="<?php echo $locationHint; ?>">
+                    <label for="companyLocation">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_LOCATION'); ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="companyLocation"
+                        id="companyLocation"
+                        class="required"
+                        maxlength="200"
+                        value="<?php echo $companyLocationValue; ?>"
+                    />
+                    <span class="hint"><?php echo $locationHint; ?></span>
                 </div>
             </fieldset>
 
@@ -103,31 +179,55 @@ $this->js();
                 <legend><span><?php echo Lang::txt('COM_JOBS_FIELDSET_JOB'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="cid"><?php echo Lang::txt('COM_JOBS_FIELD_CATEGORY'); ?>:</label><br />
-                    <?php echo \Components\Jobs\Helpers\Html::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
+                    <label for="cid">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_CATEGORY'); ?>:
+                    </label><br />
+                    <?php
+                    echo \Components\Jobs\Helpers\Html::formSelect(
+                        'cid',
+                        $this->cats,
+                        $this->row->cid,
+                        '',
+                        ''
+                    );
+                    ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="type"><?php echo Lang::txt('COM_JOBS_FIELD_TYPE'); ?>:</label><br />
-                    <?php echo \Components\Jobs\Helpers\Html::formSelect('type', $this->types, $this->row->type, '', ''); ?>
+                    <label for="type">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_TYPE'); ?>:
+                    </label><br />
+                    <?php
+                    echo \Components\Jobs\Helpers\Html::formSelect(
+                        'type',
+                        $this->types,
+                        $this->row->type,
+                        '',
+                        ''
+                    );
+                    ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="companyLocationCountry"><?php echo Lang::txt('COM_JOBS_FIELD_COUNTRY'); ?>:</label><br />
+                    <label for="companyLocationCountry">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_COUNTRY'); ?>:
+                    </label><br />
                     <?php if ($usonly) { ?>
                         <?php echo Lang::txt('COM_JOBS_USA'); ?>
                         <p class="hint"><?php echo Lang::txt('COM_JOBS_USA_HINT'); ?></p>
                         <input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
                     <?php } else {
-                        $out  = "\t\t\t\t" . '<select name="companyLocationCountry" id="companyLocationCountry">' . "\n";
-                        $out .= "\t\t\t\t" . ' <option value="">' . Lang::txt('COM_JOBS_SELECT') . '</option>' . "\n";
-                        //$countries = getcountries();
+                        $out  = "\t\t\t\t" . '<select name="companyLocationCountry"'
+                            . ' id="companyLocationCountry">' . "\n";
+                        $selectLabel = Lang::txt('COM_JOBS_SELECT');
+                        $out .= "\t\t\t\t" . ' <option value="">' . $selectLabel . '</option>' . "\n";
 
                         $countries = \Hubzero\Geocode\Geocode::countries();
                         foreach ($countries as $country) {
-                            $out .= "\t\t\t\t" . ' <option value="' . $this->escape($country->name) . '"';
+                            $escapedName = $this->escape($country->name);
+                            $out .= "\t\t\t\t" . ' <option value="' . $escapedName . '"';
                             if ($country->name == $this->row->companyLocationCountry) {
                                 $out .= ' selected="selected"';
                             }
-                            $out .= '>' . $this->escape($country->name) . '</option>' . "\n";
+                            $out .= '>' . $escapedName . '</option>' . "\n";
                         }
                         $out .= "\t\t\t" . '</select>' . "\n";
                         echo $out;
@@ -135,52 +235,123 @@ $this->js();
                     <?php } ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="title"><?php echo Lang::txt('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="title" id="title" class="required" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+                    <label for="title">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_TITLE'); ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        class="required"
+                        maxlength="200"
+                        value="<?php echo $titleValue; ?>"
+                    />
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?>">
-                    <label for="description"><?php echo Lang::txt('COM_JOBS_FIELD_DESCRIPTION'); ?>:</label><br />
-                    <?php echo $this->editor('description', $this->escape(stripslashes($this->row->description)), 50, 30, 'description', array('class' => 'required')); ?>
-                    <span class="hint"><?php echo Lang::txt('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?></span>
+                <div class="input-wrap" data-hint="<?php echo $descHint; ?>">
+                    <label for="description">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_DESCRIPTION'); ?>:
+                    </label><br />
+                    <?php
+                    $descValue = $this->escape(
+                        stripslashes($this->row->description)
+                    );
+                    echo $this->editor(
+                        'description',
+                        $descValue,
+                        50,
+                        30,
+                        'description',
+                        array('class' => 'required')
+                    );
+                    ?>
+                    <span class="hint"><?php echo $descHint; ?></span>
                 </div>
                 <div class="input-wrap">
-                    <label for="startdate"><?php echo Lang::txt('COM_JOBS_FIELD_STARTDATE'); ?>:</label><br />
+                    <label for="startdate">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_STARTDATE'); ?>:
+                    </label><br />
                     <?php echo Html::input('calendar', 'startdate', $startdate); ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="closedate"><?php echo Lang::txt('COM_JOBS_FIELD_DUEDATE'); ?>:</label><br />
+                    <label for="closedate">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_DUEDATE'); ?>:
+                    </label><br />
                     <?php echo Html::input('calendar', 'closedate', $closedate); ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="expiredate"><?php echo Lang::txt('COM_JOBS_FIELD_EXPIREDATE'); ?>:</label><br />
+                    <label for="expiredate">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_EXPIREDATE'); ?>:
+                    </label><br />
                     <?php echo Html::input('calendar', 'expiredate', $expiredate); ?>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?>">
-                    <label for="applyExternalUrl"><?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL'); ?>:</label><br />
-                    <input type="text" name="applyExternalUrl" id="applyExternalUrl" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?></span>
+                <div class="input-wrap" data-hint="<?php echo $externalUrlHint; ?>">
+                    <label for="applyExternalUrl">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL'); ?>:
+                    </label><br />
+                    <input
+                        type="text"
+                        name="applyExternalUrl"
+                        id="applyExternalUrl"
+                        maxlength="100"
+                        value="<?php echo $applyExternalValue; ?>"
+                    />
+                    <span class="hint"><?php echo $externalUrlHint; ?></span>
                 </div>
                 <div class="input-wrap">
-                    <input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1" <?php if ($this->row->applyInternal) {
-                        echo 'checked="checked"';
-                                                                                                            } ?>  />
-                    <label for="applyInternal"><?php echo Lang::txt('COM_JOBS_FIELD_APPLY_INTERNAL'); ?></label>
+                    <input
+                        type="checkbox"
+                        class="option"
+                        name="applyInternal"
+                        id="applyInternal"
+                        value="1"
+                        <?php if ($this->row->applyInternal) {
+                            echo 'checked="checked"';
+                        } ?>
+                    />
+                    <label for="applyInternal">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_APPLY_INTERNAL'); ?>
+                    </label>
                 </div>
             </fieldset>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_JOBS_FIELDSET_CONTACT_INFO'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="contactName"><?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_NAME'); ?>:</label>
-                    <input type="text" name="contactName" id="contactName" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactName)); ?>" />
+                    <label for="contactName">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_NAME'); ?>:
+                    </label>
+                    <input
+                        type="text"
+                        name="contactName"
+                        id="contactName"
+                        maxlength="100"
+                        value="<?php echo $contactNameValue; ?>"
+                    />
                 </div>
                 <div class="input-wrap">
-                    <label for="contactEmail"><?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_EMAIL'); ?>:</label>
-                    <input type="text" name="contactEmail" id="contactEmail" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactEmail)); ?>" />
+                    <label for="contactEmail">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_EMAIL'); ?>:
+                    </label>
+                    <input
+                        type="text"
+                        name="contactEmail"
+                        id="contactEmail"
+                        maxlength="100"
+                        value="<?php echo $contactEmailValue; ?>"
+                    />
                 </div>
                 <div class="input-wrap">
-                    <label for="contactPhone"><?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_PHONE'); ?>:</label>
-                    <input type="text" name="contactPhone" id="contactPhone" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactPhone)); ?>" />
+                    <label for="contactPhone">
+                        <?php echo Lang::txt('COM_JOBS_FIELD_CONTACT_PHONE'); ?>:
+                    </label>
+                    <input
+                        type="text"
+                        name="contactPhone"
+                        id="contactPhone"
+                        maxlength="100"
+                        value="<?php echo $contactPhoneValue; ?>"
+                    />
                 </div>
             </fieldset>
         </div>
@@ -189,11 +360,15 @@ $this->js();
                 <table class="meta">
                     <tbody>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_CREATED'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_CREATED'); ?>:
+                            </th>
                             <td><?php echo $this->row->added; ?></td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_CREATOR'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_CREATOR'); ?>:
+                            </th>
                             <td>
                                 <?php
                                 echo $this->row->addedBy;
@@ -204,35 +379,60 @@ $this->js();
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_MODIFIED'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_MODIFIED'); ?>:
+                            </th>
                             <td>
-                                <?php echo ($this->job->edited && $this->job->edited != '0000-00-00 00:00:00') ? $this->job->edited : Lang::txt('COM_JOBS_NOT_APPLICABLE'); ?>
+                                <?php
+                                $edited = $this->job->edited;
+                                echo ($edited && $edited != '0000-00-00 00:00:00')
+                                    ? $edited
+                                    : Lang::txt('COM_JOBS_NOT_APPLICABLE');
+                                ?>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_MODIFIER'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_MODIFIER'); ?>:
+                            </th>
                             <td>
-                                <?php echo ($this->job->editedBy) ? $this->job->editedBy : Lang::txt('COM_JOBS_NOT_APPLICABLE'); ?>
+                                <?php
+                                echo ($this->job->editedBy)
+                                    ? $this->job->editedBy
+                                    : Lang::txt('COM_JOBS_NOT_APPLICABLE');
+                                ?>
                             </td>
                         </tr>
                     <?php if (isset($this->subscription->id)) { ?>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_USER_SUBSCRIPTION'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_USER_SUBSCRIPTION'); ?>:
+                            </th>
                             <td>
-                                <?php echo $this->subscription->code;
+                                <?php
+                                echo $this->subscription->code;
                                 if (!$this->job->inactive) {
-                                    echo ' ' . Lang::txt('COM_JOBS_FIELD_USER_SUBSCRIPTION_EXPIRES', $this->subscription->expires);
-                                } ?>
+                                    $expiresMsg = Lang::txt(
+                                        'COM_JOBS_FIELD_USER_SUBSCRIPTION_EXPIRES',
+                                        $this->subscription->expires
+                                    );
+                                    echo ' ' . $expiresMsg;
+                                }
+                                ?>
                             </td>
                         </tr>
                     <?php } ?>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_STATUS'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_STATUS'); ?>:
+                            </th>
                             <td><?php echo $alt; ?></td>
                         </tr>
                     <?php if ($opendate) { ?>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_JOBS_FIELD_AD_PUBLISHED'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_JOBS_FIELD_AD_PUBLISHED'); ?>:
+                            </th>
                             <td><?php echo $this->row->opendate; ?></td>
                         </tr>
                     <?php } ?>
@@ -245,17 +445,23 @@ $this->js();
 
                 <?php if (!$this->isnew) { ?>
                     <fieldset>
-                        <legend><span><?php echo Lang::txt('COM_JOBS_FIELDSET_TAKE_ACTION'); ?>:</span></legend>
+                        <legend>
+                            <span><?php echo Lang::txt('COM_JOBS_FIELDSET_TAKE_ACTION'); ?>:</span>
+                        </legend>
 
                         <div class="input-wrap">
-                            <input type="radio" name="action" value="message" /><?php echo Lang::txt('COM_JOBS_FIELD_ACTION_NONE'); ?><br />
+                            <input type="radio" name="action" value="message" />
+                            <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_NONE'); ?><br />
                             <?php if ($this->row->status != 1) { ?>
-                                <input type="radio" name="action" value="publish" /> <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_PUBLISH'); ?>
+                                <input type="radio" name="action" value="publish" />
+                                <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_PUBLISH'); ?>
                             <?php } else { ?>
-                                <input type="radio" name="action" value="unpublish" /> <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_UNPUBLISH'); ?>
+                                <input type="radio" name="action" value="unpublish" />
+                                <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_UNPUBLISH'); ?>
                             <?php } ?>
                             <br />
-                            <input type="radio" name="action" value="delete" /> <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_DELETE'); ?><br />
+                            <input type="radio" name="action" value="delete" />
+                            <?php echo Lang::txt('COM_JOBS_FIELD_ACTION_DELETE'); ?><br />
                         </div>
                     </fieldset>
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,9 +24,27 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+);
+$categoryValue = $this->escape(
+    stripslashes($this->row->category)
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <?php if ($this->task == 'edit') { ?>
     <p class="warning">
         <?php echo Lang::txt('COM_JOBS_WARNING_EDIT_TYPE'); ?>
@@ -39,8 +55,18 @@ $this->js();
         <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
         <div class="input-wrap">
-            <label for="category"><?php echo Lang::txt('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-            <input type="text" name="category" id="category" class="required" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
+            <label for="category">
+                <?php echo Lang::txt('COM_JOBS_FIELD_TITLE'); ?>:
+                <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+            </label>
+            <input
+                type="text"
+                name="category"
+                id="category"
+                class="required"
+                maxlength="100"
+                value="<?php echo $categoryValue; ?>"
+            />
         </div>
 
         <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

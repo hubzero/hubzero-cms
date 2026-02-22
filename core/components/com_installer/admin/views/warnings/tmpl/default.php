@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');
@@ -16,7 +14,8 @@ Toolbar::help('warnings');
 Document::setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
 ?>
 <div id="installer-warnings">
-    <form action="<?php echo Route::url('index.php?option=com_installer&controller=warnings'); ?>" method="post" name="adminForm" id="item-form">
+    <?php $formAction = Route::url('index.php?option=com_installer&controller=warnings'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
         <?php
         if (!count($this->messages)) {
             echo '<p class="nowarning">' . Lang::txt('COM_INSTALLER_MSG_WARNINGS_NONE') . '</p>';

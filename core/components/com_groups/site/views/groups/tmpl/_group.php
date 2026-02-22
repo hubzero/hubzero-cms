@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,12 +21,32 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
     if (in_array(User::get('id'), $members)) {
         $status  = 'member';
-        $options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a>';
+        $options = '<a class="cancel tooltips" href="' .
+            Route::url('index.php?option=' .
+            $this->option .
+            '&cn=' .
+            $group->get('cn') .
+            '&task=cancel') .
+            '" title="' .
+            Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') .
+            '">' .
+            Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') .
+            '</a>';
 
         $managers = $group->get('managers');
         if (in_array(User::get('id'), $managers)) {
             $status  = 'manager';
-            $options = ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=edit') . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a>';
+            $options = ' <a class="customize tooltips" href="' .
+                Route::url('index.php?option=' .
+                $this->option .
+                '&cn=' .
+                $group->get('cn') .
+                '&task=edit') .
+                '" title="' .
+                Lang::txt('COM_GROUPS_TOOLBAR_EDIT') .
+                '">' .
+                Lang::txt('COM_GROUPS_TOOLBAR_EDIT') .
+                '</a>';
         }
     } else {
         $invitees   = $group->get('invitees');
@@ -36,23 +54,48 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
         if (in_array(User::get('id'), $invitees)) {
             $status  = 'invitee';
-            $options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</a>';
+            $options = ' <a class="cancel tooltips" href="' .
+                Route::url('index.php?option=' .
+                $this->option .
+                '&cn=' .
+                $group->get('cn') .
+                '&task=cancel') .
+                '" title="' .
+                Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') .
+                '">' .
+                Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') .
+                '</a>';
         } elseif (in_array(User::get('id'), $applicants)) {
             $status  = 'pending';
-            $options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a>';
+            $options = '<a class="cancel tooltips" href="' .
+                Route::url('index.php?option=' .
+                $this->option .
+                '&cn=' .
+                $group->get('cn') .
+                '&task=cancel') .
+                '" title="' .
+                Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') .
+                '">' .
+                Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') .
+                '</a>';
         }
     }
 }
 
 $published = ($group->get('published')) ? true : false;
 ?>
-<div class="group <?php echo (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->get('gidNumber'); ?>"
+<?php $val = (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published'); ?>
+<div class="group <?php echo $val; ?>" id="group<?php echo $group->get('gidNumber'); ?>"
     data-id="<?php echo $group->get('gidNumber'); ?>"
     data-status="<?php echo $this->escape($status); ?>"
     data-title="<?php echo $this->escape(stripslashes($group->get('description')) . ' ' . $group->get('cn')); ?>">
     <div class="group-contents">
         <?php if ($published) : ?>
-            <a class="group-identity" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn')); ?>">
+            <?php $url = Route::url(
+                'index.php?option=' . $this->option .
+                '&cn=' . $group->get('cn')
+            ); ?>
+            <a class="group-identity" href="<?php echo $url; ?>">
         <?php else : ?>
             <div class="group-identity">
         <?php endif; ?>
@@ -61,7 +104,9 @@ $published = ($group->get('published')) ? true : false;
 
             if ($group->get('logo') && is_file($path)) :
                 ?>
-                <img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+                <?php $val1 = with(new Hubzero\Content\Moderator($path))->getUrl(); ?>
+                <?php $val = $this->escape(stripslashes($group->get('description'))); ?>
+                <img src="<?php echo $val1; ?>" alt="<?php echo $val; ?>" />
             <?php else : ?>
                 <span><?php echo $this->escape(stripslashes($group->get('description'))); ?></span>
             <?php endif; ?>
@@ -73,13 +118,26 @@ $published = ($group->get('published')) ? true : false;
 
         <div class="group-details">
             <span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
+            <?php
+            $desc = $this->escape(Hubzero\Utility\Str::truncate(
+                stripslashes($group->get('description')),
+                60
+            ));
+            ?>
             <?php if ($published) : ?>
-                <a class="group-title" data-id="<?php echo $group->get('gidNumber'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn')); ?>">
-                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
+                <?php $url = Route::url(
+                    'index.php?option=' . $this->option .
+                    '&cn=' . $group->get('cn')
+                ); ?>
+                <a
+                    class="group-title"
+                    data-id="<?php echo $group->get('gidNumber'); ?>"
+                    href="<?php echo $url; ?>">
+                    <?php echo $desc; ?>
                 </a>
             <?php else : ?>
                 <span class="group-title">
-                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
+                    <?php echo $desc; ?>
                 </span>
             <?php endif; ?>
 
@@ -109,7 +167,8 @@ $published = ($group->get('published')) ? true : false;
 
         <?php if (!$published) : ?>
             <div class="group-meta">
-                <span class="not-published group-status"><?php echo Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
+                <?php $txt = Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?>
+                <span class="not-published group-status"><?php echo $txt; ?></span>
             </div>
         <?php else : ?>
             <?php
@@ -121,7 +180,17 @@ $published = ($group->get('published')) ? true : false;
                     <?php if ($status == 'pending') : ?>
                         <?php echo Lang::txt('Membership request requires approval.'); ?>
                     <?php elseif ($status == 'invitee') : ?>
-                        <a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></a>
+                        <?php
+                        $acceptUrl = Route::url(
+                            'index.php?option=' . $this->option .
+                            '&cn=' . $group->get('cn') . '&task=accept'
+                        );
+                        $acceptTxt = Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT');
+                        ?>
+                        <a
+                            class="btn btn-success accept tooltips"
+                            href="<?php echo $acceptUrl; ?>"
+                            title="<?php echo $acceptTxt; ?>"><?php echo $acceptTxt; ?></a>
                     <?php else : ?>
                         <div>
                             <div>
@@ -140,7 +209,10 @@ $published = ($group->get('published')) ? true : false;
                                     if (!$activity->get('id')) {
                                         $activity->set('created', $group->get('created'));
                                     }
-                                    if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00') {
+                                    if (
+                                        !$activity->get('created') || $activity->
+                                        get('created') == '0000-00-00 00:00:00'
+                                    ) {
                                         echo Lang::txt('COM_GROUPS_UNKNOWN');
                                     } else {
                                         $dt = Date::of($activity->get('created'));
@@ -174,21 +246,29 @@ $published = ($group->get('published')) ? true : false;
                         <div>
                             <div>
                                 <?php if (!$group->get('join_policy')) : ?>
-                                    <span class="open join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></span>
+                                    <?php $txt = Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?>
+                                    <span class="open join-policy"><?php echo $txt; ?></span>
                                 <?php elseif ($group->get('join_policy') == 1) : ?>
-                                    <span class="open join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></span>
+                                    <?php $txt = Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?>
+                                    <span class="open join-policy"><?php echo $txt; ?></span>
                                 <?php endif; ?>
                                 <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                             </div>
                             <div class="join-group">
-                                <a class="btn btn-success" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+                                <?php $val1 = Route::url(
+                                    'index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'
+                                ); ?>
+                                <?php $val = Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?>
+                                <a class="btn btn-success" href="<?php echo $val1; ?>"><?php echo $val; ?></a>
                             </div>
                         </div>
                     <?php elseif ($group->get('join_policy') == 3) : ?>
-                        <span class="closed join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></span>
+                        <?php $txt = Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?>
+                        <span class="closed join-policy"><?php echo $txt; ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php elseif ($group->get('join_policy') == 2) : ?>
-                        <span class="inviteonly join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></span>
+                        <?php $txt = Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?>
+                        <span class="inviteonly join-policy"><?php echo $txt; ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php endif; ?>
                 <?php endif; ?>

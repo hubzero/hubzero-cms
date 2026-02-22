@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_PACKAGES'), 'install');
@@ -20,15 +18,21 @@ Toolbar::help('warnings');
 $example = Component::path('com_installer') . '/config/composer.json.dist';
 ?>
 <div id="installer-warnings">
-    <form action="<?php echo Route::url('index.php?option=com_installer&controller=warnings'); ?>" method="post" name="adminForm" id="item-form">
+    <?php $formAction = Route::url('index.php?option=com_installer&controller=warnings'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
         <div class="input-wrap">
-            <p class="error"><?php echo Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER', PATH_APP . '/composer.json'); ?></p>
+            <?php
+            $composerPath = PATH_APP . '/composer.json';
+            $missingMsg = Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER', $composerPath);
+            ?>
+            <p class="error"><?php echo $missingMsg; ?></p>
             <?php
             if (file_exists($example)) :
                 $contents = file_get_contents($example);
                 if ($contents) :
                     ?>
-                    <label for="sample"><?php echo Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER_SAMPLE'); ?></label>
+                    <?php $sampleLabel = Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER_SAMPLE'); ?>
+                    <label for="sample"><?php echo $sampleLabel; ?></label>
                     <textarea name="sample" id="sample" cols="100" rows="28"><?php
                     $site = preg_replace('/[^a-zA-Z0-9\-]/', '', strtolower(Config::get('sitename')));
 

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,7 +17,16 @@ Toolbar::custom('display', 'back', 'back', 'COM_INSTALLER_CUSTOMEXTS_BACK', fals
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
         <table class="adminlist success">
             <thead>
                 <tr>

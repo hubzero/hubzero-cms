@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,23 +18,44 @@ defined('_HZEXEC_') or die();
     $cats       = $this->cats;
     $types      = $this->types;
 
+$dashboardUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=dashboard'
+);
+$resumesUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=resumes'
+);
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
 
-    <?php if ($this->emp or $this->admin) {  ?>
+    <?php if ($this->emp or $this->admin) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-        <?php if ($this->emp) {  ?>
-            <li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('Employer Dashboard'); ?></a></li>
-            <?php if ($filters['filterby'] == 'shortlisted') { ?>
-            <li><a class="complete btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo Lang::txt('All Candidates'); ?></a></li>
-            <?php } else { ?>
-            <li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('Candidate Shortlist'); ?></a></li>
-            <?php } ?>
-        <?php } else {  ?>
+        <?php if ($this->emp) { ?>
             <li>
-                <a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('Administrator Dashboard'); ?></a>
+                <a class="icon-dashboard myjobs btn" href="<?php echo $dashboardUrl; ?>">
+                    <?php echo Lang::txt('Employer Dashboard'); ?>
+                </a>
+            </li>
+            <?php if ($filters['filterby'] == 'shortlisted') { ?>
+            <li>
+                <a class="complete btn" href="<?php echo $resumesUrl; ?>">
+                    <?php echo Lang::txt('All Candidates'); ?>
+                </a>
+            </li>
+            <?php } else { ?>
+            <li>
+                <a class="icon-list shortlist btn"
+                    href="<?php echo $resumesUrl . '?filterby=shortlisted'; ?>">
+                    <?php echo Lang::txt('Candidate Shortlist'); ?>
+                </a>
+            </li>
+            <?php } ?>
+        <?php } else { ?>
+            <li>
+                <a class="icon-dashboard myjobs btn" href="<?php echo $dashboardUrl; ?>">
+                    <?php echo Lang::txt('Administrator Dashboard'); ?>
+                </a>
             </li>
         <?php } ?>
         </ul>
@@ -44,7 +63,7 @@ defined('_HZEXEC_') or die();
     <?php } ?>
 </header><!-- / #content-header -->
 
-<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>">
+<form method="post" action="<?php echo $resumesUrl; ?>">
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
@@ -56,10 +75,13 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('Displaying '); ?>
                     <?php
                     if ($filters['start'] == 0) {
-                        echo $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(Lang::txt('all')) . ' ' . count($seekers);
+                        echo $pageNav->total > count($seekers)
+                            ? ' top ' . count($seekers) . ' out of ' . $pageNav->total
+                            : strtolower(Lang::txt('all')) . ' ' . count($seekers);
                     } else {
                         echo ($filters['start'] + 1);
-                        echo ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
+                        echo ' - ' . ($filters['start'] + count($seekers))
+                            . ' out of ' . $pageNav->total;
                     }
                     echo ' ';
                     if ($filters['filterby'] == 'shortlisted') {
@@ -80,7 +102,9 @@ defined('_HZEXEC_') or die();
                         $this->controller = '';
                         $this->task = 'resumes';
                         $view = $this->view('seeker');
-                        $params = new \Hubzero\Config\Registry(Plugin::params('members', 'resume'));
+                        $params = new \Hubzero\Config\Registry(
+                            Plugin::params('members', 'resume')
+                        );
 
                         $view->seeker   = $seeker;
                         $view->emp      = $emp;
@@ -97,7 +121,11 @@ defined('_HZEXEC_') or die();
                 </ul>
             <?php } else { // no candidates found ?>
                 <p>
-                    <?php echo $filters['filterby'] == 'shortlisted' ? Lang::txt('You haven\'t yet included any candidates on your shortlist. Keep searching!') : Lang::txt('Sorry, no resumes found at the moment.'); ?>
+                    <?php
+                    echo $filters['filterby'] == 'shortlisted'
+                        ? Lang::txt('You haven\'t yet included any candidates on your shortlist. Keep searching!')
+                        : Lang::txt('Sorry, no resumes found at the moment.');
+                    ?>
                 </p>
             <?php } ?>
 
@@ -118,24 +146,42 @@ defined('_HZEXEC_') or die();
                 <label>
                     <?php echo Lang::txt('Sort by'); ?>:
                     <div class="together">
-                        <input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby'] != 'bestmatch') {
-                            echo ' checked="checked"';
-                                                                                           } ?> /> <?php echo Lang::txt('last update'); ?> &nbsp;
-                        <input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby'] == 'bestmatch') {
-                            echo ' checked="checked"';
-                                                                                          } elseif (!$filters['match']) {
-                                                                                              echo ' disabled="disabled"';
-                                                                                          } ?> /> <?php echo Lang::txt('best match'); ?>
+                        <input class="option" type="radio"
+                            name="sortby" value="lastupdate"
+                            <?php if ($filters['sortby'] != 'bestmatch') {
+                                echo ' checked="checked"';
+                            } ?> />
+                        <?php echo Lang::txt('last update'); ?> &nbsp;
+                        <input class="option" type="radio"
+                            name="sortby" value="bestmatch"
+                            <?php if ($filters['sortby'] == 'bestmatch') {
+                                echo ' checked="checked"';
+                            } elseif (!$filters['match']) {
+                                echo ' disabled="disabled"';
+                            } ?> />
+                        <?php echo Lang::txt('best match'); ?>
                     </div>
                 </label>
                 <label>
                     <?php echo Lang::txt('Keywords'); ?>:
-                    <span class="questionmark tooltips" title="Keywords Search :: Use skill and action keywords separated by commas, e.g. XML, web, MBA etc."></span>
-                    <input name="q" maxlength="250" type="text" value="<?php echo $this->escape($filters['search']); ?>" />
+                    <?php
+                    $keywordsHint = 'Keywords Search :: Use skill and action keywords'
+                        . ' separated by commas, e.g. XML, web, MBA etc.';
+                    ?>
+                    <span class="questionmark tooltips"
+                        title="<?php echo $keywordsHint; ?>"></span>
+                    <input name="q" maxlength="250" type="text"
+                        value="<?php echo $this->escape($filters['search']); ?>" />
                 </label>
                 <label>
                     <?php echo Lang::txt('Category sought'); ?>:
-                    <?php echo \Components\Jobs\Helpers\Html::formSelect('category', $cats, $filters['category'], '', ''); ?>
+                    <?php echo \Components\Jobs\Helpers\Html::formSelect(
+                        'category',
+                        $cats,
+                        $filters['category'],
+                        '',
+                        ''
+                    ); ?>
                 </label>
                 <label>
                     <?php echo Lang::txt('Type sought'); ?>:
@@ -152,7 +198,13 @@ defined('_HZEXEC_') or die();
             </fieldset>
         <?php } else { ?>
             <p>
-                <?php echo Lang::txt('The listed candidates are those you bookmarked for further contact. Return to a list of '); ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes'); ?>"><?php echo Lang::txt('All Candidates'); ?></a>.
+                <?php
+                $allCandidatesLink = '<a href="' . $resumesUrl . '">'
+                    . Lang::txt('All Candidates') . '</a>';
+                echo Lang::txt(
+                    'The listed candidates are those you bookmarked for further contact. Return to a list of '
+                ) . $allCandidatesLink . '.';
+                ?>
             </p>
         <?php } ?>
         </div><!-- / .aside -->

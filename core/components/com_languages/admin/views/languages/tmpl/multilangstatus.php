@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -62,7 +60,11 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
             </tr>
         <?php endif; ?>
         <?php foreach ($this->contentlangs as $contentlang) : ?>
-            <?php if (array_key_exists($contentlang->lang_code, $this->homepages) && (!array_key_exists($contentlang->lang_code, $this->site_langs) || !$contentlang->published)) : ?>
+            <?php
+            $inHomepages = array_key_exists($contentlang->lang_code, $this->homepages);
+            $notInSiteLangs = !array_key_exists($contentlang->lang_code, $this->site_langs);
+            if ($inHomepages && ($notInSiteLangs || !$contentlang->published)) :
+                ?>
                 <tr>
                     <td>
                         <span title="<?php echo Lang::txt('WARNING'); ?>">
@@ -70,7 +72,12 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                         </span>
                     </td>
                     <td>
-                        <?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE', $contentlang->lang_code); ?>
+                        <?php
+                        echo Lang::txt(
+                            'COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE',
+                            $contentlang->lang_code
+                        );
+                        ?>
                     </td>
                 </tr>
             <?php endif; ?>
@@ -212,7 +219,10 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                                 <span title="<?php echo Lang::txt('JON'); ?>">
                                     <?php echo Html::asset('icon', 'ok-sign'); ?>
                                 </span>
-                            <?php elseif (!$contentlang->published && array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
+                            <?php elseif (
+                                !$contentlang->published
+                                && array_key_exists($contentlang->lang_code, $this->homepages)
+) : ?>
                                 <span title="<?php echo Lang::txt('WARNING'); ?>">
                                     <?php echo Html::asset('icon', 'warning-sign'); ?>
                                 </span>

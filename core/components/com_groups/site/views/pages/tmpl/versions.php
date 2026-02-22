@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$editPageUrl = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id');
+$editPageUrl = 'index.php?option=com_groups&cn=' .
+    $this->group->get('cn') .
+    '&controller=pages&task=edit&pageid=' .
+    $this->page->get('id');
 
 // add page stylesheets
 $stylesheets = \Components\Groups\Helpers\View::getPageCss($this->group);
@@ -45,9 +46,11 @@ $this->css()
             <div class="col span6 title">
                 <div class="btn-group">
                     <h3 class="btn version-title"></h3>
-                    <a class="btn version-source" href="javascript:void(0);"><?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_VIEW_SOURCE'); ?></a>
+                    <?php $txt = Lang::txt('COM_GROUPS_PAGES_VERSIONS_VIEW_SOURCE'); ?>
+                    <a class="btn version-source" href="javascript:void(0);"><?php echo $txt; ?></a>
                 </div>
-                <a class="btn version-meta" title="<?php echo Lang::txt('COM_GROUPS_PAGES_VERSIONS_TOGGLE_METADATA'); ?>" href="javascript:void(0);">&hellip;</a>
+                <?php $txt = Lang::txt('COM_GROUPS_PAGES_VERSIONS_TOGGLE_METADATA'); ?>
+                <a class="btn version-meta" title="<?php echo $txt; ?>" href="javascript:void(0);">&hellip;</a>
             </div>
             <div class="col span6 omega controls">
                 <div class="btn-group">
@@ -57,7 +60,9 @@ $this->css()
                     <span class="version-jumpto-container">
                         <select class="btn version-jumpto icon-prev">
                             <?php foreach ($this->page->versions() as $version) :?>
-                                <option value="<?php echo $version->get('version'); ?>"><?php echo $version->get('version'); ?></option>
+                                <?php $v1 = $version->get('version'); ?>
+                                <?php $v0 = $version->get('version'); ?>
+                                <option value="<?php echo $v1; ?>"><?php echo $v0; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </span>
@@ -79,7 +84,11 @@ $this->css()
                         data-cycle-hash="v<?php echo $pageVersion->get('version'); ?>"
                         data-cycle-title="Version # <?php echo $pageVersion->get('version'); ?>"
                         data-raw-url="<?php echo $pageVersion->url('raw'); ?>"
-                        data-restore-url="<?php echo ($k + 1 != $this->page->versions()->count()) ? $pageVersion->url('restore') : null; ?>">
+                        <?php
+                        $val = ($k + 1 != $this->page->versions()->count())
+                            ? $pageVersion->url('restore') : null;
+                        ?>
+                        data-restore-url="<?php echo $val; ?>">
 
                         <?php
                             $created = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
@@ -90,9 +99,13 @@ $this->css()
                             $created_by = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
                         if ($pageVersion->get('created_by') == 1000) {
                             $created_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-                        } elseif ($pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by'))) {
+                        } elseif (
+                            $pageVersion->get('created_by') != null && is_numeric($pageVersion->
+                            get('created_by'))
+                        ) {
                             $profile = User::getInstance($pageVersion->get('created_by'));
-                            $created_by = '<a href="' . Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . $profile->get('name') . '</a>';
+                            $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));
+                            $created_by = '<a href="' . $url . '">' . $profile->get('name') . '</a>';
                         }
 
                             $approved_on = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
@@ -103,9 +116,13 @@ $this->css()
                             $approved_by = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
                         if ($pageVersion->get('approved_by') == 1000) {
                             $approved_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-                        } elseif ($pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by'))) {
+                        } elseif (
+                            $pageVersion->get('approved_by') != null && is_numeric($pageVersion->
+                            get('approved_by'))
+                        ) {
                             $profile = User::getInstance($pageVersion->get('approved_by'));
-                            $approved_by = '<a href="' . Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . $profile->get('name') . '</a>';
+                            $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));
+                            $approved_by = '<a href="' . $url . '">' . $profile->get('name') . '</a>';
                         }
                         ?>
                         <div class="grid version-metadata">
@@ -133,7 +150,12 @@ $this->css()
                             </div>
                         </div>
                         <div class="version-content">
-                            <?php echo \Components\Groups\Helpers\Pages::generatePreview($this->page, $pageVersion->get('version'), true); ?>
+                            <?php $val = \Components\Groups\Helpers\Pages::generatePreview(
+                                $this->page,
+                                $pageVersion->get('version'),
+                                true
+                            ); ?>
+                            <?php echo $val; ?>
                         </div>
                         <div class="version-code">
                             <?php
@@ -159,7 +181,8 @@ $this->css()
 
                                 // out formatted diff table
                                 $formatter = new \Components\Wiki\Helpers\TableDiffFormatter();
-                                $diff = $formatter->format(new \Components\Wiki\Helpers\Diff($previous, $current), $contextFormatter);
+                                $diff = $formatter->
+                                    format(new \Components\Wiki\Helpers\Diff($previous, $current), $contextFormatter);
                                 echo $diff;
     ?>
                         </div>

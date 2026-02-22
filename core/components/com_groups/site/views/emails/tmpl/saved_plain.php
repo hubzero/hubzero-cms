@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,12 @@ $message  = Lang::txt('Group Updated') . "\n\n";
 $message .= "--------------------------------------------\n";
 $message .= Lang::txt('Group:') . ' ' . strip_tags($this->group->get('description')) . "\n";
 $message .= Lang::txt('Alias:') . ' ' . $this->group->get('cn') . "\n";
-$message .= Lang::txt('Updated:') . ' @ ' . Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
+$message .= Lang::txt('Updated:') .
+    ' @ ' .
+    Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')) .
+    ' on ' .
+    Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .
+    "\n";
 $message .= Lang::txt('Updated By:') . ' ' . $this->user->get('name') . ' (' . $this->user->get('email') . ')' . "\n";
 $message .= "--------------------------------------------\n\n";
 
@@ -32,9 +35,23 @@ $message .= "\t" . Lang::txt('Interests (Tags):') . ' ';
 
     $message .= ($tags ? $tags : Lang::txt('[ Empty ]')) . "\n\n";
 
-$message .= "\t" . Lang::txt('Public Description:') . ' ' . strip_tags($this->group->get('public_desc', '[ Empty ]')) . "\n\n";
-$message .= "\t" . Lang::txt('Private Description:') . ' ' . strip_tags($this->group->get('private_desc', '[ Empty ]')) . "\n\n";
-$message .= "\t" . Lang::txt('Logo:') . ' ' . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]') . "\n\n";
+$message .= "\t" .
+    Lang::txt('Public Description:') .
+    ' ' .
+    strip_tags($this->group->get('public_desc', '[ Empty ]')) .
+    "\n\n";
+$message .= "\t" .
+    Lang::txt('Private Description:') .
+    ' ' .
+    strip_tags($this->group->get('private_desc', '[ Empty ]')) .
+    "\n\n";
+$message .= "\t" .
+    Lang::txt('Logo:') .
+    ' ' .
+    ($this->group->get('logo') ? $base .
+    DS .
+    ltrim($this->group->getLogo(), DS) : '[ Not set ]') .
+    "\n\n";
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';
 switch ($this->group->get('join_policy')) {
     case 3:
@@ -95,7 +112,11 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 
     $params = Component::params('com_groups');
     if ($params->get('email_forum_comments')) {
-        $message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . ($this->group->get('discussion_email_autosubscribe') ? Lang::txt('On') : Lang::txt('Off')) . "\n\n";
+        $message .= "\t" .
+            Lang::txt('Discussion Group Emails Autosubscribe:') .
+            ' ' .
+            ($this->group->get('discussion_email_autosubscribe') ? Lang::txt('On') : Lang::txt('Off')) .
+            "\n\n";
     }
 
     $message .= "\t" . Lang::txt('Page Comments:') . ' ';

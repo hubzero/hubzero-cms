@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,33 +33,66 @@ $this->css('import');
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>
             <a<?php if ($this->controller == 'imports') {
                 echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS'); ?></a>
+              } ?> href="<?php echo $url; ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS'); ?></a>
         </li>
         <li>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>
             <a<?php if ($this->controller == 'importhooks') {
                 echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_HOOKS'); ?></a>
+              } ?> href="<?php echo $url; ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_HOOKS'); ?></a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $url; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
-                <th scope="col" class="priority-6"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_GROUPS_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_IMPORT_DISPLAY_FIELD_LASTRUN', 'ran_at', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+                <?php $val = Html::grid('sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                <th scope="col" class="priority-6"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_IMPORT_DISPLAY_FIELD_NAME',
+                    'name',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col"><?php echo $val; ?></th>
+                <?php $txt = Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?>
+                <th scope="col" class="priority-4"><?php echo $txt; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_IMPORT_DISPLAY_FIELD_CREATED',
+                    'created_at',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col" class="priority-3"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_IMPORT_DISPLAY_FIELD_LASTRUN',
+                    'ran_at',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col"><?php echo $val; ?></th>
+                <?php $txt = Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?>
+                <th scope="col" class="priority-4"><?php echo $txt; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -82,8 +113,10 @@ $this->css('import');
                     <tr>
                         <td>
                             <?php if ($canDo->get('core.admin')) { ?>
-                                <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" class="checkbox-toggle" />
-                                <label for="cb<?php echo $i;?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?></label>
+                                <?php $val = $i;?>" value="<?php echo $import->get('id'); ?>
+                                <input type="checkbox" name="id[]" id="cb<?php echo $val; ?>" class="checkbox-toggle" />
+                                <?php $val = $i;?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?>
+                                <label for="cb<?php echo $val; ?></label>
                             <?php } ?>
                         </td>
                         <td class="priority-6">
@@ -91,7 +124,17 @@ $this->css('import');
                         </td>
                         <td>
                             <?php if ($canDo->get('core.admin')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $import->get('id')); ?>">
+                                <?php
+                                $url = Route::url(
+                                    'index.php?option=' .
+                                    $this->option .
+                                    '&controller=' .
+                                    $this->controller .
+                                    '&task=edit&id=' .
+                                    $import->get('id')
+                                );
+                                ?>
+                                <a href="<?php echo $url; ?>">
                                     <?php echo $this->escape($import->get('name')); ?>
                                 </a>
                             <?php } else { ?>
@@ -107,7 +150,8 @@ $this->css('import');
                         </td>
                         <td class="priority-3">
                             <strong><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_ON'); ?></strong>
-                            <time datetime="<?php echo $import->get('created_at'); ?>"><?php echo Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
+                            <?php $val = Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a'); ?>
+                            <time datetime="<?php echo $import->get('created_at'); ?>"><?php echo $val; ?></time><br />
                             <strong><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_BY'); ?></strong>
                             <?php
                             if ($created_by = User::getInstance($import->get('created_by'))) {
@@ -125,7 +169,8 @@ $this->css('import');
                             ?>
                             <?php if ($lastRun->get('id')) : ?>
                                 <strong><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_ON'); ?></strong>
-                                <time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
+                                <?php $val = Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a'); ?>
+                                <time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo $val; ?></time><br />
                                 <strong><?php echo Lang::txt('COM_GROUPS_IMPORT_DISPLAY_BY'); ?></strong>
                                 <?php
                                 if ($created_by = User::getInstance($lastRun->get('ran_by'))) {

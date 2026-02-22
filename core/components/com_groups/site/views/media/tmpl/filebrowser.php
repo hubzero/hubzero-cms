@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,12 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
             <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
             <?php if ($this->authorized) : ?>
                 <div class="buttons">
-                    <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=addfolder&tmpl=component'); ?>" class="icon-add action-addfolder"></a>
+                    <?php $val = Route::url(
+                        'index.php?option=com_groups&cn=' .
+                            $this->group->get('cn') .
+                            '&controller=media&task=addfolder&tmpl=component'
+                    ); ?>
+                    <a href="<?php echo $val; ?>" class="icon-add action-addfolder"></a>
                 </div>
             <?php endif; ?>
         </div>
@@ -51,9 +54,18 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
         <div class="foldertree-list">
             <?php echo $this->folderList; ?>
         </div>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
+        <?php $url = Route::url('index.php?option=' . $this->option); ?>
+        <form action="<?php echo $url; ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
             <fieldset>
-                <div id="ajax-uploader" data-instructions="<?php echo Lang::txt('Click or drop file'); ?>" data-action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+                <?php $val1 = Lang::txt('Click or drop file'); ?>
+                <?php $val = Route::url(
+                    'index.php?option=com_groups&cn=' .
+                        $this->group->get('cn') .
+                        '&controller=media&task=ajaxupload&no_html=1&' .
+                        Session::getFormToken() .
+                        '=1'
+                ); ?>
+                <div id="ajax-uploader" data-instructions="<?php echo $val1; ?>" data-action="<?php echo $val; ?>">
                     <noscript>
                         <p><input type="file" name="upload" id="upload" /></p>
                         <p><input type="submit" value="<?php echo Lang::txt('UPLOAD'); ?>" /></p>
@@ -62,13 +74,23 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="controller" value="media" />
                 <input type="hidden" name="task" value="upload" />
-                <input type="hidden" name="listdir" id="listdir" value="<?php echo $this->group->get('gidNumber'); ?>" />
+                <input
+                    type="hidden"
+                    name="listdir"
+                    id="listdir"
+                    value="<?php echo $this->group->get('gidNumber'); ?>" />
                 <input type="hidden" name="tmpl" value="component" />
                 <?php echo Html::input('token'); ?>
             </fieldset>
         </form>
     </div>
     <div class="upload-browser-col right">
-        <iframe class="upload-browser-filelist-iframe" src="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
+        <?php $val = Route::url(
+            'index.php?option=com_groups&cn=' .
+                $this->group->get('cn') .
+                '&controller=media&task=listfiles&tmpl=component&type=' .
+                $ckeditorQuery
+        ); ?>
+        <iframe class="upload-browser-filelist-iframe" src="<?php echo $val; ?>"></iframe>
     </div>
 </div>

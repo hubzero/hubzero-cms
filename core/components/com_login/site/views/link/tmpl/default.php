@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,6 +14,14 @@ $this->css('link.css')
     ->js('link.js');
 
 $step = (int) Request::getInt('step', 1);
+
+$msgLinkPrompt = Lang::txt(
+    'Great! Did you want to link your %s account to that existing account or create a new account?',
+    $this->display_name
+);
+$msgLinkUp = Lang::txt(
+    "We can do that. Just login with that existing account now and we'll link them up!"
+);
 ?>
 
 <header id="content-header">
@@ -40,7 +46,7 @@ $step = (int) Request::getInt('step', 1);
 
         <div class="prompt-container prompt2 <?php echo ($step === 2) ? 'block' : 'none'; ?>">
             <div class="prompt">
-                <?php echo Lang::txt('Great! Did you want to link your %s account to that existing account or create a new account?', $this->display_name); ?>
+                <?php echo $msgLinkPrompt; ?>
             </div>
             <div class="responses">
                 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=link&step=3'); ?>">
@@ -54,7 +60,7 @@ $step = (int) Request::getInt('step', 1);
 
         <div class="prompt-container prompt3 <?php echo ($step === 3) ? 'block' : 'none'; ?>">
             <div class="prompt">
-                <?php echo Lang::txt('We can do that. Just login with that existing account now and we\'ll link them up!'); ?>
+                <?php echo $msgLinkUp; ?>
             </div>
             <div class="responses">
                 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=logout&return=' .
@@ -62,7 +68,11 @@ $step = (int) Request::getInt('step', 1);
                         Route::url(
                             'index.php?option=' . $this->option . '&reset=1&return=' .
                             base64_encode(
-                                Route::url('index.php?option=' . $this->option . '&authenticator=' . $this->hzad->authenticator, false)
+                                Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&authenticator=' . $this->hzad->authenticator,
+                                    false
+                                )
                             ),
                             false
                         )

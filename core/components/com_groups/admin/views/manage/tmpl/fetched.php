@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,13 +19,21 @@ Toolbar::custom('doupdate', 'merge', '', 'COM_GROUPS_MERGE_CODE', false);
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
 
     <?php if (!empty($this->success)) : ?>
         <table class="adminlist success">
             <thead>
                 <tr>
-                    <th scope="col"><?php echo Lang::txt('COM_GROUPS_FETCH_SUCCESS'); ?></th>
+                    <th scope="col">
+                        <?php echo Lang::txt('COM_GROUPS_FETCH_SUCCESS'); ?>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -36,19 +42,31 @@ Html::behavior('tooltip');
                         <td class="merge-success">
                             <?php
                                 $group = \Hubzero\User\Group::getInstance($success['group']);
-                                echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>';
-                                echo '<p>' . Lang::txt('COM_GROUPS_FETCH_SUCCESS_DESC') . '</p>';
+                                echo '<strong>'
+                                    . $group->get('description')
+                                    . ' (' . $group->get('cn')
+                                    . ')</strong>';
+                                $descTxt = Lang::txt('COM_GROUPS_FETCH_SUCCESS_DESC');
+                                echo '<p>' . $descTxt . '</p>';
                             ?>
                             <hr />
                             <code><?php echo implode('<br>', $success['message']); ?></code>
 
-                            <?php if (
-                            $success['message'][0] != Lang::txt('COM_GROUPS_FETCH_CODE_UP_TO_DATE')
-                                        && !preg_match('/ineligible/', $success['message'][0])
-) : ?>
+                            <?php
+                            $upToDate = Lang::txt('COM_GROUPS_FETCH_CODE_UP_TO_DATE');
+                            if (
+                                $success['message'][0] != $upToDate
+                                && !preg_match('/ineligible/', $success['message'][0])
+                            ) : ?>
                                 <label class="merge">
-                                      <?php echo Lang::txt('COM_GROUPS_MERGE'); ?>
-                                    <input type="checkbox" name="id[]" checked="checked" value="<?php echo $group->get('gidNumber'); ?>" />
+                                    <?php echo Lang::txt('COM_GROUPS_MERGE'); ?>
+                                    <?php $gid = $group->get('gidNumber'); ?>
+                                    <input
+                                        type="checkbox"
+                                        name="id[]"
+                                        checked="checked"
+                                        value="<?php echo $gid; ?>"
+                                    />
                                 </label>
                             <?php endif; ?>
                         </td>

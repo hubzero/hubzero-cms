@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,38 +26,93 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+$required = Lang::txt('JOPTION_REQUIRED');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $formUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_KB_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-section"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->row->get('category'), 'fields[category]', 'field-category'); ?>
+                    <label for="field-section">
+                        <?php echo Lang::txt('COM_KB_CATEGORY'); ?>:
+                        <span class="required"><?php echo $required; ?></span>
+                    </label><br />
+                    <?php echo \Components\Kb\Admin\Helpers\Html::categories(
+                        $this->categories,
+                        $this->row->get('category'),
+                        'fields[category]',
+                        'field-category'
+                    ); ?>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_KB_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title', ''))); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_KB_TITLE'); ?>:
+                        <span class="required"><?php echo $required; ?></span>
+                    </label><br />
+                    <?php $titleVal = $this->escape(stripslashes($this->row->get('title', ''))); ?>
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        maxlength="255"
+                        value="<?php echo $titleVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_KB_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_KB_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias', ''))); ?>" />
+                    <?php $aliasVal = $this->escape(stripslashes($this->row->get('alias', ''))); ?>
+                    <input type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        size="30"
+                        maxlength="100"
+                        value="<?php echo $aliasVal; ?>"
+                    />
                     <span class="hint"><?php echo Lang::txt('COM_KB_ALIAS_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-fulltxt"><?php echo Lang::txt('COM_KB_BODY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt', ''))), 60, 30, 'field-fulltxt', array('class' => 'required', 'buttons' => array('pagebreak', 'readmore', 'article'))); ?>
+                    <label for="field-fulltxt">
+                        <?php echo Lang::txt('COM_KB_BODY'); ?>:
+                        <span class="required"><?php echo $required; ?></span>
+                    </label><br />
+                    <?php
+                    $fulltxtVal = $this->escape(stripslashes($this->row->get('fulltxt', '')));
+                    echo $this->editor(
+                        'fields[fulltxt]',
+                        $fulltxtVal,
+                        60,
+                        30,
+                        'field-fulltxt',
+                        array(
+                            'class' => 'required',
+                            'buttons' => array('pagebreak', 'readmore', 'article')
+                        )
+                    );
+                    ?>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_KB_FIELD_TAGS_HINT'); ?>">
                     <label for="field-tags"><?php echo Lang::txt('COM_KB_TAGS'); ?>:</label><br />
-                    <textarea name="tags" id="field-tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+                    <?php $tagsVal = $this->escape(stripslashes($this->row->tags('string'))); ?>
+                    <textarea name="tags" id="field-tags" cols="50" rows="3"><?php echo $tagsVal; ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_KB_FIELD_TAGS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -69,28 +124,63 @@ $this->js();
                         <th class="key"><?php echo Lang::txt('COM_KB_ID'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('id', 0); ?>
-                            <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
+                            <input type="hidden"
+                                name="fields[id]"
+                                id="field-id"
+                                value="<?php echo $this->row->get('id'); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <th class="key"><?php echo Lang::txt('COM_KB_CREATED'); ?>:</th>
-                        <td><time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toSql(); ?></time></td>
+                        <td>
+                            <?php $created = $this->row->get('created'); ?>
+                            <time datetime="<?php echo $created; ?>">
+                                <?php echo Date::of($created)->toSql(); ?>
+                            </time>
+                        </td>
                     </tr>
                     <tr>
                         <th class="key"><?php echo Lang::txt('COM_KB_CREATOR'); ?>:</th>
-                        <td><?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_KB_UNKNOWN'))); ?></td>
+                        <td>
+                            <?php
+                            $creatorName = $this->row->creator->get(
+                                'name',
+                                Lang::txt('COM_KB_UNKNOWN')
+                            );
+                            echo $this->escape($creatorName);
+                            ?>
+                        </td>
                     </tr>
-                    <?php if (!$this->row->isNew() && $this->row->get('modified') && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
+                    <?php
+                    $modified = $this->row->get('modified');
+                    $isModified = !$this->row->isNew()
+                        && $modified
+                        && $modified != '0000-00-00 00:00:00';
+                    if ($isModified) {
+                        ?>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>:</th>
-                            <td><time datetime="<?php echo $this->row->get('modified'); ?>"><?php echo Date::of($this->row->get('modified'))->toSql(); ?></time></td>
+                            <td>
+                                <time datetime="<?php echo $modified; ?>">
+                                    <?php echo Date::of($modified)->toSql(); ?>
+                                </time>
+                            </td>
                         </tr>
                         <?php
                         $modifier = User::getInstance($this->row->get('modified_by'));
                         if (is_object($modifier)) {?>
                             <tr>
                                 <th class="key"><?php echo Lang::txt('COM_KB_MODIFIER'); ?>:</th>
-                                <td><?php echo $this->escape($modifier->get('name', Lang::txt('COM_KB_UNKNOWN'))); ?></td>
+                                <td>
+                                    <?php
+                                    $modName = $modifier->get(
+                                        'name',
+                                        Lang::txt('COM_KB_UNKNOWN')
+                                    );
+                                    echo $this->escape($modName);
+                                    ?>
+                                </td>
                             </tr>
                         <?php } ?>
                     <?php } ?>
@@ -99,16 +189,35 @@ $this->js();
                         <td>
                             <?php echo $this->row->get('hits', 0); ?>
                             <?php if ($this->row->get('hits', 0)) { ?>
-                                <input type="button" name="reset_hits" id="reset_hits" value="<?php echo Lang::txt('COM_KB_RESET_HITS'); ?>" data-confirm="<?php echo Lang::txt('COM_KB_RESET_HITS_WARNING'); ?>" />
+                                <?php
+                                $resetHits = Lang::txt('COM_KB_RESET_HITS');
+                                $resetHitsWarn = Lang::txt('COM_KB_RESET_HITS_WARNING');
+                                ?>
+                                <input type="button"
+                                    name="reset_hits"
+                                    id="reset_hits"
+                                    value="<?php echo $resetHits; ?>"
+                                    data-confirm="<?php echo $resetHitsWarn; ?>"
+                                />
                             <?php } ?>
                         </td>
                     </tr>
                     <tr>
                         <th class="key"><?php echo Lang::txt('COM_KB_VOTES'); ?>:</th>
                         <td>
-                            +<?php echo $this->row->get('helpful', 0); ?> -<?php echo $this->row->get('nothelpful', 0); ?>
+                            +<?php echo $this->row->get('helpful', 0); ?>
+                            -<?php echo $this->row->get('nothelpful', 0); ?>
                             <?php if ($this->row->get('helpful', 0) > 0 || $this->row->get('nothelpful', 0) > 0) { ?>
-                                <input type="button" name="reset_votes" id="reset_votes" value="<?php echo Lang::txt('COM_KB_RESET_VOTES'); ?>" data-confirm="<?php echo Lang::txt('COM_KB_RESET_VOTES_WARNING'); ?>" />
+                                <?php
+                                $resetVotes = Lang::txt('COM_KB_RESET_VOTES');
+                                $resetVotesWarn = Lang::txt('COM_KB_RESET_VOTES_WARNING');
+                                ?>
+                                <input type="button"
+                                    name="reset_votes"
+                                    id="reset_votes"
+                                    value="<?php echo $resetVotes; ?>"
+                                    data-confirm="<?php echo $resetVotesWarn; ?>"
+                                />
                             <?php } ?>
                         </td>
                     </tr>
@@ -135,7 +244,13 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-access"><?php echo Lang::txt('COM_KB_ACCESS_LEVEL'); ?>:</label>
                     <select name="fields[access]" id="field-access">
-                        <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
+                        <?php echo Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->row->get('access')
+                        ); ?>
                     </select>
                 </div>
             </fieldset>

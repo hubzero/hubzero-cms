@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -31,7 +29,17 @@ Html::behavior('tooltip');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <?php if ($this->getErrors()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
@@ -42,60 +50,130 @@ $this->js();
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('url'); ?><br />
-                    <input type="text" name="fields[url]" id="field-url" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
+                    <?php $urlVal = $this->escape(stripslashes($this->row->get('url'))); ?>
+                    <input type="text"
+                        name="fields[url]"
+                        id="field-url"
+                        maxlength="250"
+                        class="required"
+                        value="<?php echo $urlVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('name'); ?><br />
-                    <input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
+                    <?php $nameVal = $this->escape(stripslashes($this->row->get('name'))); ?>
+                    <input type="text"
+                        name="fields[name]"
+                        id="field-name"
+                        maxlength="250"
+                        class="required"
+                        value="<?php echo $nameVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('alias'); ?><br />
-                    <input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                    <?php $aliasVal = $this->escape(stripslashes($this->row->get('alias'))); ?>
+                    <input type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        maxlength="250"
+                        class="required"
+                        value="<?php echo $aliasVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('type'); ?><br />
                     <select name="fields[type]" class="required" id="field-type">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
-                        <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->row['type'], true);?>
+                        <?php $typeLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT'); ?>
+                        <option value=""><?php echo $typeLabel; ?></option>
+                        <?php
+                        $helpers = '\Components\Installer\Admin\Helpers\Installer';
+                        echo Html::select(
+                            'options',
+                            $helpers::TypeOptions(),
+                            'value',
+                            'text',
+                            $this->row['type'],
+                            true
+                        );
+                        ?>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('folder'); ?><br />
                     <select name="fields[folder]" id="field-folder">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-                        <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['folder']);?>
+                        <?php $folderLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT'); ?>
+                        <option value=""><?php echo $folderLabel; ?></option>
+                        <?php echo Html::select(
+                            'options',
+                            $helpers::GroupOptions(),
+                            'value',
+                            'text',
+                            $this->row['folder']
+                        ); ?>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('description'); ?><br />
-                    <textarea name="fields[description]" id="field-description" rows="5"><?php echo $this->escape($this->row->get('description')); ?></textarea>
+                    <?php $descVal = $this->escape($this->row->get('description')); ?>
+                    <textarea name="fields[description]"
+                        id="field-description"
+                        rows="5"
+                    ><?php echo $descVal; ?></textarea>
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('apikey'); ?><br />
-                    <input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('apikey'))); ?>" />
+                    <?php $apikeyVal = $this->escape(stripslashes($this->row->get('apikey'))); ?>
+                    <input type="text"
+                        name="fields[apikey]"
+                        id="field-apikey"
+                        maxlength="250"
+                        value="<?php echo $apikeyVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('git_branch'); ?><br />
-                    <input type="text" name="fields[git_branch]" id="field-git_branch" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('git_branch'))); ?>" />
+                    <?php $branchVal = $this->escape(stripslashes($this->row->get('git_branch'))); ?>
+                    <input type="text"
+                        name="fields[git_branch]"
+                        id="field-git_branch"
+                        maxlength="250"
+                        value="<?php echo $branchVal; ?>"
+                    />
                 </div>
 
-                <!-- <div class="input-wrap">
+                <!--
+                <div class="input-wrap">
                     <?php //echo $this->form->getLabel('git_tag'); ?><br />
-                    <input type="text" name="fields[git_tag]" id="field-git_tag" maxlength="250" value="<?php //echo $this->escape(stripslashes($this->row->get('git_tag'))); ?>" />
-                </div> -->
+                    <input type="text"
+                        name="fields[git_tag]"
+                        id="field-git_tag"
+                        maxlength="250"
+                        value=""
+                    />
+                </div>
+                -->
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('client_id'); ?><br />
                     <select name="fields[client_id]" id="field-client_id">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-                        <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
+                        <?php $clientLabel = Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT'); ?>
+                        <option value=""><?php echo $clientLabel; ?></option>
+                        <?php echo Html::select(
+                            'options',
+                            $helpers::LocationOptions(),
+                            'value',
+                            'text',
+                            $this->row['client_id'],
+                            true
+                        ); ?>
                     </select>
                 </div>
 
@@ -112,7 +190,13 @@ $this->js();
                             <?php echo Lang::txt('JGLOBAL_FIELD_CREATED_LABEL'); ?>
                         </th>
                         <td>
-                            <time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape(Date::of($this->row->created)->toLocal()); ?></time>
+                            <?php
+                            $created = $this->escape($this->row->created);
+                            $createdLocal = $this->escape(Date::of($this->row->created)->toLocal());
+                            ?>
+                            <time datetime="<?php echo $created; ?>">
+                                <?php echo $createdLocal; ?>
+                            </time>
                         </td>
                     </tr>
                     <?php endif; ?>
@@ -123,8 +207,10 @@ $this->js();
                         </th>
                         <td>
                             <?php
+                            $unknownTxt = Lang::txt('COM_PLUGINS_UNKNOWN');
                             $modifier = User::getInstance($this->row->created_by);
-                            echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->created_by . ')');
+                            $modName = $modifier->get('name', $unknownTxt);
+                            echo $this->escape($modName . ' (' . $this->row->created_by . ')');
                             ?>
                         </td>
                     </tr>
@@ -137,7 +223,13 @@ $this->js();
                             <?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
                         </th>
                         <td>
-                            <time datetime="<?php echo $this->escape($this->row->modified); ?>"><?php echo $this->escape(Date::of($this->row->modified)->toLocal()); ?></time>
+                            <?php
+                            $modified = $this->escape($this->row->modified);
+                            $modifiedLocal = $this->escape(Date::of($this->row->modified)->toLocal());
+                            ?>
+                            <time datetime="<?php echo $modified; ?>">
+                                <?php echo $modifiedLocal; ?>
+                            </time>
                         </td>
                     </tr>
                     <?php endif; ?>
@@ -149,7 +241,8 @@ $this->js();
                         <td>
                             <?php
                             $modifier = User::getInstance($this->row->modified_by);
-                            echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->modified_by . ')');
+                            $modName = $modifier->get('name', $unknownTxt);
+                            echo $this->escape($modName . ' (' . $this->row->modified_by . ')');
                             ?>
                         </td>
                     </tr>

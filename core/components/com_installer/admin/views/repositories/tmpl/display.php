@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -35,33 +33,58 @@ Html::behavior('tooltip');
 $this->css();
 ?>
 
+<?php
+$pkgCls = ($this->controller == 'packages') ? ' class="active"' : '';
+$pkgUrl = Route::url('index.php?option=' . $this->option . '&controller=packages');
+$pkgTxt = Lang::txt('COM_INSTALLER_PACKAGES_PACKAGES');
+$repoCls = ($this->controller == 'repositories') ? ' class="active"' : '';
+$repoUrl = Route::url('index.php?option=' . $this->option . '&controller=repositories');
+$repoTxt = Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORIES');
+?>
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'packages') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=packages'); ?>"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_PACKAGES'); ?></a>
+            <a<?php echo $pkgCls; ?> href="<?php echo $pkgUrl; ?>">
+                <?php echo $pkgTxt; ?>
+            </a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'repositories') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=repositories'); ?>"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORIES'); ?></a>
+            <a<?php echo $repoCls; ?> href="<?php echo $repoUrl; ?>">
+                <?php echo $repoTxt; ?>
+            </a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="updateRepositoryForm">
     <table id="tktlist" class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTxt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $checkAllTxt; ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_REPO', 'repo', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_URL', 'url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php $sortDir = @$this->filters['sort_Dir']; ?>
+                <?php $sort = @$this->filters['sort']; ?>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_INSTALLER_COL_REPO', 'repo', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_INSTALLER_COL_TYPE', 'type', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_INSTALLER_COL_DESCRIPTION', 'description', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_INSTALLER_COL_URL', 'url', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -83,10 +106,20 @@ $this->css();
                 ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="repositories[]" id="cb<?php echo $id; ?>" value="<?php echo $alias; ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="repositories[]"
+                            id="cb<?php echo $id; ?>"
+                            value="<?php echo $alias; ?>"
+                            class="checkbox-toggle" />
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&alias=' . $alias); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&alias=' . $alias
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo Arr::getValue($config, 'name', ''); ?>
                         </a>
                         <br />

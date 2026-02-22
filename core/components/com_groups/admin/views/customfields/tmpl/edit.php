@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -96,14 +94,23 @@ $this//->css('jquery.ui.css', 'system')
     ->js('form-builder.min.js')
     ->js('customfields.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div id="page-1" class="fb-editor">
     </div>
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="save" />
-    <input type="hidden" name="questions" id="form-schema" value="<?php echo $this->escape(json_encode($elements)); ?>" />
+    <input type="hidden"
+        name="questions"
+        id="form-schema"
+        value="<?php echo $this->escape(json_encode($elements)); ?>"
+    />
 
     <?php echo Html::input('token'); ?>
 </form>

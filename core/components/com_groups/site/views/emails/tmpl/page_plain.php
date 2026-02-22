@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,11 +21,19 @@ $message .= "--------------------------------------------\n";
 $message .= Lang::txt('Group:') . ' ' . strip_tags($this->group->get('description')) . "\n";
 $message .= Lang::txt('Page Title:') . ' ' . $page->get('title') . "\n";
 $message .= Lang::txt('Page ID:') . ' #' . $page->get('id') . "\n";
-$message .= Lang::txt('Created:') . ' @ ' . Date::of($page->version()->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of($page->version()->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
+$message .= Lang::txt('Created:') .
+    ' @ ' .
+    Date::of($page->version()->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) .
+    ' on ' .
+    Date::of($page->version()->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .
+    "\n";
 
 $profile = User::getInstance($page->version()->get('created_by'));
 $message .= Lang::txt('Created By:') . ' ' . $profile->get('name') . ' (' . $profile->get('username') . ')' . "\n";
-$message .= Lang::txt('Status:') . ' ' . ($page->version()->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved') . "\n";
+$message .= Lang::txt('Status:') .
+    ' ' .
+    ($page->version()->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved') .
+    "\n";
 $message .= Lang::txt('Page Link:') . ' ' . $groupLink . '/' . $this->object->get('alias') . "\n";
 $message .= Lang::txt('Approve Link:') . ' ' . $adminLink . "\n";
 $message .= "--------------------------------------------\n\n";

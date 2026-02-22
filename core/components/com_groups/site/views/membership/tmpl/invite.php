@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,11 @@ $this->css();
     <div id="content-header-extra">
         <ul id="useroptions">
             <li class="last">
-                <a class="icon-group btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>">
+                <?php $url = Route::url(
+                    'index.php?option=' . $this->option .
+                    '&cn=' . $this->group->get('cn')
+                ); ?>
+                <a class="icon-group btn" href="<?php echo $url; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
                 </a>
             </li>
@@ -39,7 +41,13 @@ $this->css();
             <div class="explaination">
                 <h3><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_TITLE'); ?></h3>
                 <p><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_DESC'); ?></p>
-                <p><img class="invite-example" src="<?php echo Request::base(true); ?>/core/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" />
+                <?php $imgSrc = Request::base(true)
+                    . '/core/components/com_groups/site/assets/img/invite_example.jpg'; ?>
+                <p><img
+                    class="invite-example"
+                    src="<?php echo $imgSrc; ?>"
+                    alt="Example Auto-Completer"
+                    width="100%" />
             </div>
             <fieldset>
                 <legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
@@ -47,19 +55,36 @@ $this->css();
                 <p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC', $this->group->get('description')); ?></p>
 
                 <label>
-                    <?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
+                    <?php $txt1 = Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?>
+                    <?php $txt = Lang::txt('COM_GROUPS_REQUIRED'); ?>
+                    <?php echo $txt1; ?> <span class="required"><?php echo $txt; ?></span>
                     <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers', '', implode(', ', $this->invites))));
-                    if (count($mc) > 0) {
-                        echo $mc[0];
-                    } else { ?>
-                            <input type="text" name="logins" id="acmembers" value="<?php echo $this->escape(implode(', ', $this->invites)); ?>" size="35" />
-                    <?php } ?>
+                        $inviteList = implode(', ', $this->invites);
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            array(array(
+                                'members', 'logins', 'acmembers',
+                                '', $inviteList
+                            ))
+                        );
+                        if (count($mc) > 0) {
+                            echo $mc[0];
+                        } else { ?>
+                            <input
+                                type="text"
+                                name="logins"
+                                id="acmembers"
+                                value="<?php echo $this->escape(implode(', ', $this->invites)); ?>" size="35" />
+                        <?php } ?>
                     <span class="hint"><?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS_HINT'); ?></span>
                 </label>
                 <label for="msg">
                     <?php echo Lang::txt('COM_GROUPS_INVITE_MESSAGE'); ?>
-                    <textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape(stripslashes($this->msg)); ?></textarea>
+                    <textarea
+                        name="msg"
+                        id="msg"
+                        rows="12"
+                        cols="50"><?php echo $this->escape(stripslashes($this->msg)); ?></textarea>
                 </label>
             </fieldset>
             <div class="clear"></div>
@@ -70,7 +95,8 @@ $this->css();
             <input type="hidden" name="return" value="<?php echo $this->return; ?>" />
             <?php echo Html::input('token'); ?>
             <p class="submit">
-                <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_INVITE_BTN_TEXT'); ?>" />
+                <?php $txt = Lang::txt('COM_GROUPS_INVITE_BTN_TEXT'); ?>
+                <input class="btn btn-success" type="submit" value="<?php echo $txt; ?>" />
             </p>
         </form>
     </div>

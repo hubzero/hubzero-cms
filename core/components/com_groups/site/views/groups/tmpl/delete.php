@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,8 @@ $this->css()
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-group btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>">
+            <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
+            <a class="icon-group btn" href="<?php echo $url; ?>">
                 <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
             </a>
         </p>
@@ -33,7 +32,8 @@ $this->css()
             <?php echo $notification['message']; ?>
         </p>
     <?php endforeach; ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="hubForm">
+    <?php $url = Route::url('index.php?option=' . $this->option . '&task=delete'); ?>
+    <form action="<?php echo $url; ?>" method="post" id="hubForm">
         <div class="explaination">
             <p><strong><?php echo Lang::txt('COM_GROUPS_DELETE_ARE_YOU_SURE_TITLE'); ?></strong></p>
             <p><?php echo Lang::txt('COM_GROUPS_DELETE_ARE_YOU_SURE_DESC'); ?></p>
@@ -41,7 +41,8 @@ $this->css()
             <p><strong><?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_TITLE'); ?></strong></p>
             <p><?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_DESC'); ?></p>
             <p>
-                <a class="config btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=edit'); ?>">
+                <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
+                <a class="config btn" href="<?php echo $url . '&task=edit'; ?>">
                     <?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_BTN_TEXT'); ?>
                 </a>
             </p>
@@ -49,11 +50,17 @@ $this->css()
         <fieldset>
             <legend><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_HEADING'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_WARNING', $this->group->get('description')) . '<br /><br />' . $this->log; ?></p>
+            <?php $txt = Lang::txt(
+                'COM_GROUPS_DELETE_CONFIRM_BOX_WARNING',
+                $this->group->get('description')
+            ); ?>
+            <p class="warning"><?php echo $txt . '<br /><br />' . $this->log; ?></p>
 
             <div class="form-group form-check">
                 <label for="confirmdel">
-                    <?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM', $this->group->get('cn')); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?php $txt1 = Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM', $this->group->get('cn')); ?>
+                    <?php $txt = Lang::txt('JREQUIRED'); ?>
+                    <?php echo $txt1; ?> <span class="required"><?php echo $txt; ?></span>
                     <input type="text" name="confirmdel" id="confirmdel" value="" />
                 </label>
             </div>
@@ -61,7 +68,12 @@ $this->css()
             <div class="form-group">
                 <label for="msg">
                     <?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
-                    <textarea class="form-control" name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
+                    <textarea
+                        class="form-control"
+                        name="msg"
+                        id="msg"
+                        rows="12"
+                        cols="50"><?php echo htmlentities($this->msg); ?></textarea>
                 </label>
             </div>
         </fieldset>
@@ -74,7 +86,8 @@ $this->css()
         <p class="submit">
             <input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
 
-            <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>">
+            <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>
+            <a class="btn btn-secondary" href="<?php echo $url; ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

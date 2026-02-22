@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,13 +29,15 @@ Toolbar::help('groups');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $url; ?>" method="post" name="adminForm" id="adminForm">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="fltrt configuration-options">
                 <button type="button" onclick="submitbutton('add');"><?php echo Lang::txt('JACTION_CREATE');?></button>
-                <button type="button" onclick="submitbutton('remove');"><?php echo Lang::txt('JACTION_DELETE');?></button>
+                <?php $txt = Lang::txt('JACTION_DELETE'); ?>
+                <button type="button" onclick="submitbutton('remove');"><?php echo $txt;?></button>
             </div>
             <?php echo Lang::txt('COM_GROUPS_ROLES'); ?>
         </div>
@@ -49,20 +49,42 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th colspan="3">
+                    <?php $val1 = $this->escape(stripslashes($this->group->get('cn'))); ?>
+                    <?php $val = $this->escape(stripslashes($this->group->get('description'))); ?>
                     <?php if ($tmpl != 'component') {
                         ?><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php
                     } ?><?php echo Lang::txt('COM_GROUPS'); ?><?php if ($tmpl != 'component') {
     ?></a><?php
-                    } ?> > (<?php echo $this->escape(stripslashes($this->group->get('cn'))); ?>) <?php echo $this->escape(stripslashes($this->group->get('description'))); ?>
+                    } ?> > (<?php echo $val1; ?>) <?php echo $val; ?>
                 </th>
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_GROUPS_FIELD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_FIELD_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col" class="priority-4"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_NAME',
+                    'name',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col"><?php echo $val; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -80,15 +102,31 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <?php $v1 = $i; ?>
+                    <?php $v0 = $row->get('id'); ?>
+                    <label for="cb<?php echo $v1; ?>" class="sr-only visually-hidden"><?php echo $v0; ?></label>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->get('id')); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&gid=' . $this->filters['gid'] . ($tmpl ? '&tmpl=' . $tmpl : '')); ?>">
+                        <?php $val = Route::url(
+                            'index.php?option=' .
+                                $this->option .
+                                '&controller=' .
+                                $this->controller .
+                                '&task=edit&id=' .
+                                $row->get('id') .
+                                '&gid=' .
+                                $this->filters['gid'] .
+                                ($tmpl ? '&tmpl=' . $tmpl : '')
+                        ); ?>
+                        <a href="<?php echo $val; ?>">
                             <?php echo $this->escape(stripslashes($row->get('name'))); ?>
                         </a>
                     <?php else : ?>

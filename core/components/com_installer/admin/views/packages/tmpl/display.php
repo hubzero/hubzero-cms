@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -31,28 +29,43 @@ Html::behavior('tooltip');
 $this->css();
 ?>
 
+<?php
+$pkgCls = ($this->controller == 'packages') ? ' class="active"' : '';
+$pkgUrl = Route::url('index.php?option=' . $this->option . '&controller=packages');
+$pkgTxt = Lang::txt('COM_INSTALLER_PACKAGES_PACKAGES');
+$repoCls = ($this->controller == 'repositories') ? ' class="active"' : '';
+$repoUrl = Route::url('index.php?option=' . $this->option . '&controller=repositories');
+$repoTxt = Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORIES');
+?>
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'packages') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=packages'); ?>"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_PACKAGES'); ?></a>
+            <a<?php echo $pkgCls; ?> href="<?php echo $pkgUrl; ?>">
+                <?php echo $pkgTxt; ?>
+            </a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'repositories') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=repositories'); ?>"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORIES'); ?></a>
+            <a<?php echo $repoCls; ?> href="<?php echo $repoUrl; ?>">
+                <?php echo $repoTxt; ?>
+            </a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="updateRepositoryForm">
     <table id="tktlist" class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTxt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $checkAllTxt; ?></label>
                 </th>
                 <th scope="col">Extension</th>
                 <th scope="col priority-3">Installed Version</th>
@@ -76,10 +89,21 @@ $this->css();
             <?php foreach ($this->packages as $i => $package) : ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" class="checkbox-toggle" />
+                        <input type="checkbox"
+                            name="packages[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $package->getPrettyName(); ?>"
+                            class="checkbox-toggle" />
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName()); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&packageName=' . $package->getName()
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <strong><?php echo $package->getPrettyName() ?></strong>
                         </a>
                     </td>

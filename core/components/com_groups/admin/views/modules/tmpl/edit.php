@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,17 @@ Toolbar::cancel();
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
+<?php
+$url = Route::url(
+    'index.php?option=' .
+    $this->option .
+    '&controller=' .
+    $this->controller .
+    '&gid=' .
+    $this->group->cn
+);
+?>
+<form action="<?php echo $url; ?>" name="adminForm" id="item-form" method="post">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
@@ -31,11 +39,19 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?>:</label>
-                    <input type="text" name="module[title]" id="field-title" value="<?php echo $this->escape($this->module->get('title')); ?>" size="50" />
+                    <input
+                        type="text"
+                        name="module[title]"
+                        id="field-title"
+                        value="<?php echo $this->escape($this->module->get('title')); ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-position"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?>:</label>
-                    <input type="text" name="module[position]" id="field-position" value="<?php echo $this->escape($this->module->get('position')); ?>" size="50" />
+                    <input
+                        type="text"
+                        name="module[position]"
+                        id="field-position"
+                        value="<?php echo $this->escape($this->module->get('position')); ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label>
@@ -58,8 +74,13 @@ Toolbar::cancel();
                     <label for="field-ordering"><?php echo Lang::txt('COM_GROUPS_MODULES_ORDERING'); ?>:</label>
                     <select name="module[ordering]" id="field-ordering">
                         <?php foreach ($this->order as $k => $order) : ?>
-                            <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-                            <option <?php echo $sel; ?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
+                            <?php
+                            $sel = ($order->get('title') == $this->module->get('title'))
+                                ? 'selected="selected"' : '';
+                            ?>
+                            <option <?php echo $sel; ?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) .
+                                '. ' .
+                                $order->get('title'); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -76,12 +97,14 @@ Toolbar::cancel();
                 <legend><span><?php echo Lang::txt('COM_GROUPS_MODULES_MENU_ASSIGNMENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-assignment"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>:</label>
+                    <?php $txt = Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>
+                    <label for="field-assignment"><?php echo $txt; ?>:</label>
                     <select name="menu[assignment]" id="field-assignment">
                         <option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
+                        <?php $txt = Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?>
                         <option <?php if (!in_array(0, $activeMenu)) {
                             echo 'selected="selected"';
-                                } ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
+                                } ?> value=""><?php echo $txt; ?></option>
                     </select>
                 </div>
 
@@ -91,8 +114,17 @@ Toolbar::cancel();
                     <?php foreach ($this->pages as $i => $page) : ?>
                         <div class="input-wrap">
                             <label for="assigned<?php echo $i; ?>">
-                                <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-                                <input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" id="assigned<?php echo $i; ?>" value="<?php echo $page->get('id'); ?>" /> <?php echo $page->get('title'); ?>
+                                <?php
+                                $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu))
+                                    ? 'checked="checked"' : '';
+                                ?>
+                                <input
+                                    type="checkbox"
+                                    class="option"
+                                    <?php echo $ckd; ?>
+                                    name="menu[assigned][]"
+                                    id="assigned<?php echo $i; ?>"
+                                    value="<?php echo $page->get('id'); ?>" /> <?php echo $page->get('title'); ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
@@ -120,7 +152,10 @@ Toolbar::cancel();
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->module->get('created_by'));
-                                    echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    echo (is_object($profile)) ? $profile->get('name') .
+                                        ' (' .
+                                        $profile->get('id') .
+                                        ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
                         </tr>
@@ -143,7 +178,10 @@ Toolbar::cancel();
                                     $modified_by = '--';
                                 if ($this->module->get('modified_by') != null) {
                                     $profile = User::getInstance($this->module->get('modified_by'));
-                                    $modified_by = (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    $modified_by = (is_object($profile)) ? $profile->get('name') .
+                                        ' (' .
+                                        $profile->get('id') .
+                                        ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 }
                                     echo $modified_by;
                                 ?>
@@ -158,7 +196,10 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-content"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
-                    <textarea name="module[content]" id="field-content" rows="20"><?php echo $this->module->get('content'); ?></textarea>
+                    <textarea
+                        name="module[content]"
+                        id="field-content"
+                        rows="20"><?php echo $this->module->get('content'); ?></textarea>
                 </div>
             </fieldset>
         </div>

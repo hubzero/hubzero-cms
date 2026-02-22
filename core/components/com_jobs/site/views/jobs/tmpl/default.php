@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,6 +13,18 @@ if ($this->subscriptionCode && $this->employer) {
     $this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->employer->companyName;
 }
 
+$dashboardUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=dashboard'
+);
+$shortlistUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=resumes'
+) . '?filterby=shortlisted';
+$loginUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=view'
+) . '?action=login';
+$resumeUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=addresume'
+);
 ?>
 <header id="content-header">
     <h2><?php echo $this->mini ? Lang::txt('COM_JOBS_LATEST_POSTINGS') : $this->title; ?></h2>
@@ -22,24 +32,44 @@ if ($this->subscriptionCode && $this->employer) {
     <div id="content-header-extra">
         <ul id="useroptions">
             <?php if (User::isGuest()) { ?>
-                <li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a class="btn" href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-            <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-                <li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-                <li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
+                <li>
+                    <?php echo Lang::txt('COM_JOBS_PLEASE')
+                        . ' <a class="btn" href="' . $loginUrl . '">'
+                        . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> '
+                        . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?>
+                </li>
+            <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) { ?>
+                <li>
+                    <a class="myjobs btn" href="<?php echo $dashboardUrl; ?>">
+                        <?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a class="shortlist btn" href="<?php echo $shortlistUrl; ?>">
+                        <?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?>
+                    </a>
+                </li>
             <?php } elseif ($this->admin) { ?>
                 <li>
                     <?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-                    <a class="icon-dashboard btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+                    <a class="icon-dashboard btn" href="<?php echo $dashboardUrl; ?>">
+                        <?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?>
+                    </a>
                 </li>
             <?php } else { ?>
-                <li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
+                <li>
+                    <a class="myresume btn" href="<?php echo $resumeUrl; ?>">
+                        <?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?>
+                    </a>
+                </li>
             <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+    <?php $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+    <form method="get" action="<?php echo $browseUrl; ?>">
         <?php
         $sortbys = array(
             'category' => Lang::txt('COM_JOBS_CATEGORY'),
@@ -54,11 +84,14 @@ if ($this->subscriptionCode && $this->employer) {
         ?>
         <?php if (count($this->jobs) > 0) { ?>
             <div class="container data-entry">
-                <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+                <input class="entry-search-submit" type="submit"
+                    value="<?php echo Lang::txt('Search'); ?>" />
                 <fieldset class="entry-search">
                     <legend></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
+                    <input type="text" name="q" id="entry-search-field"
+                        value="<?php echo $this->escape($this->filters['search']); ?>"
+                        placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
                     <input type="hidden" name="limitstart" value="0" />
                     <input type="hidden" name="performsearch" value="1" />
                 </fieldset>
@@ -89,11 +122,21 @@ if ($this->subscriptionCode && $this->employer) {
             echo Lang::txt('COM_JOBS_NO_JOBS_FOUND');
             if ($this->subscriptionCode) {
                 if ($this->employer) {
-                    echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->employer->companyName . ' (' . $this->subscriptionCode . ')';
+                    echo ' ' . Lang::txt('COM_JOBS_FROM') . ' '
+                        . Lang::txt('COM_JOBS_EMPLOYER') . ' '
+                        . $this->employer->companyName
+                        . ' (' . $this->subscriptionCode . ')';
                 } else {
-                    echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptionCode . ')';
+                    echo ' ' . Lang::txt('COM_JOBS_FROM') . ' '
+                        . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER')
+                        . ' (' . $this->subscriptionCode . ')';
                 }
-                echo '. <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse') . '"">' . Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS') . '</a>';
+                $allJobsUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=browse'
+                );
+                $allJobsTxt = Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS');
+                echo '. <a href="' . $allJobsUrl . '"">'
+                    . $allJobsTxt . '</a>';
             }
             ?>
             </p>

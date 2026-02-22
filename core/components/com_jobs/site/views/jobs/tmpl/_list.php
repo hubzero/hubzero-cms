@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,8 +42,12 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
     for ($i = 0, $n = count($this->jobs); $i < $n; $i++) {
         $model = new \Components\Jobs\Models\Job($this->jobs[$i]);
 
-        $closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00') ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
-        if ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00' && $this->jobs[$i]->closedate < Date::toSql()) {
+        $jobClose = $this->jobs[$i]->closedate;
+        $hasCloseDate = ($jobClose && $jobClose != '0000-00-00 00:00:00');
+        $closedate = $hasCloseDate
+            ? Date::of($jobClose)->toLocal('d&\nb\sp;M&\nb\sp;y')
+            : 'ASAP';
+        if ($hasCloseDate && $jobClose < Date::toSql()) {
             $closedate = 'closed';
         }
         $curtype = $jt->getType($this->jobs[$i]->type);
@@ -86,7 +88,14 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         ?>
         <tr>
             <td class="jobtitle">
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code); ?>" title="<?php echo $model->content('clean', 250); ?>">
+                <?php
+                $jobUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=job&code=' . $this->jobs[$i]->code
+                );
+                ?>
+                <a href="<?php echo $jobUrl; ?>"
+                    title="<?php echo $model->content('clean', 250); ?>">
                     <?php echo $this->jobs[$i]->title; ?>
                 </a>
             </td>
@@ -104,16 +113,25 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
             <td class="secondary"><?php echo $curcat; ?></td>
             <td class="secondary"><?php echo $curtype; ?></td>
             <td class="secondary">
-                <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->added)->toLocal('d&\nb\sp;M,&\nb\sp;20y'); ?></span>
+                <?php $addedDate = Date::of($this->jobs[$i]->added)->toLocal('d&\nb\sp;M,&\nb\sp;20y'); ?>
+                <span class="datedisplay"><?php echo $addedDate; ?></span>
             </td>
             <td>
                 <?php if ($this->jobs[$i]->applied) { ?>
                     <span class="alreadyapplied">
-                        <?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->applied)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
+                        <?php
+                        $appliedTxt = Lang::txt('COM_JOBS_JOB_APPLIED_ON');
+                        $appliedDate = Date::of($this->jobs[$i]->applied)->toLocal('d&\nb\sp;M&\nb\sp;y');
+                        ?>
+                        <?php echo $appliedTxt; ?> <span class="datedisplay"><?php echo $appliedDate; ?></span>
                     </span>
                 <?php } elseif ($this->jobs[$i]->withdrawn) { ?>
                     <span class="withdrawn">
-                        <?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
+                        <?php
+                        $withdrewTxt = Lang::txt('COM_JOBS_JOB_WITHDREW_ON');
+                        $withdrewDate = Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\nb\sp;M&\nb\sp;y');
+                        ?>
+                        <?php echo $withdrewTxt; ?> <span class="datedisplay"><?php echo $withdrewDate; ?></span>
                     </span>
                 <?php } else { ?>
                     <?php echo $closedate ? '<span class="datedisplay">' . $closedate . '</span>' : ''; ?>

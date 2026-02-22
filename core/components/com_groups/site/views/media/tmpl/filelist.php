@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,6 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
     }
 </script>
 
-
 <div class="upload-filelist-toolbar">
     <div class="toolbar cf">
         <?php
@@ -50,12 +47,15 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
         ?>
         <ul class="path">
             <?php if ($this->group->get('type') == 3) : ?>
-                <li><a data-folder="/" href="javascript:(void);"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT'); ?></a></li>
+                <?php $txt = Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT'); ?>
+                <li><a data-folder="/" href="javascript:(void);"><?php echo $txt; ?></a></li>
             <?php endif; ?>
             <?php foreach ($segments as $segment) : ?>
                 <?php $folder .= DS . $segment; ?>
                 <li class="divider"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH'); ?></li>
-                <li><a data-folder="<?php echo $this->escape($folder); ?>" href="javascript:(void);"><?php echo $this->escape($segment); ?></a></li>
+                <?php $v1 = $this->escape($folder); ?>
+                <?php $v0 = $this->escape($segment); ?>
+                <li><a data-folder="<?php echo $v1; ?>" href="javascript:(void);"><?php echo $v0; ?></a></li>
             <?php endforeach; ?>
         </ul>
         <div class="buttons"></div>
@@ -83,11 +83,36 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                         $dataFolder = $this->relpath . '/' . $folder;
                     }
 
-                        $moveFolderPath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefolder&folder=' .  $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
-                        $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' .  $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
-                        $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
+                        $moveFolderPath     = Route::url('index.php?option=com_groups&cn=' .
+                            $this->group->get('cn') .
+                            '&controller=media&task=movefolder&folder=' .
+                            $dataFolder .
+                            '&tmpl=component&' .
+                            Session::getFormToken() .
+                            '=1');
+                        $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' .
+                            $this->group->get('cn') .
+                            '&controller=media&task=renamefolder&folder=' .
+                            $dataFolder .
+                            '&tmpl=component&' .
+                            Session::getFormToken() .
+                            '=1');
+                        $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' .
+                            $this->group->get('cn') .
+                            '&controller=media&task=deletefolder&folder=' .
+                            $dataFolder .
+                            '&tmpl=component&' .
+                            Session::getFormToken() .
+                            '=1');
                     ?>
-                    <a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $this->escape($dataFolder); ?>"><?php echo $this->escape($folder); ?></a>
+                    <a
+                        href="javascript:void(0);"
+                        data-action-delete="<?php echo $deleteFolderPath; ?>"
+                        data-action-rename="<?php echo $renameFolderPath; ?>"
+                        data-action-move="<?php echo $moveFolderPath; ?>"
+                        data-folder="<?php echo $this->escape($dataFolder); ?>"><?php echo $this->
+                            escape($folder); ?>
+                        </a>
                 </div>
                 <div class="modified">
                     --
@@ -127,16 +152,41 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                 $formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
 
                 // is this file an image
-                $isImage   = (in_array($extension, array('jpg','jpeg','jpe','png','gif','bmp','tiff','tif'))) ? true : false;
+            $isImage   = in_array($extension, array('jpg','jpeg','jpe','png','gif','bmp','tiff','tif')) ? true : false;
                 $isArchive = (in_array($extension, array('zip', 'tar', 'gz'))) ? true : false;
 
                 // build paths
                 $downloadPath = $baseURI . DS . 'File:' . $relFilePath;
-                $movePath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefile&file=' .  $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
-                $renamePath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefile&file=' .  $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
-                $extractPath  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=extractfile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
-                $deletePath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
-                //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
+                $movePath     = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=media&task=movefile&file=' .
+                    $relFilePath .
+                    '&format=raw&' .
+                    Session::getFormToken() .
+                    '=1'); //tmpl=component');
+                $renamePath   = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=media&task=renamefile&file=' .
+                    $relFilePath .
+                    '&format=raw&' .
+                    Session::getFormToken() .
+                    '=1'); //tmpl=component');
+                $extractPath  = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=media&task=extractfile&file=' .
+                    $relFilePath .
+                    '&format=raw&' .
+                    Session::getFormToken() .
+                    '=1'); //tmpl=component');
+                $deletePath   = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=media&task=deletefile&file=' .
+                    $relFilePath .
+                    '&format=raw&' .
+                    Session::getFormToken() .
+                    '=1'); //tmpl=component');
+                //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group
+                //    ->get('cn').'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
             ?>
             <li class="file file-<?php echo strtolower($extension); ?>">
                 <div class="name">
@@ -151,9 +201,14 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                     <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW'); ?></div>
                     <div class="preview">
                         <?php if ($isImage) : ?>
-                            <img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" />
+                            <?php $v1 = rtrim(Request::base(true), '/'); ?>
+                            <?php $v0 = $downloadPath; ?>
+                            <img
+                                src="<?php echo $v1; ?>/core/components/com_groups/site/assets/img/loading.gif"
+                                data-src="<?php echo $v0; ?>" />
                         <?php else : ?>
-                            <p><strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?></strong></p>
+                            <?php $txt = Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?>
+                            <p><strong><?php echo $txt; ?></strong></p>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -161,34 +216,64 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                     <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DETAILS'); ?></div>
                     <ul>
                         <li>
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_NAME'); ?>: </strong> <?php echo $file; ?>
+                            <?php $txt = Lang::txt('COM_GROUPS_MEDIA_FILE_NAME'); ?>
+                            <strong><?php echo $txt; ?>: </strong> <?php echo $file; ?>
                         </li>
                         <li>
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE'); ?>: </strong> <?php echo $formattedFilesize; ?>
+                            <?php $txt = Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE'); ?>
+                            <strong><?php echo $txt; ?>: </strong> <?php echo $formattedFilesize; ?>
                         </li>
                         <?php if ($isImage) : ?>
                             <li>
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS'); ?>: </strong> <?php echo $formattedDimensions; ?>
+                                <?php $txt = Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS'); ?>
+                                <strong><?php echo $txt; ?>: </strong> <?php echo $formattedDimensions; ?>
                             </li>
                         <?php endif; ?>
                         <li class="path">
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $downloadPath; ?></span>
+                            <?php $txt = Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>
+                            <strong><?php echo $txt; ?>: </strong> <span><?php echo $downloadPath; ?></span>
                         </li>
                         <li>
                             <?php if ($this->authorized && isset($ckeditor) && $ckeditor != '') : ?>
-                                <a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
+                                <?php $v1 = $downloadPath; ?>
+                                <?php $v0 = Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?>
+                                <a
+                                    href="javascript:void(0);"
+                                    class="btn btn-secondary icon-add"
+                                    onclick="return ckeditorInsertFile('<?php echo $v1; ?>');"><?php echo $v0; ?></a>
                             <?php endif; ?>
-                            <a href="<?php echo $downloadPath; ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
+                            <a
+                                href="<?php echo $downloadPath; ?>"
+                                class="btn btn-secondary icon-download action-download">
+                                    <?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?>
+                                </a>
                             <?php if ($this->authorized) : ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
-                                    <a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
+                                    <a
+                                        href="<?php echo $renamePath; ?>"
+                                        class="btn btn-secondary icon-edit action-rename">
+                                            <?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?>
+                                        </a>
+                                    <a
+                                        href="<?php echo $movePath; ?>"
+                                        class="btn btn-secondary icon-move action-move">
+                                            <?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?>
+                                        </a>
                                 <?php endif; ?>
                                 <?php if ($isArchive) : ?>
-                                    <a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
+                                    <a
+                                        href="<?php echo $extractPath; ?>"
+                                        class="btn btn-secondary icon-extract action-extract">
+                                            <?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?>
+                                        </a>
                                 <?php endif; ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+                                    <a
+                                        data-file="<?php echo $relFilePath; ?>"
+                                        href="<?php echo $deletePath; ?>"
+                                        class="btn btn-secondary icon-delete action-delete">
+                                            <?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?>
+                                        </a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>

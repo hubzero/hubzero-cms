@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +13,17 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
-Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid']), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', Route::url('index.php?option=' . $this->
+    option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid']), 570, 170);
 
-Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 400, 400);
+Toolbar::appendButton(
+    'Link',
+    'unblock',
+    'COM_GROUPS_ROLE_ASSIGN',
+    'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'],
+    400,
+    400
+);
 
 Toolbar::spacer();
 switch ($this->filters['status']) {
@@ -27,12 +33,26 @@ switch ($this->filters['status']) {
             //Toolbar::custom('accept', 'publish', Lang::txt('Accept'), Lang::txt('Accept'), false, false);
         //}
         if ($canDo->get('core.delete')) {
-            Toolbar::custom('uninvite', 'unpublish', 'COM_GROUPS_MEMBER_UNINVITE', 'COM_GROUPS_MEMBER_UNINVITE', false, false);
+            Toolbar::custom(
+                'uninvite',
+                'unpublish',
+                'COM_GROUPS_MEMBER_UNINVITE',
+                'COM_GROUPS_MEMBER_UNINVITE',
+                false,
+                false
+            );
         }
         break;
     case 'applicant':
         if ($canDo->get('core.edit')) {
-            Toolbar::custom('approve', 'publish', 'COM_GROUPS_MEMBER_APPROVE', 'COM_GROUPS_MEMBER_APPROVE', false, false);
+            Toolbar::custom(
+                'approve',
+                'publish',
+                'COM_GROUPS_MEMBER_APPROVE',
+                'COM_GROUPS_MEMBER_APPROVE',
+                false,
+                false
+            );
         }
         if ($canDo->get('core.delete')) {
             Toolbar::custom('deny', 'unpublish', 'COM_GROUPS_MEMBER_DENY', 'COM_GROUPS_MEMBER_DENY', false, false);
@@ -40,7 +60,14 @@ switch ($this->filters['status']) {
         break;
     default:
         if ($canDo->get('core.edit')) {
-            Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
+            Toolbar::custom(
+                'promote',
+                'promote',
+                'COM_GROUPS_MEMBER_PROMOTE',
+                'COM_GROUPS_MEMBER_PROMOTE',
+                false,
+                false
+            );
             Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false, false);
         }
         if ($canDo->get('core.delete')) {
@@ -59,26 +86,52 @@ $this->css()
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $url; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span8">
                 <label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" ckass="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
+                <?php $v1 = $this->escape($this->filters['search']); ?>
+                <?php $v0 = Lang::txt('COM_GROUPS_SEARCH'); ?>
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    ckass="filter"
+                    value="<?php echo $v1; ?>" placeholder="<?php echo $v0; ?>" />
 
                 <label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
-                    <option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></option>
-                    <!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
-                    <option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Manager'); ?></option>
-                    <option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Applicant'); ?></option>
-                    <option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Invitee'); ?></option>
+                    <?php $val1 = ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>
+                    <?php $val = Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>
+                    <option value=""<?php echo $val1; ?>><?php echo $val; ?></option>
+                    <!--
+                    <option value="member"<?php //echo ($this->filters['status'] == 'member')
+                        //? ' selected="selected"' : ''; ?>>Member</option>
+                    -->
+                    <?php $val = ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>
+                    <option value="manager"<?php echo $val; ?>><?php echo Lang::txt('Manager'); ?></option>
+                    <?php $val = ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>
+                    <option value="applicant"<?php echo $val; ?>><?php echo Lang::txt('Applicant'); ?></option>
+                    <?php $val = ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>
+                    <option value="invitee"<?php echo $val; ?>><?php echo Lang::txt('Invitee'); ?></option>
                 </select>
 
                 <input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
             </div>
             <div class="col span4">
-                <a class="button modal" href="<?php echo Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=' . $this->filters['gid']); ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
+                <?php
+                $rolesUrl = Route::url(
+                    'index.php?option=com_groups&controller=roles' .
+                    '&tmpl=component&gid=' . $this->filters['gid']
+                );
+                $rolesRel = '{size: {width: 570, height: 170}, onClose: function() {}}';
+                ?>
+                <a
+                    class="button modal"
+                    href="<?php echo $rolesUrl; ?>"
+                    rel="<?php echo $rolesRel; ?>">
                     <span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
                 </a>
             </div>
@@ -88,17 +141,56 @@ $this->css()
     <table class="adminlist">
         <thead>
             <tr>
-                <th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_GROUPS'); ?></a> > (<?php echo $this->escape(stripslashes($this->group->get('cn'))); ?>) <?php echo $this->escape(stripslashes($this->group->get('description'))); ?></th>
+                <?php $v3 = Route::url('index.php?option=' . $this->option); ?>
+                <?php $v2 = Lang::txt('COM_GROUPS'); ?>
+                <?php $v1 = $this->escape(stripslashes($this->group->get('cn'))); ?>
+                <?php $v0 = $this->escape(stripslashes($this->group->get('description'))); ?>
+                <th colspan="8"><a href="<?php echo $v3; ?>"><?php echo $v2; ?></a> >
+                    (<?php echo $v1; ?>) <?php echo $v0; ?></th>
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_GROUPS_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_GROUPS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_GROUPS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_USERID',
+                    'uidNumber',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col" class="priority-4"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_NAME',
+                    'name',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_USERNAME',
+                    'username',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col" class="priority-3"><?php echo $val; ?></th>
+                <?php $val = Html::grid(
+                    'sort',
+                    'COM_GROUPS_EMAIL',
+                    'email',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?>
+                <th scope="col" class="priority-5"><?php echo $val; ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></th>
                 <th scope="col" colspan="2"><?php echo Lang::txt('COM_GROUPS_MEMBER_ACTION'); ?></th>
             </tr>
@@ -133,19 +225,29 @@ $this->css()
                 $status = 'manager';
             }
 
-            $roles = \Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
+            $roles = \Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->
+                get('gidNumber'));
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i;?>" class="sr-only visually-hidden"><?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?></label>
+                    <?php $val = $i;?>" value="<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $val; ?>" class="checkbox-toggle" />
+                    <?php $v0 = (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>
+                    <?php $val = $i;?>" class="sr-only visually-hidden"><?php echo $v0; ?>
+                    <label for="cb<?php echo $val; ?></label>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->uidNumber); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber); ?>">
+                        <?php
+                        $url = Route::url(
+                            'index.php?option=com_members&controller=members&task=edit&id=' .
+                            $row->uidNumber
+                        );
+                        ?>
+                        <a href="<?php echo $url; ?>">
                             <?php echo $this->escape(stripslashes($row->name)); ?>
                         </a>
                     <?php else : ?>
@@ -160,7 +262,20 @@ $this->css()
                             //echo Lang::txt('COM_GROUPS_ROLES') . ': ';
                             $r = array();
                             foreach ($roles as $role) :
-                                $r[] = '<span class="role">' . $role['name'] . ' <a href="' . Route::url('index.php?option=com_groups&controller=roles&task=unassign&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid=' . $role['id'] . '&return=' . $this->controller) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
+                                $r[] = '<span class="role">' .
+                                    $role['name'] .
+                                    ' <a href="' .
+                                    Route::url('index.php?option=com_groups&controller=roles&task=unassign&gid=' .
+                                    $this->filters['gid'] .
+                                    '&id=' .
+                                    $row->uidNumber .
+                                    '&roleid=' .
+                                    $role['id'] .
+                                    '&return=' .
+                                    $this->controller) .
+                                    '" title="' .
+                                    Lang::txt('COM_GROUPS_UNASSIGN_ROLE') .
+                                    '">x</a></span>';
                             endforeach;
                             echo implode(', ', $r);
                             ?>
@@ -189,7 +304,24 @@ $this->css()
                     case 'invitee':
                     case 'inviteemail':
                         ?>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uninvite&gid=' . $this->filters['gid'] . '&id=' . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $memberId = isset($row->uidNumber)
+                            ? $row->uidNumber : $row->email;
+                        $uninviteUrl = Route::url(
+                            'index.php?option=' . $this->option .
+                            '&controller=' . $this->controller .
+                            '&task=uninvite&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' . $memberId .
+                            '&' . Session::getFormToken() . '=1'
+                        );
+                        $confirmJs = "javascript:if (confirm('Cancel invitation?'))"
+                            . "{return true;}else{return false;}";
+                        ?>
+                        <a
+                            class="state unpublish"
+                            onclick="<?php echo $confirmJs; ?>"
+                            href="<?php echo $uninviteUrl; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
                         </a>
                     </td>
@@ -198,19 +330,62 @@ $this->css()
                         break;
                     case 'applicant':
                         ?>
-                        <a class="state publish" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $url = Route::url(
+                            'index.php?option=' .
+                            $this->option .
+                            '&controller=' .
+                            $this->controller .
+                            '&task=approve&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' .
+                            $row->uidNumber .
+                            '&' .
+                            Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <a class="state publish" href="<?php echo $url; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_APPROVE'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $denyUrl = Route::url(
+                            'index.php?option=' . $this->option .
+                            '&controller=' . $this->controller .
+                            '&task=deny&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' . $row->uidNumber .
+                            '&' . Session::getFormToken() . '=1'
+                        );
+                        $denyJs = "javascript:if (confirm('Deny membership?'))"
+                            . "{return true;}else{return false;}";
+                        ?>
+                        <a
+                            class="state unpublish"
+                            onclick="<?php echo $denyJs; ?>"
+                            href="<?php echo $denyUrl; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
                         </a>
                         <?php
                         break;
                     case 'manager':
                         ?>
-                        <a class="state demote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $url = Route::url(
+                            'index.php?option=' .
+                            $this->option .
+                            '&controller=' .
+                            $this->controller .
+                            '&task=demote&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' .
+                            $row->uidNumber .
+                            '&' .
+                            Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <a class="state demote" href="<?php echo $url; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
                         </a>
                     </td>
@@ -221,12 +396,41 @@ $this->css()
                     default:
                     case 'member':
                         ?>
-                        <a class="state promote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $url = Route::url(
+                            'index.php?option=' .
+                            $this->option .
+                            '&controller=' .
+                            $this->controller .
+                            '&task=promote&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' .
+                            $row->uidNumber .
+                            '&' .
+                            Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <a class="state promote" href="<?php echo $url; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $deleteUrl = Route::url(
+                            'index.php?option=' . $this->option .
+                            '&controller=' . $this->controller .
+                            '&task=delete&gid=' .
+                            $this->filters['gid'] .
+                            '&id=' . $row->uidNumber .
+                            '&' . Session::getFormToken() . '=1'
+                        );
+                        $deleteJs = "javascript:if (confirm('Cancel membership?'))"
+                            . "{return true;}else{return false;}";
+                        ?>
+                        <a
+                            class="state trash"
+                            onclick="<?php echo $deleteJs; ?>"
+                            href="<?php echo $deleteUrl; ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
                         </a>
                         <?php

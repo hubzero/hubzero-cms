@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,23 @@ $this->js('roles.js');
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component' : 'item'; ?>-form" data-invalid-msg="<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>" class="editform form-validate" data-redirect="<?php echo Route::url('index.php?option=' . $this->option . '&controller=membership&gid=' . $this->group->get('cn')); ?>">
+<?php
+$formUrl = Route::url('index.php?option=' . $this->option);
+$formId = ($tmpl == 'component') ? 'component' : 'item';
+$invalidMsg = Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION');
+$redirectUrl = Route::url(
+    'index.php?option=' . $this->option .
+    '&controller=membership&gid=' . $this->group->get('cn')
+);
+?>
+<form
+    action="<?php echo $formUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="<?php echo $formId; ?>-form"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+    class="editform form-validate"
+    data-redirect="<?php echo $redirectUrl; ?>">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -64,11 +78,14 @@ $this->js('roles.js');
             ?>
 
             <div class="input-wrap">
-                <label for="field-roleid"><?php echo Lang::txt('COM_GROUPS_ROLE_CHOOSE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+                <?php $v1 = Lang::txt('COM_GROUPS_ROLE_CHOOSE'); ?>
+                <?php $v0 = Lang::txt('JOPTION_REQUIRED'); ?>
+                <label for="field-roleid"><?php echo $v1; ?>: <span class="required"><?php echo $v0; ?></span></label>
                 <select name="roleid" id="field-roleid" class="required">
                     <option value="0"><?php echo Lang::txt('COM_GROUPS_ROLE_SELECT'); ?></option>
                     <?php foreach ($this->rows as $row) { ?>
-                        <option value="<?php echo $row->get('id'); ?>"><?php echo $this->escape($row->get('name')); ?></option>
+                        <?php $val = $this->escape($row->get('name')); ?>
+                        <option value="<?php echo $row->get('id'); ?>"><?php echo $val; ?></option>
                     <?php } ?>
                 </select>
             </div>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,22 @@ $this->js('membership.js');
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form" data-redirect="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn')); ?>" data-invalid-msg="<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>">
+<?php
+$formUrl = Route::url('index.php?option=' . $this->option);
+$redirectUrl = Route::url(
+    'index.php?option=' . $this->option .
+    '&controller=' . $this->controller .
+    '&gid=' . $this->group->get('cn')
+);
+$invalidMsg = Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION');
+?>
+<form
+    action="<?php echo $formUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="component-form"
+    data-redirect="<?php echo $redirectUrl; ?>"
+    data-invalid-msg="<?php echo $invalidMsg; ?>">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration" >
@@ -58,8 +71,17 @@ $this->js('membership.js');
             <table class="admintable">
                 <tbody>
                     <tr>
-                        <th><label for="field-usernames"><?php echo Lang::txt('COM_GROUPS_ADD_USERNAME'); ?>:</label></th>
-                        <td><input type="text" name="usernames" class="input-username" id="field-usernames" value="" size="50" /></td>
+                        <?php $txt = Lang::txt('COM_GROUPS_ADD_USERNAME'); ?>
+                        <th><label for="field-usernames"><?php echo $txt; ?>:</label></th>
+                        <td>
+                            <input
+                                type="text"
+                                name="usernames"
+                                class="input-username"
+                                id="field-usernames"
+                                value=""
+                                size="50" />
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="field-tbl"><?php echo Lang::txt('COM_GROUPS_TO'); ?>:</label></th>
@@ -67,7 +89,8 @@ $this->js('membership.js');
                             <select name="tbl" id="field-tbl">
                                 <option value="invitees"><?php echo Lang::txt('COM_GROUPS_INVITEES'); ?></option>
                                 <option value="applicants"><?php echo Lang::txt('COM_GROUPS_APPLICANTS'); ?></option>
-                                <option value="members" selected="selected"><?php echo Lang::txt('COM_GROUPS_MEMBERS'); ?></option>
+                                <?php $txt = Lang::txt('COM_GROUPS_MEMBERS'); ?>
+                                <option value="members" selected="selected"><?php echo $txt; ?></option>
                                 <option value="managers"><?php echo Lang::txt('COM_GROUPS_MANAGERS'); ?></option>
                             </select>
                         </td>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,12 +24,18 @@ $this->css();
 
         <?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
             <hr />
-            <a href="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn=' . $this->group->get('cn') . '&task=accept'); ?>" class="group-invited">
+            <?php $url = Route::url('index.php?option=com_groups&controller=groups&cn=' . $this->group->get('cn')); ?>
+            <a href="<?php echo $url . '&task=accept'; ?>" class="group-invited">
                 <?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>
             </a>
             <hr />
         <?php endif; ?>
 
-        <p><a class="all-groups" href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_GROUPS_ALL_GROUPS'); ?></a> | <a class="my-groups" href="<?php echo Route::url('index.php?option=com_members&task=myaccount&active=groups'); ?>"><?php echo Lang::txt('COM_GROUPS_MY_GROUPS'); ?></a></p>
+        <?php $v3 = Route::url('index.php?option=com_groups'); ?>
+        <?php $v2 = Lang::txt('COM_GROUPS_ALL_GROUPS'); ?>
+        <?php $v1 = Route::url('index.php?option=com_members&task=myaccount&active=groups'); ?>
+        <?php $v0 = Lang::txt('COM_GROUPS_MY_GROUPS'); ?>
+        <p><a class="all-groups" href="<?php echo $v3; ?>"><?php echo $v2; ?></a>
+            | <a class="my-groups" href="<?php echo $v1; ?>"><?php echo $v0; ?></a></p>
     </div>
 </section>

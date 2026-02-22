@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,13 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -54,8 +58,15 @@ $this->js();
             <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
             <div class="input-wrap">
-                <label for="field-name"><?php echo Lang::txt('COM_GROUPS_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                <input type="text" name="fields[name]" id="field-name" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('name'))); ?>" />
+                <label for="field-name"><?php echo Lang::txt('COM_GROUPS_NAME'); ?>: <span class="required">
+                    <?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                <input
+                    type="text"
+                    name="fields[name]"
+                    id="field-name"
+                    size="30"
+                    maxlength="250"
+                    value="<?php echo $this->escape(stripslashes($this->model->get('name'))); ?>" />
             </div>
 
             <fieldset class="adminform">
@@ -64,23 +75,39 @@ $this->js();
                 <?php $permissions = $this->model->permissions; ?>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[permissions][group.invite]" id="field-permissions-invite" value="1" <?php if ($permissions->get('group.invite') == 1) {
-                        echo 'checked="checked"';
-                                                                                                                            } ?> />
-                    <label for="field-permissions-invite"><?php echo Lang::txt('COM_GROUPS_PERMISSION_INVITE'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="fields[permissions][group.invite]"
+                        id="field-permissions-invite"
+                        value="1"
+                        <?php if ($permissions->get('group.invite') == 1) {
+                            echo 'checked="checked"';
+                        } ?> />
+                    <?php $txt = Lang::txt('COM_GROUPS_PERMISSION_INVITE'); ?>
+                    <label for="field-permissions-invite"><?php echo $txt; ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[permissions][group.edit]" id="field-permissions-edit" value="1" <?php if ($permissions->get('group.edit') == 1) {
-                        echo 'checked="checked"';
-                                                                                                                        } ?> />
+                    <input
+                        type="checkbox"
+                        name="fields[permissions][group.edit]"
+                        id="field-permissions-edit"
+                        value="1"
+                        <?php if ($permissions->get('group.edit') == 1) {
+                            echo 'checked="checked"';
+                        } ?> />
                     <label for="field-permissions-edit"><?php echo Lang::txt('COM_GROUPS_PERMISSION_EDIT'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[permissions][group.pages]" id="field-permissions-pages" value="1" <?php if ($permissions->get('group.pages') == 1) {
-                        echo 'checked="checked"';
-                                                                                                                          } ?> />
+                    <input
+                        type="checkbox"
+                        name="fields[permissions][group.pages]"
+                        id="field-permissions-pages"
+                        value="1"
+                        <?php if ($permissions->get('group.pages') == 1) {
+                            echo 'checked="checked"';
+                        } ?> />
                     <label for="field-permissions-pages"><?php echo Lang::txt('COM_GROUPS_PERMISSION_PAGES'); ?></label>
                 </div>
             </fieldset>
@@ -94,7 +121,10 @@ $this->js();
                     <td>
                         <?php echo $this->model->get('id'); ?>
                         <input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
-                        <input type="hidden" name="fields[gidNumber]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+                        <input
+                            type="hidden"
+                            name="fields[gidNumber]"
+                            value="<?php echo $this->group->get('gidNumber'); ?>" />
                     </td>
                 </tr>
             </tbody>

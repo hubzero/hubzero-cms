@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,13 +28,28 @@ Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&gid=' . $this->group->cn
+);
+?>
+<form action="<?php echo $formAction; ?>" name="adminForm" id="adminForm" method="post">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <?php $checkAll = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo $checkAll; ?>
+                    </label>
                 </th>
                 <th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
                 <th class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
@@ -48,13 +61,28 @@ Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
                     <tr>
                         <td>
                             <?php if ($canDo->get('core.edit')) : ?>
-                                <input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" class="checkbox-toggle" />
-                                <label for="cb<?php echo $k;?>" class="sr-only visually-hidden"><?php echo $category->get('id'); ?></label>
+                                <input type="checkbox"
+                                    name="id[]"
+                                    id="cb<?php echo $k;?>"
+                                    value="<?php echo $category->get('id'); ?>"
+                                    class="checkbox-toggle"
+                                />
+                                <label for="cb<?php echo $k;?>" class="sr-only visually-hidden">
+                                    <?php echo $category->get('id'); ?>
+                                </label>
                             <?php endif; ?>
                         </td>
                         <td>
                             <?php if ($canDo->get('core.edit')) : ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn . '&task=edit&id=' . $category->get('id')); ?>">
+                                <?php
+                                $editUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&gid=' . $this->group->cn
+                                    . '&task=edit&id=' . $category->get('id')
+                                );
+                                ?>
+                                <a href="<?php echo $editUrl; ?>">
                                     <?php echo $this->escape($category->get('title')); ?>
                                 </a>
                             <?php else : ?>

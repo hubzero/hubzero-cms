@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -26,32 +24,56 @@ Html::behavior('tooltip');
 $this->css();
 
 ?>
+<?php
+$manageCls = ($this->controller == 'manage') ? ' class="active"' : '';
+$manageUrl = Route::url('index.php?option=' . $this->option . '&controller=manage');
+$coreTxt = Lang::txt('COM_INSTALLER_SUBMENU_CORE');
+$migCls = ($this->controller == 'migrations') ? ' class="active"' : '';
+$migUrl = Route::url('index.php?option=' . $this->option . '&controller=migrations');
+$migTxt = Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS');
+?>
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'manage') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=manage'); ?>"><?php echo Lang::txt('COM_INSTALLER_SUBMENU_CORE'); ?></a>
+            <a<?php echo $manageCls; ?> href="<?php echo $manageUrl; ?>">
+                <?php echo $coreTxt; ?>
+            </a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'migrations') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=migrations'); ?>"><?php echo Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'); ?></a>
+            <a<?php echo $migCls; ?> href="<?php echo $migUrl; ?>">
+                <?php echo $migTxt; ?>
+            </a>
         </li>
     </ul>
 </nav>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="updateRepositoryForm">
     <?php if (!empty($this->breadcrumb)) : ?>
         <fieldset id="filter-bar">
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&folder='); ?>" class="breadcrumb"><?php echo Lang::txt('JGLOBAL_FILTER_TYPE_LABEL'); ?>: <?php echo $this->breadcrumb; ?></a>
+            <?php
+            $breadcrumbUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller . '&folder='
+            );
+            $filterLabel = Lang::txt('JGLOBAL_FILTER_TYPE_LABEL');
+            ?>
+            <a href="<?php echo $breadcrumbUrl; ?>" class="breadcrumb">
+                <?php echo $filterLabel; ?>: <?php echo $this->breadcrumb; ?>
+            </a>
         </fieldset>
     <?php endif; ?>
     <table id="tktlist" class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTxt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $checkAllTxt; ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_EXTENSION'); ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('JDATE'); ?></th>
@@ -91,22 +113,33 @@ $this->css();
                         require_once PATH_ROOT . DS . $row['entry'];
                     }
                     $class = new ReflectionClass(substr($row['file'], 0, -4));
-                    $desc  = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/
-
-// phpcs:disable Generic.Files.LineLength'));
+                    $desc  = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/'));
                 } else {
-                    $desc = '<span class="warning">' . Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND') . '</span>';
+                    $notFoundTxt = Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND');
+                    $desc = '<span class="warning">' . $notFoundTxt . '</span>';
                 }
 
                 $cls = ($row['core'] ? 'dir-core' : 'dir-app');
                 ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['file']); ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="migration[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $this->escape($row['file']); ?>"
+                            class="checkbox-toggle" />
                     </td>
                     <td>
                         <?php echo $component; ?><br />
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&folder=' . urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo $cls; ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
+                        <?php
+                        $scopePath = str_replace('/migrations', '', $row['scope']);
+                        $scopeUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&folder=' . urlencode($scopePath)
+                        );
+                        ?>
+                        <a href="<?php echo $scopeUrl; ?>"
+                            class="dir-locale <?php echo $cls; ?>"><?php echo $scopePath; ?></a>
                     </td>
                     <td class="priority-3"><?php echo $date; ?></td>
                     <td>
@@ -114,9 +147,17 @@ $this->css();
                     </td>
                     <td class="status">
                         <?php if ($row['status'] == 'pending') : ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=migrate&file=' . $row['file']) . '&' . Session::getFormToken() . '=1'; ?>">
+                            <?php
+                            $migrateUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=migrate&file=' . $row['file']
+                            ) . '&' . Session::getFormToken() . '=1';
+                            ?>
+                            <a href="<?php echo $migrateUrl; ?>">
                         <?php endif; ?>
-                            <span class="state <?php echo ($row['status'] == 'complete') ? 'published' : $row['status']; ?>">
+                            <?php $stateClass = ($row['status'] == 'complete') ? 'published' : $row['status']; ?>
+                            <span class="state <?php echo $stateClass; ?>">
                                 <span class="text"><?php echo $row['status']; ?></span>
                             </span>
                         <?php if ($row['status'] == 'pending') : ?>

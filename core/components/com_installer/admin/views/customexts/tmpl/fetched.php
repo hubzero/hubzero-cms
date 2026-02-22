@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -21,7 +19,16 @@ Toolbar::custom('doupdate', 'merge', '', 'COM_INSTALLER_CUSTOMEXTS_MERGE_CODE', 
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
 
     <?php if (!empty($this->success)) : ?>
         <table class="adminlist success">
@@ -37,24 +44,31 @@ Html::behavior('tooltip');
                             <?php
                                 echo '<strong>Extension: ' . $success['extension'] . '</strong>';
                             ?>
-                            <?php if (
-                            $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')
-                                        && $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
-                                        && !preg_match('/ineligible/', $success['message'][0])
-) : ?>
-                                    <?php echo '<p>' . Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC') . '</p>'; ?>
+                            <?php
+                            $cloneTxt = Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL');
+                            $upToDateTxt = Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE');
+                            $firstMsg = $success['message'][0];
+                            $showMerge = ($firstMsg != $cloneTxt)
+                                && ($firstMsg != $upToDateTxt)
+                                && !preg_match('/ineligible/', $firstMsg);
+                            ?>
+                            <?php if ($showMerge) : ?>
+                                <?php
+                                $descTxt = Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC');
+                                echo '<p>' . $descTxt . '</p>';
+                                ?>
                             <?php endif; ?>
                             <hr />
                             <code><?php echo implode('<br>', $success['message']); ?></code>
 
-                            <?php if (
-                            $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')
-                                        && $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
-                                        && !preg_match('/ineligible/', $success['message'][0])
-) : ?>
+                            <?php if ($showMerge) : ?>
                                 <label class="merge">
-                                      <?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_MERGE'); ?>
-                                    <input type="checkbox" name="id[]" checked="checked" value="<?php echo $success['ext_id']; ?>" />
+                                    <?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_MERGE'); ?>
+                                    <input type="checkbox"
+                                        name="id[]"
+                                        checked="checked"
+                                        value="<?php echo $success['ext_id']; ?>"
+                                    />
                                 </label>
                             <?php endif; ?>
                         </td>
@@ -80,7 +94,12 @@ Html::behavior('tooltip');
                                 echo '<strong>Extension: ' . $failed['extension'] . '</strong>';
                             ?>
                             <hr />
-                            <pre><?php echo implode('<br>', is_array($failed['message']) ? $failed['message'] : array($failed['message'])); ?></pre>
+                            <?php
+                            $msgs = is_array($failed['message'])
+                                ? $failed['message']
+                                : array($failed['message']);
+                            ?>
+                            <pre><?php echo implode('<br>', $msgs); ?></pre>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,14 +21,16 @@ $this->js('import')
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>
             <a<?php if ($this->controller == 'imports') {
                 echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS'); ?></a>
+              } ?> href="<?php echo $url; ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS'); ?></a>
         </li>
         <li>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>
             <a<?php if ($this->controller == 'importhooks') {
                 echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_HOOKS'); ?></a>
+              } ?> href="<?php echo $url; ?>"><?php echo Lang::txt('COM_GROUPS_IMPORT_HOOKS'); ?></a>
         </li>
     </ul>
 </nav>
@@ -39,7 +39,8 @@ $this->js('import')
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
+<?php $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=dorun'); ?>
+<form action="<?php echo $url; ?>" method="post" name="adminForm" id="adminForm">
 
     <fieldset class="adminform import-results">
 
@@ -53,19 +54,32 @@ $this->js('import')
         <div class="countdown" data-timeout="5">
             <?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_START', '<span>5</span>'); ?>
         </div>
-        <div class="countdown-actions" data-progress="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=progress&id=' . $this->import->get('id')); ?>">
+        <?php
+        $url = Route::url(
+            'index.php?option=' .
+            $this->option .
+            '&controller=' .
+            $this->controller .
+            '&task=progress&id=' .
+            $this->import->get('id')
+        );
+        ?>
+        <div class="countdown-actions" data-progress="<?php echo $url; ?>">
             <button type="button" class="start"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_START'); ?></button>
             <button type="button" class="stop"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_STOP'); ?></button>
 
-            <button type="button" class="start-over"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_RERUN'); ?></button>
+            <?php $txt = Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_RERUN'); ?>
+            <button type="button" class="start-over"><?php echo $txt; ?></button>
             <?php if ($this->dryRun) : ?>
-                <button type="button" class="start-real"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_REAL'); ?></button>
+                <?php $txt = Lang::txt('COM_GROUPS_IMPORT_RUN_BUTTON_REAL'); ?>
+                <button type="button" class="start-real"><?php echo $txt; ?></button>
             <?php endif; ?>
         </div>
 
         <hr />
 
-        <strong><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_PROGRESS'); ?><span class="progress-percentage">0%</span></strong>
+        <?php $txt = Lang::txt('COM_GROUPS_IMPORT_RUN_PROGRESS'); ?>
+        <strong><?php echo $txt; ?><span class="progress-percentage">0%</span></strong>
         <div class="progress"></div>
 
         <hr />
@@ -76,8 +90,10 @@ $this->js('import')
         </div>
         <script id="entry-template" type="text/x-handlebars-template">
             <h3 class="resource-title">
-                {{#if record.errors}}<span class="has-errors"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
-                {{#if record.notices}}<span class="has-notices"><?php echo Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
+                <?php $txt = Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?>
+                {{#if record.errors}}<span class="has-errors"><?php echo $txt; ?></span>{{/if}}
+                <?php $txt = Lang::txt('COM_GROUPS_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?>
+                {{#if record.notices}}<span class="has-notices"><?php echo $txt; ?></span>{{/if}}
                 {{{ record.entry.description }}}
             </h3>
 

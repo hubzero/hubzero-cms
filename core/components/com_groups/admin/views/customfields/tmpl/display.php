@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,10 +27,22 @@ Toolbar::help('forms');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CAREERPLANS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <?php $placeholder = Lang::txt('COM_CAREERPLANS_FILTER_SEARCH_PLACEHOLDER'); ?>
+        <input type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo $placeholder; ?>"
+        />
 
         <input type="submit" value="<?php echo Lang::txt('COM_CAREERPLANS_GO'); ?>" />
     </fieldset>
@@ -41,14 +51,36 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <?php $checkAll = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo $checkAll; ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_COMMENT', 'content', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_ANONYMOUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_COMMENT', 'content', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_CREATOR', 'created_by', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_ANONYMOUS', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_CAREERPLANS_COL_CREATED', 'created', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -76,8 +108,15 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-5">
                     <?php echo $row->get('id'); ?>
@@ -85,7 +124,14 @@ Html::behavior('tooltip');
                 <td>
                     <?php echo $row->get('treename'); ?>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->content)), 90); ?>
                         </a>
                     <?php } else { ?>
@@ -98,7 +144,16 @@ Html::behavior('tooltip');
                     <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
                 </td>
                 <td class="priority-3">
-                    <a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $anonUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=anonymous&state=' . $state
+                        . '&id=' . $row->get('id')
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    ?>
+                    <a class="state <?php echo $cls2; ?>" href="<?php echo $anonUrl; ?>">
                         <span><?php echo $calt; ?></span>
                     </a>
                 </td>

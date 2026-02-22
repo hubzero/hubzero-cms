@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,10 +16,18 @@ $jc = new \Components\Jobs\Tables\JobCategory($database);
 
 $profile = \Components\Members\Models\Member::oneOrNew($this->seeker->uid);
 
-$jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('COM_JOBS_TYPE_ANY')));
-$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('COM_JOBS_CATEGORY_ANY')));
+$jobtype = $jt->getType(
+    $this->seeker->sought_type,
+    strtolower(Lang::txt('COM_JOBS_TYPE_ANY'))
+);
+$jobcat = $jc->getCat(
+    $this->seeker->sought_cid,
+    strtolower(Lang::txt('COM_JOBS_CATEGORY_ANY'))
+);
 
-$title = Lang::txt('COM_JOBS_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(Lang::txt('COM_JOBS_RESUME'));
+$title = Lang::txt('COM_JOBS_ACTION_DOWNLOAD') . ' '
+    . $this->seeker->name . ' '
+    . ucfirst(Lang::txt('COM_JOBS_RESUME'));
 
 // Get the configured upload path
 $base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
@@ -34,16 +40,31 @@ if (!is_dir(PATH_APP . $path)) {
     }
 }
 
-$resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
+$resume = is_file(PATH_APP . $path . DS . $this->seeker->filename)
+    ? $path . DS . $this->seeker->filename
+    : '';
+
+$mineClass = $this->seeker->mine && $this->list ? ' mine' : '';
+$shortClass = isset($this->seeker->shortlisted) && $this->seeker->shortlisted
+    ? ' shortlisted'
+    : '';
 ?>
-<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : '';
-echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
+<div class="aboutme<?php echo $mineClass . $shortClass; ?>">
     <div class="thumb">
-        <img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
+        <img src="<?php echo $profile->picture(); ?>"
+            alt="<?php echo $this->seeker->name; ?>" />
     </div>
     <div class="grid">
         <div class="aboutlb col span5">
-            <?php echo $this->list ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
+            <?php
+            $profileUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&id=' . $this->seeker->uid . '&active=resume'
+            );
+            echo $this->list
+                ? '<a href="' . $profileUrl . '" class="profilelink">'
+                : '';
+            ?>
             <?php echo $this->seeker->name; ?>
             <?php echo $this->list ? '</a>' : ''; ?>
             <?php if ($this->seeker->countryresident) { ?>
@@ -69,12 +90,34 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
 
     <?php if ($this->seeker->mine) { ?>
         <span class="editbt">
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs'); ?>" title="<?php echo Lang::txt('COM_JOBS_ACTION_EDIT_MY_PROFILE'); ?>">&nbsp;</a>
+            <?php
+            $editPrefsUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&id=' . $this->seeker->uid
+                . '&active=resume&action=editprefs'
+            );
+            $editTitle = Lang::txt('COM_JOBS_ACTION_EDIT_MY_PROFILE');
+            ?>
+            <a href="<?php echo $editPrefsUrl; ?>"
+                title="<?php echo $editTitle; ?>">&nbsp;</a>
         </span>
     <?php } elseif ($this->emp or $this->admin) { ?>
         <span id="o<?php echo $this->seeker->uid; ?>">
-            <a href="<?php echo Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist'); ?>" class="favvit" title="<?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST'); ?>">
-                <?php echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST'); ?>
+            <?php
+            $shortlistUrl = Route::url(
+                'index.php?option=com_jobs&oid='
+                . $this->seeker->uid . '&task=shortlist'
+            );
+            $isShortlisted = isset($this->seeker->shortlisted)
+                && $this->seeker->shortlisted;
+            $shortlistTitle = $isShortlisted
+                ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST')
+                : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST');
+            ?>
+            <a href="<?php echo $shortlistUrl; ?>"
+                class="favvit"
+                title="<?php echo $shortlistTitle; ?>">
+                <?php echo $shortlistTitle; ?>
             </a>
         </span>
     <?php } ?>
@@ -82,22 +125,42 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
     <div class="clear leftclear"></div>
     <span class="indented">
         <?php if ($resume) { ?>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
+            <?php
+            $downloadUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&id=' . $this->seeker->uid
+                . '&active=resume&action=download'
+            );
+            ?>
+            <a href="<?php echo $downloadUrl; ?>"
+                class="resume getit" title="<?php echo $title; ?>">
                 <?php echo ucfirst(Lang::txt('COM_JOBS_RESUME')); ?>
             </a>
-            <span class="mini"><?php echo Lang::txt('COM_JOBS_LAST_UPDATE'); ?>: <?php echo $this->seeker->created; ?></span>
+            <span class="mini">
+                <?php echo Lang::txt('COM_JOBS_LAST_UPDATE'); ?>: <?php echo $this->seeker->created; ?>
+            </span>
             <?php if ($this->seeker->url) {
-                $url = (strpos($this->seeker->url, "http://") === false && strpos($this->seeker->url, "https://") === false) ? "http://" . $this->seeker->url : $this->seeker->url;
+                $url = (strpos($this->seeker->url, "http://") === false
+                    && strpos($this->seeker->url, "https://") === false)
+                    ? "http://" . $this->seeker->url
+                    : $this->seeker->url;
+                $webTitle = Lang::txt('COM_JOBS_MEMBER_WEBSITE')
+                    . ': ' . $this->seeker->url;
                 ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?php echo $url; ?>" class="web" rel="external" title="<?php echo Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo Lang::txt('COM_JOBS_WEBSITE'); ?></a>
+                    <a href="<?php echo $url; ?>" class="web"
+                        rel="external"
+                        title="<?php echo $webTitle; ?>"><?php echo Lang::txt('COM_JOBS_WEBSITE'); ?></a>
                 </span>
             <?php } ?>
             <?php if ($this->seeker->linkedin) { ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('COM_JOBS_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('COM_JOBS_LINKEDIN'); ?></a>
+                    <?php $linkedinTitle = Lang::txt('COM_JOBS_MEMBER_LINKEDIN'); ?>
+                    <a href="<?php echo $this->seeker->linkedin; ?>"
+                        class="linkedin" rel="external"
+                        title="<?php echo $linkedinTitle; ?>"><?php echo Lang::txt('COM_JOBS_LINKEDIN'); ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

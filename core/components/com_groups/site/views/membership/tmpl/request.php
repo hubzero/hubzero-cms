@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,13 +39,23 @@ defined('_HZEXEC_') or die();
                 <legend><?php echo Lang::txt('COM_GROUPS_JOIN_SECTION_TITLE'); ?></legend>
 
                 <?php if ($this->group->get('restrict_msg')) { ?>
-                    <p class="warning"><?php echo Lang::txt('NOTE') . ': ' . $this->escape(stripslashes($this->group->get('restrict_msg'))); ?></p>
+                    <p class="warning"><?php echo Lang::txt('NOTE') .
+                        ': ' .
+                        $this->escape(stripslashes($this->group->get('restrict_msg'))); ?></p>
                 <?php } ?>
 
                 <label for="reason">
                     <?php echo Lang::txt('COM_GROUPS_JOIN_REASON'); ?>
                     <!--textarea name="reason" id="reason" rows="10" cols="50"></textarea-->
-                    <?php echo $this->editor('reason', "", 10, 10, 'reason', array('class' => 'form-control minimal no-footer')); ?>
+                    <?php $val = $this->editor(
+                        'reason',
+                        "",
+                        10,
+                        10,
+                        'reason',
+                        array('class' => 'form-control minimal no-footer')
+                    ); ?>
+                    <?php echo $val; ?>
                 </label>
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="controller" value="membership" />
@@ -56,7 +64,8 @@ defined('_HZEXEC_') or die();
                 <?php echo Html::input('token'); ?>
             </fieldset>
             <p class="submit">
-                <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_JOIN_BTN_TEXT'); ?>" />
+                <?php $txt = Lang::txt('COM_GROUPS_JOIN_BTN_TEXT'); ?>
+                <input class="btn btn-success" type="submit" value="<?php echo $txt; ?>" />
             </p>
         </form>
     </div>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,12 @@ if ($this->filters['published'] == -2 && $canDo->get('core.delete')) {
 
 if ($canDo->get('core.admin')) {
     // Add install languages link to the lang installer component
-    Toolbar::appendButton('Link', 'extension', 'COM_LANGUAGES_INSTALL', 'index.php?option=com_installer&view=languages');
+    Toolbar::appendButton(
+        'Link',
+        'extension',
+        'COM_LANGUAGES_INSTALL',
+        'index.php?option=com_installer&view=languages'
+    );
     Toolbar::divider();
 
     Toolbar::preferences($this->option);
@@ -60,13 +63,28 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', $this->option);
 $saveOrder = $listOrder == 'a.ordering';
 $pagination = $this->items->pagination;
+
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_SEARCH_IN_TITLE'); ?>" />
+            <label class="filter-search-lbl" for="filter_search">
+                <?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+            </label>
+            <?php
+            $searchVal = $this->escape($this->filters['search']);
+            $searchPlaceholder = Lang::txt('COM_LANGUAGES_SEARCH_IN_TITLE');
+            ?>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $searchVal; ?>"
+                placeholder="<?php echo $searchPlaceholder; ?>"
+            />
 
             <button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -75,11 +93,28 @@ $pagination = $this->items->pagination;
         <div class="filter-select fltrt">
             <select name="filter_published" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', \Components\Languages\Helpers\Utilities::publishedOptions(), 'value', 'text', $this->filters['published'], true); ?>
+                <?php
+                echo Html::select(
+                    'options',
+                    \Components\Languages\Helpers\Utilities::publishedOptions(),
+                    'value',
+                    'text',
+                    $this->filters['published'],
+                    true
+                );
+                ?>
             </select>
             <select name="filter_access" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::access('assetgroups'),
+                    'value',
+                    'text',
+                    $this->filters['access']
+                );
+                ?>
             </select>
         </div>
     </fieldset>
@@ -91,22 +126,61 @@ $pagination = $this->items->pagination;
                     <?php echo Lang::txt('JGRID_HEADING_ROW_NUMBER'); ?>
                 </th>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        value=""
+                        title="<?php echo $checkAllTitle; ?>"
+                        class="checkbox-toggle toggle-all"
+                    />
                 </th>
                 <th>
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
                 </th>
                 <th class="priority-4">
-                    <?php echo Html::grid('sort', 'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'title_native', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_LANGUAGES_HEADING_TITLE_NATIVE',
+                        'title_native',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_LANGUAGES_FIELD_LANG_TAG_LABEL', 'lang_code', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_LANGUAGES_FIELD_LANG_TAG_LABEL',
+                        'lang_code',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th class="priority-6">
-                    <?php echo Html::grid('sort', 'COM_LANGUAGES_FIELD_LANG_CODE_LABEL', 'sef', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_LANGUAGES_FIELD_LANG_CODE_LABEL',
+                        'sef',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th class="priority-6">
-                    <?php echo Html::grid('sort', 'COM_LANGUAGES_HEADING_LANG_IMAGE', 'image', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_LANGUAGES_HEADING_LANG_IMAGE',
+                        'image',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th>
                     <?php echo Html::grid('sort', 'JSTATUS', 'published', $listDirn, $listOrder); ?>
@@ -152,9 +226,17 @@ $pagination = $this->items->pagination;
                     <?php echo Html::grid('id', $i, $item->lang_id); ?>
                 </td>
                 <td>
-                    <span class="editlinktip hasTip" title="<?php echo Lang::txt('JGLOBAL_EDIT_ITEM');?>::<?php echo $this->escape($item->title); ?>">
+                    <?php $editTip = Lang::txt('JGLOBAL_EDIT_ITEM') . '::' . $this->escape($item->title); ?>
+                    <span class="editlinktip hasTip" title="<?php echo $editTip; ?>">
                         <?php if ($canEdit) : ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id=' . (int) $item->lang_id); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&lang_id=' . (int) $item->lang_id
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo $this->escape($item->title); ?>
                             </a>
                         <?php else : ?>
@@ -181,15 +263,56 @@ $pagination = $this->items->pagination;
                     <?php if ($canChange) : ?>
                         <?php if ($saveOrder) :?>
                             <?php if ($listDirn == 'asc') : ?>
-                                <span><?php echo $pagination->orderUpIcon($i, true, 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $pagination->orderDownIcon($i, $pagination->total, true, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $pagination->orderUpIcon(
+                                    $i,
+                                    true,
+                                    'orderup',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $pagination->orderDownIcon(
+                                    $i,
+                                    $pagination->total,
+                                    true,
+                                    'orderdown',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php elseif ($listDirn == 'desc') : ?>
-                                <span><?php echo $pagination->orderUpIcon($i, true, 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $pagination->orderDownIcon($i, $pagination->total, true, 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $pagination->orderUpIcon(
+                                    $i,
+                                    true,
+                                    'orderdown',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $pagination->orderDownIcon(
+                                    $i,
+                                    $pagination->total,
+                                    true,
+                                    'orderup',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php endif; ?>
                         <?php endif; ?>
                         <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled; ?> class="text-area-order" />
+                        <input
+                            type="text"
+                            name="order[]"
+                            size="5"
+                            value="<?php echo $item->ordering; ?>"
+                            <?php echo $disabled; ?>
+                            class="text-area-order"
+                        />
                     <?php else : ?>
                         <?php echo $item->ordering; ?>
                     <?php endif; ?>

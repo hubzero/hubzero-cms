@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,10 @@ defined('_HZEXEC_') or die();
 //build urls
 $base      = rtrim(str_replace('administrator', '', Request::base()), DS);
 $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
-$adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn') . '&controller=modules';
+$adminLink = $base .
+    '/administrator/index.php?option=com_groups&gid=' .
+    $this->group->get('cn') .
+    '&controller=modules';
 ?>
     <!-- Start Header -->
     <table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -48,46 +49,84 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
     </table>
     <!-- End Spacer -->
 
-    <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid #e1e1e1; background: #f1f1f1; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
-                                        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
-                                        color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
-                                        to(transparent));
-    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-                                    transparent 75%, transparent);
-                                    -webkit-background-size: 30px 30px;
-                                    -moz-background-size: 30px 30px;
-                                    background-size: 30px 30px;">
+    <table
+        id="ticket-info"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse: collapse; border: 1px solid #e1e1e1;
+            background: #f1f1f1; font-size: 0.9em; line-height: 1.6em;
+            background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+            color-stop(.25, rgba(255, 255, 255, .075)),
+            color-stop(.25, transparent),
+            color-stop(.5, transparent),
+            color-stop(.5, rgba(255, 255, 255, .075)),
+            color-stop(.75, rgba(255, 255, 255, .075)),
+            color-stop(.75, transparent), to(transparent));
+            background-image: -webkit-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -moz-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -ms-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: -o-linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            background-image: linear-gradient(-45deg,
+            rgba(255, 255, 255, .075) 25%, transparent 25%,
+            transparent 50%, rgba(255, 255, 255, .075) 50%,
+            rgba(255, 255, 255, .075) 75%,
+            transparent 75%, transparent);
+            -webkit-background-size: 30px 30px;
+            -moz-background-size: 30px 30px;
+            background-size: 30px 30px;">
         <thead>
             <tr>
-                <th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
+                <th
+                    colspan="2"
+                    style="
+                        font-weight: bold; 
+                        border-bottom: 1px solid #e1e1e1; 
+                        padding: 8px; 
+                        text-align: left; 
+                        font-style: italic;"
+                    align="left">
                     <?php echo $this->object->get('title'); ?>
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
+                <td
+                    id="ticket-number"
+                    style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;"
+                    align="center">
                     #<?php echo $this->object->get('id'); ?>
                 </td>
                 <td width="100%" style="padding: 8px;">
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Group:</th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right">Group:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $groupLink; ?>">
                                         <?php echo $this->group->get('description'); ?>
@@ -95,11 +134,32 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo Date::of($this->object->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->object->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right">Created:</th>
+                                <?php
+                                $created = $this->object->get('created');
+                                $time = Date::of($created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                                $date = Date::of($created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?>
+                                <td style="text-align: left; padding: 0 0.5em;" align="left">
+                                    @ <?php echo $time; ?> on <?php echo $date; ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right">Created By:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php
                                         $profile = User::getInstance($this->object->get('created_by'));
@@ -108,13 +168,29 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right">Status:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <?php echo ($this->object->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved'); ?>
+                                    <?php $txt1 = Lang::txt('Approved'); ?>
+                                    <?php $txt = Lang::txt('Unapproved'); ?>
+                                    <?php echo ($this->object->get('approved') == 1) ? $txt1 : $txt; ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Approve Link:</th>
+                                <th
+                                    style="
+                                        text-align: right; 
+                                        padding: 0 0.5em; 
+                                        font-weight: bold; 
+                                        white-space: nowrap; 
+                                        vertical-align: top;"
+                                    align="right">Approve Link:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $adminLink; ?>">
                                         <?php echo $adminLink; ?>
@@ -169,7 +245,17 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?php echo Config::get('sitename'); ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?php echo rtrim($base, '/'); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, '/'); ?>/support">Support Center</a> if you have any questions.</span>
+                    <?php $privacyUrl = rtrim($base, '/') . '/legal/privacy'; ?>
+                    <?php $supportUrl = rtrim($base, '/') . '/support'; ?>
+                    <span>
+                        <?php echo Config::get('sitename'); ?>
+                        sent this email because you are listed as a group
+                        page approver for this hub. Visit our
+                        <a href="<?php echo $privacyUrl; ?>">Privacy Policy</a>
+                        and
+                        <a href="<?php echo $supportUrl; ?>">Support Center</a>
+                        if you have any questions.
+                    </span>
                 </td>
             </tr>
         </tbody>

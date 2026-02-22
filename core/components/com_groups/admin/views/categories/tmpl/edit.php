@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,17 +26,47 @@ $this->js();
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&gid=' . $this->group->cn
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form action="<?php echo $formAction; ?>"
+    name="adminForm"
+    id="item-form"
+    method="post"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORIES_CATEGORY'); ?></span></legend>
 
         <div class="input-wrap">
-            <label for="field-type"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-            <input type="text" name="category[title]" id="field-title" class="required" value="<?php echo $this->escape($this->category->get('title')); ?>" />
+            <?php $titleLabel = Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?>
+            <?php $requiredTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+            <label for="field-type">
+                <?php echo $titleLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+            </label>
+            <input type="text"
+                name="category[title]"
+                id="field-title"
+                class="required"
+                value="<?php echo $this->escape($this->category->get('title')); ?>"
+            />
         </div>
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR_HINT'); ?>">
             <label for="field-color"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?>:</label>
-            <input maxlength="6" type="text" name="category[color]" id="field-color" value="<?php echo $this->escape($this->category->get('color')); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR_PLACEHOLDER'); ?>" />
+            <?php $colorPlaceholder = Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR_PLACEHOLDER'); ?>
+            <input maxlength="6"
+                type="text"
+                name="category[color]"
+                id="field-color"
+                value="<?php echo $this->escape($this->category->get('color')); ?>"
+                placeholder="<?php echo $colorPlaceholder; ?>"
+            />
         </div>
     </fieldset>
 

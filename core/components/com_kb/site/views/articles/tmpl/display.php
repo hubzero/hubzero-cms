@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,6 +20,10 @@ if (Pathway::count() <= 0) {
 }
 
 Document::setTitle(Lang::txt('COM_KB'));
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option . '&section=all'
+);
 ?>
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_KB'); ?></h2>
@@ -28,13 +32,26 @@ Document::setTitle(Lang::txt('COM_KB'));
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
+            <form action="<?php echo $formUrl; ?>" method="get">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_KB_SEARCH'); ?>" />
+                    <?php $searchTxt = Lang::txt('COM_KB_SEARCH'); ?>
+                    <input class="entry-search-submit" type="submit"
+                        value="<?php echo $searchTxt; ?>" />
                     <fieldset class="entry-search">
-                        <legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
-                        <label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo Lang::txt('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
+                        <?php $legendTxt = Lang::txt('COM_KB_SEARCH_LEGEND'); ?>
+                        <legend><?php echo $legendTxt; ?></legend>
+                        <?php $labelTxt = Lang::txt('COM_KB_SEARCH_LABEL'); ?>
+                        <label for="entry-search-field">
+                            <?php echo $labelTxt; ?>
+                        </label>
+                        <?php
+                        $placeholderTxt = Lang::txt(
+                            'COM_KB_SEARCH_PLACEHOLDER'
+                        );
+                        ?>
+                        <input type="text" name="search"
+                            id="entry-search-field" value=""
+                            placeholder="<?php echo $placeholderTxt; ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
@@ -43,9 +60,18 @@ Document::setTitle(Lang::txt('COM_KB'));
                         <h3><?php echo Lang::txt('COM_KB_ARTICLES'); ?></h3>
                         <div class="grid">
                             <div class="col span-half">
+                                <?php
+                                $popUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=article&section=all'
+                                    . '&order=popularity'
+                                );
+                                $readTitle = Lang::txt('COM_KB_READ_ARTICLE');
+                                ?>
                                 <h4>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-                                        <?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
+                                    <a href="<?php echo $popUrl; ?>">
+                                        <?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?>
+                                        <span class="more">&raquo;</span>
                                     </a>
                                 </h4>
                                 <?php
@@ -57,9 +83,12 @@ Document::setTitle(Lang::txt('COM_KB'));
                                             ->rows();
                                 if (count($popular) > 0) { ?>
                                     <ul class="articles">
-                                    <?php foreach ($popular as $row) { ?>
+                                    <?php foreach ($popular as $row) {
+                                        $rowUrl = Route::url($row->link());
+                                        ?>
                                         <li class="icon-file">
-                                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
+                                            <a href="<?php echo $rowUrl; ?>"
+                                                title="<?php echo $readTitle; ?>">
                                                 <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                                             </a>
                                         </li>
@@ -70,9 +99,17 @@ Document::setTitle(Lang::txt('COM_KB'));
                                 <?php } ?>
                             </div><!-- / .col span-half -->
                             <div class="col span-half omega">
+                                <?php
+                                $recUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=article&section=all'
+                                    . '&order=recent'
+                                );
+                                ?>
                                 <h4>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
-                                        <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
+                                    <a href="<?php echo $recUrl; ?>">
+                                        <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?>
+                                        <span class="more">&raquo;</span>
                                     </a>
                                 </h4>
                                 <?php
@@ -85,9 +122,12 @@ Document::setTitle(Lang::txt('COM_KB'));
                                             ->rows();
                                 if (count($recent) > 0) { ?>
                                     <ul class="articles">
-                                    <?php foreach ($recent as $row) { ?>
+                                    <?php foreach ($recent as $row) {
+                                        $rowUrl = Route::url($row->link());
+                                        ?>
                                         <li class="icon-file">
-                                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
+                                            <a href="<?php echo $rowUrl; ?>"
+                                                title="<?php echo $readTitle; ?>">
                                                 <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                                             </a>
                                         </li>
@@ -104,7 +144,10 @@ Document::setTitle(Lang::txt('COM_KB'));
                         <?php
                         $i = 0;
 
-                        $categories = $this->archive->categories(array('state' => 1, 'access' => User::getAuthorisedViewLevels()));
+                        $categories = $this->archive->categories(array(
+                            'state' => 1,
+                            'access' => User::getAuthorisedViewLevels()
+                        ));
 
                         foreach ($categories as $row) {
                             $articles = $row->articles()
@@ -128,20 +171,29 @@ Document::setTitle(Lang::txt('COM_KB'));
                                     $cls = ' omega';
                                     break;
                             }
+
+                            $catUrl = Route::url($row->link());
+                            $catTitle = $this->escape(
+                                stripslashes($row->get('title'))
+                            );
+                            $catCount = $row->get('articles', 0);
                             ?>
                             <div class="col span-half<?php echo $cls; ?>">
                                 <h4>
-                                    <a href="<?php echo Route::url($row->link()); ?>">
-                                        <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span>(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
+                                    <a href="<?php echo $catUrl; ?>">
+                                        <?php echo $catTitle; ?>
+                                        <span>(<?php echo $catCount; ?>)</span>
+                                        <span class="more">&raquo;</span>
                                     </a>
                                 </h4>
                                 <?php if ($articles->count() > 0) { ?>
                                     <ul class="articles">
                                     <?php foreach ($articles as $article) {
                                         $article->set('calias', $row->get('path'));
+                                        $artUrl = Route::url($article->link());
                                         ?>
                                         <li class="icon-file">
-                                            <a href="<?php echo Route::url($article->link()); ?>">
+                                            <a href="<?php echo $artUrl; ?>">
                                                 <?php echo $this->escape(stripslashes($article->get('title'))); ?>
                                             </a>
                                         </li>
@@ -170,23 +222,53 @@ Document::setTitle(Lang::txt('COM_KB'));
                 <div class="container">
                     <h3><?php echo Lang::txt('COM_KB_COMMUNITY'); ?></h3>
                     <p>
-                        <?php echo Lang::txt('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo Lang::txt('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>'); ?>
+                        <?php echo Lang::txt('COM_KB_COMMUNITY_CANT_FIND'); ?>
+                        <?php
+                        $answersUrl = Route::url(
+                            'index.php?option=com_answers'
+                        );
+                        $answersLink = '<a href="' . $answersUrl . '">'
+                            . Lang::txt('COM_ANSWERS') . '</a>';
+                        echo Lang::txt(
+                            'COM_KB_COMMUNITY_TRY_ANSWERS',
+                            $answersLink
+                        );
+                        ?>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>
             <?php if (Component::isEnabled('com_wishlist')) { ?>
                 <div class="container">
-                    <h3><?php echo Lang::txt('COM_KB_FEATURE_REQUEST'); ?></h3>
+                    <?php $featureTxt = Lang::txt('COM_KB_FEATURE_REQUEST'); ?>
+                    <h3><?php echo $featureTxt; ?></h3>
                     <p>
-                        <?php echo Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_KB_FEATURE_TELL_US'); ?></a>
+                        <?php echo Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST'); ?>
+                        <?php
+                        $wishUrl = Route::url(
+                            'index.php?option=com_wishlist'
+                        );
+                        ?>
+                        <a href="<?php echo $wishUrl; ?>">
+                            <?php echo Lang::txt('COM_KB_FEATURE_TELL_US'); ?>
+                        </a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>
             <?php if (Component::isEnabled('com_support')) { ?>
                 <div class="container">
-                    <h3><?php echo Lang::txt('COM_KB_TROUBLE_REPORT'); ?></h3>
+                    <?php $troubleTxt = Lang::txt('COM_KB_TROUBLE_REPORT'); ?>
+                    <h3><?php echo $troubleTxt; ?></h3>
                     <p>
-                        <?php echo Lang::txt('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_KB_TROUBLE_TELL_US'); ?></a>
+                        <?php echo Lang::txt('COM_KB_TROUBLE_FOUND_BUG'); ?>
+                        <?php
+                        $supportUrl = Route::url(
+                            'index.php?option=com_support'
+                            . '&controller=tickets&task=new'
+                        );
+                        ?>
+                        <a href="<?php echo $supportUrl; ?>">
+                            <?php echo Lang::txt('COM_KB_TROUBLE_TELL_US'); ?>
+                        </a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>

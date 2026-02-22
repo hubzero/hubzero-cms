@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -31,7 +29,14 @@ if ($this->installedPackage) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=install'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <?php if ($this->getError()) : ?>
             <div class="col span12">
@@ -43,10 +48,18 @@ if ($this->installedPackage) {
                     <legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="field-version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
+                        <?php $versionsLabel = Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>
+                        <label for="field-version"><?php echo $versionsLabel; ?>:</label>
                         <select name="packageVersion" id="field-version">
                             <?php foreach ($this->versions as $version) : ?>
-                                <option value="<?php echo $this->escape($version->getVersion()); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?>><?php echo $this->escape($version->getFullPrettyVersion()); ?></option>
+                                <?php
+                                $versionVal = $this->escape($version->getVersion());
+                                $isSelected = ($this->installedPackage->getVersion() == $version->getVersion());
+                                $selectedAttr = $isSelected ? 'selected="true"' : '';
+                                $prettyVersion = $this->escape($version->getFullPrettyVersion());
+                                ?>
+                                <option value="<?php echo $versionVal; ?>"
+                                    <?php echo $selectedAttr; ?>><?php echo $prettyVersion; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -56,7 +69,8 @@ if ($this->installedPackage) {
                 <table class="meta">
                     <tbody>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
+                            <?php $installedVersionLabel = Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>
+                            <th scope="row"><?php echo $installedVersionLabel; ?>:</th>
                             <td><?php echo $this->installedPackage->getFullPrettyVersion(); ?></td>
                         </tr>
                         <tr>

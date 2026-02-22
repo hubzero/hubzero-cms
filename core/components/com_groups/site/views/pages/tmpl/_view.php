@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -64,10 +62,12 @@ if (
 
 <div class="group-page page-<?php echo $this->page->get('alias'); ?>">
 
-    <?php if (
-    $newerVersion
-            && ($this->authorized == 'manager' || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages'))
-) : ?>
+    <?php
+    $perms = '\Components\Groups\Helpers\Permissions';
+    $canEditPages = $this->authorized == 'manager'
+        || $perms::userHasPermissionForGroupAction($this->group, 'group.pages');
+    ?>
+    <?php if ($newerVersion && $canEditPages) : ?>
         <div class="group-page group-page-notice notice-info">
             <h4><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL'); ?></h4>
             <p><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL_DESC'); ?></p>
@@ -81,12 +81,16 @@ if (
             <?php
                 $firstVersion     = $versions->last();
                 $currentVersion   = $this->version;
-                $createdDate      = ($firstVersion->get('created')) ? Date::of($firstVersion->get('created'))->toLocal('D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
-                $modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+                $createdDate      = ($firstVersion->get('created')) ? Date::of($firstVersion->get('created'))->
+                    toLocal('D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+                $modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->
+                    toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
                 $createdProfile   = User::getInstance($firstVersion->get('created_by'));
                 $modifiedProfile  = User::getInstance($currentVersion->get('created_by'));
-                $createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-                $modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+                $createdBy        = (is_object($createdProfile)) ? $createdProfile->
+                    get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+                $modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->
+                    get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
                 $createdLink  = 'javascript:void(0);';
                 $modifiedLink = 'javascript:void(0);';
@@ -100,40 +104,63 @@ if (
                 $createdLink      = '<a href="' . $createdLink . '">' . $createdBy . '</a>';
                 $modifiedLink     = '<a href="' . $modifiedLink . '">' . $modifiedBy . '</a>';
 
-                $editPageLink     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
-                $setPageHomeLink  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=sethome&pageid=' . $this->page->get('id'));
-                $overrideHomeLink = Route::url('index.php?option=com_help&component=groups&page=pages&cn=' . $this->group->get('cn') . '#grouphomepageoverride');
+                $editPageLink     = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=pages&task=edit&pageid=' .
+                    $this->page->get('id'));
+                $setPageHomeLink  = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=pages&task=sethome&pageid=' .
+                    $this->page->get('id'));
+                $overrideHomeLink = Route::url('index.php?option=com_help&component=groups&page=pages&cn=' .
+                    $this->group->get('cn') .
+                    '#grouphomepageoverride');
 
                 // current location
                 $editPageLink    .= '&return=' . base64_encode(Request::current(true));
-                $setPageHomeLink .= '&return=' . base64_encode(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')));
-                $categoryLink     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&filter=' . $category->get('id'));
+                $setPageHomeLink .= '&return=' .
+                    base64_encode(Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn')));
+                $categoryLink     = Route::url('index.php?option=com_groups&cn=' .
+                    $this->group->get('cn') .
+                    '&controller=pages&filter=' .
+                    $category->get('id'));
             ?>
-
 
             <div class="page-meta col span10">
                 <?php if ($this->page->get('id') != 0) : ?>
-                    <span class="created" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdDate, $createdBy); ?>">
+                    <?php $txt = Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdDate, $createdBy); ?>
+                    <span class="created" title="<?php echo $txt; ?>">
                         <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdLink); ?>
                     </span>
-                    <span class="modified" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedBy); ?>">
+                    <?php $txt = Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedBy); ?>
+                    <span class="modified" title="<?php echo $txt; ?>">
                         <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedLink); ?>
                     </span>
                 <?php endif; ?>
             </div>
 
-            <?php if ($this->authorized == 'manager' || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
+            <?php if ($canEditPages) : ?>
                 <div class="page-controls col span2 omega">
                     <ul class="page-controls">
                     <?php if ($this->page->get('id') != 0) : ?>
                         <li>
-                            <a class="edit" title="<?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?>" data-title="<?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?>" href="<?php echo $editPageLink; ?>">
+                            <?php $v2 = Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?>
+                            <?php $v1 = Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?>
+                            <?php $v0 = $editPageLink; ?>
+                            <a
+                                class="edit"
+                                title="<?php echo $v2; ?>" data-title="<?php echo $v1; ?>" href="<?php echo $v0; ?>">
                                 <span><?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?></span>
                             </a>
                         </li>
                         <?php /*if ($this->page->get('home') != 1) : ?>
                             <li>
-                                <a class="home" title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>" data-title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>" href="<?php echo $setPageHomeLink; ?>">
+                                <a
+                                    class="home"
+                                    title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>"
+                                    data-title="<?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?>"
+                                    href="<?php echo $setPageHomeLink; ?>">
                                     <span><?php echo Lang::txt('COM_GROUPS_PAGES_SET_HOME'); ?></span>
                                 </a>
                             </li>
@@ -141,12 +168,20 @@ if (
 
                         <?php if ($category->get('id') != '') : ?>
                             <li>
-                                <a href="<?php echo $categoryLink; ?>" class="tooltips category category-<?php echo $category->get('id'); ?>" title="In <?php echo $category->get('title'); ?>"></a>
+                                <a
+                                    href="<?php echo $categoryLink; ?>"
+                                    class="tooltips category category-<?php echo $category->get('id'); ?>"
+                                    title="In <?php echo $category->get('title'); ?>"></a>
                             </li>
                         <?php endif; ?>
                     <?php else : ?>
                         <li>
-                            <a class="popup override" title="<?php echo Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?>" data-title="<?php echo Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?>" href="<?php echo $overrideHomeLink; ?>">
+                            <?php $v2 = Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?>
+                            <?php $v1 = Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?>
+                            <?php $v0 = $overrideHomeLink; ?>
+                            <a
+                                class="popup override"
+                                title="<?php echo $v2; ?>" data-title="<?php echo $v1; ?>" href="<?php echo $v0; ?>">
                                 <span><?php echo Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?></span>
                             </a>
                         </li>
@@ -164,7 +199,8 @@ if (
             $experts = array();
         foreach ($this->group->get('members') as $member) {
             // get each members roles
-            $roles = \Components\Groups\Helpers\Permissions::getGroupMemberRoles($member, $this->group->get('gidNumber'));
+            $roles = \Components\Groups\Helpers\Permissions::getGroupMemberRoles($member, $this->group->
+                get('gidNumber'));
 
             // make sure roles match pattern "Expert: ..."
             $roles = array_map(function ($role) {

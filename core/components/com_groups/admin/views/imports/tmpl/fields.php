@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,8 @@ Request::setVar('hidemainmenu', 1);
 $canDo = \Components\Groups\Helpers\Permissions::getActions('component');
 
 // set title
-$title  = ($this->import->get('id')) ? Lang::txt('COM_GROUPS_IMPORT_TITLE_EDIT') : Lang::txt('COM_GROUPS_IMPORT_TITLE_ADD');
+$title  = ($this->import->
+    get('id')) ? Lang::txt('COM_GROUPS_IMPORT_TITLE_EDIT') : Lang::txt('COM_GROUPS_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . $title, 'import');
 if ($canDo->get('core.admin')) {
@@ -38,7 +37,16 @@ $this->js();
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $v1 = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save'); ?>
+<?php $v0 = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>
+<form
+    action="<?php echo $v1; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    enctype="multipart/form-data"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $v0; ?>">
     <div class="grid">
         <div class="col span7">
 

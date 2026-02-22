@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,17 +23,46 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('types');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_JOBS_COL_TITLE',
+                        'category',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -56,18 +83,31 @@ if ($this->rows) {
     $k = 0;
     $i = 0;
     foreach ($this->rows as $avalue => $alabel) {
+        $editUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=edit&id=' . $avalue
+        );
         ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $avalue; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $avalue; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $avalue; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $avalue; ?>
+                    </label>
                 </td>
                 <td class="priority-2">
                     <?php echo $this->escape($avalue); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $avalue); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape($alabel); ?></span>
                         </a>
                     <?php } else { ?>

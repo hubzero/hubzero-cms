@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,9 @@ $this->css('userconsent.css');
         <?php echo Html::input('token'); ?>
         <div class="actions">
             <a class="btn btn-secondary" href="/"><?php echo Lang::txt('COM_LOGIN_USERCONSENT_CANCEL'); ?></a>
-            <button class="btn btn-success" type="submit"><?php echo Lang::txt('COM_LOGIN_USERCONSENT_AGREE'); ?></button>
+            <button class="btn btn-success" type="submit">
+                <?php echo Lang::txt('COM_LOGIN_USERCONSENT_AGREE'); ?>
+            </button>
         </div>
     </form>
 </section>

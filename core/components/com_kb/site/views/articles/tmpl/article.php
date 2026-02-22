@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,14 +27,26 @@ Pathway::append(
     $this->article->link()
 );
 
-Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . ': ' . $this->article->get('title'));
+Document::setTitle(
+    Lang::txt('COM_KB') . ': '
+    . $this->category->get('title') . ': '
+    . $this->article->get('title')
+);
+
+$mainUrl = Route::url('index.php?option=' . $this->option);
+$allUrl = Route::url(
+    'index.php?option=' . $this->option . '&section=all'
+);
 ?>
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_KB'); ?></h2>
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-main main-page btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_KB_MAIN'); ?></a>
+            <a class="icon-main main-page btn"
+                href="<?php echo $mainUrl; ?>">
+                <?php echo Lang::txt('COM_KB_MAIN'); ?>
+            </a>
         </p>
     </div>
 </header>
@@ -43,11 +55,19 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
             <?php if ($this->getError()) { ?>
-                <p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
+                <p class="error">
+                    <?php echo implode("\n", $this->getErrors()); ?>
+                </p>
             <?php } ?>
-            <article class="container" id="entry-<?php echo $this->article->get('id'); ?>">
+            <?php $articleId = $this->article->get('id'); ?>
+            <article class="container"
+                id="entry-<?php echo $articleId; ?>">
                 <div class="container-block">
-                    <h3><?php echo $this->escape(stripslashes($this->article->get('title'))); ?></h3>
+                    <h3>
+                        <?php echo $this->escape(
+                            stripslashes($this->article->get('title'))
+                        ); ?>
+                    </h3>
                     <div class="entry-content">
                         <?php echo stripslashes($this->article->fulltxt()); ?>
                     </div>
@@ -70,12 +90,31 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                         ?>
                     </p>
 
+                    <?php
+                    $atTxt = Lang::txt('COM_KB_DATETIME_AT');
+                    $onTxt = Lang::txt('COM_KB_DATETIME_ON');
+                    $modDatetime = $this->article->modified();
+                    $modTime = $this->article->modified('time');
+                    $modDate = $this->article->modified('date');
+                    ?>
                     <p class="entry-details">
                         <?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>
-                        <span class="entry-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
-                        <span class="entry-time"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('time'); ?></time></span>
-                        <span class="entry-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
-                        <span class="entry-date"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('date'); ?></time></span>
+                        <span class="entry-date-at">
+                            <?php echo $atTxt; ?>
+                        </span>
+                        <span class="entry-time">
+                            <time datetime="<?php echo $modDatetime; ?>">
+                                <?php echo $modTime; ?>
+                            </time>
+                        </span>
+                        <span class="entry-date-on">
+                            <?php echo $onTxt; ?>
+                        </span>
+                        <span class="entry-date">
+                            <time datetime="<?php echo $modDatetime; ?>">
+                                <?php echo $modDate; ?>
+                            </time>
+                        </span>
                     </p>
                 </div><!-- / .container-block -->
             </article><!-- / .container -->
@@ -87,12 +126,15 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <li>
                         <a<?php if ($this->catid <= 0) {
                             echo ' class="active"';
-                          } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>">
+                          } ?> href="<?php echo $allUrl; ?>">
                             <?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
                         </a>
                     </li>
                     <?php
-                    $filters = array('state' => \Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels());
+                    $filters = array(
+                        'state' => \Components\Kb\Models\Category::STATE_PUBLISHED,
+                        'access' => User::getAuthorisedViewLevels()
+                    );
 
                     $categories = $this->archive->categories($filters);
 
@@ -102,21 +144,39 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             continue;
                         }
                         $children = $row->children($filters)->rows();
+                        $rowUrl = Route::url($row->link());
+                        $rowTitle = $this->escape(
+                            stripslashes($row->get('title'))
+                        );
+                        $rowCount = $row->get('articles', 0);
                         ?>
                         <li>
                             <a <?php if ($this->catid == $row->get('id')) {
                                 echo 'class="active" ';
-                               } ?> href="<?php echo Route::url($row->link()); ?>">
-                                <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+                               } ?> href="<?php echo $rowUrl; ?>">
+                                <?php echo $rowTitle; ?>
+                                <span class="item-count">
+                                    <?php echo $rowCount; ?>
+                                </span>
                             </a>
                             <?php if ($this->catid == $row->get('id') && count($children) > 0) { ?>
                                 <ul class="categories">
                                 <?php foreach ($children as $cat) { ?>
+                                    <?php
+                                    $catUrl = Route::url($cat->link());
+                                    $catTitle = $this->escape(
+                                        stripslashes($cat->get('title'))
+                                    );
+                                    $catCount = $cat->get('articles', 0);
+                                    ?>
                                     <li>
                                         <a <?php if ($this->category->get('id') == $cat->get('id')) {
                                             echo 'class="active" ';
-                                           } ?> href="<?php echo Route::url($cat->link()); ?>">
-                                            <?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+                                           } ?> href="<?php echo $catUrl; ?>">
+                                            <?php echo $catTitle; ?>
+                                            <span class="item-count">
+                                                <?php echo $catCount; ?>
+                                            </span>
                                         </a>
                                     </li>
                                 <?php } ?>
@@ -136,8 +196,11 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
         <div class="subject">
             <h3 class="comments-title">
                 <?php echo Lang::txt('COM_KB_COMMENTS_ON_ENTRY'); ?>
-                <?php /*if ($this->article->param('feeds_enabled') && $this->article->comments($filters)->count() > 0) { ?>
-                    <a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo Lang::txt('COM_KB_COMMENT_FEED'); ?>">
+                <?php /*if ($this->article->param('feeds_enabled')
+                    && $this->article->comments($filters)->count() > 0) { ?>
+                    <a class="icon-feed feed btn"
+                        href="<?php echo $this->article->link('feed'); ?>"
+                        title="<?php echo Lang::txt('COM_KB_COMMENT_FEED'); ?>">
                         <?php echo Lang::txt('COM_KB_FEED'); ?>
                     </a>
                 <?php }*/ ?>
@@ -171,32 +234,64 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
             <h3 class="post-comment-title">
                 <?php echo Lang::txt('COM_KB_POST_COMMENT'); ?>
             </h3>
-            <form method="post" action="<?php echo Route::url($this->article->link()); ?>" id="commentform">
+            <?php $formUrl = Route::url($this->article->link()); ?>
+            <form method="post"
+                action="<?php echo $formUrl; ?>"
+                id="commentform">
+                <?php
+                $picSrc = User::picture(!User::isGuest() ? 0 : 1);
+                ?>
                 <p class="comment-member-photo">
-                    <img src="<?php echo User::picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
+                    <img src="<?php echo $picSrc; ?>" alt="" />
                 </p>
                 <fieldset>
-                    <legend><?php echo Lang::txt('COM_KB_POST_COMMENT'); ?></legend>
+                    <legend>
+                        <?php echo Lang::txt('COM_KB_POST_COMMENT'); ?>
+                    </legend>
                     <?php
-                    $replyto = \Components\Kb\Models\Comment::oneOrNew(Request::getInt('replyto'));
+                    $replyto = \Components\Kb\Models\Comment::oneOrNew(
+                        Request::getInt('replyto')
+                    );
 
                     if (!User::isGuest()) {
                         if (!$replyto->isNew()) {
                             $name = Lang::txt('JANONYMOUS');
                             if (!$replyto->get('anonymous')) {
-                                $name = $this->escape(stripslashes($replyto->creator->get('name')));
-                                if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                    $name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+                                $name = $this->escape(
+                                    stripslashes($replyto->creator->get('name'))
+                                );
+                                $creatorAccess = $replyto->creator->get('access');
+                                if (in_array($creatorAccess, User::getAuthorisedViewLevels())) {
+                                    $creatorUrl = Route::url(
+                                        $replyto->creator->link()
+                                    );
+                                    $name = '<a href="' . $creatorUrl
+                                        . '">' . $name . '</a>';
                                 }
                             }
+                            $replyCreated = $replyto->created();
+                            $replyTime = $replyto->created('time');
+                            $replyDate = $replyto->created('date');
                             ?>
                             <blockquote cite="c<?php echo $replyto->get('id'); ?>">
                                 <p>
                                     <strong><?php echo $name; ?></strong>
-                                    <span class="comment-date-at"><?php echo Lang::txt('COM_KB_AT'); ?></span>
-                                    <span class="time"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('time'); ?></time></span>
-                                    <span class="comment-date-on"><?php echo Lang::txt('COM_KB_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                    <span class="comment-date-at">
+                                        <?php echo Lang::txt('COM_KB_AT'); ?>
+                                    </span>
+                                    <span class="time">
+                                        <time datetime="<?php echo $replyCreated; ?>">
+                                            <?php echo $replyTime; ?>
+                                        </time>
+                                    </span>
+                                    <span class="comment-date-on">
+                                        <?php echo Lang::txt('COM_KB_ON'); ?>
+                                    </span>
+                                    <span class="date">
+                                        <time datetime="<?php echo $replyCreated; ?>">
+                                            <?php echo $replyDate; ?>
+                                        </time>
+                                    </span>
                                 </p>
                                 <p>
                                     <?php echo $replyto->content('raw', 300); ?>
@@ -209,16 +304,44 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
                     <?php if ($this->article->commentsOpen()) { ?>
                         <div class="form-group">
+                            <?php
+                            $reqTxt = Lang::txt('JREQUIRED');
+                            $commentsTxt = Lang::txt('COM_KB_YOUR_COMMENTS');
+                            ?>
                             <label for="commentcontent">
-                                <?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                                <?php echo $commentsTxt; ?>
+                                <span class="required">
+                                    <?php echo $reqTxt; ?>
+                                </span>
                                 <?php
                                 if (!User::isGuest()) {
-                                    echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+                                    echo $this->editor(
+                                        'comment[content]',
+                                        '',
+                                        40,
+                                        15,
+                                        'commentcontent',
+                                        array('class' => 'minimal')
+                                    );
                                 } else {
-                                    $rtrn = Route::url($this->article->link() . '#post-comment', false, true);
+                                    $rtrn = Route::url(
+                                        $this->article->link()
+                                        . '#post-comment',
+                                        false,
+                                        true
+                                    );
+                                    $loginUrl = Route::url(
+                                        'index.php?option=com_users'
+                                        . '&view=login&return='
+                                        . base64_encode($rtrn),
+                                        false
+                                    );
                                     ?>
                                     <p class="warning">
-                                        <?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+                                        <?php echo Lang::txt(
+                                            'COM_KB_MUST_LOG_IN',
+                                            $loginUrl
+                                        ); ?>
                                     </p>
                                     <?php
                                 }
@@ -228,14 +351,19 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
                         <?php if (!User::isGuest()) { ?>
                             <div class="form-group">
-                                <label id="comment-anonymous-label" for="comment-anonymous">
-                                    <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                                <label id="comment-anonymous-label"
+                                    for="comment-anonymous">
+                                    <input class="option" type="checkbox"
+                                        name="comment[anonymous]"
+                                        id="comment-anonymous"
+                                        value="1" />
                                     <?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
                                 </label>
                             </div>
 
                             <p class="submit">
-                                <input type="submit" name="submit" value="<?php echo Lang::txt('COM_KB_SUBMIT'); ?>" />
+                                <input type="submit" name="submit"
+                                    value="<?php echo Lang::txt('COM_KB_SUBMIT'); ?>" />
                             </p>
                         <?php } ?>
                     <?php } else { ?>
@@ -244,20 +372,36 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                         </p>
                     <?php } ?>
 
-                    <input type="hidden" name="comment[id]" value="0" />
-                    <input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
-                    <input type="hidden" name="comment[parent]" value="<?php echo ($replyto->get('id') ? $this->escape($replyto->get('id')) : ''); ?>" />
-                    <input type="hidden" name="comment[created]" value="" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
-                    <input type="hidden" name="comment[state]" value="1" />
-                    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-                    <input type="hidden" name="task" value="savecomment" />
+                    <input type="hidden" name="comment[id]"
+                        value="0" />
+                    <?php $entryId = $this->escape($this->article->get('id')); ?>
+                    <input type="hidden" name="comment[entry_id]"
+                        value="<?php echo $entryId; ?>" />
+                    <?php
+                    $parentVal = $replyto->get('id')
+                        ? $this->escape($replyto->get('id'))
+                        : '';
+                    ?>
+                    <input type="hidden" name="comment[parent]"
+                        value="<?php echo $parentVal; ?>" />
+                    <input type="hidden" name="comment[created]"
+                        value="" />
+                    <input type="hidden" name="comment[created_by]"
+                        value="<?php echo $this->escape(User::get('id')); ?>" />
+                    <input type="hidden" name="comment[state]"
+                        value="1" />
+                    <input type="hidden" name="option"
+                        value="<?php echo $this->option; ?>" />
+                    <input type="hidden" name="task"
+                        value="savecomment" />
 
                     <?php echo Html::input('token'); ?>
 
                     <div class="sidenote">
                         <p>
-                            <strong><?php echo Lang::txt('COM_KB_COMMENT_KEEP_RELEVANT'); ?></strong>
+                            <strong>
+                                <?php echo Lang::txt('COM_KB_COMMENT_KEEP_RELEVANT'); ?>
+                            </strong>
                         </p>
                     </div>
                 </fieldset>

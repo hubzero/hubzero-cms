@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,6 +7,10 @@
  */
 
 defined('_HZEXEC_') or die();
+
+$showDescBlock = ($this->params->get('logoutdescription_show') == 1
+    && str_replace(' ', '', $this->params->get('logout_description')) != '')
+    || $this->params->get('logout_image') != '';
 
 // If the user is already logged in, redirect to the return or profile page.
 if (!User::isGuest()) {
@@ -31,7 +33,7 @@ if (!User::isGuest()) {
         </h1>
     <?php endif; ?>
 
-    <?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '') || $this->params->get('logout_image') != '') : ?>
+    <?php if ($showDescBlock) : ?>
     <div class="logout-description">
     <?php endif; ?>
 
@@ -40,17 +42,24 @@ if (!User::isGuest()) {
         <?php endif; ?>
 
         <?php if (($this->params->get('logout_image') != '')) :?>
-            <img src="<?php echo $this->escape($this->params->get('logout_image')); ?>" class="logout-image" alt="<?php echo Lang::txt('COM_USER_LOGOUT_IMAGE_ALT')?>"/>
+            <?php $logoutImgAlt = Lang::txt('COM_USER_LOGOUT_IMAGE_ALT'); ?>
+            <img src="<?php echo $this->escape($this->params->get('logout_image')); ?>"
+                class="logout-image" alt="<?php echo $logoutImgAlt; ?>" />
         <?php endif; ?>
 
-    <?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '') || $this->params->get('logout_image') != '') : ?>
+    <?php if ($showDescBlock) : ?>
     </div>
     <?php endif; ?>
 
     <form action="<?php echo Route::url('index.php?option=com_login&task=logout'); ?>" method="post">
         <div>
             <button type="submit" class="button"><?php echo Lang::txt('JLOGOUT'); ?></button>
-            <input type="hidden" name="return" value="<?php echo base64_encode($this->params->get('logout_redirect_url', $this->form->getValue('return'))); ?>" />
+            <?php
+            $returnVal = base64_encode(
+                $this->params->get('logout_redirect_url', $this->form->getValue('return'))
+            );
+            ?>
+            <input type="hidden" name="return" value="<?php echo $returnVal; ?>" />
             <?php echo Html::input('token'); ?>
         </div>
     </form>

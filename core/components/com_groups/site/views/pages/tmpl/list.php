@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,11 @@ $cls    = '';
 $params = '';
 if ($this->level == 0) {
     $cls    = 'item-list pages';
-    $params = 'data-url="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=reorder&no_html=1') . '"';
+    $params = 'data-url="' .
+        Route::url('index.php?option=com_groups&cn=' .
+        $this->group->get('cn') .
+        '&controller=pages&task=reorder&no_html=1') .
+        '"';
     $params .= ' data-max-depth="' . ($this->config->get('page_depth', 5) + 1) . '"';
 }
 ?>
