@@ -184,7 +184,7 @@ class BibTex
         );
         foreach ($options as $option => $value) {
             $test = $this->setOption($option, $value);
-            if ($test instanceof Exception) {
+            if ($test instanceof \Exception) {
                 //Currently nothing is done here, but it could for example raise an warning
             }
         }
@@ -232,7 +232,7 @@ class BibTex
         if (array_key_exists($option, $this->_options)) {
             $this->_options[$option] = $value;
         } else {
-            $ret = new Exception('Unknown option ' . $option);
+            $ret = new \Exception('Unknown option ' . $option);
         }
         return $ret;
     }
@@ -248,14 +248,14 @@ class BibTex
     {
         if (file_exists($filename)) {
             if (($this->content = @file_get_contents($filename)) === false) {
-                return new Exception('Could not open file ' . $filename);
+                return new \Exception('Could not open file ' . $filename);
             } else {
                 $this->_pos    = 0;
                 $this->_oldpos = 0;
                 return true;
             }
         } else {
-            return new Exception('Could not find file ' . $filename);
+            return new \Exception('Could not find file ' . $filename);
         }
     }
 
@@ -368,7 +368,7 @@ class BibTex
             $this->content = '';
             return true;
         } else {
-            return new Exception('Unbalanced parenthesis');
+            return new \Exception('Unbalanced parenthesis');
         }
     }
 
@@ -707,14 +707,14 @@ class BibTex
                             $last .= ' ' . $tmparray[$j];
                         } elseif ($invon) {
                             $case = $this->_determineCase($tmparray[$j]);
-                            if ($case instanceof Exception) {
+                            if ($case instanceof \Exception) {
                                 // IGNORE?
                             } elseif ((0 == $case) || (-1 == $case)) { //Change from von to last
                                 //You only change when there is no more lower case there
                                 $islast = true;
                                 for ($k = ($j + 1); $k < ($size - 1); $k++) {
                                     $futurecase = $this->_determineCase($tmparray[$k]);
-                                    if ($case instanceof Exception) {
+                                    if ($case instanceof \Exception) {
                                         // IGNORE?
                                     } elseif (0 == $futurecase) {
                                         $islast = false;
@@ -735,7 +735,7 @@ class BibTex
                             }
                         } else {
                             $case = $this->_determineCase($tmparray[$j]);
-                            if ($case instanceof Exception) {
+                            if ($case instanceof \Exception) {
                                 // IGNORE?
                             } elseif (0 == $case) { //Change from first to von
                                 $invon = true;
@@ -768,7 +768,7 @@ class BibTex
                                 for ($k = ($j + 1); $k < ($size - 1); $k++) {
                                     $this->_determineCase($vonlastarray[$k]);
                                     $case = $this->_determineCase($vonlastarray[$k]);
-                                    if ($case instanceof Exception) {
+                                    if ($case instanceof \Exception) {
                                         // IGNORE?
                                     } elseif (0 == $case) {
                                         $islast = false;
@@ -848,7 +848,7 @@ class BibTex
                 }
             }
         } else {
-            $ret = new Exception('Could not determine case on word: ' . (string)$word);
+            $ret = new \Exception('Could not determine case on word: ' . (string)$word);
         }
         return $ret;
     }

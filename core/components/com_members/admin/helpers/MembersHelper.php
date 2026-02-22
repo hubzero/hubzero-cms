@@ -23,7 +23,7 @@ class MembersHelper
     {
 
         // Groups and Levels are restricted to core.admin
-        $canDo = Components\Members\Helpers\Admin::getActions();
+        $canDo = \Components\Members\Helpers\Admin::getActions();
 
         $controllerName = Request::getCmd('controller', $vName);
 
@@ -39,7 +39,7 @@ class MembersHelper
         );
         if ($controllerName == 'notes' || $vName == 'categories') {
             App::set('subsubmenu', function ($app) {
-                return new Hubzero\Html\Toolbar('subsubmenu');
+                return new \Hubzero\Html\Toolbar('subsubmenu');
             });
 
             App::get('subsubmenu')->appendButton(

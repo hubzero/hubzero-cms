@@ -40,7 +40,7 @@ class HtmlMenus
 
         // Check for a database error.
         if ($error = $db->getErrorMsg()) {
-            throw new Exception($error, 500);
+            throw new \Exception($error, 500);
         }
 
         // Construct html
