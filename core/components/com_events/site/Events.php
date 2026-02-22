@@ -15,13 +15,15 @@ use Hubzero\Component\AbstractComponent;
  */
 class Events extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'EventsDate.php';
+
 		$controllerName = \Request::getCmd('controller', 'events');
 		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
 			$controllerName = 'events';
