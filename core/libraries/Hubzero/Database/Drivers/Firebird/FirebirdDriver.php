@@ -175,8 +175,8 @@ class FirebirdDriver extends BaseSqlDriver
      * Abstract-to-Firebird type mapping
      *
      * Overrides the base class MySQL defaults with Firebird-specific types.
-     * TEXT types map to VARCHAR(8192) to avoid PDO Firebird BLOB bug
-     * (zero-length BLOBs return NULL).
+     * Text types use BLOB SUB_TYPE 1 (requires patched pdo_firebird that
+     * correctly returns empty strings for zero-length BLOBs).
      *
      * @var array<string, string>
      */
@@ -189,13 +189,13 @@ class FirebirdDriver extends BaseSqlDriver
         'bigInteger'    => 'BIGINT',
         'boolean'       => 'BOOLEAN',
 
-        // String types - VARCHAR(8192) avoids PDO Firebird BLOB bug
+        // String types
         'string'     => 'VARCHAR',
         'char'       => 'CHAR',
-        'tinyText'   => 'VARCHAR(8192)',
-        'text'       => 'VARCHAR(8192)',
-        'mediumText' => 'VARCHAR(8192)',
-        'longText'   => 'VARCHAR(8192)',
+        'tinyText'   => 'BLOB SUB_TYPE 1',
+        'text'       => 'BLOB SUB_TYPE 1',
+        'mediumText' => 'BLOB SUB_TYPE 1',
+        'longText'   => 'BLOB SUB_TYPE 1',
 
         // Numeric types
         'float'   => 'FLOAT',
@@ -213,8 +213,8 @@ class FirebirdDriver extends BaseSqlDriver
         // Binary types
         'binary' => 'BLOB SUB_TYPE 0',
 
-        // Special types
-        'json'       => 'VARCHAR(8192)',
+        // Special types — JSON uses VARCHAR (no native JSON; BLOB not queryable)
+        'json'       => 'VARCHAR(32765)',
         'uuid'       => 'CHAR(36)',
         'ulid'       => 'CHAR(26)',
         'ipAddress'  => 'VARCHAR(45)',
