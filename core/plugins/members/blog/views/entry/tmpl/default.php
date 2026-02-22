@@ -81,8 +81,8 @@ $this->css()
                         ->whereIn(
                             'state',
                             array(
-                            Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                            \Components\Blog\Models\Comment::STATE_FLAGGED
                             )
                         )
                         ->count();
@@ -131,11 +131,11 @@ $this->css()
             <?php
 
             $filters = array(
-                'state' => array(Components\Blog\Models\Entry::STATE_PUBLISHED),
+                'state' => array(\Components\Blog\Models\Entry::STATE_PUBLISHED),
                 'access' => User::getAuthorisedViewLevels()
             );
             if (User::get('id') == $this->member->get('id')) {
-                $filters['state'][] = Components\Blog\Models\Entry::STATE_UNPUBLISHED;
+                $filters['state'][] = \Components\Blog\Models\Entry::STATE_UNPUBLISHED;
                 unset($filters['access']);
             }
             $popular = $this->archive->entries($filters)
@@ -176,8 +176,8 @@ $this->css()
                 ->whereIn(
                     'state',
                     array(
-                    Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                    \Components\Blog\Models\Comment::STATE_FLAGGED
                     )
                 )
                 ->whereEquals('parent', 0)
@@ -209,7 +209,7 @@ $this->css()
                 <p class="comment-member-photo">
                     <?php
 
-                    $user = Components\Members\Models\Member::oneOrNew(User::get('id'));
+                    $user = \Components\Members\Models\Member::oneOrNew(User::get('id'));
                     $anon = (User::isGuest() ? 0 : 1);
                     ?>
                     <img src="<?php echo $user->picture($anon); ?>" alt="" />
@@ -222,8 +222,8 @@ $this->css()
                             ->whereIn(
                                 'state',
                                 array(
-                                Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                Components\Blog\Models\Comment::STATE_FLAGGED
+                                \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                                \Components\Blog\Models\Comment::STATE_FLAGGED
                                 )
                             )
                             ->row();

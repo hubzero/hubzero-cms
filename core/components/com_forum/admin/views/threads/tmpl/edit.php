@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Forum\Helpers\Permissions::getActions('thread');
+$canDo = \Components\Forum\Helpers\Permissions::getActions('thread');
 
 $text  = ($this->row->get('parent') ? Lang::txt('COM_FORUM_POSTS') : Lang::txt('COM_FORUM_THREADS')) . ': ';
 $text .= ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
@@ -86,7 +86,7 @@ $this->js();
                         <select name="fields[parent]" id="field-parent">
                             <option value="0"><?php echo Lang::txt('COM_FORUM_FIELD_PARENT_SELECT'); ?></option>
                             <?php
-                            $posts = Components\Forum\Models\Post::all()
+                            $posts = \Components\Forum\Models\Post::all()
                                 ->whereEquals('thread', $this->row->get('thread'))
                                 ->ordered()
                                 ->rows();

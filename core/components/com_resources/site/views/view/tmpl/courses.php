@@ -90,7 +90,7 @@ if ($mode != 'preview') {
                     } else {
                         $schildren = $this->model->children()
                             ->whereEquals('standalone', 1)
-                            ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                            ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')
                             ->rows();
 
@@ -125,7 +125,7 @@ if ($mode != 'preview') {
                         // Display some supporting documents
                         $children = $this->model->children()
                             ->whereEquals('standalone', 0)
-                            ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                            ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')
                             ->rows();
 
@@ -272,7 +272,7 @@ if ($mode != 'preview') {
                         // Retrieve the grandchildren
                         $grandchildren = $child->children()
                             ->whereEquals('standalone', 0)
-                            ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                            ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                             ->order('ordering', 'asc')
                             ->rows();
 

@@ -112,11 +112,11 @@ class Wiki extends Plugin
         include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
         include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
-        Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
+        \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
 
-        $book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
+        $book = new \Components\Wiki\Models\Book('group', $group->get('gidNumber'));
         $arr['metadata']['count'] = $book->pages()
-            ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
             ->total();
 
         if ($arr['metadata']['count'] <= 0) {
@@ -125,7 +125,7 @@ class Wiki extends Plugin
             }
 
             $arr['metadata']['count'] = $book->pages()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->total();
         }
 
@@ -280,7 +280,7 @@ class Wiki extends Plugin
         if ($pages->count() > 0) {
             // Loop through all the IDs for pages associated with this group
             foreach ($pages as $page) {
-                $page->set('state', Components\Wiki\Models\Page::STATE_DELETED);
+                $page->set('state', \Components\Wiki\Models\Page::STATE_DELETED);
                 $page->save();
 
                 // Add the page ID to the log
@@ -316,7 +316,7 @@ class Wiki extends Plugin
         // Import needed libraries
         include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
-        $pages = Components\Wiki\Models\Page::all()
+        $pages = \Components\Wiki\Models\Page::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $gid)
             ->rows();

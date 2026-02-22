@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Modules\Helpers\Modules::getActions();
+$canDo = \Components\Modules\Helpers\Modules::getActions();
 
 Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULES'), 'module.png');
 
@@ -74,25 +74,25 @@ $saveOrder = $listOrder == 'ordering';
         <div class="filter-select fltrt">
             <label for="filter_client_id"><?php echo Lang::txt('COM_MODULES_CLIENT');?></label>
             <select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
-                <?php echo Html::select('options', Components\Modules\Helpers\Modules::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
+                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
             </select>
 
             <label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
             <select name="filter_state" id="filter_state" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', Components\Modules\Helpers\Modules::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
             </select>
 
             <label for="filter_position"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></label>
             <select name="filter_position" id="filter_position" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></option>
-                <?php echo Html::select('options', Components\Modules\Helpers\Modules::getPositions($this->filters['client_id']), 'value', 'text', $this->filters['position']); ?>
+                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getPositions($this->filters['client_id']), 'value', 'text', $this->filters['position']); ?>
             </select>
 
             <label for="filter_module"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></label>
             <select name="filter_module" id="filter_module" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></option>
-                <?php echo Html::select('options', Components\Modules\Helpers\Modules::getModules($this->filters['client_id']), 'value', 'text', $this->filters['module']); ?>
+                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getModules($this->filters['client_id']), 'value', 'text', $this->filters['module']); ?>
             </select>
 
             <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
@@ -210,7 +210,7 @@ $saveOrder = $listOrder == 'ordering';
                     <?php endif; ?>
                 </td>
                 <td class="center">
-                    <?php echo Components\Modules\Helpers\Modules::state($item->published, $i, $canChange, 'cb'); ?>
+                    <?php echo \Components\Modules\Helpers\Modules::state($item->published, $i, $canChange, 'cb'); ?>
                 </td>
                 <td class="priority-2 left">
                     <?php if ($item->position) : ?>

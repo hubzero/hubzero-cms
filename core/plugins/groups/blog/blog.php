@@ -104,7 +104,7 @@ class Blog extends Plugin
 
         include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-        $this->model = new Components\Blog\Models\Archive('group', $group->get('gidNumber'));
+        $this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
         // are we returning html
         if ($return == 'html') {
@@ -249,7 +249,7 @@ class Blog extends Plugin
         // Import needed libraries
         include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-        $entries = Components\Blog\Models\Entry::all()
+        $entries = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
             ->rows();
@@ -727,13 +727,13 @@ class Blog extends Plugin
         $entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
         // Instantiate model
-        $row = Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
+        $row = \Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
         if ($row->get('alias') == '') {
             $alias = $row->automaticAlias($row);
         }
 
         if ($row->isNew()) {
-            $item = Components\Blog\Models\Entry::oneByScope(
+            $item = \Components\Blog\Models\Entry::oneByScope(
                 $alias,
                 $this->model->get('scope'),
                 $this->model->get('scope_id')
@@ -817,7 +817,7 @@ class Blog extends Plugin
         $confirmdel = Request::getString('confirmdel', '');
 
         // Initiate a blog entry object
-        $entry = Components\Blog\Models\Entry::oneOrFail($id);
+        $entry = \Components\Blog\Models\Entry::oneOrFail($id);
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
@@ -910,7 +910,7 @@ class Blog extends Plugin
         $data = Request::getArray('comment', array(), 'post');
 
         // Instantiate a new comment object and pass it the data
-        $comment = Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
+        $comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
 
         // Store new content
         if (!$comment->save()) {
@@ -919,7 +919,7 @@ class Blog extends Plugin
         }
 
         // Record the activity
-        $entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+        $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
         $recipients = array(['group', $this->group->get('gidNumber')]);
 
@@ -985,7 +985,7 @@ class Blog extends Plugin
         }
 
         // Initiate a blog comment object
-        $comment = Components\Blog\Models\Comment::oneOrFail($id);
+        $comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
         // Delete all comments on an entry
         $comment->set('state', $comment::STATE_DELETED);
@@ -1006,7 +1006,7 @@ class Blog extends Plugin
             $recipients[] = ['user', $recipient];
         }
 
-        $entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+        $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
         $link = '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>';
         Event::trigger('system.logActivity', [

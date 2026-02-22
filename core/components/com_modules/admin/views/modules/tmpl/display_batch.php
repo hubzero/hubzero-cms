@@ -29,7 +29,7 @@ $published = $this->filters['state'];
         </div>
         <div class="col span6">
             <?php if ($published >= 0) : ?>
-                <?php echo Components\Modules\Helpers\Modules::positions($clientId); ?>
+                <?php echo \Components\Modules\Helpers\Modules::positions($clientId); ?>
             <?php endif; ?>
 
             <div class="input-wrap">

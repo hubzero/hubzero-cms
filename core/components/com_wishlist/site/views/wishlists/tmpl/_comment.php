@@ -181,8 +181,8 @@ if ($this->comment->isReported()) {
         if ($this->depth < $this->wish->config()->get('comments_depth', 3)) {
             $comments = $this->comment->replies()
                 ->whereIn('state', array(
-                    Components\Wishlist\Models\Comment::STATE_PUBLISHED,
-                    Components\Wishlist\Models\Comment::STATE_FLAGGED
+                    \Components\Wishlist\Models\Comment::STATE_PUBLISHED,
+                    \Components\Wishlist\Models\Comment::STATE_FLAGGED
                 ))
                 ->rows();
 

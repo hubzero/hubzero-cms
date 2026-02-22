@@ -50,7 +50,7 @@ class UsersCategory extends Relational
      */
     public function category()
     {
-        return $this->belongsToOne('Components\Forum\Models\Category', 'category_id');
+        return $this->belongsToOne('\Components\Forum\Models\Category', 'category_id');
     }
 
     /**

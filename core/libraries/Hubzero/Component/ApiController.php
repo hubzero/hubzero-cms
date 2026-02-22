@@ -148,7 +148,7 @@ class ApiController implements ControllerInterface
 
         // Set the name
         if (!isset($config['name']) || !$config['name']) {
-            // Components\Component\Api\Controllers\Controller
+            // \Components\Component\Api\Controllers\Controller
             $segments = explode('\\', $r->getName());
             $config['name'] = strtolower($segments[1]);
         }
@@ -156,7 +156,7 @@ class ApiController implements ControllerInterface
 
         // Set the controller name
         if (!isset($config['controller']) || !$config['controller']) {
-            // Components\Component\Api\Controllers\Controller
+            // \Components\Component\Api\Controllers\Controller
             $config['controller'] = strtolower($r->getShortName());
         }
         $this->_controller = $config['controller'];

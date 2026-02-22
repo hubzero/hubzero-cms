@@ -20,7 +20,7 @@ $params = &$this->params;
         <li class="row<?php echo $i % 2; ?>">
             <h3>
                 <?php if ($params->get('link_titles')) : ?>
-                    <a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language)); ?>">
+                    <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language)); ?>">
                         <?php echo $this->escape($item->title); ?>
                     </a>
                 <?php else : ?>
@@ -36,7 +36,7 @@ $params = &$this->params;
                     <dd class="parent-category-name">
                         <?php
                         $title = $this->escape($item->parent_title);
-                        $url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($item->parent_slug)) . '">' . $title . '</a>';
+                        $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->parent_slug)) . '">' . $title . '</a>';
                         ?>
                         <?php if ($params->get('link_parent_category') && $item->parent_slug) : ?>
                             <?php echo Lang::txt('COM_CONTENT_PARENT', $url); ?>
@@ -49,7 +49,7 @@ $params = &$this->params;
                     <dd class="category-name">
                         <?php
                         $title = $this->escape($item->category_title);
-                        $url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($item->catslug)) . '">' . $title . '</a>';
+                        $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catslug)) . '">' . $title . '</a>';
                         ?>
                         <?php if ($params->get('link_category') && $item->catslug) : ?>
                             <?php echo Lang::txt('COM_CONTENT_CATEGORY', $url); ?>

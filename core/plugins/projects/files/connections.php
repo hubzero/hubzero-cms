@@ -112,7 +112,7 @@ class Connections
             return call_user_func([$this, $task]);
         }
 
-        throw new Exception("Call to undefined action", 500);
+        throw new \Exception("Call to undefined action", 500);
     }
 
     /**
@@ -448,7 +448,7 @@ class Connections
 
         if (!$result) {
             // Should only get here on error
-            throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+            throw new \Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
         } else {
             exit;
         }
@@ -489,7 +489,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -526,7 +526,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Incoming
@@ -559,7 +559,7 @@ class Connections
             $upload = Request::getArray('upload', '', 'files');
 
             if (empty($upload['name']) or $upload['name'][0] == '') {
-                throw new Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
+                throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
             }
 
             // Go through uploaded files
@@ -712,7 +712,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Incoming
@@ -811,7 +811,7 @@ class Connections
             $upload = Request::getArray('upload', '', 'files');
 
             if (empty($upload['name']) || $upload['name'][0] == '') {
-                throw new Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
+                throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
             }
 
             // Go through uploaded files
@@ -886,7 +886,7 @@ class Connections
     {
         // Check permissions
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -921,7 +921,7 @@ class Connections
     {
         // Check permissions
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -960,7 +960,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1001,7 +1001,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1059,7 +1059,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1098,7 +1098,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1164,7 +1164,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1244,7 +1244,7 @@ class Connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 

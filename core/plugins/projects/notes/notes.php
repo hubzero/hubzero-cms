@@ -257,7 +257,7 @@ class Notes extends Plugin
             require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers'
                 . DS . $this->_controllerName . '.php';
 
-            Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
+            \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
 
             // Listing/unlisting?
             if ($this->_task == 'publist' || $this->_task == 'unlist') {
@@ -346,12 +346,12 @@ class Notes extends Plugin
         if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save') {
             $basePath = __DIR__;
             if (!$this->model->access('content')) {
-                throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+                throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             }
         }
 
         if (!$view->content) {
-            $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->_controllerName);
+            $controllerName = "\Components\Wiki\Site\Controllers\\" . ucfirst($this->_controllerName);
             // Instantiate controller
             $controller = new $controllerName(array(
                 'base_path' => $basePath,

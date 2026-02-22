@@ -132,7 +132,7 @@ class Publication extends Relational
     {
         require_once \Component::path('com_projects') . '/models/orm/project.php';
 
-        return $this->belongsToOne('Components\Projects\Models\Orm\Project', 'project_id');
+        return $this->belongsToOne('\Components\Projects\Models\Orm\Project', 'project_id');
     }
 
     /**
@@ -213,7 +213,7 @@ class Publication extends Relational
     /**
      * Get most recent version that is still marked as active
      *
-     * @return  object  Components\Publications\Models\Orm\Version
+     * @return  object  \Components\Publications\Models\Orm\Version
      */
     public function getActiveVersion()
     {

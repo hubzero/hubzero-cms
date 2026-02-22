@@ -188,7 +188,7 @@ class Question extends Relational
      */
     public function responses()
     {
-        return $this->oneToMany('Components\Answers\Models\Response', 'question_id');
+        return $this->oneToMany('\Components\Answers\Models\Response', 'question_id');
     }
 
     /**

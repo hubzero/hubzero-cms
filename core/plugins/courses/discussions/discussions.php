@@ -622,17 +622,17 @@ class Discussions extends Plugin
         // Called via AJAX?
         $no_html = Request::getInt('no_html', 0);
         if ($no_html) {
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->success = true;
 
-            $data->threads = new stdClass();
+            $data->threads = new \stdClass();
             $data->threads->lastchange = '0000-00-00 00:00:00';
             $data->threads->lastid = 0;
             $data->threads->total = 0;
             $data->threads->posts = null;
             $data->threads->html = null;
 
-            $data->thread = new stdClass();
+            $data->thread = new \stdClass();
             $data->thread->lastchange = '0000-00-00 00:00:00';
             $data->thread->lastid = 0;
             $data->thread->posts = null;
@@ -787,7 +787,7 @@ class Discussions extends Plugin
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _thread($post, $filters = array())
     {
-        $thread = new stdClass();
+        $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
         $thread->lastid = $post->get('id');
         $thread->posts = null;
@@ -864,7 +864,7 @@ class Discussions extends Plugin
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _threadsSearch($post, $filters = array())
     {
-        $threads = new stdClass();
+        $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
         $threads->lastid = 0;
         $threads->total = 0;
@@ -928,7 +928,7 @@ class Discussions extends Plugin
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _threads($post, $filters = array())
     {
-        $threads = new stdClass();
+        $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
         $threads->lastid = 0;
         $threads->posts = array();
@@ -1002,7 +1002,7 @@ class Discussions extends Plugin
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _posts($post, $filters = array())
     {
-        $thread = new stdClass();
+        $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
         $thread->lastid = 0;
         $thread->posts = null;
@@ -1033,7 +1033,7 @@ class Discussions extends Plugin
                     ? $row->get('created')
                     : $thread->lastchange;
 
-                $res[$i] = new stdClass();
+                $res[$i] = new \stdClass();
                 $res[$i]->replies = null;
 
                 $cview = $this->view('comment', 'threads')
@@ -1195,17 +1195,17 @@ class Discussions extends Plugin
 
             $post = Post::blank();
 
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->success = true;
 
-            $data->threads = new stdClass();
+            $data->threads = new \stdClass();
             $data->threads->lastchange = '0000-00-00 00:00:00';
             $data->threads->lastid = 0;
             $data->threads->total = 0;
             $data->threads->posts = null;
             $data->threads->html = null;
 
-            $data->thread = new stdClass();
+            $data->thread = new \stdClass();
             $data->thread->lastchange = '0000-00-00 00:00:00';
             $data->thread->lastid = 0;
             $data->thread->posts = null;
@@ -1294,7 +1294,7 @@ class Discussions extends Plugin
             $sects = $this->sections;
         }
 
-        $stats = new stdClass();
+        $stats = new \stdClass();
         $stats->categories = 0;
         $stats->threads = 0;
         $stats->posts = 0;
@@ -1430,7 +1430,7 @@ class Discussions extends Plugin
             ->ordered()
             ->rows();
 
-        $stats = new stdClass();
+        $stats = new \stdClass();
         $stats->categories = 0;
         $stats->threads = 0;
         $stats->posts = 0;

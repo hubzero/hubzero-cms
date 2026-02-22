@@ -42,7 +42,7 @@ $this->css()
                             $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
                             $url .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
 
-                            $rt = new Components\Publications\Helpers\Tags($database);
+                            $rt = new \Components\Publications\Helpers\Tags($database);
                             $tags = $rt->parseTopTags($this->filters['tag']);
                             foreach ($tags as $tag) {
                                 ?>
@@ -140,7 +140,7 @@ $this->css()
                 <div class="container">
                     <h3><?php echo Lang::txt('Popular Tags'); ?></h3>
                     <?php
-                    $rt = new Components\Publications\Helpers\Tags($database);
+                    $rt = new \Components\Publications\Helpers\Tags($database);
                     echo $rt->getTopTagCloud(20, $this->filters['tag']);
                     ?>
                     <p><?php echo Lang::txt('Click a tag to see only publications with that tag.'); ?></p>

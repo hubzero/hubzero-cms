@@ -284,7 +284,7 @@ if ($mode != 'preview') {
         // Get children
         $children = $this->model->children()
             ->whereEquals('standalone', 1)
-            ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+            ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
             ->order(($filters['sortby'] == 'date' ? 'created' : $filters['sortby']), 'asc')
             ->limit($filters['limit'])
             ->start($filters['start'])

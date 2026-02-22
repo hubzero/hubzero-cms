@@ -118,7 +118,7 @@ if ($this->config->get('launcher_layout', 0)) {
 
                 $p = $db->loadResult();
 
-                $ancestor = new Components\Publications\Models\Publication($p, 'default', $v);
+                $ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
 
                 $from = '';
                 if (

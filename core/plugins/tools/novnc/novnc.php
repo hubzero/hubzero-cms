@@ -31,7 +31,7 @@ class Novnc extends Plugin
      */
     public function onToolSessionIdentify()
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->name  = $this->_name;
         $obj->type  = $this->_type;
         $obj->title = Lang::txt('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
@@ -106,7 +106,7 @@ class Novnc extends Plugin
                 $allow = trim($allow);
 
                 if (preg_match('/(.+?),\s+([^\s]+)\s+(\d+)\.(\d+)/i', $allow, $matches)) {
-                    $req = new stdClass();
+                    $req = new \stdClass();
                     $req->name  = strtolower(trim($matches[2]));
                     $req->major = intval($matches[3]);
                     $req->minor = intval($matches[4]);

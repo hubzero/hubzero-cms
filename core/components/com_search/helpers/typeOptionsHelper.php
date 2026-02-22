@@ -21,7 +21,7 @@ class TypeOptionsHelper
             $args,
             'type',
             new MockProxy([
-                'class' => 'Components\Resources\Models\Type'
+                'class' => '\Components\Resources\Models\Type'
             ])
         );
     }

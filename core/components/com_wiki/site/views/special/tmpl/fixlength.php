@@ -16,10 +16,10 @@ Pathway::append(
     $this->page->link()
 );
 
-$query = Components\Wiki\Models\Version::all();
+$query = \Components\Wiki\Models\Version::all();
 
 $v = $query->getTableName();
-$p = Components\Wiki\Models\Page::blank()->getTableName();
+$p = \Components\Wiki\Models\Page::blank()->getTableName();
 
 $rows = $query
     ->join($p, $p . '.id', $v . '.page_id', 'inner')

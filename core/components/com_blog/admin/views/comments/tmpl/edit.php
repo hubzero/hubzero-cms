@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
+$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

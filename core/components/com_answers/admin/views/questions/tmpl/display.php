@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Answers\Helpers\Permissions::getActions('question');
+$canDo = \Components\Answers\Helpers\Permissions::getActions('question');
 
 Toolbar::title(
     Lang::txt('COM_ANSWERS_TITLE') . ': '

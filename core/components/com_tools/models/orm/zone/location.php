@@ -109,6 +109,6 @@ class Location extends Relational
      */
     public function zone()
     {
-        return $this->belongsToOne('Components\Tools\Models\Orm\Zone', 'zone_id');
+        return $this->belongsToOne('\Components\Tools\Models\Orm\Zone', 'zone_id');
     }
 }

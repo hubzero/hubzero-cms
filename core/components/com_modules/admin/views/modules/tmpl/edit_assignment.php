@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 // Initiasile related data.
 require_once Component::path('com_menus') . '/helpers/menus.php';
-$menuTypes = Components\Menus\Helpers\Menus::getMenuLinks();
+$menuTypes = \Components\Menus\Helpers\Menus::getMenuLinks();
 
 $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 ?>
@@ -24,7 +24,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                 <label id="jform_menus-lbl" for="jform_assignment"><?php echo Lang::txt('COM_MODULES_MODULE_ASSIGN'); ?></label>
             <!-- <fieldset id="jform_menus" class="radio"> -->
                 <select name="menu[assignment]" id="jform_assignment">
-                    <?php echo Html::select('options', Components\Modules\Helpers\Modules::getAssignmentOptions($this->item->client_id), 'value', 'text', $assignment, true);?>
+                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getAssignmentOptions($this->item->client_id), 'value', 'text', $assignment, true);?>
                 </select>
             <!-- </fieldset> -->
             </div>

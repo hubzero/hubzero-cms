@@ -134,7 +134,7 @@ class Overview extends Plugin
         $period   = $this->periodToInt(Request::getString('period', $this->params->get('period', 'prior12')));
         $datetime = Request::getString('datetime', date("Y") . '-' . date("m")) . '-00 00:00:00';
 
-        $db = Components\Usage\Helpers\Helper::getUDBO();
+        $db = \Components\Usage\Helpers\Helper::getUDBO();
 
         $sql = "SELECT value, valfmt
 				FROM `summary_user_vals`
@@ -239,8 +239,8 @@ class Overview extends Plugin
         $db->setQuery($sql);
         $result = $db->loadResult();
 
-        $data = new stdClass();
-        $data->visits = new stdClass();
+        $data = new \stdClass();
+        $data->visits = new \stdClass();
         $data->visits->total        = number_format($result == null ? 0.0 : floatval($result));
         $data->visits->residence    = $residence ?? '';
         $data->visits->organization = $organization ?? '';
@@ -348,7 +348,7 @@ class Overview extends Plugin
         $db->setQuery($sql);
         $result = $db->loadResult();
 
-        $data->downloads = new stdClass();
+        $data->downloads = new \stdClass();
         $data->downloads->total        = number_format($result ?? 0.0);
         $data->downloads->residence    = !isset($residence) ? '' : $residence;
         $data->downloads->organization = !isset($organization) ? '' : $organization;

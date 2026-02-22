@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Tags\Helpers\Permissions::getActions();
+$canDo = \Components\Tags\Helpers\Permissions::getActions();
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_TAGS') . ': ' . $text, 'tags');

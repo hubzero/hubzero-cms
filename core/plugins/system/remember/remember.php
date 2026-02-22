@@ -47,17 +47,17 @@ class Remember extends Plugin
                     $str = $crypt->decrypt($str);
 
                     if (!is_string($str)) {
-                        throw new Exception('Decoded cookie is not a string.');
+                        throw new \Exception('Decoded cookie is not a string.');
                     }
 
                     $cookieData = json_decode($str);
 
                     if (null === $cookieData) {
-                        throw new Exception('JSON could not be docoded.');
+                        throw new \Exception('JSON could not be docoded.');
                     }
 
                     if (!is_object($cookieData)) {
-                        throw new Exception('Decoded JSON is not an object.');
+                        throw new \Exception('Decoded JSON is not an object.');
                     }
 
                     // json_decoded cookie could be any object structure, so make sure the
@@ -69,13 +69,13 @@ class Remember extends Plugin
                             $cookieData->username
                         );
                     } else {
-                        throw new Exception('Malformed username.');
+                        throw new \Exception('Malformed username.');
                     }
 
                     if (isset($cookieData->password) && is_string($cookieData->password)) {
                         $credentials['password'] = \Hubzero\Utility\Sanitize::clean($cookieData->password);
                     } else {
-                        throw new Exception('Malformed password.');
+                        throw new \Exception('Malformed password.');
                     }
 
                     // We're only doing this for the site app, so we explicitly set the action here
@@ -85,9 +85,9 @@ class Remember extends Plugin
                     );
 
                     if (!$return) {
-                        throw new Exception('Log-in failed.');
+                        throw new \Exception('Log-in failed.');
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $cookie_domain = Config::get('cookie_domain', '');
                     $cookie_path   = Config::get('cookie_path', '/');
 

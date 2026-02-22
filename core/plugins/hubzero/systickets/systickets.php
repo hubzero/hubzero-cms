@@ -27,7 +27,7 @@ class Systickets extends Plugin
             return;
         }
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'tickets';
         $response->label = 'Support Tickets';
         $response->data  = array();
@@ -92,7 +92,7 @@ class Systickets extends Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

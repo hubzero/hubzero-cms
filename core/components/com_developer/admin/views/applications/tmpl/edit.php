@@ -12,7 +12,7 @@
 defined('_HZEXEC_') or die();
 
 // Get the permissions helper
-$canDo = Components\Developer\Helpers\Permissions::getActions('application');
+$canDo = \Components\Developer\Helpers\Permissions::getActions('application');
 
 // Title & toolbar
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));

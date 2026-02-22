@@ -66,7 +66,7 @@ class Quota extends Relational
      */
     public function category()
     {
-        return $this->oneToOne('Components\Members\Models\Quota\Category', 'class_id');
+        return $this->oneToOne('\Components\Members\Models\Quota\Category', 'class_id');
     }
 
     /**

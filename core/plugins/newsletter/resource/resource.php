@@ -42,7 +42,7 @@ class Resource extends Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = htmlspecialchars_decode($m->introtext);
             $object->date  = Date::of($m->publish_up)->toLocal("F j, Y");

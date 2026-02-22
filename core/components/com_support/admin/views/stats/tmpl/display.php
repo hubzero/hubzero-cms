@@ -276,7 +276,7 @@ $base = rtrim($base, '/');
                                 <td><?php echo (isset($res[0])) ? $res[0] / $total : '0'; ?></td>
                             </tr>
                             <?php
-                            $resolutions = Components\Support\Models\Status::all()->whereEquals('open', 0)->rows();
+                            $resolutions = \Components\Support\Models\Status::all()->whereEquals('open', 0)->rows();
 
                             $cls = 'odd';
                             $data = array(

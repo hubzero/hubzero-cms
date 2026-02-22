@@ -114,7 +114,7 @@ class Slack extends Plugin
 
         try {
             $client->attach($data)->send();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Fail silently
             return false;
         }

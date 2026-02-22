@@ -191,7 +191,7 @@ if (!$contributions) {
             $author_login = Lang::txt(
                 'MOD_MYCONTRIBUTIONS_UNKNOWN'
             );
-            $author = Components\Members\Models\Member::oneOrNew(
+            $author = \Components\Members\Models\Member::oneOrNew(
                 $contributions[$i]->created_by
             );
             if ($author->get('id')) {

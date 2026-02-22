@@ -136,7 +136,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             $storedState = Session::get('state', null, 'cilogon');
             $state = Request::getVar('state');
             if (empty($state) || $storedState !== $state) {
-                throw new Exception('Mismatched state');
+                throw new \Exception('Mismatched state');
             }
             Session::clear('state', 'cilogon');
 

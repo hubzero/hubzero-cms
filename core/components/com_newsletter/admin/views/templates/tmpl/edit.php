@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Newsletter\Helpers\Permissions::getActions('newsletter');
+$canDo = \Components\Newsletter\Helpers\Permissions::getActions('newsletter');
 
 //set title
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));

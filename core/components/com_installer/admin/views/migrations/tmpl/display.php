@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_MIGRATIONS'));
 

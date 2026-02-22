@@ -115,7 +115,7 @@ $this->js();
                 <div class="media-view">
                     <div class="media-items" id="media-items" data-tmpl="<?php echo $this->escape($tmpl); ?>" data-list="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>">
                         <?php
-                        $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
+                        $children = \Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
 
                         $this->view('default', 'medialist')
                             ->set('folder', $this->folder)

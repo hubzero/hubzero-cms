@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Kb\Admin\Helpers\Permissions::getActions('article');
+$canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_KB_EDIT') : Lang::txt('COM_KB_NEW'));
 
@@ -36,7 +36,7 @@ $this->js();
 
                 <div class="input-wrap">
                     <label for="field-section"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->row->get('category'), 'fields[category]', 'field-category'); ?>
+                    <?php echo \Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->row->get('category'), 'fields[category]', 'field-category'); ?>
                 </div>
 
                 <div class="input-wrap">

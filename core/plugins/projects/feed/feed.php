@@ -329,7 +329,7 @@ class Feed extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Check for request forgeries
@@ -447,7 +447,7 @@ class Feed extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         $id = Request::getInt('activity', 0);
@@ -545,7 +545,7 @@ class Feed extends Plugin
         // In this case, we're expecting JSON output
         // @TODO: Move to API
         if (isset($filters['created']) && $filters['created']) {
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->activities = array();
 
             if (count($activities)) {

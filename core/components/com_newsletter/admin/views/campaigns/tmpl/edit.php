@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Newsletter\Helpers\Permissions::getActions('campaign');
+$canDo = \Components\Newsletter\Helpers\Permissions::getActions('campaign');
 
 // If current record has a secret, then we are editing, otherwise we are new.
 $hasSecret = strlen($this->campaign->secret) > 0;

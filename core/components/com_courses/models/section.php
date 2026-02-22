@@ -418,7 +418,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_dates instanceof Iterator) || $clear) {
+        if (!($this->_dates instanceof \Iterator) || $clear) {
             $tbl = new Tables\SectionDate($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -429,7 +429,7 @@ class Section extends Base
                 $results = array();
             }
 
-            $this->_dates = new Iterator($results);
+            $this->_dates = new \Iterator($results);
         }
 
         return $this->_dates;
@@ -656,7 +656,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_codes instanceof Iterator) || $clear) {
+        if (!($this->_codes instanceof \Iterator) || $clear) {
             $tbl = new Tables\SectionCode($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -667,7 +667,7 @@ class Section extends Base
                 $results = array();
             }
 
-            $this->_codes = new Iterator($results);
+            $this->_codes = new \Iterator($results);
         }
 
         return $this->_codes;

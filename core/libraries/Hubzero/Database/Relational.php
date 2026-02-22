@@ -5521,9 +5521,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * ```php
      * Relational::morphMap([
-     *     'post'  => Components\Blog\Models\Post::class,
-     *     'video' => Components\Media\Models\Video::class,
-     *     'photo' => Components\Gallery\Models\Photo::class,
+     *     'post'  => \Components\Blog\Models\Post::class,
+     *     'video' => \Components\Media\Models\Video::class,
+     *     'photo' => \Components\Gallery\Models\Photo::class,
      * ]);
      * ```
      *

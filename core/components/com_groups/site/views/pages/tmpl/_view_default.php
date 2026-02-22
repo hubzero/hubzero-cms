@@ -102,7 +102,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
         $counter = 1;
         require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
-        $profiles = Components\Members\Models\Member::all()
+        $profiles = \Components\Members\Models\Member::all()
             ->including('profiles')
             ->whereIn('id', $members)
             ->rows();

@@ -21,7 +21,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('canvas2image.js')
      ->js('jquery.flot.saveAsImage.js');
 
-$db = Components\Usage\Helpers\Helper::getUDBO();
+$db = \Components\Usage\Helpers\Helper::getUDBO();
 
 $datetime = $this->datetime;
 $period   = $this->period;

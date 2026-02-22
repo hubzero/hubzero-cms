@@ -198,7 +198,7 @@ class Forks extends Plugin
             $forked = $db->loadObjectList();
 
             foreach ($forked as $i => $fork) {
-                $forks[$i] = new Components\Publications\Models\Publication(
+                $forks[$i] = new \Components\Publications\Models\Publication(
                     $fork->publication_id,
                     'default',
                     $fork->id

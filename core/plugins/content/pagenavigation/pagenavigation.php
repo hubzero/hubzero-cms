@@ -169,7 +169,7 @@ class Pagenavigation extends Plugin
             }
 
             if ($row->prev) {
-                $prevRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                $prevRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $row->prev->slug,
                     $row->prev->catslug,
                     $row->prev->language
@@ -180,7 +180,7 @@ class Pagenavigation extends Plugin
             }
 
             if ($row->next) {
-                $nextRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                $nextRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $row->next->slug,
                     $row->next->catslug,
                     $row->next->language

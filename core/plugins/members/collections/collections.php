@@ -598,7 +598,7 @@ class Collections extends Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
             $response->success = true;
             if ($this->getError()) {
@@ -658,7 +658,7 @@ class Collections extends Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
             $response->success = true;
             if ($this->getError()) {
@@ -1920,10 +1920,10 @@ class Collections extends Plugin
                     $entry->set('state', 2);
 
                     if (!$entry->store(false)) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }
@@ -1966,10 +1966,10 @@ class Collections extends Plugin
                     $entry = new \Components\Collections\Models\Collection($entry);
 
                     if (!$entry->delete()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

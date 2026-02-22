@@ -241,7 +241,7 @@ class Assetgroupv1_0 extends base
 
         // Conditional Checks
         if (!$courseId) {
-            throw new Exception("Course Id is required");
+            throw new \Exception("Course Id is required");
         }
 
         $database = \App::get('db');
@@ -264,7 +264,7 @@ class Assetgroupv1_0 extends base
 
         // Conditional Checks
         if (!$offeringId) {
-            throw new Exception("Offering Id is required");
+            throw new \Exception("Offering Id is required");
         }
 
         $database = \App::get('db');
@@ -288,7 +288,7 @@ class Assetgroupv1_0 extends base
 
         // Conditional Checks
         if (!$unitId) {
-            throw new Exception("Unit Id is required");
+            throw new \Exception("Unit Id is required");
         }
 
         $database = \App::get('db');

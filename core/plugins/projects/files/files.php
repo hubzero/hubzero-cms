@@ -64,7 +64,7 @@ class Files extends Plugin
         );
 
         if ($this->params->get('default_action', 'browse') == 'connections') {
-            $model = new Components\Projects\Models\Project(Request::getString('alias', ''));
+            $model = new \Components\Projects\Models\Project(Request::getString('alias', ''));
             $userIsMember = $model->access('member');
             $active = Request::getInt('connection', 0);
 
@@ -86,7 +86,7 @@ class Files extends Plugin
             );
 
             if ($model->exists()) {
-                $connections = Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))
+                $connections = \Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))
                     ->connections()
                     ->thatICanView();
 
@@ -936,7 +936,7 @@ class Files extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1849,7 +1849,7 @@ class Files extends Plugin
                 );
 
                 // Tex file?
-                $tex = Components\Projects\Helpers\Compiler::isTexFile(
+                $tex = \Components\Projects\Helpers\Compiler::isTexFile(
                     $file->get('remoteTitle'),
                     $file->get('originalFormat')
                 );
@@ -2431,7 +2431,7 @@ class Files extends Plugin
                     $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
                 } else {
                     // LaTeX?
-                    $tex = Components\Projects\Helpers\Compiler::isTexFile($file->get('name'), $file->getMimeType());
+                    $tex = \Components\Projects\Helpers\Compiler::isTexFile($file->get('name'), $file->getMimeType());
 
                     // Check format
                     if (!in_array($file->get('ext'), $formats) && !$tex) {
@@ -2940,9 +2940,9 @@ class Files extends Plugin
         $combinedSize = 0;
         $tarpath = $base_path . DS . $tarname;
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
 
-        if ($zip->open($tarpath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+        if ($zip->open($tarpath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             $i = 0;
 
             foreach ($items as $element) {

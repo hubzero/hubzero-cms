@@ -10,7 +10,7 @@
 
 if ($this->isUser) : ?>
     <div class="section-edit-container">
-        <?php if ($this->registration == Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
+        <?php if ($this->registration == \Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
             <p class="notice warning"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_READONLY', $this->title); ?></p>
         <?php else : ?>
             <div class="section-edit-content">

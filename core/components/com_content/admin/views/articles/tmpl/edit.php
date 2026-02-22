@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $this->item->get('id'));
+$canDo = \Components\Content\Admin\Helpers\Permissions::getActions('article', $this->item->get('id'));
 
 // Load the tooltip behavior.
 Html::behavior('tooltip');

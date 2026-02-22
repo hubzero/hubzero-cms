@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Wiki\Helpers\Permissions::getActions('comment');
+$canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
 
 Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki');
 

@@ -11,7 +11,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Languages\Helpers\Utilities::getActions();
+$canDo = \Components\Languages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_INSTALLED_TITLE'), 'langmanager');
 

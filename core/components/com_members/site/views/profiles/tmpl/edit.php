@@ -16,11 +16,11 @@ $this->css();
 $profiles = $this->profile->profiles()->ordered()->rows();
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
+$xml = \Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    \Components\Members\Models\Profile::collect($profiles)
 );
 
 // Create a new form
@@ -60,7 +60,7 @@ foreach ($profiles as $profile) {
 
             <label>
                 <?php echo Lang::txt('Visibility (who has access to my profile)'); ?>
-                <?php echo Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select'); ?>
+                <?php echo \Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select'); ?>
             </label>
 
             <div class="grid">
@@ -107,7 +107,7 @@ foreach ($profiles as $profile) {
             <?php foreach ($this->fields as $field) : ?>
                 <?php
                 if (!isset($fields[$field->get('name')])) {
-                    $fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+                    $fields[$field->get('name')] = \Components\Members\Models\Profile::blank();
                     $fields[$field->get('name')]->set('access', 1);
                 }
 
@@ -134,7 +134,7 @@ foreach ($profiles as $profile) {
                         <div class="col span4 omega">
                             <?php
                             echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS')  . '</label>';
-                            echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
+                            echo \Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
                             ?>
                         </div>
                     </div>

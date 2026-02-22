@@ -154,8 +154,8 @@ if ($this->comment->isReported()) {
         if ($this->depth < $this->article->param('comments_depth', 3)) {
             $comments = $this->comment->replies()
                 ->whereIn('state', array(
-                    Components\Kb\Models\Comment::STATE_PUBLISHED,
-                    Components\Kb\Models\Comment::STATE_FLAGGED
+                    \Components\Kb\Models\Comment::STATE_PUBLISHED,
+                    \Components\Kb\Models\Comment::STATE_FLAGGED
                 ))
                 ->rows();
 

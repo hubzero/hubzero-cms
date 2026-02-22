@@ -12,9 +12,9 @@ namespace Hubzero\Base;
  * Class loader for HubZero extensions and fallback for framework classes
  *
  * Handles namespace-to-directory mapping for:
- * - Components: Components\Blog\* -> components/com_blog/*
- * - Modules: Modules\Menu\* -> modules/mod_menu/*
- * - Plugins: Plugins\System\Debug\* -> plugins/system/debug/*
+ * - Components: \Components\Blog\* -> components/com_blog/*
+ * - Modules: \Modules\Menu\* -> modules/mod_menu/*
+ * - Plugins: \Plugins\System\Debug\* -> plugins/system/debug/*
  *
  * Also provides fallback for Hubzero\* and Bootstrap\* if Composer misses them.
  *
@@ -137,7 +137,7 @@ class ClassLoader
         // Build paths based on type
         switch ($config['type']) {
             case 'component':
-                // Components\Blog\Models\Entry -> components/com_blog/Models/Entry.php
+                // \Components\Blog\Models\Entry -> components/com_blog/Models/Entry.php
                 $name = array_shift($parts);
                 $file = implode('/', $parts) . '.php';
                 if (empty($file) || $file === '.php') {
@@ -155,7 +155,7 @@ class ClassLoader
                 break;
 
             case 'module':
-                // Modules\Menu\Helper -> modules/mod_menu/Helper.php
+                // \Modules\Menu\Helper -> modules/mod_menu/Helper.php
                 $name = array_shift($parts);
                 $file = implode('/', $parts) . '.php';
                 if (empty($file) || $file === '.php') {
@@ -173,7 +173,7 @@ class ClassLoader
                 break;
 
             case 'plugin':
-                // Plugins\System\Debug\Helper -> plugins/system/debug/Helper.php
+                // \Plugins\System\Debug\Helper -> plugins/system/debug/Helper.php
                 $type = strtolower(array_shift($parts));
                 $name = array_shift($parts);
                 $lname = strtolower($name);
@@ -191,7 +191,7 @@ class ClassLoader
                 break;
 
             case 'template':
-                // Templates\Kameleon\Helper -> templates/tpl_kameleon/Helper.php
+                // \Templates\Kameleon\Helper -> templates/tpl_kameleon/Helper.php
                 //                           -> templates/kameleon/Helper.php (fallback)
                 $name = array_shift($parts);
                 $lname = strtolower($name);

@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
             <a href="#" title="Attach a link" class="attach-link"></a>
             <a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>
             <a href="#" title="Include a wiki page" class="attach-wiki"></a>
-            <?php if (Components\Courses\Models\Assets\Tool::getToolDirectory() != false) : ?>
+            <?php if (\Components\Courses\Models\Assets\Tool::getToolDirectory() != false) : ?>
                 <a href="#" title="Include a tool" class="attach-tool"></a>
             <?php endif; ?>
             <a href="#" title="Browse for files" class="browse-files"></a>

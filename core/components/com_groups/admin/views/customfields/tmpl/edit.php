@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('Custom Fields'), 'form');
-$canDo = Components\Groups\Helpers\Permissions::getActions();
+$canDo = \Components\Groups\Helpers\Permissions::getActions();
 if ($canDo->get('core.manage')) {
     Toolbar::apply();
     Toolbar::spacer();

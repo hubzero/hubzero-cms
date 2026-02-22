@@ -10,7 +10,7 @@
 
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Menus\Helpers\Menus::getActions($this->filters['parent_id']);
+$canDo = \Components\Menus\Helpers\Menus::getActions($this->filters['parent_id']);
 
 Toolbar::title(Lang::txt('COM_MENUS_VIEW_MENUS_TITLE'), 'menumgr');
 

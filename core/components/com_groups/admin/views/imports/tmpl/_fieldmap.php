@@ -70,7 +70,7 @@ if ($this->import->get('id')) { ?>
                                 <?php
                                 include_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'field.php';
 
-                                $fields = Components\Groups\Models\Orm\Field::all()
+                                $fields = \Components\Groups\Models\Orm\Field::all()
                                     ->ordered()
                                     ->rows();
 

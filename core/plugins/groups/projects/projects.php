@@ -118,7 +118,7 @@ class Projects extends Plugin
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
-        $this->model = new Components\Projects\Models\Project();
+        $this->model = new \Components\Projects\Models\Project();
 
         $this->_projects = $this->model->table()->getGroupProjectIds(
             $group->get('gidNumber'),
@@ -228,7 +228,7 @@ class Projects extends Plugin
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
-        $this->model = new Components\Projects\Models\Project();
+        $this->model = new \Components\Projects\Models\Project();
 
         // Get group projects
         $projects = $this->model->table()->getGroupProjects(
@@ -267,7 +267,7 @@ class Projects extends Plugin
             require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
             // Model
-            $model = new Components\Projects\Models\Project();
+            $model = new \Components\Projects\Models\Project();
 
             // Get group projects
             $projects = $model->table()->getGroupProjects(
@@ -282,7 +282,7 @@ class Projects extends Plugin
                         continue;
                     }
 
-                    $model = new Components\Projects\Models\Project($project->id);
+                    $model = new \Components\Projects\Models\Project($project->id);
                     $model->set('state', 3);
                     $model->store(false);
 
@@ -410,7 +410,7 @@ class Projects extends Plugin
 
         // Add the post to each project
         foreach ($projects as $id) {
-            $project = new Components\Projects\Models\Project($id);
+            $project = new \Components\Projects\Models\Project($id);
 
             Event::trigger('projects.onSharedUpdate', array(
                 $project,

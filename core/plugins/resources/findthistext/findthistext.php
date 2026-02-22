@@ -152,7 +152,7 @@ class Findthistext extends Plugin
 
         // If we have resolver set vars for creating open urls
         if ($resolver != null) {
-            $openUrl = new stdClass();
+            $openUrl = new \stdClass();
             $openUrl->link = $resolver->baseURL;
             $openUrl->text = $resolver->linkText;
             $openUrl->icon = $resolver->linkIcon;

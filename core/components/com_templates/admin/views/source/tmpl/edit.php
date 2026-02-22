@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 Request::setVar('hidemainmenu', true);
 
-$canDo = Components\Templates\Helpers\Utilities::getActions();
+$canDo = \Components\Templates\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_EDIT_FILE'), 'thememanager');
 

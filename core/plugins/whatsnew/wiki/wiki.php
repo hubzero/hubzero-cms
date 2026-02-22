@@ -65,19 +65,19 @@ class Wiki extends Plugin
         include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
-        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
-        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
+        \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
+        \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
         if (!$limit) {
-            return Components\Wiki\Models\Page::all()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            return \Components\Wiki\Models\Page::all()
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->where('created', '>=', $period->cStartDate)
                 ->where('created', '<', $period->cEndDate)
                 ->order('created', 'desc')
                 ->count();
         } else {
-            $pages = Components\Wiki\Models\Page::all()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            $pages = \Components\Wiki\Models\Page::all()
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->order('created', 'desc')
                 ->where('created', '>=', $period->cStartDate)
                 ->where('created', '<', $period->cEndDate)
@@ -88,7 +88,7 @@ class Wiki extends Plugin
             $rows = array();
 
             foreach ($pages as $page) {
-                $row = new stdClass();
+                $row = new \stdClass();
                 $row->title = $page->title;
                 $row->href = Route::url($page->link());
                 $row->text = strip_tags($page->version->get('pagehtml', ''));

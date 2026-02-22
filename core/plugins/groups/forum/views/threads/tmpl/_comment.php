@@ -163,7 +163,7 @@ if ($this->comment->isReported()) {
 
             <div class="comment-attachments">
                 <?php
-                $publishedState = Components\Forum\Models\Attachment::STATE_PUBLISHED;
+                $publishedState = \Components\Forum\Models\Attachment::STATE_PUBLISHED;
                 $attachments = $this->comment->attachments()
                     ->whereEquals('state', $publishedState)
                     ->rows();

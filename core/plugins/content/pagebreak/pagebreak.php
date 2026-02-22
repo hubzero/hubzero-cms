@@ -226,7 +226,7 @@ class Pagebreak extends Plugin
 
         // TOC first Page link.
         $class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
-        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
             $row->language
@@ -293,7 +293,7 @@ class Pagebreak extends Plugin
             $pnSpace = ' ';
         }
 
-        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
             $row->language

@@ -154,7 +154,7 @@ $this->js();
                             <?php
                             $this->js('customfields');
 
-                            $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
+                            $xml = \Components\Groups\Models\Orm\Field::toXml($this->customFields);
 
                             $formInfo = array('control' => 'customfields');
 

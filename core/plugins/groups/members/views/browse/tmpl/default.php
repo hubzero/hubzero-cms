@@ -46,7 +46,7 @@ $option = 'com_groups';
                     <?php if (
                     $this->authorized == 'manager'
                         || $this->authorized == 'admin'
-                        || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction(
+                        || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction(
                             $this->group,
                             'group.invite'
                         )
@@ -480,7 +480,7 @@ $option = 'com_groups';
 
                                 if ($this->filter == 'pending') {
                                     $database = App::get('db');
-                                    $row = new Components\Groups\Tables\Reason($database);
+                                    $row = new \Components\Groups\Tables\Reason($database);
                                     $row->loadReason($u->get('id'), $this->group->gidNumber);
 
                                     if ($row) {

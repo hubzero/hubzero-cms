@@ -42,7 +42,7 @@ class Event extends Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = htmlspecialchars_decode($m->content);
             $object->date  = Date::of($m->publish_up)->toLocal("F j, Y");

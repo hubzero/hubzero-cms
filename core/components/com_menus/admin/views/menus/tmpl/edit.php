@@ -11,7 +11,7 @@
 defined('_HZEXEC_') or die();
 
 $isNew = $this->item->isNew();
-$canDo = Components\Menus\Helpers\Menus::getActions();
+$canDo = \Components\Menus\Helpers\Menus::getActions();
 
 Toolbar::title(Lang::txt($isNew ? 'COM_MENUS_VIEW_NEW_MENU_TITLE' : 'COM_MENUS_VIEW_EDIT_MENU_TITLE'), 'menu');
 

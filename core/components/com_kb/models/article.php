@@ -234,7 +234,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function parentCategory()
     {
-        return $this->belongsToOne('Components\Categories\Models\Category', 'category');
+        return $this->belongsToOne('\Components\Categories\Models\Category', 'category');
     }
 
     /**

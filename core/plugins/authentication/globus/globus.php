@@ -132,7 +132,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
             $storedState = Session::get('state', null, 'globus');
             $state = Request::getVar('state');
             if (empty($state) || $storedState !== $state) {
-                throw new Exception('Mismatched state');
+                throw new \Exception('Mismatched state');
             }
             Session::clear('state', 'globus');
             $token = $this->globus()->getAccessToken('authorization_code', array('code' => Request::getString('code')));

@@ -238,7 +238,7 @@ class Announcements extends Plugin
 
         $no_html = Request::getInt('no_html', 0);
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->code = 0;
 
         // Incoming

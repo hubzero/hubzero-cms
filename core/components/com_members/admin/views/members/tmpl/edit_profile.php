@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
-$fields = Components\Members\Models\Profile\Field::all()
+$fields = \Components\Members\Models\Profile\Field::all()
     ->including(['options', function ($option) {
         $option
             ->select('*');
@@ -27,13 +27,13 @@ foreach ($fields as $field) {
 }
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($fields);
+$xml = \Components\Members\Models\Profile\Field::toXml($fields);
 
 $profiles = $this->profile->profiles()->ordered()->rows();
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    \Components\Members\Models\Profile::collect($profiles)
 );
 $data->set('tags', $this->profile->tags('string'));
 

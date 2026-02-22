@@ -336,7 +336,7 @@ class Doi extends Plugin
             $dom = new \DomDocument();
             $dom->loadXML($xml);
 
-            $xpath = new DOMXPath($dom);
+            $xpath = new \DOMXPath($dom);
             $xpath->registerNamespace('ns', "http://datacite.org/schema/kernel-4");
 
             $query = "//ns:relatedIdentifier[text()=" . "'" . $relatedIdentifierVal
@@ -512,7 +512,7 @@ class Doi extends Plugin
         if (empty($this->_configs)) {
             $params = Component::params('com_publications');
 
-            $configs = new stdClass();
+            $configs = new \stdClass();
             $configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
             $configs->dataciteServiceURL = $params->get('datacite_doi_service');
             $configs->dataciteUserPW = $params->get('datacite_doi_userpw');

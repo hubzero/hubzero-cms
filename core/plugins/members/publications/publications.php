@@ -138,7 +138,7 @@ class Publications extends Plugin
             'notauthorrole' => 'submitter',
             'sortby'        => $sort,
             'usergroups'    => array(),
-            'published'     => Components\Publications\Models\Orm\Version::STATE_PUBLISHED
+            'published'     => \Components\Publications\Models\Orm\Version::STATE_PUBLISHED
         );
 
         if ($filters['sortby'] == 'date') {
@@ -161,8 +161,8 @@ class Publications extends Plugin
         // Get categories
         $categories = $this->cats;
         if (!$categories) {
-            $categories = Components\Publications\Models\Orm\Category::all()
-                ->whereEquals('state', Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
+            $categories = \Components\Publications\Models\Orm\Category::all()
+                ->whereEquals('state', \Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
                 ->order('name', 'asc')
                 ->rows();
         }
@@ -205,11 +205,11 @@ class Publications extends Plugin
     {
         $database = App::get('db');
 
-        $query = Components\Publications\Models\Orm\Version::all();
+        $query = \Components\Publications\Models\Orm\Version::all();
 
         $r = $query->getTableName();
-        $p = Components\Publications\Models\Orm\Publication::blank()->getTableName();
-        $a = Components\Publications\Models\Orm\Author::blank()->getTableName();
+        $p = \Components\Publications\Models\Orm\Publication::blank()->getTableName();
+        $a = \Components\Publications\Models\Orm\Author::blank()->getTableName();
 
         $query
             ->select($r . '.*')
@@ -221,16 +221,17 @@ class Publications extends Plugin
 
         if (isset($filters['type'])) {
             if (!is_numeric($filters['type'])) {
-                $filters['type'] = Components\Publications\Models\Orm\Category::oneByAlias($filters['type'])->get('id');
+                $category = \Components\Publications\Models\Orm\Category::oneByAlias($filters['type']);
+                $filters['type'] = $category->get('id');
             }
             $query->whereEquals($p . '.category', $filters['type']);
         }
 
         if (isset($filters['tag']) && $filters['tag']) {
-            $to = Components\Tags\Models\Objct::blank()->getTableName();
-            $tg = Components\Tags\Models\Tag::blank()->getTableName();
+            $to = \Components\Tags\Models\Objct::blank()->getTableName();
+            $tg = \Components\Tags\Models\Tag::blank()->getTableName();
 
-            $cloud = new Components\Publications\Helpers\Tags($database);
+            $cloud = new \Components\Publications\Helpers\Tags($database);
             $tags = $cloud->parse($filters['tag']);
 
             $query->join($to, $to . '.objectid', $r . '.id');

@@ -323,8 +323,8 @@ class Reviews extends Plugin
             ->whereEquals('item_id', $this->obj->get('id'))
             ->whereEquals('parent', 0)
             ->whereIn('state', array(
-                Components\Courses\Models\Comment::STATE_PUBLISHED,
-                Components\Courses\Models\Comment::STATE_FLAGGED
+                \Components\Courses\Models\Comment::STATE_PUBLISHED,
+                \Components\Courses\Models\Comment::STATE_FLAGGED
             ))
             ->limit($this->params->get('display_limit', 25))
             ->ordered()

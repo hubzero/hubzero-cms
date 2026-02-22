@@ -511,7 +511,7 @@ class Forum extends Plugin
         if (file_exists($memberoptionFile)) {
             include_once $memberoptionFile;
 
-            $recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+            $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $this->group->get('gidNumber'),
                 User::get('id'),
                 'receive-forum-email'
@@ -1460,7 +1460,7 @@ class Forum extends Plugin
 
             try {
                 $encryptor = new \Hubzero\Mail\Token();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $allowEmailResponses = false;
             }
 
@@ -1785,7 +1785,7 @@ class Forum extends Plugin
             $sendEmail = $usersCategory->isNew() ? 0 : 1;
         } elseif ($memberoptions) {
             $groupId = $this->group->get('gidNumber');
-            $usersGroupSettings = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+            $usersGroupSettings = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $groupId,
                 $userId,
                 'receive-forum-email'
@@ -2234,7 +2234,7 @@ class Forum extends Plugin
         include_once $memberoptionPath . DS . 'models' . DS . 'memberoption.php';
 
         // Find the user's group settings, do they want to get email (0 or 1)?
-        $groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $groupMemberOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $this->group->get('gidNumber'),
             $tokenDetails[0],
             'receive-forum-email'

@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Document::setTitle(Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADER_' . $this->controller));
 Toolbar::title(Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADER_' . $this->controller), 'customexts');
@@ -73,25 +73,25 @@ $saveOrder = $listOrder == 'ordering';
                 <label for="filter_location"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></label>
                 <select name="filter_location" id="filter_location" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
+                    <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
                 </select>
 
                 <label for="filter_status"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></label>
                 <select name="filter_status" id="filter_status" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
+                    <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
                 </select>
 
                 <label for="filter_type"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></label>
                 <select name="filter_type" id="filter_type" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
+                    <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
                 </select>
 
                 <label for="filter_group"><?php echo Lang::txt('COM_INSTALLER_VALUE_FOLDER_SELECT');?></label>
                 <select name="filter_group" id="filter_group" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
+                    <?php echo Html::select('options', \Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
                 </select>
 
             </div>

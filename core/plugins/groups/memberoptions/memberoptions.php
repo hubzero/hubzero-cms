@@ -101,7 +101,7 @@ class Memberoptions extends Plugin
     protected function edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
     {
         // Load the options
-        $recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $group->get('gidNumber'),
             $user->get('id'),
             'receive-forum-email'
@@ -131,7 +131,7 @@ class Memberoptions extends Plugin
         $postSaveRedirect = Request::getString('postsaveredirect', '');
 
         // Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
-        $row = Plugins\Groups\Memberoptions\Models\Memberoption::blank()->set(array(
+        $row = \Plugins\Groups\Memberoptions\Models\Memberoption::blank()->set(array(
             'id'          => $recvEmailOptionID,
             'userid'      => $user->get('id'),
             'gidNumber'   => $group->get('gidNumber'),
@@ -188,7 +188,7 @@ class Memberoptions extends Plugin
         include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
 
         // see if they've already got something, they shouldn't, but you never know
-        $row = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $gidNumber,
             $userid,
             'receive-forum-email'

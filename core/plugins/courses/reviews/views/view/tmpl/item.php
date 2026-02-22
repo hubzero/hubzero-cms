@@ -310,8 +310,8 @@ switch ($this->comment->get('rating')) {
             <?php
             $replies = $this->comment->replies()
                 ->whereIn('state', array(
-                    Components\Courses\Models\Comment::STATE_PUBLISHED,
-                    Components\Courses\Models\Comment::STATE_FLAGGED
+                    \Components\Courses\Models\Comment::STATE_PUBLISHED,
+                    \Components\Courses\Models\Comment::STATE_FLAGGED
                 ))
                 ->ordered()
                 ->rows();

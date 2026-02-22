@@ -33,42 +33,42 @@ namespace Components\Dataviewer;
  * |-- migrations/              <-- Database migrations
  * |
  * |-- site/                    <-- Frontend (public-facing)
- * |   |-- Bootstrap.php        <-- Components\Dataviewer\Site\Bootstrap
- * |   |-- DvConfig.php         <-- Components\Dataviewer\Site\DvConfig
- * |   |-- Controller.php       <-- Components\Dataviewer\Site\Controller
+ * |   |-- Bootstrap.php        <-- \Components\Dataviewer\Site\Bootstrap
+ * |   |-- DvConfig.php         <-- \Components\Dataviewer\Site\DvConfig
+ * |   |-- Controller.php       <-- \Components\Dataviewer\Site\Controller
  * |   |-- router.php           <-- SEF URL routing (procedural, unchanged)
  * |   |-- html/                <-- JS, CSS, images (static assets)
  * |   |-- Lib/
- * |   |   |-- Auth.php         <-- Components\Dataviewer\Site\Lib\Auth
- * |   |   |-- Db.php           <-- Components\Dataviewer\Site\Lib\Db
- * |   |   |-- Dl.php           <-- Components\Dataviewer\Site\Lib\Dl
- * |   |   `-- Html.php         <-- Components\Dataviewer\Site\Lib\Html
+ * |   |   |-- Auth.php         <-- \Components\Dataviewer\Site\Lib\Auth
+ * |   |   |-- Db.php           <-- \Components\Dataviewer\Site\Lib\Db
+ * |   |   |-- Dl.php           <-- \Components\Dataviewer\Site\Lib\Dl
+ * |   |   `-- Html.php         <-- \Components\Dataviewer\Site\Lib\Html
  * |   |-- Modes/
- * |   |   |-- ModeDb.php       <-- Components\Dataviewer\Site\Modes\ModeDb
- * |   |   |-- ModeDs.php       <-- Components\Dataviewer\Site\Modes\ModeDs
- * |   |   `-- ModeDsl.php      <-- Components\Dataviewer\Site\Modes\ModeDsl
+ * |   |   |-- ModeDb.php       <-- \Components\Dataviewer\Site\Modes\ModeDb
+ * |   |   |-- ModeDs.php       <-- \Components\Dataviewer\Site\Modes\ModeDs
+ * |   |   `-- ModeDsl.php      <-- \Components\Dataviewer\Site\Modes\ModeDsl
  * |   |-- Filter/
- * |   |   |-- Csv.php          <-- Components\Dataviewer\Site\Filter\Csv
- * |   |   |-- Json.php         <-- Components\Dataviewer\Site\Filter\Json
- * |   |   |-- Kml.php          <-- Components\Dataviewer\Site\Filter\Kml
- * |   |   |-- Kmz.php          <-- Components\Dataviewer\Site\Filter\Kmz
- * |   |   `-- Shp.php          <-- Components\Dataviewer\Site\Filter\Shp
+ * |   |   |-- Csv.php          <-- \Components\Dataviewer\Site\Filter\Csv
+ * |   |   |-- Json.php         <-- \Components\Dataviewer\Site\Filter\Json
+ * |   |   |-- Kml.php          <-- \Components\Dataviewer\Site\Filter\Kml
+ * |   |   |-- Kmz.php          <-- \Components\Dataviewer\Site\Filter\Kmz
+ * |   |   `-- Shp.php          <-- \Components\Dataviewer\Site\Filter\Shp
  * |   `-- View/
- * |       |-- File.php         <-- Components\Dataviewer\Site\View\File
- * |       |-- Gallery.php      <-- Components\Dataviewer\Site\View\Gallery
- * |       `-- Spreadsheet.php  <-- Components\Dataviewer\Site\View\Spreadsheet
+ * |       |-- File.php         <-- \Components\Dataviewer\Site\View\File
+ * |       |-- Gallery.php      <-- \Components\Dataviewer\Site\View\Gallery
+ * |       `-- Spreadsheet.php  <-- \Components\Dataviewer\Site\View\Spreadsheet
  * |
  * `-- admin/                   <-- Backend (administrator)
- *     |-- Bootstrap.php        <-- Components\Dataviewer\Admin\Bootstrap
- *     |-- DvConfig.php         <-- Components\Dataviewer\Admin\DvConfig
- *     |-- Controller.php       <-- Components\Dataviewer\Admin\Controller
+ *     |-- Bootstrap.php        <-- \Components\Dataviewer\Admin\Bootstrap
+ *     |-- DvConfig.php         <-- \Components\Dataviewer\Admin\DvConfig
+ *     |-- Controller.php       <-- \Components\Dataviewer\Admin\Controller
  *     |-- Libs/
- *     |   |-- JsonFormat.php   <-- Components\Dataviewer\Admin\Libs\JsonFormat
- *     |   |-- Messages.php     <-- Components\Dataviewer\Admin\Libs\Messages
- *     |   `-- Security.php     <-- Components\Dataviewer\Admin\Libs\Security
+ *     |   |-- JsonFormat.php   <-- \Components\Dataviewer\Admin\Libs\JsonFormat
+ *     |   |-- Messages.php     <-- \Components\Dataviewer\Admin\Libs\Messages
+ *     |   `-- Security.php     <-- \Components\Dataviewer\Admin\Libs\Security
  *     `-- Tasks/
- *         |-- TaskList.php     <-- Components\Dataviewer\Admin\Tasks\TaskList
- *         |-- TaskConfig.php   <-- Components\Dataviewer\Admin\Tasks\TaskConfig
+ *         |-- TaskList.php     <-- \Components\Dataviewer\Admin\Tasks\TaskList
+ *         |-- TaskConfig.php   <-- \Components\Dataviewer\Admin\Tasks\TaskConfig
  *         |-- ConfigCurrent.php     <-- ...Tasks\ConfigCurrent
  *         |-- ConfigUpdate.php      <-- ...Tasks\ConfigUpdate
  *         |-- DataDefinition.php    <-- ...Tasks\DataDefinition
@@ -107,7 +107,7 @@ namespace Components\Dataviewer;
  *    the database mode (`db`, `ds`, or `dsl`), then resolves the mode class
  *    dynamically:
  *
- *        $modeClass = 'Components\Dataviewer\Site\Modes\Mode' . ucfirst($mode);
+ *        $modeClass = '\Components\Dataviewer\Site\Modes\Mode' . ucfirst($mode);
  *        $modeClass::get_conf($db_id);   // loads DB connection config
  *
  *    The `task` request parameter maps to a method on Controller:
@@ -118,13 +118,13 @@ namespace Components\Dataviewer;
  * 4. `task_view()` loads the data definition via `$modeClass::get_dd()`,
  *    checks authorization via `self::authorize()`, then resolves a View class:
  *
- *        $viewClass = 'Components\Dataviewer\Site\View\Spreadsheet';
+ *        $viewClass = '\Components\Dataviewer\Site\View\Spreadsheet';
  *        $viewClass::render($dd);
  *
  * 5. `task_data()` generates SQL via `Lib\Db::query_gen()`, executes it via
  *    `Lib\Db::get_results()`, then passes results through a Filter class:
  *
- *        $filterClass = 'Components\Dataviewer\Site\Filter\Json';
+ *        $filterClass = '\Components\Dataviewer\Site\Filter\Json';
  *        $filterClass::filter($result, $dd);
  *
  *
@@ -248,12 +248,12 @@ namespace Components\Dataviewer;
  * The class is named `DvConfig` (not `Config`) to avoid confusion with HubZero's
  * `\Config` facade (`Hubzero\Facades\Config`).
  *
- * Site-side (`Components\Dataviewer\Site\DvConfig`):
+ * Site-side (`\Components\Dataviewer\Site\DvConfig`):
  * - `DvConfig::$dv_conf`   -- Primary configuration array (settings, ACL, DB config)
  * - `DvConfig::$com_name`  -- Component name without `com_` prefix ("dataviewer")
  * - `DvConfig::$html_path` -- Relative path to the html/ assets directory
  *
- * Admin-side (`Components\Dataviewer\Admin\DvConfig`):
+ * Admin-side (`\Components\Dataviewer\Admin\DvConfig`):
  * - `DvConfig::$conf`      -- Primary admin configuration array
  * - `DvConfig::$com_name`  -- Component name without `com_` prefix
  *

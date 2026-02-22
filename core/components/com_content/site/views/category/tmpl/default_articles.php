@@ -100,7 +100,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                 <?php endif; ?>
                     <?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
                         <td class="list-title">
-                            <a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
+                            <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
                                 <?php echo $this->escape($article->title); ?></a>
 
                             <?php if ($article->params->get('access-edit')) : ?>
@@ -147,7 +147,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 $active = $menu->getActive();
                                 $itemId = $active->id;
                                 $link = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
-                                $returnURL = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language));
+                                $returnURL = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language));
                                 $fullURL = new Hubzero\Utility\Uri($link);
                                 $fullURL->setUriVar('return', base64_encode(urlencode($returnURL)));
                             ?>

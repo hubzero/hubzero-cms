@@ -77,7 +77,7 @@ class Redirect extends Plugin
             $current = rtrim($current);
 
             // See if the current url exists in the database as a redirect.
-            $link = Components\Redirect\Models\Link::all()
+            $link = \Components\Redirect\Models\Link::all()
                 ->whereEquals('old_url', $current)
                 ->row();
 
@@ -86,7 +86,7 @@ class Redirect extends Plugin
                 $currRel = $uri->toString(array('path', 'query', 'fragment'));
                 $currRel = '/' . trim($currRel, '/');
 
-                $link = Components\Redirect\Models\Link::all()
+                $link = \Components\Redirect\Models\Link::all()
                     ->whereEquals('old_url', $currRel)
                     ->orWhereEquals('old_url', ltrim($currRel, '/'))
                     ->row();
@@ -103,7 +103,7 @@ class Redirect extends Plugin
 
             $referer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 
-            $row = Components\Redirect\Models\Link::all()
+            $row = \Components\Redirect\Models\Link::all()
                 ->whereEquals('old_url', substr($current, 0, 255))
                 ->row();
 

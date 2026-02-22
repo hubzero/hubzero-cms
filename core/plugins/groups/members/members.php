@@ -234,7 +234,7 @@ class Members extends Plugin
                 try {
                     // Get messages plugin access level
                     $view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     // Plugin is not enabled.
                     $view->messages_acl = 'nobody';
                 }
@@ -472,7 +472,7 @@ class Members extends Plugin
                 }
 
                 // Remove record of reason wanting to join group
-                $reason = new Components\Groups\Tables\Reason($database);
+                $reason = new \Components\Groups\Tables\Reason($database);
                 $reason->deleteReason($targetuser->get('id'), $this->group->get('gidNumber'));
 
                 // Are they approved for membership?
@@ -1637,7 +1637,7 @@ class Members extends Plugin
         include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $id = Request::getInt('member', 0);
-        $profile = Components\Members\Models\Member::oneOrFail($id);
+        $profile = \Components\Members\Models\Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
             App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
@@ -1645,13 +1645,13 @@ class Members extends Plugin
 
         include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
-        $fields = Components\Members\Models\Profile\Field::all()
+        $fields = \Components\Members\Models\Profile\Field::all()
             ->including(['options', function ($option) {
                 $option
                     ->select('*')
                     ->ordered();
             }])
-            ->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+            ->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
             ->ordered()
             ->rows();
 

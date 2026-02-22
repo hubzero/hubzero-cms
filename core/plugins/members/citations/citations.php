@@ -332,7 +332,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Create view object
@@ -480,7 +480,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Set scope & scope id in save so no one can access hidden form inputs
@@ -628,7 +628,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Incoming
@@ -973,7 +973,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         //are we allowing importing
@@ -1009,7 +1009,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         Request::checkToken();
@@ -1040,7 +1040,7 @@ class Citations extends Plugin
 
         // make sure we dont have any file errors
         if ($file->getError() > 0) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
         }
 
         // call the plugins
@@ -1090,7 +1090,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         $citations_require_attention = $this->importer->readRequiresAttention();
@@ -1146,7 +1146,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         Request::checkToken();
@@ -1237,7 +1237,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Get the session object

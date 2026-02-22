@@ -142,17 +142,17 @@ class Points extends Plugin
                 $entry = \Hubzero\Bank\Account::oneByUserId($user['id']);
 
                 if (!$entry->destroy()) {
-                    throw new Exception($entry->getError());
+                    throw new \Exception($entry->getError());
                 }
 
                 $transactions = \Hubzero\Bank\Transaction::all()->whereEquals('uid', $user['id']);
 
                 foreach ($transactions->rows() as $row) {
                     if (!$row->destroy()) {
-                        throw new Exception($row->getError());
+                        throw new \Exception($row->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

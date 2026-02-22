@@ -51,14 +51,14 @@ class HtmlIcon
 
             $base     = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
-            $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+            $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $article->slug,
                 $article->catid,
                 $article->language
             );
             $link     = $base . Route::url($articleRoute, false);
             $url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template
-                . '&link=' . Components\Mailto\Site\Helpers\Mailto::addLink($link);
+                . '&link=' . \Components\Mailto\Site\Helpers\Mailto::addLink($link);
 
             $status = 'width=400,height=350,menubar=yes,resizable=yes';
 
@@ -158,7 +158,7 @@ class HtmlIcon
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function print_popup($article, $params, $attribs = array())
     {
-        $url  = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $url  = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $article->slug,
             $article->catid,
             $article->language

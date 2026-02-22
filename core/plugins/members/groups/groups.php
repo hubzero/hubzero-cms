@@ -92,7 +92,7 @@ class Groups extends Plugin
                 continue;
             }
 
-            $group = new stdClass();
+            $group = new \stdClass();
             $group->gidNumber = $g->gidNumber;
             $group->published = $g->published;
             $group->approved = $g->approved;

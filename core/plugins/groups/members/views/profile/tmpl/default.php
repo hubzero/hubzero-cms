@@ -19,11 +19,11 @@ $isUser   = false;
 $profiles = $this->profile->profiles()->ordered()->rows();
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
+$xml = \Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    \Components\Members\Models\Profile::collect($profiles)
 );
 
 // Create a new form
@@ -136,7 +136,7 @@ foreach ($profiles as $profile) {
             <?php foreach ($this->fields as $field) : ?>
                 <?php
                 if (!isset($fields[$field->get('name')])) {
-                    $fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+                    $fields[$field->get('name')] = \Components\Members\Models\Profile::blank();
                     $fields[$field->get('name')]->set('access', 1);
                 }
 

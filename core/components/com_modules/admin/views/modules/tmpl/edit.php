@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 $isNew      = ($this->item->id == 0);
 $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
-$canDo      = Components\Modules\Helpers\Modules::getActions();
+$canDo      = \Components\Modules\Helpers\Modules::getActions();
 $item       = $this->get('Item');
 
 Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)), 'module');

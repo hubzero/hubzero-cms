@@ -1240,7 +1240,7 @@ class Html extends Obj
     public static function listDirHtml($dir = null, $currentDir = '')
     {
         if ($dir == null) {
-            $dir = new stdClass();
+            $dir = new \stdClass();
         }
 
         $leftMargin = ($dir->depth * 15) . 'px';

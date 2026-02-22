@@ -28,7 +28,7 @@ $ratings = \Components\Courses\Models\Comment::all()
     ->whereEquals('item_type', 'courses')
     ->whereEquals('parent', 0)
     ->whereEquals('state', array(
-        Components\Courses\Models\Comment::STATE_PUBLISHED
+        \Components\Courses\Models\Comment::STATE_PUBLISHED
     ))
     ->rows();
 

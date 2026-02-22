@@ -203,8 +203,8 @@ $isEmpty = $noFilters && !$rows->count();
                                                 <?php
                                                 $comments = $row->comments()
                                                     ->whereIn('state', array(
-                                                        Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                                        Components\Blog\Models\Comment::STATE_FLAGGED
+                                                        \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                                                        \Components\Blog\Models\Comment::STATE_FLAGGED
                                                     ))
                                                     ->count();
                                                 echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>

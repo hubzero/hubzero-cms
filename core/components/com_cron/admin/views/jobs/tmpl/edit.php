@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Cron\Helpers\Permissions::getActions('component');
+$canDo = \Components\Cron\Helpers\Permissions::getActions('component');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

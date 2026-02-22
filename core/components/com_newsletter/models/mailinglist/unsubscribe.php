@@ -53,7 +53,7 @@ class Unsubscribe extends Relational
      */
     public function mailinglist()
     {
-        return $this->belongsToOne('Components\\Newsletter\\Models\\Mailinglist', 'mid');
+        return $this->belongsToOne('\Components\\Newsletter\\Models\\Mailinglist', 'mid');
     }
 
     /**

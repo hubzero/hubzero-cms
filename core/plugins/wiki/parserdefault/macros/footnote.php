@@ -40,7 +40,7 @@ class FootNote extends WikiMacro
         static $wm;
 
         if (!is_object($wm)) {
-            $wm = new stdClass();
+            $wm = new \stdClass();
             $wm->footnotes = array();
             $wm->footnotes_notes = array();
             $wm->footnotes_count = 0;
@@ -74,7 +74,7 @@ class FootNote extends WikiMacro
 
             $i = count($wm->footnotes) + 1;
 
-            $footnote = new stdClass();
+            $footnote = new \stdClass();
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
             $footnote->refs    = array(

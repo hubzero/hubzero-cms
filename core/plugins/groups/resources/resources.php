@@ -442,7 +442,7 @@ class Resources extends Plugin
 
         if (!is_array($this->_cats)) {
             // Get categories
-            $this->_cats = Components\Resources\Models\Type::getMajorTypes();
+            $this->_cats = \Components\Resources\Models\Type::getMajorTypes();
         }
         $categories = $this->_cats;
 
@@ -525,7 +525,7 @@ class Resources extends Plugin
         // Get categories
         $categories = $this->_cats;
         if (!is_array($categories)) {
-            $categories = Components\Resources\Models\Type::getMajorTypes();
+            $categories = \Components\Resources\Models\Type::getMajorTypes();
         }
 
         // Normalize the category names

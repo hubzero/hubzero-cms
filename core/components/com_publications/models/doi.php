@@ -225,7 +225,7 @@ class Doi extends Obj
     /**
      * Map publication object to DOI fields
      *
-     * @param   object  $pub  Instance of Components\Publications\Models\Publication
+     * @param   object  $pub  Instance of \Components\Publications\Models\Publication
      * @return  void
      */
     public function mapPublication($pub = null)

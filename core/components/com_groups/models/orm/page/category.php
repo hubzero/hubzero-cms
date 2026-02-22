@@ -53,7 +53,7 @@ class Category extends Relational
      */
     public function group()
     {
-        return $this->belongsToOne('Components\Groups\Models\Orm\Group', 'gidNumber');
+        return $this->belongsToOne('\Components\Groups\Models\Orm\Group', 'gidNumber');
     }
 
     /**
@@ -63,6 +63,6 @@ class Category extends Relational
      */
     public function pages()
     {
-        return $this->oneToMany('Components\Groups\Models\Orm\Page', 'category');
+        return $this->oneToMany('\Components\Groups\Models\Orm\Page', 'category');
     }
 }

@@ -436,13 +436,13 @@ class CartMessenger
         $mailMessage = Date::getRoot() . "\n";
 
         if ($errorType == 'POSTBACK') {
-            $mailSubject = ': Error processing postback payment.';
+            $mailSubject = ': \Error processing postback payment.';
             $mailMessage = 'There was an error processing payment postback:' . "\n\n";
         } elseif ($errorType == 'LOG') {
-            $mailSubject = ': Error logging payment postback information.';
+            $mailSubject = ': \Error logging payment postback information.';
             $mailMessage = 'Log file is not writable.' . "\n\n";
         } elseif ($errorType == 'NO_LOG') {
-            $mailSubject = ': Error logging payment postback information.';
+            $mailSubject = ': \Error logging payment postback information.';
             $mailMessage = 'Log file does not exist' . "\n\n";
         } else {
             $mailSubject = 'Cart error';

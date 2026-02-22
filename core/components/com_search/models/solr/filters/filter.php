@@ -132,7 +132,7 @@ class Filter extends Relational
         if ($data && count($data) > 0) {
             foreach ($data as $row) {
                 $filterName = ucfirst(strtolower($row->type . 'filter'));
-                $className = 'Components\Search\Models\Solr\Filters\\' . $filterName;
+                $className = '\Components\Search\Models\Solr\Filters\\' . $filterName;
                 if (class_exists($className)) {
                     $rows->push($className::newFromResults($row));
                 } else {

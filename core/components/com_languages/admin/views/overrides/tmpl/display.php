@@ -9,7 +9,7 @@
  */
 
 // Get the results for each action
-$canDo = Components\Languages\Helpers\Utilities::getActions();
+$canDo = \Components\Languages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_TITLE'), 'langmanager');
 

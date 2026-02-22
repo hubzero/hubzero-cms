@@ -25,7 +25,7 @@ class SolariumBoostQueries
             $args,
             'query',
             new MockProxy([
-                'class' => 'Components\Search\Helpers\SolariumBoostQuery'
+                'class' => '\Components\Search\Helpers\SolariumBoostQuery'
             ])
         );
     }

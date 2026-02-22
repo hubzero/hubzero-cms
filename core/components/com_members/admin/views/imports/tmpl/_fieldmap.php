@@ -119,7 +119,7 @@ if ($this->import->get('id')) { ?>
                                 <?php
                                 include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
-                                $fields = Components\Members\Models\Profile\Field::all()
+                                $fields = \Components\Members\Models\Profile\Field::all()
                                     ->ordered()
                                     ->rows();
 

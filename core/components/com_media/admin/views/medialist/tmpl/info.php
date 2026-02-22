@@ -36,12 +36,12 @@ endif;
                     <?php if ($this->data['type'] == 'img') : ?>
                         <div class="media-thumb img-preview <?php echo Filesystem::extension($this->data['name']); ?>" title="<?php echo $this->escape($this->data['name']); ?>" >
                             <span class="media-preview-shim"></span><!--
-                            --><img src="<?php echo COM_MEDIA_BASEURL . $this->data['path']; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="<?php echo ($this->data['width'] < 260) ? $this->data['width'] : '260'; ?>" />
+                            --><img src="<?php echo COM_MEDIA_BASEURL . $this->data['path']; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="<?php echo ($this->data['width'] < 260) ? $this->data['width'] : '260'; ?>" />
                         </div>
                     <?php else : ?>
                         <div class="media-thumb doc-item <?php echo Filesystem::extension($this->data['name']); ?>" title="<?php echo $this->escape($this->data['name']); ?>" >
                             <span class="media-preview-shim"></span><!--
-                            --><img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="80" />
+                            --><img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="80" />
                         </div>
                     <?php endif; ?>
                 </div>

@@ -15,7 +15,7 @@ $this->css();
 
             $p = $db->loadResult();
 
-            $publication = new Components\Publications\Models\Publication($p, 'default', $v);
+            $publication = new \Components\Publications\Models\Publication($p, 'default', $v);
             ?>
             <h3 class="section-header">
                 <?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FROM'); ?>

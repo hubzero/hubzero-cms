@@ -294,7 +294,7 @@ class Team extends Plugin
 
         $userId = User::getInstance()->get('id');
         $projectId = $this->model->get('id');
-        $view->currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
+        $view->currentUser = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
         $view->count_groups = $groups ? count($groups) : 0;
         $view->params = $this->model->params;
         $view->option = $this->_option;
@@ -847,10 +847,10 @@ class Team extends Plugin
         Request::checkToken('get');
         $projectId = $this->model->get('id');
         $userId = User::getInstance()->get('id');
-        $currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
+        $currentUser = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
         $ownerId = Request::getInt('owner', 0);
         if ($currentUser->isManager() && $ownerId != 0) {
-            $owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
+            $owner = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
             $owner->set('status', 1);
             $owner->set('added', Date::of()->toSql());
             if ($owner->save()) {
@@ -880,11 +880,11 @@ class Team extends Plugin
         Request::checkToken('get');
         $projectId = $this->model->get('id');
         $userId = User::getInstance()->get('id');
-        $currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
+        $currentUser = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
         $ownerId = Request::getInt('owner', 0);
         $confirm = Request::getInt('confirm', 0);
         if ($currentUser->isManager() && $ownerId != 0) {
-            $owner = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
+            $owner = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
             if ($confirm != 1) {
                 $view = new \Hubzero\Plugin\View(
                     array(

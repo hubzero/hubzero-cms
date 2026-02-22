@@ -51,16 +51,16 @@ endif;
 $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 
 // Find what links to the current page
-$l = Components\Wiki\Models\Link::blank()->getTableName();
-$p = Components\Wiki\Models\Page::blank()->getTableName();
+$l = \Components\Wiki\Models\Link::blank()->getTableName();
+$p = \Components\Wiki\Models\Page::blank()->getTableName();
 
-$rows = Components\Wiki\Models\Page::all()
+$rows = \Components\Wiki\Models\Page::all()
     ->select($p . '.*')
     ->select($l . '.timestamp')
     ->join($l, $l . '.scope_id', $p . '.id', 'inner')
     ->whereEquals($p . '.scope', $page->get('scope'))
     ->whereEquals($p . '.scope_id', $page->get('scope_id'))
-    ->whereEquals($p . '.state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+    ->whereEquals($p . '.state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
     ->whereEquals($l . '.scope', 'internal')
     ->whereEquals($l . '.scope_id', $page->get('id'))
     ->order($sort, $dir)

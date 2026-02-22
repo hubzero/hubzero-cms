@@ -63,6 +63,6 @@ class History extends Relational
      */
     public function member()
     {
-        return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
+        return $this->belongsToOne('\Components\Members\Models\Member', 'user_id');
     }
 }

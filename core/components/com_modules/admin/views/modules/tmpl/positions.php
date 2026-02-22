@@ -37,17 +37,17 @@ $type      = $this->filters['type'];
             <div class="col span7">
                 <select name="filter_state" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
-                    <?php echo Html::select('options', Components\Modules\Helpers\Modules::templateStates(), 'value', 'text', $state, true);?>
+                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::templateStates(), 'value', 'text', $state, true);?>
                 </select>
 
                 <select name="filter_type" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE'); ?></option>
-                    <?php echo Html::select('options', Components\Modules\Helpers\Modules::types(), 'value', 'text', $type, true);?>
+                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::types(), 'value', 'text', $type, true);?>
                 </select>
 
                 <select name="filter_template" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE'); ?></option>
-                    <?php echo Html::select('options', Components\Modules\Helpers\Modules::templates($clientId), 'value', 'text', $template, true);?>
+                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::templates($clientId), 'value', 'text', $template, true);?>
                 </select>
             </div>
         </div>

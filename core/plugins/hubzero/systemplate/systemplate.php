@@ -27,7 +27,7 @@ class Systemplate extends Plugin
             return;
         }
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'template';
         $response->label = 'Template';
         $response->data  = array();
@@ -97,7 +97,7 @@ class Systemplate extends Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

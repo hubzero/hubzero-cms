@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Wiki\Helpers\Permissions::getActions('comment');
+$canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

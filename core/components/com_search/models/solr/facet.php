@@ -67,7 +67,7 @@ class Facet extends Relational
     /**
      * Get parent facet
      *
-     * @return  object  Components\Search\Models\Solr\Facet
+     * @return  object  \Components\Search\Models\Solr\Facet
      */
     public function parentFacet()
     {

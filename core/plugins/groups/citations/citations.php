@@ -951,7 +951,7 @@ class Citations extends Plugin
 
             $params = json_decode($this->group->get('params'));
             if (!is_object($params)) {
-                $params = new stdClass();
+                $params = new \stdClass();
             }
 
             // craft a clever name

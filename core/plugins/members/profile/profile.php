@@ -119,7 +119,7 @@ class Profile extends Plugin
 
         $xreg = null;
 
-        $fields = Components\Members\Models\Profile\Field::all()
+        $fields = \Components\Members\Models\Profile\Field::all()
             ->including(
                 [
                 'options',
@@ -134,7 +134,7 @@ class Profile extends Plugin
             ->where(
                 'action_edit',
                 '!=',
-                Components\Members\Models\Profile\Field::STATE_HIDDEN
+                \Components\Members\Models\Profile\Field::STATE_HIDDEN
             )
             ->ordered()
             ->rows();
@@ -157,7 +157,7 @@ class Profile extends Plugin
             // Validate profile fields
             $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
             $form->load(
-                Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
+                \Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
             );
             $form->bind(new \Hubzero\Config\Registry($profile));
 
@@ -300,7 +300,7 @@ class Profile extends Plugin
             //get request vars
             $addressId = Request::getInt('addressid', 0);
 
-            $address = Components\Members\Models\Address::oneOrNew($addressId);
+            $address = \Components\Members\Models\Address::oneOrNew($addressId);
         }
 
         //set vars for view
@@ -326,7 +326,7 @@ class Profile extends Plugin
         $data['uidNumber'] = User::get('id');
 
         // set up objects
-        $address = Components\Members\Models\Address::blank()->set($data);
+        $address = \Components\Members\Models\Address::blank()->set($data);
 
         // attempt to save
         if (!$address->save()) {
@@ -357,7 +357,7 @@ class Profile extends Plugin
         $addressId = Request::getInt('addressid', 0);
 
         // set up objects
-        $address = Components\Members\Models\Address::oneOrNew($addressId);
+        $address = \Components\Members\Models\Address::oneOrNew($addressId);
 
         // make sure we have a valid member address object
         if (!$address->get('id')) {

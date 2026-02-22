@@ -24,7 +24,7 @@ class Support extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'support';
 
         $obj->events = array(

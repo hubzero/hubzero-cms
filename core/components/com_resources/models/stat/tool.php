@@ -81,6 +81,6 @@ class Tool extends Relational
      */
     public function resource()
     {
-        return $this->belongsToOne('Components\Resources\Models\Entry', 'resid');
+        return $this->belongsToOne('\Components\Resources\Models\Entry', 'resid');
     }
 }

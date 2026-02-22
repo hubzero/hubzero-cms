@@ -86,7 +86,7 @@ class Comment extends Relational
      */
     public function page()
     {
-        return $this->belongsToOne('Components\Wiki\Models\Page', 'page_id');
+        return $this->belongsToOne('\Components\Wiki\Models\Page', 'page_id');
     }
 
     /**

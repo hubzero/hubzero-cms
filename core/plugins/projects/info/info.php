@@ -82,11 +82,11 @@ class Info extends Plugin
 
         // Are we returning HTML?
         if ($returnhtml) {
-            $fields = Components\Projects\Models\Orm\Description\Field::all()
+            $fields = \Components\Projects\Models\Orm\Description\Field::all()
                 ->order('ordering', 'ASC')
                 ->rows();
 
-            $projectDescription = Components\Projects\Models\Orm\Description::all()
+            $projectDescription = \Components\Projects\Models\Orm\Description::all()
                 ->where('project_id', '=', $model->get('id'))
                 ->rows();
 
@@ -94,7 +94,7 @@ class Info extends Plugin
             foreach ($fields as $field) {
                 foreach ($projectDescription as $description) {
                     if ($description->description_key == $field->name) {
-                        $f = new stdClass();
+                        $f = new \stdClass();
                         $f->label = $field->label;
                         $f->value = $description->description_value;
                         array_push($info, $f);
@@ -127,11 +127,11 @@ class Info extends Plugin
             return;
         }
 
-        $fields = Components\Projects\Models\Orm\Description\Field::all()
+        $fields = \Components\Projects\Models\Orm\Description\Field::all()
             ->order('ordering', 'ASC')
             ->rows();
 
-        $projectDescription = Components\Projects\Models\Orm\Description::all()
+        $projectDescription = \Components\Projects\Models\Orm\Description::all()
             ->where('project_id', '=', $model->get('id'))
             ->rows();
 
@@ -139,7 +139,7 @@ class Info extends Plugin
         foreach ($fields as $field) {
             foreach ($projectDescription as $description) {
                 if ($description->description_key == $field->name) {
-                    $f = new stdClass();
+                    $f = new \stdClass();
                     $f->label = $field->label;
                     $f->value = $description->description_value;
                     array_push($info, $f);

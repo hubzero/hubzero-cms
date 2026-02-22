@@ -72,7 +72,7 @@ class Importer
 
         // anonymous function to get adapters
         $isAdapterClass = function ($class) {
-            return (in_array('Components\Resources\Import\Interfaces\Adapter', class_implements($class)));
+            return (in_array('\Components\Resources\Import\Interfaces\Adapter', class_implements($class)));
         };
 
         // set our adapters (any declared class implementing the ResourcesImportInterface)

@@ -12,7 +12,7 @@
 defined('_HZEXEC_') or die();
 
 $isNew = empty($this->item->lang_id);
-$canDo = Components\Languages\Helpers\Utilities::getActions();
+$canDo = \Components\Languages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt($isNew ? 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE' : 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_EDIT_TITLE'), 'langmanager');
 

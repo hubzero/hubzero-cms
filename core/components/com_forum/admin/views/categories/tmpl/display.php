@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Forum\Helpers\Permissions::getActions('category');
+$canDo = \Components\Forum\Helpers\Permissions::getActions('category');
 
 Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_CATEGORIES'), 'forum');
 if ($canDo->get('core.admin')) {

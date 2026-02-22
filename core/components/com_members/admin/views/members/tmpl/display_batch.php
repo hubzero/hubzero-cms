@@ -29,7 +29,7 @@ $options = array(
                     <label id="batch-choose-action-lbl" for="batch-choose-action"><?php echo Lang::txt('COM_MEMBERS_BATCH_GROUP') ?></label>
                     <select name="batch[group_id]" class="inputbox" id="batch-group-id">
                         <option value=""><?php echo Lang::txt('JSELECT') ?></option>
-                        <?php echo Html::select('options', Components\Members\Helpers\Admin::getAccessGroups()); //Html::user('groups', User::get('isRoot'))); ?>
+                        <?php echo Html::select('options', \Components\Members\Helpers\Admin::getAccessGroups()); //Html::user('groups', User::get('isRoot'))); ?>
                     </select>
                 </div>
 

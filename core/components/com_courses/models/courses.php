@@ -127,7 +127,7 @@ class Courses extends Obj
             return $this->_tbl->getCount($filters);
         }
 
-        if (!($this->_courses instanceof Iterator) || $clear) {
+        if (!($this->_courses instanceof \Iterator) || $clear) {
             if (($results = $this->_tbl->getRecords($filters))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Course($result);
@@ -136,7 +136,7 @@ class Courses extends Obj
                 $results = array();
             }
 
-            $this->_courses = new Iterator($results);
+            $this->_courses = new \Iterator($results);
         }
 
         return $this->_courses;
@@ -159,7 +159,7 @@ class Courses extends Obj
             $results = array();
         }
 
-        $courses = new Iterator($results);
+        $courses = new \Iterator($results);
 
         return $courses;
     }

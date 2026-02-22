@@ -11,7 +11,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Menus\Helpers\Menus::getActions();
+$canDo = \Components\Menus\Helpers\Menus::getActions();
 
 Toolbar::title(Lang::txt('COM_MENUS_VIEW_ITEMS_TITLE'), 'menumgr');
 

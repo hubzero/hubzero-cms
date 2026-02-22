@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Admin::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions('component');
 
 $text = ($this->profile->isNew() ? Lang::txt('JACTION_CREATE') : Lang::txt('JACTION_EDIT'));
 

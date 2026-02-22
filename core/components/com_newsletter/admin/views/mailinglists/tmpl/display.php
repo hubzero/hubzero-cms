@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
+$canDo = \Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
 
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list');
 if ($canDo->get('core.create')) {

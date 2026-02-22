@@ -105,7 +105,7 @@ if ($mode != 'preview') {
 
                         if (floatval($totalhours) < floatval($maxhours)) {
                             $lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->path);
-                            $html = Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+                            $html = \Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
                             $html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
                             $html .= '<p class="info">Read the <a href="' . Route::url($this->model->link() . '&active=windowstools') . '">setup/instructions</a>.</p>';
 
@@ -142,7 +142,7 @@ if ($mode != 'preview') {
 								});
 							');
                         } else {
-                            $html  = Components\Resources\Helpers\Html::primaryButton('', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+                            $html  = \Components\Resources\Helpers\Html::primaryButton('', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
                             $html .= 'AppStream tool usage over limit. Please contact the system administrator.';
                             $html .= "<br/>" . $totalUsageFigure[0]->totalhours . "/" . $maxhours;
                         }

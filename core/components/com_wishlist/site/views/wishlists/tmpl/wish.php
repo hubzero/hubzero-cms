@@ -640,8 +640,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 <?php
                 $comments = $this->wish->comments()
                     ->whereIn('state', array(
-                        Components\Wishlist\Models\Comment::STATE_PUBLISHED,
-                        Components\Wishlist\Models\Comment::STATE_FLAGGED
+                        \Components\Wishlist\Models\Comment::STATE_PUBLISHED,
+                        \Components\Wishlist\Models\Comment::STATE_FLAGGED
                     ))
                 ->rows();
                 ?>

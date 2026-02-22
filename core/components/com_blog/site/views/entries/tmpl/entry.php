@@ -108,8 +108,8 @@ $first = $this->archive->entries(array(
                 <?php if ($this->row->get('allow_comments')) {
                     $comments = $this->row->comments()
                         ->whereIn('state', array(
-                            Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                            \Components\Blog\Models\Comment::STATE_FLAGGED
                         ))
                         ->total();
                     ?>
@@ -319,8 +319,8 @@ $first = $this->archive->entries(array(
         <?php
         $comments = $this->row->comments()
             ->whereIn('state', array(
-                Components\Blog\Models\Comment::STATE_PUBLISHED,
-                Components\Blog\Models\Comment::STATE_FLAGGED
+                \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                \Components\Blog\Models\Comment::STATE_FLAGGED
             ))
             ->whereEquals('parent', 0)
             ->ordered()
@@ -356,8 +356,8 @@ $first = $this->archive->entries(array(
                     $replyto = $this->row->comments()
                         ->whereEquals('id', Request::getInt('reply', 0))
                         ->whereIn('state', array(
-                            Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                            \Components\Blog\Models\Comment::STATE_FLAGGED
                         ))
                         ->row();
 

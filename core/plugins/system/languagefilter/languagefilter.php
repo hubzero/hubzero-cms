@@ -102,7 +102,7 @@ class Languagefilter extends Plugin
                 self::$lang_codes   = Lang::available('lang_code');
                 self::$default_lang = Component::params('com_languages')->get('site', 'en-GB');
                 self::$default_sef  = self::$lang_codes[self::$default_lang]->sef;
-                self::$homes        = Components\Languages\Helpers\Multilangstatus::getHomepages();
+                self::$homes        = \Components\Languages\Helpers\Multilangstatus::getHomepages();
 
                 $levels = User::getAuthorisedViewLevels();
                 foreach (self::$sefs as $sef => &$language) {

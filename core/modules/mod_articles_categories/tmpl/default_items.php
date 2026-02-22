@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die;
 foreach ($list as $item) : ?>
     <?php
     $catRoute = Route::url(
-        Components\Content\Site\Helpers\Route::getCategoryRoute($item->id)
+        \Components\Content\Site\Helpers\Route::getCategoryRoute($item->id)
     );
     ?>
     <li <?php if ($_SERVER['PHP_SELF'] == $catRoute) {

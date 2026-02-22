@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Permissions::getActions('component');
+$canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('JACTION_CREATE'), 'user');
 if ($canDo->get('core.edit')) {

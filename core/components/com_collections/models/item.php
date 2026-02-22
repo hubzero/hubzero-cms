@@ -657,7 +657,7 @@ class Item extends Base
 
                 // Filter available classes to just our collectibles
                 $collectibles = array_values(array_filter(get_declared_classes(), function ($class) {
-                    return (in_array('Components\\Collectionss\\Models\\Item', class_parents($class)));
+                    return (in_array('\Components\\Collectionss\\Models\\Item', class_parents($class)));
                 }));
             }
 

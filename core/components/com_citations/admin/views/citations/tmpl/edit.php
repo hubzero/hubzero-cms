@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Citations\Helpers\Permissions::getActions('citation');
+$canDo = \Components\Citations\Helpers\Permissions::getActions('citation');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 

@@ -266,7 +266,7 @@ $bdcolor = '#e1e1e1';
                     </div>
                     <?php
                     $attachments = $this->post->attachments()
-                        ->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+                        ->whereIn('state', array(\Components\Forum\Models\Post::STATE_PUBLISHED))
                         ->rows();
 
                     if ($attachments->count() > 0) { ?>

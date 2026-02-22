@@ -12,8 +12,8 @@
 defined('_HZEXEC_') or die();
 
 $database = App::get('db');
-$jt = new Components\Jobs\Tables\JobType($database);
-$jc = new Components\Jobs\Tables\JobCategory($database);
+$jt = new \Components\Jobs\Tables\JobType($database);
+$jc = new \Components\Jobs\Tables\JobCategory($database);
 
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->jobs[0]->keywords : 1;
@@ -42,7 +42,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
     <tbody>
     <?php
     for ($i = 0, $n = count($this->jobs); $i < $n; $i++) {
-        $model = new Components\Jobs\Models\Job($this->jobs[$i]);
+        $model = new \Components\Jobs\Models\Job($this->jobs[$i]);
 
         $closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00') ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
         if ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00' && $this->jobs[$i]->closedate < Date::toSql()) {

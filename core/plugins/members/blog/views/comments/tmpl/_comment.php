@@ -264,8 +264,8 @@ $replyLegend = Lang::txt(
                     $creator->select('*');
                 }])
                 ->whereIn('state', array(
-                    Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                    \Components\Blog\Models\Comment::STATE_FLAGGED
                 ))
                 ->ordered()
                 ->rows();

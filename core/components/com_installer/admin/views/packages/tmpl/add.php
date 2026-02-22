@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . 'ADD NEW PACKAGE', 'packages');
 
-$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 if ($canDo->get('core.create')) {
     Toolbar::custom('install', 'download', 'download', 'COM_INSTALLER_INSTALL_BUTTON', false);
     Toolbar::spacer();

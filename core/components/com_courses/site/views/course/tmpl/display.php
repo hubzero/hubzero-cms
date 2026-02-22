@@ -623,7 +623,7 @@ $this->css('course.css')
                 foreach ($instructors as $i) {
                     $this->view('_instructor')
                          ->set('biolength', 200)
-                         ->set('instructor', Components\Members\Models\Member::oneOrNew($i->get('user_id')))
+                         ->set('instructor', \Components\Members\Models\Member::oneOrNew($i->get('user_id')))
                          ->display();
                 }
                 ?>

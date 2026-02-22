@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$canDo = Components\Members\Helpers\Permissions::getActions('component');
+$canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('Members') . ': ' . Lang::txt('Plugins'), 'members');
 if ($canDo->get('core.edit.state')) {
@@ -41,7 +41,7 @@ $saveOrder = $listOrder == 'ordering';
         <div class="filter-select fltrt">
             <select name="filter_state" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
+                <?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
             </select>
 
             <select name="filter_access" class="inputbox filter filter-submit">

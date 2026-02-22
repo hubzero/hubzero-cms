@@ -319,7 +319,7 @@ class Ckeditor extends Plugin
         $this->params->merge($params);
 
         // Object to hold our final config
-        $config                                = new stdClass();
+        $config                                = new \stdClass();
         $config->versionCheck                  = false;
         $config->startupMode                   = 'wysiwyg';
         $config->tabSpaces                     = 4;
@@ -333,7 +333,7 @@ class Ckeditor extends Plugin
         $config->removePlugins                 = '';
         $config->resize_enabled                = true;
         $config->emailProtection               = '';
-        $config->iframe_attributes             = new stdClass();
+        $config->iframe_attributes             = new \stdClass();
         $config->protectedSource               = array(
             '/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi', '/<map[^>]*>(.|\n)*<\/map>/ig', '/<area([^>]*)\/?>/ig'
         );
@@ -440,7 +440,7 @@ class Ckeditor extends Plugin
             $config->removePlugins = 'elementspath';
         }
 
-        $config->wordcount = new stdClass();
+        $config->wordcount = new \stdClass();
         $config->wordcount->showRemaining = false;
         $config->wordcount->showParagraphs = false;
         $config->wordcount->showCharCount = false;
@@ -471,7 +471,7 @@ class Ckeditor extends Plugin
         }
 
         // Setup codemirror
-        $config->codemirror                         = new stdClass();
+        $config->codemirror                         = new \stdClass();
         $config->codemirror->autoFormatOnModeChange = false;
         $config->codemirror->autoCloseTags          = false;
         $config->codemirror->autoCloseBrackets      = false;

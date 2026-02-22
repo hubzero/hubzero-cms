@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Groups\Helpers\Permissions::getActions('component');
+$canDo = \Components\Groups\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS'), 'import');
 

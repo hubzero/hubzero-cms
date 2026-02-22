@@ -19,7 +19,7 @@ class LocalAdapter extends \League\Flysystem\Adapter\Local
      * @param   \SplFileInfo  $file  The original file info class
      * @return  array
      */
-    protected function mapFileInfo(SplFileInfo $file)
+    protected function mapFileInfo(\SplFileInfo $file)
     {
         $default = parent::mapFileInfo($file);
 

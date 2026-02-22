@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
+$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 Toolbar::title(Lang::txt('COM_BLOG_TITLE'), 'blog');
 if ($canDo->get('core.admin')) {
@@ -65,7 +65,7 @@ $formAction = Route::url(
             <div class="col span8 align-right">
                 <label for="filter-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label>
                 <?php
-                echo Components\Blog\Admin\Helpers\Html::scopes(
+                echo \Components\Blog\Admin\Helpers\Html::scopes(
                     $this->filters['scope'],
                     'scope',
                     'filter-scope',

@@ -145,8 +145,8 @@ class View extends AbstractView
                 $bits = explode('\\', __NAMESPACE__);
 
                 // Should match either:
-                //   Plugins\Folder\Element
-                //   Components\Folder\Plugins\Element
+                //   \Plugins\Folder\Element
+                //   \Components\Folder\Plugins\Element
                 $folder = strtolower($bits[1]);
             } else {
                 throw new Exception('Cannot get or parse view class name.', 500);
@@ -174,8 +174,8 @@ class View extends AbstractView
                 $bits = explode('\\', __NAMESPACE__);
 
                 // Should match either:
-                //   Plugins\Folder\Element
-                //   Components\Folder\Plugins\Element
+                //   \Plugins\Folder\Element
+                //   \Components\Folder\Plugins\Element
                 $element = strtolower($bits[2]);
 
                 if (strtolower($bits[0]) == 'components') {

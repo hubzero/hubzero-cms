@@ -219,7 +219,7 @@ class Loader implements LoaderInterface
         $nsType = self::toNamespacePart($plugin->type);
         $nsName = self::toNamespacePart($plugin->name);
 
-        // Namespaced: Plugins\{Type}\{Name}\{Name} (preferred)
+        // Namespaced: \Plugins\{Type}\{Name}\{Name} (preferred)
         $classNameN = 'Plugins\\' . $nsType . '\\' . $nsName . '\\' . $nsName;
         // Legacy: plg{type}{name} (BC — case-insensitive, covers PlgTypeName too)
         $classNameL = 'plg' . $plugin->type . $plugin->name;

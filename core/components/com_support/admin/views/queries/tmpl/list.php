@@ -29,7 +29,7 @@ if (count($this->folders) > 0) { ?>
                         echo ' class="active"';
                                   }?>>
                         <a class="query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tickets&show=' . $query->id . (intval($this->show) != $query->id ? '&search=' : '')); ?>">
-                            <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo Components\Support\Models\Ticket::countWithQuery($query, array()); ?></span>
+                            <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo \Components\Support\Models\Ticket::countWithQuery($query, array()); ?></span>
                         </a>
                         <span class="query-options">
                             <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">

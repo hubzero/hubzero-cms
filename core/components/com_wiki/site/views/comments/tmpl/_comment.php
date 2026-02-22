@@ -193,8 +193,8 @@ $this->comment->set('category', 'answercomment');
         if ($this->depth < $this->config->get('comments_depth', 3)) {
             $model = $this->comment->replies()
                 ->whereIn('state', array(
-                    Components\Wiki\Models\Comment::STATE_PUBLISHED,
-                    Components\Wiki\Models\Comment::STATE_FLAGGED
+                    \Components\Wiki\Models\Comment::STATE_PUBLISHED,
+                    \Components\Wiki\Models\Comment::STATE_FLAGGED
                 ));
             if ($this->version) {
                 $model->whereEquals('version', $this->version);

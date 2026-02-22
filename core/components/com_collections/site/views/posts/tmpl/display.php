@@ -145,7 +145,7 @@ if (!$no_html) {
                     <ol class="comments">
                     <?php
                     foreach ($item->comments() as $comment) {
-                        $cuser = Components\Members\Models\Member::oneOrNew($comment->created_by);
+                        $cuser = \Components\Members\Models\Member::oneOrNew($comment->created_by);
                         $cname = Lang::txt('JANONYMOUS');
                         if (!$comment->anonymous) {
                             $cname = $this->escape(stripslashes($cuser->get('name')));

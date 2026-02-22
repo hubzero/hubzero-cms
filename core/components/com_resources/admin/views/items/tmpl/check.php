@@ -89,7 +89,7 @@ Html::behavior('tooltip');
                                     </th>
                                     <td>
                                         <?php
-                                        $parents = Components\Resources\Models\Association::all()
+                                        $parents = \Components\Resources\Models\Association::all()
                                             ->whereEquals('child_id', $result->get('scope_id'))
                                             ->rows()
                                             ->fieldsByKey('parent_id');

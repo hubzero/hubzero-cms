@@ -55,7 +55,7 @@ class Type extends Relational
      */
     public function role()
     {
-        return $this->belongsToOne('Components\Resources\Models\Author\Role', 'role_id');
+        return $this->belongsToOne('\Components\Resources\Models\Author\Role', 'role_id');
     }
 
     /**
@@ -65,7 +65,7 @@ class Type extends Relational
      */
     public function type()
     {
-        return $this->belongsToOne('Components\Resources\Models\Type', 'type_id');
+        return $this->belongsToOne('\Components\Resources\Models\Type', 'type_id');
     }
 
     /**

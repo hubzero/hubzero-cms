@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Forum\Helpers\Permissions::getActions('section');
+$canDo = \Components\Forum\Helpers\Permissions::getActions('section');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

@@ -948,10 +948,10 @@ class Blog extends Plugin
                     $entry->set('state', 2);
 
                     if (!$entry->save()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }
@@ -985,10 +985,10 @@ class Blog extends Plugin
 
                 foreach ($entries as $entry) {
                     if (!$entry->destroy()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

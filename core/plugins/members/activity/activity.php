@@ -260,7 +260,7 @@ class Activity extends Plugin
         $success = Lang::txt('PLG_MEMBERS_ACTIVITY_RECORD_REMOVED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -332,7 +332,7 @@ class Activity extends Plugin
 
         if ($no_html)
         {
-            $response = new stdClass;
+            $response = new \stdClass;
             $response->success = true;
             $response->message = Lang::txt('PLG_MEMBERS_ACTIVITY_RECORDS_REMOVED');
             if ($err = $this->getError())
@@ -393,7 +393,7 @@ class Activity extends Plugin
             : Lang::txt('PLG_MEMBERS_ACTIVITY_RECORD_UNSTARRED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {

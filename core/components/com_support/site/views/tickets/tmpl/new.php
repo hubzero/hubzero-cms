@@ -215,13 +215,13 @@ endif;
                                 <select name="problem[status]" id="ticket-field-status" class="form-control">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
                                         <option value="0" selected="selected"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW'); ?></option>
-                                        <?php foreach (Components\Support\Models\Status::allOpen()->rows() as $status) : ?>
+                                        <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) : ?>
                                             <option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
                                         <option value="0"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-                                        <?php foreach (Components\Support\Models\Status::allClosed()->rows() as $status) : ?>
+                                        <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) : ?>
                                             <option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
                                         <?php endforeach; ?>
                                     </optgroup>

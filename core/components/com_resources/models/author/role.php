@@ -98,7 +98,7 @@ class Role extends Relational
     {
         $tbl = Type::blank()->getTableName();
 
-        return $this->manyToMany('Components\Resources\Models\Type', $tbl);
+        return $this->manyToMany('\Components\Resources\Models\Type', $tbl);
     }
 
     /**

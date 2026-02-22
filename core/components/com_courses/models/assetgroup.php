@@ -90,7 +90,7 @@ class Assetgroup extends Base
     {
         parent::__construct($oid);
 
-        $this->children = new Iterator(array());
+        $this->children = new \Iterator(array());
     }
 
     /**
@@ -234,7 +234,7 @@ class Assetgroup extends Base
      */
     public function assets($filters = array())
     {
-        if (!($this->_assets instanceof Iterator)) {
+        if (!($this->_assets instanceof \Iterator)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -259,7 +259,7 @@ class Assetgroup extends Base
                 $results = array();
             }
 
-            $this->_assets = new Iterator($results);
+            $this->_assets = new \Iterator($results);
         }
 
         return $this->_assets;
@@ -273,8 +273,8 @@ class Assetgroup extends Base
      */
     public function siblings(&$siblings)
     {
-        if (!($siblings instanceof Iterator)) {
-            $siblings = new Iterator($siblings);
+        if (!($siblings instanceof \Iterator)) {
+            $siblings = new \Iterator($siblings);
         }
         $this->_siblings = $siblings;
     }

@@ -202,7 +202,7 @@ else :
                 <label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
                 <select name="fields[folder_id]" id="field-folder_id">
                     <?php
-                    $folders = Components\Support\Models\QueryFolder::all()
+                    $folders = \Components\Support\Models\QueryFolder::all()
                         ->whereEquals('user_id', User::get('id'))
                         ->order('ordering', 'ASC')
                         ->rows();

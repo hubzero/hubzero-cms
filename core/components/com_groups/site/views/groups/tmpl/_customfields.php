@@ -3,7 +3,7 @@
 // phpcs:disable Generic.Files.LineLength.TooLong
 
     $this->js('customfields');
-    $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
+    $xml = \Components\Groups\Models\Orm\Field::toXml($this->customFields);
     $formInfo = array('control' => 'customfields');
     $form = new Hubzero\Form\Form('application', $formInfo);
     $form->load($xml);

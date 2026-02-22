@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 
 $link = $item->link('version');
 
-if ($item->get('state') == Components\Publications\Models\Orm\Version::STATE_DRAFT) :
+if ($item->get('state') == \Components\Publications\Models\Orm\Version::STATE_DRAFT) :
     $link = $item->link('edit');
 endif;
 

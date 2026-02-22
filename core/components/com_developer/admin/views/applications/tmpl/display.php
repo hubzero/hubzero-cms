@@ -12,7 +12,7 @@
 defined('_HZEXEC_') or die();
 
 // Get the permissions helper
-$canDo = Components\Developer\Helpers\Permissions::getActions('application');
+$canDo = \Components\Developer\Helpers\Permissions::getActions('application');
 
 // title & toolbar
 Toolbar::title(Lang::txt('COM_DEVELOPER') . ': ' . Lang::txt('COM_DEVELOPER_APPLICATIONS'));

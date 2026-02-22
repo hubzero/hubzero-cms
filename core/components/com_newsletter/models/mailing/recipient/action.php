@@ -53,7 +53,7 @@ class Action extends Relational
      */
     public function mailing()
     {
-        return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mailingid');
+        return $this->belongsToOne('\Components\\Newsletter\\Models\\Mailing', 'mailingid');
     }
 
     /**

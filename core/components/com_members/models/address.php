@@ -52,7 +52,7 @@ class Address extends Relational
      */
     public function member()
     {
-        return $this->belongsToOne('Components\Members\Models\Member', 'uidNumber');
+        return $this->belongsToOne('\Components\Members\Models\Member', 'uidNumber');
     }
 
     /**

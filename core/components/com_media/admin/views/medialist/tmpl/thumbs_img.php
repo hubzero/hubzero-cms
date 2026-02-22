@@ -39,7 +39,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
                 <div class="media-preview-inner">
                     <a href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" class="media-thumb doc-item img-preview <?php echo Filesystem::extension($this->currentImg['name']); ?>" title="<?php echo $this->escape($this->currentImg['name']); ?>">
                         <span class="media-preview-shim"></span><!--
-                        --><img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="160" />
+                        --><img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="160" />
                     </a>
                     <span class="media-options-btn"></span>
                 </div>

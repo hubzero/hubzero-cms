@@ -39,12 +39,12 @@ class Collections extends Plugin
         $pparams = Plugin::params('resources', 'collections');
         $collectionType = $pparams->get('collection_alias');
         $allowPublished = $pparams->get('collection_afterpublished');
-        $typeObj = Components\Resources\Models\Type::oneByAlias($collectionType);
+        $typeObj = \Components\Resources\Models\Type::oneByAlias($collectionType);
         if (!($typeObj) || !($typeObj->get('collection'))) {
             return false;
         }
         $parentIds = $resource->parents->fieldsByKey('id');
-        $resources = Components\Resources\Models\Entry::all();
+        $resources = \Components\Resources\Models\Entry::all();
         $resources->whereEquals('standalone', 1);
         $resources->whereEquals('type', $typeObj->get('id'));
         if (!$allowPublished) {

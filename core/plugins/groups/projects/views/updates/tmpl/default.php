@@ -64,7 +64,7 @@ $this->view('submenu', 'partials')
                                     <option value="0"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_ALL'); ?></option>
                                     <?php foreach ($this->projects as $project) { ?>
                                         <option value="<?php echo $project; ?>"><?php
-                                        $p = new Components\Projects\Models\Project($project);
+                                        $p = new \Components\Projects\Models\Project($project);
                                         echo $p->get('title');
                                         ?></option>
                                     <?php } ?>

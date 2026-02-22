@@ -240,7 +240,7 @@ class Application extends Relational
      */
     public function team()
     {
-        return $this->oneToMany('Components\Developer\Models\Application\Member', 'application_id');
+        return $this->oneToMany('\Components\Developer\Models\Application\Member', 'application_id');
     }
 
     /**

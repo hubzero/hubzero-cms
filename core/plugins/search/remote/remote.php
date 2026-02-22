@@ -45,7 +45,7 @@ class Remote extends Plugin
                 ]
             ]);
             $body = $response->getBody();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
@@ -53,10 +53,10 @@ class Remote extends Plugin
      * Triggers when the plugin is marked as diabled
      *
      * @param   string  $extension  the type of extension
-     * @param   Components\Plugins\Models\Plugin    $model  the model of the plugin being deactivated
+     * @param   \Components\Plugins\Models\Plugin    $model  the model of the plugin being deactivated
      * @return  void
      */
-    public function onExtensionAfterDelete($extension, Components\Plugins\Models\Plugin $model)
+    public function onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)
     {
         $className = strtolower(preg_replace('/([A-Z])/', '_$1', get_class($this)));
         if ($model->name === $className) {
@@ -64,7 +64,7 @@ class Remote extends Plugin
             $url = $params->get('app_url');
             $token = $params->get('app_token');
             if (!empty($url) && !empty($token)) {
-                $result = new stdClass();
+                $result = new \stdClass();
                 $this->sendSolrRequest($result, 'delete');
             }
         }

@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Cron\Helpers\Permissions::getActions('component');
+$canDo = \Components\Cron\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_CRON') . ': ' . Lang::txt('COM_CRON_RUN'), 'cron');
 

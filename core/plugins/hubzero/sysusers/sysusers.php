@@ -25,7 +25,7 @@ class Sysusers extends Plugin
     {
         $database = App::get('db');
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'users';
         $response->label = 'Users';
         $response->data  = array();
@@ -72,7 +72,7 @@ class Sysusers extends Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

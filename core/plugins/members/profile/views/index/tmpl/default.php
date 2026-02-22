@@ -54,15 +54,15 @@ require_once Component::path('com_members') . '/models/incremental/options.php';
 use Components\Members\Models\Profile\Field;
 
 $uid = (int)$this->profile->get('id');
-$incrOpts = new Components\Members\Models\Incremental\Options();
+$incrOpts = new \Components\Members\Models\Incremental\Options();
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 // Profile info
 $entries = $this->profile->profiles();
 
 $p = $entries->getTableName();
-$f = Components\Members\Models\Profile\Field::blank()->getTableName();
-$o = Components\Members\Models\Profile\Option::blank()->getTableName();
+$f = \Components\Members\Models\Profile\Field::blank()->getTableName();
+$o = \Components\Members\Models\Profile\Option::blank()->getTableName();
 
 $profiles = $entries
     ->select($p . '.*,' . $o . '.label')
@@ -72,11 +72,11 @@ $profiles = $entries
     ->rows();
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
+$xml = \Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    \Components\Members\Models\Profile::collect($profiles)
 );
 
 // Create a new form
@@ -208,7 +208,7 @@ $profileUrl = Route::url(
     <?php
 
     if ($isUser && $isIncrementalEnabled) {
-        $awards = new Components\Members\Models\Incremental\Awards($this->profile);
+        $awards = new \Components\Members\Models\Incremental\Awards($this->profile);
         $awards = $awards->award();
 
         $increm  = '<div id="award-info">';
@@ -317,8 +317,8 @@ $profileUrl = Route::url(
     <?php endif; ?>
 
     <?php
-    $stateHidden = Components\Members\Models\Profile\Field::STATE_HIDDEN;
-    $stateReadonly = Components\Members\Models\Profile\Field::STATE_READONLY;
+    $stateHidden = \Components\Members\Models\Profile\Field::STATE_HIDDEN;
+    $stateReadonly = \Components\Members\Models\Profile\Field::STATE_READONLY;
     ?>
     <ul id="profile">
         <?php
@@ -350,7 +350,7 @@ $profileUrl = Route::url(
 
                     if (
                         Field::state('registrationFullname', 'RRRR', 'edit') !=
-                        Components\Members\Models\Profile\Field::STATE_READONLY
+                        \Components\Members\Models\Profile\Field::STATE_READONLY
                     ) {
                         $this->view('default', 'edit')
                          ->set('registration_field', 'name')
@@ -759,7 +759,7 @@ $profileUrl = Route::url(
             //---
 
             if (!isset($fields[$field->get('name')])) {
-                $fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+                $fields[$field->get('name')] = \Components\Members\Models\Profile::blank();
                 $fields[$field->get('name')]->set('access', 1);
             }
 
@@ -900,7 +900,7 @@ $profileUrl = Route::url(
                                     $accessVal = $value == ''
                                         ? $field->get('access')
                                         : $profile->get('access', $field->get('access'));
-                                    $selectHtml = Components\Members\Helpers\Html::selectAccess(
+                                    $selectHtml = \Components\Members\Helpers\Html::selectAccess(
                                         $accessName,
                                         $accessVal,
                                         'input-select'

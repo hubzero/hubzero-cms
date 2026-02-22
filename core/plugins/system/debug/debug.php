@@ -104,7 +104,7 @@ class Debug extends Plugin
                 // let it happen silently
                 try {
                     $this->logProfile();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
             }
         }

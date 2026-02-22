@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Support\Helpers\Permissions::getActions('category');
+$canDo = \Components\Support\Helpers\Permissions::getActions('category');
 
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_CATEGORIES'), 'support');
 if ($canDo->get('core.create')) {

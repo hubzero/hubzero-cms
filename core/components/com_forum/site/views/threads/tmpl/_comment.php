@@ -122,7 +122,7 @@ if ($this->comment->isReported()) {
 
             <div class="comment-attachments">
                 <?php
-                foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment) {
+                foreach ($this->comment->attachments()->whereEquals('state', \Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment) {
                     if (!trim($attachment->get('description'))) {
                         $attachment->set('description', $attachment->get('filename'));
                     }

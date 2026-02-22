@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Support\Helpers\Permissions::getActions('message');
+$canDo = \Components\Support\Helpers\Permissions::getActions('message');
 
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_MESSAGES'), 'support');
 if ($canDo->get('core.create')) {

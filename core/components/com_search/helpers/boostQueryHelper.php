@@ -25,14 +25,14 @@ class BoostQueryHelper
             $args,
             'boosts',
             new MockProxy([
-                'class' => 'Components\Search\Models\Solr\Boost'
+                'class' => '\Components\Search\Models\Solr\Boost'
             ])
         );
         $this->queriesFactory = Arr::getValue(
             $args,
             'queries',
             new MockProxy([
-                'class' => 'Components\Search\Helpers\SolariumBoostQueries'
+                'class' => '\Components\Search\Helpers\SolariumBoostQueries'
             ])
         );
     }

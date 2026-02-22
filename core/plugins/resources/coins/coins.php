@@ -163,7 +163,7 @@ class Coins extends Plugin
                 ->row();
 
             if ($firstchild && $firstchild->id) {
-                $doi = Components\Resources\Helpers\Html::processPath('com_resources', $firstChild, $model->id, '');
+                $doi = \Components\Resources\Helpers\Html::processPath('com_resources', $firstChild, $model->id, '');
                 if (substr($doi, 0, strlen('http')) != 'http') {
                     $doi = Route::url($doi, true, 1);
                 }

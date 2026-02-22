@@ -25,7 +25,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) : ?>
                 <li<?php echo $class; ?>>
                     <?php $class = ''; ?>
                     <span class="item-title">
-                        <a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($item->id)); ?>">
+                        <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->id)); ?>">
                             <?php echo $this->escape($item->title); ?>
                         </a>
                     </span>

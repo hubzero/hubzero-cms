@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Newsletter\Helpers\Permissions::getActions('newsletter');
+$canDo = \Components\Newsletter\Helpers\Permissions::getActions('newsletter');
 
 //set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter');

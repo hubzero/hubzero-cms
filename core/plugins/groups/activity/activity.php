@@ -256,7 +256,7 @@ class Activity extends Plugin
         $success = Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_REMOVED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -305,7 +305,7 @@ class Activity extends Plugin
             : Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_UNSTARRED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -355,7 +355,7 @@ class Activity extends Plugin
                 $this->setError(\Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
             }
 
-            $file = new Plugins\Groups\Activity\Models\Attachment();
+            $file = new \Plugins\Groups\Activity\Models\Attachment();
             $file->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
 
             if (!$file->upload($upload['name'], $upload['tmp_name'], $upload['size'])) {

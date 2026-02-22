@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Templates\Helpers\Utilities::getActions();
+$canDo = \Components\Templates\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_VIEW_TEMPLATE'), 'thememanager');
 
@@ -33,7 +33,7 @@ $this->css();
                     <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
 
                     <div class="input-wrap">
-                        <?php echo Components\Templates\Helpers\Utilities::thumb($this->template->element, $this->template->client_id); ?>
+                        <?php echo \Components\Templates\Helpers\Utilities::thumb($this->template->element, $this->template->client_id); ?>
 
                         <h2><?php echo ucfirst($this->template->element); ?></h2>
                         <p><?php echo Lang::txt($this->template->xml->get('description')); ?></p>

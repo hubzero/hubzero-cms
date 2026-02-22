@@ -36,7 +36,7 @@ class Migration20150820154213ComCitations extends Base
         require_once self::$file;
 
         // get all formats on the hub
-        $formats = Components\Citations\Models\Format::all();
+        $formats = Format::all();
         $ieee = false; // flag for IEEE format
         $apa = false; // flag for APA format
 
@@ -54,7 +54,7 @@ class Migration20150820154213ComCitations extends Base
 
         if (!$apa) {
             //insert apa
-            $apaFormat = Components\Citations\Models\Format::oneOrNew(null);
+            $apaFormat = Format::oneOrNew(null);
             $apaFormat->set(array(
                 'style'  => 'APA',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
@@ -69,7 +69,7 @@ class Migration20150820154213ComCitations extends Base
 
         if (!$ieee) {
             //insert ieee
-            $ieeeFormat = Components\Citations\Models\Format::oneOrNew(null);
+            $ieeeFormat = Format::oneOrNew(null);
             $ieeeFormat->set(array(
                 'style'  => 'IEEE',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
@@ -96,7 +96,7 @@ class Migration20150820154213ComCitations extends Base
         require_once self::$file;
 
         // get all formats on the hub
-        $formats = Components\Citations\Models\Format::all();
+        $formats = Format::all();
         $ieee = false; // flag for IEEE format
         $apa = false; // flag for APA format
 
@@ -114,13 +114,13 @@ class Migration20150820154213ComCitations extends Base
 
         if ($apa) {
             //insert apa
-            $apaFormat = Components\Citations\Models\Format::oneOrFail($apa);
+            $apaFormat = Format::oneOrFail($apa);
             $apaFormat->destroy();
         }
 
         if ($ieee) {
             //insert ieee
-            $ieeeFormat = Components\Citations\Models\Format::oneOrFail($ieee);
+            $ieeeFormat = Format::oneOrFail($ieee);
             $ieeeFormat->destroy();
         }
     }

@@ -15,7 +15,7 @@ $tmpl = Request::getString('tmpl', '');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_NEW'));
 
-//$canDo = Components\Projects\Helpers\Permissions::getActions('project');
+//$canDo = \Components\Projects\Helpers\Permissions::getActions('project');
 
 if ($tmpl != 'component') {
     Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . $text);

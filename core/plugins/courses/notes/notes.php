@@ -124,7 +124,7 @@ class Notes extends Plugin
             }
 
             if ($this->view->no_html && $result) {
-                $note = new stdClass();
+                $note = new \stdClass();
                 $note->id = $result;
                 $note->success = true;
                 if ($this->getError()) {

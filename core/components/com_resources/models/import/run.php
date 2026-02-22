@@ -122,7 +122,7 @@ class Run extends Relational
      */
     public function import()
     {
-        return $this->belongsToOne('Components\Resources\Models\Import', 'import_id');
+        return $this->belongsToOne('\Components\Resources\Models\Import', 'import_id');
     }
 
     /**

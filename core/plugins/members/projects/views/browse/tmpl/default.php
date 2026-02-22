@@ -119,7 +119,7 @@ $this->css();
                     <?php
 
                     foreach ($this->invites as $invite) {
-                        $row = new Components\Projects\Models\Project(
+                        $row = new \Components\Projects\Models\Project(
                             $invite->projectid
                         );
                         $rowUrl = Route::url($row->link());

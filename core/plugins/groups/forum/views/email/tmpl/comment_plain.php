@@ -54,7 +54,7 @@ $output = preg_replace_callback(
 $message .= $output;
 
 $attachments = $this->post->attachments()
-    ->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+    ->whereIn('state', array(\Components\Forum\Models\Post::STATE_PUBLISHED))
     ->rows();
 if ($attachments->count() > 0) {
     $message .= "\n\n";

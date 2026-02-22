@@ -62,7 +62,7 @@ class Middleware extends Plugin
                 require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
                 // Check for an existing quota record
-                $row = Components\Members\Models\Quota::all()
+                $row = \Components\Members\Models\Quota::all()
                     ->whereEquals('user_id', $userId)
                     ->row();
 
@@ -115,7 +115,7 @@ class Middleware extends Plugin
                     $row->set('soft_blocks', $val['soft_blocks']);
 
                     if (!$row->save()) {
-                        throw new Exception($row->getError());
+                        throw new \Exception($row->getError());
                     }
                 }
 
@@ -167,14 +167,14 @@ class Middleware extends Plugin
                     $row->jobs  = $val['jobs'];
 
                     if (!$row->check()) {
-                        throw new Exception($row->getError());
+                        throw new \Exception($row->getError());
                     }
 
                     if (!$row->store()) {
-                        throw new Exception($row->getError());
+                        throw new \Exception($row->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 return false;
             }
@@ -207,15 +207,15 @@ class Middleware extends Plugin
                 $db->setQuery("DELETE FROM `#__users_quotas` WHERE `user_id`=" . $userId);
 
                 if (!$db->query()) {
-                    throw new Exception($db->getErrorMsg());
+                    throw new \Exception($db->getErrorMsg());
                 }
 
                 $db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 
                 if (!$db->query()) {
-                    throw new Exception($db->getErrorMsg());
+                    throw new \Exception($db->getErrorMsg());
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 return false;
             }

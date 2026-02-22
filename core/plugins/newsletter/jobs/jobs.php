@@ -42,7 +42,7 @@ class Jobs extends Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = preg_replace('/[^ .,;a-zA-Z0-9_-]|[,;]/', '', $m->description);
             $object->date  = Date::of($m->created)->toLocal("F j, Y");

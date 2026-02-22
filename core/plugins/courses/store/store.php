@@ -100,7 +100,7 @@ class Store extends Plugin
             // Get course by pID returned with $course->add() above
             try {
                 $product = $warehouse->getCourse($offering->params('store_product_id', 0));
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
             }
         }
@@ -158,7 +158,7 @@ class Store extends Plugin
 
                     $model->set('params', $params->toString());
                     $model->store();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->setError('ERROR: ' . $e->getMessage());
                 }
             } else {
@@ -176,7 +176,7 @@ class Store extends Plugin
                         $product->setActiveStatus(1);
                     }
                     $product->save();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->setError('ERROR: ' . $e->getMessage());
                 }
             }
@@ -295,7 +295,7 @@ class Store extends Plugin
                 $coupon->setAction('discount', '100%');
                 // Add coupon
                 $coupon->add();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
             }
             return;
@@ -317,7 +317,7 @@ class Store extends Plugin
         $warehouse = new \Components\Storefront\Models\Warehouse();
         try {
             $warehouse->deleteCoupon($model->get('code'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo 'ERROR: ' . $e->getMessage();
         }
         return;

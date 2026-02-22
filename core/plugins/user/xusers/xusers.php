@@ -75,14 +75,14 @@ class Xusers extends Plugin
             }
 
             if ($hubzero_order === false) {
-                throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
+                throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
             }
 
             if ($xuser_order <= $hubzero_order) {
-                throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
+                throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
             }
 
-            throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
+            throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
         }
 
         // log login to auth log
@@ -209,12 +209,12 @@ class Xusers extends Plugin
         if ($params->get('manage_quotas', false)) {
             require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-            $quota = Components\Members\Models\Quota::all()
+            $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $xuser->get('id'))
                 ->row();
 
             if (!$quota->get('id')) {
-                $class = Components\Members\Models\Quota\Category::defaultEntry();
+                $class = \Components\Members\Models\Quota\Category::defaultEntry();
 
                 if ($class->get('id')) {
                     $quota->set('user_id', $xuser->get('id'));
@@ -227,7 +227,7 @@ class Xusers extends Plugin
                 }
             } elseif ($quota->get('class_id')) {
                 // Here, we're checking to make sure their class matches their actual quota values
-                $class = Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
+                $class = \Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
 
                 if (
                     $quota->get('soft_blocks') != $class->get('soft_blocks')
@@ -360,7 +360,7 @@ class Xusers extends Plugin
             $result = $xprofile->create();
 
             if (!$result) {
-                return new Exception('Unable to create \Hubzero\User\Profile record', 500);
+                return new \Exception('Unable to create \Hubzero\User\Profile record', 500);
             }
         } else {
             $update = false;
@@ -472,12 +472,12 @@ class Xusers extends Plugin
         if ($params->get('manage_quotas', false)) {
             require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-            $quota = Components\Members\Models\Quota::all()
+            $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $user['id'])
                 ->row();
 
             if (!$quota->get('id')) {
-                $class = Components\Members\Models\Quota\Category::defaultEntry();
+                $class = \Components\Members\Models\Quota\Category::defaultEntry();
 
                 if ($class->get('id')) {
                     $quota->set('user_id', $user['id']);
@@ -571,7 +571,7 @@ class Xusers extends Plugin
         // Check if quota exists for the user
         require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-        $quota = Components\Members\Models\Quota::all()
+        $quota = \Components\Members\Models\Quota::all()
             ->whereEquals('user_id', $user['id'])
             ->row();
 

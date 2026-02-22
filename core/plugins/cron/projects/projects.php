@@ -24,7 +24,7 @@ class Projects extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'projects';
 
         $obj->events = array(

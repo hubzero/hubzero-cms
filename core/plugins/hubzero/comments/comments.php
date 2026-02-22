@@ -292,8 +292,8 @@ class Comments extends Plugin
             ->whereEquals('item_id', $this->obj_id)
             ->whereEquals('parent', 0)
             ->whereIn('state', array(
-                Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+                \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
             ))
             ->limit($this->params->get('display_limit', 25))
             ->ordered()

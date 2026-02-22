@@ -11,7 +11,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Languages\Helpers\Utilities::getActions();
+$canDo = \Components\Languages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_LANGUAGES_TITLE'), 'langmanager');
 
@@ -75,7 +75,7 @@ $pagination = $this->items->pagination;
         <div class="filter-select fltrt">
             <select name="filter_published" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', Components\Languages\Helpers\Utilities::publishedOptions(), 'value', 'text', $this->filters['published'], true); ?>
+                <?php echo Html::select('options', \Components\Languages\Helpers\Utilities::publishedOptions(), 'value', 'text', $this->filters['published'], true); ?>
             </select>
             <select name="filter_access" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>

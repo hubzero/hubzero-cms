@@ -24,7 +24,7 @@ class Publications extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'publications';
 
         $obj->events = array(

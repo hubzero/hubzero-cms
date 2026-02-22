@@ -38,7 +38,7 @@ class Tools extends Plugin
             // What tools did this user contribute?
             $db = App::get('db');
 
-            $TA = new Components\Tools\Tables\Author($db);
+            $TA = new \Components\Tools\Tables\Author($db);
             $tools = $TA->getToolContributions(User::get('id'));
             $mytooltags = array();
             if ($tools) {
@@ -74,8 +74,8 @@ class Tools extends Plugin
         require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 
         $db = App::get('db');
-        $TA = new Components\Tools\Tables\Author($db);
-        $objV = new Components\Tools\Tables\Version($db);
+        $TA = new \Components\Tools\Tables\Author($db);
+        $objV = new \Components\Tools\Tables\Version($db);
 
         foreach ($tags as $tag) {
             if ($tag == '') {

@@ -144,7 +144,7 @@ class Register extends SiteController
         }
 
         if ($xregistration->get('email') != $xprofile->get('email')) {
-            $code = Components\Members\Helper\Utility::genemailconfirm();
+            $code = \Components\Members\Helper\Utility::genemailconfirm();
             $xprofile->set('activation', $code);
             $updateEmail = true;
         }

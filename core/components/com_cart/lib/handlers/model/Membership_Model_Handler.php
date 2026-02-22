@@ -40,7 +40,7 @@ class Membership_Model_Handler extends Model_Handler
         $currentExpiration = $subscription->getExpiration();
 
         // Calculate new expiration
-        $newExpires = Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $this->item);
+        $newExpires = \Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $this->item);
 
         // Update/Create membership expiration date with new value
         $subscription->setExpiration($newExpires);

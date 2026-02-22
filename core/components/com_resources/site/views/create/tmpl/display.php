@@ -80,7 +80,7 @@ $this->css('introduction.css', 'system')
                 foreach ($submissions as $submission) {
                     $cls = ($cls == 'even') ? 'odd' : 'even';
 
-                    $resource = Components\Resources\Models\Entry::oneOrNew($submission->id);
+                    $resource = \Components\Resources\Models\Entry::oneOrNew($submission->id);
 
                     switch ($resource->get('published')) {
                         case 1:
@@ -167,7 +167,7 @@ $this->css('introduction.css', 'system')
     </div><!-- / .grid -->
 
 <?php
-$categories = Components\Resources\Models\Type::getMajorTypes();
+$categories = \Components\Resources\Models\Type::getMajorTypes();
 if ($categories) {
     ?>
     <div class="grid">

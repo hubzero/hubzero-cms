@@ -52,6 +52,6 @@ class Recipient extends Relational
      */
     public function mailing()
     {
-        return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
+        return $this->belongsToOne('\Components\\Newsletter\\Models\\Mailing', 'mid');
     }
 }

@@ -92,7 +92,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                         </a>
                     </li>
                     <?php
-                    $filters = array('state' => Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels());
+                    $filters = array('state' => \Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels());
 
                     $categories = $this->archive->categories($filters);
 
@@ -146,8 +146,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
             <?php
             $comments = $this->article->comments()
                 ->whereIn('state', array(
-                    Components\Kb\Models\Comment::STATE_PUBLISHED,
-                    Components\Kb\Models\Comment::STATE_FLAGGED
+                    \Components\Kb\Models\Comment::STATE_PUBLISHED,
+                    \Components\Kb\Models\Comment::STATE_FLAGGED
                 ))
                 ->rows();
 

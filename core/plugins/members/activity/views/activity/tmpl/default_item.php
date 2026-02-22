@@ -186,7 +186,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
                     require_once Component::path('com_projects') . '/models/project.php';
 
-                    $project = new Components\Projects\Models\Project($this->row->log->get('scope_id'));
+                    $project = new \Components\Projects\Models\Project($this->row->log->get('scope_id'));
 
                     if ($project) {
                         ?>

@@ -41,9 +41,9 @@ class Dashboard extends Plugin
     public function __construct($subject, $config)
     {
         // get all public methods ending in 'action'
-        $reflectionClass = new ReflectionClass($this);
+        $reflectionClass = new \ReflectionClass($this);
 
-        foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             $name = $method->getName();
             if (substr(strtolower($name), -6) == 'action') {
                 $this->_actionMap[] = $name;
@@ -133,7 +133,7 @@ class Dashboard extends Plugin
             if (in_array($doAction, $this->_actionMap)) {
                 $arr['html'] = $this->$doAction();
             } else {
-                throw new Exception('Members dashboard action does not exist: [$doAction].', 404);
+                throw new \Exception('Members dashboard action does not exist: [$doAction].', 404);
             }
         }
 
@@ -164,7 +164,7 @@ class Dashboard extends Plugin
             if (isset($dashboardModules[$preference->module])) {
                 // create module objects
                 $module = $dashboardModules[$preference->module];
-                $module->positioning = new stdClass();
+                $module->positioning = new \stdClass();
                 $module->positioning->col = $preference->col;
                 $module->positioning->row = $preference->row;
                 $module->positioning->size_x = $preference->size_x;
@@ -206,7 +206,7 @@ class Dashboard extends Plugin
         $preferences = $this->loadPreferences();
 
         // get module preferences for moduleid
-        $preference = new stdClass();
+        $preference = new \stdClass();
         foreach ($preferences as $p) {
             if ($p->module == $moduleId) {
                 $preference = $p;
@@ -218,7 +218,7 @@ class Dashboard extends Plugin
         $module = null;
         if (in_array($moduleId, array_keys($modulesList))) {
             $module = $modulesList[$moduleId];
-            $module->positioning = new stdClass();
+            $module->positioning = new \stdClass();
             $module->positioning->col = 1;
             $module->positioning->row = 1;
             $module->positioning->size_x = 1;
@@ -328,7 +328,7 @@ class Dashboard extends Plugin
         }
 
         // load member preferences
-        $preferences = Plugins\Members\Dashboard\Models\Preference::oneByUser(User::get('id'));
+        $preferences = \Plugins\Members\Dashboard\Models\Preference::oneByUser(User::get('id'));
 
         // update the user preferences
         $preferences->set('uidNumber', User::get('id'));
@@ -418,7 +418,7 @@ class Dashboard extends Plugin
             if (isset($dashboardModules[$preference->module])) {
                 // create module objects
                 $module = $dashboardModules[$preference->module];
-                $module->positioning = new stdClass();
+                $module->positioning = new \stdClass();
                 $module->positioning->col = $preference->col;
                 $module->positioning->row = $preference->row;
                 $module->positioning->size_x = $preference->size_x;
@@ -508,7 +508,7 @@ class Dashboard extends Plugin
         $module = null;
         if (in_array($moduleId, array_keys($modulesList))) {
             $module = $modulesList[$moduleId];
-            $module->positioning = new stdClass();
+            $module->positioning = new \stdClass();
             $module->positioning->col = 1;
             $module->positioning->row = 1;
             $module->positioning->size_x = 1;
@@ -564,7 +564,7 @@ class Dashboard extends Plugin
         }
 
         // load all member preferences
-        $memberPreferences = Plugins\Members\Dashboard\Models\Preference::all()
+        $memberPreferences = \Plugins\Members\Dashboard\Models\Preference::all()
             ->ordered()
             ->rows();
 
@@ -598,7 +598,7 @@ class Dashboard extends Plugin
             }
 
             // create new module object
-            $newModule = new stdClass();
+            $newModule = new \stdClass();
             $newModule->module = $module;
             $newModule->col = $column;
             $newModule->size_x = $width;
@@ -674,7 +674,7 @@ class Dashboard extends Plugin
         }
 
         // load member preferences
-        $model = Plugins\Members\Dashboard\Models\Preference::oneByUser($uidNumber);
+        $model = \Plugins\Members\Dashboard\Models\Preference::oneByUser($uidNumber);
         $preferences = $model->get('preferences');
 
         // no user preferences, use default

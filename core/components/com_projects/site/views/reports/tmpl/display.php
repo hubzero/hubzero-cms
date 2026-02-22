@@ -296,7 +296,7 @@ $this->js('flot/jquery.flot.min.js', 'system')
                             <ul>
                                 <?php foreach ($this->stats['topActiveProjects'] as $topProject) : ?>
                                     <?php
-                                    $project = new Components\Projects\Models\Project($topProject->scope_id);
+                                    $project = new \Components\Projects\Models\Project($topProject->scope_id);
                                     ?>
                                     <li>
                                         <span class="stats-ima-small"><img src="<?php echo $project->picture('thumb'); ?>" alt="" /></span>

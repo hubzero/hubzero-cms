@@ -722,7 +722,7 @@ class Collections extends Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $colUrl = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
             $colUrl .= '&active=collections' . $sfx;
             $response->href = Route::url($colUrl);
@@ -777,7 +777,7 @@ class Collections extends Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $colUrl = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
             $colUrl .= '&active=collections' . $sfx;
             $response->href = Route::url($colUrl);

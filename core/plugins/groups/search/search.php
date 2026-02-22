@@ -37,7 +37,7 @@ class Search extends Plugin
 
         include_once Component::path('com_groups') . '/models/orm/group.php';
 
-        $ormGroup = Components\Groups\Models\Orm\Group::one($groupId);
+        $ormGroup = \Components\Groups\Models\Orm\Group::one($groupId);
         $attributes = $ormGroup->getAttributes();
 
         if ($ormGroup) {

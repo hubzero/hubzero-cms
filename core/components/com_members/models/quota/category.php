@@ -95,7 +95,7 @@ class Category extends Relational
      */
     public function groups()
     {
-        return $this->oneToMany('Components\Members\Models\Quota\Group', 'class_id');
+        return $this->oneToMany('\Components\Members\Models\Quota\Group', 'class_id');
     }
 
     /**

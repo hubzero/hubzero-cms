@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Redirect\Helpers\Redirect::getActions();
+$canDo = \Components\Redirect\Helpers\Redirect::getActions();
 
 Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINKS'), 'redirect');
 if ($canDo->get('core.create')) {
@@ -73,7 +73,7 @@ $this->css('.adminlist tr td {
             <div class="col span6">
                 <label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
                 <select name="state" id="filter_state" class="inputbox filter filter-submit">
-                    <?php echo Html::select('options', Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
+                    <?php echo Html::select('options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
                 </select>
             </div>
         </div>
@@ -170,7 +170,7 @@ $this->css('.adminlist tr td {
                     <?php echo Date::of($item->created_date)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
                 </td>
                 <td class="priority-2 center">
-                    <?php echo Components\Redirect\Helpers\Redirect::published($item->published, $i); ?>
+                    <?php echo \Components\Redirect\Helpers\Redirect::published($item->published, $i); ?>
                 </td>
                 <td class="priority-3 center">
                     <?php echo (int) $item->hits; ?>

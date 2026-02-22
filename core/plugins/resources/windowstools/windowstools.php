@@ -242,9 +242,9 @@ class Windowstools extends Plugin
             // Get the current page
             include_once __DIR__ . DS . 'models' . DS . 'page.php';
 
-            $page = Plugins\Resources\Windowstools\Models\Page::all()
+            $page = \Plugins\Resources\Windowstools\Models\Page::all()
                 ->whereIn('access', User::getAuthorisedViewLevels())
-                ->whereEquals('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
+                ->whereEquals('state', \Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
                 ->whereEquals('plugin', $this->_name)
                 ->order('ordering', 'asc')
                 ->row();
@@ -255,7 +255,7 @@ class Windowstools extends Plugin
 
                     $page->set('content', $contents);
                     $page->set('title', Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'));
-                    $page->set('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
+                    $page->set('state', \Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
                     $page->set('plugin', $this->_name);
                     $page->set('access', 1);
                     $page->save();

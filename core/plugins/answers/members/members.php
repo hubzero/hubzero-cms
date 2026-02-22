@@ -36,7 +36,7 @@ class Members extends Plugin
             require_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
 
             // Get tags of interest
-            $mt = new Components\Members\Models\Tags(User::get('id'));
+            $mt = new \Components\Members\Models\Tags(User::get('id'));
 
             $filters['tag'] .= ($filters['tag'] ? ',' : '') . $mt->render('string');
 

@@ -24,7 +24,7 @@ class Members extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'members';
         $obj->events = array(
             array(

@@ -15,7 +15,7 @@ use Hubzero\Utility\Arr;
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_REPOSITORIES'));
 
-$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 if ($canDo->get('core.admin')) {
     Toolbar::preferences('com_installer');
     Toolbar::divider();

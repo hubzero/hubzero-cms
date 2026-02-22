@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 Request::setVar('hidemainmenu', true);
 
-$canDo = Components\Redirect\Helpers\Redirect::getActions();
+$canDo = \Components\Redirect\Helpers\Redirect::getActions();
 
 Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINK'), 'redirect');
 // If not checked out, can save the item.

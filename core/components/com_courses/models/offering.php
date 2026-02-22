@@ -331,7 +331,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_sections instanceof Iterator) || $clear) {
+        if (!($this->_sections instanceof \Iterator) || $clear) {
             $tbl = new Tables\Section($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -342,7 +342,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_sections = new Iterator($results);
+            $this->_sections = new \Iterator($results);
         }
 
         return $this->_sections;
@@ -404,7 +404,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_units instanceof Iterator) || $clear) {
+        if (!($this->_units instanceof \Iterator) || $clear) {
             $tbl = new Tables\Unit($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -418,7 +418,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_units = new Iterator($results);
+            $this->_units = new \Iterator($results);
         }
 
         return $this->_units;
@@ -601,7 +601,7 @@ class Offering extends Base
      */
     public function assets($filters = array())
     {
-        if (!($this->_assets instanceof Iterator)) {
+        if (!($this->_assets instanceof \Iterator)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -619,7 +619,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_assets = new Iterator($results);
+            $this->_assets = new \Iterator($results);
         }
 
         return $this->_assets;
@@ -926,7 +926,7 @@ class Offering extends Base
                 }
             }
 
-            $this->_announcements = new Iterator($results);
+            $this->_announcements = new \Iterator($results);
         }
 
         return $this->_announcements;

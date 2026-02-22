@@ -41,8 +41,8 @@ namespace Hubzero\Database\Relationship;
  * ## Type Resolution
  *
  * By default, the type column stores a string identifier that maps to a class:
- * - 'post'  => Components\Blog\Models\Post
- * - 'video' => Components\Media\Models\Video
+ * - 'post'  => \Components\Blog\Models\Post
+ * - 'video' => \Components\Media\Models\Video
  *
  * Register mappings using the static morphMap:
  * ```php

@@ -316,7 +316,7 @@ class Todo extends Plugin
 
         // Check permission
         if ($this->_task == 'edit' && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -388,7 +388,7 @@ class Todo extends Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -623,7 +623,7 @@ class Todo extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -768,7 +768,7 @@ class Todo extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -818,7 +818,7 @@ class Todo extends Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 

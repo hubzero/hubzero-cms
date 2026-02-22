@@ -69,7 +69,7 @@ $this->css('jquery.colpick.css', 'system');
 // Include media tracking
 if (isset($this->entityId) && isset($this->entityType)) {
     // Get tracking for this user for this resource
-    $tracking = Components\System\Models\Mediatracking::oneByUserAndObject(
+    $tracking = \Components\System\Models\Mediatracking::oneByUserAndObject(
         $this->entityId,
         $this->entityType,
         User::get('id')

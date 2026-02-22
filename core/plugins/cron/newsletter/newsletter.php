@@ -24,7 +24,7 @@ class Newsletter extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(
@@ -206,7 +206,7 @@ class Newsletter extends Plugin
                     // If there is no mailing set for the next interval, create it.
                     if ($windowMax - $windowMin == 0) {
                         // Create mailing
-                        $newMailing = Components\Newsletter\Models\Mailing::blank();
+                        $newMailing = \Components\Newsletter\Models\Mailing::blank();
                         foreach (get_object_vars($latestMailing) as $k => $v) {
                             $newMailing->set($k, $v);
                         }
@@ -215,7 +215,7 @@ class Newsletter extends Plugin
                         $newMailing->save();
 
                         // Add recipients
-                        $mailingList = Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
+                        $mailingList = \Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
                         $emails = $mailingList->emails()->rows();
 
                         // @TODO Verify there is no helper method to determine whether or not to send email
@@ -287,7 +287,7 @@ class Newsletter extends Plugin
             // attempt to locate
             try {
                 $location = \Hubzero\Geocode\Geocode::locate($action->ip);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
 
                 /*$location = array(

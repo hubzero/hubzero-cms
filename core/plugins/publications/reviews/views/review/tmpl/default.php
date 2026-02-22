@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-$review = new Plugins\Publications\Reviews\Models\Review($this->review);
+$review = new \Plugins\Publications\Reviews\Models\Review($this->review);
 
 if ($review->exists()) {
     $title = Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT_YOUR_REVIEW');

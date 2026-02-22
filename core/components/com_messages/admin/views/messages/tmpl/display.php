@@ -9,7 +9,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Messages\Helpers\Utilities::getActions();
+$canDo = \Components\Messages\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_MESSAGES_MANAGER_MESSAGES'), 'inbox.png');
 
@@ -62,7 +62,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
             <div class="col span6 filter-select">
                 <select name="filter_state" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo Html::select('options', Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                    <?php echo Html::select('options', \Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
                 </select>
             </div>
         </div>
@@ -109,7 +109,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                         </a>
                     </td>
                     <td class="center">
-                        <?php echo Components\Messages\Helpers\Utilities::state($item->state, $i, $canChange); ?>
+                        <?php echo \Components\Messages\Helpers\Utilities::state($item->state, $i, $canChange); ?>
                     </td>
                     <td>
                         <?php echo $item->user_from; ?>

@@ -256,7 +256,7 @@ class Category extends Relational
      */
     public function usersCategories()
     {
-        return $this->oneToMany('Components\Forum\Models\UsersCategory', 'category_id', 'id');
+        return $this->oneToMany('\Components\Forum\Models\UsersCategory', 'category_id', 'id');
     }
 
     /**

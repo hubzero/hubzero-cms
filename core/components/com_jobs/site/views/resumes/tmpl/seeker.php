@@ -16,7 +16,7 @@ $database = App::get('db');
 $jt = new \Components\Jobs\Tables\JobType($database);
 $jc = new \Components\Jobs\Tables\JobCategory($database);
 
-$profile = Components\Members\Models\Member::oneOrNew($this->seeker->uid);
+$profile = \Components\Members\Models\Member::oneOrNew($this->seeker->uid);
 
 $jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('COM_JOBS_TYPE_ANY')));
 $jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('COM_JOBS_CATEGORY_ANY')));

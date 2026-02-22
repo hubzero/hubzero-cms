@@ -1255,7 +1255,7 @@ class Profiles extends SiteController
 
             // Send an e-mail to admin
             if (!$msg->send()) {
-                return App::abort(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
+                return App::abort(500, 'xHUB Internal Error: \Error mailing resource request to site administrator(s).');
             }
 
             // Output the view

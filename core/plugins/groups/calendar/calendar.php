@@ -363,7 +363,7 @@ class Calendar extends Plugin
         $baseUrl .= '&active=calendar&action=events&calendar_id=';
 
         foreach ($calendars as $calendar) {
-            $source            = new stdClass();
+            $source            = new \stdClass();
             $source->title     = $calendar->get('title');
             $source->url       = Route::url($baseUrl . $calendar->get('id'));
             $source->className = $calendar->get('color')
@@ -373,7 +373,7 @@ class Calendar extends Plugin
         }
 
         // add uncategorized source
-        $source            = new stdClass();
+        $source            = new \stdClass();
         $source->title     = 'Uncategorized';
         $source->url       = Route::url($baseUrl . '0');
         $source->className = 'fc-event-default';
@@ -450,7 +450,7 @@ class Calendar extends Plugin
             $ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
             $timeFormat = 'Y-m-d\TH:i:sO';
 
-            $event            = new stdClass();
+            $event            = new \stdClass();
             $event->id        = $rawEvent->get('id');
             $event->title     = $rawEvent->get('title');
             $event->allDay    = $rawEvent->get('allday') == 1;
@@ -1081,22 +1081,22 @@ class Calendar extends Plugin
         $description = (isset($icalEvent['DESCRIPTION'])) ? $icalEvent['DESCRIPTION'] : '';
         $location    = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
         $website     = (isset($icalEvent['URL'])) ? $icalEvent['URL'] : '';
-        $hasStart    = isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof DateTime);
-        $start       = $hasStart ? $icalEvent['DTSTART'] : new DateTime();
-        $hasEnd      = isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof DateTime);
-        $end         = $hasEnd ? $icalEvent['DTEND'] : new DateTime();
+        $hasStart    = isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof \DateTime);
+        $start       = $hasStart ? $icalEvent['DTSTART'] : new \DateTime();
+        $hasEnd      = isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof \DateTime);
+        $end         = $hasEnd ? $icalEvent['DTEND'] : new \DateTime();
         $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : array();
 
         // normalize until date
         if (isset($recurrence['UNTIL'])) {
             $tz = Config::get('offset');
-            $until = new DateTime($recurrence['UNTIL']);
+            $until = new \DateTime($recurrence['UNTIL']);
             $until->setTimezone(new DateTimezone($tz));
             $recurrence['UNTIL'] = $until->format('m/d/Y');
         }
 
         //object to hold event data
-        $event             = new stdClass();
+        $event             = new \stdClass();
         $event->title      = $title;
         $event->content    = stripslashes(str_replace('\n', "\n", $description));
         $event->start      = $start->format("m/d/Y");
@@ -1605,7 +1605,7 @@ class Calendar extends Plugin
         $view = $this->view('edit', 'calendars');
 
         // get the calendar
-        $view->calendar = Components\Events\Models\Calendar::getInstance($calendarId);
+        $view->calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
 
         //push some vars to the view
         $view->month      = $this->month;

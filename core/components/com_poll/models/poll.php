@@ -71,7 +71,7 @@ class Poll extends Relational
      */
     public function options()
     {
-        return $this->oneToMany('Components\Poll\Models\Option', 'poll_id');
+        return $this->oneToMany('\Components\Poll\Models\Option', 'poll_id');
     }
 
     /**
@@ -81,7 +81,7 @@ class Poll extends Relational
      */
     public function dates()
     {
-        return $this->oneToMany('Components\Poll\Models\Date', 'poll_id');
+        return $this->oneToMany('\Components\Poll\Models\Date', 'poll_id');
     }
 
     /**

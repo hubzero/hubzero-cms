@@ -301,8 +301,8 @@ if ($this->comment->isReported()) {
         if ($this->depth < $this->config->get('comments_depth', 3)) {
             $replies = $this->comment->replies()
                 ->whereIn('state', array(
-                    Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    \Components\Blog\Models\Comment::STATE_PUBLISHED,
+                    \Components\Blog\Models\Comment::STATE_FLAGGED
                 ))
                 ->ordered()
                 ->rows();

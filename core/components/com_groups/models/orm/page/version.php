@@ -63,7 +63,7 @@ class Version extends Relational
      */
     public function page()
     {
-        return $this->belongsToOne('Components\Groups\Models\Orm\Page', 'pageid');
+        return $this->belongsToOne('\Components\Groups\Models\Orm\Page', 'pageid');
     }
 
     /**

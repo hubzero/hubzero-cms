@@ -154,7 +154,7 @@ class Databases extends Plugin
             } else {
                 $this->_configured = true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_configured = false;
         }
 
@@ -494,7 +494,7 @@ class Databases extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
         // Set params
@@ -821,7 +821,7 @@ class Databases extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1146,7 +1146,7 @@ class Databases extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1214,7 +1214,7 @@ class Databases extends Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 

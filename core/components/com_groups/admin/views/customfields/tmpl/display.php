@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Careerplans\Helpers\Permissions::getActions('fieldset');
+$canDo = \Components\Careerplans\Helpers\Permissions::getActions('fieldset');
 
 Toolbar::title(Lang::txt('COM_CAREERPLANS_TITLE'), 'form');
 if ($canDo->get('core.delete')) {

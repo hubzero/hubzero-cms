@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Members\Helpers\Admin::getActions('component');
+$canDo = \Components\Members\Helpers\Admin::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS'));
 
@@ -96,25 +96,25 @@ $this->css()
                 <label for="filter-state"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="inputbox filter filter-submit">
                     <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                    <?php echo Html::select('options', \Components\Members\Helpers\Admin::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
                 </select>
 
                 <label for="filter-approved"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED'); ?>:</label>
                 <select name="approved" id="filter-approved" class="inputbox filter filter-submit">
                     <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getApprovedOptions(), 'value', 'text', $this->filters['approved']); ?>
+                    <?php echo Html::select('options', \Components\Members\Helpers\Admin::getApprovedOptions(), 'value', 'text', $this->filters['approved']); ?>
                 </select>
 
                 <label for="filter-group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP'); ?>:</label>
                 <select name="group_id" id="filter-group_id" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getAccessGroups(), 'value', 'text', $this->filters['group_id']); ?>
+                    <?php echo Html::select('options', \Components\Members\Helpers\Admin::getAccessGroups(), 'value', 'text', $this->filters['group_id']); ?>
                 </select>
 
                 <label for="filter-range"><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE'); ?>:</label>
                 <select name="range" id="filter-range" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getRangeOptions(), 'value', 'text', $this->filters['range']); ?>
+                    <?php echo Html::select('options', \Components\Members\Helpers\Admin::getRangeOptions(), 'value', 'text', $this->filters['range']); ?>
                 </select>
             </div>
         </div>

@@ -50,7 +50,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
         <td width="50%">
             <a class="doc-item" href="<?php echo COM_MEDIA_BASEURL . $this->currentDoc['path']; ?>" title="<?php echo $this->escape($this->currentDoc['name']); ?>">
                 <span class="media-icon">
-                    <img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" />
+                    <img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" />
                 </span>
                 <span class="media-name">
                     <?php echo $this->escape($name); ?>
@@ -58,7 +58,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
             </a>
         </td>
         <td>
-            <span class="media-size"><?php echo Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']); ?></span>
+            <span class="media-size"><?php echo \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']); ?></span>
         </td>
     <?php if ($tmpl != 'component') : ?>
         <td>

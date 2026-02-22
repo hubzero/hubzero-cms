@@ -12,7 +12,7 @@
 defined('_HZEXEC_') or die();
 
 $checkedOut = !($this->row->get('checked_out') == 0 || $this->row->get('checked_out') == User::get('id'));
-$canDo = Components\Members\Helpers\Admin::getActions($this->row->get('category_id'), $this->row->get('id'));
+$canDo = \Components\Members\Helpers\Admin::getActions($this->row->get('category_id'), $this->row->get('id'));
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
@@ -69,7 +69,7 @@ $this->js();
 
                 <div class="input-wrap">
                     <label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_USER'); ?>:</label>
-                    <?php echo Components\Members\Helpers\Admin::getUserInput('fields[user_id]', 'fielduser_id', $this->row->get('user_id')); ?>
+                    <?php echo \Components\Members\Helpers\Admin::getUserInput('fields[user_id]', 'fielduser_id', $this->row->get('user_id')); ?>
                 </div>
 
                 <div class="input-wrap">

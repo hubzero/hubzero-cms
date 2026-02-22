@@ -133,7 +133,7 @@ $this->css()
                 $status = 'manager';
             }
 
-            $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
+            $roles = \Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>

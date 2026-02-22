@@ -252,7 +252,7 @@ class Course extends Base
         }
 
         // Is the data is not set OR is it not the right type?
-        if (!($this->_offerings instanceof Iterator) || $clear) {
+        if (!($this->_offerings instanceof \Iterator) || $clear) {
             $tbl = new Tables\Offering($this->_db);
 
             // Attempt to get database results
@@ -268,7 +268,7 @@ class Course extends Base
             }
 
             // Set the results
-            $this->_offerings = new Iterator($results);
+            $this->_offerings = new \Iterator($results);
         }
 
         // Return results

@@ -340,8 +340,8 @@ if ($mark = $this->params->get('onCommentMark')) {
             if ($this->depth < $this->params->get('comments_depth', 3)) {
                 $replies = $this->comment->replies()
                     ->whereIn('state', array(
-                        Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                        Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                        \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+                        \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
                     ))
                     ->whereIn('access', User::getAuthorisedViewLevels())
                     ->ordered()

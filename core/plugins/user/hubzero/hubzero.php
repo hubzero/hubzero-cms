@@ -167,7 +167,7 @@ class Hubzero extends Plugin
 
                 if (!$mail->send()) {
                     // TODO: Probably should raise a plugin error but this event is not error checked.
-                    throw new Exception(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR'), 500);
+                    throw new \Exception(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR'), 500);
                 }
             }
         }
@@ -185,7 +185,7 @@ class Hubzero extends Plugin
         $instance = $this->_getUser($user, $options);
 
         // If _getUser returned an error, then pass it back.
-        if ($instance instanceof Exception) {
+        if ($instance instanceof \Exception) {
             return false;
         }
 
@@ -412,7 +412,7 @@ class Hubzero extends Plugin
 
         if ($autoregister) {
             if (!$instance->save()) {
-                return new Exception($instance->getError());
+                return new \Exception($instance->getError());
             }
         } else {
             // No existing user and autoregister off, this is a temporary user.

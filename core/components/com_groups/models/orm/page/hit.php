@@ -88,7 +88,7 @@ class Hit extends Relational
      */
     public function group()
     {
-        return $this->belongsToOne('Components\Groups\Models\Orm\Group', 'gidNumber');
+        return $this->belongsToOne('\Components\Groups\Models\Orm\Group', 'gidNumber');
     }
 
     /**
@@ -98,7 +98,7 @@ class Hit extends Relational
      */
     public function page()
     {
-        return $this->belongsToOne('Components\Groups\Models\Orm\Page', 'pageid');
+        return $this->belongsToOne('\Components\Groups\Models\Orm\Page', 'pageid');
     }
 
     /**

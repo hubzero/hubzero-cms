@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Templates\Helpers\Utilities::getActions();
+$canDo = \Components\Templates\Helpers\Utilities::getActions();
 
 Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_TEMPLATES'), 'thememanager');
 if ($canDo->get('core.admin')) {
@@ -80,7 +80,7 @@ Html::behavior('multiselect');
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="priority-3">
-                        <?php echo Components\Templates\Helpers\Utilities::thumb($item->element, $item->protected); ?>
+                        <?php echo \Components\Templates\Helpers\Utilities::thumb($item->element, $item->protected); ?>
                     </td>
                     <td class="template-name">
                         <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=files&id=' . (int) $item->extension_id); ?>">

@@ -179,7 +179,7 @@ Html::behavior('modal');
                 <td class="priority-2">
                     <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=projects&task=edit&id=' . $row->get('scope_id')); ?>">
                         <?php
-                        $model = new Components\Projects\Models\Project($row->get('scope_id'));
+                        $model = new \Components\Projects\Models\Project($row->get('scope_id'));
                         echo $this->escape($model->get('alias')); ?>
                     </a>
                 </td>

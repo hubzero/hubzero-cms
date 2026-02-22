@@ -11,7 +11,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Tags\Helpers\Permissions::getActions();
+$canDo = \Components\Tags\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_PIERCE'), 'tags');
 if ($canDo->get('core.edit')) {

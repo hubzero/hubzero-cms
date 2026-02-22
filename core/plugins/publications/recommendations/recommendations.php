@@ -48,7 +48,7 @@ class Recommendations extends Plugin
         include_once __DIR__ . DS . 'models' . DS . 'recommendation.php';
 
         // Get recommendations
-        $r = Plugins\Publications\Recommendations\Models\Recommendation::find(
+        $r = \Plugins\Publications\Recommendations\Models\Recommendation::find(
             $publication->id,
             $this->params->get('threshold', '0.21')
         );

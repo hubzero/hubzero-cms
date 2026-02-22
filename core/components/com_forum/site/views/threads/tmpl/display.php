@@ -256,7 +256,7 @@ $now = Date::of('now')->toSql();
             <?php } ?>
 
             <?php
-            $attachments = Components\Forum\Models\Attachment::all()
+            $attachments = \Components\Forum\Models\Attachment::all()
                 ->whereEquals('parent', $this->thread->get('thread'))
                 ->whereIn('state', $this->filters['state'])
                 ->rows();

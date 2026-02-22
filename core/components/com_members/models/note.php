@@ -73,7 +73,7 @@ class Note extends Relational
      */
     public function member()
     {
-        return $this->belongsToOne('Components\Members\Models\Member', 'user_id');
+        return $this->belongsToOne('\Components\Members\Models\Member', 'user_id');
     }
 
     /**
@@ -83,7 +83,7 @@ class Note extends Relational
      */
     public function category()
     {
-        return $this->belongsToOne('Components\Members\Models\Note\Category', 'catid');
+        return $this->belongsToOne('\Components\Members\Models\Note\Category', 'catid');
     }
 
     /**

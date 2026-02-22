@@ -29,7 +29,7 @@ class Source extends Obj
      */
     public function getSource()
     {
-        $item = new stdClass();
+        $item = new \stdClass();
 
         if (!$this->template) {
             $this->getTemplate();

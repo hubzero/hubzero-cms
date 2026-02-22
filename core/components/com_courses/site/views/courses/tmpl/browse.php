@@ -186,7 +186,7 @@ $this->css('browse.css');
                                         if (count($instructors) > 0) {
                                             $names = array();
                                             foreach ($instructors as $i) {
-                                                $instructor = Components\Members\Models\Member::oneOrNew($i->get('user_id'));
+                                                $instructor = \Components\Members\Models\Member::oneOrNew($i->get('user_id'));
                                                 $name = $this->escape(stripslashes($instructor->get('name')));
 
                                                 $names[] = (in_array($instructor->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($instructor->link()) . '">' . $name . '</a>' : $name);

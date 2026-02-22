@@ -216,7 +216,7 @@ class Unit extends Base
             $filters['section_id'] = (int) $this->get('section_id');
         }
 
-        if (!isset($this->assetgroups) || !($this->assetgroups instanceof Iterator)) {
+        if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Iterator)) {
             $tbl = new Tables\AssetGroup($this->_db);
             if (($results = $tbl->find(array('w' => $filters)))) {
                 $list = array();
@@ -247,7 +247,7 @@ class Unit extends Base
             } else {
                 $res = array();
             }
-            $this->assetgroups = new Iterator($res);
+            $this->assetgroups = new \Iterator($res);
         }
 
         if ($idx !== null) {
@@ -283,10 +283,10 @@ class Unit extends Base
      */
     public function siblings(&$siblings)
     {
-        if ($siblings instanceof Iterator) {
+        if ($siblings instanceof \Iterator) {
             $this->_siblings = $siblings;
         } else {
-            $this->_siblings = new Iterator($siblings);
+            $this->_siblings = new \Iterator($siblings);
         }
     }
 
@@ -380,7 +380,7 @@ class Unit extends Base
      */
     public function assets($filters = array())
     {
-        if (!isset($this->_assets) || !($this->_assets instanceof Iterator)) {
+        if (!isset($this->_assets) || !($this->_assets instanceof \Iterator)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -401,7 +401,7 @@ class Unit extends Base
                 $results = array();
             }
 
-            $this->_assets = new Iterator($results);
+            $this->_assets = new \Iterator($results);
         }
 
         return $this->_assets;

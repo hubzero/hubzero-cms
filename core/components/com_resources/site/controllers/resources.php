@@ -878,7 +878,7 @@ class Resources extends SiteController
         try {
             $model = Entry::oneOrFail($parent);
             $activeChild = Entry::oneOrFail($child);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
         }
 
@@ -996,7 +996,7 @@ class Resources extends SiteController
         try {
             $model = Entry::oneOrFail($parent);
             $activechild = Entry::oneOrFail($child);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
         }
 

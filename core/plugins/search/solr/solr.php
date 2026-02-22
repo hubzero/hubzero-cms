@@ -54,7 +54,7 @@ class Solr extends Plugin
             return;
         }
 
-        $modelClass = new ReflectionClass($model);
+        $modelClass = new \ReflectionClass($model);
         $modelNamespace = explode('\\', $modelClass->getNamespaceName());
         $componentName = strtolower($modelNamespace[1]);
         $searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
@@ -102,7 +102,7 @@ class Solr extends Plugin
         // @TODO: Implement mechanism to send to Solr index
         // This Event is called in the Relational save() method.
         $modelName = '';
-        if ($modelName = Components\Search\Helpers\DiscoveryHelper::isSearchable($model)) {
+        if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model)) {
             $extensionName = strtolower(explode('\\', $modelName)[1]);
             $searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
             if ($searchComponent->get('state') == 1) {
@@ -121,14 +121,14 @@ class Solr extends Plugin
 
     /**
      *
-     * @param Components\Search\Models\Solr\SearchComponent $searchComponent
+     * @param \Components\Search\Models\Solr\SearchComponent $searchComponent
      * @param mixed $table
      * @param mixed $model
      * @return mixed
      */
     private function getSearchableModel($table, $model, $searchComponent)
     {
-        $searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+        $searchModel = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
         $indexResultModel = $model;
         if ($searchModel === false) {
             $searchModel = $searchComponent->getSearchableModel();

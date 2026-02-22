@@ -693,7 +693,7 @@ class Announcements extends Plugin
 
         // Only admins and group managers
         if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
         // Incoming data
@@ -728,12 +728,12 @@ class Announcements extends Plugin
             && $model->get('publish_down') != '0000-00-00 00:00:00'
             && $model->get('publish_up') > $model->get('publish_down')
         ) {
-            throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+            throw new \Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
         }
 
         // Save
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return $model->toObject();
@@ -758,7 +758,7 @@ class Announcements extends Plugin
 
         // Was it actually found?
         if (!$model->get('id')) {
-            throw new Exception(Lang::txt('Announcement not found.'), 404);
+            throw new \Exception(Lang::txt('Announcement not found.'), 404);
         }
 
         return $model->toObject();
@@ -780,7 +780,7 @@ class Announcements extends Plugin
 
         // Only admins and group managers
         if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
         $model = \Hubzero\Item\Announcement::oneOrFail($id);
@@ -819,12 +819,12 @@ class Announcements extends Plugin
             && $model->get('publish_down') != '0000-00-00 00:00:00'
             && $model->get('publish_up') > $model->get('publish_down')
         ) {
-            throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+            throw new \Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
         }
 
         // Save
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return $model->toObject();
@@ -846,7 +846,7 @@ class Announcements extends Plugin
 
         // Only admins and group managers
         if (!User::getauthorise('core.admin') || !in_array(User::get('id'), $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
         // Load the record
@@ -854,14 +854,14 @@ class Announcements extends Plugin
 
         // Was it actually found?
         if (!$model->get('id')) {
-            throw new Exception(Lang::txt('Announcement not found.'), 404);
+            throw new \Exception(Lang::txt('Announcement not found.'), 404);
         }
 
         // Mark as deleted and save the change
         $model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return true;

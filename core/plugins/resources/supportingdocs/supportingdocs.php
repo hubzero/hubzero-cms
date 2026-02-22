@@ -36,12 +36,12 @@ class Supportingdocs extends Plugin
 
         if ($model->isTool()) {
             $children = $model->children()
-                ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')
                 ->rows();
         } else {
             $children = $model->children()
-                ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->whereEquals('standalone', 0)
                 ->order('ordering', 'asc')
                 ->rows();

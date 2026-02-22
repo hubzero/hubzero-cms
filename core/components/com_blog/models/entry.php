@@ -300,7 +300,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public function creator()
     {
         if (file_exists(Component::path('com_members') . DS . 'models' . DS . 'member.php')) {
-            return $this->belongsToOne('Components\Members\Models\Member', 'created_by');
+            return $this->belongsToOne('\Components\Members\Models\Member', 'created_by');
         }
         return $this->belongsToOne('Hubzero\User\User', 'created_by');
     }

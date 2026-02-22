@@ -99,7 +99,7 @@ class Asset extends Base
                 $key = str_replace('_', ' ', $parts[0]);
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
-                $tbl = "Components\\Courses\\Tables\\{$key}";
+                $tbl = "\Components\\Courses\\Tables\\{$key}";
                 $tbl = new $tbl($this->_db);
                 $aux = array();
                 foreach (self::$_aux_tablekeys[$parts[0]] as $item) {
@@ -184,7 +184,7 @@ class Asset extends Base
                 $key = str_replace('_', ' ', $key);
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
-                $tbl = "Components\\Courses\\Tables\\{$key}";
+                $tbl = "\Components\\Courses\\Tables\\{$key}";
                 $tbl = new $tbl($this->_db);
 
                 if ($v == 'delete') {
@@ -552,7 +552,7 @@ class Asset extends Base
         $filePath = Component::path('com_courses') . '/models/assets/' . $handlerName . '.php';
         if (file_exists($filePath)) {
             require_once $filePath;
-            $handlerClassString = 'Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+            $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
             $handlerModel = new $handlerClassString($this->_db);
             return $handlerModel;
         }

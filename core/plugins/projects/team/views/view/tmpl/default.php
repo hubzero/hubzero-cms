@@ -262,7 +262,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                             $lastvisit = '<time datetime="'
                                 . Date::of($owner->lastvisit)->format('Y-m-d\TH:i:s\Z')
                                 . '">'
-                                . Components\Projects\Helpers\Html::timeAgo($owner->lastvisit)
+                                . \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit)
                                 . ' '
                                 . Lang::txt('PLG_PROJECTS_TEAM_AGO')
                                 . '</time>';

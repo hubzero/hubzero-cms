@@ -261,7 +261,7 @@ class Query extends Relational
             {
                 $condition->expressions[$i]->val = '0';
 
-                $exp = new stdClass;
+                $exp = new \stdClass;
                 $exp->fldval = 'open';
                 $exp->opval  = '=';
                 $exp->opdisp = 'is';

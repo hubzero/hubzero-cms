@@ -120,7 +120,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
                     require_once Component::path('com_projects') . '/models/project.php';
 
-                    $project = new Components\Projects\Models\Project($this->row->log->details->get(
+                    $project = new \Components\Projects\Models\Project($this->row->log->details->get(
                         'projectid',
                         $this->row->log->get('scope_id')
                     ));
@@ -170,7 +170,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     <div class="activity-attachments">
                         <?php
                         foreach ($attachments as $attachment) {
-                            $attachment = new Plugins\Groups\Activity\Models\Attachment($attachment);
+                            $attachment = new \Plugins\Groups\Activity\Models\Attachment($attachment);
                             $attachment->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
 
                             if (!$attachment->exists()) {

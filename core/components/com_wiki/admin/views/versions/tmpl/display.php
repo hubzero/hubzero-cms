@@ -11,7 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
 
 Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS'), 'wiki');
 if ($canDo->get('core.create')) {

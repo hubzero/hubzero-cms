@@ -340,7 +340,7 @@ class Migration20130924000009ComMenus extends Base
                     class_exists('Components\Menus\Models\Menu')
                     && method_exists('Components\Menus\Models\Menu', 'rebuild')
                 ) {
-                    $table = Components\Menus\Models\Menu::blank();
+                    $table = \Components\Menus\Models\Menu::blank();
                     $table->rebuild();
                 }
             }

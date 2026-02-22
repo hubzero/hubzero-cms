@@ -142,7 +142,7 @@ class Usage extends Plugin
                     ->rows();
 
                 foreach ($options as $opt) {
-                    $type = new stdClass();
+                    $type = new \stdClass();
                     $type->id    = $opt->get('id');
                     $type->type  = $opt->get('value');
                     $type->title = $opt->get('label');
@@ -348,7 +348,7 @@ class Usage extends Plugin
         // $sessions = array();
         $runs = array();
 
-        $data = new stdClass();
+        $data = new \stdClass();
         $data->points = array();
         //$data->runs = array();
 

@@ -24,7 +24,7 @@ class Forum extends Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

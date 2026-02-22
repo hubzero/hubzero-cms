@@ -60,7 +60,7 @@ class Recaptcha extends Plugin
     public function onInit($id = 'dynamic_recaptcha_1')
     {
         if (!$this->params->get('public') || !$this->params->get('private')) {
-            throw new Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
+            throw new \Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
         }
 
         return true;
@@ -78,7 +78,7 @@ class Recaptcha extends Plugin
     {
         try {
             $this->onInit($id);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return '<p class="error">' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_API_NEEDED') . '</p>';
         }
 

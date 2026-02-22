@@ -51,7 +51,7 @@ defined('_HZEXEC_') or die();
 
         <?php
         // Convert to XML so we can use the Form processor
-        $xml = Components\Projects\Models\Orm\Description\Field::toXml($this->fields, 'edit');
+        $xml = \Components\Projects\Models\Orm\Description\Field::toXml($this->fields, 'edit');
         // Create a new form
         Hubzero\Form\Form::addFieldPath(Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'fields');
 

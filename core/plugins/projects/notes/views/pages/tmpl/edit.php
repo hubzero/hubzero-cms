@@ -151,7 +151,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
             <?php echo Lang::txt('COM_WIKI_FIELD_PAGETEXT'); ?>:
             <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
             <?php
-            echo Components\Wiki\Helpers\Editor::getInstance()->display(
+            echo \Components\Wiki\Helpers\Editor::getInstance()->display(
                 'revision[pagetext]',
                 'pagetext',
                 $this->revision->get('pagetext'),

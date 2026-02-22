@@ -189,7 +189,7 @@ class Codemirror extends Plugin
             $style = Request::root() . '/' . $this->_basePath . 'assets/css/' . $style;
         }
 
-        $options = new stdClass();
+        $options = new \stdClass();
 
         $options->basefiles  = array('basefiles' . $compressed . '.js');
         $options->path       = Request::root() . '/' . $this->_basePath . 'assets/js/';
