@@ -43,12 +43,13 @@ class TranslationServiceProvider extends ServiceProvider
         $translator = $this->app['language'];
 
         $language = null;
+        $appLangDir = PATH_APP . DS . 'language' . DS . strtolower($this->app['client']->name);
 
         // If a language was specified it has priority
         if (!$language && $this->app->has('request')) {
             $lang = $this->app['request']->getString('language', null);
 
-            if ($lang && $translator->exists($lang)) {
+            if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -57,7 +58,7 @@ class TranslationServiceProvider extends ServiceProvider
         if (!$language && $this->app->has('user')) {
             $lang = $this->app['user']->getParam('api_language');
 
-            if ($lang && $translator->exists($lang)) {
+            if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -66,7 +67,7 @@ class TranslationServiceProvider extends ServiceProvider
         if (!$language && $this->app->has('browser')) {
             $lang = $translator->detectLanguage();
 
-            if ($lang && $translator->exists($lang)) {
+            if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -82,10 +83,10 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         // One last check to make sure we have something
-        if (!$language || !$translator->exists($language)) {
+        if (!$language || !is_dir($appLangDir . DS . $language)) {
             $lang = $this->app['config']->get('language', 'en-GB');
 
-            if ($translator->exists($lang)) {
+            if (is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -93,10 +94,5 @@ class TranslationServiceProvider extends ServiceProvider
         if ($language) {
             $translator->setLanguage($language);
         }
-
-        $boot = DS . 'bootstrap' . DS . $this->app['client']->name;
-
-        $translator->load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
-        $translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
     }
 }

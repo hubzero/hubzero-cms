@@ -359,8 +359,8 @@ class Languagefilter extends Plugin
             $lang_code = isset(self::$sefs[$sef]) ? self::$sefs[$sef]->lang_code : '';
 
             if (
-                $lang_code && (Lang::exists($lang_code, PATH_APP . '/bootstrap/site')
-                || Lang::exists($lang_code, PATH_CORE . '/bootstrap/Site'))
+                $lang_code && (Lang::exists($lang_code, PATH_APP, 'site')
+                || Lang::exists($lang_code, PATH_CORE, 'site'))
             ) {
                 array_shift($parts);
                 $uri->setPath(implode('/', $parts));
