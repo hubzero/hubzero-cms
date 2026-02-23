@@ -3,6 +3,10 @@
 namespace Plugins\Members\Resources;
 
 use Hubzero\Plugin\Plugin;
+use Components\Resources\Models\Type;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * @package   hubzero-cms
@@ -54,8 +58,6 @@ class Resources extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**
@@ -181,7 +183,7 @@ class Resources extends Plugin
         if (User::get('id') != $member->get('id')) {
             //$filters['published'] = 1;
             $filters['access'] = array(0, 3);
-            if (!\User::isGuest()) {
+            if (!\Hubzero\Facades\User::isGuest()) {
                 $filters['access'][] = 1;
             }
         }
@@ -201,8 +203,8 @@ class Resources extends Plugin
         }
 
         if ($limit) {
+            $total = 0;
             if ($this->total != null) {
-                $total = 0;
                 $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
@@ -228,8 +230,6 @@ class Resources extends Plugin
             $query = \Components\Resources\Models\Entry::allWithFilters($filters);
 
             if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
-                include_once \Component::path('com_resources') . DS . 'models' . DS . 'stat.php';
-
                 $s = \Components\Resources\Models\Stat::blank()->getTableName();
                 $t = $query->getTableName();
 
@@ -434,7 +434,5 @@ class Resources extends Plugin
     {
         // Push some CSS and JS to the tmeplate that may be needed
         \Hubzero\Document\Assets::addComponentStylesheet('com_resources');
-
-        include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
     }
 }
