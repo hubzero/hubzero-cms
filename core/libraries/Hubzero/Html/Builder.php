@@ -146,16 +146,42 @@ class Builder
 
                     $tokens = token_get_all($code);
 
-                    for ($i = 2; $i < count($tokens); $i++) {
+                    $namespace = '';
+                    $className = '';
+
+                    for ($i = 0; $i < count($tokens); $i++) {
+                        // Capture namespace declaration
+                        if ($tokens[$i][0] === T_NAMESPACE) {
+                            $ns = '';
+                            for ($j = $i + 1; $j < count($tokens); $j++) {
+                                if ($tokens[$j] === ';' || $tokens[$j] === '{') {
+                                    break;
+                                }
+                                if ($tokens[$j][0] === T_STRING || $tokens[$j][0] === T_NAME_QUALIFIED) {
+                                    $ns .= $tokens[$j][1];
+                                } elseif ($tokens[$j][0] === T_NS_SEPARATOR) {
+                                    $ns .= '\\';
+                                }
+                            }
+                            $namespace = trim($ns);
+                        }
+
+                        // Capture class name
                         if (
-                            $tokens[$i - 2][0] === T_CLASS
+                            $i >= 2
+                            && $tokens[$i - 2][0] === T_CLASS
                             && $tokens[$i - 1][0] === T_WHITESPACE
                             && $tokens[$i][0] === T_STRING
                         ) {
-                            include_once $inc;
-
-                            return $tokens[$i][1];
+                            $className = $tokens[$i][1];
+                            break;
                         }
+                    }
+
+                    if ($className) {
+                        include_once $inc;
+
+                        return $namespace ? $namespace . '\\' . $className : $className;
                     }
                 }
             }
