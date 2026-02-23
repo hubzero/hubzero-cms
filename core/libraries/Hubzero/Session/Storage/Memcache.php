@@ -55,7 +55,7 @@ class Memcache extends Store
     public function __construct($options = array())
     {
         if (!self::isAvailable()) {
-            throw new \Exception(\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
+            throw new \Exception(\Hubzero\Facades\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (isset($options['prefix'])) {
@@ -69,8 +69,7 @@ class Memcache extends Store
         }
 
         if (!isset($options['servers']) || empty($options['servers'])) {
-            $conf = new \Hubzero\Config\Repository('site');
-
+            $config = \Hubzero\Facades\App::get('config');
             $options['servers'] = array(
                 array(
                     'host'   => $config->get('memcache_server_host', 'localhost'),
