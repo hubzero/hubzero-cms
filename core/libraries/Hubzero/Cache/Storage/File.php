@@ -71,8 +71,8 @@ class File extends None
      */
     public static function isAvailable()
     {
-        $conf = new \Hubzero\Config\Repository('site');
-        return is_writable($conf->get('cache_path', PATH_APP . DIRECTORY_SEPARATOR . 'cache'));
+        $config = \Hubzero\Facades\App::get('config');
+        return is_writable($config->get('cache_path', PATH_APP . DIRECTORY_SEPARATOR . 'cache'));
     }
 
     /**
@@ -98,7 +98,7 @@ class File extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {
@@ -235,7 +235,7 @@ class File extends None
      * Garbage collect expired cache data
      *
      * @param   string  $group
-     * @return  void
+     * @return  bool
      */
     public function gc($group = null)
     {
