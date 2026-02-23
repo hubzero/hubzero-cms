@@ -12,14 +12,14 @@ use Components\Config\Models\Extension;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Hubzero\Base\Obj;
-use Filesystem;
-use Config;
-use Notify;
-use Event;
-use Cache;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Model class for Application config
@@ -42,7 +42,7 @@ class Application extends Obj
         $form = new Form('com_config.application', array('control' => 'hzform'));
 
         if (!$form->loadFile($file, false, '//form')) {
-            $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+            $this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
         }
 
         if (!empty($data)) {
@@ -79,12 +79,12 @@ class Application extends Obj
         $data['asset_id'] = 1;
 
         // Get the text filter data
-        $params = \Component::params('com_config');
+        $params = \Hubzero\Facades\Component::params('com_config');
         $data['filters'] = \Hubzero\Utility\Arr::fromObject($params->get('filters'));
 
         // If no filter data found, get from com_content (update of 1.6/1.7 site)
         if (empty($data['filters'])) {
-            $contentParams = \Component::params('com_content');
+            $contentParams = \Hubzero\Facades\Component::params('com_content');
             $data['filters'] = \Hubzero\Utility\Arr::fromObject($contentParams->get('filters'));
         }
 
@@ -146,7 +146,7 @@ class Application extends Obj
 
             // Check that we aren't removing our Super User permission
             // Need to get groups from database, since they might have changed
-            $myGroups = \Hubzero\Access\Access::getGroupsByUser(\User::get('id'));
+            $myGroups = \Hubzero\Access\Access::getGroupsByUser(User::get('id'));
             $myRules = $rules->getData();
             $hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
             if (!$hasSuperAdmin) {
@@ -187,7 +187,7 @@ class Application extends Obj
         }
 
         // Get the previous configuration.
-        $config = new \Hubzero\Config\Repository('site');
+        $config = new \Hubzero\Config\Repository('site', new \Hubzero\Config\FileLoader(PATH_ROOT, PATH_APP));
 
         $prev = $config->toArray();
 

@@ -43,10 +43,11 @@ class Memcache extends None
 
         if (!$this->engine) {
             if (!isset($this->options['servers']) || empty($this->options['servers'])) {
-                $conf = new \Hubzero\Config\Repository('site');
-                $this->
-                    options['compress'] = $config->
-                    get('memcache_compress', false) == false ? 0 : MEMCACHE_COMPRESSED;
+                $config = \Hubzero\Facades\App::get('config');
+                $this->options['compress'] = $config->get(
+                    'memcache_compress',
+                    false
+                ) == false ? 0 : MEMCACHE_COMPRESSED;
                 $this->options['servers'] = array(
                     array(
                         'host'    => $config->get('memcache_server_host', 'localhost'),
@@ -137,7 +138,7 @@ class Memcache extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {
