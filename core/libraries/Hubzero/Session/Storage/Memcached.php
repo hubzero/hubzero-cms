@@ -54,7 +54,7 @@ class Memcached extends Store
     public function __construct($options = array())
     {
         if (!self::isAvailable()) {
-            throw new Exception(\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
+            throw new \Exception(\Hubzero\Facades\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (isset($options['prefix'])) {
@@ -68,8 +68,7 @@ class Memcached extends Store
         }
 
         if (!isset($options['servers']) || empty($options['servers'])) {
-            $conf = new \Hubzero\Config\Repository('site');
-
+            $config = \Hubzero\Facades\App::get('config');
             $options['servers'] = array(
                 array(
                     'host'   => $config->get('memcache_server_host', 'localhost'),
@@ -200,7 +199,7 @@ class Memcached extends Store
      */
     public function session($id)
     {
-        $session = new Object();
+        $session = new \stdClass();
         $session->session_id = $id;
         $session->data       = $this->read($id);
 
@@ -223,7 +222,7 @@ class Memcached extends Store
         // loop through all session keys and get data
         foreach ($data as $key => $value) {
             if (strpos($value->name, $this->prefix) === 0) {
-                $session = new Object();
+                $session = new \stdClass();
                 $session->session_id = $value->name;
                 $session->data       = $value;
 

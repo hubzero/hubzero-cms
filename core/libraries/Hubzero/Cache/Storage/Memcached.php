@@ -43,8 +43,7 @@ class Memcached extends None
 
         if (!$this->engine) {
             if (!isset($this->options['servers']) || empty($this->options['servers'])) {
-                $conf = new \Hubzero\Config\Repository('site');
-
+                $config = \Hubzero\Facades\App::get('config');
                 $this->options['servers'] = array(
                     array(
                         'host'   => $config->get('memcache_server_host', 'localhost'),
@@ -129,7 +128,7 @@ class Memcached extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {
