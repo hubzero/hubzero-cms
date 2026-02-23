@@ -41,9 +41,9 @@ class Language extends Select
             $client_id = 1;
         }
 
-        $path = PATH_APP . DS . 'bootstrap' . DS . $client;
+        $path = PATH_APP . DS . 'language' . DS . $client;
         if (!is_dir($path)) {
-            $path = PATH_CORE . DS . 'bootstrap' . DS . $client;
+            $path = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client);
         }
 
         // Merge any additional options in the XML definition.

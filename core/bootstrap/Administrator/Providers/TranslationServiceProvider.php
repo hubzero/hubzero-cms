@@ -43,13 +43,13 @@ class TranslationServiceProvider extends ServiceProvider
         $translator = $this->app['language'];
 
         $language = null;
-        $path = PATH_APP . DS . 'bootstrap' . DS . strtolower($this->app['client']->name);
+        $appLangDir = PATH_APP . DS . 'language' . DS . strtolower($this->app['client']->name);
 
         // Detect user specified language
         if (!$language && $this->app->has('user')) {
             $lang = \User::getParam($this->app['client']->alias . '_language');
 
-            if ($lang && $translator->exists($lang, $path)) {
+            if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -65,10 +65,10 @@ class TranslationServiceProvider extends ServiceProvider
         }
 
         // One last check to make sure we have something
-        if (!$language || !$translator->exists($language)) {
+        if (!$language || !is_dir($appLangDir . DS . $language)) {
             $lang = $this->app['config']->get('language', 'en-GB');
 
-            if ($translator->exists($lang, $path)) {
+            if (is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;
             }
         }
@@ -76,8 +76,5 @@ class TranslationServiceProvider extends ServiceProvider
         if ($language) {
             $translator->setLanguage($language);
         }
-
-        $translator->load('lib_hubzero', $path, null, false, true) ||
-        $translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
     }
 }
