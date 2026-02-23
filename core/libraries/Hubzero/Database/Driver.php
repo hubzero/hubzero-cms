@@ -3384,6 +3384,10 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function getNumRows()
     {
+        if ($this->statement === null) {
+            return 0;
+        }
+
         // @FIXME: this isn't guaranteed to work on select statements in mysql
         if ($this->connection instanceof ConnectionInterface) {
             return $this->connection->affectedRows($this->statement);

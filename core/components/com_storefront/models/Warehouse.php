@@ -617,7 +617,7 @@ class Warehouse extends \Hubzero\Base\Obj
             $products = $this->_db->loadObjectList();
 
             if ($return == 'count') {
-                return $this->_db->getNumRows();
+                return count($products);
             }
 
             return $products;
