@@ -146,7 +146,7 @@ class Application extends Obj
 
             // Check that we aren't removing our Super User permission
             // Need to get groups from database, since they might have changed
-            $myGroups = \Hubzero\Access\Access::getGroupsByUser(\User::get('id'));
+            $myGroups = \Hubzero\Access\Access::getGroupsByUser(User::get('id'));
             $myRules = $rules->getData();
             $hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
             if (!$hasSuperAdmin) {
@@ -187,7 +187,7 @@ class Application extends Obj
         }
 
         // Get the previous configuration.
-        $config = new \Hubzero\Config\Repository('site');
+        $config = new \Hubzero\Config\Repository('site', new \Hubzero\Config\FileLoader(PATH_ROOT, PATH_APP));
 
         $prev = $config->toArray();
 
