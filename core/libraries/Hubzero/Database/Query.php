@@ -4031,6 +4031,10 @@ class Query
 
         // Build and hash query
         $query = $this->buildQuery();
+        if (strpos($query, 'COUNT') !== false && strpos($query, 'FROM') === false) {
+            error_log('DEBUG fetch: COUNT query missing FROM: ' . $query);
+            error_log('DEBUG fetch: stack = ' . (new \Exception())->getTraceAsString());
+        }
         $bindingsHash = serialize($this->syntax->getBindings());
         $connectionId = ($this->connection instanceof Driver) ? $this->connection->getConnectionId() : '';
         $memoryCacheKey = hash('md5', $connectionId . $structure . $query . $bindingsHash);
@@ -4794,12 +4798,14 @@ class Query
      * @param   string  $column  Column name or expression
      * @return  mixed
      **/
-    public function value(string $column)
+    public function value(string $column = null)
     {
         $query = clone $this;
-        $query->deselect()
-            ->select($column)
-            ->limit(1);
+        if ($column !== null) {
+            $query->deselect()
+                ->select($column);
+        }
+        $query->limit(1);
 
         $row = $query->fetch('row', true);
         $query->reset();
@@ -4999,7 +5005,8 @@ class Query
             }
         }
 
-        return implode("\n", $pieces);
+        $result = implode("\n", $pieces);
+        return $result;
     }
 
     /**

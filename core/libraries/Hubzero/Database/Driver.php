@@ -1378,6 +1378,18 @@ abstract class Driver implements LoggerAwareInterface
             return '';
         }
 
+        // Strip existing quote characters to prevent double-wrapping
+        // e.g. `#__table` AS `alias` -> #__table AS alias before re-quoting
+        $unwrapped = sprintf($this->wrapper, '');
+        if (strlen($unwrapped) >= 2) {
+            $open  = $unwrapped[0];
+            $close = $unwrapped[strlen($unwrapped) - 1];
+            if (strpos($value, $open) !== false) {
+                $value = str_replace([$open, $close], '', $value);
+                $value = trim($value);
+            }
+        }
+
         // Preserve derived-table expressions like "(SELECT ...)" as raw SQL.
         if ($value[0] === '(' && substr($value, -1) === ')') {
             return $value;
