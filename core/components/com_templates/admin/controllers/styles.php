@@ -197,8 +197,7 @@ class Styles extends AdminController
             $base = PATH_APP;
         }
 
-        // Load the core and/or local language file(s).
-        Lang::load('tpl_' . $template, $base . '/bootstrap/' . $client->name, null, false, true) ||
+        // Load the template's language file for style editing labels
         Lang::load('tpl_' . $template, $base . '/templates/' . $template, null, false, true);
 
         $paths   = array();

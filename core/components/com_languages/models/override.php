@@ -33,8 +33,8 @@ class Override extends Obj
      */
     public function path($client, $language)
     {
-        return PATH_APP . DS . 'bootstrap' . DS . $client . DS . 'language'
-            . DS . 'overrides' . DS . $language . '.override.ini';
+        return PATH_APP . DS . 'language' . DS . $client
+            . DS . $language . DS . $language . '.override.ini';
     }
 
     /**
@@ -336,8 +336,8 @@ class Override extends Obj
         }
 
         // Overwrite core languages with any installed ones
-        $site_languages  = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'site');
-        $admin_languages = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'administrator');
+        $site_languages  = Lang::getKnownLanguages(PATH_APP . DS . 'language' . DS . 'site');
+        $admin_languages = Lang::getKnownLanguages(PATH_APP . DS . 'language' . DS . 'administrator');
 
         // Create a single array of them
         foreach ($site_languages as $tag => $language) {

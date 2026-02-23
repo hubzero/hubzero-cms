@@ -292,8 +292,11 @@ class Overrides extends AdminController
             $files = array();
 
             foreach (array(PATH_CORE, PATH_APP) as $base) {
-                $clientDir = ($base == PATH_CORE ? ucfirst($client) : $client);
-                $path = $base . '/bootstrap/language/' . $clientDir . '/' . $language;
+                if ($base == PATH_CORE) {
+                    $path = $base . '/bootstrap/' . ucfirst($client) . '/language/' . $language;
+                } else {
+                    $path = $base . '/language/' . $client . '/' . $language;
+                }
 
                 // Parse common language directory
                 if (Filesystem::exists($path)) {

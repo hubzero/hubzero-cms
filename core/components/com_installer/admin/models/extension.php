@@ -222,15 +222,24 @@ class Extension extends Relational
             case 'language':
                 $client = \Hubzero\Base\ClientManager::client($this->get('client_id'));
                 $element = $this->get('element');
-                $path = DS . 'bootstrap' . DS . $client->name . DS . 'language';
-                $path .= DS . $element . DS . $element . '.xml';
+                $corePath = DS . 'bootstrap' . DS . ucfirst($client->name) . DS . 'language';
+                $corePath .= DS . $element . DS . $element . '.xml';
+                $appPath = DS . 'language' . DS . strtolower($client->name);
+                $appPath .= DS . $element . DS . $element . '.xml';
                 break;
         }
 
-        $paths = array(
-            'app'  => Filesystem::cleanPath(PATH_APP . $path),
-            'core' => Filesystem::cleanPath(PATH_CORE . $path)
-        );
+        if (isset($appPath)) {
+            $paths = array(
+                'app'  => Filesystem::cleanPath(PATH_APP . $appPath),
+                'core' => Filesystem::cleanPath(PATH_CORE . $corePath)
+            );
+        } else {
+            $paths = array(
+                'app'  => Filesystem::cleanPath(PATH_APP . $path),
+                'core' => Filesystem::cleanPath(PATH_CORE . $path)
+            );
+        }
 
         $xml = null;
 

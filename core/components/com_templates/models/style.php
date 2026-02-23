@@ -10,6 +10,7 @@ namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Hubzero\Config\FileWriter;
 
 /**
  * Template style model
@@ -159,7 +160,46 @@ class Style extends Relational
             $query->execute();
         }
 
-        return parent::save();
+        $result = parent::save();
+
+        // Sync the config file when the default template changes
+        if ($result && $this->get('home')) {
+            $this->syncTemplateConfig();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Update the app config file with the current default template name.
+     *
+     * Maps client_id 0 → site_template, client_id 1 → administrator_template.
+     *
+     * @return  void
+     */
+    protected function syncTemplateConfig()
+    {
+        $configKey = (int)$this->get('client_id') === 1
+            ? 'administrator_template'
+            : 'site_template';
+
+        $configPath = PATH_APP . DS . 'config';
+        $configFile = $configPath . DS . 'app.php';
+
+        if (!file_exists($configFile)) {
+            return;
+        }
+
+        $config = include $configFile;
+
+        if (!is_array($config)) {
+            return;
+        }
+
+        $config[$configKey] = $this->get('template');
+
+        $writer = new FileWriter('php', $configPath);
+        $writer->write($config, 'app');
     }
 
     /**

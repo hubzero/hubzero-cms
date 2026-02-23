@@ -9,6 +9,7 @@
 namespace Bootstrap\Site\Providers;
 
 use Hubzero\Base\ServiceProvider;
+use Hubzero\Config\FileWriter;
 use Hubzero\Template\Loader;
 
 /**
@@ -57,7 +58,24 @@ class TemplateServiceProvider extends ServiceProvider
                 $loader->setStyle($style);
             }
 
-            return $loader->load();
+            $template = $loader->load();
+
+            // Keep config in sync with the database default
+            $configName = $app['config']->get('site_template');
+            if ($template->home && $configName !== $template->template) {
+                $configPath = PATH_APP . DS . 'config';
+                $configFile = $configPath . DS . 'app.php';
+                if (file_exists($configFile)) {
+                    $config = include $configFile;
+                    if (is_array($config)) {
+                        $config['site_template'] = $template->template;
+                        $writer = new FileWriter('php', $configPath);
+                        $writer->write($config, 'app');
+                    }
+                }
+            }
+
+            return $template;
         };
     }
 }

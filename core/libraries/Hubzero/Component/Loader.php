@@ -155,21 +155,7 @@ class Loader
     {
         $client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
-        // Load template language files.
         $lang = $this->app['language'];
-        if ($this->app->has('template')) {
-            $template = $this->app['template']->template;
-
-            $lang->load('tpl_' .
-                $template, PATH_APP .
-                DIRECTORY_SEPARATOR .
-                'bootstrap' .
-                DIRECTORY_SEPARATOR .
-                $client .
-                DIRECTORY_SEPARATOR .
-                'language', null, false, true);
-            $lang->load('tpl_' . $template, $this->app['template']->path, null, false, true);
-        }
 
         $option = $this->canonical($option);
 

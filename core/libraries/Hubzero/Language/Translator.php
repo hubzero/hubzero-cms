@@ -117,18 +117,18 @@ class Translator extends Obj
     protected $used = array();
 
     /**
-     * Counter for number of loads.
-     *
-     * @public integer
-     */
-    protected $counter = 0;
-
-    /**
      * An array used to store overrides.
      *
      * @public array
      */
     protected $override = array();
+
+    /**
+     * Whether overrides have been merged into strings.
+     *
+     * @public boolean
+     */
+    protected $overridesMerged = false;
 
     /**
      * Name of the transliterator function for this language.
@@ -169,17 +169,19 @@ class Translator extends Obj
         $this->setLanguage($lang);
         $this->setDebug($debug);
 
-        // Client directories are all lowercase under PATH_APP
-        $filename = PATH_APP . "/bootstrap/" . strtolower($client) . "/language/overrides/$lang.override.ini";
+        // App language path (new flat structure)
+        $appLangPath = PATH_APP . "/language/" . strtolower($client) . "/$lang";
 
-        if (file_exists($filename) && $contents = $this->parse($filename)) {
-            if (is_array($contents)) {
-                // Sort the underlying heap by key values to optimize merging
-                ksort($contents, SORT_STRING);
-                $this->override = $contents;
-            }
+        // System overrides — loaded first, lower priority
+        $this->loadOverride("$appLangPath/$lang.override.ini");
 
-            unset($contents);
+        // Template overrides (early, from config) — highest priority
+        // Uses the standard tpl_ file as the global override for all strings
+        $templateName = \App::get('config')->get(strtolower($client) . '_template');
+        if ($templateName) {
+            $tplFile = PATH_APP
+                . "/templates/$templateName/language/$lang/$lang.tpl_$templateName.ini";
+            $this->loadOverride($tplFile);
         }
 
         // Look for a language specific localise class.
@@ -191,12 +193,11 @@ class Translator extends Obj
         $class = $classLegacy;
         $paths = array();
 
-        // Client directories are all lowercase under PATH_APP (for now)
-        $paths[0] = PATH_APP . "/bootstrap/" . strtolower($client) . "/language/overrides/$lang.localise.php";
-        $paths[1] = PATH_APP . "/bootstrap/" . strtolower($client) . "/language/$lang/$lang.localise.php";
-        // Client directories are ucfirst (PSR-4) under PATH_CORE
-        $paths[2] = PATH_CORE . "/bootstrap/" . strtolower($client) . "/language/$lang/$lang.localise.php";
-        $paths[3] = PATH_CORE . "/bootstrap/" . ucfirst($client) . "/language/$lang/$lang.localise.php";
+        // App localise path
+        $paths[0] = "$appLangPath/$lang.localise.php";
+        // Core paths (ucfirst is PSR-4 convention)
+        $paths[1] = PATH_CORE . "/bootstrap/" . strtolower($client) . "/language/$lang/$lang.localise.php";
+        $paths[2] = PATH_CORE . "/bootstrap/" . ucfirst($client) . "/language/$lang/$lang.localise.php";
 
         ksort($paths);
         $path = reset($paths);
@@ -281,6 +282,12 @@ class Translator extends Obj
         // Detect empty string
         if ($string == '') {
             return '';
+        }
+
+        // Deferred override merge — apply overrides once after all regular strings are loaded
+        if (!$this->overridesMerged && !empty($this->override)) {
+            $this->strings = array_merge($this->strings, $this->override);
+            $this->overridesMerged = true;
         }
 
         $key = strtoupper($string);
@@ -609,11 +616,14 @@ class Translator extends Obj
             $lang = $this->lang;
         }
 
-        if ($basePath == PATH_APP || $basePath == PATH_CORE) {
+        if ($basePath == PATH_APP) {
+            $path = PATH_APP . DS . 'language' . DS . strtolower($this->client) . DS . $lang;
+        } elseif ($basePath == PATH_CORE) {
             $basePath .= DS . 'bootstrap' . DS . $this->client;
+            $path = self::getLanguagePath($basePath, $lang);
+        } else {
+            $path = self::getLanguagePath($basePath, $lang);
         }
-
-        $path = self::getLanguagePath($basePath, $lang);
 
         $internal = $extension == 'hubzero' || $extension == '';
         $filename = $internal ? $lang : $lang . '.' . $extension;
@@ -649,6 +659,29 @@ class Translator extends Obj
     }
 
     /**
+     * Load an override file and merge its contents into the override array.
+     *
+     * @param   string   $filename  The override file path.
+     * @return  boolean  True if new overrides were loaded.
+     */
+    public function loadOverride($filename)
+    {
+        if (!file_exists($filename)) {
+            return false;
+        }
+
+        $contents = $this->parse($filename);
+
+        if (is_array($contents) && count($contents)) {
+            $this->override = array_merge($this->override, $contents);
+            $this->overridesMerged = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Loads a language file.
      *
      * This method will not note the successful loading of a file - use load() instead.
@@ -659,8 +692,6 @@ class Translator extends Obj
      */
     protected function loadLanguage($filename, $extension = 'unknown')
     {
-        $this->counter++;
-
         $result  = false;
         $strings = false;
 
@@ -668,19 +699,10 @@ class Translator extends Obj
             $strings = $this->parse($filename);
         }
 
-        if ($strings) {
-            if (is_array($strings)) {
-                // Sort the underlying heap by key values to optimize merging
-                ksort($strings, SORT_STRING);
-                $this->strings = array_merge($this->strings, $strings);
-            }
-
-            if (is_array($strings) && count($strings)) {
-                // Do not bother with ksort here.  Since the originals were sorted, PHP will already have chosen the
-                // bestheap.
-                $this->strings = array_merge($this->strings, $this->override);
-                $result = true;
-            }
+        if (is_array($strings) && count($strings)) {
+            $this->strings = array_merge($this->strings, $strings);
+            $this->overridesMerged = false;
+            $result = true;
         }
 
         // Record the result of loading the extension's file.
@@ -1030,6 +1052,12 @@ class Translator extends Obj
             return false;
         }
 
+        // Ensure overrides are merged before checking
+        if (!$this->overridesMerged && !empty($this->override)) {
+            $this->strings = array_merge($this->strings, $this->override);
+            $this->overridesMerged = true;
+        }
+
         $key = strtoupper($string);
 
         return isset($this->strings[$key]);
@@ -1043,7 +1071,7 @@ class Translator extends Obj
      */
     public static function getMetadata($lang)
     {
-        $path = self::getLanguagePath(PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name, $lang);
+        $path = PATH_APP . DS . 'language' . DS . strtolower(\App::get('client')->name) . DS . $lang;
         $file = $lang . '.xml';
 
         $result = null;
@@ -1119,8 +1147,32 @@ class Translator extends Obj
      */
     public function setLanguage($lang)
     {
-        $this->lang     = $lang;
+        $previous = $this->lang ?? null;
+        $this->lang = $lang;
         $this->metadata = $this->getMetadata($this->lang);
+
+        // If switching languages, reload everything in the new language
+        if ($previous && $previous !== $lang) {
+            $this->strings = array();
+            $this->override = array();
+            $this->overridesMerged = false;
+
+            // Reload base strings
+            $this->load('', PATH_APP) || $this->load('', PATH_CORE);
+
+            // Reload overrides in the new language
+            $client = strtolower($this->client);
+            $appLangPath = PATH_APP . "/language/$client/$lang";
+
+            $this->loadOverride("$appLangPath/$lang.override.ini");
+
+            $templateName = \App::get('config')->get($client . '_template');
+            if ($templateName) {
+                $tplFile = PATH_APP
+                    . "/templates/$templateName/language/$lang/$lang.tpl_$templateName.ini";
+                $this->loadOverride($tplFile);
+            }
+        }
 
         return $this;
     }
@@ -1283,7 +1335,7 @@ class Translator extends Obj
             // Installation uses available languages
             if (\App::get('client')->id == 2) {
                 $languages[$key] = array();
-                $knownLangs = self::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . $this->client);
+                $knownLangs = self::getKnownLanguages(PATH_APP . DS . 'language' . DS . strtolower($this->client));
                 foreach ($knownLangs as $metadata) {
                     // Take off 3 letters iso code languages as they can't match browsers' languages and default them
                     // toen
