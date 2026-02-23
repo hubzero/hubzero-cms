@@ -160,6 +160,7 @@ $revision = $this->revision;
                                 $versiontext .= ' (' . Lang::txt('COM_RESOURCES_IN_DEVELOPMENT') . ')';
                             }
                         } elseif ($curtool) {
+                            $dateFmt = Lang::txt('DATE_FORMAT_HZ1');
                             $versiontext .= $curtool->version . '</strong> - '
                                 . Lang::txt('COM_RESOURCES_PUBLISHED_ON') . ' ';
                             $versiontext .= ($curtool->released
