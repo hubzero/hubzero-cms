@@ -33,8 +33,8 @@ class Override extends Obj
      */
     public function path($client, $language)
     {
-        return PATH_APP . DS . 'bootstrap' . DS . $client . DS . 'language'
-            . DS . 'overrides' . DS . $language . '.override.ini';
+        return PATH_APP . DS . 'language' . DS . $client
+            . DS . $language . DS . $language . '.override.ini';
     }
 
     /**
@@ -325,8 +325,8 @@ class Override extends Obj
         // Get all languages of frontend and backend
         $languages = array();
 
-        $site_languages  = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Site');
-        $admin_languages = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Administrator');
+        $site_languages  = Lang::getKnownLanguages(PATH_CORE, 'site');
+        $admin_languages = Lang::getKnownLanguages(PATH_CORE, 'administrator');
         $langKey = 'COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM';
         foreach ($site_languages as $tag => $language) {
             $languages[$tag . '0'] = Lang::txt($langKey, $language['name'], Lang::txt('JSITE'));
@@ -336,8 +336,8 @@ class Override extends Obj
         }
 
         // Overwrite core languages with any installed ones
-        $site_languages  = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'site');
-        $admin_languages = Lang::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . 'administrator');
+        $site_languages  = Lang::getKnownLanguages(PATH_APP, 'site');
+        $admin_languages = Lang::getKnownLanguages(PATH_APP, 'administrator');
 
         // Create a single array of them
         foreach ($site_languages as $tag => $language) {

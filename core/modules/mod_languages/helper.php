@@ -78,12 +78,9 @@ class Helper extends Module
 
         // Filter allowed languages
         foreach ($languages as $i => &$language) {
-            $clientName = App::get('client')->name;
-            $appLangPath = PATH_APP . DS . 'bootstrap' . DS . strtolower($clientName);
-            $coreLangPath = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($clientName);
             if (
-                !Lang::exists($language->lang_code, $appLangPath)
-                && !Lang::exists($language->lang_code, $coreLangPath)
+                !Lang::exists($language->lang_code, PATH_APP)
+                && !Lang::exists($language->lang_code, PATH_CORE)
             ) {
                 // Do not display language without frontend UI
                 unset($languages[$i]);

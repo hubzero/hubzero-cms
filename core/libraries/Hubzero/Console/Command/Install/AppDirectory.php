@@ -198,6 +198,10 @@ class AppDirectory
         $content .= "    'live_site'           => " . var_export($config['live_site'] ?? '', true) . ",\n";
         $content .= "    'xmlrpc_server'       => " . var_export($config['xmlrpc_server'] ?? '0', true) . ",\n";
         $content .= "    'helpurl'             => " . var_export($config['helpurl'] ?? '', true) . ",\n";
+        $siteTemplate = var_export($config['site_template'] ?? 'hubzero', true);
+        $content .= "    'site_template'          => " . $siteTemplate . ",\n";
+        $adminTemplate = var_export($config['administrator_template'] ?? 'kimera', true);
+        $content .= "    'administrator_template' => " . $adminTemplate . ",\n";
         $content .= ");\n";
 
         if (@file_put_contents($configPath, $content) === false) {
