@@ -1281,7 +1281,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Delete the viewperm
-        $mv = new \Components\Tools\Models\Middleware\Viewperm($mwdb);
+        $mv = new \Components\Tools\Tables\Viewperm($mwdb);
         $mv->deleteViewperm($sessionid, $result->get('username'));
 
         //make sure we didnt have error disconnecting

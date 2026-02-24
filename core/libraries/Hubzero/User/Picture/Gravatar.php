@@ -128,7 +128,7 @@ class Gravatar implements Resolver
     public function hash($email)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidEmailException('Please specify a valid email address');
+            throw new \InvalidArgumentException('Please specify a valid email address');
         }
 
         return md5(strtolower(trim($email)));

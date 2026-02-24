@@ -27,7 +27,7 @@ class Migration20141029192338ComOaipmh extends Base
             ->set(['query' => Expression::replace('query', 'jos_', '#__')])
             ->execute();
 
-        $schema = new Builder($this->db);
+        $schema = new \Hubzero\Database\Schema\Builder($this->db);
 
         if ($this->db->tableExists('#__oaipmh_records')) {
             // Cleanup duplicates

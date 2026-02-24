@@ -135,7 +135,7 @@ class Orders
         $allSkuInfo = $db->loadObjectList('sId');
         $skus = $db->loadColumn();
 
-        $warehouse = new Warehouse();
+        $warehouse = new \Components\Storefront\Models\Warehouse();
 
         $skuInfo = $warehouse->getSkusInfo($skus);
 

@@ -460,7 +460,7 @@ class Publications extends Plugin
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
         // Output HTML
-        $view = new CompView(array(
+        $view = new \Hubzero\Component\View(array(
             'base_path' => Component::path('com_publications') . DS . 'site',
             'name' => 'handlers',
             'layout' => 'editor',
@@ -2876,7 +2876,7 @@ class Publications extends Plugin
         }
 
         // Initiate a new content server and serve up the file
-        $server = new Server();
+        $server = new \Hubzero\Content\Server();
         $server->filename($serve);
         $server->disposition($disp);
         $server->acceptranges(false); // @TODO fix byte range support

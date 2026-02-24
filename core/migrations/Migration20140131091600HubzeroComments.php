@@ -40,10 +40,7 @@ class Migration20140131091600HubzeroComments extends Base
                     }
                 }
 
-                $cls = 'Hubzero_Item_Comment';
-                if (class_exists('\\Hubzero\\Item\\Comment')) {
-                    $cls = '\\Hubzero\\Item\\Comment';
-                }
+                $cls = '\\Hubzero\\Item\\Comment';
 
                 foreach ($results as $r) {
                     $record = new $cls($this->db);

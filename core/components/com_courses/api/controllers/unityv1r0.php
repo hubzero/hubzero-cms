@@ -103,7 +103,7 @@ class Unityv1r0 extends base
         $now = Date::toSql();
 
         // Save the unity details
-        $unity = new AssetUnity($this->db);
+        $unity = new \Components\Courses\Tables\AssetUnity($this->db);
         $unity->set('member_id', $member_id);
         $unity->set('asset_id', $asset_id);
         $unity->set('created', $now);
@@ -114,7 +114,7 @@ class Unityv1r0 extends base
         }
 
         // Now set/update the gradebook item
-        $gradebook = new GradeBook($this->db);
+        $gradebook = new \Components\Courses\Tables\GradeBook($this->db);
         $gradebook->loadByUserAndAssetId($member_id, $asset_id);
 
         // Score is either 100 or 0

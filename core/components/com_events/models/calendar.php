@@ -259,7 +259,7 @@ class Calendar extends Model
         }
 
         //read calendar file
-        $icalparser = new \icalparser($calendarUrl);
+        $icalparser = new \Plugins\Groups\Calendar\IcalParser($calendarUrl);
         $incomingEvents = $icalparser->getEvents();
 
         // check to make sure we have events

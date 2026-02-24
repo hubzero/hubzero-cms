@@ -197,15 +197,15 @@ class Category extends Relational
         $file = __DIR__ . '/forms/category.xml';
         $file = Filesystem::cleanPath($file);
 
-        Form::addFieldPath(__DIR__ . '/fields');
+        \Hubzero\Form\Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('category', array('control' => 'fields'));
+        $form = new \Hubzero\Form\Form('category', array('control' => 'fields'));
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
         }
 
-        $params = new Registry($this->get('params'));
+        $params = new \Hubzero\Config\Registry($this->get('params'));
 
         $data = $this->toArray();
         $data['params'] = $params->toArray();

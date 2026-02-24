@@ -556,9 +556,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $file = __DIR__ . '/forms/article.xml';
         $file = Filesystem::cleanPath($file);
 
-        Form::addFieldPath(__DIR__ . '/fields');
+        \Hubzero\Form\Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('article', array('control' => 'fields'));
+        $form = new \Hubzero\Form\Form('article', array('control' => 'fields'));
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

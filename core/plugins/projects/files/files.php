@@ -411,7 +411,7 @@ class Files extends Plugin
 
         // Load member params
         $member = $this->model->member(true);
-        $view->oparams = new Registry($member ? $member->params : '');
+        $view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
         // Sync active?
         $remotes = array();
@@ -1610,7 +1610,7 @@ class Files extends Plugin
         }
 
         // Initiate a new content server and serve up the file
-        $server = new Server();
+        $server = new \Hubzero\Content\Server();
         $server->filename($serve);
         $server->disposition($disp);
         $server->acceptranges(false); // @TODO fix byte range support
@@ -1775,7 +1775,7 @@ class Files extends Plugin
 
             // Serve image
             if ($image && is_file($image)) {
-                $server = new Server();
+                $server = new \Hubzero\Content\Server();
                 $server->filename($image);
                 $server->serve_inline($image);
                 exit;
@@ -1903,7 +1903,7 @@ class Files extends Plugin
             // Proceed with download
             if (!$this->getError()) {
                 // Initiate a new content server and serve up the file
-                $server = new Server();
+                $server = new \Hubzero\Content\Server();
                 $server->filename($downloadPath);
                 $server->disposition('attachment');
                 $server->acceptranges(false);
@@ -2136,7 +2136,7 @@ class Files extends Plugin
                 $pdfName = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
 
                 // Serve up file
-                $server = new Server();
+                $server = new \Hubzero\Content\Server();
                 $server->filename(PATH_APP . $outputDir . DS . $contentFile);
                 $server->disposition('attachment');
                 $server->acceptranges(false);
@@ -2190,7 +2190,7 @@ class Files extends Plugin
                     exec($cmd, $out);
 
                     if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg')) {
-                        $hi = new Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
+                        $hi = new \Hubzero\Image\Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
                         if (count($hi->getErrors()) == 0) {
                             $hi->resize($view->oWidth, false, false, true);
                             $hi->save(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
@@ -2759,11 +2759,11 @@ class Files extends Plugin
 
         // Get refreshed params
         $this->model->reloadProject();
-        $view->params = new Registry($this->model->table()->params);
+        $view->params = new \Hubzero\Config\Registry($this->model->table()->params);
 
         // Get connection details for user
         $member = $this->model->member(true);
-        $view->oparams = new Registry($member ? $member->params : '');
+        $view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
         // Get messages and errors
         $view->msg = $this->_msg;

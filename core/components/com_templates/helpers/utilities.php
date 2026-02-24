@@ -114,7 +114,7 @@ class Utilities
      */
     public static function parseXMLTemplateFile($templateBaseDir, $templateDir)
     {
-        $data = new Object();
+        $data = new \Hubzero\Base\Obj();
 
         // Check of the xml file exists
         $filePath = Filesystem::cleanPath($templateBaseDir . '/templates/' . $templateDir . '/templateDetails.xml');

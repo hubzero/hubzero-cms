@@ -40,7 +40,7 @@ class Migration20140408121756ComCourses extends Base
                         . DS . 'models' . DS . 'course.php';
 
                     // Loop through all files and separate them into arrays of images, folders, and other
-                    $dirIterator = new DirectoryIterator($path);
+                    $dirIterator = new \DirectoryIterator($path);
                     foreach ($dirIterator as $file) {
                         if ($file->isDot()) {
                             continue;

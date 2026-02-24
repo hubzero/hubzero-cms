@@ -26,7 +26,7 @@ class Request extends ComponentController
         $response->status = 'ok';
 
         include_once \Component::path($this->option) . DS . 'models' . DS . 'cart.php';
-        $cart = new CurrentCart();
+        $cart = new \Components\Cart\Models\CurrentCart();
 
         // update cart
         $updateCartRequest = \Request::getBool('updateCart', false, 'post');
@@ -36,7 +36,7 @@ class Request extends ComponentController
         if (!empty($pIds)) {
             $skus = array();
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
 
             foreach ($pIds as $pId => $qty) {
                 $product_skus = $warehouse->getProductSkus($pId);

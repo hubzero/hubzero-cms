@@ -102,7 +102,7 @@ class Slack extends Plugin
         include_once __DIR__ . DS . 'lib' . DS . 'AttachmentField.php';
 
         // Set up the client
-        $client = new Maknz\Slack\Client(
+        $client = new \Maknz\Slack\Client(
             $endpoint,
             array(
                 'username' => $username,

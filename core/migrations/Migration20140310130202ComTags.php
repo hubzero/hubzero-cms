@@ -38,10 +38,6 @@ class Migration20140310130202ComTags extends Base
                     require_once PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php';
 
                     $cls = '\\Components\\Tags\\Models\\Tag';
-                    // [!] - Backwards compatibility
-                    if (class_exists('TagsModelTag')) {
-                        $cls = 'TagsModelTag';
-                    }
 
                     foreach ($results as $result) {
                         // Get all duplicate tags

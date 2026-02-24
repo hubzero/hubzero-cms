@@ -1266,7 +1266,7 @@ class Team extends Plugin
             // Send HUB message
             $recipient = User::getInstance($uid);
 
-            $email = new MailMessage();
+            $email = new \Hubzero\Mail\Message();
             $email->setSubject($subject)
                 ->addFrom($from['email'], $from['name'])
                 ->addPart($message['plaintext'], 'text/plain')

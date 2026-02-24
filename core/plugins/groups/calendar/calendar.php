@@ -1091,7 +1091,7 @@ class Calendar extends Plugin
         if (isset($recurrence['UNTIL'])) {
             $tz = Config::get('offset');
             $until = new \DateTime($recurrence['UNTIL']);
-            $until->setTimezone(new DateTimezone($tz));
+            $until->setTimezone(new \DateTimezone($tz));
             $recurrence['UNTIL'] = $until->format('m/d/Y');
         }
 
@@ -1834,7 +1834,7 @@ class Calendar extends Plugin
 
                 // create date time object where timezoen is configured value
                 // let php convert to UTC when formatting
-                $timezone = new DateTimezone(Config::get('offset'));
+                $timezone = new \DateTimezone(Config::get('offset'));
                 $date = Date::of($until . ' ' . $endTime, $timezone);
 
                 //set the rule

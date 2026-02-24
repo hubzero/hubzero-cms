@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
 
 /**
  * @package    hubzero-cms
@@ -8,13 +8,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Projects\Files\Helpers;
 
 /**
  * Sync helper
  */
-
 class Sync extends \Hubzero\Base\Obj
 {
     /**

@@ -1315,7 +1315,7 @@ class CurrentCart extends Cart
      */
     public function removeCoupon($cnId)
     {
-        $coupons = new Coupons();
+        $coupons = new \Components\Storefront\Models\Coupons();
 
         // If user is logged in return coupon back to the coupons pool.
         $user = User::getInstance();

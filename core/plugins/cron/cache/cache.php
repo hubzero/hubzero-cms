@@ -95,7 +95,7 @@ class Cache extends Plugin
 
         $docs = array();
 
-        $dirIterator = new DirectoryIterator($this->_path);
+        $dirIterator = new \DirectoryIterator($this->_path);
         foreach ($dirIterator as $file) {
             if ($file->isDot() || $file->isDir()) {
                 continue;

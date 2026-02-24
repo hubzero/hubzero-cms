@@ -52,7 +52,7 @@ class AutoGroups extends Field
             $value = json_decode($value);
 
             if (!is_object($value[0])) {
-                $newvalue = new stdClass();
+                $newvalue = new \stdClass();
 
                 foreach ($value as $key => $domain) {
                     $newvalue->domain = $domain[0];

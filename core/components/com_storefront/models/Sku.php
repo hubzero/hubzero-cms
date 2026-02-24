@@ -429,10 +429,10 @@ class Sku
         $dir = PATH_APP . DS . $imgWebPath . DS . $this->getProductId() . DS . $this->getId();
 
         if (file_exists($dir)) {
-            $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-            $files = new RecursiveIteratorIterator(
+            $it = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
+            $files = new \RecursiveIteratorIterator(
                 $it,
-                RecursiveIteratorIterator::CHILD_FIRST
+                \RecursiveIteratorIterator::CHILD_FIRST
             );
             foreach ($files as $file) {
                 if ($file->isDir()) {

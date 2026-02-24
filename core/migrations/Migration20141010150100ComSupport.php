@@ -175,29 +175,19 @@ class Migration20141010150100ComSupport extends Base
                 ->loadObjectList();
 
             if ($queries) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables'
-                    . DS . 'query.php';
-                if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
-                        . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
-                }
-                include_once $path;
-
-                $tbl = '\\Components\\Support\\Tables\\Query';
-                if (class_exists('SupportQuery')) {
-                    $tbl = 'SupportQuery';
-                }
-
                 // Copy the queries to the new folder
                 foreach ($queries as $k => $query) {
-                    $stq = new $tbl($this->db);
-                    $stq->bind($query);
-                    $stq->id        = null;
-                    $stq->user_id   = 0;
-                    $stq->folder_id = 5;
-                    $stq->ordering  = $k;
-                    $stq->iscore    = 4;
-                    $stq->store();
+                    $data = (array) $query;
+                    unset($data['id']);
+                    $data['user_id']   = 0;
+                    $data['folder_id'] = 5;
+                    $data['ordering']  = $k;
+                    $data['iscore']    = 4;
+
+                    $this->db->getQuery(true)
+                        ->insert('#__support_queries')
+                        ->set($data)
+                        ->execute();
                 }
             }
         }

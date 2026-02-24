@@ -471,7 +471,7 @@ class Products extends AdminController
         }
 
         // Load the article
-        $row = new Category($id);
+        $row = new \Components\Storefront\Models\Collection($id);
         $row->set('access', $access);
 
         // Check and store the changes

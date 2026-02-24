@@ -162,7 +162,7 @@ class Publications extends Plugin
                 include_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 
                 // Delete the review
-                $review = new PublicationReview($database);
+                $review = new \Components\Publications\Tables\Review($database);
                 $review->load($referenceid);
                 //$comment->anonymous = 1;
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $review->comment, $matches)) {
@@ -183,7 +183,7 @@ class Publications extends Plugin
                 $review->store();
 
                 // Recalculate the average rating for the parent resource
-                $pub = new Publication($database);
+                $pub = new \Components\Publications\Tables\Publication($database);
                 $pub->load($parentid);
                 $pub->calculateRating();
                 $pub->updateRating();

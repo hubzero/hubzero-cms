@@ -734,7 +734,7 @@ class Translator extends Obj
         $errors       = array();
 
         // Open the file as a stream.
-        $file = new SplFileObject($filename);
+        $file = new \SplFileObject($filename);
 
         foreach ($file as $lineNumber => $line) {
             // Avoid BOM error as BOM is OK when using parse_ini.
@@ -1339,7 +1339,7 @@ class Translator extends Obj
                 foreach ($knownLangs as $metadata) {
                     // Take off 3 letters iso code languages as they can't match browsers' languages and default them
                     // toen
-                    $languages[$key][] = new Object(array('lang_code' => $metadata['tag']));
+                    $languages[$key][] = new \Hubzero\Base\Obj(array('lang_code' => $metadata['tag']));
                 }
             } else {
                 $cache = \App::get('cache.store');

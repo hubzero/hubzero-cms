@@ -56,7 +56,7 @@ class Test extends ComponentController
             include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCoupon.php';
             try {
                 // Constructor take the coupon code
-                $coupon = new Coupon('hui');
+                $coupon = new \Components\Storefront\Models\Coupon('hui');
                 // Coupon description (shows up in the cart)
                 $coupon->setDescription('Test coupon, 10% off product with ID 3');
                 // Expiration date
@@ -83,7 +83,7 @@ class Test extends ComponentController
         if (0) {
             // DELETE COUPON
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             try {
                 $warehouse->deleteCoupon('couponcode3');
             } catch (\Exception $e) {
@@ -96,7 +96,7 @@ class Test extends ComponentController
             // CREATE NEW COURSE
             include_once \Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
-            $course = new Course();
+            $course = new \Components\Storefront\Models\Course();
             $course->setName('Name of the course');
             $course->setDescription('Short description');
             $course->setPrice(12.00);
@@ -118,7 +118,7 @@ class Test extends ComponentController
         if (0) {
             // GET EXISTING COURSE, modify it and save
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             try {
                 // Get course by pID returned with $course->add() above
                 $course = $warehouse->getCourse(1);
@@ -137,7 +137,7 @@ class Test extends ComponentController
         if (0) {
             // UPDATE COURSE by recreating it
             include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCourse.php';
-            $course = new Course();
+            $course = new \Components\Storefront\Models\Course();
             $course->setName('Operations Management 104');
             $course->setDescription('Operations Management 104 is some kind of test course for now...');
             $course->setPrice(13.05);
@@ -158,7 +158,7 @@ class Test extends ComponentController
         if (0) {
             // DELETE COURSE
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             // Delete by existing course ID (pID returned with $course->add() when the course was created)
             $warehouse->deleteProduct(1023);
             return;
@@ -295,7 +295,7 @@ class Test extends ComponentController
         //$badges = new Hubzero_Badges('PASSPORT');
 
         // Get the actual badges provider class
-        $badges = new \Hubzero_Badges('PASSPORT');
+        $badges = new \Hubzero\Badges\Wallet('PASSPORT');
 
         // Get the actual badges provider class
         $passport = $badges->getProvider();

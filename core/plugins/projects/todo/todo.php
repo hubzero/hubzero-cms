@@ -251,7 +251,7 @@ class Todo extends Plugin
     {
         // Get default view from owner params
         $member = $this->model->member();
-        $mparams = new Parameter($member ? $member->params : '');
+        $mparams = new \Hubzero\Config\Registry($member ? $member->params : '');
         $defaultView = $mparams->get('todo_layout', 'pinboard');
 
         // Incoming

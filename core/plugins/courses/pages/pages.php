@@ -719,7 +719,7 @@ class Pages extends Plugin
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
-            $dirIterator = new DirectoryIterator($path);
+            $dirIterator = new \DirectoryIterator($path);
             foreach ($dirIterator as $file) {
                 if ($file->isDot()) {
                     continue;
