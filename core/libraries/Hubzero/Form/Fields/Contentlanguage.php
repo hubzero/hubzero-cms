@@ -8,7 +8,7 @@
 
 namespace Hubzero\Form\Fields;
 
-use Hubzero\Html\Builder\Contentlanguage as ContentLang;
+use Hubzero\Html\Builder\ContentLanguage as ContentLang;
 
 /**
  * Provides a list of content languages

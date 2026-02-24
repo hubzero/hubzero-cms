@@ -13,7 +13,7 @@ use Components\Wishlist\Models\Wishlist;
 use Components\Wishlist\Models\Wish;
 use Components\Wishlist\Models\Plan;
 use Components\Wishlist\Models\Owner;
-use Components\Wishlist\Models\OwnerGroup;
+use Components\Wishlist\Models\Ownergroup;
 use Components\Wishlist\Models\Tags;
 use Exception;
 use stdClass;

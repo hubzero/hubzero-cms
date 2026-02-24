@@ -8,7 +8,7 @@
 
 namespace Components\Search\Helpers;
 
-use Components\Search\Models\Hubtype;
+use Components\Search\Models\HubType;
 use stdClass;
 use Solarium;
 

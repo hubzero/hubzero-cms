@@ -433,7 +433,7 @@ class Assetgroups extends AdminController
         $uid = $id[0];
         $inc = ($this->_task == 'orderup' ? -1 : 1);
 
-        $row = new Tables\Assetgroup($this->database);
+        $row = new Tables\AssetGroup($this->database);
         $row->load($uid);
         $where = 'unit_id=' . $this->database->Quote($row->unit_id)
             . ' AND parent=' . $this->database->Quote($row->parent);

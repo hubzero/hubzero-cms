@@ -318,7 +318,7 @@ class Wishlist extends Relational
                 break;
 
             case 'groups':
-                $tbl = new OwnerGroup($this->_db);
+                $tbl = new Ownergroup($this->_db);
                 break;
 
             default:

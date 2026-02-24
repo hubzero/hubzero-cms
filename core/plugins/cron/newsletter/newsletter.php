@@ -215,7 +215,7 @@ class Newsletter extends Plugin
                         $newMailing->save();
 
                         // Add recipients
-                        $mailingList = \Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
+                        $mailingList = \Components\Newsletter\Models\Mailinglist::oneOrNew($newMailing->lid);
                         $emails = $mailingList->emails()->rows();
 
                         // @TODO Verify there is no helper method to determine whether or not to send email
