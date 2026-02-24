@@ -9,120 +9,68 @@
 namespace Hubzero\Config;
 
 /**
- * Repository class
+ * Configuration repository
+ *
+ * Loads configuration from one or more base paths, each containing
+ * a `config/` directory with PHP config files. Later paths override
+ * earlier ones, allowing app-level overrides of core defaults.
+ *
+ * Usage:
+ *   $config = new Repository(PATH_APP);
+ *   $config = new Repository([PATH_CORE, PATH_APP]);
+ *   $config->get('app.debug');
  */
 class Repository extends Registry
 {
     /**
-     * The current client type (admin, site, api, etc).
-     *
-     * @var  string
-     */
-    protected $client;
-
-    /**
-     * The loader implementation.
-     *
-     * @var  object
-     */
-    protected $loader;
-
-    /**
      * Create a new configuration repository.
      *
-     * @param   string  $client  Client name (site, admin, api, etc)
-     * @param   object  $loader  FileLoader instance (required)
+     * @param   string|array  $paths  Base path(s) containing a config/ directory
      * @return  void
-     * @throws  \InvalidArgumentException if loader not provided
      */
-    public function __construct($client, $loader = null)
+    public function __construct($paths)
     {
-        if (!$loader) {
-            throw new \InvalidArgumentException('A FileLoader instance is required');
+        if (!is_array($paths)) {
+            $paths = [$paths];
         }
-        $this->loader = $loader;
-        $this->client = $client;
 
-        $items = $this->load($this->client);
+        $merged = [];
 
-        parent::__construct($items);
-    }
+        foreach ($paths as $path) {
+            $loader = new FileLoader($path, $path);
+            $data = $loader->load();
+            $merged = array_replace_recursive($merged, $data);
+        }
 
-    /**
-     * Load the configuration for a specified client.
-     *
-     * @param   string  $client
-     * @return  void
-     */
-    public function load($client)
-    {
-        return $this->loader->load($client);
-    }
-
-    /**
-     * Get the loader implementation.
-     *
-     * @return  object
-     */
-    public function getLoader()
-    {
-        return $this->loader;
-    }
-
-    /**
-     * Set the loader implementation.
-     *
-     * @param   object $loader
-     * @return  void
-     */
-    public function setLoader($loader)
-    {
-        $this->loader = $loader;
-    }
-
-    /**
-     * Set the current configuration client.
-     *
-     * @param   string  $client
-     * @return  void
-     */
-    public function setClient($client)
-    {
-        $this->client = (string) $client;
-    }
-
-    /**
-     * Get the current configuration client.
-     *
-     * @return  string
-     */
-    public function getClient()
-    {
-        return $this->client;
+        parent::__construct($merged);
     }
 
     /**
      * Get a registry value.
      *
-     * @param   string  $path     Registry path (e.g. config.cache.file)
-     * @param   mixed   $default  Optional default value, returned if the internal value is null.
+     * Supports dot-notation (e.g. 'app.debug') for grouped config.
+     * For bare keys without a dot, searches across all config groups
+     * to maintain backward compatibility with legacy config access.
+     *
+     * @param   string  $path     Registry path (e.g. app.debug)
+     * @param   mixed   $default  Optional default value
      * @return  mixed   Value of entry or null
      */
     public function get($path, $default = null)
     {
-        // Return default value if path is empty
         if (empty($path)) {
             return $default;
         }
 
+        // Dot-notation: delegate directly to parent
         if (strpos($path, $this->separator)) {
             return parent::get($path, $default);
         }
 
+        // Bare key: search across all config groups
         $nodes = get_object_vars($this->data);
         $found = false;
 
-        // Traverse the registry to find the correct node for the result.
         foreach ($nodes as $n => $node) {
             if (is_array($node) && isset($node[$path])) {
                 $value = $node[$path];
@@ -139,10 +87,61 @@ class Repository extends Registry
         }
 
         if (!$found || $value === null || $value === '') {
-            //return $default;
             return parent::get($path, $default);
         }
 
         return $value;
+    }
+
+    /**
+     * Set a registry value.
+     *
+     * Supports dot-notation (e.g. 'app.debug') for grouped config.
+     * For bare keys without a dot, finds the config group that contains
+     * the key and updates it there. If the bare key matches a top-level
+     * group name or is otherwise not found inside any group, delegates
+     * to parent. Throws if the bare key is not found anywhere.
+     *
+     * @param   string  $path       Registry path (e.g. app.debug)
+     * @param   mixed   $value      Value to set
+     * @param   string  $separator  Optional path separator
+     * @return  mixed   Previous value
+     * @throws  \InvalidArgumentException  If bare key not found in any group
+     */
+    public function set($path, $value, $separator = null)
+    {
+        if (empty($separator)) {
+            $separator = $this->separator;
+        }
+
+        // Dot-notation: delegate directly to parent
+        if (strpos($path, $separator) !== false) {
+            return parent::set($path, $value, $separator);
+        }
+
+        // If the bare key is a top-level group name, set it directly
+        if (isset($this->data->$path)) {
+            return parent::set($path, $value, $separator);
+        }
+
+        // Bare key: find the group that contains it
+        $nodes = get_object_vars($this->data);
+        $targetGroup = null;
+
+        foreach ($nodes as $group => $node) {
+            if (is_object($node) && isset($node->$path)) {
+                $targetGroup = $group;
+            } elseif (is_array($node) && isset($node[$path])) {
+                $targetGroup = $group;
+            }
+        }
+
+        if ($targetGroup === null) {
+            throw new \InvalidArgumentException(
+                "Config key '$path' not found in any group. Use dot-notation (e.g. 'group.$path')."
+            );
+        }
+
+        return parent::set($targetGroup . $separator . $path, $value, $separator);
     }
 }
