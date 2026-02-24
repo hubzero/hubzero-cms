@@ -128,7 +128,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public function isDeleted()
     {
-        return ($this->get('state') == self::STATE_TRASHED);
+        return ($this->get('state') == self::STATE_DELETED);
     }
 
     /**
