@@ -42,8 +42,8 @@ class Datastore
 
         $dd['serverside'] = false;
 
-        $sql    = \Components\Dataviewer\Site\Lib\Db::query_gen($dd);
-        $result = \Components\Dataviewer\Site\Lib\Db::get_results($sql, $dd);
+        $sql    = \Components\Dataviewer\Site\Lib\Db::queryGen($dd);
+        $result = \Components\Dataviewer\Site\Lib\Db::getResults($sql, $dd);
 
         ob_start();
         \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
