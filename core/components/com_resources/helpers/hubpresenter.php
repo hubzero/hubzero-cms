@@ -23,7 +23,7 @@ class Hubpresenter extends Obj
      * @param   string  $xml_path       Path to XML doc
      * @return  string  Check to make sure manifest is created successfully
      */
-    public function createJsonManifest($resource_path, $xml_path)
+    public static function createJsonManifest($resource_path, $xml_path)
     {
         // Verify once again the file exists
         if (file_exists($xml_path)) {
