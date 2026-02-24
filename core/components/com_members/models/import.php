@@ -79,6 +79,7 @@ class Import extends Base
             'publicprofile',
             'access',
             'visibility',
+            'permissions',
         ),
         'block' => array(
             'block',
@@ -167,11 +168,6 @@ class Import extends Base
             'validemail',
             'emailconfirm',
             'activation',
-        ),
-        'access' => array(
-            'access',
-            'permissions',
-            'public',
         ),
         /* @deprecated
         'countryresident' => array(

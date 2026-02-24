@@ -2103,8 +2103,7 @@ class Tickets extends SiteController
             'reportedby' => '',
             'severity'   => 'normal',
             'sort'       => trim(Request::getString('filter_order', 'created')),
-            'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC')),
-            'severity'   => ''
+            'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC'))
         );
 
         // Paging vars
