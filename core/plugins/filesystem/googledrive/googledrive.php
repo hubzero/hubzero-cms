@@ -38,7 +38,7 @@ class Googledrive extends Plugin
         $client = new \Google_Client();
         $client->setClientId($app_id);
         $client->setClientSecret($app_secret);
-        $client->addScope(Google_Service_Drive::DRIVE);
+        $client->addScope(\Google_Service_Drive::DRIVE);
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         $client->setIncludeGrantedScopes(true);
