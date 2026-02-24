@@ -234,7 +234,7 @@ class Processor extends Obj
                         break;
 
                     case 7:
-                        $this - rotate(90);
+                        $this->rotate(90);
                         $this->flip(true, false);
                         break;
 
