@@ -8,6 +8,8 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Request;
+
 /**
  * AJAX actions controller class (TODO, not yet implemented)
  */

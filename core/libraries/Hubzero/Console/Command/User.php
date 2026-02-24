@@ -8,6 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
+use App;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Utility\Date;

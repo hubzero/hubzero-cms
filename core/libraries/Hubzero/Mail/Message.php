@@ -426,8 +426,8 @@ class Message extends \Symfony\Component\Mime\Email
                 $address = new \Symfony\Component\Mime\Address($key, $value);
             }
 
-            if (isset($first_set)) {
-                parent::reply($address);
+            if (!isset($first_set)) {
+                parent::replyTo($address);
                 $first_set = true;
             } else {
                 parent::addReplyTo($address);

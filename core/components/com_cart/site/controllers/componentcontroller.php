@@ -8,6 +8,8 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Request;
+
 /**
  *  Base component controller class
  */

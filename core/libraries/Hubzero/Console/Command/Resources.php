@@ -8,6 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
+use User;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Components\Resources\Models\Entry;

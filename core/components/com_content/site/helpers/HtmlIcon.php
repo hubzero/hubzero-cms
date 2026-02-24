@@ -8,6 +8,10 @@
 
 namespace Components\Content\Site\Helpers;
 
+use Route;
+use Request;
+use Lang;
+
 /**
  * Content Component HTML Helper
  */

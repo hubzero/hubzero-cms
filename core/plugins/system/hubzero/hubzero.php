@@ -146,7 +146,7 @@ class Hubzero extends Plugin
     public function onUserLoginFailure($response)
     {
         $post_username = isset($_POST['username']) ? $_POST['username'] : '';
-        $input_username = is_array($post_username) ? self::_flatten('', $post_username) : $post_username;
+        $input_username = is_array($post_username) ? implode('', $post_username) : $post_username;
         $filter = '/[^A-Z0-9_\.-]/i';
         $filtered_username = (string) preg_replace($filter, '', $input_username);
         $log_username = empty($filtered_username) ? '[unknown]' : $filtered_username;
