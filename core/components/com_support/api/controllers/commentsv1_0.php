@@ -16,8 +16,9 @@ use stdClass;
 use Request;
 use Config;
 use Route;
-use Lang;
 use Event;
+use Lang;
+use Log;
 use User;
 
 /**
@@ -39,6 +40,78 @@ class Commentsv1_0 extends ApiController
         $this->acl->setUser(User::get('id'));
 
         parent::execute();
+    }
+
+    /**
+     * Convert a date string to a timestamp format
+     *
+     * @param   string  $val  Date string (e.g., 'year', 'month', 'week', 'day', or Y-m-d)
+     * @return  string|null
+     */
+    private function _toTimestamp($val = null)
+    {
+        if ($val) {
+            $val = strtolower($val);
+
+            if (strstr($val, ',')) {
+                $vals = explode(',', $val);
+                foreach ($vals as $i => $v) {
+                    $vals[$i] = $this->_toTimestamp(trim($v));
+                }
+                return $vals;
+            }
+            switch ($val) {
+                case 'year':
+                    $val = with(new Date(
+                        mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1)
+                    ))->format("Y-m-d H:i:s");
+                    break;
+
+                case 'month':
+                    $val = with(new Date(
+                        mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"))
+                    ))->format("Y-m-d H:i:s");
+                    break;
+
+                case 'week':
+                    $val = with(new Date(
+                        mktime(0, 0, 0, date("m"), date("d") - 7, date("Y"))
+                    ))->format("Y-m-d H:i:s");
+                    break;
+
+                case 'day':
+                    $val = with(new Date(
+                        mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"))
+                    ))->format("Y-m-d H:i:s");
+                    break;
+
+                default:
+                    $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})"
+                        . "[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+                    if (preg_match($pattern, $val, $regs)) {
+                        // Time already matches pattern
+                    } elseif (
+                        preg_match(
+                            "/([0-9]{4})-([0-9]{2})-([0-9]{2})/",
+                            $val,
+                            $regs
+                        )
+                    ) {
+                        $val .= ' 00:00:00';
+                    } elseif (
+                        preg_match(
+                            "/([0-9]{4})-([0-9]{2})/",
+                            $val,
+                            $regs
+                        )
+                    ) {
+                        $val .= '-01 00:00:00';
+                    }
+                    break;
+            }
+        }
+
+        return $val;
     }
 
     /**
@@ -328,7 +401,12 @@ class Commentsv1_0 extends ApiController
 
                 // Get the user's email address
                 if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support'))) {
-                    // not notified (an API controller has no error bag to record it in)
+                    // not notified: an API controller has no error bag, so say so
+                    // in the log rather than losing it
+                    Log::warning(Lang::txt(
+                        'COM_SUPPORT_ERROR_FAILED_TO_MESSAGE',
+                        $to['name'] . '(' . $to['role'] . ')'
+                    ));
                     continue;
                 }
                 $comment->changelog()->notified(
