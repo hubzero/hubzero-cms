@@ -33,44 +33,33 @@ class Migration20140408121756ComCourses extends Base
             $path = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
 
             if (is_dir($path)) {
-                if (
-                    file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php')
-                ) {
-                    require_once PATH_CORE . DS . 'components' . DS . 'com_courses'
-                        . DS . 'models' . DS . 'course.php';
+                // Loop through all files and separate them into arrays of images, folders, and other
+                $dirIterator = new \DirectoryIterator($path);
+                foreach ($dirIterator as $file) {
+                    if ($file->isDot() || $file->isDir()) {
+                        continue;
+                    }
 
-                    // Loop through all files and separate them into arrays of images, folders, and other
-                    $dirIterator = new \DirectoryIterator($path);
-                    foreach ($dirIterator as $file) {
-                        if ($file->isDot()) {
+                    if ($file->isFile()) {
+                        $name = $file->getFilename();
+                        if (
+                            ('cvs' == strtolower($name))
+                            || ('.svn' == strtolower($name))
+                        ) {
                             continue;
                         }
 
-                        if ($file->isDir()) {
+                        $bits = explode('_', $name);
+                        if (count($bits) < 4) {
                             continue;
                         }
 
-                        if ($file->isFile()) {
-                            $name = $file->getFilename();
-                            if (
-                                ('cvs' == strtolower($name))
-                                || ('.svn' == strtolower($name))
-                            ) {
-                                continue;
-                            }
+                        $course = $bits[1];
+                        $offering = $bits[2];
+                        $user = strstr($bits[3], '.', true);
 
-                            $bits = explode('_', $name);
-                            if (count($bits) < 4) {
-                                continue;
-                            }
-
-                            $course = $bits[1];
-                            $offering = $bits[2];
-                            $user = strstr($bits[3], '.', true);
-
-                            $member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
-                            $member->token();
-                        }
+                        $member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
+                        $member->token();
                     }
                 }
             }

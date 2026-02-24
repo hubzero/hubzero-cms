@@ -49,8 +49,8 @@ class TemplateServiceProvider extends ServiceProvider
             // Keep config in sync with the database default
             $configName = $app['config']->get('administrator_template');
             if ($template->home && $configName !== $template->template) {
-                $configPath = PATH_APP . DS . 'config';
-                $configFile = $configPath . DS . 'app.php';
+                $configPath = PATH_APP . '/config';
+                $configFile = $configPath . '/app.php';
                 if (file_exists($configFile)) {
                     $config = include $configFile;
                     if (is_array($config)) {

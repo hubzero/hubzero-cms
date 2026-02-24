@@ -34,32 +34,23 @@ class Migration20140310130202ComTags extends Base
                 ->loadObjectList();
 
             if ($results) {
-                if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php')) {
-                    require_once PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php';
+                foreach ($results as $result) {
+                    // Get all duplicate tags
+                    $tags = $this->db->getQuery(true)
+                        ->select('*')
+                        ->from('#__tags')
+                        ->where('tag', '=', $result->tag)
+                        ->loadObjectList();
 
-                    $cls = '\\Components\\Tags\\Models\\Tag';
+                    if ($tags) {
+                        foreach ($tags as $tag) {
+                            if ($tag->id == $result->id) {
+                                continue;
+                            }
 
-                    foreach ($results as $result) {
-                        // Get all duplicate tags
-                        $tags = $this->db->getQuery(true)
-                            ->select('*')
-                            ->from('#__tags')
-                            ->where('tag', '=', $result->tag)
-                            ->loadObjectList();
-
-                        if ($tags) {
-                            foreach ($tags as $tag) {
-                                if ($tag->id == $result->id) {
-                                    continue;
-                                }
-
-                                $oldtag = new $cls($tag->id);
-                                if ($oldtag instanceof \Hubzero\Database\Relational) {
-                                    $oldtag = \Components\Tags\Models\Tag::oneOrNew($tag->id);
-                                }
-                                if (!$oldtag->mergeWith($result->id)) {
-                                    continue;
-                                }
+                            $oldtag = \Components\Tags\Models\Tag::oneOrNew($tag->id);
+                            if (!$oldtag->mergeWith($result->id)) {
+                                continue;
                             }
                         }
                     }

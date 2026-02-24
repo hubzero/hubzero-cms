@@ -68,32 +68,43 @@ class Migration20140609160011ComFeedback extends Base
                 ->loadObjectList();
 
             if ($results) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
-                if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback'
-                        . DS . 'tables' . DS . 'quotes.php';
-                }
-                include_once $path;
-
-                $tbl = '\\Components\\Feedback\\Tables\\Quote';
-                if (class_exists('FeedbackQuotes')) {
-                    $tbl = 'FeedbackQuotes';
-                }
-
                 foreach ($results as $result) {
-                    $tbl = new $tbl($this->db);
-                    $tbl->id = $result->fid;
-                    $tbl->user_id = $result->userid;
-                    $tbl->fullname = $result->fullname;
-                    $tbl->org = $result->org;
-                    $tbl->quote = $result->quote;
-                    $tbl->notes = $result->notes;
-                    $tbl->picture = $result->picture;
-                    $tbl->publish_ok = 1;
-                    $tbl->date = $result->date;
-                    $tbl->miniquote = $result->miniquote;
-                    $tbl->notable_quote = $result->notable_quotes;
-                    $tbl->store();
+                    if ($result->fid) {
+                        // Update existing feedback entry
+                        $this->db->getQuery(true)
+                            ->update('#__feedback')
+                            ->set([
+                                'user_id'       => $result->userid,
+                                'fullname'      => $result->fullname,
+                                'org'           => $result->org,
+                                'quote'         => $result->quote,
+                                'notes'         => $result->notes,
+                                'picture'       => $result->picture,
+                                'publish_ok'    => 1,
+                                'date'          => $result->date,
+                                'miniquote'     => $result->miniquote,
+                                'notable_quote' => $result->notable_quotes,
+                            ])
+                            ->where('id', '=', $result->fid)
+                            ->execute();
+                    } else {
+                        // Insert new feedback entry
+                        $this->db->getQuery(true)
+                            ->insert('#__feedback')
+                            ->set([
+                                'user_id'       => $result->userid,
+                                'fullname'      => $result->fullname,
+                                'org'           => $result->org,
+                                'quote'         => $result->quote,
+                                'notes'         => $result->notes,
+                                'picture'       => $result->picture,
+                                'publish_ok'    => 1,
+                                'date'          => $result->date,
+                                'miniquote'     => $result->miniquote,
+                                'notable_quote' => $result->notable_quotes,
+                            ])
+                            ->execute();
+                    }
                 }
             }
 
