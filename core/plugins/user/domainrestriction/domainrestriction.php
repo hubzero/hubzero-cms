@@ -181,50 +181,53 @@ class Domainrestriction extends Plugin
      */
     private function blackwhite($ip)
     {
-        $whitelistnet = array();
-        $blacklistnet = array();
-        $whitelist = array();
-        $blacklist = array();
+        $lists = array(
+            'whitelist'    => array(),
+            'blacklist'    => array(),
+            'whitelistnet' => array(),
+            'blacklistnet' => array(),
+        );
 
-        foreach (array('whitelist', 'blacklist') as $list) {
-            $listnet = $list . 'net';
-            $listdefault = ($list == 'blacklist')
+        foreach (array('whitelist', 'blacklist') as $name) {
+            $default = ($name == 'blacklist')
                 ? Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_BLACKLIST')
                 : Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_WHITELIST');
-            $$list = explode("\n", trim(str_replace(
+            $items = explode("\n", trim(str_replace(
                 array("\r", "\t", " "),
                 array('', '', ''),
-                $this->params->get($list, $listdefault)
+                $this->params->get($name, $default)
             )));
 
-            foreach ($$list as $key => $item) {
+            foreach ($items as $item) {
                 $item = trim($item);
-                if (preg_match('/\//', $item)) {
-                    unset(${$list}[$key]);
-                    array_push($$listnet, $item);
+                if (strpos($item, '/') !== false) {
+                    $lists[$name . 'net'][] = $item;
                 } else {
-                    ${$list}[$key] = $item;
+                    $lists[$name][] = $item;
                 }
             }
         }
 
-        if (in_array($ip, $whitelist)) {
+        if (in_array($ip, $lists['whitelist'])) {
             return true;
         }
 
-        if (in_array($ip, $blacklist)) {
+        if (in_array($ip, $lists['blacklist'])) {
             return $ip;
         }
 
-        if (count(array_merge($whitelistnet, $blacklistnet))) {
-            $require = $this->_gmp ? Helpers\IPv6Net::class : Helpers\SimpleCIDR::class;
+        $nets = array_merge($lists['whitelistnet'], $lists['blacklistnet']);
+        if (count($nets)) {
+            $require = $this->_gmp
+                ? Helpers\IPv6Net::class
+                : Helpers\SimpleCIDR::class;
 
             if (!class_exists($require)) {
                 $file = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
                 require_once __DIR__ . '/helpers/' . $file . '.php';
             }
 
-            foreach ($whitelistnet as $net) {
+            foreach ($lists['whitelistnet'] as $net) {
                 $ipnet = $this->bwnet($net);
 
                 if ($ipnet->contains($ip)) {
@@ -232,7 +235,7 @@ class Domainrestriction extends Plugin
                 }
             }
 
-            foreach ($blacklistnet as $net) {
+            foreach ($lists['blacklistnet'] as $net) {
                 $ipnet = $this->bwnet($net);
 
                 if ($ipnet->contains($ip)) {
