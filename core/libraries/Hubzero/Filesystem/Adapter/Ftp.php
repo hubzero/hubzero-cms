@@ -571,7 +571,7 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteDirectory($dirname)
+    public function deleteDirectory($dirname, $preserve = false)
     {
         $connection = $this->getConnection();
 
