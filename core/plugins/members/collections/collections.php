@@ -164,10 +164,10 @@ class Collections extends Plugin
                     $arr['html'] = $this->_savecomment();
                     break;
                 case 'newcomment':
-                    $arr['html'] = $this->_newcomment();
+                    $arr['html'] = $this->_savecomment();
                     break;
                 case 'editcomment':
-                    $arr['html'] = $this->_editcomment();
+                    $arr['html'] = $this->_savecomment();
                     break;
                 case 'deletecomment':
                     $arr['html'] = $this->_deletecomment();

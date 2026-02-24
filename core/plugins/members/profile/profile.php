@@ -367,7 +367,7 @@ class Profile extends Plugin
 
         // attempt to delete address
         if (!$address->destroy()) {
-            $this->setErrror($address->getError());
+            $this->setError($address->getError());
             return $this->view();
         }
 
