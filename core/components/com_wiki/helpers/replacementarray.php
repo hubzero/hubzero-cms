@@ -9,159 +9,87 @@
 namespace Components\Wiki\Helpers;
 
 /**
- * Replacement array for FSS with fallback to strtr()
- * Supports lazy initialisation of FSS resource
+ * Wrapper around strtr() for managing replacement arrays
  */
 class ReplacementArray
 {
-    /*mostly private*/
+    /**
+     * Replacement data array
+     *
+     * @var array
+     */
+    private $data = [];
 
     /**
-     * Description for 'data'
+     * Create an object with the specified replacement array.
+     * The array should have the same form as the replacement array for strtr().
      *
-     * @var mixed
+     * @param  array  $data
      */
-    public $data = false;
-    /*mostly private*/
-
-    /**
-     * Description for 'fss'
-     *
-     * @var boolean
-     */
-    public $fss = false;
-
-    // Create an object with the specified replacement array
-    // The array should have the same form as the replacement array for strtr()
-
-    /**
-     * Short description for '__construct'
-     *
-     * Long description (if any) ...
-     *
-     * @param      array $data Parameter description (if any) ...
-     * @return     void
-     */
-    public function __construct($data = array())
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }
 
     /**
-     * Short description for '__sleep'
+     * Set the whole replacement array at once
      *
-     * Long description (if any) ...
-     *
-     * @return     mixed Return description (if any) ...
+     * @param  array  $data
      */
-    public function __sleep()
-    {
-        return array('data');
-    }
-
-    /**
-     * Short description for '__wakeup'
-     *
-     * Long description (if any) ...
-     *
-     * @return     void
-     */
-    public function __wakeup()
-    {
-        $this->fss = false;
-    }
-
-    // Set the whole replacement array at once
-
-    /**
-     * Short description for 'setArray'
-     *
-     * Long description (if any) ...
-     *
-     * @param      unknown $data Parameter description (if any) ...
-     * @return     void
-     */
-    public function setArray($data)
+    public function setArray(array $data): void
     {
         $this->data = $data;
-        $this->fss = false;
     }
 
     /**
-     * Short description for 'getArray'
+     * Get the replacement array
      *
-     * Long description (if any) ...
-     *
-     * @return     mixed Return description (if any) ...
+     * @return array
      */
-    public function getArray()
+    public function getArray(): array
     {
         return $this->data;
     }
 
-    // Set an element of the replacement array
-
     /**
-     * Short description for 'setPair'
+     * Set a single replacement pair
      *
-     * Long description (if any) ...
-     *
-     * @param      unknown $from Parameter description (if any) ...
-     * @param      unknown $to Parameter description (if any) ...
-     * @return     void
+     * @param  string  $from
+     * @param  string  $to
      */
-    public function setPair($from, $to)
+    public function setPair(string $from, string $to): void
     {
         $this->data[$from] = $to;
-        $this->fss = false;
     }
 
     /**
-     * Short description for 'mergeArray'
+     * Merge a raw array into the replacement data
      *
-     * Long description (if any) ...
-     *
-     * @param      unknown $data Parameter description (if any) ...
-     * @return     void
+     * @param  array  $data
      */
-    public function mergeArray($data)
+    public function mergeArray(array $data): void
     {
         $this->data = array_merge($this->data, $data);
-        $this->fss = false;
     }
 
     /**
-     * Short description for 'merge'
+     * Merge another ReplacementArray into this one
      *
-     * Long description (if any) ...
-     *
-     * @param      object $other Parameter description (if any) ...
-     * @return     void
+     * @param  self  $other
      */
-    public function merge($other)
+    public function merge(self $other): void
     {
         $this->data = array_merge($this->data, $other->data);
-        $this->fss = false;
     }
 
     /**
-     * Short description for 'replace'
+     * Perform the replacement on the given subject string
      *
-     * Long description (if any) ...
-     *
-     * @param      unknown $subject Parameter description (if any) ...
-     * @return     unknown Return description (if any) ...
+     * @param  string  $subject
+     * @return string
      */
-    public function replace($subject)
+    public function replace(string $subject): string
     {
-        if (function_exists('fss_prep_replace')) {
-            if ($this->fss === false) {
-                $this->fss = fss_prep_replace($this->data);
-            }
-            $result = fss_exec_replace($this->fss, $subject);
-        } else {
-            $result = strtr($subject, $this->data);
-        }
-        return $result;
+        return strtr($subject, $this->data);
     }
 }
