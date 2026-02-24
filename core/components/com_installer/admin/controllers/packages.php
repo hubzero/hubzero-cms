@@ -10,7 +10,6 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Composer as ComposerHelper;
-use Components\Installer\Admin\Helpers\Cli;
 use Request;
 use Config;
 use Notify;
@@ -140,7 +139,7 @@ class Packages extends AdminController
         $packageName    = Request::getString('packageName', null);
         $packageVersion = Request::getString('packageVersion', null);
 
-        Cli::installPackage($packageName, $packageVersion);
+        ComposerHelper::installPackage($packageName, $packageVersion);
 
         // Set the redirect
         $this->cancelTask();
@@ -192,7 +191,7 @@ class Packages extends AdminController
         $packages = Request::getArray('packages', array());
 
         foreach ($packages as $package) {
-            Cli::removePackage($package);
+            ComposerHelper::removePackage($package);
 
             Event::trigger('onPackageAfterDelete', array($package));
         }

@@ -377,6 +377,17 @@ class Composer
     }
 
     /**
+     * Update a single package to its latest version
+     *
+     * @param   string  $packageName  Name of the package to update
+     * @return  mixed
+     */
+    public static function updatePackage($packageName)
+    {
+        return self::_updatePackage($packageName);
+    }
+
+    /**
      * Install a package as a specific version
      *
      * @param       string  $packageName    Name of the package to install

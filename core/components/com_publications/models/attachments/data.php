@@ -814,8 +814,8 @@ class Data extends Base
         $dd = \Components\Dataviewer\Site\Modes\ModeDsl::getDd(null, $db_name, $version);
         $dd['serverside'] = false;
 
-        $sql = \Components\Dataviewer\Site\Lib\Db::query_gen($dd);
-        $result = \Components\Dataviewer\Site\Lib\Db::get_results($sql, $dd);
+        $sql = \Components\Dataviewer\Site\Lib\Db::queryGen($dd);
+        $result = \Components\Dataviewer\Site\Lib\Db::getResults($sql, $dd);
 
         ob_start();
         \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);

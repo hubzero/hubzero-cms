@@ -100,7 +100,7 @@ class SingleSkuProduct extends Product
         // save product sku with the current ID to resave the changes with this ID
         $sku = $this->getSku()->setId($skuId);
 
-        return parent::update();
+        return parent::save();
     }
 
     public function addSku($sku)

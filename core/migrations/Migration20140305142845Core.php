@@ -98,7 +98,7 @@ class Migration20140305142845Core extends Base
             ->select($column)
             ->distinct()
             ->from($table)
-            ->where($column, 'IS NOT', Expression::null())
+            ->where($column, 'IS NOT', Expression::raw('NULL'))
             ->where($column, '!=', '0000-00-00 00:00:00');
 
         $dates = $query->loadColumn();
