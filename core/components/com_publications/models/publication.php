@@ -1777,7 +1777,7 @@ class Publication extends Obj
         }
 
         $query = "SELECT p.* ";
-        if ($this->get('state') == self::STATUS_DRAFT) {
+        if ($this->get('state') == self::STATE_DRAFT) {
             // Draft - load latest version
             $query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id
 			  ORDER by p.state ASC, v.version DESC LIMIT 1) as pagetext ";

@@ -1206,7 +1206,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
             // Use CUBRID's native schema introspection method
             // PDO::CUBRID_SCH_IMPORTED_KEYS = 2 (imported foreign keys)
-            $rows = $pdo->cubrid_schema(\PDO::CUBRID_SCH_IMPORTED_KEYS, $tableName);
+            $rows = $pdo->cubrid_schema(2, $tableName); // CUBRID_SCH_IMPORTED_KEYS
 
             if (!is_array($rows) || empty($rows)) {
                 return [];
