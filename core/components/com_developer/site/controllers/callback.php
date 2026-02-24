@@ -125,7 +125,7 @@ class Callback extends SiteController
      **/
     public function globusAuthorizeTask()
     {
-        $params = \Plugin::params('filesystem', 'globus');
+        $params = \Plugin::params('authentication', 'globus');
 
         if (!$code = Request::getString('code')) {
             throw new \Exception("No code found", 400);
@@ -139,8 +139,8 @@ class Callback extends SiteController
             throw new \Exception("State mismatch", 500);
         }
 
-        $provider = new \League\OAuth2\Client\Provider\Globus([
-            'clientId'     => $params->get('app_key'),
+        $provider = new \Plugins\Authentication\Globus\Provider\Globus([
+            'clientId'     => $params->get('app_id'),
             'clientSecret' => $params->get('app_secret'),
             'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'
         ]);
