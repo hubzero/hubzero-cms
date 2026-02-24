@@ -46,7 +46,7 @@ class JSON extends Base
             // Deprecation warning.
             $msg = '\Components\Publications\Models\Format\JSON::stringToObject() '
                 . 'second argument should not be a boolean.';
-            \JLog::add($msg, \JLog::WARNING, 'deprecated');
+            \Log::warning($msg);
         }
 
         $data = trim($data);

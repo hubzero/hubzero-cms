@@ -5,6 +5,7 @@
 
 namespace Plugins\Projects\Feed;
 
+use Hubzero\Activity\Recipient;
 use Hubzero\Plugin\Plugin;
 
 /**
