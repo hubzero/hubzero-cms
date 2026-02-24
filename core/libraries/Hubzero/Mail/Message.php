@@ -218,11 +218,14 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function removeAttachment($attachment)
     {
-        if (!($attachment instanceof Symfony\Component\Mime\Part\DataPart)) {
-            $attachment = Symfony\Component\Mime\Part\DataPart::fromPath($attachment);
-        }
-
-        return $this->detach($attachment);
+        // Symfony Mime Email does not support removing individual
+        // attachments. The internal attachments array is private
+        // with no removal API. Callers should build a new Message
+        // instead of trying to remove attachments after the fact.
+        throw new \BadMethodCallException(
+            'Removing individual attachments is not supported by '
+            . 'the underlying Symfony Mime Email class.'
+        );
     }
 
     /**

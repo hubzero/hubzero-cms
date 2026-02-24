@@ -58,16 +58,16 @@ class OauthControllerApi extends ApiController
     private function consumerRequestTest()
     {
         if (empty($this->_request->validApiKey)) {
-            $this->setMessage('', 401, 'No API Key');
+            $this->send('No API Key', 401);
             return;
         }
 
-        $this->setMessage('Consumer Request Test OK', 200, 'OK');
+        $this->send('Consumer Request Test OK', 200);
     }
 
     private function unsignedRequestTest()
     {
-        $this->setMessage('Unsigned Request Test OK', 200, 'OK');
+        $this->send('Unsigned Request Test OK', 200);
     }
 
     /**
@@ -79,7 +79,7 @@ class OauthControllerApi extends ApiController
      */
     private function tokenInfo()
     {
-        $this->_response->setMessage($this->_provider->getTokenData(), 200, 'OK');
+        $this->send($this->_provider->getTokenData(), 200);
     }
 
     /**
@@ -91,7 +91,7 @@ class OauthControllerApi extends ApiController
      */
     private function notFound()
     {
-        $this->_response->setErrorMessage(404, 'Not Found');
+        $this->send('Not Found', 404);
     }
 
     /**
@@ -106,7 +106,7 @@ class OauthControllerApi extends ApiController
     private function requestToken()
     {
         if (empty($this->_provider)) {
-            $this->setMessage('', 400, 'Bad Request');
+            $this->send('Bad Request', 400);
             return;
         }
 
@@ -121,7 +121,7 @@ class OauthControllerApi extends ApiController
         $consumer_data = $this->_provider->getConsumerData();
 
         if (empty($consumer_data)) {
-            $this->_response->setErrorMessage(500, 'Internal Server Error');
+            $this->send('Internal Server Error', 500);
             return;
         }
 
@@ -137,12 +137,12 @@ class OauthControllerApi extends ApiController
         $db->setQuery($sql);
 
         if (!$db->query()) {
-            $this->_response->setErrorMessage(500, 'Internal Server Error');
+            $this->send('Internal Server Error', 500);
         } else {
-            $this->setMessageType('application/x-www-form-urlencoded,text/plain;q=0.9');
+            $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
             $msg = "oauth_token=" . $token . "&oauth_token_secret=" . $token_secret
                 . "&oauth_callback_confirmed=true";
-            $this->setMessage($msg, 200, 'OK');
+            $this->send($msg, 200);
         }
     }
 
@@ -204,20 +204,20 @@ class OauthControllerApi extends ApiController
                 //     . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
 
                 if (!empty($result->callback_url)) {
-                    $this->_response->setErrorMessage(302, "Redirect" . "");
-                    $location = 'Location: ' . $result->callback_url . "?oauth_token="
+                    $redirectUrl = $result->callback_url . "?oauth_token="
                         . $_REQUEST['oauth_token'] . "&oauth_verifier=" . $result->verifier;
-                    $this->_response->addHeader($location, true);
+                    $this->response->headers->set('Location', $redirectUrl);
+                    $this->send('Redirect', 302);
                 }
 
                 return true;
             }
 
-            $this->_response->setErrorMessaege(400, "Invalid Request");
+            $this->send("Invalid Request", 400);
             return;
         }
 
-        $this->setErrorMessage(500, "Internal Server Error");
+        $this->send("Internal Server Error", 500);
     }
 
     /**
@@ -230,8 +230,8 @@ class OauthControllerApi extends ApiController
     private function accessToken()
     {
         if (empty($this->_provider)) {
-            $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-            $this->_response->setErrorMessage('oauth_problem=bad oauth provider', 501, 'Internal Server Error');
+            $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+            $this->send('oauth_problem=bad oauth provider', 501);
             return;
         }
 
@@ -266,13 +266,13 @@ class OauthControllerApi extends ApiController
 
         if ($xauth_request) {
             if ($this->_provider->getConsumerData()->xauth == '0') {
-                $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-                $this->_response->setErrorMessage('oauth_problem=permission_denied', 401, 'Unauthorized0');
+                $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+                $this->send('oauth_problem=permission_denied', 401);
                 return;
             }
 
             if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
-                $this->_response->setErrorMessage('SSL Required', 403, 'Forbidden');
+                $this->send('SSL Required', 403);
                 return;
             }
 
@@ -307,16 +307,16 @@ class OauthControllerApi extends ApiController
             }
 
             if ($x_auth_mode != 'client_auth') {
-                $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-                $this->_response->setErrorMessage('oauth_problem=permission_denied', 400, 'Bad Request');
+                $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+                $this->send('oauth_problem=permission_denied', 400);
                 return;
             }
 
             $match = \Hubzero\User\Password::passwordMatches($x_auth_username, $x_auth_password, true);
 
             if (!$match) {
-                $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-                $this->_response->setErrorMessage('oauth_problem=permission_denied', 401, 'Unauthorized');
+                $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+                $this->send('oauth_problem=permission_denied', 401);
                 return;
             }
 
@@ -331,13 +331,13 @@ class OauthControllerApi extends ApiController
             $result = $db->loadObject();
 
             if ($result === false) {
-                $this->_response->setErrorMessage(500, 'Internal Server Error');
+                $this->send('Internal Server Error', 500);
                 return;
             }
 
             if (!is_object($result)) {
                 if ($this->_provider->getConsumerData()->xauth_grant < 1) {
-                    $this->_response->setErrorMessage(501, 'Internal Server Error');
+                    $this->send('Internal Server Error', 501);
                     return;
                 }
 
@@ -355,35 +355,35 @@ class OauthControllerApi extends ApiController
                 $db->setQuery($sql);
 
                 if (!$db->query()) {
-                    $this->_response->setErrorMessage(502, 'Internal Server Error');
+                    $this->send('Internal Server Error', 502);
                     return;
                 }
 
                 if ($db->getAffectedRows() < 1) {
-                    $this->_response->setErrorMessage(503, 'Internal Server Error');
+                    $this->send('Internal Server Error', 503);
                     return;
                 }
 
-                $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
+                $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
                 $msg = "oauth_token=" . $token . "&oauth_token_secret=" . $token_secret;
-                $this->_response->setMessage($msg, 200, "OK");
+                $this->send($msg, 200);
             } else {
-                $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
+                $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
                 $msg = "oauth_token=" . $result->token . "&oauth_token_secret=" . $result->token_secret;
-                $this->_response->setMessage($msg, 200, "OK");
+                $this->send($msg, 200);
             }
 
             return;
         } else {
-            $this->_response->setErrorMessage(503, 'Internal Server Error');
+            $this->send('Internal Server Error', 503);
             return;
 
             // @FIXME: we don't support 3-legged auth yet
             // lookup request token to access token, give out access token
             // check verifier
             // check used flag
-            $this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-            $this->_response->setMessage("oauth_token=" . $token . "&oauth_token_secret=" . $token_secret, 200, "OK");
+            $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+            $this->send("oauth_token=" . $token . "&oauth_token_secret=" . $token_secret, 200);
             return;
         }
     }

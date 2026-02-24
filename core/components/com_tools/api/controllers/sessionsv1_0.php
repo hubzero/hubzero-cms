@@ -562,7 +562,7 @@ class Sessionsv1_0 extends ApiController
 
         //check to make sure we have an app to invoke
         if (!$app->name) {
-            $this->errorMessage(400, 'You Must Supply a Valid Tool Alias to Invoke.');
+            $this->send('You Must Supply a Valid Tool Alias to Invoke.', 400);
             return;
         }
 

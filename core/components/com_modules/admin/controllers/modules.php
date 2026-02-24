@@ -1168,7 +1168,6 @@ class Modules extends AdminController
     protected function batchCopy($value, $pks, $contexts)
     {
         // Set the variables
-        $table = $this->getTable();
         $i = 0;
 
         foreach ($pks as $pk) {
@@ -1290,4 +1289,65 @@ class Modules extends AdminController
 
         return true;
     }
+
+    /**
+     * Batch access level changes for a group of modules.
+     *
+     * @param   integer  $value     The new access level value.
+     * @param   array    $pks       An array of row IDs.
+     * @param   array    $contexts  An array of item contexts.
+     * @return  boolean  True if successful, false otherwise.
+     */
+    protected function batchAccess($value, $pks, $contexts)
+    {
+        foreach ($pks as $pk) {
+            $model = Module::oneOrNew($pk);
+
+            if (!$model->get('id')) {
+                continue;
+            }
+
+            $model->set('access', (int) $value);
+
+            if (!$model->save()) {
+                $this->setError($model->getError());
+                return false;
+            }
+        }
+
+        $this->cleanCache();
+
+        return true;
+    }
+
+    /**
+     * Batch language changes for a group of modules.
+     *
+     * @param   string   $value     The new language value.
+     * @param   array    $pks       An array of row IDs.
+     * @param   array    $contexts  An array of item contexts.
+     * @return  boolean  True if successful, false otherwise.
+     */
+    protected function batchLanguage($value, $pks, $contexts)
+    {
+        foreach ($pks as $pk) {
+            $model = Module::oneOrNew($pk);
+
+            if (!$model->get('id')) {
+                continue;
+            }
+
+            $model->set('language', $value);
+
+            if (!$model->save()) {
+                $this->setError($model->getError());
+                return false;
+            }
+        }
+
+        $this->cleanCache();
+
+        return true;
+    }
+
 }

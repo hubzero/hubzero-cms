@@ -24,7 +24,9 @@ class App extends Base implements CommandInterface
      **/
     public function execute()
     {
-        $this->run();
+        $this->output = $this->output->getHelpOutput();
+        $this->help();
+        $this->output->render();
     }
 
     /**
