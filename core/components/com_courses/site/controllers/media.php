@@ -259,7 +259,7 @@ class Media extends SiteController
                     }
                 }
 
-                $model->set('logo', $filename . '.' . $ext);
+                $model->set('logo', $file['name']);
                 if (!$model->store()) {
                     Notify::error($model->getError());
                     return $this->displayTask();
@@ -529,7 +529,7 @@ class Media extends SiteController
 
         // Output HTML
         $this->view
-            ->set('config', $config)
+            ->set('config', $this->config)
             ->set('course', $course)
             ->set('listdir', $listdir)
             ->setLayout('media')
@@ -600,7 +600,7 @@ class Media extends SiteController
             ->set('docs', $docs)
             ->set('folders', $folders)
             ->set('images', $images)
-            ->set('config', $config)
+            ->set('config', $this->config)
             ->set('listdir', $listdir)
             ->display();
     }

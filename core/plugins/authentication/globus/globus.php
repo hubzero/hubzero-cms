@@ -144,8 +144,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
             );
             return;
         }
-        // Make sure we have a user_id (gc returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($token) && $token)) {
+        if (isset($token) && $token) {
             try {
                 $globusResponse = $this->globus()->getResourceOwner($token);
                 $id       = $globusResponse->getId();
@@ -231,19 +230,12 @@ class Globus extends \Hubzero\Plugin\OauthClient
         } catch (\Exception $ex) {
             // When validation fails or other local issues
         }
-        // Make sure we have a user_id (globus returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($session) && $session)) {
+        if (isset($session) && $session) {
             try {
                 $globusResponse = $this->globus()->getResourceOwner($session);
                 $id       = $globusResponse->getId();
                 $email    = $globusResponse->getEmail();
             } catch (\Exception $e) {
-                // Error message?
-                $response->status = \Hubzero\Auth\Status::FAILURE;
-                $response->error_message = Lang::txt(
-                    'PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE',
-                    $e->getMessage()
-                );
                 return;
             }
 

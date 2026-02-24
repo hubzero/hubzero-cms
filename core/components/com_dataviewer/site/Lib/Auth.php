@@ -14,6 +14,7 @@ class Auth
 {
     public static function dvAuth()
     {
+        $dd = DvConfig::$dv_conf['dd'] ?? [];
         $allowedUsers = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : null;
         $allowedGroups = isset($dd['acl']['allowed_groups']) ? $dd['acl']['allowed_groups'] : null;
 

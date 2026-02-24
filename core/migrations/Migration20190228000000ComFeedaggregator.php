@@ -21,6 +21,8 @@ class Migration20190228000000ComFeedaggregator extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->deleteComponentEntry('feedaggregator');
 
         $schema->dropTable('#__feedaggregator_feeds');

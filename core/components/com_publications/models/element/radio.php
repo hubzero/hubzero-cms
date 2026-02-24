@@ -75,7 +75,7 @@ class Radio extends Base
                 $sel = '';
                 if (is_array($value)) {
                     foreach ($value as $val) {
-                        $k2 = is_object($val) ? $val->$key : $val;
+                        $k2 = is_object($val) ? $val->value : $val;
                         if ($value == $k2) {
                             $sel .= ' selected="selected"';
                             break;

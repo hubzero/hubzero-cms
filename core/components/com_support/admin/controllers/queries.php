@@ -438,6 +438,8 @@ class Queries extends AdminController
             }
         }
 
+        $no_html = Request::getInt('no_html', 0);
+
         if (!$no_html) {
             // Output messsage and redirect
             Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));

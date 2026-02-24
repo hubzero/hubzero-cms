@@ -401,7 +401,7 @@ class Grid
         }
 
         $text = addslashes(htmlspecialchars($editorName ? $editorName : "", ENT_COMPAT, 'UTF-8'));
-        addslashes(
+        $date = addslashes(
             htmlspecialchars(
                 with(new Date($time))->toLocal(Lang::txt('DATE_FORMAT_LC')),
                 ENT_COMPAT,

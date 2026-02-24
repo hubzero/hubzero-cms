@@ -590,7 +590,7 @@ class Form extends SiteController
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=form'));
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
-                $message,
+                Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
                 'warning'
             );
             return;

@@ -132,7 +132,6 @@ class Source extends Obj
         $result = Event::trigger('extension.onExtensionBeforeSave', array('com_templates.source', &$data, false));
 
         if (in_array(false, $result, true)) {
-            $this->setError($table->getError());
             return false;
         }
 
@@ -151,7 +150,7 @@ class Source extends Obj
         }
 
         // Trigger the onExtensionAfterSave event.
-        Event::trigger('extension.onExtensionAfterSave', array('com_templates.source', &$table, false));
+        Event::trigger('extension.onExtensionAfterSave', array('com_templates.source', &$data, false));
 
         return true;
     }

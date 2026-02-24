@@ -463,7 +463,12 @@ class Tickets extends AdminController
                         if ($attachment->size() < 2097152) {
                             if ($attachment->isImage()) {
                                 $file = basename($attachment->path());
-                                $html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $msg->getEmbed($attachment->path()) . '" alt="" />', $html);
+                                $pattern = '/<a class="img" data\-filename="'
+                                    . str_replace('.', '\.', $file)
+                                    . '" href="(.*?)"\>(.*?)<\/a>/i';
+                                $replacement = '<img src="'
+                                    . $msg->getEmbed($attachment->path()) . '" alt="" />';
+                                $html = preg_replace($pattern, $replacement, $html);
                             } else {
                                 $msg->addAttachment($attachment->path());
                             }
@@ -851,14 +856,14 @@ class Tickets extends AdminController
             // Create a new support comment object and populate it
             $comment = Comment::blank();
             $comment->set('ticket', $id);
-            $comment->set('comment', $text);
+            $comment->set('comment', '');
             $comment->set('created', Date::toSql());
             $comment->set('created_by', User::get('id'));
             //$comment->set('access', $access);
 
             // Compare fields to find out what has changed for this ticket and build a changelog
             $comment->changelog()->diff($old, $ticket);
-            $comment->changelog()->cced($cc);
+            $comment->changelog()->cced('');
 
             // Save the data
             if (!$comment->save()) {

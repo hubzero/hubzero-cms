@@ -538,7 +538,7 @@ class Support extends Plugin
 
             // Send mail
             if (!$message->send()) {
-                $this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
+                $this->setError(Lang::txt('Failed to mail %s', $user->get('email')));
             }
             $mailed[] = $user->get('username');
         }

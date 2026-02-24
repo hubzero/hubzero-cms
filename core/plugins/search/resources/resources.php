@@ -331,7 +331,7 @@ class Resources extends Plugin
                 $fileData = '';
                 $content = '';
                 foreach ($children as $child) {
-                    if (isset($fileScan) && $fileScan == true) {
+                    if (false) {
                         // Call the helper to read the file
                         //$fileData .= /Helper/FileScan::scan($child['path']) . ' ';
                     }

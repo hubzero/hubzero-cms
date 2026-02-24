@@ -162,7 +162,7 @@ class Endnote extends Downloadable
         if ($row->label && !in_array('label', $exclude)) {
             $l = html_entity_decode($row->label);
             $l = $this->toUtf8($l);
-            $doc .= "%F " . $label . "\r\n";
+            $doc .= "%F " . $l . "\r\n";
         }
         if ($row->language && !in_array('language', $exclude)) {
             $lan = html_entity_decode($row->language);

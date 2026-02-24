@@ -21,6 +21,8 @@ class Migration20150218180139PlgOaipmh extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->dropTable('#__oaipmh_dcspecs');
 
         $this->addPluginEntry('oaipmh', 'resources', 1);

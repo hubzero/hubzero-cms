@@ -692,7 +692,7 @@ class Setup extends Base
                             if (in_array($descriptionValue, $destroyKeyValues)) {
                                 $existingField->destroy();
                             } elseif (!$existingField->save()) {
-                                $this->setError($newField->getError());
+                                $this->setError($existingField->getError());
                             }
                         }
                     }

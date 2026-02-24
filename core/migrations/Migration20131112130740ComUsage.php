@@ -20,6 +20,8 @@ class Migration20131112130740ComUsage extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Get stats DB object
         $config     = $this->getParams('com_usage');
         $siteConfig = \App::get('config');

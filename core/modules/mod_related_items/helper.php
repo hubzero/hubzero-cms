@@ -41,7 +41,7 @@ class Helper extends Module
             'Itemid' => 'int'
         );
 
-        $list = \Module::cache($module, $params, $cacheparams);
+        $list = \Module::cache($this->module, $params, $cacheparams);
 
         if (!count($list)) {
             return;

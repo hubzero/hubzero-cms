@@ -33,6 +33,7 @@ class Username extends Rule
      */
     public function test(&$element, $value, $group = null, &$input = null, &$form = null)
     {
+        $userId = ($input instanceof \Hubzero\Config\Registry) ? $input->get('id', 0) : 0;
         $duplicate = User::all()
             ->whereEquals('username', $value)
             ->where('id', '<>', (int) $userId)
