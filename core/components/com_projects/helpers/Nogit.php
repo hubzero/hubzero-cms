@@ -331,6 +331,56 @@ class Nogit extends Obj
             return null;
         }
     }
+
+    /**
+     * Add/update local repo item (stub - no git)
+     *
+     * @param   string   $item        file path
+     * @param   string   &$commitMsg
+     * @param   boolean  $new
+     * @return  bool
+     */
+    public function gitAdd($item = '', &$commitMsg = '', $new = true)
+    {
+        if (!$this->path || !is_dir($this->path)) {
+            return false;
+        }
+        if (!$item) {
+            return false;
+        }
+
+        $commitMsg .= $new == true ? 'Added' : 'Updated';
+        $commitMsg .= ' file ' . escapeshellarg($item) . "\n";
+
+        return true;
+    }
+
+    /**
+     * Commit changes (stub - no git)
+     *
+     * @param   string  $commitMsg
+     * @param   string  $author
+     * @param   string  $date
+     * @return  bool
+     */
+    public function gitCommit($commitMsg = '', $author = '', $date = '')
+    {
+        return true;
+    }
+
+    /**
+     * Get local file history (stub - no git)
+     *
+     * @param   string  $file   file path
+     * @param   string  $rev
+     * @param   string  $since
+     * @return  array
+     */
+    public function getLocalFileHistory($file = '', $rev = '', $since = '')
+    {
+        return array();
+    }
+
     /**
      * Show commit log detail
      *

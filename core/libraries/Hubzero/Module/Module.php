@@ -70,6 +70,20 @@ class Module extends Obj
     }
 
     /**
+     * Run the module logic and output content
+     *
+     * Subclasses should override this method to implement
+     * their module logic. The default implementation simply
+     * calls display().
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        $this->display();
+    }
+
+    /**
      * Get the cached contents of a module
      * caching it, if it doesn't already exist
      *
