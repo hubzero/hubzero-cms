@@ -36,7 +36,7 @@ class Commentsv1r0 extends ApiController
         $this->database = \App::get('db');
 
         $this->acl = \Components\Support\Helpers\ACL::getACL();
-        $this->acl->setUser($userid);
+        $this->acl->setUser(User::get('id'));
 
         parent::execute();
     }
@@ -241,6 +241,7 @@ class Commentsv1r0 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
+        $user = User::getInstance();
         $ticket_id = Request::getInt('ticket', 0, 'post');
 
         // Load the old ticket so we can compare for the changelog
@@ -465,16 +466,16 @@ class Commentsv1r0 extends ApiController
         $id = Request::getInt('comment', 0);
 
         // Initiate class and bind data to database fields
-        $ticket = \Components\Support\Models\Comment::oneOrFail($id);
+        $comment = \Components\Support\Models\Comment::oneOrFail($id);
 
         $response = new stdClass();
         $response->id = $comment->get('id');
         $response->ticket = $comment->get('ticket');
 
         $response->owner = new stdClass();
-        $response->owner->username = $ticket->owner('username');
-        $response->owner->name     = $ticket->owner('name');
-        $response->owner->id       = $ticket->owner('id');
+        $response->owner->username = $comment->owner('username');
+        $response->owner->name     = $comment->owner('name');
+        $response->owner->id       = $comment->owner('id');
 
         $response->content = $comment->content('raw');
 

@@ -1260,7 +1260,7 @@ class Tool
         $sql = "SELECT f.toolname FROM `#__tool` AS f
 			JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1
 			JOIN `#__xgroups` AS xg ON g.cn=xg.cn
-			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($uid);
+			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($userid);
 
         $db->setQuery($sql);
 

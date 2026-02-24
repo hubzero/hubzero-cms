@@ -482,10 +482,10 @@ class Tickets extends AdminController
                                     . str_replace('.', '\.', $file)
                                     . '" href="(.*?)"\>(.*?)<\/a>/i';
                                 $replacement = '<img src="'
-                                    . $message->getEmbed($attachment->path()) . '" alt="" />';
+                                    . $msg->getEmbed($attachment->path()) . '" alt="" />';
                                 $html = preg_replace($pattern, $replacement, $html);
                             } else {
-                                $message->addAttachment($attachment->path());
+                                $msg->addAttachment($attachment->path());
                             }
                         }
                     }

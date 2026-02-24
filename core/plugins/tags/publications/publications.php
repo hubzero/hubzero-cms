@@ -136,7 +136,7 @@ class Publications extends Plugin
             if (isset($response['children'][$areas])) {
                 $filters['category'] = $response['children'][$areas]['id'];
 
-                $response['children'][$key]['sql'] = $this->buildPluginQuery($filters);
+                $response['children'][$areas]['sql'] = $this->buildPluginQuery($filters);
             } else {
                 unset($filters['category']);
                 $response['sql'] = $this->buildPluginQuery($filters);

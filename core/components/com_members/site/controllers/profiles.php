@@ -109,7 +109,7 @@ class Profiles extends SiteController
 
                     case 1:
                     default:
-                        $profile = User::groups();
+                        $xgroups = User::groups();
                         $usersgroups = array();
                         if (!empty($xgroups)) {
                             foreach ($xgroups as $group) {
@@ -1213,7 +1213,7 @@ class Profiles extends SiteController
             $live_site = rtrim(Request::base(), '/');
 
             // Email subject
-            $subject = $hubName . " Account Resource Request";
+            $subject = $sitename . " Account Resource Request";
 
             // Email message
             $message = 'Name: ' . $profile->get('name');
@@ -1223,7 +1223,7 @@ class Profiles extends SiteController
             $message .= "\r\n";
             $message .= "Email: " . $profile->get('email') . "\r\n";
             $message .= "Username: " . $profile->get('username') . "\r\n\r\n";
-            $message .= 'Has requested an increases in their ' . $hubName;
+            $message .= 'Has requested an increases in their ' . $sitename;
             $message .= $resourcemessage . "\r\n\r\n";
             $message .= "Reason: ";
             if (empty($request)) {

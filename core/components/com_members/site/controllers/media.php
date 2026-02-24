@@ -509,8 +509,8 @@ class Media extends SiteController
 
         // Check if they're a site admin
         // Admin
-        $this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
-        $this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
+        $this->config->set('access-admin-' . $assetType, User::authorise('core.admin', 'com_members'));
+        $this->config->set('access-manage-' . $assetType, User::authorise('core.manage', 'com_members'));
 
         if ($this->config->get('access-admin-' . $assetType)) {
             return 'admin';

@@ -91,6 +91,7 @@ class Login extends AdminController
 
         $credentials = $model->getState('credentials');
         $return      = $model->getState('return');
+        $options     = array();
 
         // If a specific authenticator is specified try to call the login method for that plugin
         if ($authenticator = Request::getString('authenticator', false, 'method')) {

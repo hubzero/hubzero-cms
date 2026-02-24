@@ -136,7 +136,7 @@ class Resources extends Plugin
             if (isset($response['children'][$areas])) {
                 $filters['type'] = $response['children'][$areas]['id'];
 
-                $response['children'][$key]['sql'] = $this->buildPluginQuery($filters);
+                $response['children'][$areas]['sql'] = $this->buildPluginQuery($filters);
             } else {
                 unset($filters['type']);
                 $response['sql'] = $this->buildPluginQuery($filters);

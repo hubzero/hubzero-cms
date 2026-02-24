@@ -79,6 +79,8 @@ class Sessions extends SiteController
             }
         }
         if (is_object($session)) {
+            $title = $this->app ? $this->app->caption : '';
+            $lnk = $this->app ? $this->app->toolname : '';
             Pathway::append(
                 $title,
                 Route::url('index.php?option=' . $this->_option . '&tag=' . $lnk)
@@ -104,7 +106,7 @@ class Sessions extends SiteController
                 . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
         if (is_object($session)) {
-            $title .= ': ';
+            $this->_title .= ': ';
         }
         Document::setTitle($this->_title);
     }
@@ -1364,7 +1366,7 @@ class Sessions extends SiteController
         $sess = Request::getString('sess', '');
         $rtrn = base64_decode(Request::getString('return', '', 'method', 'base64'));
 
-        $rediect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
+        $redirect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
 
         // Ensure we have a session
         if (!$sess) {
@@ -1744,7 +1746,7 @@ class Sessions extends SiteController
             case 'pu':
                 if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol)) {
                     $this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY'));
-                    Log::debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
+                    Log::debug("mw::_getToolExportControl($exportcontrol) FAILED PURDUE export control check");
                     return false;
                 }
                 break;

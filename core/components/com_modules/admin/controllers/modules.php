@@ -1109,6 +1109,7 @@ class Modules extends AdminController
         }
 
         $done = false;
+        $contexts = array($this->_option . '.' . $this->_controller);
 
         if (!empty($commands['position_id'])) {
             $cmd = \Hubzero\Utility\Arr::getValue($commands, 'move_copy', 'c');

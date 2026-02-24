@@ -243,7 +243,7 @@ class Messages extends AdminController
 
             // Store new content
             if (!$message->save()) {
-                Notify::error($row->getError());
+                Notify::error($message->getError());
                 continue;
             }
 
@@ -351,7 +351,7 @@ class Messages extends AdminController
             $lang->load('com_messages', PATH_CORE . '/components/com_messages/admin');*/
 
             $siteURL  = Request::root()
-                . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
+                . 'administrator/index.php?option=com_messages&view=message&message_id=' . $message->id;
             $sitename = \Config::get('sitename');
 
             $subject = Lang::txt('COM_MESSAGES_NEW_MESSAGE_ARRIVED', $sitename);
