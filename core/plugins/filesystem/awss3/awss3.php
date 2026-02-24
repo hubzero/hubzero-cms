@@ -12,7 +12,7 @@ use Hubzero\Plugin\Plugin;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Aws\S3\S3Client;
-use League\Flysystem\AwsS3v2\AwsS3Adapter;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
 
 /**
@@ -37,12 +37,13 @@ class Awss3 extends Plugin
         $bucket = $params['bucket'];
         $path = isset($params['path']) ? $params['path'] : '';
 
-        $client = S3Client::factory([
-            'key'           => $app_id,
-            'secret'    => $app_secret,
-            'region'    => $region,
-            'base_url' => 'http://s3.amazonaws.com',
-            'signature' => 'v4'
+        $client = new S3Client([
+            'credentials' => [
+                'key'    => $app_id,
+                'secret' => $app_secret,
+            ],
+            'region'  => $region,
+            'version' => 'latest',
         ]);
         $adapter = new AwsS3Adapter($client, $bucket, $path);
         return $adapter;
