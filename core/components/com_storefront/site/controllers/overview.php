@@ -51,7 +51,6 @@ class Overview extends ComponentController
 
         $customLandingPage = $this->config->get('landingPage', 0);
 
-        include_once PATH_CORE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'article.php';
         $content = Article::oneOrFail($customLandingPage);
 
         $this->view->content = $content->toObject();

@@ -183,8 +183,8 @@ class Style extends Relational
             ? 'administrator_template'
             : 'site_template';
 
-        $configPath = PATH_APP . DS . 'config';
-        $configFile = $configPath . DS . 'app.php';
+        $configPath = PATH_APP . '/config';
+        $configFile = $configPath . '/app.php';
 
         if (!file_exists($configFile)) {
             return;

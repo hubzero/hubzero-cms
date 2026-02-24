@@ -8,7 +8,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Reviews\Models;
+namespace Plugins\Resources\Reviews\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Item\Vote;
@@ -17,8 +17,6 @@ use Lang;
 use Date;
 
 //use User;
-
-require_once __DIR__ . DS . 'comment.php';
 
 /**
  * Resource review

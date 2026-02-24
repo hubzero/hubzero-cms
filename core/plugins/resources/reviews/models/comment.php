@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Reviews\Models;
+namespace Plugins\Resources\Reviews\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 

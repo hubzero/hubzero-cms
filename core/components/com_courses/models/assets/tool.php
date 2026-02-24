@@ -97,10 +97,6 @@ class Tool extends Content
             $cconfig = Component::params('com_courses');
 
             // Build the upload path if it doesn't exist
-            $assetPath = PATH_CORE . DS . 'components' . DS . 'com_courses'
-                . DS . 'models' . DS . 'asset.php';
-            require_once $assetPath;
-
             // Loop through files and save them
             // (they will potentially be coming in together, in a single request)
             for ($i = 0; $i < count($_FILES['files']['name']); $i++) {

@@ -272,8 +272,8 @@ class Loader
             $chrome = array();
         }
 
-        include_once PATH_CORE . DS . 'templates' . DS . 'system' . DS . 'html' . DS . 'modules.php';
-        $chromePath = $this->app['template']->path . DS . 'html' . DS . 'modules.php';
+        include_once PATH_CORE . '/templates/system/html/modules.php';
+        $chromePath = $this->app['template']->path . '/html/modules.php';
 
         if (!isset($chrome[$chromePath])) {
             if (file_exists($chromePath)) {

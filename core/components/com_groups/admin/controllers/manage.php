@@ -554,7 +554,7 @@ class Manage extends AdminController
         }
 
         // check to see if we have a super group db config
-        $supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
+        $supergroupDbConfigFile = '/etc/supergroup.conf';
         if (!file_exists($supergroupDbConfigFile)) {
             Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'));
         } else {

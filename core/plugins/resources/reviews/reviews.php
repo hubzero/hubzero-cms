@@ -133,11 +133,11 @@ class Reviews extends Plugin
         $h->execute();
 
         // Get reviews for this resource
-        $reviews = \Components\Resources\Reviews\Models\Review::all()
+        $reviews = \Plugins\Resources\Reviews\Models\Review::all()
             ->whereEquals('resource_id', $model->get('id'))
             ->whereIn('state', array(
-                \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED,
-                \Components\Resources\Reviews\Models\Review::STATE_FLAGGED
+                \Plugins\Resources\Reviews\Models\Review::STATE_PUBLISHED,
+                \Plugins\Resources\Reviews\Models\Review::STATE_FLAGGED
             ))
             ->ordered()
             ->rows();

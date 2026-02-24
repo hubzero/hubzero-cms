@@ -147,16 +147,7 @@ class Resources extends Plugin
             return null;
         }
 
-        $path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
-        if (file_exists(PATH_APP . $path)) {
-            $path = PATH_APP . $path;
-        } else {
-            $path = PATH_CORE . $path;
-        }
-
-        include_once $path;
-
-        $comment = \Components\Resources\Reviews\Models\Review::oneOrFail($refid);
+        $comment = \Plugins\Resources\Reviews\Models\Review::oneOrFail($refid);
         $comment->set('state', 3);
         $comment->save();
 
@@ -177,16 +168,7 @@ class Resources extends Plugin
             return null;
         }
 
-        $path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
-        if (file_exists(PATH_APP . $path)) {
-            $path = PATH_APP . $path;
-        } else {
-            $path = PATH_CORE . $path;
-        }
-
-        include_once $path;
-
-        $comment = \Components\Resources\Reviews\Models\Review::oneOrFail($refid);
+        $comment = \Plugins\Resources\Reviews\Models\Review::oneOrFail($refid);
         $comment->set('state', 1);
         $comment->save();
 
@@ -214,22 +196,12 @@ class Resources extends Plugin
 
         switch ($category) {
             case 'review':
-                $path = DS . 'plugins' . DS . 'resources' . DS . 'reviews' . DS . 'models' . DS . 'review.php';
-                if (file_exists(PATH_APP . $path)) {
-                    $path = PATH_APP . $path;
-                } else {
-                    $path = PATH_CORE . $path;
-                }
-
-                include_once $path;
-                include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
                 // Delete the review
-                $review = \Components\Resources\Reviews\Models\Review::oneOrFail($referenceid);
+                $review = \Plugins\Resources\Reviews\Models\Review::oneOrFail($referenceid);
                 $review->set('state', 2);
                 $review->save();
 
-                $rating = \Components\Resources\Reviews\Models\Review::averageByResource($parentid);
+                $rating = \Plugins\Resources\Reviews\Models\Review::averageByResource($parentid);
 
                 // Recalculate the average rating for the parent resource
                 $resource = \Components\Resources\Models\Entry::oneOrFail($parentid);

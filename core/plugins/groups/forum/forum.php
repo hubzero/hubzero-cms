@@ -113,8 +113,6 @@ class Forum extends Plugin
         $this->group    = $group;
         $this->database = App::get('db');
 
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
-
         $this->forum = new Manager('group', $group->get('gidNumber'));
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
@@ -506,11 +504,7 @@ class Forum extends Plugin
         // Email settings data
         $recvEmailOptionID = 0;
         $recvEmailOptionValue = 0;
-        $memberoptionPath = PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions';
-        $memberoptionFile = $memberoptionPath . DS . 'models' . DS . 'memberoption.php';
-        if (file_exists($memberoptionFile)) {
-            include_once $memberoptionFile;
-
+        if (class_exists(\Plugins\Groups\Memberoptions\Models\Memberoption::class)) {
             $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $this->group->get('gidNumber'),
                 User::get('id'),
@@ -1728,10 +1722,7 @@ class Forum extends Plugin
     {
         $memberoptions = false;
 
-        $memberoptionPath = PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions';
-        $memberoptionFile = $memberoptionPath . DS . 'models' . DS . 'memberoption.php';
-        if (file_exists($memberoptionFile)) {
-            include_once $memberoptionFile;
+        if (class_exists(\Plugins\Groups\Memberoptions\Models\Memberoption::class)) {
             $memberoptions = true;
         }
 
@@ -2062,8 +2053,6 @@ class Forum extends Plugin
     {
         $log = Lang::txt('PLG_GROUPS_FORUM') . ': ';
 
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
-
         $sections = Section::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
@@ -2230,9 +2219,6 @@ class Forum extends Plugin
         }
 
         // needed member option lib
-        $memberoptionPath = PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions';
-        include_once $memberoptionPath . DS . 'models' . DS . 'memberoption.php';
-
         // Find the user's group settings, do they want to get email (0 or 1)?
         $groupMemberOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $this->group->get('gidNumber'),

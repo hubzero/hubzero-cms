@@ -220,7 +220,6 @@ class CartMessenger
         // Initialize low inventory notification
         $lowInventoryNotifySummary = '';
 
-        require_once PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
         $warehouse = new \Components\Storefront\Models\Warehouse();
 
         foreach ($items as $k => $item) {
@@ -342,7 +341,6 @@ class CartMessenger
         $message->addPart($plain, 'text/plain');
 
         // Get user's email address
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
         $uId = \Components\Cart\Models\Cart::getCartUser($transactionInfo->crtId);
         $usr = \Hubzero\User\Profile::getInstance($uId);
         $message->addTo($usr->get('email'));
