@@ -43,7 +43,7 @@ class Dns
     public static function hostname()
     {
         $arr = self::_getConfigArray();
-        if (is_empty($arr)) {
+        if (empty($arr)) {
             return '';
         }
         return self::_getConfigArray()[0];
@@ -57,7 +57,7 @@ class Dns
     public static function tld()
     {
         $arr = self::_getConfigArray();
-        if (is_empty($arr)) {
+        if (empty($arr)) {
             return '';
         }
         $tld = end($arr);
