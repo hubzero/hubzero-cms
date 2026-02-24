@@ -121,8 +121,8 @@ namespace Components\Dataviewer;
  *        $viewClass = 'Components\Dataviewer\Site\View\Spreadsheet';
  *        $viewClass::render($dd);
  *
- * 5. `task_data()` generates SQL via `Lib\Db::query_gen()`, executes it via
- *    `Lib\Db::get_results()`, then passes results through a Filter class:
+ * 5. `task_data()` generates SQL via `Lib\Db::queryGen()`, executes it via
+ *    `Lib\Db::getResults()`, then passes results through a Filter class:
  *
  *        $filterClass = 'Components\Dataviewer\Site\Filter\Json';
  *        $filterClass::filter($result, $dd);
@@ -277,8 +277,8 @@ namespace Components\Dataviewer;
  *
  *     \Components\Dataviewer\Site\DvConfig::init();
  *     $dd = \Components\Dataviewer\Site\Modes\ModeDsl::get_dd(null, $db_name, $version);
- *     $sql = \Components\Dataviewer\Site\Lib\Db::query_gen($dd);
- *     $result = \Components\Dataviewer\Site\Lib\Db::get_results($sql, $dd);
+ *     $sql = \Components\Dataviewer\Site\Lib\Db::queryGen($dd);
+ *     $result = \Components\Dataviewer\Site\Lib\Db::getResults($sql, $dd);
  *     \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
  *
  * This cross-component dependency lives in:
