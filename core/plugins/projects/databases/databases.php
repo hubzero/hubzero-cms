@@ -615,7 +615,6 @@ class Databases extends Plugin
             $table['repo'] = array(
                 'prj_alias' => $this->model->get('alias'),
                 'wd' => trim($dir, '/'),
-                'wd' => trim($dir, '/'),
                 'base' => '/projects/' . $this->model->get('alias')
                     . '/files/?action=download&subdir=' . trim($dir, '/'),
                 'sub_dirs' => $sub_dirs
