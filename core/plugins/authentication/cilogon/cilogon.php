@@ -188,8 +188,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
             return;
         }
-        // Make sure we have a user_id (gc returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($token) && $token)) {
+        if (isset($token) && $token) {
             try {
                 $cilogonResponse = $this->cilogon()->getResourceOwner($token);
                 $responseArr = $cilogonResponse->toArray();
@@ -298,8 +297,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
         } catch (\Exception $ex) {
             // When validation fails or other local issues
         }
-        // Make sure we have a user_id (cilogon returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($session) && $session)) {
+        if (isset($session) && $session) {
             try {
                 $cilogonResponse = $this->cilogon()->getResourceOwner($session);
                 $id       = $cilogonResponse->getId();

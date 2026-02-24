@@ -20,6 +20,8 @@ class Migration20140110135511ComFinder extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $id = $this->db->getQuery(true)
             ->select('extension_id')
             ->from('#__extensions')

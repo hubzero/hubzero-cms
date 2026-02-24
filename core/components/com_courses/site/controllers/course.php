@@ -266,6 +266,8 @@ class Course extends SiteController
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
         }
 
+        $tags = trim(Request::getString('tags', ''));
+
         // Push back into edit mode if any errors
         if (!$course->bind($data)) {
             Notify::error($course->getError(), 'courses');
@@ -288,7 +290,6 @@ class Course extends SiteController
         }
 
         if (isset($_POST['tags'])) {
-            $tags = trim(Request::getString('tags', ''));
             $course->tag($tags, User::get('id'));
         }
 
@@ -605,7 +606,7 @@ class Course extends SiteController
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
         $eview->user = User::getInstance();
-        $eview->gcn = $gcn;
+        $eview->gcn = $this->course->get('cn');
         $eview->msg = $msg;
         $eview->course = $this->course;
 

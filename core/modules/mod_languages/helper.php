@@ -63,7 +63,9 @@ class Helper extends Module
         }
 
         // Load associations
-        $assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
+        $config = App::get('config');
+        $assoc = $config->get('menu_associations', 0);
+        $associations = array();
         if ($assoc) {
             $active = $menu->getActive();
             if ($active) {

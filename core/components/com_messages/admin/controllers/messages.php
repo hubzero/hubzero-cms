@@ -357,7 +357,8 @@ class Messages extends AdminController
             $lang->load('com_messages', PATH_APP) ||
             $lang->load('com_messages', PATH_CORE . '/components/com_messages/admin');*/
 
-            $siteURL  = Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $message->get('message_id');
+            $siteURL  = Request::root()
+                . 'administrator/index.php?option=com_messages&view=message&message_id=' . $message->id;
             $sitename = \Config::get('sitename');
 
             $subject = Lang::txt('COM_MESSAGES_NEW_MESSAGE_ARRIVED', $sitename);

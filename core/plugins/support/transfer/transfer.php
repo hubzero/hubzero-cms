@@ -206,7 +206,7 @@ class Transfer extends Plugin
                 }
 
                 if ($rid) {
-                    $listid = $objWishlist->get_wishlistID($rid);
+                    $listid = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource')->get('id');
                 }
                 $newrow->set('wishlist', ($listid ? $listid : $mainlist));
                 break;

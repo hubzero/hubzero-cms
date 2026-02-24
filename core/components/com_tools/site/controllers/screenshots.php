@@ -336,6 +336,7 @@ class Screenshots extends SiteController
     {
         // Incoming
         $pid = Request::getInt('pid', 0);
+        $version = Request::getString('version', 'dev');
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
             return $this->displayTask($pid, $version);

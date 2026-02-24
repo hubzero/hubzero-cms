@@ -82,6 +82,8 @@ class Sessions extends SiteController
             }
         }
         if (is_object($session)) {
+            $title = $this->app ? $this->app->caption : '';
+            $lnk = $this->app ? $this->app->toolname : '';
             Pathway::append(
                 $title,
                 Route::url('index.php?option=' . $this->_option . '&tag=' . $lnk)
@@ -105,7 +107,7 @@ class Sessions extends SiteController
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
         if (is_object($session)) {
-            $title .= ': ';
+            $this->_title .= ': ';
         }
         Document::setTitle($this->_title);
     }
