@@ -33,7 +33,7 @@ class Spacer extends Element
      * @param   string  $name          The name.
      * @return  string
      */
-    public function fetchTooltip($label, $description, &$node, $control_name, $name)
+    public function fetchTooltip($label, $description, &$node, $control_name = '', $name = '')
     {
         return '&#160;';
     }

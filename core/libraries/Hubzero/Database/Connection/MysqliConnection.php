@@ -333,6 +333,19 @@ class MysqliConnection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
+    public function query(string $statement)
+    {
+        $this->connect();
+        $result = $this->mysqli->query($statement);
+        if ($result === false) {
+            throw new QueryFailedException($this->mysqli->error, $this->mysqli->errno);
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function exec(string $statement): int
     {
         $this->connect();

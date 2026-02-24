@@ -1380,7 +1380,7 @@ class Manage extends AdminController
      * @return  boolean  True if authorized, false if not.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _authorize($task, $group = null)
+    protected function _authorize($task = null, $group = null)
     {
         // get users actions
         $canDo = Permissions::getActions('group');
