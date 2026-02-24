@@ -15,8 +15,6 @@ use Hubzero\Plugin\Plugin;
 
 defined('_HZEXEC_') or die;
 
-Html::behavior('core');
-
 /**
  * CKEditor Plugin
  */
@@ -35,6 +33,8 @@ class Ckeditor5 extends Plugin
      */
     public function onInit()
     {
+        Html::behavior('core');
+
         $bundle = __DIR__ . '/assets/js/ckeditor.js';
 
         // Version the bundle by its mtime, as the CKEditor 4 plugin does, so a
