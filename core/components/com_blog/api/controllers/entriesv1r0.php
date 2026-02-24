@@ -1,0 +1,608 @@
+<?php
+
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\Blog\Api\Controllers;
+
+use Components\Blog\Models\Entry;
+use Components\Blog\Models\Archive;
+use Hubzero\Component\ApiController;
+use Hubzero\Utility\Date;
+use Exception;
+use stdClass;
+use Request;
+use Route;
+use Event;
+use User;
+use Lang;
+
+/**
+ * API controller class for blog entries
+ */
+class Entriesv1r0 extends ApiController
+{
+    /**
+     * Display a list of entries
+     *
+     * @apiMethod GET
+     * @apiUri    /blog/list
+     * @apiParameter {
+     *      "name":          "scope",
+     *      "description":   "Scope type (group, member, etc.)",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       "site"
+     * }
+     * @apiParameter {
+     *      "name":          "scope_id",
+     *      "description":   "Scope object ID",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       0
+     * }
+     * @apiParameter {
+     *      "name":          "limit",
+     *      "description":   "Number of result to return.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       25
+     * }
+     * @apiParameter {
+     *      "name":          "start",
+     *      "description":   "Number of where to start returning results.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       0
+     * }
+     * @apiParameter {
+     *      "name":          "search",
+     *      "description":   "A word or phrase to search for.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       ""
+     * }
+     * @apiParameter {
+     *      "name":          "sort",
+     *      "description":   "Field to sort results by.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       "created",
+     *      "allowedValues": "created, title, alias, id, publish_up, publish_down, state"
+     * }
+     * @apiParameter {
+     *      "name":          "sort_Dir",
+     *      "description":   "Direction to sort results by.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       "desc",
+     *      "allowedValues": "asc, desc"
+     * }
+     * @return  void
+     */
+    public function listTask()
+    {
+        $model = new Archive('site');
+
+        $filters = array(
+            'scope'      => Request::getString('scope', 'site'),
+            'scope_id'   => Request::getInt('scope_id', 0),
+            'search'     => Request::getString('search', ''),
+            'authorized' => false,
+            'state'      => 1,
+            'access'     => User::getAuthorisedViewLevels()
+        );
+
+        $response = new stdClass();
+        $response->posts = array();
+        $response->total = $model->entries($filters)->count();
+
+        if ($response->total) {
+            $base = rtrim(Request::base(), '/');
+
+            $rows = $model->entries($filters)
+                ->ordered('sort', 'sort_Dir')
+                ->paginated()
+                ->rows();
+
+            foreach ($rows as $i => $entry) {
+                $obj = new stdClass();
+                $obj->id        = $entry->get('id');
+                $obj->title     = $entry->get('title');
+                $obj->alias     = $entry->get('alias');
+                $obj->state     = $entry->get('state');
+                $obj->published = with(new Date($entry->get('publish_up')))->format('Y-m-d\TH:i:s\Z');
+                $obj->scope     = $entry->get('scope');
+                $obj->author    = $entry->creator->get('name');
+                $obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), DS));
+                $obj->comments  = $entry->comments()->whereIn('state', array(1, 3))->count();
+
+                $response->posts[] = $obj;
+            }
+        }
+
+        $response->success = true;
+
+        $this->send($response);
+    }
+
+    /**
+     * Create an entry
+     *
+     * @apiMethod POST
+     * @apiUri    /blog
+     * @apiParameter {
+     *      "name":        "scope",
+     *      "description": "Scope type (group, member, etc.)",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "scope_id",
+     *      "description": "Scope object ID",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "title",
+     *      "description": "Entry title",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "alias",
+     *      "description": "Entry alias",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "content",
+     *      "description": "Entry content",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "created",
+     *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     "now"
+     * }
+     * @apiParameter {
+     *      "name":        "created_by",
+     *      "description": "User ID of entry creator",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "state",
+     *      "description": "Published state (0 = unpublished, 1 = published)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "access",
+     *      "description": "Access level (1 = public, 2 = registered users, 5 = private)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "allow_comments",
+     *      "description": "Allow comments on the entry?",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     1
+     * }
+     * @apiParameter {
+     *      "name":        "publish_up",
+     *      "description": "Publish start timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     "now"
+     * }
+     * @apiParameter {
+     *      "name":        "publish_down",
+     *      "description": "Publish end timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "tags",
+     *      "description": "Comma-separated list of tags",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function createTask()
+    {
+        $this->requiresAuthentication();
+
+        $fields = array(
+            'scope'          => Request::getString('scope', '', 'post'),
+            'scope_id'       => Request::getInt('scope_id', 0, 'post'),
+            'title'          => Request::getString('title', null, 'post', 'none', 2),
+            'alias'          => Request::getString('alias', null, 'post'),
+            'content'        => Request::getString('content', null, 'post', 'none', 2),
+            'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
+            'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
+            'state'          => Request::getInt('state', 1, 'post'),
+            'access'         => Request::getInt('access', 1, 'post'),
+            'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
+            'publish_up'     => Request::getString('publish_up', with(new Date('now'))->toSql(), 'post'),
+            'publish_down'   => Request::getString('publish_down', null, 'post'),
+        );
+
+        $row = new Entry();
+
+        if (!$row->set($fields)) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 500);
+        }
+
+        // Trigger before save event
+        $isNew  = $row->isNew();
+        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+        if (in_array(false, $result, true)) {
+            throw new Exception($row->getError(), 500);
+        }
+
+        if (!$row->save()) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
+        }
+
+        $tags = Request::getVar('tags', null, 'post');
+
+        if (!is_null($tags) && is_string($tags)) {
+            if (!$row->tag($tags, $fields['created_by'])) {
+                throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
+            }
+        }
+
+        // Trigger after save event
+        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+
+        $row->set('tags', $tags);
+        $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+        $row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+        if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') {
+            $row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
+        }
+
+        // Log activity
+        $base = rtrim(Request::base(), '/');
+        $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+        Event::trigger('system.logActivity', [
+            'activity' => [
+                'action'      => 'created',
+                'scope'       => 'blog.entry',
+                'scope_id'    => $row->get('id'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_CREATED',
+                    '<a href="' . $url . '">' . $row->get('title') . '</a>'
+                ),
+                'details'     => array(
+                    'title' => $row->get('title'),
+                    'url'   => $url
+                )
+            ],
+            'recipients' => [
+                $row->get('created_by')
+            ]
+        ]);
+
+        $this->send($row->toObject());
+    }
+
+    /**
+     * Retrieve an entry
+     *
+     * @apiMethod GET
+     * @apiUri    /blog/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Blog entry identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function readTask()
+    {
+        $id = Request::getInt('id', 0);
+
+        $row = Entry::oneOrFail($id);
+
+        if (!$row->get('id')) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
+        }
+
+        $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+        $row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+        if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') {
+            $row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
+        }
+
+        $this->send($row->toObject());
+    }
+
+    /**
+     * Update an entry
+     *
+     * @apiMethod PUT
+     * @apiUri    /blog/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Blog entry identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "scope",
+     *      "description": "Scope type (group, member, etc.)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "scope_id",
+     *      "description": "Scope object ID",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "title",
+     *      "description": "Entry title",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "alias",
+     *      "description": "Entry alias",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "content",
+     *      "description": "Entry content",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "created",
+     *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     "now"
+     * }
+     * @apiParameter {
+     *      "name":        "created_by",
+     *      "description": "User ID of entry creator",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "state",
+     *      "description": "Published state (0 = unpublished, 1 = published)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "access",
+     *      "description": "Access level (1 = public, 2 = registered users, 5 = private)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "allow_comments",
+     *      "description": "Allow comments on the entry?",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     1
+     * }
+     * @apiParameter {
+     *      "name":        "publish_up",
+     *      "description": "Publish start timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     "now"
+     * }
+     * @apiParameter {
+     *      "name":        "publish_down",
+     *      "description": "Publish end timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "hits",
+     *      "description": "Record hits",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "tags",
+     *      "description": "Comma-separated list of tags",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function updateTask()
+    {
+        $this->requiresAuthentication();
+
+        $id = Request::getInt('id', 0);
+
+        $row = Entry::oneOrFail($id);
+
+        if ($row->isNew()) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
+        }
+
+        $fields = array(
+            'scope'          => Request::getString('scope', $row->get('scope')),
+            'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
+            'title'          => Request::getString('title', $row->get('title')),
+            'alias'          => Request::getString('alias', $row->get('alias')),
+            'content'        => Request::getString('content', $row->get('content')),
+            'created'        => Request::getString('created', $row->get('created')),
+            'created_by'     => Request::getInt('created_by', $row->get('created_by')),
+            'state'          => Request::getInt('state', $row->get('state')),
+            'access'         => Request::getInt('access', $row->get('access')),
+            'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
+            'publish_up'     => Request::getString('publish_up', $row->get('publish_up')),
+            'publish_down'   => Request::getString('publish_down', $row->get('publish_down')),
+            'hits'           => Request::getInt('hits', $row->get('hits'))
+        );
+
+        if (!$row->set($fields)) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
+        }
+
+        // Trigger before save event
+        $isNew  = $row->isNew();
+        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+
+        if (in_array(false, $result, true)) {
+            throw new Exception($row->getError(), 500);
+        }
+
+        if (!$row->save()) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_DATA'), 500);
+        }
+
+        $tags = Request::getVar('tags', null);
+
+        if (!is_null($tags) && is_string($tags)) {
+            if (!$row->tag($tags, $fields['created_by'])) {
+                throw new Exception(Lang::txt('COM_BLOG_ERROR_SAVING_TAGS'), 500);
+            }
+        }
+
+        // Trigger after save event
+        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+
+        $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+        $row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
+        if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') {
+            $row->set('publish_down', with(new Date($row->get('publish_down')))->format('Y-m-d\TH:i:s\Z'));
+        }
+
+        // Log activity
+        $base = rtrim(Request::base(), '/');
+        $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+        Event::trigger('system.logActivity', [
+            'activity' => [
+                'action'      => 'updated',
+                'scope'       => 'blog.entry',
+                'scope_id'    => $row->get('id'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_UPDATED',
+                    '<a href="' . $url . '">' . $row->get('title') . '</a>'
+                ),
+                'details'     => array(
+                    'title' => $row->get('title'),
+                    'url'   => $url
+                )
+            ],
+            'recipients' => [
+                $row->get('created_by')
+            ]
+        ]);
+
+        $this->send($row->toObject());
+    }
+
+    /**
+     * Delete an entry
+     *
+     * @apiMethod DELETE
+     * @apiUri    /blog/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Blog entry identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function deleteTask()
+    {
+        $this->requiresAuthentication();
+
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
+
+        if (count($ids) <= 0) {
+            throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_ID'), 500);
+        }
+
+        foreach ($ids as $id) {
+            $row = Entry::oneOrNew(intval($id));
+
+            if (!$row->get('id')) {
+                throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
+            }
+
+            if (!$row->destroy()) {
+                throw new Exception($row->getError(), 500);
+            }
+
+            // Trigger before delete event
+            Event::trigger('onBlogAfterDelete', array($id));
+
+            // Log activity
+            $base = rtrim(Request::base(), '/');
+            $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
+
+            Event::trigger('system.logActivity', [
+                'activity' => [
+                    'action'      => 'deleted',
+                    'scope'       => 'blog.entry',
+                    'scope_id'    => $id,
+                    'description' => Lang::txt(
+                        'COM_BLOG_ACTIVITY_ENTRY_DELETED',
+                        '<a href="' . $url . '">' . $row->get('title') . '</a>'
+                    ),
+                    'details'     => array(
+                        'title' => $row->get('title'),
+                        'url'   => $url
+                    )
+                ],
+                'recipients' => [
+                    $row->get('created_by')
+                ]
+            ]);
+        }
+
+        $this->send(null, 204);
+    }
+}
