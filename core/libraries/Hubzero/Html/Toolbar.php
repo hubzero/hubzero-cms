@@ -193,7 +193,7 @@ class Toolbar extends Obj
             if ($buttonFile = $this->find($dirs, $file)) {
                 include_once $buttonFile;
             } else {
-                InvalidArgumentException(
+                throw new \InvalidArgumentException(
                     \Lang::txt(
                         'JLIB_HTML_BUTTON_NO_LOAD',
                         $buttonClass,
