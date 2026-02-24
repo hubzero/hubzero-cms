@@ -280,7 +280,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     public function getGeocodedData($address)
     {
         if (!in_array($this->type, array('countries', 'country', 'continent'))) {
-            throw new \Geocoder\Exception\UnsupportedException(
+            throw new \Geocoder\Exception\UnsupportedOperation(
                 \Lang::txt('The LocalProvider does not support "%s".', $this->type)
             );
         }
@@ -402,7 +402,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      */
     public function getReversedData(array $coordinates)
     {
-        throw new \Geocoder\Exception\UnsupportedException('The LocalProvider is not able to do reverse geocoding.');
+        throw new \Geocoder\Exception\UnsupportedOperation('The LocalProvider is not able to do reverse geocoding.');
     }
 
     /**
@@ -420,7 +420,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      */
     public function reverseQuery(\Geocoder\Query\ReverseQuery $query): \Geocoder\Collection
     {
-        throw new \Geocoder\Exception\UnsupportedException('The LocalProvider is not able to do reverse geocoding.');
+        throw new \Geocoder\Exception\UnsupportedOperation('The LocalProvider is not able to do reverse geocoding.');
     }
 
     /**
