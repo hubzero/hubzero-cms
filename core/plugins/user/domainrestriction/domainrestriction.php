@@ -168,45 +168,46 @@ class Domainrestriction extends Plugin
      */
     private function blackwhite($ip)
     {
-        $whitelistnet = array();
-        $blacklistnet = array();
-        $whitelist = array();
-        $blacklist = array();
+        $lists = array(
+            'whitelist'    => array(),
+            'blacklist'    => array(),
+            'whitelistnet' => array(),
+            'blacklistnet' => array(),
+        );
 
-        foreach (array('whitelist', 'blacklist') as $list) {
-            $listnet = $list . 'net';
-            $listdefault = ($list == 'blacklist')
+        foreach (array('whitelist', 'blacklist') as $name) {
+            $default = ($name == 'blacklist')
                 ? Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_BLACKLIST')
                 : Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_WHITELIST');
-            $$list = explode("\n", trim(str_replace(
+            $items = explode("\n", trim(str_replace(
                 array("\r", "\t", " "),
                 array('', '', ''),
-                $this->params->get($list, $listdefault)
+                $this->params->get($name, $default)
             )));
 
-            foreach ($$list as $key => $item) {
+            foreach ($items as $item) {
                 $item = trim($item);
-                if (preg_match('/\//', $item)) {
-                    unset(${$list}[$key]);
-                    array_push($$listnet, $item);
+                if (strpos($item, '/') !== false) {
+                    $lists[$name . 'net'][] = $item;
                 } else {
-                    ${$list}[$key] = $item;
+                    $lists[$name][] = $item;
                 }
             }
         }
 
         // Single addresses compare as addresses, not strings, like the
         // networks below: 2001:DB8::1 or ::ffff:192.0.2.1 matches its entry
-        if ($this->inList($ip, $whitelist)) {
+        if ($this->inList($ip, $lists['whitelist'])) {
             return true;
         }
 
-        if ($this->inList($ip, $blacklist)) {
+        if ($this->inList($ip, $lists['blacklist'])) {
             return $ip;
         }
 
-        if (count(array_merge($whitelistnet, $blacklistnet))) {
-            foreach ($whitelistnet as $net) {
+        $nets = array_merge($lists['whitelistnet'], $lists['blacklistnet']);
+        if (count($nets)) {
+            foreach ($lists['whitelistnet'] as $net) {
                 $ipnet = $this->bwnet($net);
 
                 if ($ipnet && $ipnet->contains($ip)) {
@@ -214,7 +215,7 @@ class Domainrestriction extends Plugin
                 }
             }
 
-            foreach ($blacklistnet as $net) {
+            foreach ($lists['blacklistnet'] as $net) {
                 $ipnet = $this->bwnet($net);
 
                 if ($ipnet && $ipnet->contains($ip)) {
