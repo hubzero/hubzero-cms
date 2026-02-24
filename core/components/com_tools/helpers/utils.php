@@ -616,7 +616,6 @@ class Utils
                     'class' => 'class=(["\'])(?:(?=(\\?))\2.)*?\1',
                     'height' => 'height=\"(\d+)\"',
                     'width' => 'width=\"(\d+)\"',
-                    'height' => 'height=\"(\d+)\"',
                     'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
                     'host' => '<param name=\"HOST\" value=\"?([^>]+)\"?>',
                     'encpassword' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',

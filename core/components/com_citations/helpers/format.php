@@ -90,8 +90,7 @@ class Format
         'type'         => 'rft.genre',
         'author'       => 'rft.au',
         'url'          => 'rft_id',
-        'doi'          => 'rft_id=info:doi/',
-        'author'       => 'rft.au'
+        'doi'          => 'rft_id=info:doi/'
     );
 
     /**

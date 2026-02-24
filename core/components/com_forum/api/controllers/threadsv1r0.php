@@ -379,7 +379,6 @@ class Threadsv1r0 extends ApiController
             'scope'       => Request::getWord('scope', 'site'),
             'scope_id'    => Request::getInt('scope_id', 0),
             'state'       => Post::STATE_PUBLISHED,
-            'parent'      => 0,
             'access'      => User::getAuthorisedViewLevels()
         );
         $filters['threads'] = (!$filters['threads'] || $filters['threads'] == 'false') ? false : true;
