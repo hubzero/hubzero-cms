@@ -8,7 +8,7 @@
 
 namespace Hubzero\Base;
 
-use Hubzero\Config\FileLoader;
+use Hubzero\Config\Repository;
 use Hubzero\Database\MysqlDatabaseConnection;
 use Hubzero\Http\Request;
 
@@ -132,21 +132,19 @@ class ClientDetector
      */
     protected function isInstalled()
     {
-        // Load config directly via FileLoader since the Config facade
+        // Load config directly since the Config facade
         // is not yet available during client detection
-        $loader = new FileLoader(PATH_ROOT, PATH_APP);
-        $config = $loader->load();
+        $config = new Repository(PATH_APP);
 
-        $dbConfig = $config['database'] ?? null;
+        $host = $config->get('database.host');
+        $db   = $config->get('database.db');
+        $user = $config->get('database.user');
 
-        if (!$dbConfig || !is_array($dbConfig)) {
+        if (empty($host) || empty($db) || empty($user)) {
             return false;
         }
 
-        // Check for required config values
-        if (empty($dbConfig['host']) || empty($dbConfig['db']) || empty($dbConfig['user'])) {
-            return false;
-        }
+        $dbConfig = $config->extract('database')->toArray();
 
         // Try to connect and check for users
         try {
