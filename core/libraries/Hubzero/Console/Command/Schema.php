@@ -1303,7 +1303,7 @@ class Schema extends Base implements CommandInterface
         $this->output->addSpacer();
 
         // Introspect database
-        $filterCallback = $filter ? $this->buildFilterCallback($filter) : null;
+        $filterCallback = $filter ? $this->buildTableFilterCallback($filter) : null;
         $databaseInfo = $db->schema()->introspectDatabase($prefix, $filterCallback);
 
         // Get statistics

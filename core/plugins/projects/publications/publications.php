@@ -189,7 +189,7 @@ class Publications extends Plugin
         switch ($this->_task) {
             case 'browse':
             default:
-                $arr['html'] = $this->_browse();
+                $arr['html'] = $this->browse();
                 break;
 
             case 'start':
@@ -201,7 +201,7 @@ class Publications extends Plugin
             case 'publication':
             case 'continue':
             case 'review':
-                $arr['html'] = $this->_editDraft();
+                $arr['html'] = $this->editDraft();
                 break;
 
             case 'newversion':
@@ -376,7 +376,7 @@ class Publications extends Plugin
      *
      * @return     string
      */
-    protected function _browse() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function browse()
     {
         // Build query
         $filters = array();
@@ -1089,7 +1089,7 @@ class Publications extends Plugin
      *
      * @return     object
      */
-    protected function _createDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createDraft()
     {
         // Incoming
         $base = Request::getString('base', 'files');
@@ -1244,7 +1244,7 @@ class Publications extends Plugin
      *
      * @return  string
      */
-    protected function _editDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function editDraft()
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);

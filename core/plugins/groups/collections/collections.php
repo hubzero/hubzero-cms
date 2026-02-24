@@ -359,10 +359,10 @@ class Collections extends Plugin
                     $arr['html'] = $this->savecomment();
                     break;
                 case 'newcomment':
-                    $arr['html'] = $this->newcomment();
+                    $arr['html'] = $this->savecomment();
                     break;
                 case 'editcomment':
-                    $arr['html'] = $this->editcomment();
+                    $arr['html'] = $this->savecomment();
                     break;
                 case 'deletecomment':
                     $arr['html'] = $this->deletecomment();
@@ -372,7 +372,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->following();
+                    $arr['html'] = $this->followers();
                     break;
                 case 'follow':
                     $arr['html'] = $this->follow('group');

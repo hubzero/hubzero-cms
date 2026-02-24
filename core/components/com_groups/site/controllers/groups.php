@@ -449,7 +449,7 @@ class Groups extends Base
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
             $notManager = $this->_authorize() != 'manager'
-                && !$this->authorizedForTask('group.edit');
+                && !$this->_authorizedForTask('group.edit');
             if ($this->view->group->published == 2 || $notManager) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
@@ -587,7 +587,7 @@ class Groups extends Base
         // Published = 2 = archived. Archived is a read-only mode.
         $notAuthorized = $this->_authorize() != 'manager'
             && $g_gidNumber != 0
-            && !$this->authorizedForTask('group.edit');
+            && !$this->_authorizedForTask('group.edit');
         if ($group->published == 2 || $notAuthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }

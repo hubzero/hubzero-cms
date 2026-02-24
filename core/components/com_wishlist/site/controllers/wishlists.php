@@ -1597,7 +1597,7 @@ class Wishlists extends SiteController
 
             // Set the pathway
             $this->_buildPathway($wishlist);
-            return $this->login();
+            return $this->loginTask();
         }
 
         // check available user funds

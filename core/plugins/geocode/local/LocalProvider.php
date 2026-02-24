@@ -420,9 +420,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      */
     public function reverseQuery(\Geocoder\Query\ReverseQuery $query): \Geocoder\Collection
     {
-        $address = $query->getText();
-
-        return $this->getReverseData($address);
+        throw new \Geocoder\Exception\UnsupportedException('The LocalProvider is not able to do reverse geocoding.');
     }
 
     /**

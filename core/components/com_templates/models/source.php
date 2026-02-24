@@ -62,7 +62,7 @@ class Source extends Obj
     {
         // Initialise variables.
         if (is_null($this->template)) {
-            $pk     = $this->getState('extension.id');
+            $pk     = $this->get('extension.id');
             $db     = App::get('db');
             $result = false;
 

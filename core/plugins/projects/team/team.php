@@ -125,7 +125,7 @@ class Team extends Plugin
             switch ($this->_task) {
                 case 'edit':
                 case 'setup':
-                    $arr['html'] = $this->_display(1);
+                    $arr['html'] = $this->display(1);
                     break;
 
                 case 'delete':
@@ -160,7 +160,7 @@ class Team extends Plugin
 
                 case 'view':
                 default:
-                    $arr['html'] = $this->_display();
+                    $arr['html'] = $this->display();
                     break;
 
                 case 'select':
@@ -249,7 +249,7 @@ class Team extends Plugin
      * @param   integer  $edit
      * @return  string
      */
-    protected function _display($edit = 0) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function display($edit = 0)
     {
         $layout = $edit ? 'edit' : 'view';
         $setup = $this->_task == 'setup' ? 1 : 0;
@@ -859,7 +859,7 @@ class Team extends Plugin
                 $subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_ACCEPTED');
                 $message = '';
 
-                $this->_sendMemberRequestEmail($ownerEmail, $subject, $message);
+                $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 $url = Route::url('index.php?option=' . $this->_option .
                     '&task=team' . '&alias=' . $this->model->get('alias'), false);
                 Notify::success(Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_APPROVED'));

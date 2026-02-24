@@ -400,7 +400,7 @@ class Reviews extends Plugin
         // Incoming
         $id = Request::getInt('comment', 0);
         if (!$id) {
-            return $this->_redirect();
+            return $this->redirect('');
         }
 
         // Initiate a comment object

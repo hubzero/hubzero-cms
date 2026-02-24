@@ -47,7 +47,7 @@ class DoiService extends Obj
     public function __construct($pub = null)
     {
         // Set configs
-        $this->_configs();
+        $this->configs();
 
         // Map to DOI fields
         $this->mapData($pub);
@@ -88,7 +88,7 @@ class DoiService extends Obj
     public function on()
     {
         // Make sure configs are loaded
-        $this->_configs();
+        $this->configs();
 
         // Check required
         $hasBase = $this->_configs->serviceSwitch && $this->_configs->shoulder;

@@ -410,7 +410,7 @@ class Item extends Table
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= ", v.id AS voted ";
         }
-        $query .= $this->buildQuery($filters);
+        $query .= $this->_buildQuery($filters);
 
         if ($filters['limit'] != 0) {
             $query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);

@@ -387,4 +387,155 @@ class Usage extends Plugin
 
         echo json_encode($data);
     }
+
+    /**
+     * Get top values for orgs, countries, and domains as JSON
+     *
+     * @param   integer  $id        Resource ID
+     * @param   string   $datetime  Timestamp
+     * @return  void
+     */
+    public function getTopValues($id, $datetime)
+    {
+        $period = Request::getInt('period', 14);
+
+        $colors = array(
+            $this->params->get('pie_chart_color1', '#7c7c7c'),
+            $this->params->get('pie_chart_color2', '#515151'),
+            $this->params->get('pie_chart_color3', '#d9d9d9'),
+            $this->params->get('pie_chart_color4', '#3d3d3d'),
+            $this->params->get('pie_chart_color5', '#797979'),
+            $this->params->get('pie_chart_color6', '#595959'),
+            $this->params->get('pie_chart_color7', '#e5e5e5'),
+            $this->params->get('pie_chart_color8', '#828282'),
+            $this->params->get('pie_chart_color9', '#404040'),
+            $this->params->get('pie_chart_color10', '#6a6a6a'),
+        );
+
+        $json = new \stdClass();
+
+        $tid = $this->getTid($id, $datetime, $period);
+
+        $orgs = $this->getTopValue($id, 3, $tid, $datetime, $period);
+        $json->orgs = $this->formatTopResults($orgs, $colors);
+
+        $countries = $this->getTopValue(
+            $id,
+            1,
+            $tid,
+            $datetime,
+            $period
+        );
+        $json->countries = $this->formatTopCountryResults(
+            $countries,
+            $colors
+        );
+
+        $domains = $this->getTopValue(
+            $id,
+            2,
+            $tid,
+            $datetime,
+            $period
+        );
+        $json->domains = $this->formatTopResults($domains, $colors);
+
+        ob_clean();
+
+        echo json_encode($json);
+        die();
+    }
+
+    /**
+     * Format top result rows into chart-ready data grouped by date
+     *
+     * @param   array  $rows    Database result rows
+     * @param   array  $colors  Chart colors
+     * @return  array
+     */
+    private function formatTopResults($rows, $colors)
+    {
+        $r = array();
+        if ($rows) {
+            $i = 0;
+            foreach ($rows as $row) {
+                $ky = $this->extractDateKey($row->datetime);
+                if (!isset($r[$ky])) {
+                    $i = 0;
+                    $r[$ky] = array();
+                }
+                if (!isset($colors[$i])) {
+                    $i = 0;
+                }
+                $obj = new \stdClass();
+                $obj->label = $row->name;
+                $obj->data  = (int) $row->value;
+                $obj->color = $colors[$i];
+                $obj->code  = '';
+                $r[$ky][] = $obj;
+                $i++;
+            }
+        }
+        return $r;
+    }
+
+    /**
+     * Format top country results with geocode lookups
+     *
+     * @param   array  $rows    Database result rows
+     * @param   array  $colors  Chart colors
+     * @return  array
+     */
+    private function formatTopCountryResults($rows, $colors)
+    {
+        $r = array();
+        if ($rows) {
+            $names = array();
+            foreach ($rows as $row) {
+                $names[] = $row->name;
+            }
+            $codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
+            $i = 0;
+            foreach ($rows as $row) {
+                $ky = $this->extractDateKey($row->datetime);
+                if (!isset($r[$ky])) {
+                    $i = 0;
+                    $r[$ky] = array();
+                }
+                if (!isset($colors[$i])) {
+                    $i = 0;
+                }
+                $obj = new \stdClass();
+                $obj->label = $row->name;
+                $obj->data  = (int) $row->value;
+                $obj->color = $colors[$i];
+                $code = $codes[$row->name]['code'] ?? '';
+                $obj->code  = strtolower($code);
+                $r[$ky][] = $obj;
+                $i++;
+            }
+        }
+        return $r;
+    }
+
+    /**
+     * Extract a date key from a datetime string
+     *
+     * @param   string  $datetime  Datetime value
+     * @return  string
+     */
+    private function extractDateKey($datetime)
+    {
+        $ky = str_replace(
+            '-',
+            '/',
+            str_replace('-00 00:00:00', '-01', $datetime)
+        );
+        $pattern = '/([0-9]{4})-([0-9]{2})-([0-9]{2})/';
+        $pattern .= '[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/';
+        if ($datetime && preg_match($pattern, $datetime, $regs)) {
+            $ky = $regs[1] . '/' . $regs[2] . '/01';
+        }
+        return $ky;
+    }
 }

@@ -144,7 +144,7 @@ class Domainrestriction extends Plugin
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
         if ($isnew) {
-            $this->_updateGroups($user);
+            $this->updateGroups($user);
         }
 
         return true;
@@ -263,8 +263,8 @@ class Domainrestriction extends Plugin
     private function decision($allowed = false)
     {
         $ret = $allowed ?
-                $this->_mailmatch(array('_tlds', '_domains', '_emails')) :
-                !$this->_mailmatch(array('_badtlds', '_baddomains', '_bademails'));
+                $this->mailmatch(array('_tlds', '_domains', '_emails')) :
+                !$this->mailmatch(array('_badtlds', '_baddomains', '_bademails'));
         return $ret;
     }
 
@@ -335,7 +335,7 @@ class Domainrestriction extends Plugin
         $email = explode('@', $this->_email);
 
         $this->_domain = $email[1];
-        $this->_tld = $this->_getTldFromUrl($email[1]);
+        $this->_tld = $this->getTldFromUrl($email[1]);
 
         return $email[0];
     }
@@ -353,12 +353,12 @@ class Domainrestriction extends Plugin
         }
 
         // Are there any auto-group assignments?
-        $assignments = $this->_getAssignments();
+        $assignments = $this->getAssignments();
         if (!$assignments) {
             return true;
         }
 
-        $user = $this->_getUser($user['username']);
+        $user = $this->getUser($user['username']);
 
         $excludegroups = $this->params->get('excludegroup', array());
         foreach ($user->groups as $group) {
@@ -367,14 +367,14 @@ class Domainrestriction extends Plugin
             }
         }
 
-        $emailuser = $this->_parseEmail($user->email);
+        $emailuser = $this->parseEmail($user->email);
         $excluded = json_decode(str_replace('*', $emailuser, base64_decode($this->params->get('excludeauto', 'W10K'))));
 
         if (count($excluded) && in_array(strtolower($user->email), $excluded)) {
             return true;
         }
 
-        $akey = $this->_getAssignmentsKey($assignments);
+        $akey = $this->getAssignmentsKey($assignments);
 
         if ($akey) {
             $groupchange = false;

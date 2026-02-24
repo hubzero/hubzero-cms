@@ -193,7 +193,7 @@ class Blog extends Plugin
                     $arr['html'] = $this->savecomment();
                     break;
                 case 'newcomment':
-                    $arr['html'] = $this->newcomment();
+                    $arr['html'] = $this->entry();
                     break;
                 case 'editcomment':
                     $arr['html'] = $this->entry();

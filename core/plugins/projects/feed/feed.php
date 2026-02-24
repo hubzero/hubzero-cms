@@ -157,10 +157,10 @@ class Feed extends Plugin
                     $arr['html'] = $this->_save();
                     break;
                 case 'savecomment':
-                    $arr['html'] = $this->_saveComment();
+                    $arr['html'] = $this->_save();
                     break;
                 case 'deletecomment':
-                    $arr['html'] = $this->_deleteComment();
+                    $arr['html'] = $this->_delete();
                     break;
                 case 'update':
                     $arr['html'] = $this->_updateFeed();

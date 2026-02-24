@@ -337,7 +337,7 @@ class Files extends Plugin
                 // File browser
                 case 'browse':
                 default:
-                    $arr['html'] = $this->_browse();
+                    $arr['html'] = $this->browse();
                     break;
             }
         }
@@ -389,7 +389,7 @@ class Files extends Plugin
      * @param   integer  $sync
      * @return  string
      */
-    protected function _browse($sync = 0) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function browse($sync = 0)
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
@@ -3313,7 +3313,7 @@ class Files extends Plugin
      *
      * @return  array
      */
-    protected function _sortIncoming() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortIncoming()
     {
         // Clean incoming data
         $this->_cleanData();
