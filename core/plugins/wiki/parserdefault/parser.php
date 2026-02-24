@@ -1683,24 +1683,22 @@ class WikiParser
             'registered'        => '&#174;',
             'copyright'         => '&#169;',
         );
-        extract($glyph, EXTR_PREFIX_ALL, 'txt');
-
         $glyph_replace = array(
-            '$1' . $txt_apostrophe . '$2',       //  apostrophe's
-            '$1' . $txt_apostrophe . '$2',       //  back in '88
-            '$1' . $txt_quote_single_close,      //  single closing
-            $txt_quote_single_open,              //  single opening
-            '$1' . $txt_quote_double_close,      //  double closing
-            $txt_quote_double_open,              //  double opening
+            '$1' . $glyph['apostrophe'] . '$2',       //  apostrophe's
+            '$1' . $glyph['apostrophe'] . '$2',       //  back in '88
+            '$1' . $glyph['quote_single_close'],      //  single closing
+            $glyph['quote_single_open'],              //  single opening
+            '$1' . $glyph['quote_double_close'],      //  double closing
+            $glyph['quote_double_open'],              //  double opening
             //'<acronym title="$2">$1</acronym>',  //  3+ uppercase acronym
             //'<span class="caps">$1</span>$2',    //  3+ uppercase
-            '$1' . $txt_ellipsis,                //  ellipsis
-            '$1' . $txt_emdash . '$2',           //  em dash
-            ' ' . $txt_endash . ' ',             //  en dash
-            '$1$2' . $txt_dimension . '$3',      //  dimension sign
-            '$1' . $txt_trademark,               //  trademark
-            '$1' . $txt_registered,              //  registered
-            '$1' . $txt_copyright,               //  copyright
+            '$1' . $glyph['ellipsis'],                //  ellipsis
+            '$1' . $glyph['emdash'] . '$2',           //  em dash
+            ' ' . $glyph['endash'] . ' ',             //  en dash
+            '$1$2' . $glyph['dimension'] . '$3',      //  dimension sign
+            '$1' . $glyph['trademark'],               //  trademark
+            '$1' . $glyph['registered'],              //  registered
+            '$1' . $glyph['copyright'],               //  copyright
             '$1$2',
             '$1$2',
             '$1$2'
