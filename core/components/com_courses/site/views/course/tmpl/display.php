@@ -238,11 +238,11 @@ $this->css('course.css')
         <aside class="aside">
             <div class="course-identity">
                 <?php if ($logo = $this->course->logo('url')) { ?>
-                    <img src="<?php
+                    <?php
                         $size = $this->course->logo('size');
-                        echo Route::url($logo);
-                    <  ? php $val = ($size['width'] >= $size['height']) ? 'landscape' : 'portrait'; ?>
-                    ?>" class="<?php echo $val; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+                        $val = ($size['width'] >= $size['height']) ? 'landscape' : 'portrait';
+                    ?>
+                    <img src="<?php echo Route::url($logo); ?>" class="<?php echo $val; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
                 <?php } else { ?>
                     <span></span>
                 <?php } ?>
