@@ -728,7 +728,7 @@ class Elements
         $signature = md5($type);
 
         $elementExists = isset($this->_elements[$signature])
-            && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class);
+            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class);
         if ($elementExists && $new === false) {
             return $this->_elements[$signature];
         }

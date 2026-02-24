@@ -54,7 +54,7 @@ class Helper
             }
         }
 
-        if ($instance instanceof Throwable) {
+        if ($instance instanceof \Throwable) {
             return null;
         }
 

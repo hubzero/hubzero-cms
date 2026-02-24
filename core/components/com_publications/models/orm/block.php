@@ -8,6 +8,7 @@
 
 namespace Components\Publications\Models\Orm;
 
+use Hubzero\Config\Registry;
 use Hubzero\Database\Relational;
 
 /**

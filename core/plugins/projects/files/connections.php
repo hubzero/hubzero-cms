@@ -11,6 +11,7 @@ namespace Plugins\Projects\Files;
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Models\Orm\Provider;
+use Hubzero\View\View;
 
 /**
  * Projects Files plugin (connections extension)

@@ -203,7 +203,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function addAttachment($attachment, $filename = null)
     {
-        if (!($attachment instanceof Symfony\Component\Mime\Part\DataPart)) {
+        if (!($attachment instanceof \Symfony\Component\Mime\Part\DataPart)) {
             $attachment = \Symfony\Component\Mime\Part\DataPart::fromPath($attachment, $filename);
         }
 
