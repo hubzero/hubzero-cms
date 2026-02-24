@@ -150,7 +150,8 @@ class Grid
         if ($row instanceof \Hubzero\Database\Table) {
             $result = $row->isCheckedOut($userid);
         } else {
-            $result = \Hubzero\Database\Table::isCheckedOut($userid, $row->checked_out);
+            $checkedOut = $row->checked_out ?? 0;
+            $result = ($checkedOut && $checkedOut != $userid);
         }
 
         $checked = '';

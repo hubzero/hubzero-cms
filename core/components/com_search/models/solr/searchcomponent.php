@@ -72,7 +72,7 @@ class SearchComponent extends Relational
      *
      * @return  object  Hubzero\Database\Rows
      */
-    public function getNewComponents()
+    public static function getNewComponents()
     {
         $existing = self::all()->rows()->fieldsByKey('name');
         $components = DiscoveryHelper::getSearchableComponents($existing);

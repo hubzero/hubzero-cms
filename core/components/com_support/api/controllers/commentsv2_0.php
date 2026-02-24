@@ -238,7 +238,7 @@ class Commentsv2_0 extends ApiController
                             $tiket->set('closed', null);
                         }
                         if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open') {
-                            $ticket->set('closed', Date::toSql());
+                            $ticket->set('closed', Date::of('now')->toSql());
                         }
                     }
                     if ($index == 'owner') {

@@ -194,7 +194,7 @@ class Commentsv1_0 extends ApiController
         // If an existing ticket AND closed AND previously open
         if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open')) {
             // Record the closing time
-            $ticket->set('closed', Date::toSql());
+            $ticket->set('closed', Date::of('now')->toSql());
         }
 
         // Any tags?
@@ -219,7 +219,7 @@ class Commentsv1_0 extends ApiController
                 $ticket->open();
             }
         }
-        $comment->set('created', Date::toSql());
+        $comment->set('created', Date::of('now')->toSql());
         $comment->set('created_by', $user->get('uidNumber'));
         $comment->set('access', Request::getInt('access', 0, 'post'));
 
