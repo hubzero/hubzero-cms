@@ -3011,8 +3011,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         if ($this->query === null) {
             $this->newQuery();
         }
-        $this->query->dd();
-        exit(1); // @codeCoverageIgnore
+        $this->query->dd(); // @phpstan-ignore return.never (Query::dd() calls exit)
     }
 
     /**

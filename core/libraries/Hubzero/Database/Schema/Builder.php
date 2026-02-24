@@ -73,7 +73,7 @@ class Builder
      * its database type. This delegates grammar selection to the driver
      * using polymorphism instead of conditional type checking.
      *
-     * @return Grammar
+     * @return BaseSchemaGrammar
      */
     protected function createGrammar(): BaseSchemaGrammar
     {
@@ -93,7 +93,7 @@ class Builder
     /**
      * Get the grammar instance
      *
-     * @return Grammar
+     * @return BaseSchemaGrammar
      */
     public function getGrammar(): BaseSchemaGrammar
     {

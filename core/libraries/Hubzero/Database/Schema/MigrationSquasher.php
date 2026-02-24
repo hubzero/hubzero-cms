@@ -9,6 +9,7 @@
 namespace Hubzero\Database\Schema;
 
 use Hubzero\Database\Driver;
+use Hubzero\Database\SchemaManager;
 
 /**
  * Migration Squasher
@@ -116,7 +117,7 @@ class MigrationSquasher
      *
      * @return SchemaManager
      */
-    protected function getSchemaManager()
+    protected function getSchemaManager(): SchemaManager
     {
         if ($this->schemaManager === null) {
             $this->schemaManager = new SchemaManager($this->driver);
