@@ -73,13 +73,25 @@ class Loader extends Base
                         'v*.php');
 
                     if (!empty($files)) {
-                        natsort($files);
+                        // Rank v1r0 and legacy v1_0 names on the same footing
+                        usort($files, function ($a, $b) {
+                            return strnatcmp(str_replace('_', 'r', $a), str_replace('_', 'r', $b));
+                        });
 
                         $file = end($files);
                         $controller = basename($file, '.php');
                     }
                 } else {
-                    $controller .= 'v' . str_replace('.', '_', $version);
+                    // Prefer v1r0 form, fall back to legacy v1_0 form
+                    $versionNew = 'v' . str_replace('.', 'r', $version);
+                    $versionOld = 'v' . str_replace('.', '_', $version);
+                    $basePath = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR;
+
+                    if (file_exists($basePath . $controller . $versionNew . '.php')) {
+                        $controller .= $versionNew;
+                    } else {
+                        $controller .= $versionOld;
+                    }
                 }
 
                 $controllerClass = '\\Components\\' .
