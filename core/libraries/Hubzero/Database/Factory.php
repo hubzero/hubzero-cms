@@ -183,7 +183,7 @@ abstract class Factory
      */
     public static function new()
     {
-        return new static();
+        return new static(); // @phpstan-ignore new.static
     }
 
     /**

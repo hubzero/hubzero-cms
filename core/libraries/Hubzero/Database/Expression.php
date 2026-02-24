@@ -59,7 +59,7 @@ namespace Hubzero\Database;
  * $expr = Expr::concat('first_name', Expr::literal(' '), Expr::upper('last_name'));
  * ```
  */
-class Expression
+final class Expression
 {
     /**
      * Expression type constants
