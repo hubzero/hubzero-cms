@@ -99,7 +99,7 @@ class Shibboleth extends Plugin
         try {
             $resolver = new Net_DNS2_Resolver(['nameservers' => (array) $dns, 'timeout' => $timeout]);
             $result   = $resolver->query($ip, 'PTR');
-        } catch (Net_DNS2_Exception $e) {
+        } catch (\Net_DNS2_Exception $e) {
             return $ip;
         }
 

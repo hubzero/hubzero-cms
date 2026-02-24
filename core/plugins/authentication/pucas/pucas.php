@@ -148,7 +148,7 @@ class Pucas extends Plugin
 
         try {
             $authenticated = phpCAS::isAuthenticated();
-        } catch (CAS_AuthenticationException $e) {
+        } catch (\CAS_AuthenticationException $e) {
             throw new \Exception(Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_EXPIRED_TICKET'), 400);
         }
 

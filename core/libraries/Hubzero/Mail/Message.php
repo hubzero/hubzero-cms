@@ -164,7 +164,7 @@ class Message extends \Symfony\Component\Mime\Email
         try {
             $mailer->send($this, $this->failures);
             $result = true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $result = false;
         }
 

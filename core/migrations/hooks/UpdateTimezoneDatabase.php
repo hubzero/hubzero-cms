@@ -102,7 +102,7 @@ class UpdateTimezoneDatabase extends Base
 
                 try {
                     $this->db->execute($s);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $return = array(
                         'success' => false,
                         'message' => $e->getMessage()
