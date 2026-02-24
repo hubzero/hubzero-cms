@@ -1773,19 +1773,16 @@ class Connect extends Obj
         }
 
         if ($service == 'google') {
-            // Make Http request
-            $request = new Google_Http_Request($url, 'GET', null, null);
-
-            // Get remote content
-            $request = $client->getAuth()->sign($request);
-            $httpRequest = $client->getIo()->makeRequest($request);
-
-            if ($httpRequest->getResponseHttpCode() == 200) {
-                return $httpRequest->getResponseBody();
-            } else {
+            $httpClient = $client->authorize();
+            try {
+                $response = $httpClient->get($url);
+                if ($response->getStatusCode() == 200) {
+                    return (string) $response->getBody();
+                }
+            } catch (\Exception $e) {
                 // An error occurred.
-                return null;
             }
+            return null;
         }
 
         return $content;
@@ -1819,40 +1816,13 @@ class Connect extends Obj
             return false;
         }
 
-        $fp = fopen($path, 'w');
-
-        // Make Http request
-        $request = new Google_Http_Request($url, 'GET', null, null);
-
-        $request = $client->getAuth()->sign($request);
-        $request = $client->getIo()->makeRequest($request);
-
-        //Initialize the Curl Session.
-        $ch = curl_init();
-
-        // Set the Curl url.
-        curl_setopt($ch, CURLOPT_URL, $request->getUrl());
-
-        // Set headers
-        $requestHeaders = $request->getRequestHeaders();
-        if ($requestHeaders && is_array($requestHeaders)) {
-            $parsed = array();
-            foreach ($requestHeaders as $k => $v) {
-                $parsed[] = "$k: $v";
-            }
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $parsed);
+        $httpClient = $client->authorize();
+        try {
+            $response = $httpClient->get($url, ['sink' => $path]);
+            return $response->getStatusCode() == 200;
+        } catch (\Exception $e) {
+            return false;
         }
-
-        // Download to file stream
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-
-        $data = curl_exec($ch);
-
-        curl_close($ch);
-        fclose($fp);
-
-        return true;
     }
 
     /**
