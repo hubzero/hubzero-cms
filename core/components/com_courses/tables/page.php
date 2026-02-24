@@ -208,7 +208,7 @@ class Page extends Table
         }
 
         $tbl = new PageHit($this->_db);
-        if (!$tbl->hit($offering_id, $page_id)) {
+        if (!$tbl->recordHit($offering_id, $page_id)) {
             $this->setError($tbl->getError());
             return false;
         }

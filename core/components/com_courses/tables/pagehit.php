@@ -78,7 +78,7 @@ class PageHit extends Table
      * @param   integer  $user_id
      * @return  boolean
      */
-    public function hit($offering_id, $page_id, $user_id = 0)
+    public function recordHit($offering_id, $page_id, $user_id = 0)
     {
         if (!$user_id) {
             $user_id = User::get('id');
