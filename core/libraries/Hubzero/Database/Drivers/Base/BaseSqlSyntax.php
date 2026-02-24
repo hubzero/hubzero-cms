@@ -1610,6 +1610,8 @@ abstract class BaseSqlSyntax
             'raw'    => $raw,
             'type'   => $type
         ];
+
+        return $this;
     }
 
     /**

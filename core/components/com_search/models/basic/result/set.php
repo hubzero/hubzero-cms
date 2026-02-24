@@ -195,7 +195,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_limit()
@@ -208,7 +208,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_offset()
@@ -249,7 +249,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_widgets()
@@ -262,7 +262,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown_results()
@@ -275,7 +275,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown_count()
@@ -288,7 +288,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_result_counts()
@@ -314,7 +314,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_custom_title()
@@ -328,7 +328,7 @@ class Set extends Obj implements Iterator
      * Long description (if any) ...
      *
      * @param      boolean $force_generic Parameter description (if any) ...
-     * @return     unknown Return description (if any) ...
+     * @return     void
      */
     public function collect($force_generic = false)
     {
@@ -664,7 +664,7 @@ class Set extends Obj implements Iterator
      * Long description (if any) ...
      *
      * @param      mixed $res Parameter description (if any) ...
-     * @return     unknown Return description (if any) ...
+     * @return     void
      */
     private function processResult($res)
     {
@@ -689,7 +689,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_total_count()
@@ -702,7 +702,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer Return description (if any) ...
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_total_list_count()
@@ -755,7 +755,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     array
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown()
@@ -796,7 +796,7 @@ class Set extends Obj implements Iterator
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     integer
      */
 
     #[\ReturnTypeWillChange]

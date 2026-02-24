@@ -770,7 +770,7 @@ class Author extends Table
      * @param   string  $authorID   Author's id
      * @param   string  $putCode    ORCID work put-code
      *
-     * @return  none
+     * @return  void
      */
     public function saveORCIDPutCode($authorID, $putCode)
     {

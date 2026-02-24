@@ -195,8 +195,7 @@ class OptionGroup
     /**
      * Delete the option group
      *
-     * @param   void
-     * @return  true on success, throws exception on failure
+     * @return  void
      */
     public function delete()
     {

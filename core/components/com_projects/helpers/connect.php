@@ -310,7 +310,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   boolean  $reauth   Re-authenticate user?
      * @param   string   $return   URL to return to after authorization
-     * @return  false or array with configs
+     * @return  bool|void
      */
     public function makeConnection($service = 'google', $reauth = false, $return = '')
     {

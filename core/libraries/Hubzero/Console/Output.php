@@ -202,6 +202,8 @@ class Output
 
         // Add the bottom border
         $this->addLine('\\' . str_repeat('-', ($width)) . '/');
+
+        return $this;
     }
 
     /**
@@ -219,6 +221,8 @@ class Output
         if ($this->isInteractive()) {
             $this->render(true);
         }
+
+        return $this;
     }
 
     /**

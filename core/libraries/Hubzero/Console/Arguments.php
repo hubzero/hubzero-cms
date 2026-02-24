@@ -195,7 +195,7 @@ class Arguments
      *
      * @param   string  $namespace  The namespace location to use
      * @param   array   $paths      Optional paths to load from
-     * @return  $this
+     * @return  void
      **/
     public static function registerNamespace($namespace, $paths = array())
     {

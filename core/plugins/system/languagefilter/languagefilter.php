@@ -512,7 +512,7 @@ class Languagefilter extends Plugin
     /**
      * This method adds alternate meta tags for associated menu items
      *
-     * @return  nothing
+     * @return  void
      */
     public function onAfterDispatch()
     {

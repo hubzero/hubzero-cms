@@ -441,7 +441,7 @@ class Base
      * Registers a location to look for commands
      *
      * @param   string  $namespace  The namespace location to use
-     * @return  $this
+     * @return  void
      **/
     public static function registerMacroNamespace($namespace, $paths = array())
     {

@@ -60,7 +60,7 @@ class Helper extends Module
     /**
      * Generate module output
      *
-     * @return  voif
+     * @return  void
      */
     public function run()
     {
