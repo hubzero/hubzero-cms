@@ -15,8 +15,6 @@ use Hubzero\Plugin\Plugin;
 
 defined('_HZEXEC_') or die;
 
-Html::behavior('core');
-
 /**
  * CKEditor Plugin
  */
@@ -35,6 +33,8 @@ class Ckeditor extends Plugin
      */
     public function onInit()
     {
+        Html::behavior('core');
+
         // Add ckeditor stylesheet
         $this->css();
 
