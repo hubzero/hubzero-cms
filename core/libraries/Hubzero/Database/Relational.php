@@ -2898,7 +2898,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     // | getQueryBindings()  | array   | Bound parameter values                   |
     // | toRawSql()          | string  | SQL with values substituted (debug only) |
     // | dump()              | $this   | Output debug info and continue           |
-    // | dd()                | never   | Output debug info and exit               |
     // | getDebugInfo()      | array   | Get all debug info as array              |
     //
     // Example:
@@ -2995,24 +2994,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         return $this;
     }
 
-    /**
-     * Dump the query SQL and bindings, then terminate execution
-     *
-     * Example:
-     * ```php
-     * Article::all()->whereEquals('status', 'published')->dd();
-     * ```
-     *
-     * @return  never
-     */
-    public function dd()
-    {
-        $this->bootIfNotBooted();
-        if ($this->query === null) {
-            $this->newQuery();
-        }
-        $this->query->dd(); // @phpstan-ignore return.never (Query::dd() calls exit)
-    }
 
     /**
      * Get debug information about the query as an array
