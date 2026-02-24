@@ -558,7 +558,7 @@ class Assetv1_0 extends base
         $assetObj = new AssetTbl($database);
 
         if (!$assetObj->load($asset_id)) {
-            App::abort(500, "Loading asset {$id} failed");
+            App::abort(500, "Loading asset {$asset_id} failed");
         }
 
         // See if the asset is orphaned

@@ -1015,7 +1015,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     \Hubzero\Utility\Arr::toString($authorAlias);
 
                     foreach ($authorAlias as $key => $alias) {
-                        $authorAlias[$key] = $db->Quote($alias);
+                        $authorAlias[$key] = \App::get('db')->Quote($alias);
                     }
 
                     $authorAlias = implode(',', $authorAlias);

@@ -78,10 +78,6 @@ class Response extends BaseResponse
 
                 $output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-                if ($suppress_response_codes) {
-                    $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
-                }
-
                 if (!is_object($content) && !is_array($content)) {
                     $output .= '<p id ="message">' . $content . "</p>\n";
                 } else {
@@ -97,7 +93,7 @@ class Response extends BaseResponse
                 $content = htmlspecialchars($content);
 
                 $output .= '<?xml version="1.0" ?>' . "\n";
-                $output .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+                $output .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' .
                     "\n";
                 $output .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">' . "\n";
@@ -109,9 +105,6 @@ class Response extends BaseResponse
 
                 $output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-                if ($suppress_response_codes) {
-                    $output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
-                }
                 if (!is_object($content) && !is_array($content)) {
                     $output .= '<p id ="message">' . $content . "</p>\n";
                 } else {

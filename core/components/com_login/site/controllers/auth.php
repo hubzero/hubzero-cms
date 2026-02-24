@@ -48,7 +48,7 @@ class Auth extends SiteController
 
         // Check for errors.
         if ($this->getError()) {
-            App::abort(500, implode('<br />', $errors));
+            App::abort(500, implode('<br />', $this->getErrors()));
         }
 
         // Get the active menu
@@ -345,7 +345,7 @@ class Auth extends SiteController
                     if (method_exists($className, 'login')) {
                         $myplugin = new $className($this, (array)$plugin);
 
-                        $myplugin->login($credentials, $options);
+                        $myplugin->login($data, $options);
 
                         if (isset($options['return'])) {
                             $data['return'] = $options['return'];

@@ -190,6 +190,7 @@ class Xml
         $stack = array();
 
         $obj = null;
+        $fatal = false;
 
         for ($i = 0; $i < $count; $i++) {
             $v = $vals[$i];

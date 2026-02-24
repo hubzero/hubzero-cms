@@ -709,7 +709,7 @@ class Resources extends SiteController
             ->start(0)
             ->row();
 
-        $resid = $firstChild->id;
+        $resid = $firstchild->id;
 
         App::redirect(
             Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
@@ -2494,9 +2494,7 @@ class Resources extends SiteController
      */
     protected function _serveup($inline, $p, $f, $mime)
     {
-        $user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
-                    ? $_SERVER["HTTP_USER_AGENT"]
-                    : $HTTP_USER_AGENT;
+        $user_agent = $_SERVER["HTTP_USER_AGENT"] ?? '';
 
         while (ob_get_level()) {
             ob_end_clean();

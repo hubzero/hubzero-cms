@@ -375,6 +375,7 @@ class Git extends Models\Adapter
             return false;
         }
 
+        $commitMsg = '';
         $this->_git->gitMove($fromFile->get('localPath'), $toFile->get('localPath'), $type, $commitMsg);
         $this->_git->gitCommit($commitMsg, $author, $date);
 
@@ -422,6 +423,7 @@ class Git extends Models\Adapter
         }
 
         // Delete from Git
+        $commitMsg = '';
         $this->_git->gitDelete($file->get('localPath'), 'folder', $commitMsg);
         $this->_git->gitCommit($commitMsg, $author, $date);
 
@@ -452,6 +454,7 @@ class Git extends Models\Adapter
         }
 
         // Delete from Git
+        $commitMsg = '';
         $this->_git->gitDelete($file->get('localPath'), 'file', $commitMsg);
         $this->_git->gitCommit($commitMsg, $author, $date);
 
@@ -549,6 +552,7 @@ class Git extends Models\Adapter
         // If restored
         if (is_file($file->get('fullPath'))) {
             // Git add & commit
+            $commitMsg = '';
             $this->_git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
             $this->_git->gitCommit($commitMsg, $author, $date);
         }

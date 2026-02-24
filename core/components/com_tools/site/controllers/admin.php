@@ -553,7 +553,6 @@ class Admin extends SiteController
                     }
                 } else {
                     $this->setError(Lang::txt('COM_TOOLS_ERR_DOI_STORE_FAILED'));
-                    $this->setError($doierr);
                     $result = false;
                 }
             }

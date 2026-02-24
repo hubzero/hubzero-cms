@@ -45,7 +45,7 @@ class Resourcetype extends Element
         foreach ($types as $type) {
             $selected = ($value == $type->id ? ' selected="selected"' : '');
             $html[] = '<option value="' . $type->id . '"' . $selected . '>'
-                . stripslashes($anode->type) . '</option>';
+                . stripslashes($type->type) . '</option>';
         }
 
         $html[] = '</select>';

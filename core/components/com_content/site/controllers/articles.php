@@ -465,7 +465,7 @@ class Articles extends SiteController
                             $articleArray[$key] = $articleParams->get($key);
                         } else {
                             // otherwise, use the global value
-                            $articleArray[$key] = $globalParams->get($key);
+                            $articleArray[$key] = $params->get($key);
                         }
                     }
                 }
@@ -499,15 +499,16 @@ class Articles extends SiteController
             // Compute the asset access permissions.
             // Technically guest could edit an article, but lets not check that to improve performance a little.
             if (!User::isGuest()) {
-                $asset = 'com_content.article.' . $item->id;
+                $itemAsset = 'com_content.article.' . $item->id;
+                $currentUserId = User::get('id');
 
                 // Check general edit permission first.
-                if (User::authorise('core.edit', $asset)) {
+                if (User::authorise('core.edit', $itemAsset)) {
                     $item->params->set('access-edit', true);
-                } elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
+                } elseif (!empty($currentUserId) && User::authorise('core.edit.own', $itemAsset)) {
                     // Now check if edit.own is available.
                     // Check for a valid user and that they are the owner.
-                    if ($userId == $item->created_by) {
+                    if ($currentUserId == $item->created_by) {
                         $item->params->set('access-edit', true);
                     }
                 }
@@ -1386,6 +1387,8 @@ class Articles extends SiteController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
+        $form = $item->getForm('site');
+
         if (!empty($item) && isset($item->id)) {
             $item->images = json_decode($item->images);
             $item->urls   = json_decode($item->urls);
@@ -1396,8 +1399,6 @@ class Articles extends SiteController
 
             $form->bind($tmp);
         }
-
-        $form = $item->getForm('site');
 
         if ($params->get('enable_category') == 1) {
             $form->setFieldAttribute('catid', 'default', $params->get('catid', 1));
@@ -1471,7 +1472,7 @@ class Articles extends SiteController
 
         if (User::authorise('core.edit', $context)) {
             $authorised = true;
-        } elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+        } elseif (User::get('id') && User::authorise('core.edit.own', $context)) {
             // Now check if edit.own is available.
             // Check for a valid user and that they are the owner.
             if (User::get('id') == $model->created_by) {
@@ -1480,13 +1481,14 @@ class Articles extends SiteController
         }
 
         // Check edit state permission.
+        $saveCatId = isset($data['catid']) ? (int) $data['catid'] : 0;
         if ($id) {
             // Existing item
-            $authorised = User::authorise('core.edit.state', $asset);
+            $authorised = User::authorise('core.edit.state', $context);
         } else {
             // New item.
-            if ($catId) {
-                $authorised = User::authorise('core.edit.state', 'com_content.category.' . $catId);
+            if ($saveCatId) {
+                $authorised = User::authorise('core.edit.state', 'com_content.category.' . $saveCatId);
             } else {
                 $authorised = User::authorise('core.edit.state', 'com_content');
             }

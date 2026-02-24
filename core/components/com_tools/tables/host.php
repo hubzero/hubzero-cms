@@ -153,7 +153,7 @@ class Host extends Table
         $query .= " LEFT JOIN zones AS v ON v.id = c.zone_id";
         if (isset($filters['hosttype']) && $filters['hosttype']) {
             $query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
-            $where[] = "t.name = " . $mwdb->Quote($this->view->filters['hosttype']);
+            $where[] = "t.name = " . $this->_db->quote($filters['hosttype']);
         }
         if (count($where) > 0) {
             $query .= " WHERE ";

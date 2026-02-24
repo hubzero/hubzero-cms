@@ -411,7 +411,7 @@ class Ftp implements AdapterInterface
             return false;
         }
 
-        $this->setPermissions($path, $visibility);
+        $this->setPermissions($path);
 
         return true;
     }
@@ -427,7 +427,7 @@ class Ftp implements AdapterInterface
             return false;
         }
 
-        $this->setPermissions($path, $visibility);
+        $this->setPermissions($path);
 
         return true;
     }

@@ -229,8 +229,8 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     $canCheckin
                 );
 
-                $prevFolder = @$folders[$i - 1];
-                $nextFolder = @$folders[$i + 1];
+                $prevFolder = $folders[$i - 1] ?? null;
+                $nextFolder = $folders[$i + 1] ?? null;
                 $matchPrev = ($prevFolder == $item->folder);
                 $matchNext = ($nextFolder == $item->folder);
                 $paginationTotal = $this->items->pagination->total;

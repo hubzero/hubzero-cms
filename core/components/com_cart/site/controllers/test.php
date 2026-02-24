@@ -294,7 +294,7 @@ class Test extends ComponentController
     public function passportTask()
     {
         // Instantiate badges manager, provide badges provider (right now there is only one: 'PASSPORT').
-        //$badges = new Hubzero_Badges('PASSPORT');
+        $badges = new \Hubzero\Badges\Wallet('PASSPORT');
 
         // Get the actual badges provider class
         $passport = $badges->getProvider();

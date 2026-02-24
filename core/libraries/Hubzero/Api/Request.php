@@ -81,7 +81,7 @@ class Request
         $key = 'HTTP_' . strtoupper($header);
 
         if (isset($_SERVER[$key])) {
-            return $SERVER[$key];
+            return $_SERVER[$key];
         }
 
         return null;

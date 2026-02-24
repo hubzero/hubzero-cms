@@ -235,7 +235,7 @@ class Commentsv2_0 extends ApiController
                         $temp->after = $status_model->get('title');
                         $ticket->set('open', $status_model->get('open'));
                         if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed') {
-                            $tiket->set('closed', null);
+                            $ticket->set('closed', null);
                         }
                         if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open') {
                             $ticket->set('closed', Date::of('now')->toSql());

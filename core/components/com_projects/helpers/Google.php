@@ -123,7 +123,7 @@ class Google extends Obj
     public static function patchFile($apiService, $id, $title, $parentId, &$metadata)
     {
         // Check for what we need
-        if (!$apiService || !$id || (!$title && !$parentId && !$convert)) {
+        if (!$apiService || !$id || (!$title && !$parentId)) {
             return false;
         }
 

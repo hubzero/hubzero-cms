@@ -1229,9 +1229,9 @@ class Citations extends Plugin
             $citations_action_no_attention
         );
 
-        if (isset($group) && $group != '') {
+        if (isset($this->group) && $this->group->get('cn') != '') {
             $gob = new \Components\Groups\Tables\Group($this->database);
-            $cn = $gob->getName($group);
+            $cn = $gob->getName($this->group->get('gidNumber'));
 
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $cn . '&active=citations&action=dashboard')

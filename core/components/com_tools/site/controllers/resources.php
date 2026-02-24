@@ -352,7 +352,7 @@ class Resources extends SiteController
         }
 
         if (!$resource->save()) {
-            $this->setError($row->getError());
+            $this->setError($resource->getError());
             return false;
         } elseif ($newtool) {
             \Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'), 'tools');

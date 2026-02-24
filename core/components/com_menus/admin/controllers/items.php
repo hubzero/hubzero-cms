@@ -182,7 +182,7 @@ class Items extends AdminController
         $query->join('`#__viewlevels` AS ag', 'ag.id', $a . '.access', 'left');
 
         // Join over the associations.
-        $assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
+        $assoc = 0;
         if ($assoc) {
             $query->select('COUNT(asso2.id)>1', 'association');
             $assoCondition = 'asso.id = ' . $a . '.id AND asso.context=\'com_menus.item\'';
@@ -539,7 +539,7 @@ class Items extends AdminController
         $row->set('menuordering', $row->get('id'));
 
         if (App::has('menu_associations') && App::get('menu_associations') != 0) {
-            if ($pk != null) {
+            if ($row->get('id') != null) {
                 $row->set('associations', MenusHelper::getAssociations($row->get('id')));
             } else {
                 $row->set('associations', array());

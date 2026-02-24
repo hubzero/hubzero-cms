@@ -45,7 +45,7 @@ class PageName extends WikiMacro
             case 'title':
                 $page = \Components\Wiki\Models\Page::oneByPath($this->pagename, $this->domain, $this->domain_id);
 
-                return stripslashes($row->title);
+                return stripslashes($page->title);
             break;
 
             case 'alias':

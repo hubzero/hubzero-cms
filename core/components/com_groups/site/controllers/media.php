@@ -951,7 +951,7 @@ class Media extends Base
         if (isset($editorName) && $editorName != '') {
             $base = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
             $base .= $_SERVER['HTTP_HOST'];
-            $listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir=' . $listdir . '&tmpl=component&type=' . $type . '&editor=' . $editorName . '&editorFuncNum=' . $editorFunc;
+            $listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir=' . $folder . '&tmpl=component&type=' . $type . '&editor=' . $editorName . '&editorFuncNum=' . $editorFunc;
 
             App::redirect($listFilesUrl);
         } else {

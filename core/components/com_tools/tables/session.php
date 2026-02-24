@@ -228,7 +228,7 @@ class Session extends Table
 			AND s.sessnum=" . $this->_db->quote($sess);
 
         $this->_db->setQuery($query);
-        return $mwdb->loadResult();
+        return $this->_db->loadResult();
     }
 
     /**

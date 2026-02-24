@@ -206,6 +206,10 @@ class Session extends Base
             $readonly = 'No';
         }
 
+        // Load the session owner's viewperm to copy connection details for new shares
+        $ownerViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $rows = $ownerViewperm->loadViewperm($this->get('sessnum'), User::get('username'));
+
         foreach ($users as $user) {
             // Check for invalid characters
             if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $user)) {
@@ -222,7 +226,7 @@ class Session extends Base
 
             //load current view perm
             $mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
-            $currentViewPerm = $mwViewperm->loadViewperm($sess, $zuser->get('username'));
+            $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username'));
 
             // If there are no matching entries in viewperm, add a new entry,
             // Otherwise, update the existing entry (e.g. readonly).
