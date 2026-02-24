@@ -18,6 +18,8 @@ class Migration20160907105300ComUsers extends Base
 {
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->setTableEngine('#__users_tool_preferences', 'MyISAM');
         $schema->setTableEngine('#__users_quotas_classes_groups', 'MyISAM');
     }

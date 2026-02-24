@@ -18,6 +18,8 @@ class Migration20160907105600ComSupport extends Base
 {
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->setTableEngine('#__support_query_folders', 'MyISAM');
     }
 

@@ -21,6 +21,8 @@ class Migration20160920144401ComSupport extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->dropTable('#__support_sections');
     }
 

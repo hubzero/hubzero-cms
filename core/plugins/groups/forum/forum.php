@@ -2082,7 +2082,7 @@ class Forum extends Plugin
                 $section->set('state', $section::STATE_DELETED);
 
                 if (!$section->save()) {
-                    $this->setError($sModel->getError());
+                    $this->setError($section->getError());
                     return '';
                 }
             }

@@ -21,6 +21,8 @@ class Migration20170512150115ComTime extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->deleteComponentEntry('time');
 
         $this->deletePluginEntry('support', 'time');
