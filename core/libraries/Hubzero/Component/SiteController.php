@@ -172,7 +172,7 @@ class SiteController extends Obj implements ControllerInterface
                     $this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
                 } else {
                 // Uh-oh!
-                    InvalidControllerException(
+                    throw new InvalidControllerException(
                         Lang::txt('Controller::__construct() : Can\'t get or parse class name.'),
                         500
                     );

@@ -275,7 +275,7 @@ class Skus extends AdminController
 
             case 2:
                 // Check for request forgeries
-                Request::checkToken() or jexit('Invalid Token');
+                Request::checkToken() or exit('Invalid Token');
 
                 // Incoming
                 $sIds = Request::getInt('sId', 0);

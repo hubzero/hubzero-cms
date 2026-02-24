@@ -721,7 +721,7 @@ abstract class Table extends \stdClass
 
         // If the store failed return false.
         if (!$stored) {
-            Exception(
+            $e = new Exception(
                 'Store failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -791,7 +791,7 @@ abstract class Table extends \stdClass
             $this->_db->setQuery($query->toString());
 
             if (!$this->_db->execute()) {
-                Exception(
+                $e = new Exception(
                     'Failed to update asset ID: ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
@@ -899,7 +899,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            Exception(
+            $e = new Exception(
                 'Delete failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -954,7 +954,7 @@ abstract class Table extends \stdClass
         $this->_db->setQuery($query->toString());
 
         if (!$this->_db->execute()) {
-            Exception(
+            $e = new Exception(
                 'Checkout failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -1017,7 +1017,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            Exception(
+            $e = new Exception(
                 'Checkin failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -1065,7 +1065,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            Exception(
+            $e = new Exception(
                 'Hit update failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -1145,7 +1145,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
-            Exception(
+            $e = new Exception(
                 'Failed to get next ordering for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -1194,7 +1194,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
-            Exception(
+            $e = new Exception(
                 'Reorder failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
@@ -1296,7 +1296,7 @@ abstract class Table extends \stdClass
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                Exception(
+                $e = new Exception(
                     'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
@@ -1313,7 +1313,7 @@ abstract class Table extends \stdClass
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                Exception(
+                $e = new Exception(
                     'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
@@ -1333,7 +1333,7 @@ abstract class Table extends \stdClass
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                Exception(
+                $e = new Exception(
                     'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
@@ -1401,7 +1401,7 @@ abstract class Table extends \stdClass
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            Exception(
+            $e = new Exception(
                 'Publish failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);

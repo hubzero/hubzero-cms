@@ -114,7 +114,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
 
             // check storage if client is public client
             if (!$this->storage->isPublicClient($clientData['client_id'])) {
-                setError(
+                $response->setError(
                     400,
                     'invalid_client',
                     'This client is invalid or must authenticate using a client secret'

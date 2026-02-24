@@ -165,7 +165,7 @@ class Debug extends Plugin
                 $filterUsers = explode(',', $filterUsers);
                 $filterUsers = array_map('trim', $filterUsers);
 
-                if (!informatArrayay(User::get('username'), $filterUsers)) {
+                if (!in_array(User::get('username'), $filterUsers)) {
                     echo $contents;
                     return;
                 }

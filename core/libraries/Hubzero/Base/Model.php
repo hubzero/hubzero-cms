@@ -291,7 +291,7 @@ abstract class Model extends Obj
                     '(); ' .
                     \Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
             );
-            InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 \Lang::txt(
                     'Data must be of type object or array. Type given was %s',
                     gettype($data)
