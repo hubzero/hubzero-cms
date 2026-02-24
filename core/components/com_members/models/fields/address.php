@@ -33,6 +33,17 @@ class Address extends Field
 	protected static $countries = null;
 
 	/**
+	 * Method to get the field label markup.
+	 * Suppressed because the fieldset legend serves as the label.
+	 *
+	 * @return  string
+	 */
+	protected function getLabel()
+	{
+		return '';
+	}
+
+	/**
 	 * Method to get the field input markup.
 	 *
 	 * @return  string  The field input markup.
@@ -45,8 +56,11 @@ class Address extends Field
 		// Initialize some field attributes.
 		$class = $this->element['class'] ? ' class="radio addresses-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="radio addresses-' . $this->id . '"';
 
+		$lang = App::get('language');
+
 		// Start the radio field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+		$html[] = '<legend>' . $lang->txt($this->element['label'] ? (string) $this->element['label'] : 'Address') . '</legend>';
 
 		// Get the field options.
 		$options = $this->getOptions();
@@ -55,8 +69,6 @@ class Address extends Field
 
 		$values = $this->value;
 		$values = is_array($values) ? $values : array($values);
-
-		$lang = App::get('language');
 
 		// Build the radio field output.
 		foreach ($values as $i => $value)
