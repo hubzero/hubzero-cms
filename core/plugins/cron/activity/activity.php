@@ -50,7 +50,7 @@ class Activity extends Plugin
     public function emailMemberDigest(\Components\Cron\Models\Job $job)
     {
         // Make sure digests are enabled?  The cron job being on may be evidence enough...
-        if (!Plugin::params('members', 'activity')->get('email_digests', false)) {
+        if (!\Plugin::params('members', 'activity')->get('email_digests', false)) {
             return true;
         }
 

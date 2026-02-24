@@ -28,7 +28,7 @@ class Shibboleth extends Plugin
         static $params;
 
         if (!isset($params)) {
-            $params = Plugin::params('authentication', 'shibboleth');
+            $params = \Plugin::params('authentication', 'shibboleth');
         }
 
         if ($params->get('debug_enabled', true)) {
@@ -124,7 +124,7 @@ class Shibboleth extends Plugin
     {
         static $inst = null;
         if ($inst === null) {
-            $plugin = Plugin::byType('authentication', 'shibboleth');
+            $plugin = \Plugin::byType('authentication', 'shibboleth');
             $inst = json_decode(json_decode($plugin->params)->institutions, true);
             $inst = isset($inst['activeIdps']) ? $inst['activeIdps'] : [];
         }
@@ -239,7 +239,7 @@ class Shibboleth extends Plugin
     public static function onRenderOption($return = null, $title = 'With Institutional Credentials')
     {
         // Hide the login box if the plugin is in "debug mode" and the special key is not set in the request
-        $params = Plugin::params('authentication', 'shibboleth');
+        $params = \Plugin::params('authentication', 'shibboleth');
         if (($testKey = $params->get('testkey', null)) && !array_key_exists($testKey, $_GET)) {
             return '<span />';
         }

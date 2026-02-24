@@ -36,7 +36,7 @@ class Collections extends Plugin
         if (!$resource->type->params->get('plg_collections', 0)) {
             return;
         }
-        $pparams = Plugin::params('resources', 'collections');
+        $pparams = \Plugin::params('resources', 'collections');
         $collectionType = $pparams->get('collection_alias');
         $allowPublished = $pparams->get('collection_afterpublished');
         $typeObj = \Components\Resources\Models\Type::oneByAlias($collectionType);

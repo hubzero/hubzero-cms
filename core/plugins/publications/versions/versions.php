@@ -87,7 +87,7 @@ class Versions extends Plugin
             $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
 
             // Are we allowing contributions
-            $contributable = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $contributable = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
             // Instantiate a view
             $view = $this->view('default', 'browse')

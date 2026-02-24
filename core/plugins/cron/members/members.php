@@ -114,7 +114,7 @@ class Members extends Plugin
             $reviews = $RE->getReviews();
 
             // do we have ratings on reviews enabled?
-            $param = Plugin::byType('resources', 'reviews');
+            $param = \Plugin::byType('resources', 'reviews');
             $plparam = new \Hubzero\Config\Registry($param->params);
             $voting = $plparam->get('voting');
 

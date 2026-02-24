@@ -1660,7 +1660,7 @@ class Members extends Plugin
         $pageTitle .= ': ' . Lang::txt(strtoupper($profile->get('name')));
         Document::setTitle($pageTitle);
 
-        $params = Plugin::params('members', 'profile');
+        $params = \Plugin::params('members', 'profile');
         $params->merge(new \Hubzero\Config\Registry($profile->get('params')));
 
         // Display form asking for a reason to deny membership

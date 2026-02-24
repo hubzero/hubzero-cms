@@ -397,7 +397,7 @@ class Hubzero extends Plugin
             $domain = \Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
 
             if ($domain && is_object($domain)) {
-                $params = Plugin::params('authentication', $domain->authenticator);
+                $params = \Plugin::params('authentication', $domain->authenticator);
 
                 if ($params && is_object($params) && $params->get('auto_approve', false)) {
                     $instance->set('approved', 2);

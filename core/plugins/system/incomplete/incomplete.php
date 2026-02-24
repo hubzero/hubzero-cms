@@ -101,7 +101,7 @@ class Incomplete extends Plugin
                 {
                     // Does the user even have access to the profile plugin?
                     // If not, then we can't redirect them there
-                    $plugin = Plugin::byType('members', 'profile');
+                    $plugin = \Plugin::byType('members', 'profile');
 
                     if (!empty($plugin)) {
                         Request::setVar('option', 'com_members');

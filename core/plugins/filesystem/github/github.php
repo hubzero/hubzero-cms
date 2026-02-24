@@ -27,7 +27,7 @@ class Github extends Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = Plugin::params('filesystem', 'github');
+        $pparams = \Plugin::params('filesystem', 'github');
 
         $app_key = $pparams['app_key'];
         $app_secret = $pparams['app_secret'];

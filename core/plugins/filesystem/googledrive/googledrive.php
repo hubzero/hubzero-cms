@@ -28,7 +28,7 @@ class Googledrive extends Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = Plugin::params('filesystem', 'googledrive');
+        $pparams = \Plugin::params('filesystem', 'googledrive');
 
         $app_id = isset($params['app_id']) && $params['app_id'] != '' ? $params['app_id'] : $pparams->get('app_id');
         $app_secret = isset($params['app_secret']) && $params['app_secret'] != ''

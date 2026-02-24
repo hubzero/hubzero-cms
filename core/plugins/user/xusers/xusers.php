@@ -57,7 +57,7 @@ class Xusers extends Plugin
         if ($xuser->isGuest()) {
             // user plugin hasn't run or something went very badly
 
-            $plugins = Plugin::byType('user');
+            $plugins = \Plugin::byType('user');
             $xuser_order = false;
             $hubzero_order = false;
             $i = 0;

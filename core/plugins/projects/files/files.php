@@ -171,7 +171,7 @@ class Files extends Plugin
 
             $default = $this->params->get('default_action', 'browse');
 
-            $this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
             $this->_database = \App::get('db');
             $this->_uid = User::get('id');
             $this->_task = $action ? $action : Request::getString('action', $default);
@@ -2609,7 +2609,7 @@ class Files extends Plugin
         }
 
         // Get publication usage
-        if (Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
+        if (\Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
             $filters = array();
             $filters['project'] = $model->get('id');
             $filters['ignore_access'] = 1;
