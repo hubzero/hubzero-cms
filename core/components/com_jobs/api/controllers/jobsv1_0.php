@@ -132,7 +132,7 @@ class Jobsv1_0 extends ApiController
      */
     private function authorizeOrFail()
     {
-        $permissions = new Permissions('com_jobs');
+        $permissions = new Permissions();
 
         // Make sure action can be performed
         if (!$permissions->can('api')) {
