@@ -133,8 +133,6 @@ class Login extends AdminController
             'group'         => 'Public Backend',
             // Make sure users are not autoregistered
             'autoregister'  => false,
-            // Set the access control action to check.
-            'action'        => 'core.login.admin'
         );
 
         // Set the application login entry point
