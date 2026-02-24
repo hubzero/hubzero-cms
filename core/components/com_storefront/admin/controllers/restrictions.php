@@ -230,7 +230,7 @@ class Restrictions extends AdminController
                             $key = null;
                         }
 
-                        $res = RestrictionsHelper::addSkuUser($uId, $sId, $key);
+                        $res = RestrictionsHelper::addPermittedSkuUser($uId, $sId, $key);
                         if ($res) {
                             $inserted++;
                         } else {

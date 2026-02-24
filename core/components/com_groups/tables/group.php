@@ -83,7 +83,7 @@ class Group extends Table
         if ($assetId) {
             return $assetId;
         } else {
-            return parent::getAssetParentId($table, $id);
+            return parent::_getAssetParentId($table, $id);
         }
     }
 
