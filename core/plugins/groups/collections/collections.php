@@ -333,7 +333,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->following();
+                    $arr['html'] = $this->followers();
                     break;
                 case 'follow':
                     $arr['html'] = $this->follow('group');
