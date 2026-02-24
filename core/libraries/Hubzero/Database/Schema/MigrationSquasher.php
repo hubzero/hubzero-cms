@@ -116,7 +116,7 @@ class MigrationSquasher
      *
      * @return SchemaManager
      */
-    protected function getSchemaManager(): SchemaManager
+    protected function getSchemaManager()
     {
         if ($this->schemaManager === null) {
             $this->schemaManager = new SchemaManager($this->driver);

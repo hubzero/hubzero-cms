@@ -2729,7 +2729,7 @@ abstract class Driver implements LoggerAwareInterface
      * @param   string  $type  The variable type (bool, null, int, str)
      * @return  int
      **/
-    private function translateType($type)
+    protected function translateType($type)
     {
         return constant('\PDO::PARAM_' . strtoupper($type));
     }

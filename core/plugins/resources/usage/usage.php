@@ -531,8 +531,7 @@ class Usage extends Plugin
             '/',
             str_replace('-00 00:00:00', '-01', $datetime)
         );
-        $pattern = '/([0-9]{4})-([0-9]{2})-([0-9]{2})/';
-        $pattern .= '[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/';
+        $pattern = '/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/';
         if ($datetime && preg_match($pattern, $datetime, $regs)) {
             $ky = $regs[1] . '/' . $regs[2] . '/01';
         }

@@ -3012,6 +3012,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $this->newQuery();
         }
         $this->query->dd();
+        exit(1); // @codeCoverageIgnore
     }
 
     /**

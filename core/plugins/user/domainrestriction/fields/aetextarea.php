@@ -14,7 +14,7 @@ class AETextarea extends Textarea
 {
     protected $type = 'AETextarea';
 
-    public function setup(SimpleXMLElement $element, $value, $group = null)
+    public function setup(&$element, $value, $group = null)
     {
         $return = parent::setup($element, $value, $group);
 

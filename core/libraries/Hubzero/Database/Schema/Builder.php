@@ -9,6 +9,7 @@
 namespace Hubzero\Database\Schema;
 
 use Hubzero\Database\Driver;
+use Hubzero\Database\Drivers\Base\BaseSchemaGrammar;
 use Closure;
 
 /**
@@ -74,7 +75,7 @@ class Builder
      *
      * @return Grammar
      */
-    protected function createGrammar(): Grammar
+    protected function createGrammar(): BaseSchemaGrammar
     {
         return $this->driver->getSchemaGrammar();
     }
@@ -94,7 +95,7 @@ class Builder
      *
      * @return Grammar
      */
-    public function getGrammar(): Grammar
+    public function getGrammar(): BaseSchemaGrammar
     {
         return $this->grammar;
     }

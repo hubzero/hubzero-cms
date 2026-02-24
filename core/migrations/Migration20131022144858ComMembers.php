@@ -47,7 +47,7 @@ class Migration20131022144858ComMembers extends Base
                             'subject'         => $r->manager,
                             'state'           => '1',
                             'created_user_id' => $admin_id,
-                            'created_time'    => Date::toSql()
+                            'created_time'    => Date::of('now')->toSql()
                         ])
                         ->execute();
                 }
