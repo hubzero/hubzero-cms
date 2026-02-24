@@ -11,6 +11,23 @@ namespace Hubzero\Component\Router;
 class DefaultRouter extends Base
 {
     /**
+     * Component name
+     *
+     * @var  string
+     */
+    protected $component;
+
+    /**
+     * Constructor
+     *
+     * @param  string  $component  Component name
+     */
+    public function __construct($component)
+    {
+        $this->component = $component;
+    }
+
+    /**
      * Build the route for the component.
      *
      * @param   array  &$query  An array of URL arguments
