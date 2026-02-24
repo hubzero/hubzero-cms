@@ -10,7 +10,6 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Composer as ComposerHelper;
-use Components\Installer\Admin\Helpers\Cli;
 use Request;
 use Config;
 use Notify;
