@@ -293,6 +293,9 @@ class Test extends ComponentController
         //$badges = new Hubzero_Badges('PASSPORT');
 
         // Get the actual badges provider class
+        $badges = new \Hubzero_Badges('PASSPORT');
+
+        // Get the actual badges provider class
         $passport = $badges->getProvider();
 
         // Set credentials and settings (outh in not secured at this point)

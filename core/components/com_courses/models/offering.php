@@ -947,7 +947,7 @@ class Offering extends Base
             $this->_plugins = $this->trigger('onCourse', array($course, $this, true));
         }
 
-        if ($idx !== null) {
+        if ($name !== null) {
             foreach ($this->_plugins as $plugin) {
                 if ($plugin->get('name') == $name) {
                     return $plugin;

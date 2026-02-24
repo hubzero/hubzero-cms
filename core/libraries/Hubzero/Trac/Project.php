@@ -396,17 +396,7 @@ class Project
                 $db =  \App::get('db');
 
                 if (is_object($db)) {
-                    $query = null;
-
-                    if (!empty($query)) {
-                        $db->setQuery($query);
-
-                        $result = $db->loadColumn();
-                    }
-
-                    if ($result !== false) {
-                        $this->__set($property, $result);
-                    }
+                    // Note: query logic not yet implemented
                 }
             }
         }

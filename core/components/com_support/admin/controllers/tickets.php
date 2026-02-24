@@ -892,14 +892,14 @@ class Tickets extends AdminController
             // Create a new support comment object and populate it
             $comment = Comment::blank();
             $comment->set('ticket', $id);
-            $comment->set('comment', $text);
+            $comment->set('comment', '');
             $comment->set('created', Date::toSql());
             $comment->set('created_by', User::get('id'));
             //$comment->set('access', $access);
 
             // Compare fields to find out what has changed for this ticket and build a changelog
             $comment->changelog()->diff($old, $ticket);
-            $comment->changelog()->cced($cc);
+            $comment->changelog()->cced('');
 
             // Save the data
             if (!$comment->save()) {

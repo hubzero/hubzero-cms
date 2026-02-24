@@ -68,6 +68,12 @@ class ModeDb
             $dd_json_file = $jsonPath;
         }
 
+        $dd_php_file = false;
+        $phpPath = DvConfig::$dv_conf['dd_json'] . DS . $dv_id . '.php';
+        if (isset(DvConfig::$dv_conf['dd_json']) && file_exists($phpPath)) {
+            $dd_php_file = $phpPath;
+        }
+
         if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
             $dd['title'] = 'Table : ' . $dv_id;
             $dd['table'] = $dv_id;

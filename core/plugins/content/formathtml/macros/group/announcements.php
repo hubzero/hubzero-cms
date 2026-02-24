@@ -99,7 +99,7 @@ class Announcements extends GroupMacro
                 } else {
                     // Build link
                     $link = \Route::url(
-                        'index.php?option=com_groups&cn=' . $group->get('cn') .
+                        'index.php?option=com_groups&cn=' . $this->group->get('cn') .
                         '&active=announcements&id=' . $row->id
                     );
 
@@ -115,7 +115,7 @@ class Announcements extends GroupMacro
             }
         } else {
             $archiveUrl = \Route::url(
-                'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=announcements'
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'
             );
             $html .= '<p>Currently there are no announcements. View the <a href="' .
                 $archiveUrl . '">full archive here</a>.</p>';

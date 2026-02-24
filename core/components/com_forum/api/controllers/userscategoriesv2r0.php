@@ -187,7 +187,7 @@ class UsersCategoriesv2r0 extends ApiController
                 'error' => 'User ID mismatch, unable to proceed.'
             );
 
-            $this->send($result);
+            $this->send($error);
         }
     }
 }

@@ -565,10 +565,6 @@ class PdfForm
         $dbh = self::getDbh();
         $fid = $this->getId();
 
-        if (isset($date) && !is_null($date)) {
-            $date = date('Y-m-d H:i:s', strtotime($date));
-        }
-
         $versionClause = $version
             ? (int)$version
             : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';

@@ -1445,14 +1445,14 @@ class Collections extends Plugin
         }
 
         // Incoming
-        $comment = Request::getArray('comment', array(), 'post');
+        $data = Request::getArray('comment', array(), 'post');
 
         // Instantiate a new comment object and pass it the data
-        $row = \Hubzero\Item\Comment::blank()->set($comment);
+        $comment = \Hubzero\Item\Comment::blank()->set($data);
 
         // Store new content
-        if (!$row->save()) {
-            $this->setError($row->getError());
+        if (!$comment->save()) {
+            $this->setError($comment->getError());
             return $this->post();
         }
 
@@ -1489,7 +1489,7 @@ class Collections extends Plugin
                 'details' => array(
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
-                    'item_id' => $row->get('item_id'),
+                    'item_id' => $post->get('item_id'),
                     'url' => $url . '#c' . $comment->get('id')
                 )
             ],

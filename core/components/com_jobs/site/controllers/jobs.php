@@ -846,10 +846,11 @@ class Jobs extends SiteController
         $unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
 
         // get cost per unit (to compute required refund)
+        $unitprice = $service->get('unitprice', 0);
         $needsRefund = $subscription->totalpaid > 0
             && $unitsleft > 0
-            && ($subscription->totalpaid - $unitsleft * $unitcost) > 0;
-        $refund = $needsRefund ? $unitsleft * $prevunitcost : 0;
+            && ($subscription->totalpaid - $unitsleft * $unitprice) > 0;
+        $refund = $needsRefund ? $unitsleft * $unitprice : 0;
 
         // cancel previous subscription & issue a refund if applicable
         if ($subscription->cancel($refund, $unitsleft)) {

@@ -395,13 +395,13 @@ class Overrides extends AdminController
             }
         }
 
-        // If messages exist add them to the output
-        if (isset($lists) && is_array($lists)) {
-            $data->messages = $lists;
-        }
-
         // Prepare the response data
         $response = new \stdClass();
+
+        // If messages exist add them to the output
+        if (isset($lists) && is_array($lists)) {
+            $response->messages = $lists;
+        }
         $response->success = ($this->getError() ? false : true);
         $response->error   = $this->getError();
         $response->data    = $results;

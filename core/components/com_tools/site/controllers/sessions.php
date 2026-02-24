@@ -1389,7 +1389,7 @@ class Sessions extends SiteController
         // Did we get a result form the database?
         if (!$ms->username) {
             App::redirect(
-                Route::url($rediect)
+                Route::url($redirect)
             );
             return;
         }
@@ -1440,7 +1440,7 @@ class Sessions extends SiteController
             );
         } else {
             App::redirect(
-                Route::url($rediect)
+                Route::url($redirect)
             );
         }
     }

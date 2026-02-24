@@ -228,10 +228,11 @@ class Subscriptions extends AdminController
 
                 // get cost per unit (to compute required refund)
                 $totalpaid = $subscription->get('totalpaid');
+                $unitprice = $service->get('unitprice', 0);
                 $hasRefund = $totalpaid > 0
                     && $unitsleft > 0
-                    && ($totalpaid - $unitsleft * $unitcost) > 0;
-                $refund = $hasRefund ? $unitsleft * $prevunitcost : 0;
+                    && ($totalpaid - $unitsleft * $unitprice) > 0;
+                $refund = $hasRefund ? $unitsleft * $unitprice : 0;
 
                 $subscription->set('status', 2);
                 $subscription->set('pendingpayment', $refund);

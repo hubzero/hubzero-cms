@@ -383,7 +383,7 @@ class Articles extends SiteController
                 . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
             // URL link to article
-            $item->link = $feed->link . '#c' . $comment->get('id');
+            $item->link = Document::instance()->link . '#c' . $comment->get('id');
 
             // Strip html from feed item description text
             if ($comment->isReported()) {

@@ -537,7 +537,7 @@ class Items extends AdminController
         $row->set('menuordering', $row->get('id'));
 
         if (App::has('menu_associations') && App::get('menu_associations') != 0) {
-            if ($pk != null) {
+            if ($row->get('id') != null) {
                 $row->set('associations', MenusHelper::getAssociations($row->get('id')));
             } else {
                 $row->set('associations', array());

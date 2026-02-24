@@ -360,6 +360,8 @@ class Pagesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
+        $id = Request::getInt('id', 0);
+
         $fields = array(
             'title'          => Request::getString('title', null, '', 'none', 2),
             'pagename'       => Request::getString('pagename', null),

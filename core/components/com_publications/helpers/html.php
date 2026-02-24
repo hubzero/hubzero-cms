@@ -757,7 +757,7 @@ class Html
         if ($cat_alias) {
             $cls = str_replace(' ', '', $cat_alias);
             $title = $cat_alias;
-        } elseif ($pubtitle) {
+        } elseif ($typetitle) {
             $normalized = strtolower($typetitle);
             $cls = preg_replace("/[^a-zA-Z0-9]/", '', $normalized);
 

@@ -819,6 +819,8 @@ class Filesv1r0 extends ApiController
             }
         }
 
+        $response = new stdClass();
+
         if ($result) {
             $file  = Entity::fromPath($subdir . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
             if ($file->exists()) {

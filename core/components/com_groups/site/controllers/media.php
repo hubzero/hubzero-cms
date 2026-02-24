@@ -920,7 +920,7 @@ class Media extends Base
             $base = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
             $base .= $_SERVER['HTTP_HOST'];
             $listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media'
-                . '&task=listfiles&listdir=' . $listdir
+                . '&task=listfiles&listdir=' . $folder
                 . '&tmpl=component&type=' . $type
                 . '&CKEditor=' . $ckeditor
                 . '&CKEditorFuncNum=' . $ckeditorFunc;

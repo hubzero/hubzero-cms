@@ -934,7 +934,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         // Add more to coins
 
-        $tmpl = isset($template) ? $template : $default_template;
+        $tmpl = $template;
         $cite = strtr($tmpl, $replace_values);
 
         // Strip empty tags

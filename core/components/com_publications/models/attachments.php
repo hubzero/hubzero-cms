@@ -118,6 +118,7 @@ class Attachments extends Obj
         $type = $this->loadAttach($name);
 
         if ($type === false) {
+            $status = new \Components\Publications\Models\Status();
             $status->setError(Lang::txt('Attachment type not found'));
         } else {
             $attachments = $pub->_attachments;

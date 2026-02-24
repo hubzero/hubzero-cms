@@ -585,7 +585,7 @@ class Form extends SiteController
             $loginUrl = 'index.php?option=com_users&view=login&return=' . $return;
             App::redirect(
                 Route::url($loginUrl),
-                $message,
+                Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
                 'warning'
             );
             return;

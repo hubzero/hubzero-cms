@@ -1604,7 +1604,7 @@ class Collections extends Plugin
                 'details'     => array(
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
-                    'item_id'       => $row->get('item_id'),
+                    'item_id'       => $post->get('item_id'),
                     'url'           => $url . '#c' . $comment->get('id')
                 )
             ],

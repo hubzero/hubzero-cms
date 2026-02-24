@@ -934,11 +934,11 @@ class Tickets extends SiteController
         $row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
         $row->set('browser', $browser->name() . ' ' . $browser->version());
 
-        if (isset($incoming['target_date'])) {
-            if (!$incoming['target_date']) {
+        if (isset($problem['target_date'])) {
+            if (!$problem['target_date']) {
                 $row->set('target_date', null);
             } else {
-                $row->set('target_date', Date::of($incoming['target_date'], Config::get('offset'))->toSql());
+                $row->set('target_date', Date::of($problem['target_date'], Config::get('offset'))->toSql());
             }
         }
 

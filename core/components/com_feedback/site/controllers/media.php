@@ -97,13 +97,14 @@ class Media extends SiteController
             return $this->displayTask();
         }
 
+        // Do we have an old file we're replacing?
+        $curfile = Request::getString('currentfile', '');
+
         // Perform the upload
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_UPLOADING'));
             $file = $curfile;
         } else {
-            // Do we have an old file we're replacing?
-            $curfile = Request::getString('currentfile', '');
 
             if ($curfile != '' && file_exists($path . DS . $curfile)) {
                 if (!Filesystem::delete($path . DS . $curfile)) {

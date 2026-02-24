@@ -250,7 +250,7 @@ class Activity extends AdminController
 
         // Redirect to main listing or go back to edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            return $this->editTask($recipient);
         }
 
         $this->cancelTask();

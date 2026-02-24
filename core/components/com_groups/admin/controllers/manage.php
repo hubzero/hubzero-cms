@@ -507,7 +507,7 @@ class Manage extends AdminController
 
         // make sure folder is writable
         if (!is_writable($uploadPath)) {
-            Notify::error(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadpath));
+            Notify::error(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadPath));
             return;
         }
 
@@ -836,7 +836,7 @@ class Manage extends AdminController
                 }
 
                 // url
-                $url_bits = parse_url($gitLabProject['http_url_to_repo']);
+                $url_bits = parse_url($gitlabProject['http_url_to_repo']);
                 $gitLabUrl = $url_bits["scheme"] . '://oauth2:'
                     . $gitlabKey . '@' . $url_bits["host"] . $url_bits["path"];
 

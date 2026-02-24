@@ -343,7 +343,7 @@ class Customexts extends AdminController
         Notify::success(Lang::txt('COM_INSTALLER_CUSTOMEXTS_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            return $this->editTask($model);
         }
 
         $this->cancelTask();
@@ -697,7 +697,7 @@ class Customexts extends AdminController
                 'up',
                 $extension->path
             );
-            $respJson = $migrations_response == null ? '' : $migration_response;
+            $respJson = $migrations_response == null ? '' : $migrations_response;
             $migrations_response = json_decode($respJson);
         }
 

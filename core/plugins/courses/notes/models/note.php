@@ -64,7 +64,7 @@ class Note extends Relational
      * @param   array   $data  the data being saved
      * @return  string
      */
-    public function automaticState()
+    public function automaticState($data)
     {
         $data['state'] = (isset($data['state']) ? $data['state'] : 1);
         return $data['state'];

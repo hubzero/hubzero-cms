@@ -91,7 +91,7 @@ class Respondents extends AdminController
         // Output the HTML
         $this->view
             ->set('event', $event)
-            ->set('resp', $respondent)
+            ->set('resp', $resp)
             ->display();
     }
 

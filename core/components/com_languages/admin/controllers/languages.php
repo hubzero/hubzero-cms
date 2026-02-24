@@ -100,11 +100,11 @@ class Languages extends AdminController
         }
 
         if ($filters['search']) {
-            $entries->whereLike($l . '.title', strtolower((string)$filters['search']));
+            $query->whereLike($l . '.title', strtolower((string)$filters['search']));
         }
 
         if ($filters['access'] >= 0) {
-            $entries->whereEquals($l . '.access', (int)$filters['access']);
+            $query->whereEquals($l . '.access', (int)$filters['access']);
         }
 
         $rows = $query

@@ -719,7 +719,7 @@ class Resources extends SiteController
             ->start(0)
             ->row();
 
-        $resid = $firstChild->id;
+        $resid = $firstchild->id;
 
         $watchUrl = 'index.php?option=com_resources&id=' . $presentation
             . '&task=watch&resid=' . $resid . '&tmpl=component';

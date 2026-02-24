@@ -550,6 +550,10 @@ class Applications extends SiteController
         Request::checkToken('get');
 
         // Must be logged in
+        // Get the application
+        $id = Request::getInt('id', 0);
+
+        // Must be logged in
         if (User::isGuest()) {
             $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
                 . '&task=view&id=' . $id . '&active=tokens';
@@ -559,9 +563,6 @@ class Applications extends SiteController
             );
             return;
         }
-
-        // Get the application
-        $id = Request::getInt('id', 0);
         $application = Application::oneOrFail($id);
 
         // Set up the authorization code request and response

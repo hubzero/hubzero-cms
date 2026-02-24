@@ -255,7 +255,7 @@ class Asset extends Table
         $query  = "SELECT caa.id";
         $query .= " FROM $this->_tbl AS ca";
         $query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
-        $query .= " WHERE ca.id = " . $this->_db->quote($id);
+        $query .= " WHERE ca.id = " . $this->_db->quote($this->id);
 
         $this->_db->setQuery($query);
         $result = $this->_db->loadObjectList();

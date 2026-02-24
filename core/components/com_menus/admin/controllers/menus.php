@@ -254,6 +254,7 @@ class Menus extends AdminController
         Request::checkToken();
 
         // Initialise variables.
+        $id = Request::getInt('id', 0);
         $model = Menu::oneOrFail($id);
 
         if ($model->rebuild()) {

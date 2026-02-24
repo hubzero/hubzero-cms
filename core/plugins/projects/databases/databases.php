@@ -242,7 +242,7 @@ class Databases extends Plugin
 
         if (!method_exists($this, $act_func)) {
             if ($raw_op) {
-                echo json_encode(array('status' => 'success', 'data' => $table));
+                echo json_encode(array('status' => 'success', 'data' => null));
                 exit();
             } else {
                 $act_func = 'act_list';
