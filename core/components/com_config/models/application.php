@@ -187,7 +187,7 @@ class Application extends Obj
         }
 
         // Get the previous configuration.
-        $config = new \Hubzero\Config\Repository('site', new \Hubzero\Config\FileLoader(PATH_ROOT, PATH_APP));
+        $config = new \Hubzero\Config\Repository(PATH_APP);
 
         $prev = $config->toArray();
 
