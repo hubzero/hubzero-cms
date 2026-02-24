@@ -21,8 +21,19 @@ class SavePluginParams extends SaveParams
      * @param   array   $params   Plugin params (if already known)
      * @return  bool
      **/
-    public function __invoke($folder, $element, $params)
+    public function __invoke($element, $params = null)
     {
-        return parent::__invoke('plg_' . $folder . '_' . $element, $params);
+        // When called with 3 args: ($folder, $element, $params)
+        // When called with 2 args: ($element, $params) — delegates directly
+        if ($params === null) {
+            return parent::__invoke($element, []);
+        }
+
+        $args = func_get_args();
+        if (count($args) === 3) {
+            return parent::__invoke('plg_' . $args[0] . '_' . $args[1], $args[2]);
+        }
+
+        return parent::__invoke($element, $params);
     }
 }
