@@ -356,6 +356,23 @@ class Images extends AdminController
     }
 
     /**
+     * Display an image and its info
+     *
+     * @param   string   $file  Image filename
+     * @param   integer  $id    Object ID
+     * @return  void
+     */
+    public function displayTask($file = '', $id = 0)
+    {
+        $this->view
+            ->set('file', $file)
+            ->set('id', $id)
+            ->setErrors($this->getErrors())
+            ->setLayout('display')
+            ->display();
+    }
+
+    /**
      * Display a file and its info
      *
      * @param      integer $id ID

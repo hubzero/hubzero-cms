@@ -15,14 +15,26 @@ use stdClass;
 use Request;
 use Event;
 use Lang;
-use App;
 use User;
+use App;
 
 /**
  * API controller class for resources
  */
 class Entriesv1_0 extends ApiController
 {
+    /**
+     * Verify the user is authorized to manage plugins
+     *
+     * @return  void
+     */
+    private function authorizeOrFail()
+    {
+        if (!User::authorise('core.manage', 'com_plugins')) {
+            App::abort(401, 'Unauthorized');
+        }
+    }
+
     /**
      * Display a list of entries
      *
