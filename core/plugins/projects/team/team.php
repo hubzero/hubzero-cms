@@ -147,7 +147,7 @@ class Team extends Plugin
                     break;
 
                 case 'sync':
-                    $arr['html'] = $this->_sync();
+                    $arr['html'] = $this->sync();
                     break;
 
                 case 'choose':

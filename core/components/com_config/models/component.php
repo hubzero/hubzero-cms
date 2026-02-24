@@ -89,7 +89,7 @@ class Component extends Obj
         $form = new Form('com_config.component', array('control' => 'hzform'));
 
         if (!$form->loadFile($file, false, '//config')) {
-            $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+            $this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
             return false;
         }
 

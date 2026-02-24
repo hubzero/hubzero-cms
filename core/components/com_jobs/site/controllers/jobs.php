@@ -1070,7 +1070,7 @@ class Jobs extends SiteController
         $appid = Request::getInt('appid', 0, 'post');
 
         if (!$code) {
-            $this->display();
+            $this->displayTask();
             return;
         }
 

@@ -658,7 +658,7 @@ class Profile extends Obj
         }
 
         if ($storage == 'author') {
-            return $this->sql_load_author($user);
+            return $this->sql_author_load($user);
         }
 
         if ($storage == 'xregistration') {
