@@ -39,10 +39,9 @@ class Arcgisonline extends Plugin
             return;
         }
 
-        return new \Geocoder\Provider\ArcGISList\ArcGISList(
+        return new \Geocoder\Provider\ArcGISOnline\ArcGISOnline(
             $adapter,
-            $this->params->get('sourceCountry', null),
-            $this->params->get('useSsl', false)
+            $this->params->get('sourceCountry', null)
         );
     }
 }

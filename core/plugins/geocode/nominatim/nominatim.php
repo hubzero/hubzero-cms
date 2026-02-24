@@ -39,7 +39,8 @@ class Nominatim extends Plugin
 
         return new \Geocoder\Provider\Nominatim\Nominatim(
             $adapter,
-            $this->params->get('rootUrl')
+            $this->params->get('rootUrl'),
+            $this->params->get('userAgent', 'HubZero CMS Geocoder')
         );
     }
 }
