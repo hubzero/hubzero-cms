@@ -93,7 +93,7 @@ class Migration20140908193005ComGroups extends Base
                     $this->db->getQuery(true)
                         ->insert('#__xgroups_pages_versions')
                         ->columns(['pageid', 'version', 'content', 'created', 'created_by'])
-                        ->values([$homePageId, 1, $defaultHomePageContent, new Expression('NOW()'), 1000])
+                        ->values([$homePageId, 1, $defaultHomePageContent, Expression::now(), 1000])
                         ->execute();
                 } else {
                     // update the home page

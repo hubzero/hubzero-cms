@@ -32,7 +32,7 @@ class Migration20130423001442ComCourses extends Base
 
             $this->db->getQuery(true)
                 ->update('#__courses_assets')
-                ->set(['subtype' => new Expression('type')])
+                ->set(['subtype' => Expression::raw('type')])
                 ->execute();
 
             $this->db->getQuery(true)

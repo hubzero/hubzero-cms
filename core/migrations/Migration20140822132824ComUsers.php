@@ -27,7 +27,7 @@ class Migration20140822132824ComUsers extends Base
             ->select('u.id')
             ->from('#__users', 'u')
             ->leftJoin('#__user_usergroup_map AS um', 'u.id', 'um.user_id')
-            ->where('group_id', 'IS', new Expression('NULL'))
+            ->where('group_id', 'IS', Expression::raw('NULL'))
             ->loadColumn();
 
         if ($ids && count($ids) > 0) {

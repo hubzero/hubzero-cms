@@ -27,7 +27,7 @@ class Migration20141222135427ComTags extends Base
             $this->db->getQuery(true)
                 ->update('#__tags', 't')
                 ->innerJoin('#__tags_log AS l', 't.id', 'l.tag_id')
-                ->set(['t.created' => new Expression('l.timestamp'), 't.created_by' => new Expression('l.user_id')])
+                ->set(['t.created' => Expression::raw('l.timestamp'), 't.created_by' => Expression::raw('l.user_id')])
                 ->where('t.created_by', '=', 0)
                 ->where('l.action', '=', 'tag_created')
                 ->execute();
