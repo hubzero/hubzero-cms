@@ -20,6 +20,8 @@ class Migration20140714201025ComTime extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->dropTable('#__time_auth_tokens');
 
         if (!$schema->tableExists('#__time_hub_contacts')) {

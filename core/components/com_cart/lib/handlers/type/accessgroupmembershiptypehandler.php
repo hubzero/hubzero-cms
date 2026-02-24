@@ -46,7 +46,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
             $userGId = \Components\Storefront\Models\Product::getMetaValue($this->item['info']->pId, 'userGroupId');
 
             if (!\Hubzero\Access\Map::addUserToGroup($userId, $userGId)) {
-                $errorMsg = $add->getMessage() . ' Cart #' . $this->crtId;
+                $errorMsg = 'Failed to add user to group. Cart #' . $this->crtId;
                 mail(Config::get('mailfrom'), 'Error adding to the group', $errorMsg);
             }
 

@@ -468,7 +468,7 @@ class Articles extends SiteController
                             $articleArray[$key] = $articleParams->get($key);
                         } else {
                             // otherwise, use the global value
-                            $articleArray[$key] = $globalParams->get($key);
+                            $articleArray[$key] = $params->get($key);
                         }
                     }
                 }
@@ -502,10 +502,11 @@ class Articles extends SiteController
             // Compute the asset access permissions.
             // Technically guest could edit an article, but lets not check that to improve performance a little.
             if (!User::isGuest()) {
-                $asset = 'com_content.article.' . $item->id;
+                $itemAsset = 'com_content.article.' . $item->id;
+                $currentUserId = User::get('id');
 
                 // Check general edit permission first.
-                if (User::authorise('core.edit', $asset)) {
+                if (User::authorise('core.edit', $itemAsset)) {
                     $item->params->set('access-edit', true);
                 }
                 // Now check if edit.own is available.

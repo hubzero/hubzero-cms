@@ -627,7 +627,7 @@ class Publications extends Plugin
         // Make sure the publication belongs to the project
         if (!$publication->exists() || !$publication->belongsToProject($this->model->get('id'))) {
             $this->setError(Lang::txt('Failed to save a setting'));
-            return json_encode(array('error' => $this->getError(), 'result' => $result));
+            return json_encode(array('error' => $this->getError(), 'result' => null));
         }
 
         if ($result = $publication->saveParam($param, $value)) {
@@ -926,7 +926,7 @@ class Publications extends Plugin
         $pub = new \Components\Publications\Models\Publication($pid, $version);
 
         // Error loading publication record
-        if (!$pub->exists() && $new == false) {
+        if (!$pub->exists()) {
             \Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
             return;

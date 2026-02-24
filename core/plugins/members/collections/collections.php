@@ -1657,8 +1657,8 @@ class Collections extends Plugin
         }
 
         // Store new content
-        if (!$row->save()) {
-            $this->setError($row->getError());
+        if (!$comment->save()) {
+            $this->setError($comment->getError());
             return $this->_post();
         }
 
@@ -1686,8 +1686,8 @@ class Collections extends Plugin
                 'details'     => array(
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
-                    'item_id'       => $row->get('item_id'),
-                    'url'           => $url . '#c' . $row->get('id')
+                    'item_id'       => $post->get('item_id'),
+                    'url'           => $url . '#c' . $comment->get('id')
                 )
             ],
             'recipients' => $recipients

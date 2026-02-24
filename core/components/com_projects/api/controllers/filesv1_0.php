@@ -826,6 +826,8 @@ class Filesv1_0 extends ApiController
             }
         }
 
+        $response = new stdClass();
+
         if ($result) {
             // createFileFromChunks() has already assembled and saved the file
             // (and the last chunk's tmp_name is gone), so only report it

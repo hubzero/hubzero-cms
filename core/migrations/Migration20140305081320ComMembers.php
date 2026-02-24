@@ -21,6 +21,8 @@ class Migration20140305081320ComMembers extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $schema->dropTable('#__xprofiles_tags');
     }
 

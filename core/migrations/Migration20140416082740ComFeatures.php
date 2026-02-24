@@ -21,6 +21,8 @@ class Migration20140416082740ComFeatures extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->deleteComponentEntry('features');
 
         $schema->dropTable('#__feature_history');

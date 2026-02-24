@@ -103,7 +103,7 @@ class Helper extends Module
                     ->order('created', 'asc');
                 break;
             case 'mc_dsc':
-                $quotedDate = $db->quote(Date::toSql());
+                $quotedDate = App::get('db')->quote(Date::toSql());
                 $orderCase = 'CASE WHEN (modified = ' . $quotedDate . ') THEN created ELSE modified END';
                 $query->order($orderCase, 'desc');
                 break;
