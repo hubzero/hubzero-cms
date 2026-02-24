@@ -91,28 +91,47 @@ class Detector implements DetectorInterface
 		}
 
 		// Spammer likes to include various obfuscated texts
-		$keywords = array(
+		$plainKeywords = array(
 			"ßåßå", "Vå§hïkåråñ", "Lðvê", "§þê¢ïålï§†", "þrðßlêm", "Mµ†hkårñï", "jï", "Pℝℴℬℒℰℳ)","mðhïñï", "vå§hïkåråñ",
 			"vå§hïKÄRÄñ", "mårrïågê", "§ðlµ", "†ïðñ§", "Äll", "vððÐðð", "ßLåÇk", "MåGïÇ",
-			"/Black\-{0,1}Magic/i","Haryana","Ambala"
+			"Haryana", "Ambala"
+		);
+		$regexKeywords = array(
+			'/Black\-{0,1}Magic/i'
 		);
 
-		foreach ($keywords as $k)
+		foreach ($plainKeywords as $k)
 		{
-			if ((($k[0] == '/') && preg_match($k, $context))
-			 || (($k[0] != '/') && strpos($context, $k) !== false))
+			if (strpos($context, $k) !== false)
 			{
 				$spam += 10;
 				$reason |= 16;
 			}
-			if ((($k[0] == '/') && preg_match($k, $email))
-			 || (($k[0] != '/') && strpos($email, $k) !== false))
+			if (strpos($email, $k) !== false)
 			{
 				$spam += 10;
 				$reason |= 32;
 			}
-			if ((($k[0] == '/') && preg_match($k, $username))
-			 || (($k[0] != '/') && strpos($username, $k) !== false))
+			if (strpos($username, $k) !== false)
+			{
+				$spam += 10;
+				$reason |= 64;
+			}
+		}
+
+		foreach ($regexKeywords as $pattern)
+		{
+			if (preg_match($pattern, $context))
+			{
+				$spam += 10;
+				$reason |= 16;
+			}
+			if (preg_match($pattern, $email))
+			{
+				$spam += 10;
+				$reason |= 32;
+			}
+			if (preg_match($pattern, $username))
 			{
 				$spam += 10;
 				$reason |= 64;
