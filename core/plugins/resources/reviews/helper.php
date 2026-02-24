@@ -176,7 +176,7 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Load entry
-        $rev = \Plugins\Resources\Reviews\Models\Review::oneOrNew($id);
+        $rev = \Components\Resources\Models\Review::oneOrNew($id);
 
         if (!$rev->vote($vote, User::get('id'), $ip)) {
             $this->setError($rev->getError());
@@ -233,9 +233,9 @@ class Helper extends \Hubzero\Base\Obj
         $myr = Request::getInt('comment', 0);
 
         if ($myr) {
-            $review = \Plugins\Resources\Reviews\Models\Review::oneOrNew($myr);
+            $review = \Components\Resources\Models\Review::oneOrNew($myr);
         } else {
-            $review = \Plugins\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'));
+            $review = \Components\Resources\Models\Review::oneByUser($this->resource->id, User::get('id'));
         }
 
         if (!$review->get('id')) {
@@ -247,7 +247,7 @@ class Helper extends \Hubzero\Base\Obj
             $review->set('comment', str_replace('<br />', '', $review->get('comment')));
         }
         $review->set('rating', ($myr ? $myr : $review->get('rating')));
-        $review->set('state', \Plugins\Resources\Reviews\Models\Review::STATE_PUBLISHED);
+        $review->set('state', \Components\Resources\Models\Review::STATE_PUBLISHED);
 
         // Store the object in our registry
         $this->myreview = $review;
@@ -280,11 +280,11 @@ class Helper extends \Hubzero\Base\Obj
         $data = Request::getArray('review', array(), 'post');
 
         // Bind the form data to our object
-        $row = \Plugins\Resources\Reviews\Models\Review::oneOrNew($data['id'])->set($data);
+        $row = \Components\Resources\Models\Review::oneOrNew($data['id'])->set($data);
 
         // Perform some text cleaning, etc.
         if ($row->isNew()) {
-            $row->set('state', \Plugins\Resources\Reviews\Models\Review::STATE_PUBLISHED);
+            $row->set('state', \Components\Resources\Models\Review::STATE_PUBLISHED);
         }
         $row->set('comment', \Hubzero\Utility\Sanitize::stripImages(
             \Hubzero\Utility\Sanitize::clean($row->get('comment'))
@@ -298,7 +298,7 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Calculate the new average rating for the parent resource
-        $calculated = \Plugins\Resources\Reviews\Models\Review::averageByResource($this->resource->get('id'));
+        $calculated = \Components\Resources\Models\Review::averageByResource($this->resource->get('id'));
 
         // Recalculate the average rating for the parent resource
         $this->resource->set('rating', $calculated['rating']);
@@ -372,17 +372,17 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $review = \Plugins\Resources\Reviews\Models\Review::oneOrFail($reviewid);
+        $review = \Components\Resources\Models\Review::oneOrFail($reviewid);
 
         // Permissions check
         if ($review->get('user_id') != User::get('id') && !User::authorise('core.admin')) {
             return;
         }
 
-        $review->set('state', \Plugins\Resources\Reviews\Models\Review::STATE_DELETED);
+        $review->set('state', \Components\Resources\Models\Review::STATE_DELETED);
         $review->save();
 
-        $ratings = \Plugins\Resources\Reviews\Models\Review::all()
+        $ratings = \Components\Resources\Models\Review::all()
             ->whereEquals('resource_id', $this->resource->get('id'))
             ->rows()
             ->fieldsByKey('rating');

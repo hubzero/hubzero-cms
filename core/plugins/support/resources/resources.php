@@ -147,7 +147,7 @@ class Resources extends Plugin
             return null;
         }
 
-        $comment = \Plugins\Resources\Reviews\Models\Review::oneOrFail($refid);
+        $comment = \Components\Resources\Models\Review::oneOrFail($refid);
         $comment->set('state', 3);
         $comment->save();
 
@@ -168,7 +168,7 @@ class Resources extends Plugin
             return null;
         }
 
-        $comment = \Plugins\Resources\Reviews\Models\Review::oneOrFail($refid);
+        $comment = \Components\Resources\Models\Review::oneOrFail($refid);
         $comment->set('state', 1);
         $comment->save();
 
@@ -197,11 +197,11 @@ class Resources extends Plugin
         switch ($category) {
             case 'review':
                 // Delete the review
-                $review = \Plugins\Resources\Reviews\Models\Review::oneOrFail($referenceid);
+                $review = \Components\Resources\Models\Review::oneOrFail($referenceid);
                 $review->set('state', 2);
                 $review->save();
 
-                $rating = \Plugins\Resources\Reviews\Models\Review::averageByResource($parentid);
+                $rating = \Components\Resources\Models\Review::averageByResource($parentid);
 
                 // Recalculate the average rating for the parent resource
                 $resource = \Components\Resources\Models\Entry::oneOrFail($parentid);

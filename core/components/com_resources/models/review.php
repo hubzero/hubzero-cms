@@ -1,14 +1,12 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Resources\Reviews\Models;
+namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Item\Vote;
@@ -16,12 +14,9 @@ use Request;
 use Lang;
 use Date;
 
-//use User;
-
 /**
  * Resource review
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Review extends Relational
 {
     /**
@@ -158,7 +153,7 @@ class Review extends Relational
      */
     public function replies()
     {
-        return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
+        return $this->oneShiftsToMany('Reviewcomment', 'item_id', 'item_type');
     }
 
     /**
@@ -252,28 +247,6 @@ class Review extends Relational
         }
 
         if ($vote != $al->get('vote', 0)) {
-            /*if ($vote > 0)
-            {
-                $this->set('helpful', (int) $this->get('helpful') + 1);
-                if ($al->get('id'))
-                {
-                    $this->set('nothelpful', (int) $this->get('nothelpful') - 1);
-                }
-            }
-            else
-            {
-                if ($al->get('id'))
-                {
-                    $this->set('helpful', (int) $this->get('helpful') - 1);
-                }
-                $this->set('nothelpful', (int) $this->get('nothelpful') + 1);
-            }
-
-            if (!$this->save())
-            {
-                return false;
-            }*/
-
             $al->set('vote', $vote);
 
             if (!$al->save()) {

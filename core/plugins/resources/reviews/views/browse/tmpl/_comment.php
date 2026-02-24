@@ -380,8 +380,8 @@ if ($this->comment->get('resource_id')) {
         if ($this->depth < $this->config->get('comments_depth', 3)) {
             $replies = $this->comment->replies()
                 ->whereIn('state', array(
-                    \Plugins\Resources\Reviews\Models\Comment::STATE_PUBLISHED,
-                    \Plugins\Resources\Reviews\Models\Comment::STATE_FLAGGED
+                    \Components\Resources\Models\Reviewcomment::STATE_PUBLISHED,
+                    \Components\Resources\Models\Reviewcomment::STATE_FLAGGED
                 ))
                 ->ordered()
                 ->rows();

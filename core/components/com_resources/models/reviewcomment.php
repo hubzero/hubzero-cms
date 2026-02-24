@@ -6,15 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Resources\Reviews\Models;
+namespace Components\Resources\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 
 /**
- * Resources model for a comment
+ * Resources model for a review comment
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class Comment extends ItemComment
+class Reviewcomment extends ItemComment
 {
     /**
      * Flagged state
