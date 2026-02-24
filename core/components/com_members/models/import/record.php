@@ -375,7 +375,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 $valid = false;
 
                 // Try to create from name
-                $username = preg_replace('/[^a-z9-0_]/i', '', strtolower($this->record->entry->get('name')));
+                $username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name')));
                 if (Validate::username($username)) {
                     if (!$this->usernameExists($username)) {
                         $valid = true;
@@ -396,7 +396,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 if (!$valid) {
                     for ($i = 0; $i <= 99; $i++) {
                         $name = strtolower($this->record->entry->get('name'));
-                        $username = preg_replace('/[^a-z9-0_]/i', '', $name) . $i;
+                        $username = preg_replace('/[^a-z0-9_]/i', '', $name) . $i;
                         if (Validate::username($username)) {
                             if ($this->usernameExists($username)) {
                                 $valid = true;
