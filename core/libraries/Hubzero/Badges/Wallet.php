@@ -42,7 +42,7 @@ class Wallet
         $this->provider = new $cls($requestType);
 
         if (!($this->provider instanceof ProviderInterface)) {
-            InvalidProviderException(
+            throw new InvalidProviderException(
                 \Lang::txt(
                     'Invalid badges provider of "%s". Provider must implement ProviderInterface',
                     $provider

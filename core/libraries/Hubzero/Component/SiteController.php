@@ -155,14 +155,15 @@ class SiteController extends Obj implements ControllerInterface
                 // If namespaced...
                 if (strstr($cls, '\\')) {
                     $segments = explode('\\', $cls);
-                }
+                } elseif (preg_match('/(.*)Controller(.*)/i', $cls, $segments)) {
                 // If matching the pattern of ComponentControllerName
-                else if (preg_match('/(.*)Controller(.*)/i', $cls, $segments)) {
                     $this->_controller = isset($segments[2]) ? strtolower($segments[2]) : null;
-                }
+                } else {
                 // Uh-oh!
-                else {
-                    throw new InvalidControllerException(Lang::txt('Controller::__construct() : Can\'t get or parse class name.'), 500);
+                    throw new InvalidControllerException(
+                        Lang::txt('Controller::__construct() : Can\'t get or parse class name.'),
+                        500
+                    );
                 }
 
                 $this->_name = strtolower($segments[1]);
@@ -289,9 +290,8 @@ class SiteController extends Obj implements ControllerInterface
                 $this->_controller = strtolower($r[2]);
                 $name   = $this->_controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
-            }
-            // Namepsaced component
-            else if (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r)) {
+            } else if (preg_match('/(.?)Controllers\\\(.*)/i', $cls, $r)) {
+                // Namepsaced component
                 $this->_controller = strtolower($r[2]);
                 $name   = $this->_controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);

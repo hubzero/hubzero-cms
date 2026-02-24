@@ -47,7 +47,7 @@ class Helper extends Obj
                 if (count($mids) > 0) {
                     $recipient = Recipient::blank();
                     if (!$recipient->setState(1, $mids)) {
-                        setError(
+                        $this->setError(
                             Lang::txt(
                                 'Unable to update recipient records %s for user %s',
                                 implode(

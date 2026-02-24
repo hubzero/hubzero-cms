@@ -90,7 +90,7 @@ class AuthorizationCode implements GrantTypeInterface
                 !$request->request('redirect_uri') ||
                 urldecode($request->request('redirect_uri')) != $authCode['redirect_uri']
             ) {
-                setError(
+                $response->setError(
                     400,
                     'redirect_uri_mismatch',
                     "The redirect URI is missing or do not match",
