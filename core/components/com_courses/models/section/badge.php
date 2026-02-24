@@ -92,11 +92,8 @@ class Badge extends Base
      * @param      integer $id  Provider badge id
      * @return     void
      */
-    public function loadByProviderBadgeId($id)
+    public static function loadByProviderBadgeId($id)
     {
-        $model = new stdClass();
-        $model->_db = \App::get('db');
-
         $model = new self();
 
         $model->_tbl = new $model->_tbl_name($model->_db);

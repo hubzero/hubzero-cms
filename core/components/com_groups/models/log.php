@@ -76,10 +76,12 @@ class Log extends Model
      * Log a Group action
      *
      * @param   array  $options
-     * @return  object
+     * @return  mixed
      */
-    private function log(array $options = null)
+    public static function log(array $options = null)
     {
+        $instance = new self();
+
         // merge defaults with passed in options
         $details = array_merge(self::logDefaults(), $options);
 
@@ -92,44 +94,13 @@ class Log extends Model
         $details['comments'] = json_encode($details['comments']);
 
         // bind log details
-        $this->bind($details);
+        $instance->bind($details);
 
         // store log details
-        if (!$this->store(true)) {
-            return $this->getError();
+        if (!$instance->store(true)) {
+            return $instance->getError();
         }
 
-        return $this;
-    }
-
-    /**
-     * Overloading Static Method Call
-     *
-     * Resolves instance of log model and runs method on instance with args
-     *
-     * @param    string $method  Static method name
-     * @param    array  $args    Method args passed
-     * @return   mixed
-     */
-    public static function __callStatic($method, $args)
-    {
-        // resolve instance
-        $instance = new self();
-
-        // run method on instance
-        switch (count($args)) {
-            case 0:
-                return $instance->$method();
-            case 1:
-                return $instance->$method($args[0]);
-            case 2:
-                return $instance->$method($args[0], $args[1]);
-            case 3:
-                return $instance->$method($args[0], $args[1], $args[2]);
-            case 4:
-                return $instance->$method($args[0], $args[1], $args[2], $args[3]);
-            default:
-                return call_user_func_array(array($instance, $method), $args);
-        }
+        return $instance;
     }
 }

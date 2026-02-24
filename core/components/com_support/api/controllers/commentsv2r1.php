@@ -381,7 +381,7 @@ class Commentsv2r1 extends ApiController
                         }
 
                         if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open') {
-                            $ticket->set('closed', Date::toSql());
+                            $ticket->set('closed', Date::of('now')->toSql());
                         }
                     }
 

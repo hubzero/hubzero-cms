@@ -411,15 +411,17 @@ class Tool extends Table
      * @param   integer  $toolid
      * @return  array
      */
-    public function getToolDevelopers($toolid)
+    public static function getToolDevelopers($toolid)
     {
+        $db = \App::get('db');
+
         $query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
         $query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
-        $query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=1 ";
+        $query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1 ";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $db->setQuery($query);
+        return $db->loadObjectList();
     }
 
     /**
