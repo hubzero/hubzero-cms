@@ -37,6 +37,13 @@ class Passport implements ProviderInterface
     public const PASSPORT_DENIED_URL   = 'https://www.openpassport.org/MyBadges/Denied';
 
     /**
+     * API badges URL
+     *
+     * @var  string
+     */
+    public const PASSPORT_BADGES_URL   = 'https://www.openpassport.org/MyBadges';
+
+    /**
      * Credentials
      *
      * @var  array
