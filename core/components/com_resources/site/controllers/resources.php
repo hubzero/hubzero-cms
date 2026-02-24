@@ -2596,9 +2596,7 @@ class Resources extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _serveup($inline, $p, $f, $mime)
     {
-        $user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
-                    ? $_SERVER["HTTP_USER_AGENT"]
-                    : $HTTP_USER_AGENT;
+        $user_agent = $_SERVER["HTTP_USER_AGENT"] ?? '';
 
         while (ob_get_level()) {
             ob_end_clean();

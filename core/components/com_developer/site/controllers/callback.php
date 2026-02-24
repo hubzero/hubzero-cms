@@ -84,8 +84,8 @@ class Callback extends SiteController
 
         $url = 'https://github.com/login/oauth/access_token';
         $fields = array(
-            'client_id'     => isset($app_key) ? $app_key : $pparams->get('app_key'),
-            'client_secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
+            'client_id'     => $pparams->get('app_key'),
+            'client_secret' => $pparams->get('app_secret'),
             'code'          => $code,
             'state'         => $state
         );

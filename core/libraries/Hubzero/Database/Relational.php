@@ -4673,7 +4673,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $columns = $this->getTableColumns();
 
         if (isset($columns[$col])) {
-            return $column[$col]['default'];
+            return $columns[$col]['default'];
         }
 
         return null;

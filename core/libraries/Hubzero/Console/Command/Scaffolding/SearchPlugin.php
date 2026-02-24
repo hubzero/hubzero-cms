@@ -26,11 +26,12 @@ class SearchPlugin extends Scaffolding
     public function construct()
     {
         if ($this->arguments->getOpt(4)) {
-                $extension = $this->arguments->getOpt(4);
-                $this->addReplacement('plugin_name', $extension);
-                $this->addReplacement('extension', $extension);
+            $extension = $this->arguments->getOpt(4);
+            $this->addReplacement('plugin_name', $extension);
+            $this->addReplacement('extension', $extension);
         } else {
             $this->output->error("Error: must specify a hubtype.");
+            return;
         }
 
         // Determine our base path

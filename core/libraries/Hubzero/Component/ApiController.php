@@ -617,7 +617,7 @@ class ApiController implements ControllerInterface
     {
         $this->requiresAuthentication();
 
-        $name = $this->resolveModel();
+        $model = $this->resolveModel();
 
         $properties = $model->getStructure()->getTableColumns($model->getTableName());
         $properties = $this->normalizeProperties($properties);

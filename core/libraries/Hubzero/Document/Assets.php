@@ -280,7 +280,7 @@ class Assets
         $paths = array();
         $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
         $paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-        $paths[] = DS . 'components' . DS . $component . DS . $folder . DS . $stylesheet;
+        $paths[] = DS . 'components' . DS . $component . DS . $dir . DS . $stylesheet;
 
         $root = self::base();
 

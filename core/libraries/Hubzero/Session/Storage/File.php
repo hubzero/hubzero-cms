@@ -47,7 +47,7 @@ class File extends Store
         }
 
         if (!isset($options['filesystem']) || !($options['filesystem'] instanceof Filesystem)) {
-            $adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+            $adapter = new Local(\App::get('config')->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
             $options['filesystem'] = new Filesystem($adapter);
         }
 

@@ -629,6 +629,7 @@ class Repository extends Base implements CommandInterface
     public function updateRepo()
     {
         // Set our directory & call update
+        $repoPath = $this->arguments->getOpt('r');
         $this->arguments->setOpt('r', $repoPath);
 
         \App::get('client')->call('repository', 'update', $this->arguments, $this->output);

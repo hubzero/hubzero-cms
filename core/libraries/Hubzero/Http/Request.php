@@ -216,7 +216,7 @@ class Request extends BaseRequest
      */
     public function getFloat($name, $default = 0.0, $hash = 'input')
     {
-        $result = $this->getVar($key, $default, $hash);
+        $result = $this->getVar($name, $default, $hash);
         $result = is_array($result) ? self::flatten('', $result) : $result;
         return preg_replace(static::$filters['float'], '', $result);
     }

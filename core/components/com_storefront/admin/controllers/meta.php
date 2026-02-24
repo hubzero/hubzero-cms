@@ -27,6 +27,7 @@ class Meta extends AdminController
         $this->view->filters = array(
             'access' => -1
         );
+        $app = \App::getInstance();
         $this->view->filters['sort'] = trim($app->getUserStateFromRequest(
             $this->_option . '.' . $this->_controller . '.sort',
             'filter_order',

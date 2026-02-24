@@ -180,7 +180,7 @@ class Items extends AdminController
         $query->join('`#__viewlevels` AS ag', 'ag.id', $a . '.access', 'left');
 
         // Join over the associations.
-        $assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
+        $assoc = 0;
         if ($assoc) {
             $query->select('COUNT(asso2.id)>1', 'association');
             $assoCondition = 'asso.id = ' . $a . '.id AND asso.context=\'com_menus.item\'';

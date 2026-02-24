@@ -1012,6 +1012,7 @@ class Progress extends Plugin
 
         if (Request::getInt('no_html', false)) {
             $gp = new \Components\Courses\Models\GradePolicies(1);
+            $policy = new \stdClass();
             $policy->description = $gp->get('description');
             $policy->exam_weight = $gp->get('exam_weight') * 100;
             $policy->quiz_weight = $gp->get('quiz_weight') * 100;

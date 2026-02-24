@@ -211,8 +211,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        // Make sure we have a user_id (provider returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($token) && $token)) {
+        if (isset($token) && $token) {
             try {
                 // We got an access token, let's now get the user's details
                 $owner = $this->provider->getResourceOwner($token);
@@ -316,13 +315,6 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             App::redirect($authUrl);
         } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
             Session::clear('oauth2state', $this->name);
-
-            $response->status = \Hubzero\Auth\Status::FAILURE;
-            $response->error_message = Lang::txt(
-                'PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE',
-                'Mismatched state'
-            );
-
             return;
         }
 
@@ -330,19 +322,12 @@ class Facebook extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        // Make sure we have a user_id (provider returns 0 for a non-logged in user)
-        if ((isset($user_id) && $user_id > 0) || (isset($token) && $token)) {
+        if (isset($token) && $token) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
                 $id       = $owner->getId();
                 $email    = $owner->getEmail();
             } catch (\Exception $e) {
-                // Error message?
-                $response->status = \Hubzero\Auth\Status::FAILURE;
-                $response->error_message = Lang::txt(
-                    'PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE',
-                    $e->getMessage()
-                );
                 return;
             }
 
