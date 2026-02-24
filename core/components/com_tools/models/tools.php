@@ -22,12 +22,18 @@ class Tools extends Obj
      */
     public function getApplicationTools()
     {
-        $dh = @opendir('/opt/trac/tools');
+        $toolsDir = '/opt/trac/tools';
         $result = array();
+
+        if (!is_dir($toolsDir)) {
+            return $result;
+        }
+
+        $dh = opendir($toolsDir);
 
         if (!empty($dh)) {
             while (($file = readdir($dh)) !== false) {
-                if (is_dir('/opt/trac/tools/' . $file)) {
+                if (is_dir($toolsDir . '/' . $file)) {
                     if (strncmp($file, '.', 1) != 0) {
                         $result[] = $file;
                     }
