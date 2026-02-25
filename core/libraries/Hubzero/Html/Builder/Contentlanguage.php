@@ -16,7 +16,7 @@ use App;
 /**
  * Utility class working with content language select lists
  */
-class ContentLanguage
+class Contentlanguage
 {
     /**
      * Cached array of the content language items.
