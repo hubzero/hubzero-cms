@@ -6,8 +6,48 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\GroupPages;
+namespace Modules\Grouppages;
 
-require_once __DIR__ . '/helper.php';
+use Hubzero\Module\Module;
+use Components\Groups\Models;
+use Hubzero\Facades\Component;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for showing group pages
+ */
+class Grouppages extends Module
+{
+    protected $unapprovedModules;
+    protected $unapprovedPages;
+
+    /**
+     * Display module contents
+     *
+     * @return     void
+     */
+    public function display()
+    {
+        if (!\Hubzero\Facades\App::isAdmin()) {
+            return;
+        }
+
+        // include group page archive model
+
+        // include group module archive model
+
+        // get unapproved pages
+        $groupModelPageArchive = new Models\Page\Archive();
+        $this->unapprovedPages = $groupModelPageArchive->pages('unapproved', array(
+            'state' => array(0, 1)
+        ), true);
+
+        // get unapproved modules
+        $groupModelModuleArchive = new Models\Module\Archive();
+        $this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', array(
+            'state' => array(0, 1)
+        ), true);
+
+        // Get the view
+        parent::display();
+    }
+}

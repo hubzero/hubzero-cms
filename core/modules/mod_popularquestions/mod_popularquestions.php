@@ -6,8 +6,90 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\PopularQuestions;
+namespace Modules\Popularquestions;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Components\Answers\Models\Question;
+use Components\Answers\Models\Tags;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Date;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying popular questions
+ */
+class Popularquestions extends Module
+{
+    protected $cssClass;
+    protected $cssId;
+    protected $rows;
+    protected $style;
+    protected $tag;
+
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        $this->cssId    = $this->params->get('cssId');
+        $this->cssClass = $this->params->get('cssClass');
+
+        $this->tag   = Request::getString('tag', '', 'get');
+        $this->style = Request::getString('style', '', 'get');
+
+        $records = Question::all();
+
+        switch ($this->params->get('state', 'open')) {
+            case 'open':
+                $records->whereEquals('state', 0);
+                break;
+            case 'closed':
+                $records->whereEquals('state', 1);
+                break;
+            case 'both':
+            default:
+                $records->where('state', '<', 2);
+                break;
+        }
+
+        if ($this->tag) {
+            $cloud = new Tags();
+            $tags = $cloud->parse($this->tag);
+
+            $records
+                ->select('#__answers_questions.*')
+                ->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+                ->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+                ->whereEquals('#__tags_object.tbl', 'answers')
+                ->whereIn('#__tags.tag', $tags);
+        }
+
+        $this->rows = $records
+            ->limit(intval($this->params->get('limit', 5)))
+            ->order('helpful', 'desc')
+            ->ordered()
+            ->rows();
+
+        require $this->getLayoutPath();
+    }
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Push the module CSS to the template
+        $this->css();
+
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
+
+        $this->run();
+    }
+}

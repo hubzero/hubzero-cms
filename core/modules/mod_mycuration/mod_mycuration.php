@@ -6,8 +6,52 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyCuration;
+namespace Modules\Mycuration;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Publication;
+use Hubzero\Facades\Component;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying a user's publication curation tasks
+ */
+class Mycuration extends Module
+{
+    protected $moduleclass;
+    protected $rows;
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        $database = \Hubzero\Facades\App::get('db');
+        $config   = Component::params('com_publications');
+
+        // Get some classes we need
+
+        $this->moduleclass = $this->params->get('moduleclass');
+
+        // Build query
+        $filters = array(
+            'limit'         => intval($this->params->get('limit', 10)),
+            'start'         => 0,
+            'sortby'        => 'title',
+            'sortdir'       => 'ASC',
+            'ignore_access' => 1,
+            'curator'       => 'owner',
+            'dev'           => 1, // get dev versions
+            'status'        => array(5, 7) // submitted/pending
+        );
+
+        // Instantiate
+        $objP = new \Components\Publications\Tables\Publication($database);
+
+        // Assigned curation
+        $this->rows = $objP->getRecords($filters);
+
+        require $this->getLayoutPath();
+    }
+}
