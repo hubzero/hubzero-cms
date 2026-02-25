@@ -40,27 +40,21 @@ class Parsermarkdown extends Plugin
     public function onGetWikiParser($config, $getnew = false)
     {
         if (!is_object($this->parser) || $getnew) {
-            $path = dirname(__FILE__);
+            $config['option']    = (isset($config['option']))    ? $config['option']    : 'com_wiki';
+            $config['scope']     = (isset($config['scope']))     ? $config['scope']     : '';
+            $config['pagename']  = (isset($config['pagename']))  ? $config['pagename']  : '';
+            $config['pageid']    = (isset($config['pageid']))    ? $config['pageid']    : 0;
+            $config['filepath']  = (isset($config['filepath']))  ? $config['filepath']  : '';
+            $config['domain']    = (isset($config['domain']))    ? $config['domain']    : null;
+            $config['domain_id'] = (isset($config['domain_id'])) ? $config['domain_id'] : null;
+            $config['url']       = (isset($config['url']))       ? $config['url']       : null;
+            $config['loglinks']  = (isset($config['loglinks']))  ? $config['loglinks']  : null;
 
-            if (is_file($path . DS . 'parser.php')) {
-                include_once $path . DS . 'parser.php';
+            $config['style'] = isset($config['style'])
+                ? $config['style']
+                : $this->params->get('style', 'GithubMarkdown');
 
-                $config['option']    = (isset($config['option']))    ? $config['option']    : 'com_wiki';
-                $config['scope']     = (isset($config['scope']))     ? $config['scope']     : '';
-                $config['pagename']  = (isset($config['pagename']))  ? $config['pagename']  : '';
-                $config['pageid']    = (isset($config['pageid']))    ? $config['pageid']    : 0;
-                $config['filepath']  = (isset($config['filepath']))  ? $config['filepath']  : '';
-                $config['domain']    = (isset($config['domain']))    ? $config['domain']    : null;
-                $config['domain_id'] = (isset($config['domain_id'])) ? $config['domain_id'] : null;
-                $config['url']       = (isset($config['url']))       ? $config['url']       : null;
-                $config['loglinks']  = (isset($config['loglinks']))  ? $config['loglinks']  : null;
-
-                $config['style'] = isset($config['style'])
-                    ? $config['style']
-                    : $this->params->get('style', 'GithubMarkdown');
-
-                $this->parser = new MarkdownParser($config);
-            }
+            $this->parser = new MarkdownParser($config);
         }
 
         return $this->parser;

@@ -1487,16 +1487,6 @@ class WikiParser
      */
     private function macros($text)
     {
-        $path = __DIR__;
-        if (is_file($path . DS . 'macro.php')) {
-            // Include abstract macro class
-            include_once $path . DS . 'macro.php';
-        } else {
-            // Abstract macro class not found
-            // Proceed no further
-            return $text;
-        }
-
         $this->macros = array();
 
         // Get macros [[name(args)]]
@@ -1543,35 +1533,20 @@ class WikiParser
             if (!isset($_macros[$matches[1]])) {
                 // split macro by . (dot) char
                 $macroPieces = explode('.', strtolower($matches[1]));
-                $macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 
-                if (is_file($macropath)) {
-                    include_once $macropath;
-                } else {
-                    $lngth = count($macroPieces);
-                    $macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize($macroPieces[$lngth - 1]);
-                    $macroname = ucfirst($macroPieces[$lngth - 1]) . 'Macro';
-                    $macropath = __DIR__
-                        . DS
-                        . 'macros'
-                        . DS
-                        . implode(DS, array_map('strtolower', $macroPieces))
-                        . '
-                        . php';
-
-                    if (is_file($macropath)) {
-                        include_once $macropath;
-                    } else {
-                        return '';
-                    }
-                }
+                // Build namespaced macro name and let the autoloader resolve it
+                $macroname = '\\Plugins\\Wiki\\Parserdefault\\Macros\\'
+                    . implode('\\', array_map('ucfirst', $macroPieces));
 
                 if (!class_exists($macroname)) {
-                    // build namespaced macro name
-                    $macroname = '\\Plugins\\Wiki\\Parserdefault\\Macros\\' . implode(
-                        '\\',
-                        array_map('ucfirst', $macroPieces)
+                    // Try pluralized variant (e.g. Resource -> Resources
+                    // to avoid PHP reserved name conflicts)
+                    $lngth = count($macroPieces);
+                    $macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize(
+                        $macroPieces[$lngth - 1]
                     );
+                    $macroname = '\\Plugins\\Wiki\\Parserdefault\\Macros\\'
+                        . implode('\\', array_map('ucfirst', $macroPieces));
                 }
 
                 if (class_exists($macroname)) {
