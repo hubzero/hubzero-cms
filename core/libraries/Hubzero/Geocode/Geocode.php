@@ -8,6 +8,8 @@
 
 namespace Hubzero\Geocode;
 
+use Hubzero\Facades\Event;
+
 /**
  * Helper class for getting geolocation information
  */
@@ -41,7 +43,7 @@ class Geocode
         // Each provider has an associated plugin. If the provider supports
         // the desired data look-up, it (the provider) will be returned by
         // the plugin. Otherwise, the plugin returns nothing.
-        if ($providers = \Hubzero\Facades\Event::trigger('geocode.onGeocodeProvider', array('geocode.countries', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.countries', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -93,7 +95,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Hubzero\Facades\Event::trigger('geocode.onGeocodeProvider', array('geocode.country', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.country', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -134,7 +136,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Hubzero\Facades\Event::trigger('geocode.onGeocodeProvider', array('geocode.continent', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.continent', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -180,7 +182,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Hubzero\Facades\Event::trigger('geocode.onGeocodeProvider', array('geocode.locate', $adapter, $ip))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.locate', $adapter, $ip))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -217,7 +219,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Hubzero\Facades\Event::trigger('geocode.onGeocodeProvider', array('geocode.address', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.address', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -233,11 +235,15 @@ class Geocode
         $longitude = isset($coordinates['longitude']) ? $coordinates['longitude'] : $coordinates[1];
 
         // Instantiate the Geocoder service and pass it the list of providers
-        $geocoder = new \Geocoder\Geocoder();
-        $geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
+        $geocoder = new \Geocoder\ProviderAggregator();
+
+        $chain = new \Geocoder\Provider\Chain\Chain($p);
+
+        $geocoder->registerProvider($chain);
 
         // Try to get some data...
-        return $geocoder->reverse($latitude, $longitude);
+        $query = \Geocoder\Query\ReverseQuery::fromCoordinates($latitude, $longitude);
+        return $geocoder->reverseQuery($query);
     }
 
     /**
