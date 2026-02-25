@@ -297,7 +297,10 @@ class Resources extends Plugin
                     Request::setVar('noview', 1);
 
                     // Instantiate the controller and have it execute
-                    $newtest = new \Components\Resources\Site\Controllers\Resources(array('base_path' => Component::path('com_resources') . DS . 'site'));
+                    $controllerPath = Component::path('com_resources') . DS . 'site';
+                    $newtest = new \Components\Resources\Site\Controllers\Resources(
+                        array('base_path' => $controllerPath)
+                    );
                     $newtest->execute();
 
                     // Set up the return for the plugin 'view'

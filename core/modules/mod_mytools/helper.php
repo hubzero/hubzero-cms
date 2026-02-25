@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyTools;
+namespace Modules\Mytools;
 
 use Hubzero\Module\Module;
 use Component;
