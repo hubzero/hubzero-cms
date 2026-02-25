@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace TwitterFeed;
+namespace Modules\Twitterfeed;
 
 use Hubzero\Module\Module;
 
