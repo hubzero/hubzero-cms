@@ -23,6 +23,8 @@ use User;
  */
 class Calendar extends Model
 {
+    protected $id;
+
     /**
      * Table
      *

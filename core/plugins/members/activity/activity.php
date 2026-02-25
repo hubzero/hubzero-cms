@@ -15,6 +15,8 @@ use Hubzero\Plugin\Plugin;
  */
 class Activity extends Plugin
 {
+    protected $member;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -22,6 +22,27 @@ class MathRenderer
     public const MATH_MATHML = 5;
 
     /**
+     * Parameters
+     *
+     * @var  array
+     */
+    protected $params = array();
+
+    /**
+     * Component configuration
+     *
+     * @var  object
+     */
+    protected $config;
+
+    /**
+     * MD5 hash of TeX input
+     *
+     * @var  string
+     */
+    protected $md5 = '';
+
+    /**
      * Operation mode
      *
      * @var  integer

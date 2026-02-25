@@ -15,6 +15,8 @@ use Hubzero\Plugin\Plugin;
 
 class Transfer extends Plugin
 {
+    protected $banking;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

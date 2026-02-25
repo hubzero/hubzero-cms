@@ -18,6 +18,11 @@ use Lang;
  */
 class Helper extends Module
 {
+    protected $height;
+    protected $noflash_file;
+    protected $noflash_link;
+    protected $width;
+
     /**
      * Path to find slideshow content
      *

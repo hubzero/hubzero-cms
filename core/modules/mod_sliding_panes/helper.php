@@ -22,6 +22,9 @@ class Helper extends Module
      *
      * @var  integer
      */
+    protected $container;
+    protected $content;
+
     protected static $instances = 0;
 
     /**

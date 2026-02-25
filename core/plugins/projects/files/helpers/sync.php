@@ -13,6 +13,19 @@ namespace Plugins\Projects\Files\Helpers;
  */
 class Sync extends \Hubzero\Base\Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_connect;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_logPath;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_path;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $model;
+    protected $params;
+
     /**
      * Constructor
      *

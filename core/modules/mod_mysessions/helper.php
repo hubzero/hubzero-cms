@@ -17,6 +17,11 @@ use User;
  */
 class Helper extends Module
 {
+    protected $database;
+    protected $error;
+    protected $sessions;
+    protected $toolsConfig;
+
     /**
      * Set the time when the session will tiemout
      *

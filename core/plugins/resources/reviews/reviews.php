@@ -15,6 +15,9 @@ use Hubzero\Plugin\Plugin;
 
 class Reviews extends Plugin
 {
+    protected $banking;
+    protected $infolink;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

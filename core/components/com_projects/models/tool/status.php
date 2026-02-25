@@ -16,6 +16,9 @@ use Components\Projects\Tables;
  */
 class Status extends Model
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_statuses;
+
     /**
      * Table class name
      *

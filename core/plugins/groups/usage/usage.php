@@ -15,6 +15,8 @@ use Hubzero\Plugin\Plugin;
 
 class Usage extends Plugin
 {
+    protected $group;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

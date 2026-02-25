@@ -68,8 +68,8 @@ if ($params->get('tag_id') != null) {
 
         echo '<li' . $class . '>';
 
-        $this->set('rootLink', $rootLink)
-             ->set('parentLink', $parentLink);
+        $this->rootLink = $rootLink;
+        $this->parentLink = $parentLink;
         // Render the menu item.
         switch ($item->type) :
             case 'separator':

@@ -18,6 +18,9 @@ use Hubzero\Plugin\Plugin;
  */
 class Info extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

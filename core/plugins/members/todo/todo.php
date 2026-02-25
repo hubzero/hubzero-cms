@@ -15,6 +15,15 @@ use Hubzero\Plugin\Plugin;
  */
 class Todo extends Plugin
 {
+    protected $database;
+    protected $filters;
+    protected $member;
+    protected $model;
+    protected $projects;
+    protected $task;
+    protected $todo;
+    protected $user;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

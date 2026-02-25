@@ -19,6 +19,9 @@ use User;
  */
 class Permissions extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+
     /**
      * Config
      *

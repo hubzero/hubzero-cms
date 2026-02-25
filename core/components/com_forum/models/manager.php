@@ -19,6 +19,8 @@ use User;
  */
 class Manager extends Obj
 {
+    protected $config;
+
     /**
      * Cached data
      *

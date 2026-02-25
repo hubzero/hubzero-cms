@@ -16,6 +16,8 @@ use Components\Projects\Tables;
  */
 class Instance extends Model
 {
+    protected $params;
+
     /**
      * Table class name
      *

@@ -18,6 +18,9 @@ use User;
  */
 class Helper extends Module
 {
+    protected $cssClass;
+    protected $cssId;
+
     /**
      * Get module contents
      *

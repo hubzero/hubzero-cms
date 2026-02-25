@@ -17,6 +17,10 @@ use Date;
  */
 class Helper extends Module
 {
+    protected $courses;
+    protected $limit;
+    protected $moduleclass;
+
     /**
      * Get courses for a user
      *

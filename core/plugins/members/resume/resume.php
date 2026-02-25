@@ -15,6 +15,8 @@ use Hubzero\Plugin\Plugin;
  */
 class Resume extends Plugin
 {
+    protected $config;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

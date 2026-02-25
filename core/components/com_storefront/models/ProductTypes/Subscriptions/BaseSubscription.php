@@ -11,6 +11,28 @@ namespace Components\Storefront\Models\ProductTypes\Subscriptions;
 class BaseSubscription
 {
     /**
+     * Product ID
+     *
+     * @var  integer
+     */
+    protected $pId;
+
+    /**
+     * User ID
+     *
+     * @var  integer
+     */
+    protected $uId;
+
+    /**
+     * Database connection
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+
+    /**
      * Constructor
      *
      * @param   integer  $pId
