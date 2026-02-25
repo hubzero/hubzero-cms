@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Course_Type_Handler extends Type_Handler
+namespace Components\Cart\Lib\Handlers\Type;
+
+use Components\Cart\Lib\Handlers\TypeHandler;
+
+class CourseTypeHandler extends TypeHandler
 {
     /**
      * Constructor
      *
-     * @param   void
+     * @param   object   $item
+     * @param   integer  $crtId
      * @return  void
      */
     public function __construct($item, $crtId)
@@ -22,7 +26,6 @@ class Course_Type_Handler extends Type_Handler
 
     public function handle()
     {
-
         $ms = new \Components\Storefront\Models\Memberships();
 
         // Get current registration
@@ -33,23 +36,17 @@ class Course_Type_Handler extends Type_Handler
         $courseId = $this->item['meta']['courseId'];
 
         // Get user ID for the cart
-
         $userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
         // Load courses model and register
-        // registerForCourse($userId, $courseId, $expiration);
-
         $course = \Components\Courses\Models\Course::getInstance($this->item['meta']['courseId']);
 
         if (!$course->offerings()->count()) {
             // error enrolling
         } else {
             // Get to the first and probably the only offering
-            //$offering = $course->offerings()->current();
             $offering = $course->offering($this->item['meta']['offeringId']);
-
             $offering->add($userId);
-            //$offering->remove($userId);
         }
     }
 }

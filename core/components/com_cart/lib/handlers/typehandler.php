@@ -6,8 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Model_Handler
+namespace Components\Cart\Lib\Handlers;
+
+/**
+ * Product type handler. Parent class for all type handlers.
+ */
+class TypeHandler
 {
     // Database instance
     public $db = null;
@@ -15,17 +19,16 @@ class Model_Handler
     // Item info
     public $item;
 
+    // Cart ID
     public $crtId;
-    public $tId;
 
     /**
      * Constructor
      *
      */
-    public function __construct($item, $crtId, $tId)
+    public function __construct($item, $crtId)
     {
         $this->item = $item;
         $this->crtId = $crtId;
-        $this->tId = $tId;
     }
 }

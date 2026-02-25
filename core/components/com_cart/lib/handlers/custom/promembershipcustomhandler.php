@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Pro_Membership_Custom_Handler extends Custom_Handler
+namespace Components\Cart\Lib\Handlers\Custom;
+
+use Components\Cart\Lib\Handlers\CustomHandler;
+
+class ProMembershipCustomHandler extends CustomHandler
 {
     /**
      * Constructor
      *
-     * @param   void
+     * @param   object   $item
+     * @param   integer  $crtId
      * @return  void
      */
     public function __construct($item, $crtId)
@@ -23,7 +27,6 @@ class Pro_Membership_Custom_Handler extends Custom_Handler
     public function handle()
     {
         // Get user ID for the cart
-
         $userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
         // Get number of points to add

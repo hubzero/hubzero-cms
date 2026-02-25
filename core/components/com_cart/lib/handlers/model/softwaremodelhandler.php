@@ -6,13 +6,18 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Software_Model_Handler extends Model_Handler
+namespace Components\Cart\Lib\Handlers\Model;
+
+use Components\Cart\Lib\Handlers\ModelHandler;
+
+class SoftwareModelHandler extends ModelHandler
 {
     /**
      * Constructor
      *
-     * @param   void
+     * @param   object   $item
+     * @param   integer  $crtId
+     * @param   integer  $tId
      * @return  void
      */
     public function __construct($item, $crtId, $tId)
@@ -37,7 +42,6 @@ class Software_Model_Handler extends Model_Handler
 
             $this->item['meta']['serials'] = $serialNumbers;
             // Update the transaction items with serials
-
             \Components\Cart\Models\Cart::updateTransactionItem($this->tId, $this->item);
         }
     }

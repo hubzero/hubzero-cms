@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Handlers;
+
 /**
- * Product type handler. Parent class for all type handlers.
+ * Custom handler. Parent class for all custom handlers.
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Type_Handler
+class CustomHandler
 {
     // Database instance
     public $db = null;

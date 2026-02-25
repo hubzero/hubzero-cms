@@ -6,11 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-/**
- * Custom handler. Parent class for all custom handlers.
- */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Custom_Handler
+namespace Components\Cart\Lib\Handlers;
+
+class ModelHandler
 {
     // Database instance
     public $db = null;
@@ -18,16 +16,17 @@ class Custom_Handler
     // Item info
     public $item;
 
-    // Cart ID
     public $crtId;
+    public $tId;
 
     /**
      * Constructor
      *
      */
-    public function __construct($item, $crtId)
+    public function __construct($item, $crtId, $tId)
     {
         $this->item = $item;
         $this->crtId = $crtId;
+        $this->tId = $tId;
     }
 }

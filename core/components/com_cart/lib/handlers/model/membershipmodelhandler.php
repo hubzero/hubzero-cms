@@ -6,13 +6,18 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Membership_Model_Handler extends Model_Handler
+namespace Components\Cart\Lib\Handlers\Model;
+
+use Components\Cart\Lib\Handlers\ModelHandler;
+
+class MembershipModelHandler extends ModelHandler
 {
     /**
      * Constructor
      *
-     * @param   void
+     * @param   object   $item
+     * @param   integer  $crtId
+     * @param   integer  $tId
      * @return  void
      */
     public function __construct($item, $crtId, $tId)
@@ -25,11 +30,9 @@ class Membership_Model_Handler extends Model_Handler
         $itemInfo = $this->item['info'];
 
         // Get user
-
         $uId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
         // Get product type
-
         $warehouse = new \Components\Storefront\Models\Warehouse();
         $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
         $type = $pType['ptName'];

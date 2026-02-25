@@ -23,8 +23,9 @@ class CartProductHandler
     /**
      * Constructor
      *
-     * @param   object          item info
-     * @param   int             cart ID
+     * @param   object  $item   item info
+     * @param   int     $crtId  cart ID
+     * @param   int     $tId    transaction ID
      * @return  void
      */
     public function __construct($item, $crtId, $tId)
@@ -37,7 +38,6 @@ class CartProductHandler
     /**
      * Process item
      *
-     * @param   void
      * @return  void
      */
     public function handle()
@@ -52,51 +52,34 @@ class CartProductHandler
         // Run both product model handler and type handler if needed.
         // Model handlers must go first for type handlers to potentially use their updates
 
-        $handlersPath = dirname(__DIR__) . DS . 'lib' . DS . 'handlers';
-
         // MODEL HANDLER
-        $modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';
-        if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php')) {
-            // Include the parent class
-            include_once $handlersPath . DS . 'ModelHandler.php';
-
-            // Include the handler file
-            include_once $handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php';
-
-            $modelHandler = new $modelHandlerClass($this->item, $this->crtId, $this->tId);
+        $modelHandlerClass = str_replace(' ', '', ucwords(strtolower($ptIdTypeInfo['ptModel'])))
+            . 'ModelHandler';
+        $modelHandlerFqcn = '\\Components\\Cart\\Lib\\Handlers\\Model\\' . $modelHandlerClass;
+        if (class_exists($modelHandlerFqcn)) {
+            $modelHandler = new $modelHandlerFqcn($this->item, $this->crtId, $this->tId);
             $modelHandler->handle();
         }
 
-
         // TYPE HANDLER
-        $typeHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptName']))) . '_Type_Handler';
-        //print_r($typeHandlerClass); die;
-        if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php')) {
-            // Include the parent class
-            include_once $handlersPath . DS . 'TypeHandler.php';
-
-            // Include the handler file
-            include_once $handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php';
-
-            $typeHandler = new $typeHandlerClass($this->item, $this->crtId);
+        $typeHandlerClass = str_replace(' ', '', ucwords(strtolower($ptIdTypeInfo['ptName'])))
+            . 'TypeHandler';
+        $typeHandlerFqcn = '\\Components\\Cart\\Lib\\Handlers\\Type\\' . $typeHandlerClass;
+        if (class_exists($typeHandlerFqcn)) {
+            $typeHandler = new $typeHandlerFqcn($this->item, $this->crtId);
             $typeHandler->handle();
         }
-
 
         // CUSTOM HANDLERS (if any)
         if (!empty($this->item['meta']['customHandler'])) {
             $customHandler = $this->item['meta']['customHandler'];
-            $customHandlerClass = str_replace(' ', '_', ucwords(strtolower($customHandler))) . '_Custom_Handler';
+            $customHandlerClass = str_replace(' ', '', ucwords(strtolower($customHandler)))
+                . 'CustomHandler';
+            $customHandlerFqcn = '\\Components\\Cart\\Lib\\Handlers\\Custom\\' . $customHandlerClass;
 
-            if (file_exists($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php')) {
-                // Include the parent class
-                include_once $handlersPath . DS . 'CustomHandler.php';
-
-                // Include the handler file
-                include_once $handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php';
-
-                $customHandler = new $customHandlerClass($this->item, $this->crtId);
-                $customHandler->handle();
+            if (class_exists($customHandlerFqcn)) {
+                $handler = new $customHandlerFqcn($this->item, $this->crtId);
+                $handler->handle();
             }
         }
     }
