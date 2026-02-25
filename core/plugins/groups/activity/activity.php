@@ -237,8 +237,6 @@ class Activity extends Plugin
 
     /**
      * Unpublish an entry
-     *
-     * @return  string
      */
     protected function removeAction()
     {
@@ -285,8 +283,6 @@ class Activity extends Plugin
 
     /**
      * Star/unstar an entry
-     *
-     * @return  string
      */
     protected function starAction()
     {
@@ -334,8 +330,6 @@ class Activity extends Plugin
 
     /**
      * Save a comment
-     *
-     * @return  void
      */
     protected function postAction()
     {

@@ -1541,8 +1541,6 @@ class Articles extends SiteController
 
     /**
      * Cancel editing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

@@ -209,7 +209,6 @@ class Categories extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $category
-     * @return  void
      */
     public function editTask($category = null)
     {
@@ -428,7 +427,7 @@ class Categories extends AdminController
     /**
      * Changes the order of one or more records.
      *
-     * @return  boolean  True on success
+     * @return  void
      */
     public function reorderTask()
     {
@@ -470,8 +469,6 @@ class Categories extends AdminController
 
     /**
      * Cancels a task and redirects to default view
-     *
-     * @return  void
      */
     public function cancelTask()
     {

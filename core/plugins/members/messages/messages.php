@@ -538,7 +538,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtoarchive($database, $option, $member)
     {
@@ -577,13 +576,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -592,7 +592,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtoinbox($database, $option, $member)
     {
@@ -625,13 +624,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -640,7 +640,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtotrash($database, $option, $member)
     {
@@ -680,13 +679,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -695,7 +695,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function emptytrash($database, $option, $member)
     {
@@ -714,7 +713,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function delete($database, $option, $member)
     {
@@ -748,13 +746,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -763,7 +762,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function markasread($database, $option, $member)
     {
@@ -798,13 +796,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -813,7 +812,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function markasunread($database, $option, $member)
     {
@@ -844,13 +842,14 @@ class Messages extends Plugin
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(
+        App::redirect(
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
                 false
             )
         );
+        return;
     }
 
     /**
@@ -859,7 +858,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function savesettings($database, $option, $member)
     {
@@ -954,7 +952,8 @@ class Messages extends Plugin
         // Push through to the settings view
         Notify::success(Lang::txt('You have successfully saved your message settings.'));
 
-        return App::redirect(Route::url($member->link() . '&active=messages&action=settings', false));
+        App::redirect(Route::url($member->link() . '&active=messages&action=settings', false));
+        return;
     }
 
     /**
@@ -1014,9 +1013,11 @@ class Messages extends Plugin
         if (!$subject || !$message) {
             if (!$no_html) {
                 Notify::error(Lang::txt('You must select a message recipient and enter a message.'));
-                return App::redirect(Route::url($member->link() . '&active=messages&action=new', false));
+                App::redirect(Route::url($member->link() . '&active=messages&action=new', false));
+                return;
             }
-            return App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
+            App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
+            return;
         }
 
         // Build the "from" data for the e-mail
@@ -1044,7 +1045,8 @@ class Messages extends Plugin
         // (if no - this is an AJAX call)
         if (!$no_html) {
             Notify::success(Lang::txt('You have successfully sent a message.'));
-            return App::redirect(Route::url($member->link() . '&active=messages&task=inbox', false));
+            App::redirect(Route::url($member->link() . '&active=messages&task=inbox', false));
+            return;
         }
     }
 

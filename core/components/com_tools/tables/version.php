@@ -227,6 +227,7 @@ class Version extends Table
             if ($this->_db->query()) {
                 return true;
             }
+            return false;
         } else {
             return false;
         }

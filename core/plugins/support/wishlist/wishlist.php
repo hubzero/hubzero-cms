@@ -82,7 +82,7 @@ class Wishlist extends Plugin
      *
      * @param      integer $parentid ID to check for parents of
      * @param      string  $category Element type (determines table to look in)
-     * @return     integer
+     * @return     integer|null
      */
     public function getParentId($parentid, $category)
     {
@@ -118,6 +118,8 @@ class Wishlist extends Plugin
             $database->setQuery("SELECT wishlist FROM `#__wishlist_item` WHERE id=" . $refid);
             return $database->loadResult();
         }
+
+        return null;
     }
 
     /**
@@ -155,6 +157,8 @@ class Wishlist extends Plugin
                 return Lang::txt('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
                 break;
         }
+
+        return '';
     }
 
     /**

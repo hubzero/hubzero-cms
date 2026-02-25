@@ -722,7 +722,6 @@ class Group extends Obj
      *
      * @param   string  $property
      * @param   mixed   $value
-     * @return  void
      */
     public function __set($property = null, $value = null)
     {

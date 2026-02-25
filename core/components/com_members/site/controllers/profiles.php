@@ -692,8 +692,6 @@ class Profiles extends SiteController
 
     /**
      * Display a user profile
-     *
-     * @return  void
      */
     public function viewTask()
     {
@@ -1222,7 +1220,8 @@ class Profiles extends SiteController
 
             // Send an e-mail to admin
             if (!$msg->send()) {
-                return App::abort(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
+                App::abort(500, 'xHUB Internal Error: Error mailing resource request to site administrator(s).');
+                return;
             }
 
             // Output the view
@@ -1251,7 +1250,6 @@ class Profiles extends SiteController
      * Show a form for editing a profile
      *
      * @param   object  $profile  Profile
-     * @return  void
      */
     public function editTask($profile = null)
     {
@@ -1340,7 +1338,7 @@ class Profiles extends SiteController
      * Save changes to a profile
      * Outputs JSON when called via AJAX, redirects to profile otherwise
      *
-     * @return  string  JSON
+     * @return  void
      */
     public function saveTask()
     {
@@ -1809,7 +1807,7 @@ class Profiles extends SiteController
     /**
      * Perform querying of research organization based on the input value
      *
-     * @return  array   matched research organization names
+     * @return  void
      */
     public function getOrganizationsTask()
     {
@@ -1917,5 +1915,7 @@ class Profiles extends SiteController
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

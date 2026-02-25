@@ -28,7 +28,7 @@ class Tools extends Plugin
      * Modify or append to query filters
      *
      * @param   array  $filters
-     * @return  array
+     * @return  array|null
      */
     public function onQuestionsPrepareFilters($filters)
     {
@@ -49,13 +49,15 @@ class Tools extends Plugin
 
             return $filters;
         }
+
+        return [];
     }
 
     /**
      * Return a list of users to be notified of changes
      *
      * @param   object  $row
-     * @return  array
+     * @return  array|null
      */
     public function onQuestionNotify($row)
     {
@@ -94,5 +96,7 @@ class Tools extends Plugin
         if (count($recipients)) {
             return $recipients;
         }
+
+        return [];
     }
 }

@@ -452,6 +452,7 @@ class Google extends Obj
         } catch (Exception $e) {
             return false;
         }
+        return false;
     }
 
     /**

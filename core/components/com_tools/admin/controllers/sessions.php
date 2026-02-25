@@ -214,7 +214,6 @@ class Sessions extends AdminController
      * Edit a quota class
      *
      * @param   integer  $id  ID of class to edit
-     * @return  void
      */
     public function editTask($id = 0)
     {
@@ -341,8 +340,6 @@ class Sessions extends AdminController
 
     /**
      * Cancel a task (redirects to default task)
-     *
-     * @return  void
      */
     public function cancelclassTask()
     {

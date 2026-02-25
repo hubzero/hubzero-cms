@@ -481,6 +481,8 @@ class Parser
                 $macro->render()
             ));
         }
+
+        return '';
     }
 
     /**

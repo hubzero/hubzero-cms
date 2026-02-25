@@ -796,7 +796,7 @@ class GradeBook extends Base
      * Check whether or not the student(s) have earned a badge
      *
      * @param      int $member_id
-     * @return     bool
+     * @return     void
      **/
     public function hasEarnedBadge($member_id = null)
     {

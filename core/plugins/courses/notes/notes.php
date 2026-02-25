@@ -135,8 +135,6 @@ class Notes extends Plugin
 
     /**
      * Set layout to the listing
-     *
-     * @return  void
      */
     public function _list()
     {
@@ -147,8 +145,6 @@ class Notes extends Plugin
 
     /**
      * Download
-     *
-     * @return  void
      */
     public function _download()
     {
@@ -176,7 +172,6 @@ class Notes extends Plugin
      * Set layout to the edit view
      *
      * @param   mixed  $model
-     * @return  void
      */
     public function _edit($model = null)
     {

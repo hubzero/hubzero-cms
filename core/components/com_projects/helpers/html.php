@@ -894,7 +894,7 @@ class Html extends Obj
      * @param   int     $uid
      * @param   array   $config
      * @param   array   $params
-     * @return  void
+     * @return  array
      */
     public static function getSuggestions($model)
     {
@@ -980,7 +980,7 @@ class Html extends Obj
      * Suggest alias name from title
      *
      * @param   string  $title
-     * @return  void
+     * @return  string|false
      */
     public static function suggestAlias($title = '', $maxLength = 30)
     {
@@ -1014,7 +1014,7 @@ class Html extends Obj
      * Get group members
      *
      * @param   string  $groupname
-     * @return  void
+     * @return  array
      */
     public static function getGroupMembers($groupname)
     {

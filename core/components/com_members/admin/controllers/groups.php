@@ -171,7 +171,6 @@ class Groups extends AdminController
      * Display all the groups a member is apart of
      *
      * @param   integer  $id  Member ID to lookup
-     * @return  void
      */
     public function displayTask($id = 0)
     {

@@ -132,7 +132,7 @@ class Tools extends SiteController
      * Tool asset delivery function.
      * Original purpose was to deliver a template overrideable css file for the filexfer package
      *
-     * @return  exit
+     * @return  void
      */
     public function assetsTask()
     {

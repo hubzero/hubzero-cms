@@ -278,7 +278,7 @@ class Tags extends SiteController
      * Returns results (JSON format) for a search string
      * Used for autocompletion scripts called via AJAX
      *
-     * @return  string  JSON
+     * @return  void
      */
     public function autocompleteTask()
     {
@@ -369,7 +369,7 @@ class Tags extends SiteController
     /**
      * Generate an RSS feed
      *
-     * @return  string  RSS
+     * @return  void
      */
     public function feedTask()
     {
@@ -651,7 +651,6 @@ class Tags extends SiteController
      * Show a form for editing a tag
      *
      * @param   object  $tag
-     * @return  void
      */
     public function editTask($tag = null)
     {
@@ -689,8 +688,6 @@ class Tags extends SiteController
 
     /**
      * Cancel a task and redirect to the main listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {
@@ -895,7 +892,7 @@ class Tags extends SiteController
     /**
      * Method to check admin access permission
      *
-     * @return  boolean  True on success
+     * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'tag', $assetId = null)

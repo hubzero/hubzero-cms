@@ -312,7 +312,7 @@ class Connect extends Obj
      * @param   string   $service  Service name (google or dropbox)
      * @param   boolean  $reauth   Re-authenticate user?
      * @param   string   $return   URL to return to after authorization
-     * @return  false or array with configs
+     * @return  bool|void
      */
     public function makeConnection($service = 'google', $reauth = false, $return = '')
     {
@@ -1352,7 +1352,7 @@ class Connect extends Obj
      * @param   array    &$versions       Versions collector array
      * @param   array    &$timestamps     Collector array
      * @param   integer  $original        Source file?
-     * @return  array
+     * @return  void
      */
     public function sortRemoteRevisions($id, $converted, $lastModifiedBy, $uid, $service, $file, &$versions = array(), &$timestamps = array(), $original = 0)
     {
@@ -1461,7 +1461,7 @@ class Connect extends Obj
      * @param   string   $action    Action
      * @param   string   $newdir    New directory path
      * @param   string   $parentId  Parent ID
-     * @return  array
+     * @return  void
      */
     public function fixConvertedItems($service = 'google', $uid = 0, $dir = '', $action = '', $newdir = '', $parentId = '')
     {
@@ -1812,7 +1812,7 @@ class Connect extends Obj
      * @param   string  $fc     File content
      * @param   string  $fpath  File path relative to repo path
      * @param   string  $path   Project repo path
-     * @return  void
+     * @return  bool
      */
     public function fetchFile($fc = '', $fpath = '', $path = '')
     {
@@ -2000,6 +2000,8 @@ class Connect extends Obj
             $params = implode('&', $params);
             return self::GOOGLE_OAUTH2_AUTH_URL . "?$params";
         }
+
+        return '';
     }
 
     /**

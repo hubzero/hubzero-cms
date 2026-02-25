@@ -451,6 +451,7 @@ class Collection
             Filesystem::delete($path . DS . $img->imgName);
             return true;
         }
+        return false;
     }
 
     /* ******************************** Static functions ********************************** */

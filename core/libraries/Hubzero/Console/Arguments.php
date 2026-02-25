@@ -195,7 +195,7 @@ class Arguments
      *
      * @param   string  $namespace  The namespace location to use
      * @param   array   $paths      Optional paths to load from
-     * @return  $this
+     * @return  void
      **/
     public static function registerNamespace($namespace, $paths = array())
     {
@@ -223,7 +223,7 @@ class Arguments
      * Routes command to the proper file based on the input given
      *
      * @param   string  $command  The command to route
-     * @return  void
+     * @return  string
      **/
     public static function routeCommand($command = 'help')
     {
@@ -295,7 +295,7 @@ class Arguments
      * @param   string  $command  The command to route
      * @param   string  $class    The class deduced from routeCommand
      * @param   string  $task     The task to route
-     * @return  void
+     * @return  string
      **/
     public static function routeTask($command, $class, $task = 'execute')
     {

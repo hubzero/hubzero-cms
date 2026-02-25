@@ -356,7 +356,7 @@ class PdfFormDeployment
     /**
      * Set ID
      *
-     * @return int
+     * @return void
      **/
     public function setId($id)
     {
@@ -484,7 +484,7 @@ class PdfFormDeployment
     /**
      * Generates a new form deployment crumb
      *
-     * @return string
+     * @return void
      **/
     public function genNewCrumb()
     {

@@ -95,6 +95,9 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
         }
     }
 
+    /**
+     * @return  void
+     */
     public function status()
     {
         // Do nothing as of now
@@ -126,7 +129,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
+     * @return  void
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {

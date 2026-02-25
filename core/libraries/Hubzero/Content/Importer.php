@@ -47,7 +47,7 @@ class Importer
      * Get Instance of importer
      *
      * @param   $key  Instance Key
-     * @return  void
+     * @return  static
      */
     public static function &getInstance($key = null)
     {

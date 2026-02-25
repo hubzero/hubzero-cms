@@ -107,7 +107,6 @@ class ImportHooks extends AdminController
      * Edit a record
      *
      * @param   object  $row  \Hubzero\Content\Import\Model\Hook
-     * @return  void
      */
     public function editTask($row = null)
     {

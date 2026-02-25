@@ -85,7 +85,7 @@ class Repo extends Obj
     /**
      * Initialize repo
      *
-     * @return  object
+     * @return  void
      */
     private function _ini()
     {
@@ -138,7 +138,7 @@ class Repo extends Obj
     /**
      * Return the adapter for this repo
      *
-     * @return  object
+     * @return  void
      */
     private function _adapter()
     {
@@ -1319,7 +1319,7 @@ class Repo extends Obj
     /**
      * Connect to remote repo
      *
-     * @return  boolean
+     * @return  void
      */
     public function iniRemote()
     {

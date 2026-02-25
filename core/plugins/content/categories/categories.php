@@ -85,6 +85,7 @@ class Categories extends Plugin
 
             return $result;
         }
+        return $result;
     }
 
     /**

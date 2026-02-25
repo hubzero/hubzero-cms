@@ -96,8 +96,6 @@ class Certificate extends SiteController
 
     /**
      * Redirect to main page
-     *
-     * @return  void
      */
     public function cancelTask()
     {

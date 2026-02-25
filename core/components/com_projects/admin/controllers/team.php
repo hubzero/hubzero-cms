@@ -381,8 +381,6 @@ class Team extends AdminController
 
     /**
      * Cancel a task
-     *
-     * @return  void
      */
     public function cancelTask()
     {

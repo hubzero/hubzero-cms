@@ -140,7 +140,6 @@ class Create extends SiteController
     /**
      * Redirect to the login page with the return set
      *
-     * @return  void
      */
     public function loginTask()
     {
@@ -276,7 +275,6 @@ class Create extends SiteController
      * Display a form for composing the title, abstract, etc.
      *
      * @param   object  $row  Resource
-     * @return  void
      */
     public function step_compose($row = null)
     {
@@ -377,8 +375,6 @@ class Create extends SiteController
 
     /**
      * Show form for adding authors to a resource
-     *
-     * @return  void
      */
     public function step_authors()
     {
@@ -417,7 +413,7 @@ class Create extends SiteController
      * @param   array    $labels
      * @param   integer  $parent_id     Tag ID
      * @param   string   $parent_label  Tag
-     * @return  void
+     * @return  array
      */
     private function _loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
     {
@@ -472,7 +468,6 @@ class Create extends SiteController
      * Show form for adding tags to an entry
      *
      * @param   array  $existing
-     * @return  void
      */
     public function step_tags($existing = array())
     {
@@ -539,8 +534,6 @@ class Create extends SiteController
 
     /**
      * Show final review form for setting license and agreeing to terms of submission
-     *
-     * @return  void
      */
     public function step_review()
     {

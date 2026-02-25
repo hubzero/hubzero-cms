@@ -298,8 +298,6 @@ class Questions extends Plugin
 
     /**
      * Save a question and redirect to the main listing when done
-     *
-     * @return  void
      */
     private function save()
     {

@@ -125,7 +125,6 @@ class Items extends AdminController
      * Edit a collection
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

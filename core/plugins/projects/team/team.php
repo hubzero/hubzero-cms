@@ -482,8 +482,6 @@ class Team extends Plugin
 
     /**
      * Save member
-     *
-     * @return  void  redirect
      */
     protected function _save()
     {
@@ -696,8 +694,6 @@ class Team extends Plugin
 
     /**
      * Sync group members
-     *
-     * @return  void
      */
     protected function sync()
     {

@@ -67,7 +67,7 @@ class WinCache extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {
@@ -143,7 +143,7 @@ class WinCache extends None
     /**
      * Force garbage collect expired cache data as items are removed only on get/add/delete/info etc
      *
-     * @return  boolean  True on success, false otherwise.
+     * @return  void
      */
     public function gc()
     {

@@ -148,6 +148,8 @@ class Attachment extends Relational
                     . DS . ltrim($this->get('filename'), '/');
             break;
         }
+
+        return '';
     }
 
     /**
