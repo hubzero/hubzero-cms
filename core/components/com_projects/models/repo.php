@@ -24,6 +24,11 @@ use Hubzero\Facades\Component;
  */
 class Repo extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_quota;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_sizeLimit;
+
     /**
      * Tables\Repo
      *

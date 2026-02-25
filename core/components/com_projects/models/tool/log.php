@@ -17,6 +17,11 @@ use Hubzero\Facades\Lang;
  */
 class Log extends Model
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_actor;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_creator;
+
     /**
      * Table class name
      *

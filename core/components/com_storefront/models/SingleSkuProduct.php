@@ -17,6 +17,8 @@ use Hubzero\Facades\Lang;
  */
 class SingleSkuProduct extends Product
 {
+    protected $defaultSku;
+
     /**
      * Contructor
      *

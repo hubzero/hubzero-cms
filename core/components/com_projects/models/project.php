@@ -24,6 +24,46 @@ use Hubzero\Facades\Event;
  */
 class Project extends Model
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_base;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_creator;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_groupOwner;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_member;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_newCount;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_objPub;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_owner;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_project;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_publication;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_repo;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblActivity;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblBlog;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblComment;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblOwner;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblTodo;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblType;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_team;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_type;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_userGroups;
+    protected $params;
+
     /**
      * Table class name
      *

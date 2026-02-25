@@ -23,6 +23,27 @@ use Hubzero\Facades\User;
 /** @phpstan-consistent-constructor */
 class Tool extends Model
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_actor;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_creator;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_lastUpdate;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_lastView;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_log;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_status;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_statusChanger;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_version;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_viewLog;
+
     /**
      * Table class name
      *

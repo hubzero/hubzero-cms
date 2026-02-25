@@ -24,6 +24,8 @@ use Hubzero\Facades\Component;
  */
 class CurrentCart extends Cart
 {
+    protected $db;
+
     // Session cart
     public $cart = null;
 

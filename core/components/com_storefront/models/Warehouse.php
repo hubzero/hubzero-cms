@@ -24,6 +24,9 @@ use Hubzero\Facades\Lang;
  */
 class Warehouse extends \Hubzero\Base\Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+
     // Product categories to look at (to define scope)
     public $lookupCollections = null;
 

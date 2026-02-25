@@ -19,6 +19,17 @@ use Hubzero\Facades\Lang;
  */
 class Git extends Models\Adapter
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_fileLog;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_files;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_git;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_gitpath;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_profileAssoc;
+
     /**
      * Adapter name
      *

@@ -18,6 +18,13 @@ use Hubzero\Facades\Filesystem;
  */
 class Nogit extends Models\Adapter
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_files;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_nogit;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_profileAssoc;
+
     /**
      * Adapter name
      *
