@@ -26,6 +26,8 @@ use Hubzero\Facades\Event;
  */
 class Messagesv2r1 extends ApiController
 {
+    protected $acl;
+
     /**
      * Execute a request
      *

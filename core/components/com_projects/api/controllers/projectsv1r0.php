@@ -23,6 +23,8 @@ use Hubzero\Facades\Lang;
 // phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Projectsv1r0 extends ApiController
 {
+    protected $model;
+
     /**
      * Display projects user belongs to
      *

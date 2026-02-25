@@ -24,6 +24,10 @@ use Hubzero\Facades\Event;
  */
 class Commentsv2r0 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *

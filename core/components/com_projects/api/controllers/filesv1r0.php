@@ -28,6 +28,11 @@ use Hubzero\Facades\Filesystem;
 // phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Filesv1r0 extends ApiController
 {
+    protected $cid;
+    protected $model;
+    protected $ormconn;
+    protected $ormproj;
+
     /**
      * Execute a request
      *

@@ -21,6 +21,11 @@ use OAuthProvider;
  */
 class OauthControllerApi extends ApiController
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_provider;
+    protected $segments;
+    protected $view;
+
     /**
      * Short description for 'execute'
      *

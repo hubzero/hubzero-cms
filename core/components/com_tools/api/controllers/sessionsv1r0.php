@@ -25,6 +25,9 @@ use Hubzero\Facades\Plugin;
  */
 class Sessionsv1r0 extends ApiController
 {
+    protected $database;
+    protected $rt;
+
     /**
      * Method to get list of tools
      *

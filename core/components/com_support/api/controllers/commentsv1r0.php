@@ -25,6 +25,10 @@ use Hubzero\Facades\User;
  */
 class Commentsv1r0 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *

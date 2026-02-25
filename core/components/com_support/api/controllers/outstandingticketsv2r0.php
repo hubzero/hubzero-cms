@@ -17,6 +17,8 @@ use Component;
  */
 class OutstandingTicketsv2r0 extends ApiController
 {
+    protected $acl;
+
     /**
      * Execute a request
      *

@@ -26,6 +26,10 @@ use Hubzero\Facades\User;
  */
 class Ticketsv2r0 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *

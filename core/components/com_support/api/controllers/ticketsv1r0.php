@@ -18,11 +18,16 @@ use Config;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
+
 /**
  * API controller class for support tickets
  */
 class Ticketsv1r0 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *
@@ -394,7 +399,7 @@ class Ticketsv1r0 extends ApiController
         $ticket = \Components\Support\Models\Ticket::blank();
 
         // Set the created date
-        $ticket->set('created', Date::of('now')->toSql());
+        $ticket->set('created', \Hubzero\Facades\Date::of('now')->toSql());
 
         // Incoming
         $ticket->set('report', Request::getString('report', '', 'post'));

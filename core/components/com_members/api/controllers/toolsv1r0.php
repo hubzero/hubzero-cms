@@ -23,6 +23,8 @@ use Hubzero\Facades\User;
  */
 class Toolsv1r0 extends ApiController
 {
+    protected $rt;
+
     /**
      * Get a member's tool sessions
      *

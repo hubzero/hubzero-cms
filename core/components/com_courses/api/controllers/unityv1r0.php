@@ -19,6 +19,8 @@ use Hubzero\Facades\Date;
  */
 class Unityv1r0 extends base
 {
+    protected $db;
+
     /**
      * Processes grade save from unity app
      *
