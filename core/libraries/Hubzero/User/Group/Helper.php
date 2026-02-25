@@ -9,6 +9,7 @@
 namespace Hubzero\User\Group;
 
 use Hubzero\User\Group;
+use Hubzero\Facades\App;
 
 /**
  * Misc. group helper methods
@@ -38,7 +39,7 @@ class Helper
     public static function getPopularGroups($limit = 0)
     {
         //database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //query
         $sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc,
@@ -73,7 +74,7 @@ class Helper
     public static function getFeaturedGroups($groupList)
     {
         //database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //parse the group list
         $groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
@@ -111,7 +112,7 @@ class Helper
     public static function getGroupsMatchingTagString($usertags, $usergroups)
     {
         //database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //turn users tag string into array
         $mytags = ($usertags != '') ? array_map('trim', explode(',', $usertags)) : array();
@@ -175,7 +176,7 @@ class Helper
             return false;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = 'SELECT gidNumber FROM `#__xgroups_inviteemails` WHERE email=' . $db->quote($email) . ';';
 
@@ -240,7 +241,7 @@ class Helper
             return false;
         }
 
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
 
         $query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id='" .
             $role .
@@ -277,7 +278,7 @@ class Helper
 
         // Trigger the functions that return the areas we'll be using
         //then add overview to array
-        $hub_group_plugins = \Event::trigger('groups.onGroupAreas', array());
+        $hub_group_plugins = \Hubzero\Facades\Event::trigger('groups.onGroupAreas', array());
         array_unshift(
             $hub_group_plugins,
             array('name' => 'overview', 'title' => 'Overview', 'default_access' => 'anyone')
@@ -358,7 +359,7 @@ class Helper
         $db = App::get('db');
 
         // make sure we have a group object
-        if (!$group = Group::getInstance(\Request::getString('cn', $cname))) {
+        if (!$group = Group::getInstance(\Hubzero\Facades\Request::getString('cn', $cname))) {
             return $db;
         }
 
@@ -370,7 +371,7 @@ class Helper
         // load super group db config if not passed in
         if (empty($config)) {
             // build path to config file
-            $uploadPath = \Component::params('com_groups')->get('uploadpath');
+            $uploadPath = \Hubzero\Facades\Component::params('com_groups')->get('uploadpath');
             $configPath = PATH_APP .
                 DS .
                 trim($uploadPath, DS) .

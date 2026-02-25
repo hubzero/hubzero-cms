@@ -15,9 +15,9 @@ use Hubzero\User\Group;
 use DateTimezone;
 use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use DateTime;
-use Route;
-use Lang;
-use Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Event model
@@ -47,7 +47,7 @@ class Event extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // load page jtable
         $this->_tbl = new $this->_tbl_name($this->_db);

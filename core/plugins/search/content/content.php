@@ -3,6 +3,8 @@
 namespace Plugins\Search\Content;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

@@ -3,6 +3,11 @@
 namespace Plugins\Groups\Courses;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * @package    hubzero-cms

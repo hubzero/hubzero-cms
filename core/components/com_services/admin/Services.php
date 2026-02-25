@@ -22,8 +22,8 @@ class Services extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_services')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_services')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
@@ -31,19 +31,19 @@ class Services extends AbstractComponent
         require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
         require_once dirname(__DIR__) . DS . 'models' . DS . 'subscription.php';
 
-        $controllerName = \Request::getCmd('controller', 'services');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'services');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'services';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_SERVICES_SERVICES'),
-            \Route::url('index.php?option=com_services&controller=services'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SERVICES_SERVICES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_services&controller=services'),
             $controllerName == 'services'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
-            \Route::url('index.php?option=com_services&controller=subscriptions'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_services&controller=subscriptions'),
             $controllerName == 'subscriptions'
         );
 

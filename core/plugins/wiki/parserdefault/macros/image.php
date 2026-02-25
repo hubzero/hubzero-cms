@@ -110,7 +110,7 @@ class Image extends WikiMacro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = \Component::params('com_wiki');
+        $this->config = \Hubzero\Facades\Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -162,7 +162,7 @@ class Image extends WikiMacro
 
         // Does the file exist?
         if ($ret) {
-            if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+            if (!in_array(strtolower(\Hubzero\Facades\Filesystem::extension($file)), $this->imgs)) {
                 return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
             }
 
@@ -377,7 +377,7 @@ class Image extends WikiMacro
 
         $file = trim($file, DS);
 
-        if (\Request::getString('format') == 'pdf') {
+        if (\Hubzero\Facades\Request::getString('format') == 'pdf') {
             return $this->path($file);
         }
 
@@ -396,7 +396,7 @@ class Image extends WikiMacro
         $link = rtrim($link, '/');
         $link .= '/Image:' . $file;
 
-        return \Route::url($link);
+        return \Hubzero\Facades\Route::url($link);
     }
 
     /**

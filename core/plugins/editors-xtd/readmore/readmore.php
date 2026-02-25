@@ -3,6 +3,9 @@
 namespace Plugins\EditorsXtd\Readmore;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 /**
  * @package    hubzero-cms

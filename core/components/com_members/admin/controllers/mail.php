@@ -11,12 +11,13 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Form\Form;
 use Exception;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Send mass email to members
@@ -53,7 +54,7 @@ class Mail extends AdminController
         }
 
         $file = dirname(dirname(__DIR__)) . '/models/forms/mail.xml';
-        $file = \Filesystem::cleanPath($file);
+        $file = \Hubzero\Facades\Filesystem::cleanPath($file);
 
         //Form::addFieldPath(__DIR__ . '/fields');
 

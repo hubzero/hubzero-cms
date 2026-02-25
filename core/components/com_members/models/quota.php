@@ -11,8 +11,8 @@ namespace Components\Members\Models;
 use Hubzero\Database\Relational;
 use Components\Members\Models\Quota\Category;
 use Components\Members\Models\Quota\Log;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * User quota model
@@ -93,7 +93,7 @@ class Quota extends Relational
             $command = "update_quota '" . $this->get('user_id') . "' '"
                 . $this->get('soft_blocks') . "' '" . $this->get('hard_blocks') . "'";
 
-            $cmd = "/bin/sh " . \Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
+            $cmd = "/bin/sh " . \Hubzero\Facades\Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
 
             exec($cmd, $results, $status);
 
@@ -104,7 +104,7 @@ class Quota extends Relational
                 return false;
             }
 
-            $log = Log::blank();
+            $log = \Hubzero\Facades\Log::blank();
             $log->set('object_type', 'class');
             $log->set('object_id', (int)$this->get('id'));
             $log->set('name', (string)$this->get('alias'));

@@ -78,7 +78,7 @@ class InertiaService
      */
     public function isInertiaRequest(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         $header = strtolower((string) $request->header('X-Inertia', ''));
 
         return $header === 'true';
@@ -147,7 +147,7 @@ class InertiaService
      */
     public function url(): string
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         return (string) $request->server('REQUEST_URI', '/');
     }
 
@@ -250,7 +250,7 @@ class InertiaService
             return;
         }
 
-        \App::redirect($url);
+        \Hubzero\Facades\App::redirect($url);
     }
 
     /**
@@ -260,7 +260,7 @@ class InertiaService
      */
     public function redirect(string $url, int $status = 302): void
     {
-        $method = strtoupper((string) \App::get('request')->getMethod());
+        $method = strtoupper((string) \Hubzero\Facades\App::get('request')->getMethod());
         if (
             $this->isInertiaRequest()
             && $status === 302
@@ -313,7 +313,7 @@ class InertiaService
      */
     protected function handleVersionMismatch(): void
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         $method = strtoupper((string) $request->getMethod());
         if ($method !== 'GET') {
             return;
@@ -353,7 +353,7 @@ class InertiaService
             return $props;
         }
 
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         $partialComponent = (string) $request->header('X-Inertia-Partial-Component', '');
         if ($partialComponent !== '' && $partialComponent !== $component) {
             return $props;
@@ -390,7 +390,7 @@ class InertiaService
             $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: array());
         }
 
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
@@ -442,7 +442,7 @@ class InertiaService
      */
     public function isDebugEnabled(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return false;
         }
@@ -629,7 +629,7 @@ class InertiaService
     {
         $this->sentHeaders[$name] = $value;
 
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers)) {
             $response->headers->set($name, $value);
         }
@@ -649,7 +649,7 @@ class InertiaService
      */
     protected function setStatusCode(int $status): void
     {
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && method_exists($response, 'setStatusCode')) {
             $response->setStatusCode($status);
         }
@@ -719,7 +719,7 @@ class InertiaService
      */
     protected function requestContext(): array
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return array();
         }
@@ -769,7 +769,7 @@ class InertiaService
      */
     protected function requestHeaderValue(string $name): string
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if ($request && method_exists($request, 'header')) {
             $value = (string) $request->header($name, '');
             if ($value !== '') {

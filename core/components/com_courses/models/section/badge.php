@@ -41,7 +41,7 @@ class Badge extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new $this->_tbl_name($this->_db);
 
@@ -67,7 +67,7 @@ class Badge extends Base
     public static function loadBySectionId($id)
     {
         $model = new stdClass();
-        $model->_db = \App::get('db');
+        $model->_db = \Hubzero\Facades\App::get('db');
 
         $model = new self();
 
@@ -162,7 +162,7 @@ class Badge extends Base
      */
     private function getUrl($type = 'Claim')
     {
-        $cconfig        = \Component::params('com_courses');
+        $cconfig        = \Hubzero\Facades\Component::params('com_courses');
         $request_type   = $cconfig->get('badges_request_type', 'oauth');
         $badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($this->get('provider_name')), $request_type);
         $badgesProvider = $badgesHandler->getProvider();

@@ -12,6 +12,15 @@
 namespace Plugins\Cron\Support;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 class Support extends Plugin
 {

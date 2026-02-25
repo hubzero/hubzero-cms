@@ -12,6 +12,8 @@
 namespace Plugins\Cron\Cache;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Filesystem;
 
 class Cache extends Plugin
 {
@@ -76,7 +78,7 @@ class Cache extends Plugin
             return;
         }
 
-        \Cache::gc();
+        \Hubzero\Facades\Cache::gc();
 
         return true;
     }

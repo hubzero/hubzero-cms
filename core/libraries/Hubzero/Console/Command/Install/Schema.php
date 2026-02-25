@@ -61,7 +61,7 @@ class Schema
         self::output("-----------------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = \Hubzero\Facades\Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -127,7 +127,7 @@ class Schema
         self::output("-----------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = \Hubzero\Facades\Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -191,7 +191,7 @@ class Schema
         self::output("-------------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = \Hubzero\Facades\Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);

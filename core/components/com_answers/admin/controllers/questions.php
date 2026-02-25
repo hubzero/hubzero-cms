@@ -10,13 +10,13 @@ namespace Components\Answers\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Answers\Models\Question;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Event;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for questions
@@ -30,7 +30,7 @@ class Questions extends AdminController
      */
     public function execute()
     {
-        $this->banking = \Component::params('com_members')->get('bankAccounts');
+        $this->banking = \Hubzero\Facades\Component::params('com_members')->get('bankAccounts');
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');

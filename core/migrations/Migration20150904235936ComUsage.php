@@ -32,19 +32,19 @@ class Migration20150904235936ComUsage extends Base
         $options['database'] = $config->get('statsDBDatabase');
 
         if (empty($options['driver'])) {
-            $options['driver'] = \Config::get('dbtype');
+            $options['driver'] = \Hubzero\Facades\Config::get('dbtype');
         }
         if (empty($options['host'])) {
-            $options['host'] = \Config::get('host');
+            $options['host'] = \Hubzero\Facades\Config::get('host');
         }
         if (empty($options['user'])) {
-            $options['user'] = \Config::get('user');
+            $options['user'] = \Hubzero\Facades\Config::get('user');
         }
         if (empty($options['password'])) {
-            $options['password'] = \Config::get('password');
+            $options['password'] = \Hubzero\Facades\Config::get('password');
         }
         if (empty($options['database'])) {
-            $options['database'] = \Config::get('db') . '_metrics';
+            $options['database'] = \Hubzero\Facades\Config::get('db') . '_metrics';
         }
 
         $originalDriver    = $options['driver'];

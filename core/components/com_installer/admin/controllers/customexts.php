@@ -11,12 +11,16 @@ namespace Components\Installer\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Installer\Admin\Helpers\Cli;
 use Components\Installer\Admin\Models\Custom_extensions;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Event;
 use Route;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Html;
 
 /**
  * Custom Exentions Controller
@@ -49,7 +53,7 @@ class Customexts extends AdminController
         $limit = Request::getState(
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
-            \Config::get('list_limit'),
+            Config::get('list_limit'),
             'int'
         );
         $start = Request::getState(

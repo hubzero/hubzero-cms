@@ -12,15 +12,15 @@ use Components\Support\Models\Report;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Utility\Validate;
-use Request;
-use Pathway;
-use Config;
-use Event;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Report items as abusive
@@ -58,7 +58,7 @@ class Abuse extends SiteController
         $this->_title  = Lang::txt(strtoupper($this->_option));
         $this->_title .= ': ' . Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE'));
 
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**

@@ -108,7 +108,7 @@ class Params extends Relational
      */
     public static function getDefaultParams($folder = null, $element = null)
     {
-        $plugin = \Plugin::byType($folder, $element);
+        $plugin = \Hubzero\Facades\Plugin::byType($folder, $element);
 
         return new Registry($plugin->params);
     }

@@ -9,6 +9,8 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Document;
 
 /**
  * Renders a geolocation element
@@ -72,7 +74,7 @@ class Geo extends Base
     {
         if (!$this->_script) {
             Document::addScript('//maps.google.com/maps/api/js?sensor=false');
-            $geoJs = \Request::base(true) . '/core/components/com_publications/models/element/assets/js/geo.js';
+            $geoJs = \Hubzero\Facades\Request::base(true) . '/core/components/com_publications/models/element/assets/js/geo.js';
             Document::addScript($geoJs);
             $this->_script = true;
         }

@@ -17,17 +17,18 @@ use Hubzero\Utility\Sanitize;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
 use Exception;
-use Document;
+use Hubzero\Facades\Document;
 use Pathway;
-use Request;
-use Session;
-use Config;
-use Event;
-use Route;
-use Lang;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Answers controller class for questions
@@ -41,7 +42,7 @@ class Questions extends SiteController
      */
     public function execute()
     {
-        $this->config->set('banking', \Component::params('com_members')->get('bankAccounts'));
+        $this->config->set('banking', \Hubzero\Facades\Component::params('com_members')->get('bankAccounts'));
 
         $this->registerTask('__default', 'search');
         $this->registerTask('display', 'search');
@@ -558,9 +559,9 @@ class Questions extends SiteController
             App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
         }
 
-        $r_u = \Component::params('com_answers')->get('restrict_users');
+        $r_u = \Hubzero\Facades\Component::params('com_answers')->get('restrict_users');
         if ($r_u == "active") {
-            $r_d = \Component::params('com_answers')->get('restrict_days');
+            $r_d = \Hubzero\Facades\Component::params('com_answers')->get('restrict_days');
             $r_t = new \DateTime();
             $r_c = new \DateTime(User::get("registerDate"));
             if ($r_t->diff($r_c)->days < $r_d) {
@@ -927,9 +928,9 @@ class Questions extends SiteController
             return $this->loginTask();
         }
 
-        $r_u = \Component::params('com_answers')->get('restrict_users');
+        $r_u = \Hubzero\Facades\Component::params('com_answers')->get('restrict_users');
         if ($r_u == "active") {
-            $r_d = \Component::params('com_answers')->get('restrict_days');
+            $r_d = \Hubzero\Facades\Component::params('com_answers')->get('restrict_days');
             $r_t = new \DateTime();
             $r_c = new \DateTime(User::get("registerDate"));
             if ($r_t->diff($r_c)->days < $r_d) {
@@ -1140,7 +1141,7 @@ class Questions extends SiteController
         $mid = Request::getInt('m', 0);
 
         //get module params
-        $params = \Module::params($mid);
+        $params = \Hubzero\Facades\Module::params($mid);
 
         //number of questions to get
         $limit = intval($params->get('limit', 5));

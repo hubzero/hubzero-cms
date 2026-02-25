@@ -178,7 +178,7 @@ trait Hittable
 
         // Try HubZero session
         if (class_exists('\\App') && method_exists('\\App', 'get')) {
-            $session = \App::get('session');
+            $session = \Hubzero\Facades\App::get('session');
             if ($session) {
                 $hits = $session->get($sessionKey, []);
                 return in_array($this->getPkValue(), $hits);
@@ -207,7 +207,7 @@ trait Hittable
 
         // Try HubZero session
         if (class_exists('\\App') && method_exists('\\App', 'get')) {
-            $session = \App::get('session');
+            $session = \Hubzero\Facades\App::get('session');
             if ($session) {
                 $hits = $session->get($sessionKey, []);
                 $hits[] = $pk;

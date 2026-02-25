@@ -11,9 +11,10 @@ namespace Components\Members\Models\Import\Handler;
 use Hubzero\Base\Obj;
 use Components\Projects\Models\Project;
 use Components\Projects\Tables;
-use Component;
-use User;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Member Projects import handler

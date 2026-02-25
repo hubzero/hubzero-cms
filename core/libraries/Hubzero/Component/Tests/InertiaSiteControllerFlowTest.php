@@ -208,7 +208,7 @@ namespace Hubzero\Component\Tests {
             $this->addVaryInertia();
             $this->body = $body;
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             if ($response) {
                 $response->setStatusCode($status);
                 foreach ($headers as $name => $value) {
@@ -251,11 +251,11 @@ namespace Hubzero\Component\Tests {
             }
 
             $request = new InertiaFlowRequestStub($headers, $method, array('REQUEST_URI' => $uri));
-            \App::set('request', $request);
-            \App::set('response', new InertiaFlowResponseStub());
+            \Hubzero\Facades\App::set('request', $request);
+            \Hubzero\Facades\App::set('response', new InertiaFlowResponseStub());
 
             $container = new InertiaFlowContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $service = new TestableInertiaFlowService();
             $service->version($version);
@@ -291,7 +291,7 @@ namespace Hubzero\Component\Tests {
             $this->assertIsArray($result);
             $this->assertSame('Test/Page', $result['component'] ?? null);
             $this->assertSame('/component/render', $result['url'] ?? null);
-            $this->assertSame(200, \App::get('response')->statusCode);
+            $this->assertSame(200, \Hubzero\Facades\App::get('response')->statusCode);
             $this->assertNull($service->status);
             $this->assertFalse($service->terminated);
         }

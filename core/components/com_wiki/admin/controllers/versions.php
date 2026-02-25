@@ -12,12 +12,14 @@ use Hubzero\Component\AdminController;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Version;
 use Components\Wiki\Helpers\Parser;
-use Request;
-use Notify;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use Date;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for wiki page revisions

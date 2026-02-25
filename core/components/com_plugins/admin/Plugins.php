@@ -23,18 +23,18 @@ class Plugins extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_plugins')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_plugins')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $task = \Request::getCmd('task');
+        $task = \Hubzero\Facades\Request::getCmd('task');
         if (strstr($task, '.')) {
-            \Request::setVar('controller', strstr($task, '.', true));
-            \Request::setVar('task', strstr($task, '.'));
+            \Hubzero\Facades\Request::setVar('controller', strstr($task, '.', true));
+            \Hubzero\Facades\Request::setVar('task', strstr($task, '.'));
         }
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'plugins'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'plugins'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         require_once dirname(__DIR__) . DS . 'helpers' . DS . 'plugins.php';

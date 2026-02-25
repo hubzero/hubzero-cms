@@ -22,66 +22,66 @@ class Resources extends AbstractComponent
      */
     protected function execute(): void
     {
-        $option = \Request::getCmd('option', 'com_resources');
-        $task = \Request::getWord('task', '');
+        $option = \Hubzero\Facades\Request::getCmd('option', 'com_resources');
+        $task = \Hubzero\Facades\Request::getWord('task', '');
 
-        if (!\User::authorise('core.manage', $option)) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', $option)) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Get controller name
-        $controllerName = \Request::getCmd('controller', 'items');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'items');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'items';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES'),
-            \Route::url('index.php?option=' . $option),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option),
             ($controllerName == 'items' && $task != 'orphans')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_ORPHANS'),
-            \Route::url('index.php?option=' . $option . '&controller=items&task=orphans'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_ORPHANS'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=items&task=orphans'),
             $task == 'orphans'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_TYPES'),
-            \Route::url('index.php?option=' . $option . '&controller=types'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_TYPES'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=types'),
             $controllerName == 'types'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_LICENSES'),
-            \Route::url('index.php?option=' . $option . '&controller=licenses'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_LICENSES'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=licenses'),
             $controllerName == 'licenses'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_AUTHORS'),
-            \Route::url('index.php?option=' . $option . '&controller=authors'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_AUTHORS'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=authors'),
             $controllerName == 'authors'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_ROLES'),
-            \Route::url('index.php?option=' . $option . '&controller=roles'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_ROLES'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=roles'),
             $controllerName == 'roles'
         );
-        require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_RESOURCES_PLUGINS'),
-                \Route::url('index.php?option=' . $option . '&controller=plugins'),
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_RESOURCES_PLUGINS'),
+                \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=plugins'),
                 $controllerName == 'plugins'
             );
         }
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_IMPORT'),
-            \Route::url('index.php?option=' . $option . '&controller=imports'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_IMPORT'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=imports'),
             $controllerName == 'imports'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_RESOURCES_IMPORTHOOK'),
-            \Route::url('index.php?option=' . $option . '&controller=importhooks'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_RESOURCES_IMPORTHOOK'),
+            \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=importhooks'),
             $controllerName == 'importhooks'
         );
 

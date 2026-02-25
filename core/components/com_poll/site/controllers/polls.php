@@ -10,14 +10,14 @@ namespace Components\Poll\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Poll\Models\Poll;
-use Document;
-use Request;
-use Pathway;
-use Notify;
-use Route;
-use Lang;
-use Html;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
 
 /**
  * Poll controller
@@ -106,8 +106,8 @@ class Polls extends SiteController
                 ->row();
 
             if ($dates->get('mindate')) {
-                $first_vote = \Date::of($dates->get('mindate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
-                $last_vote  = \Date::of($dates->get('maxdate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+                $first_vote = \Hubzero\Facades\Date::of($dates->get('mindate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+                $last_vote  = \Hubzero\Facades\Date::of($dates->get('maxdate'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
             }
 
             $votes = $poll->options()
@@ -295,7 +295,7 @@ class Polls extends SiteController
         } else {
             // Determine whether cookie should be 'secure' or not
             $secure   = false;
-            $forceSsl = \Config::get('force_ssl', false);
+            $forceSsl = \Hubzero\Facades\Config::get('force_ssl', false);
 
             if (App::isAdmin() && $forceSsl >= 1) {
                 $secure = true;

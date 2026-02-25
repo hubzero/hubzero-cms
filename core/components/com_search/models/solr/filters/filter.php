@@ -10,6 +10,8 @@ namespace Components\Search\Models\Solr\Filters;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Database model for search filters

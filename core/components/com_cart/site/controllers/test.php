@@ -8,7 +8,11 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Cart controller class
@@ -53,7 +57,7 @@ class Test extends ComponentController
 
         if (0) {
             // CREATE COUPON
-            include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCoupon.php';
+            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCoupon.php';
             try {
                 // Constructor take the coupon code
                 $coupon = new \Components\Storefront\Models\Coupon('hui');
@@ -94,7 +98,7 @@ class Test extends ComponentController
 
         if (0) {
             // CREATE NEW COURSE
-            include_once \Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
+            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
             $course = new \Components\Storefront\Models\Course();
             $course->setName('Name of the course');
@@ -136,7 +140,7 @@ class Test extends ComponentController
 
         if (0) {
             // UPDATE COURSE by recreating it
-            include_once \Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCourse.php';
+            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCourse.php';
             $course = new \Components\Storefront\Models\Course();
             $course->setName('Operations Management 104');
             $course->setDescription('Operations Management 104 is some kind of test course for now...');
@@ -186,7 +190,7 @@ class Test extends ComponentController
         //$user->delete();
         //die;
 
-        \Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+        \Hubzero\Facades\Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
         $this->view->display();
     }
@@ -243,7 +247,7 @@ class Test extends ComponentController
         //print_r($curl_result);
         die('+');
 
-        \Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+        \Hubzero\Facades\Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
         $this->view->display();
     }

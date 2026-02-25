@@ -9,7 +9,7 @@
 namespace Modules\Newsletter;
 
 use Hubzero\Module\Module;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying Newsletter Mailing List Sign up
@@ -24,7 +24,7 @@ class Helper extends Module
     public function display()
     {
         // Instantiate database object
-        $this->database = \App::get('db');
+        $this->database = \Hubzero\Facades\App::get('db');
 
         // Get mailing list details that we are wanting users to sign up for
         $mailinglistId = $this->database->quote($this->params->get('mailinglist', 0));

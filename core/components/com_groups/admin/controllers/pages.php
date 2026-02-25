@@ -14,14 +14,14 @@ use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers;
 use stdClass;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Groups controller class for managing group pages
@@ -301,7 +301,7 @@ class Pages extends AdminController
         }
 
         // log edit
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_saved',
             'comments'  => array('page' => $page, 'version' => $version)
@@ -362,7 +362,7 @@ class Pages extends AdminController
         }
 
         // log change
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_deleted',
             'comments'  => $ids
@@ -764,7 +764,7 @@ class Pages extends AdminController
         Helpers\Pages::sendApprovedNotification('page', $page);
 
         // log approval
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_approved',
             'comments'  => array($page->get('id'))

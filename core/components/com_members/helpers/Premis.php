@@ -11,8 +11,8 @@ namespace Components\Members\Helpers;
 use Hubzero\User\User;
 use Hubzero\User\Password;
 use Components\Courses\Models\Course;
-use Component;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 use Lang;
 
 /**

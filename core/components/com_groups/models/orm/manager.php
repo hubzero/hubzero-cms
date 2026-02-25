@@ -116,10 +116,10 @@ class Manager extends Relational
 
         // If creating, result is our new id, so set that back on the model
         if ($this->isNew()) {
-            \Event::trigger($this->getTableName() . '_new', ['model' => $this]);
+            \Hubzero\Facades\Event::trigger($this->getTableName() . '_new', ['model' => $this]);
         }
 
-        \Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        \Hubzero\Facades\Event::trigger('system.onContentSave', array($this->getTableName(), $this));
 
         return $result;
     }

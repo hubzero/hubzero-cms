@@ -10,9 +10,10 @@ namespace Modules\ArticleArchive;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Module class for displaying an article archive

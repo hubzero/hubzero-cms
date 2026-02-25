@@ -22,9 +22,9 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
-        include_once \Component::path('com_usage') . DS . 'helpers' . DS . 'helper.php';
+        include_once \Hubzero\Facades\Component::path('com_usage') . DS . 'helpers' . DS . 'helper.php';
         $udb = \Components\Usage\Helpers\Helper::getUDBO();
 
         $this->cls = trim($this->params->get('moduleclass_sfx', ''));

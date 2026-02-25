@@ -22,30 +22,30 @@ class Oaipmh extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_oaipmh')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_oaipmh')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         require_once __DIR__ . DS . 'controllers' . DS . 'config.php';
 
-        $task = \Request::getCmd('task');
+        $task = \Hubzero\Facades\Request::getCmd('task');
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_OAIPMH_ABOUT'),
-            \Route::url('index.php?option=com_oaipmh'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_OAIPMH_ABOUT'),
+            \Hubzero\Facades\Route::url('index.php?option=com_oaipmh'),
             (!$task || $task == 'display')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_OAIPMH_SCHEMAS'),
-            \Route::url('index.php?option=com_oaipmh&task=schemas'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_OAIPMH_SCHEMAS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_oaipmh&task=schemas'),
             ($task == 'schemas')
         );
         require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_OAIPMH_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_OAIPMH_PLUGINS'),
+                \Hubzero\Facades\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
             );
         }
 

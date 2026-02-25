@@ -8,6 +8,8 @@
 
 namespace Components\System\Helpers\Html;
 
+use Hubzero\Facades\Lang;
+
 /**
  * Utility class working with system
  */

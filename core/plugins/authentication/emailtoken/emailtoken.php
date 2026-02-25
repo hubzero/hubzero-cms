@@ -3,6 +3,12 @@
 namespace Plugins\Authentication\Emailtoken;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Log;
 
 /**
  * @package    hubzero-cms
@@ -123,13 +129,13 @@ class Emailtoken extends Plugin
      */
     private function hasExceededLoginLimit($user)
     {
-        $params    = \Component::params('com_members');
+        $params    = \Hubzero\Facades\Component::params('com_members');
         $limit     = (int)$params->get('login_attempts_limit', 10);
         $timeframe = (int)$params->get('login_attempts_timeframe', 1);
         $result    = true;
 
         // Get the user's tokens
-        $threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
+        $threshold = date("Y-m-d H:i:s", strtotime(\Hubzero\Facades\Date::toSql() . " {$timeframe} hours ago"));
         $auths     = new \Hubzero\User\Log\Auth();
 
         $auths->whereEquals('username', $user->username)
@@ -159,7 +165,7 @@ class Emailtoken extends Plugin
      */
     private function hasExceededBlockLimit($response)
     {
-        $params    = \Component::params('com_members');
+        $params    = \Hubzero\Facades\Component::params('com_members');
         $limit     = (int)$params->get('blocked_accounts_limit', 10);
         $timeframe = (int)$params->get('blocked_accounts_timeframe', 1);
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -171,7 +177,7 @@ class Emailtoken extends Plugin
         // Fail2ban Enabled?
         if ($fail2ban == 1) {
             // Determine what the threshold is
-            $threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$timeframe} hours ago"));
+            $threshold = date("Y-m-d H:i:s", strtotime(\Hubzero\Facades\Date::toSql() . " {$timeframe} hours ago"));
             $auths     = new \Hubzero\User\Log\Auth();
 
             // Select all usernames which are blocked

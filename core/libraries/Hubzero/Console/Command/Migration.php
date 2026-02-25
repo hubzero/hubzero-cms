@@ -62,7 +62,7 @@ class Migration extends Base implements CommandInterface
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
                 // Get group config
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
 
                 // Path to group folder
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -570,7 +570,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 
@@ -730,7 +730,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 
@@ -889,7 +889,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 
@@ -908,7 +908,7 @@ class Migration extends Base implements CommandInterface
         }
 
         // Get database connection
-        $db = $alternativeDatabase ?? \App::get('db');
+        $db = $alternativeDatabase ?? \Hubzero\Facades\App::get('db');
 
         if (!$db) {
             $this->output->error('Error: Could not get database connection.');

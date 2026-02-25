@@ -16,11 +16,12 @@ use Components\Collections\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Item\Comment;
 use Pathway;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for collection posts

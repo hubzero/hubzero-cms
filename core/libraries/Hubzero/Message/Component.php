@@ -9,7 +9,7 @@
 namespace Hubzero\Message;
 
 use Hubzero\Database\Relational;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for message component list

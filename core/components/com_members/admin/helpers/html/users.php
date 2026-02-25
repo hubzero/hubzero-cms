@@ -8,6 +8,10 @@
 
 namespace Components\Members\Admin\Helpers\Html;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+
 /**
  * Extended Utility class for the Users component.
  */

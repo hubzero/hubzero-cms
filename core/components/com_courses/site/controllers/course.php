@@ -15,16 +15,16 @@ use Hubzero\Base\Obj;
 use Hubzero\Content\Server;
 use Exception;
 use stdClass;
-use Pathway;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Event;
-use Date;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Courses controller class
@@ -93,7 +93,7 @@ class Course extends SiteController
         }
 
         //set title of browser window
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**
@@ -825,7 +825,7 @@ class Course extends SiteController
             $filename = substr($filename, strlen('file:'));
         }
         $filename = urldecode($filename);
-        $filename = \Filesystem::clean($filename);
+        $filename = \Hubzero\Facades\Filesystem::clean($filename);
         $filename = str_replace(' ', '_', $filename);
 
         // Get the configured upload path

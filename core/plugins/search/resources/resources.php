@@ -4,6 +4,8 @@ namespace Plugins\Search\Resources;
 
 use Components\Resources\Models\Entry;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

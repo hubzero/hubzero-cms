@@ -87,8 +87,8 @@ class Record extends Obj
         $this->_mode    = strtoupper($mode);
 
         // Create core objects
-        $this->_database = \App::get('db');
-        $this->_user     = \User::getInstance();
+        $this->_database = \Hubzero\Facades\App::get('db');
+        $this->_user     = \Hubzero\Facades\User::getInstance();
 
         // Create objects
         $this->record = new stdClass();

@@ -21,7 +21,7 @@ class Dns
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getConfig()
     {
-        return \Config::get('app.fqdn', '');
+        return \Hubzero\Facades\Config::get('app.fqdn', '');
     }
 
     /**

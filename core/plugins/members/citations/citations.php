@@ -17,6 +17,17 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 /**
  * Groups plugin class for citations
@@ -478,7 +489,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Hubzero\Facades\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Set scope & scope id in save so no one can access hidden form inputs
@@ -624,7 +635,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Hubzero\Facades\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Incoming

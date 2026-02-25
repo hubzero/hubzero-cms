@@ -99,8 +99,8 @@ class Twitter extends Macro
         }
 
         $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/twitter/twitter.js';
-        \Document::addScript(
-            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js')
+        \Hubzero\Facades\Document::addScript(
+            \Hubzero\Facades\Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js')
         );
 
         // output embeded timeline

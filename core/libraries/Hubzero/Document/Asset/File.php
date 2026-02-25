@@ -225,7 +225,7 @@ class File extends Obj
     public function setPath($type, $path)
     {
         if (!array_key_exists($type, $this->paths)) {
-            throw new \Exception(\App::get('language')->txt('Unknown asset path type of %s given.', $type));
+            throw new \Exception(\Hubzero\Facades\App::get('language')->txt('Unknown asset path type of %s given.', $type));
         }
 
         $path = trim((string) $path);
@@ -256,7 +256,7 @@ class File extends Obj
                 $basea  = PATH_APP . DS;
                 $basec  = PATH_CORE . DS;
 
-                $client = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
+                $client = (isset(\Hubzero\Facades\App::get('client')->alias) ? \Hubzero\Facades\App::get('client')->alias : \Hubzero\Facades\App::get('client')->name);
 
                 $path2 = '';
                 switch ($this->extensionType()) {
@@ -389,7 +389,7 @@ class File extends Obj
     public function overridePath()
     {
         if (!isset($this->paths['override'])) {
-            $this->paths['override']  = \App::get('template')->path . DS . 'html';
+            $this->paths['override']  = \Hubzero\Facades\App::get('template')->path . DS . 'html';
             $this->paths['override'] .= DS .
                 $this->extensionName() .
                 DS .
@@ -479,13 +479,13 @@ class File extends Obj
         }
 
         if ($this->extensionType() == 'system') {
-            $relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') .
+            $relative = rtrim(str_replace('/administrator', '', \Hubzero\Facades\Request::base(true)), '/') .
                 substr($output, strlen(PATH_ROOT));
         } else {
             if (strpos($output, PATH_ROOT) === 0) {
-                $relative = rtrim(\Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
+                $relative = rtrim(\Hubzero\Facades\Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');
             } elseif (strpos($output, PATH_CORE) === 0) {
-                $relative = rtrim(\Request::root(true), '/') .
+                $relative = rtrim(\Hubzero\Facades\Request::root(true), '/') .
                     "/core/" .
                     rtrim(substr($output, strlen(PATH_CORE)), '/');
             }

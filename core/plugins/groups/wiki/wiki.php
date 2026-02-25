@@ -3,6 +3,12 @@
 namespace Plugins\Groups\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * @package    hubzero-cms
@@ -42,7 +48,7 @@ class Wiki extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         $ext = strtolower($extension);
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
 

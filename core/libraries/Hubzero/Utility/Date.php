@@ -192,7 +192,7 @@ class Date extends DateTime
 
     /**
      * Magic method to render the date object in the format specified in the public
-     * static member Date::$format.
+     * static member \Hubzero\Facades\Date::$format.
      *
      * @return  string  The date as a formatted string.
      */
@@ -213,19 +213,19 @@ class Date extends DateTime
     {
         switch ($day) {
             case 0:
-                return $abbr ? \Lang::txt('SUN') : \Lang::txt('SUNDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('SUN') : \Hubzero\Facades\Lang::txt('SUNDAY');
             case 1:
-                return $abbr ? \Lang::txt('MON') : \Lang::txt('MONDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('MON') : \Hubzero\Facades\Lang::txt('MONDAY');
             case 2:
-                return $abbr ? \Lang::txt('TUE') : \Lang::txt('TUESDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('TUE') : \Hubzero\Facades\Lang::txt('TUESDAY');
             case 3:
-                return $abbr ? \Lang::txt('WED') : \Lang::txt('WEDNESDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('WED') : \Hubzero\Facades\Lang::txt('WEDNESDAY');
             case 4:
-                return $abbr ? \Lang::txt('THU') : \Lang::txt('THURSDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('THU') : \Hubzero\Facades\Lang::txt('THURSDAY');
             case 5:
-                return $abbr ? \Lang::txt('FRI') : \Lang::txt('FRIDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('FRI') : \Hubzero\Facades\Lang::txt('FRIDAY');
             case 6:
-                return $abbr ? \Lang::txt('SAT') : \Lang::txt('SATURDAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('SAT') : \Hubzero\Facades\Lang::txt('SATURDAY');
         }
 
         return '';
@@ -324,29 +324,29 @@ class Date extends DateTime
     {
         switch ($month) {
             case 1:
-                return $abbr ? \Lang::txt('JANUARY_SHORT') : \Lang::txt('JANUARY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('JANUARY_SHORT') : \Hubzero\Facades\Lang::txt('JANUARY');
             case 2:
-                return $abbr ? \Lang::txt('FEBRUARY_SHORT') : \Lang::txt('FEBRUARY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('FEBRUARY_SHORT') : \Hubzero\Facades\Lang::txt('FEBRUARY');
             case 3:
-                return $abbr ? \Lang::txt('MARCH_SHORT') : \Lang::txt('MARCH');
+                return $abbr ? \Hubzero\Facades\Lang::txt('MARCH_SHORT') : \Hubzero\Facades\Lang::txt('MARCH');
             case 4:
-                return $abbr ? \Lang::txt('APRIL_SHORT') : \Lang::txt('APRIL');
+                return $abbr ? \Hubzero\Facades\Lang::txt('APRIL_SHORT') : \Hubzero\Facades\Lang::txt('APRIL');
             case 5:
-                return $abbr ? \Lang::txt('MAY_SHORT') : \Lang::txt('MAY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('MAY_SHORT') : \Hubzero\Facades\Lang::txt('MAY');
             case 6:
-                return $abbr ? \Lang::txt('JUNE_SHORT') : \Lang::txt('JUNE');
+                return $abbr ? \Hubzero\Facades\Lang::txt('JUNE_SHORT') : \Hubzero\Facades\Lang::txt('JUNE');
             case 7:
-                return $abbr ? \Lang::txt('JULY_SHORT') : \Lang::txt('JULY');
+                return $abbr ? \Hubzero\Facades\Lang::txt('JULY_SHORT') : \Hubzero\Facades\Lang::txt('JULY');
             case 8:
-                return $abbr ? \Lang::txt('AUGUST_SHORT') : \Lang::txt('AUGUST');
+                return $abbr ? \Hubzero\Facades\Lang::txt('AUGUST_SHORT') : \Hubzero\Facades\Lang::txt('AUGUST');
             case 9:
-                return $abbr ? \Lang::txt('SEPTEMBER_SHORT') : \Lang::txt('SEPTEMBER');
+                return $abbr ? \Hubzero\Facades\Lang::txt('SEPTEMBER_SHORT') : \Hubzero\Facades\Lang::txt('SEPTEMBER');
             case 10:
-                return $abbr ? \Lang::txt('OCTOBER_SHORT') : \Lang::txt('OCTOBER');
+                return $abbr ? \Hubzero\Facades\Lang::txt('OCTOBER_SHORT') : \Hubzero\Facades\Lang::txt('OCTOBER');
             case 11:
-                return $abbr ? \Lang::txt('NOVEMBER_SHORT') : \Lang::txt('NOVEMBER');
+                return $abbr ? \Hubzero\Facades\Lang::txt('NOVEMBER_SHORT') : \Hubzero\Facades\Lang::txt('NOVEMBER');
             case 12:
-                return $abbr ? \Lang::txt('DECEMBER_SHORT') : \Lang::txt('DECEMBER');
+                return $abbr ? \Hubzero\Facades\Lang::txt('DECEMBER_SHORT') : \Hubzero\Facades\Lang::txt('DECEMBER');
         }
 
         return '';
@@ -425,7 +425,7 @@ class Date extends DateTime
     public function toSql($local = false, $dbo = null)
     {
         if ($dbo === null) {
-            $dbo = \App::get('db');
+            $dbo = \Hubzero\Facades\App::get('db');
         }
         return $this->format($dbo->getDateFormat(), $local, false);
     }
@@ -463,7 +463,7 @@ class Date extends DateTime
         $format = $format ?: self::$format;
 
         // get timezone idenfier from user setting otherwise user system
-        $tz = \User::getParam('timezone', \Config::get('offset'));
+        $tz = \Hubzero\Facades\User::getParam('timezone', \Hubzero\Facades\Config::get('offset'));
 
         // format date
         return $this->toTimeZone($tz, $format, $ignoreDst);
@@ -505,7 +505,7 @@ class Date extends DateTime
 
         // Less than a minute
         if ($diff < 60) {
-            return \Lang::txt('JLIB_HTML_DATE_RELATIVE_LESSTHANAMINUTE');
+            return \Hubzero\Facades\Lang::txt('JLIB_HTML_DATE_RELATIVE_LESSTHANAMINUTE');
         }
 
         // Round to minutes
@@ -513,7 +513,7 @@ class Date extends DateTime
 
         // 1 to 59 minutes
         if ($diff < 60 || $unit == 'minute') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_MINUTES', $diff);
+            return \Hubzero\Facades\Lang::txts('JLIB_HTML_DATE_RELATIVE_MINUTES', $diff);
         }
 
         // Round to hours
@@ -521,7 +521,7 @@ class Date extends DateTime
 
         // 1 to 23 hours
         if ($diff < 24 || $unit == 'hour') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_HOURS', $diff);
+            return \Hubzero\Facades\Lang::txts('JLIB_HTML_DATE_RELATIVE_HOURS', $diff);
         }
 
         // Round to days
@@ -529,7 +529,7 @@ class Date extends DateTime
 
         // 1 to 6 days
         if ($diff < 7 || $unit == 'day') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_DAYS', $diff);
+            return \Hubzero\Facades\Lang::txts('JLIB_HTML_DATE_RELATIVE_DAYS', $diff);
         }
 
         // Round to weeks
@@ -537,7 +537,7 @@ class Date extends DateTime
 
         // 1 to 4 weeks
         if ($diff <= 4 || $unit == 'week') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_WEEKS', $diff);
+            return \Hubzero\Facades\Lang::txts('JLIB_HTML_DATE_RELATIVE_WEEKS', $diff);
         }
 
         // [!] HUBZERO - Added months
@@ -547,7 +547,7 @@ class Date extends DateTime
         // 1 to 12 months
         if ($diff <= 12 || $unit == 'month')
         {
-            return \Lang::txt('%s months ago', $diff);
+            return \Hubzero\Facades\Lang::txt('%s months ago', $diff);
         }*/
 
         // [!] HUBZERO - Changed default to format "% days ago"

@@ -23,7 +23,7 @@ class Version
      */
     public function iterate($func)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (true) {
             $query = "SELECT instance FROM `#__tool_version`;";
@@ -54,7 +54,7 @@ class Version
      */
     public static function getCurrentToolVersion($toolid)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (is_numeric($toolid)) {
             $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
@@ -85,7 +85,7 @@ class Version
      */
     public static function getDevelopmentToolVersion($toolid)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (is_numeric($toolid)) {
             $query = "SELECT instance FROM #__tool_version AS v WHERE v.toolid=" .
@@ -117,7 +117,7 @@ class Version
      */
     public static function getToolRevision($toolid, $revision)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if ($revision == 'dev' || $revision == 'development') {
             if (is_numeric($toolid)) {

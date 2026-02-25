@@ -22,7 +22,7 @@ class Oauth extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', 'authorize');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'authorize');
 
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             throw new \Exception('Specified controller does not exist.', 404);

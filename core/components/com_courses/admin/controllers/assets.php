@@ -11,11 +11,12 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
-use Filesystem;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Courses controller class for managing course pages
@@ -247,7 +248,7 @@ class Assets extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            \Hubzero\Facades\Notify::error($error);
         }
 
         // Output the HTML
@@ -336,7 +337,7 @@ class Assets extends AdminController
             // Make sure the upload path exist
             if (!is_dir($path))
             {
-                if (!\Filesystem::makeDirectory($path))
+                if (!Filesystem::makeDirectory($path))
                 {
                     $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
                     $this->editTask($row);
@@ -356,7 +357,7 @@ class Assets extends AdminController
             }
 
             // Perform the upload
-            if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+            if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
             {
                 $this->setError(Lang::txt('ERROR_UPLOADING'));
             }

@@ -151,7 +151,7 @@ class File extends Relational
         $path = $this->path();
 
         if (file_exists($path)) {
-            if (!\Filesystem::delete($path)) {
+            if (!\Hubzero\Facades\Filesystem::delete($path)) {
                 $this->addError('Unable to delete file.');
 
                 return false;
@@ -173,7 +173,7 @@ class File extends Relational
         $destination = $this->getUploadDir() . DS . $this->get('comment_id');
 
         if (!is_dir($destination)) {
-            if (!\Filesystem::makeDirectory($destination)) {
+            if (!\Hubzero\Facades\Filesystem::makeDirectory($destination)) {
                 $this->addError('Unable to create upload path.');
 
                 return false;
@@ -187,7 +187,7 @@ class File extends Relational
 
         $destination .= DS . $filename;
 
-        if (!\Filesystem::upload($temp, $destination)) {
+        if (!\Hubzero\Facades\Filesystem::upload($temp, $destination)) {
             $this->addError('Unable to upload file.');
 
             return false;

@@ -9,10 +9,10 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-use Request;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Knowledgebase model for a comment
@@ -375,7 +375,7 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = \Hubzero\Facades\Event::trigger('content.onContentBeforeSave', array(
                 'com_kb.comment.content',
                 &$this,
                 $this->isNew()

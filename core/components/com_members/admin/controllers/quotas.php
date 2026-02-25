@@ -13,13 +13,13 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Quota;
 use Components\Members\Models\Quota\Category;
 use Filesystem;
-use Request;
-use Notify;
-use Route;
-use Html;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Manage member quotas
@@ -558,7 +558,7 @@ class Quotas extends AdminController
 
         $username = $user->get('username');
 
-        $config = \Component::params('com_tools');
+        $config = \Hubzero\Facades\Component::params('com_tools');
         $host = $config->get('storagehost');
 
         if ($username && $host) {

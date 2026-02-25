@@ -13,7 +13,10 @@ use Hubzero\Component\SiteController;
 use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
 use OAuth2;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * Handle Oauth Authorization & Tokens

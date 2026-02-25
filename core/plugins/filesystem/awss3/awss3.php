@@ -29,7 +29,7 @@ class Awss3 extends Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = \Plugin::params('filesystem', 'awss3');
+        $pparams = \Hubzero\Facades\Plugin::params('filesystem', 'awss3');
 
         $app_id = $params['app_id'];
         $app_secret = $params['app_secret'];

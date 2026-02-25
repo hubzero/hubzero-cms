@@ -23,21 +23,21 @@ class Installer extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_installer')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_installer')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        if ($task = \Request::getCmd('task')) {
+        if ($task = \Hubzero\Facades\Request::getCmd('task')) {
             if (strstr($task, '.')) {
                 @list($c, $t) = explode('.', $task);
-                $t = \Request::setVar('task', trim($t));
-                $c = \Request::setVar('controller', trim($c));
+                $t = \Hubzero\Facades\Request::setVar('task', trim($t));
+                $c = \Hubzero\Facades\Request::setVar('controller', trim($c));
             }
         }
-        $controllerName = \Request::getCmd('controller', 'manage');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'manage');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         \Components\Installer\Admin\Helpers\Installer::addSubmenu($controllerName);

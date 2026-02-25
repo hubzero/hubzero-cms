@@ -10,8 +10,8 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
 use Components\Publications\Models\Orm\Category;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a list of support ticket statuses
@@ -39,7 +39,7 @@ class Publicationcategory extends Select
 
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 
-        include_once \Component::path('com_publications') . '/models/orm/category.php';
+        include_once \Hubzero\Facades\Component::path('com_publications') . '/models/orm/category.php';
 
         $types = Category::all()->rows();
 

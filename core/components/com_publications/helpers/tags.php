@@ -9,9 +9,10 @@
 namespace Components\Publications\Helpers;
 
 use Components\Tags\Models\Cloud;
-use Route;
-use Date;
-use Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Publication Tagging class

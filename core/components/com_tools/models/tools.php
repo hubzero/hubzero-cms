@@ -39,7 +39,7 @@ class Tools extends Obj
             sort($result);
 
             if (count($result) > 0) {
-                $database = \App::get('db');
+                $database = \Hubzero\Facades\App::get('db');
 
                 foreach ($result as $key => $val) {
                     $result[$key] = $database->quote($val);

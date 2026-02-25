@@ -10,11 +10,12 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
-use Request;
-use Event;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Component;
 
 /**
  * Authors block
@@ -344,7 +345,7 @@ class Authors extends Base
         $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
 
         // Instantiate a new registration object
-        include_once \Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
         $xregistration = new \Components\Members\Models\Registration();
 
         // Do we have a registered user with this email?
@@ -430,7 +431,7 @@ class Authors extends Base
 
         // Get organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = \Hubzero\Facades\Component::params('com_members')->get('rorApi');
         if ($useRorApi) {
             $orgid = $this->getOrganizationId($org);
             $pAuthor->orgid = $orgid;
@@ -450,7 +451,7 @@ class Authors extends Base
             $project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
             // Load component language file
-            Lang::load('com_projects') || Lang::load('com_projects', \Component::path('com_projects') . DS . 'site');
+            Lang::load('com_projects') || Lang::load('com_projects', \Hubzero\Facades\Component::path('com_projects') . DS . 'site');
 
             // Plugin params
             $plugin_params = array(
@@ -501,7 +502,7 @@ class Authors extends Base
         }
 
         // Instantiate a new registration object
-        include_once \Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
         $xregistration = new \Components\Members\Models\Registration();
 
         // Get current owners
@@ -530,7 +531,7 @@ class Authors extends Base
 
         // Get organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = \Hubzero\Facades\Component::params('com_members')->get('rorApi');
         if ($useRorApi) {
             $orgid = $this->getOrganizationId($org);
             $row->orgid = $orgid;
@@ -793,7 +794,7 @@ class Authors extends Base
         $org = trim($organization);
         $orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = \Hubzero\Facades\Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);

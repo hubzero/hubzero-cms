@@ -8,7 +8,7 @@
 
 namespace Components\Categories\Admin;
 
-use Request;
+use Hubzero\Facades\Request;
 use Hubzero\Component\AbstractComponent;
 
 /**
@@ -24,8 +24,8 @@ class Categories extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', Request::getCmd('extension'))) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', Request::getCmd('extension'))) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 

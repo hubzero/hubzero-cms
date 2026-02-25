@@ -9,10 +9,10 @@
 namespace Hubzero\Form\Fields;
 
 use stdClass;
-use Request;
-use Html;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * CategoryEdit form field
@@ -143,7 +143,7 @@ class CategoryEdit extends Select
                 // To take save or create in a category you need to have create rights for that category
                 // unless the item is already in that category.
                 // Unset the option if the user isn't authorised for it. In this field assets are always categories.
-                if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true) {
+                if (\Hubzero\Facades\User::authorise('core.create', $extension . '.category.' . $option->value) != true) {
                     unset($options[$i]);
                 }
             }
@@ -154,14 +154,14 @@ class CategoryEdit extends Select
             // but you should be able to save in that category.
             foreach ($options as $i => $option) {
                 $catAsset = $extension . '.category.' . $oldCat;
-                $canEditState = \User::authorise('core.edit.state', $catAsset);
+                $canEditState = \Hubzero\Facades\User::authorise('core.edit.state', $catAsset);
                 if ($canEditState != true && !isset($oldParent)) {
                     if ($option->value != $oldCat) {
                         unset($options[$i]);
                     }
                 }
                 if (
-                    \User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true
+                    \Hubzero\Facades\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true
                     && (isset($oldParent)) && $option->value != $oldParent
                 ) {
                     unset($options[$i]);
@@ -170,7 +170,7 @@ class CategoryEdit extends Select
                 // However, if you can edit.state you can also move this to another category for which you have
                 // create permission and you should also still be able to save in the current category.
                 if (
-                    (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
+                    (\Hubzero\Facades\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && ($option->value != $oldCat && !isset($oldParent))
                 ) {
                     {
@@ -178,7 +178,7 @@ class CategoryEdit extends Select
                     }
                 }
                 if (
-                    (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
+                    (\Hubzero\Facades\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && (isset($oldParent)) && $option->value != $oldParent
                 ) {
                     {

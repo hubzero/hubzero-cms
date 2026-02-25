@@ -10,9 +10,9 @@ namespace Components\System\Admin\Controllers;
 
 use Components\System\Models\Info as KnowItAll;
 use Hubzero\Component\AdminController;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * System controller class for info

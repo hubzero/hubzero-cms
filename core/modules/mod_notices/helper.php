@@ -9,10 +9,10 @@
 namespace Modules\Notices;
 
 use Hubzero\Module\Module;
-use Request;
-use Config;
-use Lang;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Module class for displaying site wide notices
@@ -130,7 +130,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // Set today's time and date
         $now = Date::toSql();

@@ -13,6 +13,11 @@ use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\SearchComponent as SearchComponent;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Cron plugin for Search indexing

@@ -117,7 +117,7 @@ class TitleIndex extends WikiMacro
                     $row->set('scope_id', $this->domain_id);
                 }
 
-                $html .= '<li><a href="' . \Route::url($row->link()) . '">';
+                $html .= '<li><a href="' . \Hubzero\Facades\Route::url($row->link()) . '">';
                 $html .= stripslashes($row->get('title', $row->get('pagename')) ?? '');
                 $html .= '</a></li>' . "\n";
             }

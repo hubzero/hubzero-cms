@@ -40,12 +40,16 @@ class Rss extends Renderer
         $now  = new Date('now');
         $data = $this->doc;
 
-        $url = rtrim(\App::get('request')->root(), '/') . '/';
+        $url = rtrim(\Hubzero\Facades\App::get('request')->root(), '/') . '/';
 
-        if (\App::get('config')->get('sitename_pagetitles', 0) == 1) {
-            $data->title = \App::get('language')->txt('JPAGETITLE', \App::get('config')->get('sitename'), $data->title);
-        } elseif (\App::get('config')->get('sitename_pagetitles', 0) == 2) {
-            $data->title = \App::get('language')->txt('JPAGETITLE', $data->title, \App::get('config')->get('sitename'));
+        $config = \Hubzero\Facades\App::get('config');
+        $lang = \Hubzero\Facades\App::get('language');
+        $sitename = $config->get('sitename');
+
+        if ($config->get('sitename_pagetitles', 0) == 1) {
+            $data->title = $lang->txt('JPAGETITLE', $sitename, $data->title);
+        } elseif ($config->get('sitename_pagetitles', 0) == 2) {
+            $data->title = $lang->txt('JPAGETITLE', $data->title, $sitename);
         }
 
         $feed  = '<rss version="2.0" xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">' . "\n";
@@ -275,7 +279,7 @@ class Rss extends Renderer
      */
     private function relToAbs($text)
     {
-        $base = \App::get('request')->base();
+        $base = \Hubzero\Facades\App::get('request')->base();
         $text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
         return $text;

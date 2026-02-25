@@ -15,10 +15,11 @@ use Hubzero\Content\Server;
 use InvalidArgumentException;
 use RuntimeException;
 use DirectoryIterator;
-use Filesystem;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Blog controller class for media

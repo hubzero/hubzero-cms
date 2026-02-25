@@ -11,11 +11,13 @@ namespace Components\Newsletter\Admin\Controllers;
 use Components\Newsletter\Models\Campaign;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Campaign Controller
@@ -154,7 +156,7 @@ class Campaigns extends AdminController
             // If display date changed in the form, save new date:
             if ($fields['expire_date_display'] != $fields['expire_date_local']) {
                 // get timezone identifier from user setting
-                $tz = \User::getParam('timezone', \Config::get('offset'));
+                $tz = \Hubzero\Facades\User::getParam('timezone', \Hubzero\Facades\Config::get('offset'));
                 // save the newly changed date, accounting for the user's local time zone, $tz:
                 $row->expire_date = Date::of($fields['expire_date_display'], $tz)->toSql();
             }
@@ -225,7 +227,7 @@ class Campaigns extends AdminController
                 }
 
                 // delete the campaign from the table
-                $query = \App::get('db')->getQuery();
+                $query = App::get('db')->getQuery();
                 $deleted = $query->remove('#__campaign', 'id', $id);
 
                 if (!$deleted) {

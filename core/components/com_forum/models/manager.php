@@ -10,9 +10,9 @@ namespace Components\Forum\Models;
 
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
-use Component;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Model class for a forum
@@ -384,7 +384,7 @@ class Manager extends Obj
     {
         $section = Section::blank();
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery("
 			SELECT DISTINCT s.scope, s.scope_id
 			FROM " . $section->getTableName() . " AS s

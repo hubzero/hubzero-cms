@@ -653,7 +653,7 @@ $profileUrl = Route::url(
 
         foreach ($this->fields as $field) :
             // Add in class for JS selector to conditionally retrieve data from RoR Api
-            $rorApiBoolean = \Component::params('com_members')->get('rorApi');
+            $rorApiBoolean = \Hubzero\Facades\Component::params('com_members')->get('rorApi');
             $isOrgTextField = strtolower($field->get('name')) == "organization"
                 && strtolower($field->get('type')) == "text";
             if ($isOrgTextField && $rorApiBoolean) {

@@ -290,7 +290,7 @@ class Provider extends AbstractService
         }
 
         $response = $this->sendRequest(
-            'blog=' . \Request::base() . '&' . $this->getQueryString(),
+            'blog=' . \Hubzero\Facades\Request::base() . '&' . $this->getQueryString(),
             $this->apiKey . '.rest.akismet.com',
             '/' . $this->akismetVersion . '/comment-check'
         );

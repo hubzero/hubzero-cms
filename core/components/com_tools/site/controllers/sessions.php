@@ -9,15 +9,19 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 use stdClass;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 /**
  * Tools controller class for simulation sessions
@@ -1592,7 +1596,7 @@ class Sessions extends SiteController
         $retval = true; // Assume success.
 
         $comm = escapeshellcmd($comm);
-        $dbname = \App::get('config')->get('database.db');
+        $dbname = App::get('config')->get('database.db');
 
         $cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
 

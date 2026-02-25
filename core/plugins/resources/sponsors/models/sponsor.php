@@ -9,8 +9,8 @@
 namespace Plugins\Resources\Sponsors\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Resource sponsor model

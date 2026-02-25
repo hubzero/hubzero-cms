@@ -11,8 +11,9 @@ namespace Components\Forum\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Database\Value\Raw;
 use Hubzero\Form\Form;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Forum model for a post
@@ -551,7 +552,7 @@ class Post extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = \Hubzero\Facades\Event::trigger('content.onContentBeforeSave', array(
                 'com_forum.post.comment',
                 &$this,
                 $this->isNew()
@@ -581,7 +582,7 @@ class Post extends Relational
         $this->removeAttribute('category');
 
         if (!$this->get('access')) {
-            $this->set('access', (int) \Config::get('access'));
+            $this->set('access', (int) \Hubzero\Facades\Config::get('access'));
         }
 
         $isNew = $this->isNew();
@@ -845,7 +846,7 @@ class Post extends Relational
     {
         $name = strtolower($this->getModelName());
         $file = __DIR__ . '/forms/' . $name . '.xml';
-        $file = \Filesystem::cleanPath($file);
+        $file = \Hubzero\Facades\Filesystem::cleanPath($file);
 
         $form = new Form('com_forum.' . $name, array('control' => 'data'));
 

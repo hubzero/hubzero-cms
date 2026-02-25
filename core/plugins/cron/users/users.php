@@ -12,6 +12,9 @@
 namespace Plugins\Cron\Users;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 class Users extends Plugin
 {

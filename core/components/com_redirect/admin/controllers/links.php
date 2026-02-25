@@ -12,11 +12,12 @@ use Components\Redirect\Helpers\Redirect as Helper;
 use Components\Redirect\Models\Link;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use Route;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use App;
+use Hubzero\Facades\Notify;
 
 /**
  * Redirect link list controller class.
@@ -110,12 +111,12 @@ class Links extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        \Submenu::addEntry(
+        \Hubzero\Facades\Submenu::addEntry(
             Lang::txt('COM_REDIRECT_REDIRECTS'),
             Route::url('index.php?option=' . $this->_option . '&type=redirect'),
             ($filters['type'] != '404')
         );
-        \Submenu::addEntry(
+        \Hubzero\Facades\Submenu::addEntry(
             Lang::txt('COM_REDIRECT_NOTFOUND'),
             Route::url('index.php?option=' . $this->_option . '&type=404'),
             ($filters['type'] == '404')

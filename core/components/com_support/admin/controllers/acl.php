@@ -13,11 +13,12 @@ use Components\Support\Models\Acl\Aro;
 use Components\Support\Models\Acl\Aco;
 use Components\Support\Models\Acl\Map;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Support controller class for defining permissions

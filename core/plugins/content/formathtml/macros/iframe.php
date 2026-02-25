@@ -23,7 +23,7 @@ class Iframe extends Macro
     public function description()
     {
         // use host for example, that way  its not block
-        $host = 'https://' . \Request::getString('HTTP_HOST', '', 'server');
+        $host = 'https://' . \Hubzero\Facades\Request::getString('HTTP_HOST', '', 'server');
 
         $txt = array();
         $txt['wiki'] = 'Embeds an Iframe into the Page';

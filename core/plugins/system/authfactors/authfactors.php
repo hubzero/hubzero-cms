@@ -12,6 +12,9 @@
 namespace Plugins\System\Authfactors;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 class Authfactors extends Plugin
 {

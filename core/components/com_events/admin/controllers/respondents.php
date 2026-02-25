@@ -13,11 +13,12 @@ use Components\Events\Models\Orm\Event;
 use Components\Events\Helpers\Csv;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Events controller class for respondents
@@ -181,7 +182,7 @@ class Respondents extends AdminController
             }
 
             // Trigger before delete event
-            \Event::trigger('onEventsAfterDeleteRespondent', array($id));
+            \Hubzero\Facades\Event::trigger('onEventsAfterDeleteRespondent', array($id));
 
             $removed++;
         }

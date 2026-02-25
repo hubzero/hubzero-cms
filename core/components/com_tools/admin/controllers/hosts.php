@@ -13,12 +13,12 @@ use Components\Tools\Tables\Host;
 use Components\Tools\Tables\Hosttype;
 use Components\Tools\Tables\Zones;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Tools controller class for hosts
@@ -147,7 +147,7 @@ class Hosts extends AdminController
         $retval = 1; // Assume success.
         $fnoutput = array();
 
-        $dbname = \App::get('config')->get('database.db');
+        $dbname = App::get('config')->get('database.db');
         //$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm 2>&1 </dev/null";
         exec($cmd, $output, $status);

@@ -45,7 +45,7 @@ class Group extends Base implements CommandInterface
             $currentDirectory = str_replace(PATH_APP, '', $currentDirectory);
 
             // Get group upload directory
-            $groupsConfig     = \Component::params('com_groups');
+            $groupsConfig     = \Hubzero\Facades\Component::params('com_groups');
             $groupsDirectory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
             // Are we within the groups upload path
@@ -87,7 +87,7 @@ class Group extends Base implements CommandInterface
     public function scaffolding()
     {
         // Get group config
-        $groupsConfig = \Component::params('com_groups');
+        $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
 
         // Path to group folder
         $directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -99,7 +99,7 @@ class Group extends Base implements CommandInterface
         // Set our needed args
         $this->arguments->setOpt(3, $createWhat);
         $this->arguments->setOpt('install-dir', $directory);
-        \App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
     }
 
     /**
@@ -111,7 +111,7 @@ class Group extends Base implements CommandInterface
     {
         // Set our group arg & call migration
         $this->arguments->setOpt('group', $this->group->get('cn'));
-        \App::get('client')->call('migration', 'run', $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('migration', 'run', $this->arguments, $this->output);
     }
 
     /**
@@ -122,7 +122,7 @@ class Group extends Base implements CommandInterface
     public function update()
     {
         // Get group config
-        $groupsConfig = \Component::params('com_groups');
+        $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
 
         // Path to group folder
         $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -133,7 +133,7 @@ class Group extends Base implements CommandInterface
 
         // Set our group directory & call update
         $this->arguments->setOpt('r', $directory);
-        \App::get('client')->call('repository', $task, $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('repository', $task, $this->arguments, $this->output);
     }
 
     /**

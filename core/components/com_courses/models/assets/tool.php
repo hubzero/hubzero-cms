@@ -8,12 +8,13 @@
 
 namespace Components\Courses\Models\Assets;
 
-use Component;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 use Components\Projects\Models\Project;
 use Components\Projects\Models\Orm\Connection;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Manager;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Tool asset handler class
@@ -66,13 +67,13 @@ class Tool extends Content
 
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
-            if (!\Filesystem::makeDirectory($uploadDirectory)) {
+            if (!\Hubzero\Facades\Filesystem::makeDirectory($uploadDirectory)) {
                 return array(
                     'error' => 'Server error. Unable to create upload directory'
                 );
             }
             // Set the right permissions on the folder for the tools to access
-            \Filesystem::setPermissions($uploadDirectory, '0664', '02775');
+            \Hubzero\Facades\Filesystem::setPermissions($uploadDirectory, '0664', '02775');
         }
         if (!is_writable($uploadDirectory)) {
             return array(
@@ -130,7 +131,7 @@ class Tool extends Content
 
                 // Scan for viruses
                 $tmpFileName = $_FILES['files']['tmp_name'][$i];
-                if (!\Filesystem::isSafe($tmpFileName)) {
+                if (!\Hubzero\Facades\Filesystem::isSafe($tmpFileName)) {
                     // Scan failed, return an error
                     $errMsg = 'File rejected because the anti-virus scan failed.';
                     return array('error' => $errMsg);

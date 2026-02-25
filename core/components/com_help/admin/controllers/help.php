@@ -10,11 +10,11 @@ namespace Components\Help\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Help\Helpers\Finder;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Help controller class
@@ -183,13 +183,13 @@ class Help extends AdminController
         }
 
         // Path to help pages
-        $path  = \Component::path($component) . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
+        $path  = \Hubzero\Facades\Component::path($component) . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
 
         // Make sure directory exists
         $pages = array();
 
         // Get help pages for this component
-        $pages = \Filesystem::files($path, '.phtml');
+        $pages = \Hubzero\Facades\Filesystem::files($path, '.phtml');
         $pages = array_map(function ($file) {
             return ltrim($file, DS);
         }, $pages);

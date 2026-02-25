@@ -12,13 +12,14 @@ use Hubzero\Component\AdminController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Substitute;
-use Request;
-use Notify;
-use Cache;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Event;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Tags controller class for managing entries

@@ -3,6 +3,10 @@
 namespace Plugins\Usage\Tools;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

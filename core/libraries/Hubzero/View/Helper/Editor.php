@@ -8,7 +8,7 @@
 
 namespace Hubzero\View\Helper;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Helper for making easy links and getting urls that depend on the routes and router.
@@ -48,7 +48,7 @@ class Editor extends AbstractHelper
         }
 
         if (!$name) {
-            App::abort(500, \Lang::txt('Editor must have a name'));
+            App::abort(500, \Hubzero\Facades\Lang::txt('Editor must have a name'));
         }
 
         $id = $id ?: str_replace(array('[', ']'), '', $name);

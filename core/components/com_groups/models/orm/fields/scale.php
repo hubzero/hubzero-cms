@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Radio;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Supports a scaled selection field
@@ -71,7 +71,7 @@ class Scale extends Radio
 
         $found = false;
 
-        \Document::addStyleDeclaration('
+        \Hubzero\Facades\Document::addStyleDeclaration('
 			#' . $this->id . ' .li-' . $this->id . ' {
 				width: ' . $percent . '%;
 			}
@@ -139,7 +139,7 @@ class Scale extends Radio
             $cls = 'hi';
         }
 
-        \Document::addStyleDeclaration('
+        \Hubzero\Facades\Document::addStyleDeclaration('
 			.graph .bar' . $this->id . ' {
 				width: ' . $percent . '%;
 			}

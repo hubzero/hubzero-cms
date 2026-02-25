@@ -9,6 +9,7 @@
 namespace Components\Tools\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Lang;
 
 /**
  * Tool zone model

@@ -9,9 +9,9 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Course section table class
@@ -48,7 +48,7 @@ class Section extends Table
         }
 
         if (!isset($instances[$alias . '_' . $offering_id])) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
             $inst = new self($db);
             $inst->load($alias, $offering_id);
 

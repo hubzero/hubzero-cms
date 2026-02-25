@@ -8,7 +8,15 @@
 
 namespace Components\Publications\Helpers;
 
-use Component;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 /**
  * Html helper class
@@ -1083,7 +1091,7 @@ class Html
      */
     public static function createThumbName($image = null, $tn = '_thumb', $ext = 'png')
     {
-        return \Filesystem::name($image) . $tn . '.' . $ext;
+        return \Hubzero\Facades\Filesystem::name($image) . $tn . '.' . $ext;
     }
 
     /**

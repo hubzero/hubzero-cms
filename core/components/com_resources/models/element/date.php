@@ -10,7 +10,7 @@ namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a category element
@@ -126,15 +126,15 @@ class Date extends Base
             $options = array();
             $y++;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = \Hubzero\Facades\Html::select('option', $i, $i);
             }
 
             $options = array_reverse($options);
-            array_unshift($options, \Html::select('option', '0', Lang::txt('Year...')));
+            array_unshift($options, \Hubzero\Facades\Html::select('option', '0', Lang::txt('Year...')));
 
             $selectName = $control_name . '[' . $name . '][year]';
             $selectId = $control_name . '-' . $name . '-year';
-            $html[] = \Html::select(
+            $html[] = \Hubzero\Facades\Html::select(
                 'genericlist',
                 $options,
                 $selectName,
@@ -151,17 +151,17 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Month...'))
+                \Hubzero\Facades\Html::select('option', '0', Lang::txt('Month...'))
             );
             $i = 1;
             $y = 13;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $this->getMonth($i));
+                $options[] = \Hubzero\Facades\Html::select('option', $i, $this->getMonth($i));
             }
 
             $selectName = $control_name . '[' . $name . '][month]';
             $selectId = $control_name . '-' . $name . '-month';
-            $html[] = \Html::select(
+            $html[] = \Hubzero\Facades\Html::select(
                 'genericlist',
                 $options,
                 $selectName,
@@ -178,17 +178,17 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Day...'))
+                \Hubzero\Facades\Html::select('option', '0', Lang::txt('Day...'))
             );
             $i = 1;
             $y = 32;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = \Hubzero\Facades\Html::select('option', $i, $i);
             }
 
             $selectName = $control_name . '[' . $name . '][day]';
             $selectId = $control_name . '-' . $name . '-day';
-            $html[] = \Html::select(
+            $html[] = \Hubzero\Facades\Html::select(
                 'genericlist',
                 $options,
                 $selectName,

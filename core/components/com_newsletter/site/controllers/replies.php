@@ -11,6 +11,12 @@ namespace Components\Newsletter\Site\Controllers;
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Models\Reply;
 use Hubzero\Component\SiteController;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
 
 class Replies extends SiteController
 {

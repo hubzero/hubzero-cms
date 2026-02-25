@@ -11,11 +11,11 @@ namespace Components\Publications\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
-use Request;
-use Config;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Manage publication master types

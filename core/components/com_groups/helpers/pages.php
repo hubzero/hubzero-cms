@@ -11,14 +11,15 @@ namespace Components\Groups\Helpers;
 use Components\Groups\Models\Page;
 use Components\Groups\Tables\PageHit;
 use Components\Groups\Models\Orm\Field;
-use Component;
-use Request;
-use Config;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 use stdClass;
+use Hubzero\Facades\Date;
 
 class Pages
 {
@@ -476,7 +477,7 @@ class Pages
      */
     public static function getCheckout($pageid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // get person who has page checkedout
         $sql = "SELECT * FROM `#__xgroups_pages_checkout`"
@@ -494,7 +495,7 @@ class Pages
      */
     public static function checkout($pageid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // check in other pages
         self::checkinForUser();
@@ -516,7 +517,7 @@ class Pages
      */
     public static function checkin($pageid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // check in page
         $sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote((int) $pageid);
@@ -531,7 +532,7 @@ class Pages
      */
     public static function checkinForUser()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // check in all pages for this user
         $sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote((int) User::get('id'));
@@ -547,7 +548,7 @@ class Pages
      */
     public static function checkinAbandoned()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // check in all pages for this user
         $sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
@@ -578,7 +579,7 @@ class Pages
         }
 
         // get needed vars
-        $database    = \App::get('db');
+        $database    = App::get('db');
         $authorized  = \Components\Groups\Helpers\View::authorize($group);
         $version     = ($page) ? $page->approvedVersion() : null;
 

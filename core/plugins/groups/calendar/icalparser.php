@@ -8,6 +8,8 @@
 
 namespace Plugins\Groups\Calendar;
 
+use Hubzero\Facades\Date;
+
 class IcalParser
 {
     /**

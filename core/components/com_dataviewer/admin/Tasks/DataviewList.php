@@ -16,22 +16,22 @@ class DataviewList
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-        $db_id = \Request::getString('db', false);
+        $db_id = \Hubzero\Facades\Request::getString('db', false);
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
         $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
         $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
 
-        \Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
+        \Hubzero\Facades\Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
         if (!$jdb->getErrorMsg()) {
-            \Toolbar::custom('new', 'new', 'new', 'New Dataview', false);
+            \Hubzero\Facades\Toolbar::custom('new', 'new', 'new', 'New Dataview', false);
         }
 
-        \Toolbar::custom('back', 'back', 'back', 'Go back', false);
+        \Hubzero\Facades\Toolbar::custom('back', 'back', 'back', 'Go back', false);
 
         $path = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions/';
 
@@ -100,7 +100,7 @@ class DataviewList
                         $cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$php_file -o$json_file";
                         system($cmd);
 
-                        $author = \User::get('name') . ' <' . \User::get('email') . '>';
+                        $author = \Hubzero\Facades\User::get('name') . ' <' . \Hubzero\Facades\User::get('email') . '>';
                         $cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json "
                             . "--author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
                         system($cmd);

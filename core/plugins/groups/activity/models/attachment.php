@@ -11,8 +11,8 @@ namespace Plugins\Groups\Activity\Models;
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Util;
 use Hubzero\Utility\Number;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Class for comment files (attachments)
@@ -169,7 +169,7 @@ class Attachment extends Obj
             return false;
         }
 
-        $config = \Component::params('com_media');
+        $config = \Hubzero\Facades\Component::params('com_media');
 
         // Check for allowed file types
         $ext = Filesystem::extension($name);

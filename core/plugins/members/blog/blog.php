@@ -3,6 +3,15 @@
 namespace Plugins\Members\Blog;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
 
 /**
  * @package   hubzero-cms
@@ -72,7 +81,7 @@ class Blog extends Plugin
             'metadata' => array()
         );
 
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
+        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
         // Get our model
         $this->model = new \Components\Blog\Models\Archive('member', $member->get('id'));
@@ -930,7 +939,7 @@ class Blog extends Plugin
         ) {
             try {
                 // Mark all content as trashed
-                include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
+                include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
                 $entries = \Components\Blog\Models\Entry::all()
                     ->whereEquals('created_by', $user['id'])
@@ -969,7 +978,7 @@ class Blog extends Plugin
 
         if ($userId) {
             try {
-                include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
+                include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
                 $entries = \Components\Blog\Models\Entry::all()
                     ->whereEquals('created_by', $user['id'])

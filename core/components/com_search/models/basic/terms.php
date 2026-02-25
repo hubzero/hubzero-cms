@@ -190,7 +190,7 @@ class Terms extends Obj
             }
         }
         $chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
-        \Event::trigger('onSearchExpandTerms', array(&$chunks));
+        \Hubzero\Facades\Event::trigger('onSearchExpandTerms', array(&$chunks));
 
         return array_unique($chunks);
     }

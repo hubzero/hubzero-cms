@@ -19,8 +19,8 @@ class AdminController extends SiteController
     public function cancelTask()
     {
         // Set the redirect
-        \App::redirect(
-            \Route::url('index.php?option=' .
+        \Hubzero\Facades\App::redirect(
+            \Hubzero\Facades\Route::url('index.php?option=' .
                 $this->_option .
                 ($this->_controller ? '&controller=' .
                 $this->_controller : ''), false)

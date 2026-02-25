@@ -9,7 +9,7 @@
 namespace Hubzero\Form;
 
 use Exception;
-use Lang;
+use Hubzero\Facades\Lang;
 
 // Detect if we have full UTF-8 and unicode PCRE support.
 if (!defined('JCOMPAT_UNICODE_PROPERTIES')) {

@@ -22,29 +22,29 @@ class Forum extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_forum')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_forum')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'sections');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'sections');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'sections';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_SECTIONS'),
-            \Route::url('index.php?option=com_forum&controller=sections'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_FORUM_SECTIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_forum&controller=sections'),
             ($controllerName == 'sections')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_CATEGORIES'),
-            \Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_FORUM_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
             ($controllerName == 'categories')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_THREADS'),
-            \Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_FORUM_THREADS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
             ($controllerName == 'threads')
         );
 

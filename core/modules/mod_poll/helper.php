@@ -10,8 +10,8 @@ namespace Modules\Poll;
 
 use Hubzero\Module\Module;
 use Components\Poll\Models\Poll as PollModel;
-use Component;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a poll

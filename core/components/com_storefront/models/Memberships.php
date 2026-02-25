@@ -8,8 +8,8 @@
 
 namespace Components\Storefront\Models;
 
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Memberships lookup and management
@@ -31,10 +31,10 @@ class Memberships
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Load language file
-        \App::get('language')->load('com_storefront');
+        \Hubzero\Facades\App::get('language')->load('com_storefront');
     }
 
     /**
@@ -172,7 +172,7 @@ class Memberships
      */
     public static function getMembershipInfoByUser($uId, $pId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $now = Date::of('now')->toSql();
         $sql = "SELECT `crtmExpires`,";

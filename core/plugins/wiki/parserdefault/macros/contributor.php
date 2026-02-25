@@ -75,7 +75,7 @@ class Contributor extends WikiMacro
             if (!strpos($n, ' ')) {
                 // No, then we must have a username
                 // Get user's name
-                $cuser = \User::getInstance($n);
+                $cuser = \Hubzero\Facades\User::getInstance($n);
                 if (is_object($cuser)) {
                     $name = $cuser->get('name');
                     $id   = $cuser->get('id');
@@ -108,8 +108,8 @@ class Contributor extends WikiMacro
 
         // Did we get a result from the database?
         if ($name && $id) {
-            return '<a href="' . \Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
-            //return '['.\Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
+            return '<a href="' . \Hubzero\Facades\Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+            //return '['.\Hubzero\Facades\Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
         } else {
             // Return error message
             return '(contributor:' . $et . ' not found)';

@@ -9,7 +9,7 @@
 namespace Components\Newsletter\Site;
 
 use Hubzero\Utility\Arr;
-use Request;
+use Hubzero\Facades\Request;
 use Hubzero\Component\AbstractComponent;
 
 /**

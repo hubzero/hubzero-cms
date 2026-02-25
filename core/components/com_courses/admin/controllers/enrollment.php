@@ -9,6 +9,9 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Manage a course's manager entries

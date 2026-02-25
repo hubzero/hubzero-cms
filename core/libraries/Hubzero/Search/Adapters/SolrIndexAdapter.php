@@ -10,6 +10,7 @@ namespace Hubzero\Search\Adapters;
 
 use Hubzero\Search\IndexInterface;
 use Solarium;
+use Hubzero\Facades\Filesystem;
 
 /**
  * SolrIndexAdapter - Index adapter for Solr using the Solarium library

@@ -408,7 +408,7 @@ $option = 'com_groups';
                                     $html .= '<span class="roles">';
                                     $all_roles = '';
 
-                                    $db = \App::get('db');
+                                    $db = \Hubzero\Facades\App::get('db');
                                     $db->setQuery(
                                         "SELECT r.id, r.name, r.permissions
 										FROM `#__xgroups_roles` as r

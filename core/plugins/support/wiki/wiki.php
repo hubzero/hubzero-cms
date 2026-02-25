@@ -12,6 +12,9 @@
 namespace Plugins\Support\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 class Wiki extends Plugin
 {

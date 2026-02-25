@@ -9,9 +9,9 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Table class for publication author
@@ -378,7 +378,7 @@ class Author extends Table
             return false;
         }
 
-        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
+        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
 
         // Get project owner info
         $objO = new \Components\Projects\Tables\Owner($this->_db);

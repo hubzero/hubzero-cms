@@ -16,7 +16,7 @@ use Hubzero\Htmx\Htmx;
 use Hubzero\Inertia\Inertia;
 use ReflectionClass;
 use ReflectionMethod;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Base controller for components to extend.
@@ -214,7 +214,7 @@ class SiteController extends Obj implements ControllerInterface
         }
 
         // get language object & get any loaded lang for option
-        $lang   = \Lang::getRoot();
+        $lang   = Lang::getRoot();
         $loaded = $lang->getPaths($this->_option);
 
         // Load language file if we dont have one yet
@@ -226,9 +226,9 @@ class SiteController extends Obj implements ControllerInterface
         //
         // [!] Deprecated
         //     These will be going away in a future version. Do not use.
-        $this->juser    = \User::getInstance();
-        $this->database = \App::get('db');
-        $this->config   = \Component::params($this->_option);
+        $this->juser    = \Hubzero\Facades\User::getInstance();
+        $this->database = \Hubzero\Facades\App::get('db');
+        $this->config   = \Hubzero\Facades\Component::params($this->_option);
     }
 
     /**
@@ -278,7 +278,7 @@ class SiteController extends Obj implements ControllerInterface
     public function execute()
     {
         // Incoming task
-        $this->_task = strtolower(\Request::getCmd('task', \Request::getWord('layout', '')));
+        $this->_task = strtolower(\Hubzero\Facades\Request::getCmd('task', \Hubzero\Facades\Request::getWord('layout', '')));
 
         // Check if the task is in the taskMap
         if (isset($this->_taskMap[$this->_task])) {
@@ -437,7 +437,7 @@ class SiteController extends Obj implements ControllerInterface
         }
 
         if ($this->_redirect != null) {
-            \App::redirect($this->_redirect, $this->_message, $this->_messageType);
+            \Hubzero\Facades\App::redirect($this->_redirect, $this->_message, $this->_messageType);
         }
     }
 

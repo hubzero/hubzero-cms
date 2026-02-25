@@ -3,6 +3,11 @@
 namespace Plugins\Content\Xhubtags;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
 
 /**
  * @package    hubzero-cms
@@ -121,7 +126,7 @@ class Xhubtags extends Plugin
             $attribs['params'] = $params[2];
         }
 
-        return \Module::position($position[2], $attribs);
+        return \Hubzero\Facades\Module::position($position[2], $attribs);
     }
 
     /**

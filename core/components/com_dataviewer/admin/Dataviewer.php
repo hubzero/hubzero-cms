@@ -16,7 +16,7 @@ class Dataviewer extends AbstractComponent
     {
         DvConfig::init();
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
         $document->addStyleSheet(DB_PATH . '/html/smoothness/jquery-ui.css');
         $document->addStyleSheet(DB_PATH . '/html/main.css');

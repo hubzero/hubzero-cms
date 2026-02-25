@@ -22,7 +22,7 @@ class Members extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'profiles'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'profiles'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'profiles';
         }

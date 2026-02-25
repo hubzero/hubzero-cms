@@ -9,6 +9,7 @@
 namespace Hubzero\Session;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\Session;
 
 /**
  * Class for managing HTTP sessions
@@ -236,7 +237,7 @@ class Manager extends Obj
      */
     public static function getFormToken($forceNew = false)
     {
-        $hash = \App::hash(\User::get('id', 0) . \App::get('session')->getToken($forceNew));
+        $hash = \Hubzero\Facades\App::hash(\Hubzero\Facades\User::get('id', 0) . \Hubzero\Facades\App::get('session')->getToken($forceNew));
 
         return $hash;
     }
@@ -261,18 +262,18 @@ class Manager extends Obj
         $method = (array) $method;
 
         foreach ($method as $m) {
-            if (\Request::getVar($token, '', $m, 'alnum')) {
+            if (\Hubzero\Facades\Request::getVar($token, '', $m, 'alnum')) {
                 $result = true;
                 break;
             }
 
-            if (\App::get('session')->isNew()) {
+            if (\Hubzero\Facades\App::get('session')->isNew()) {
                 // Redirect to login screen.
-                \App::redirect(
-                    \Route::url('index.php'),
-                    \App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED')
+                \Hubzero\Facades\App::redirect(
+                    \Hubzero\Facades\Route::url('index.php'),
+                    \Hubzero\Facades\App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED')
                 );
-                \App::close();
+                \Hubzero\Facades\App::close();
             }
         }
 
@@ -281,7 +282,7 @@ class Manager extends Obj
                 return $result;
             }
 
-            \App::abort(403, \App::get('language')->txt('JINVALID_TOKEN'));
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\App::get('language')->txt('JINVALID_TOKEN'));
         }
 
         return $result;
@@ -490,8 +491,8 @@ class Manager extends Obj
         } else {
             $session_name = session_name();
 
-            if (!\Request::getVar($session_name, false, 'COOKIE')) {
-                if ($id = \Request::getVar($session_name)) {
+            if (!\Hubzero\Facades\Request::getVar($session_name, false, 'COOKIE')) {
+                if ($id = \Hubzero\Facades\Request::getVar($session_name)) {
                     session_id($id);
                     setcookie($session_name, '', time() - 3600);
                 } else {

@@ -10,12 +10,15 @@ namespace Components\Projects\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Projects\Models\Project;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
 
 /**
  * Projects controller class for managing membership

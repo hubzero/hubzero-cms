@@ -18,15 +18,15 @@ use Components\Tags\Models\Objct;
 use Components\Tags\Models\Tag;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Str;
-use Pathway;
-use Request;
-use Route;
-use Event;
-use Lang;
-use User;
-use Date;
-use App;
-
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 /**
  * Resources controller for creating a resource
  */
@@ -773,7 +773,7 @@ class Create extends SiteController
 
         // if we have a temp dir, move it to permanent location
         if (is_dir($oldPath)) {
-            \Filesystem::move($oldPath, $newPath);
+            \Hubzero\Facades\Filesystem::move($oldPath, $newPath);
 
             $old = DS . $session->get('resources_temp_id') . DS;
             $new = DS . $row->id . DS;

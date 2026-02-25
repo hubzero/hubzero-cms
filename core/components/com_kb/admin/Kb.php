@@ -22,23 +22,23 @@ class Kb extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_kb')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_kb')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'articles');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'articles');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'articles';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_KB_ARTICLES'),
-            \Route::url('index.php?option=com_kb&controller=articles', false),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_KB_ARTICLES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_kb&controller=articles', false),
             $controllerName == 'articles'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_KB_CATEGORIES'),
-            \Route::url('index.php?option=com_categories&extension=com_kb', false)
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_KB_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_categories&extension=com_kb', false)
         );
 
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';

@@ -3,6 +3,16 @@
 namespace Plugins\Authentication\Twitter;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Log;
 
 /**
  * @package    hubzero-cms

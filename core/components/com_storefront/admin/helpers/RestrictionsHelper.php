@@ -8,7 +8,7 @@
 
 namespace Components\Storefront\Admin\Helpers;
 
-use App;
+use Hubzero\Facades\App;
 
 class RestrictionsHelper
 {

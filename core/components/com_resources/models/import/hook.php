@@ -9,8 +9,8 @@
 namespace Components\Resources\Models\Import;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource import hook model
@@ -102,7 +102,7 @@ class Hook extends Relational
     public function fileSpacePath()
     {
         // get com resources params
-        $params = \Component::params('com_resources');
+        $params = \Hubzero\Facades\Component::params('com_resources');
 
         // build upload path
         $uploadPath = $params->get('import_hooks_uploadpath', '/site/resources/import/hooks');

@@ -16,16 +16,18 @@ use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers\Gitlab;
 use Components\Groups\Models\Orm\Field;
-use Filesystem;
-use Request;
-use Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
 use Nofity;
-use Event;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
 
 /**
  * Groups controller class for managing membership and group info
@@ -429,7 +431,7 @@ class Manage extends AdminController
         Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
         // log edit
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'group_edited',
             'comments'  => 'edited by administrator'
@@ -475,7 +477,7 @@ class Manage extends AdminController
         // get the source path
         $srcTplPath = null;
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $query = $db->getQuery();
         $query->select('s.id, s.home, s.template, s.params, e.protected');
         $query->from('#__template_styles', 's');
@@ -586,7 +588,7 @@ class Manage extends AdminController
         }
 
         // log super group change
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'super_group_created',
             'comments'  => ''
@@ -1110,7 +1112,7 @@ class Manage extends AdminController
                 }
 
                 // log publishing
-                Log::log(array(
+                \Hubzero\Facades\Log::log(array(
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_deleted',
                     'comments'  => $log
@@ -1192,7 +1194,7 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                \Hubzero\Facades\Log::log(array(
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_' . $action,
                     'comments'  => $action . ' by administrator'
@@ -1260,7 +1262,7 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                \Hubzero\Facades\Log::log(array(
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_approved',
                     'comments'  => 'approved by administrator'
@@ -1325,7 +1327,7 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                \Hubzero\Facades\Log::log(array(
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_unapproved',
                     'comments'  => 'unapproved by administrator'

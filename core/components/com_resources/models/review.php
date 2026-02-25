@@ -10,9 +10,10 @@ namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Item\Vote;
-use Request;
-use Lang;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Resource review

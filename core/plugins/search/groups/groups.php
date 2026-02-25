@@ -4,6 +4,8 @@ namespace Plugins\Search\Groups;
 
 use Components\Groups\Models\Orm\Group;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

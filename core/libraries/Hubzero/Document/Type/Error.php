@@ -10,7 +10,7 @@ namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Base;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Error document class for parsing and displaying an error page
@@ -74,7 +74,7 @@ class Error extends Base
         }
 
         // Set the status header
-        // \App::get('response')->headers->set('status', $this->error->getCode() . ' ' . str_replace("\n", ' ',
+        // \Hubzero\Facades\App::get('response')->headers->set('status', $this->error->getCode() . ' ' . str_replace("\n", ' ',
         // $this->error->getMessage()));
 
         $file = 'error.php';
@@ -92,7 +92,7 @@ class Error extends Base
         }
 
         // Set variables
-        $this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/') .
+        $this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(Request::root(true), '/') .
             rtrim(substr(dirname($directory), strlen(PATH_ROOT)), '/'));
         $this->template = $template;
         $this->debug    = isset($params['debug']) ? $params['debug'] : false;

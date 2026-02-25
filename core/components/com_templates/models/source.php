@@ -9,6 +9,10 @@
 namespace Components\Templates\Models;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Source model

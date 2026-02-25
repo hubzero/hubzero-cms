@@ -9,8 +9,8 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
-use User;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Group custom description model

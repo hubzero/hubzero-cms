@@ -42,6 +42,6 @@ class Timestamp extends Macro
      */
     public function render()
     {
-        return \Date::toSql();
+        return \Hubzero\Facades\Date::toSql();
     }
 }

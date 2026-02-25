@@ -9,9 +9,9 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Database\Relational;
-use User;
-use Lang;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Wishlist model class for a ranking

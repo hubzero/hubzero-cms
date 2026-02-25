@@ -9,6 +9,9 @@
 namespace Plugins\Captcha\Recaptcha;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Document;
 
 /**
  * Recaptcha Plugin.

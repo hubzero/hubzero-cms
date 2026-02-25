@@ -48,11 +48,11 @@ class DefaultHomePage extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // add required helper lib
-        require_once \Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
+        require_once \Hubzero\Facades\Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
 
         // get default home page
         $html = \Components\Groups\Helpers\Pages::getDefaultHomePage($this->group);

@@ -16,7 +16,7 @@ class ConfigCurrent
     public static function execute()
     {
         $base = DvConfig::$conf['dir_base'];
-        $db_id = \Request::getString('db', false);
+        $db_id = \Hubzero\Facades\Request::getString('db', false);
 
         \Components\Dataviewer\Site\DvConfig::init();
 

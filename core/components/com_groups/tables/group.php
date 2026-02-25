@@ -95,7 +95,7 @@ class Group extends Table
     public function check()
     {
         if (trim($this->cn) == '') {
-            $this->setError(\Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
+            $this->setError(\Hubzero\Facades\Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
             return false;
         }
         return true;

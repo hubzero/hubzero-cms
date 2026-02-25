@@ -3,6 +3,9 @@
 namespace Plugins\Publications\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 /**
  * @package    hubzero-cms

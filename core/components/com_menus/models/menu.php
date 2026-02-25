@@ -10,9 +10,10 @@ namespace Components\Menus\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Form\Form;
-use Filesystem;
-use Lang;
-use User;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Module;
 
 /**
  * Menu type model
@@ -362,7 +363,7 @@ class Menu extends Relational
     {
         $m = Module::blank()->getTableName();
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = $db->getQuery();
         $query->from($m, 'a');

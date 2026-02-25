@@ -16,6 +16,7 @@ use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\HookTestItem;
 use Hubzero\Database\Tests\TestModels\HookTestItemWithSoftDeletes;
 use Hubzero\Database\Tests\TestModels\LifecycleEventStub;
+use Hubzero\Facades\Event;
 
 /**
  * Model Lifecycle Hooks tests

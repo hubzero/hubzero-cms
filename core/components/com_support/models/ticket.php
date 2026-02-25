@@ -10,7 +10,10 @@ namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
 use Components\Support\Helpers\ACL;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Support ticket model

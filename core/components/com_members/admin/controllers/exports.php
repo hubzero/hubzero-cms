@@ -12,13 +12,14 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers\Permissions;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
 use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Member exporter

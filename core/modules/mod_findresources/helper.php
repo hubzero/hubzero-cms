@@ -10,7 +10,7 @@ namespace Modules\FindResources;
 
 use Hubzero\Module\Module;
 use Components\Tags\Models\Tag;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Module class for displaying ways to find resources

@@ -8,10 +8,11 @@
 
 namespace Hubzero\Console\Command;
 
-use User;
+use Hubzero\Facades\User;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Components\Resources\Models\Entry;
+use Hubzero\Facades\Config;
 
 /**
  * Resources command class

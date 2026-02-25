@@ -10,10 +10,11 @@ namespace Components\Cart\Models;
 
 use Components\Storefront\Models\Product;
 use Hubzero\Base\Model;
-use Lang;
+use Hubzero\Facades\Lang;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\Helper;
 use Components\Cart\Helpers\Audit;
+use Hubzero\Facades\Component;
 
 /**
  * Core shopping cart
@@ -64,10 +65,10 @@ abstract class Cart
     public function __construct()
     {
         // Initialize DB
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Load language file
-        \App::get('language')->load('com_cart');
+        \Hubzero\Facades\App::get('language')->load('com_cart');
 
         $this->warehouse = new Warehouse();
     }
@@ -159,7 +160,7 @@ abstract class Cart
      */
     public static function getAllTransactions($filters = array(), $completedOnly = true)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Get info
         $sql = "SELECT DISTINCT ";
@@ -587,7 +588,7 @@ abstract class Cart
      */
     public static function getCartUser($crtId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = 'SELECT `uidNumber` AS uId FROM `#__cart_carts` WHERE `crtId` = ' . $db->quote($crtId);
         $db->setQuery($sql);
@@ -609,7 +610,7 @@ abstract class Cart
      */
     protected static function removeItem($sId, $qty, $crtId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "UPDATE `#__cart_cart_items` SET `crtiQty` = `crtiQty` - {$qty} "
             . "WHERE `sId` = '{$sId}' AND `crtId` = {$crtId}";
@@ -625,7 +626,7 @@ abstract class Cart
      */
     protected static function kill($crtId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // delete cart items
         $sql = "DELETE FROM `#__cart_cart_items` WHERE `crtId` = {$crtId}";
@@ -685,7 +686,7 @@ abstract class Cart
      */
     public static function getTransactionItems($tId, $verifySkuInfo = true, $returnSimpleInfo = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT `sId`, `tiQty`, `tiPrice`, `tiMeta` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
         $db->setQuery($sql);
@@ -745,7 +746,7 @@ abstract class Cart
      */
     public static function getTransactionInfo($tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Get info
         $sql = 'SELECT t.*, TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) AS tAge, ti.*
@@ -799,7 +800,7 @@ abstract class Cart
         }
 
         // Clean up cart
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Delete zero and negative qty items in the cart
         $sql = "DELETE FROM `#__cart_cart_items` WHERE `crtiQty` <= 0 AND `crtId` = {$tInfo->info->crtId}";
@@ -841,7 +842,7 @@ abstract class Cart
      */
     private static function setTransactionItems($tId, $items)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "UPDATE `#__cart_transaction_info` SET `tiItems` = " . $db->quote(serialize($items))
             . " WHERE `tId` = " . $db->quote($tId);
@@ -868,7 +869,7 @@ abstract class Cart
      */
     public static function updateTransactionItems($tId, $tiInfo, $returnChanges = true)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Get the current transaction items simple info to properly handle the meta
         $transactionItems = self::getTransactionItems($tId, false, true);
@@ -951,7 +952,7 @@ abstract class Cart
      */
     public static function updateTransactionStatus($status, $tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "UPDATE `#__cart_transactions` SET `tStatus` = '{$status}' WHERE `tId` = {$tId}";
         $db->setQuery($sql);
@@ -975,7 +976,7 @@ abstract class Cart
      */
     public static function updateTransactionInfo($tId, $tInfo, $returnChanges = true)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if ($returnChanges) {
             // get transaction info to check the changes against
@@ -1049,7 +1050,7 @@ abstract class Cart
      */
     public static function saveTransactionPaymentInfo($paymentInfo, $tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', "
             . "`tiPaymentDetails` = '{$paymentInfo[1]}' WHERE `tId` = {$tId}";
@@ -1108,7 +1109,7 @@ abstract class Cart
             }
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sqlCoupons = '0';
         foreach ($couponIds as $cnId) {
@@ -1147,7 +1148,7 @@ abstract class Cart
      */
     public static function releaseTransaction($tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Check if the transaction can be released (status is pending)
         // Get info
@@ -1166,7 +1167,7 @@ abstract class Cart
         $warehouse = new Warehouse();
 
         if (!empty($tItems)) {
-            require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+            require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
             foreach ($tItems as $sId => $itemInfo) {
                 $qty = $itemInfo['transactionInfo']->qty;
@@ -1186,7 +1187,7 @@ abstract class Cart
      */
     protected static function killTransaction($tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "DELETE FROM `#__cart_transactions` WHERE `tId` = {$tId}";
         $db->setQuery($sql);
@@ -1212,7 +1213,7 @@ abstract class Cart
      */
     public static function killExpiredTransactions()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $params =  Component::params('com_cart');
         $transactionTTL = ($params->get('transactionTTL', 120));
 

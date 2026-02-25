@@ -15,10 +15,10 @@ use Hubzero\Activity\Recipient;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * API controller class for activity entries
@@ -148,7 +148,7 @@ class Entriesv1r1 extends ApiController
         'recipients' => Request::getString('recipients', ''),
         'sort'       => Request::getString('sort', 'created'),
         'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
-        'limit'      => Request::getInt('limit', \Config::get('list_limit')),
+        'limit'      => Request::getInt('limit', \Hubzero\Facades\Config::get('list_limit')),
         'start'      => Request::getInt('start', 0)
         );
 
@@ -299,8 +299,8 @@ class Entriesv1r1 extends ApiController
             $obj->recipients = $row->recipients->toObject();
             $obj->created_by_name = User::getInstance($obj->created_by)->get('name');
 
-            $dt = Date::of($obj->created);
-            $ct = Date::of('now');
+            $dt = \Hubzero\Facades\Date::of($obj->created);
+            $ct = \Hubzero\Facades\Date::of('now');
 
             $lapsed = $ct->toUnix() - $dt->toUnix();
 

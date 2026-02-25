@@ -8,6 +8,8 @@
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+
 /**
  *
  * Storefront single sku product class

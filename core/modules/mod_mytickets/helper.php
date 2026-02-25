@@ -9,7 +9,7 @@
 namespace Modules\MyTickets;
 
 use Hubzero\Module\Module;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's support tickets
@@ -23,7 +23,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $this->moduleclass = $this->params->get('moduleclass');
         $limit = intval($this->params->get('limit', 10));

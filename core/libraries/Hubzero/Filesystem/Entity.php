@@ -12,6 +12,7 @@ use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Util\Icon;
 use Hubzero\Error\Exception\BadMethodCallException;
 use Hubzero\Error\Exception\RuntimeException;
+use Hubzero\Facades\App;
 
 /**
  * Filesystem entity

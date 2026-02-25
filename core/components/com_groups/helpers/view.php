@@ -10,13 +10,14 @@ namespace Components\Groups\Helpers;
 
 use Components\Groups\Models\Page\Archive;
 use Exception;
-use Filesystem;
-use Request;
-use Event;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
@@ -510,7 +511,7 @@ class View
      */
     private static function stylesheetsForUrl($url)
     {
-        if ($stylesheets = \Cache::get('groups.' . $url)) {
+        if ($stylesheets = \Hubzero\Facades\Cache::get('groups.' . $url)) {
             return $stylesheets;
         }
 
@@ -557,7 +558,7 @@ class View
             $stylesheets[] = (string) $s->attributes()->href;
         }
 
-        \Cache::put('groups.' . $url, $stylesheets, 15);
+        \Hubzero\Facades\Cache::put('groups.' . $url, $stylesheets, 15);
 
         //return stylesheets
         return $stylesheets;
@@ -658,7 +659,7 @@ class View
             'template'  => 'system',
             'file'      => 'group.php',
             'directory' => PATH_CORE . DS . 'templates',
-            'baseurl'   => rtrim(\Request::root(true), '/') . '/core'
+            'baseurl'   => rtrim(Request::root(true), '/') . '/core'
         ));
 
         // echo to screen

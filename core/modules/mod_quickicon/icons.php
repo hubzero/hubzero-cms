@@ -44,7 +44,7 @@ class Icons
             } else {
                 // Take each pair of permission, context values.
                 for ($i = 0, $n = count($button['access']); $i < $n; $i += 2) {
-                    if (!\User::authorise($button['access'][$i], $button['access'][$i + 1])) {
+                    if (!\Hubzero\Facades\User::authorise($button['access'][$i], $button['access'][$i + 1])) {
                         return '';
                     }
                 }
@@ -61,7 +61,7 @@ class Icons
         if (isset($button['image']) && $button['image']) {
             $image = empty($button['image']) ? '' : $button['image'];
             $alt = empty($button['alt']) ? null : htmlspecialchars($button['alt']);
-            $html[] = \Html::asset('image', $image, $alt, null, true);
+            $html[] = \Hubzero\Facades\Html::asset('image', $image, $alt, null, true);
         }
         $html[] = (empty($button['text'])) ? '' : ('<span>' . $button['text'] . '</span>');
         $html[] = '</a>';

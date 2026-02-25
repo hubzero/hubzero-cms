@@ -270,7 +270,7 @@ class Group extends Obj
      */
     public function create()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -328,7 +328,7 @@ class Group extends Obj
         }
 
         //trigger the onAfterStoreGroup event
-        \Event::trigger('user.onAfterStoreGroup', array($this));
+        \Hubzero\Facades\Event::trigger('user.onAfterStoreGroup', array($this));
 
         return $this->gidNumber;
     }
@@ -343,7 +343,7 @@ class Group extends Obj
     {
         $this->clear();
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -405,7 +405,7 @@ class Group extends Obj
      */
     public function update()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -555,11 +555,11 @@ class Group extends Obj
         // After SQL is done and has no errors, fire off onGroupUserEnrolledEvents
         // for every user added to this group
         foreach ($aNewUserGroupEnrollments as $userid) {
-            \Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
+            \Hubzero\Facades\Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
         }
 
         if ($affected > 0) {
-            \Event::trigger('user.onAfterStoreGroup', array($this));
+            \Hubzero\Facades\Event::trigger('user.onAfterStoreGroup', array($this));
         }
 
         return true;
@@ -572,7 +572,7 @@ class Group extends Obj
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -608,7 +608,7 @@ class Group extends Obj
         $db->query();
 
         //trigger the onAfterStoreGroup event
-        \Event::trigger('user.onAfterStoreGroup', array($this));
+        \Hubzero\Facades\Event::trigger('user.onAfterStoreGroup', array($this));
 
         return true;
     }
@@ -633,7 +633,7 @@ class Group extends Obj
 
         if (in_array($property, self::$_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
 
                 if (is_object($db)) {
                     $groups = array('applicants' => array(),
@@ -828,7 +828,7 @@ class Group extends Obj
      */
     private function userids($users)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -906,7 +906,7 @@ class Group extends Obj
      */
     public static function iterate($func)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT cn FROM `#__xgroups`;";
 
@@ -935,7 +935,7 @@ class Group extends Obj
      */
     public static function exists($group, $check_system = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($group)) {
             return false;
@@ -983,7 +983,7 @@ class Group extends Obj
      */
     public static function find($filters = array())
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Type 0 - System Group
         // Type 1 - HUB Group
@@ -1208,7 +1208,7 @@ class Group extends Obj
             return false;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -1247,7 +1247,7 @@ class Group extends Obj
         $table = '#__xgroups_' . $tbl;
         $user_table = '#__users';
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u
 					WHERE t.gidNumber={$db->quote($this->gidNumber)}
@@ -1283,7 +1283,7 @@ class Group extends Obj
         }
 
         //logo link - links to group overview page
-        $link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
+        $link = \Hubzero\Facades\Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 
         //path to group uploaded logo
         $path = substr(PATH_APP, strlen(PATH_ROOT)) .
@@ -1301,7 +1301,7 @@ class Group extends Obj
         $members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
         if (
             $this->get('discoverability') == 1
-            && !in_array(\User::get('id'), $members_and_invitees)
+            && !in_array(\Hubzero\Facades\User::get('id'), $members_and_invitees)
         ) {
             $src = $default_logo;
         }
@@ -1315,7 +1315,7 @@ class Group extends Obj
             return $src;
         }
 
-        return \Request::base(true) . $src;
+        return \Hubzero\Facades\Request::base(true) . $src;
     }
 
     /**
@@ -1325,7 +1325,7 @@ class Group extends Obj
      */
     public function getBasePath()
     {
-        $groupParams = \Component::params('com_groups');
+        $groupParams = \Hubzero\Facades\Component::params('com_groups');
         $uploadPath  = $groupParams->get('uploadpath', '/site/groups');
         return $uploadPath . DS . $this->get('gidNumber');
     }
@@ -1351,7 +1351,7 @@ class Group extends Obj
         }
 
         // build link
-        $link  = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
+        $link  = \Hubzero\Facades\Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
         $link .= '/' . ucfirst($type) . ':' . implode('/', $segments);
 
         // return link
@@ -1380,7 +1380,7 @@ class Group extends Obj
                     'scope'    => '', //$this->get('cn') . DS . 'wiki',
                     'pagename' => $this->get('cn'),
                     'pageid'   => 0, //$this->get('gidNumber'),
-                    'filepath' => \Component::params('com_groups')->get('uploadpath', '/site/groups') .
+                    'filepath' => \Hubzero\Facades\Component::params('com_groups')->get('uploadpath', '/site/groups') .
                         DS .
                         $this->get('gidNumber') .
                         DS .
@@ -1389,7 +1389,7 @@ class Group extends Obj
                     'camelcase' => 0
                 );
 
-                \Event::trigger('content.onContentPrepare', array(
+                \Hubzero\Facades\Event::trigger('content.onContentPrepare', array(
                     'com_groups.group.' . $type . '_desc',
                     &$this,
                     &$config

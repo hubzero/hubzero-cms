@@ -22,15 +22,15 @@ class Content extends AbstractComponent
      */
     protected function execute(): void
     {
-        $task = \Request::getCmd('task');
+        $task = \Hubzero\Facades\Request::getCmd('task');
         if ($task) {
             if (strstr($task, '.')) {
                 $task = explode('.', $task);
                 $task = end($task);
-                \Request::setVar('task', $task);
+                \Hubzero\Facades\Request::setVar('task', $task);
             }
         } else {
-            \Request::setVar('task', \Request::getCmd('view', 'article'));
+            \Hubzero\Facades\Request::setVar('task', \Hubzero\Facades\Request::getCmd('view', 'article'));
         }
 
         $controller = new Controllers\Articles();

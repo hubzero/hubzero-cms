@@ -11,8 +11,8 @@ namespace Modules\RecentQuestions;
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
 use Components\Answers\Models\Tags;
-use Component;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 use Date;
 
 /**

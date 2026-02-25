@@ -8,6 +8,8 @@
 
 namespace Hubzero\Html\Builder;
 
+use Hubzero\Facades\Request;
+
 /**
  * Utility class for Sliders elements
  */
@@ -136,7 +138,7 @@ class Sliders
 
             Behavior::framework(true);
 
-            \App::get('document')->addScriptDeclaration(
+            \Hubzero\Facades\App::get('document')->addScriptDeclaration(
                 "jQuery(document).ready(function($){
 					$('div#" . $group . "').accordion(" . $options . ");
 				});"

@@ -33,7 +33,7 @@ class Remote extends Plugin
                 $result = SearchComponent::addDomainNameSpace($result);
             }
             unset($result);
-            $params = \Plugin::params('search', 'remote');
+            $params = \Hubzero\Facades\Plugin::params('search', 'remote');
             $url = $params->get('app_url');
             $token = $params->get('app_token');
             $client = new \GuzzleHttp\Client(['verify' => false]);
@@ -60,7 +60,7 @@ class Remote extends Plugin
     {
         $className = strtolower(preg_replace('/([A-Z])/', '_$1', get_class($this)));
         if ($model->name === $className) {
-            $params = \Plugin::params('search', 'remote');
+            $params = \Hubzero\Facades\Plugin::params('search', 'remote');
             $url = $params->get('app_url');
             $token = $params->get('app_token');
             if (!empty($url) && !empty($token)) {

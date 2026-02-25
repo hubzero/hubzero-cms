@@ -34,7 +34,7 @@ class WinCache extends Store
     public function __construct($options = array())
     {
         if (!self::isAvailable()) {
-            throw new Exception(\Lang::txt('JLIB_SESSION_WINCACHE_EXTENSION_NOT_AVAILABLE'));
+            throw new Exception(\Hubzero\Facades\Lang::txt('JLIB_SESSION_WINCACHE_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (isset($options['prefix'])) {

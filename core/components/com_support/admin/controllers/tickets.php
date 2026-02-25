@@ -25,14 +25,18 @@ use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Number;
 use Exception;
-use Filesystem;
-use Request;
-use Config;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Date;
 
 /**
  * Support controller class for tickets
@@ -1136,7 +1140,7 @@ class Tickets extends AdminController
 
         $database->setQuery($query);
         if ($nouser) {
-            $users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
+            $users[] = \Hubzero\Facades\Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
             $users = array_merge($users, $database->loadObjectList());
         } else {
             $users = $database->loadObjectList();
@@ -1158,13 +1162,13 @@ class Tickets extends AdminController
                 $groups[$result->alias][] = $result;
             }
             foreach ($groups as $nme => $gusers) {
-                $users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
+                $users[] = \Hubzero\Facades\Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
                 $users = array_merge($users, $gusers);
-                $users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
+                $users[] = \Hubzero\Facades\Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
             }
         }
 
-        $users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        $users = \Hubzero\Facades\Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
         return $users;
     }
@@ -1183,7 +1187,7 @@ class Tickets extends AdminController
     {
         $users = array();
         if ($nouser) {
-            $users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
+            $users[] = \Hubzero\Facades\Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
         }
 
         if (strstr($group, ',')) {
@@ -1196,7 +1200,7 @@ class Tickets extends AdminController
                         $members = $hzg->get('members');
 
                         //$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
-                        $users[] = \Html::select('optgroup', stripslashes($hzg->description));
+                        $users[] = \Hubzero\Facades\Html::select('optgroup', stripslashes($hzg->description));
                         foreach ($members as $member) {
                             $u = User::getInstance($member);
                             if (!is_object($u)) {
@@ -1211,7 +1215,7 @@ class Tickets extends AdminController
                             $users[] = $m;
                         }
                         //$users[] = '</optgroup>';
-                        $users[] = \Html::select('option', '</OPTGROUP>');
+                        $users[] = \Hubzero\Facades\Html::select('option', '</OPTGROUP>');
                     }
                 }
             }
@@ -1242,7 +1246,7 @@ class Tickets extends AdminController
             ksort($users);
         }
 
-        $users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        $users = \Hubzero\Facades\Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
         return $users;
     }

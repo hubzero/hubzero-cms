@@ -23,8 +23,8 @@ class Modules extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_modules')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_modules')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 

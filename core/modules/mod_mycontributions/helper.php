@@ -9,8 +9,8 @@
 namespace Modules\MyContributions;
 
 use Hubzero\Module\Module;
-use Component;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying contributions in progress
@@ -24,7 +24,7 @@ class Helper extends Module
      */
     private function getContributions()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, ";
         $query .= "R.created, R.created_by, R.published, R.publish_up, R.standalone, ";
@@ -51,7 +51,7 @@ class Helper extends Module
      */
     private function getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools = '40')
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // Query filters defaults
         $filters = array();

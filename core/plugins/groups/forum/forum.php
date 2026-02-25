@@ -8,6 +8,16 @@ use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
 
 /**
  * @package    hubzero-cms
@@ -47,7 +57,7 @@ class Forum extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         $ext = strtolower($extension);
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
 
@@ -1166,7 +1176,7 @@ class Forum extends Plugin
         $this->_authorize('post');
 
         // Get all the likes of this thread
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $queryLikes = "SELECT LIKES.threadId as 'threadId', LIKES.postId as 'postId', 
 		  LIKES.userId as 'userId', USERS.name as 'userName', USERS.email as 'userEmail' 
 		  FROM jos_forum_posts_like as LIKES, jos_users AS USERS
@@ -1339,7 +1349,7 @@ class Forum extends Plugin
                 $moving = true;
             }
 
-            $fields['modified'] = \Date::toSql();
+            $fields['modified'] = \Hubzero\Facades\Date::toSql();
             $fields['modified_by'] = User::get('id');
         }
 
@@ -1913,7 +1923,7 @@ class Forum extends Plugin
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

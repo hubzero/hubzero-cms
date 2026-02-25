@@ -126,7 +126,7 @@ class File extends WikiMacro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = \Component::params('com_wiki');
+        $this->config = \Hubzero\Facades\Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -434,8 +434,8 @@ class File extends WikiMacro
             $link .= $this->pagename;
         }
         $type = 'File';
-        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
-            if (\Request::getCmd('format') == 'pdf') {
+        if (in_array(strtolower(\Hubzero\Facades\Filesystem::extension($file)), $this->imgs)) {
+            if (\Hubzero\Facades\Request::getCmd('format') == 'pdf') {
                 return $this->path($file);
             }
             $type = 'Image';
@@ -443,7 +443,7 @@ class File extends WikiMacro
         $link = rtrim($link, '/');
         $link .= '/' . $type . ':' . $file;
 
-        return \Route::url($link);
+        return \Hubzero\Facades\Route::url($link);
     }
 
     /**
@@ -455,7 +455,7 @@ class File extends WikiMacro
      */
     private function embed($file, $attr = array())
     {
-        $ext = strtolower(\Filesystem::extension($file));
+        $ext = strtolower(\Hubzero\Facades\Filesystem::extension($file));
 
         switch ($ext) {
             case 'unity3d':
@@ -512,7 +512,7 @@ class File extends WikiMacro
 
                 $rand = rand(0, 100000);
 
-                $imgSrc = (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://')
+                $imgSrc = (\Hubzero\Facades\Request::scheme() == 'https' ? 'https://ssl-' : 'http://')
                     . 'webplayer.unity3d.com/installation/getunity.png';
                 $html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" '
                     . 'data-width="' . intval($attr['width']) . '" '
@@ -526,16 +526,16 @@ class File extends WikiMacro
                     . '</div>'
                     . '</div>' . "\n";
 
-                \Document::addScript(\Request::scheme()
+                \Hubzero\Facades\Document::addScript(\Hubzero\Facades\Request::scheme()
                     . '://webplayer
                     . unity3d
                     . com/download_webplayer-3
                     . x/3
                     . 0/uo/UnityObject2
                     . js');
-                $fileJs = \Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/file/file.js'
+                $fileJs = \Hubzero\Facades\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/file/file.js'
                     . '?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js');
-                \Document::addScript($fileJs);
+                \Hubzero\Facades\Document::addScript($fileJs);
                 break;
 
             case 'cdf':
@@ -579,16 +579,16 @@ class File extends WikiMacro
                         . 'href="http://www.wolfram.com/cdf-player/" title="CDF Web '
                         . 'Player. Install now!">';
                     $attr['alt'] .= '<img alt="CDF Web Player Install now!" src="'
-                        . \Request::scheme()
+                        . \Hubzero\Facades\Request::scheme()
                         . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js';
                     $attr['alt'] .= '<img alt="CDF Web Player Install now!" src="'
-                        . \Request::scheme()
+                        . \Hubzero\Facades\Request::scheme()
                         . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
                     $attr['alt'] .= '</a>';
                 }
 
-                \Document::addScript(\Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
-                \Document::addScript(\Request::root()
+                \Hubzero\Facades\Document::addScript(\Hubzero\Facades\Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
+                \Hubzero\Facades\Document::addScript(\Hubzero\Facades\Request::root()
                     . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t='
                     . filemtime(__DIR__ . '/macro-assets/file/file.js'));
 
@@ -668,11 +668,11 @@ class File extends WikiMacro
                     if ($size !== null && $attr['details']) {
                         $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
                         if (isset($attr['created_by'])) {
-                            $user = \User::getInstance($attr['created_by']);
-                            $html .= ', ' . \Lang::txt('uploaded by %s ', stripslashes($user->get('name', '')));
+                            $user = \Hubzero\Facades\User::getInstance($attr['created_by']);
+                            $html .= ', ' . \Hubzero\Facades\Lang::txt('uploaded by %s ', stripslashes($user->get('name', '')));
                         }
                         if (isset($attr['created'])) {
-                            $html .= ' ' . \Date::of($attr['created'])->relative();
+                            $html .= ' ' . \Hubzero\Facades\Date::of($attr['created'])->relative();
                         }
                         $html .= '</span>)';
                     }

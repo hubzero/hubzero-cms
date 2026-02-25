@@ -12,9 +12,9 @@ use Hubzero\User\Group;
 use Components\Collections\Models\Item as GenericItem;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for an item
@@ -73,7 +73,7 @@ class Wiki extends GenericItem
             return true;
         }
 
-        include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
+        include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
         $page = null;
 
         if (!$id) {

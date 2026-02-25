@@ -23,30 +23,30 @@ class Wiki extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_wiki')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_wiki')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Initiate controller
-        $controllerName = \Request::getCmd('controller', 'pages');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'pages');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'pages';
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_WIKI_PAGES'),
-            \Route::url('index.php?option=com_wiki'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_WIKI_PAGES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_wiki'),
             true
         );
 
         require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_WIKI_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_WIKI_PLUGINS'),
+                \Hubzero\Facades\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
             );
         }
 

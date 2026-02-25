@@ -12,6 +12,7 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Utility\Inflector;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Scaffolding class for generating template extensions
@@ -118,8 +119,8 @@ class Scaffolding extends Base implements CommandInterface
         }
 
         // Get author name and email - we'll go ahaed and retrieve for all create calls
-        $user_name  = Config::get('user_name');
-        $user_email = Config::get('user_email');
+        $user_name  = \Hubzero\Facades\Config::get('user_name');
+        $user_email = \Hubzero\Facades\Config::get('user_email');
 
         if (!$user_name || !$user_email) {
             $this->output

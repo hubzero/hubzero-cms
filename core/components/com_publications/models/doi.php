@@ -10,11 +10,11 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use stdClass;
-use Component;
-use Request;
-use Config;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Publication doi model class
@@ -92,7 +92,7 @@ class Doi extends Obj
      */
     public function __construct($pub = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Set configs
         $this->configs();

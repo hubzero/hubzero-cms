@@ -202,14 +202,14 @@ namespace Hubzero\Component\Tests {
                 HtmxAppStub::reset();
             }
 
-            \App::set('response', new HtmxResponseStub());
+            \Hubzero\Facades\App::set('response', new HtmxResponseStub());
         }
 
         #[Test]
         public function bootRegistersHtmxForEnabledComponent(): void
         {
             $container = new HtmxContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new EnabledHtmxComponent();
             $component->boot();
@@ -220,14 +220,14 @@ namespace Hubzero\Component\Tests {
             $service = $container->get('htmx');
             $this->assertInstanceOf(HtmxService::class, $service);
             $this->assertSame('enabled', $service->getState('marker'));
-            $this->assertStringContainsString('HX-Request', \App::get('response')->headers->get('Vary'));
+            $this->assertStringContainsString('HX-Request', \Hubzero\Facades\App::get('response')->headers->get('Vary'));
         }
 
         #[Test]
         public function bootSkipsHtmxSetupForDisabledComponent(): void
         {
             $container = new HtmxContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new DisabledHtmxComponent();
             $component->boot();
@@ -240,7 +240,7 @@ namespace Hubzero\Component\Tests {
         public function traitRegistersDefaultHtmxSecurityState(): void
         {
             $container = new HtmxContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new TraitDefaultHtmxComponent();
             $component->boot();
@@ -258,7 +258,7 @@ namespace Hubzero\Component\Tests {
         public function traitAllowsOverridingHtmxSecurityState(): void
         {
             $container = new HtmxContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new TraitCustomHtmxComponent();
             $component->boot();

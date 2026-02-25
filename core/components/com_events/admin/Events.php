@@ -22,28 +22,28 @@ class Events extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_events')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_events')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'events');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'events');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'events';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS'),
-            \Route::url('index.php?option=com_events&controller=events'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_EVENTS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_events&controller=events'),
             $controllerName == 'events'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS_CATEGORIES'),
-            \Route::url('index.php?option=com_categories&extension=com_events'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_EVENTS_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_categories&extension=com_events'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS_CONFIGURATION'),
-            \Route::url('index.php?option=com_events&controller=configure'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_EVENTS_CONFIGURATION'),
+            \Hubzero\Facades\Route::url('index.php?option=com_events&controller=configure'),
             $controllerName == 'configure'
         );
 

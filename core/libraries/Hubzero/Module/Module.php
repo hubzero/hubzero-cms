@@ -11,7 +11,7 @@ namespace Hubzero\Module;
 use Hubzero\Base\Obj;
 use Hubzero\Document\Assets;
 use Hubzero\Utility\Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Base class for modules

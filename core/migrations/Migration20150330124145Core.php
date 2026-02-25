@@ -60,7 +60,7 @@ class Migration20150330124145Core extends Base
         $permissions = substr(decoct(fileperms($configFile)), 2);
 
         if (substr($permissions, 1, 1) != '6') {
-            \App::get('filesystem')->setPermissions(
+            \Hubzero\Facades\App::get('filesystem')->setPermissions(
                 $configFile,
                 substr_replace($permissions, '6', 1, 1)
             );
@@ -72,7 +72,7 @@ class Migration20150330124145Core extends Base
         }
 
         // Change permissions back to what they were before
-        \App::get('filesystem')->setPermissions($configFile, $permissions);
+        \Hubzero\Facades\App::get('filesystem')->setPermissions($configFile, $permissions);
     }
 
     /**

@@ -10,6 +10,11 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Review block
@@ -209,7 +214,7 @@ class Review extends Base
         }
 
         // Instantiate a new registration object
-        include_once \Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
         $xregistration = new \Components\Members\Models\Registration();
 
         // Get current owners

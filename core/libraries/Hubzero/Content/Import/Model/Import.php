@@ -10,9 +10,9 @@ namespace Hubzero\Content\Import\Model;
 
 use Hubzero\Database\Relational;
 use Exception;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Class for an import

@@ -11,12 +11,13 @@ namespace Components\Tools\Admin\Controllers;
 use Components\Tools\Models\Tool;
 use Components\Resources\Models\Entry;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Tools controller class
@@ -177,9 +178,9 @@ class Pipeline extends AdminController
         $row->update();
 
         // If the tool state was changed...
-        if ($oldstate != $row->state && file_exists(\Component::path('com_resources') . '/models/entry.php')) {
+        if ($oldstate != $row->state && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/entry.php')) {
             // Trash the associated resource page
-            require_once \Component::path('com_resources') . '/models/entry.php';
+            require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
 
             $resource = Entry::oneByAlias($row->toolname);
 
@@ -226,8 +227,8 @@ class Pipeline extends AdminController
         $database = App::get('db');
 
         // Initiate extended database classes
-        require_once \Component::path('com_resources') . '/models/entry.php';
-        require_once \Component::path('com_resources') . '/models/doi.php';
+        require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
+        require_once \Hubzero\Facades\Component::path('com_resources') . '/models/doi.php';
 
         $objV     = new \Components\Tools\Tables\Version($database);
         $objA     = new \Components\Tools\Tables\Author($database);
@@ -236,7 +237,7 @@ class Pipeline extends AdminController
         $sitename = Config::get('sitename');
 
         // Get config
-        $config = \Component::params($this->_option);
+        $config = \Hubzero\Facades\Component::params($this->_option);
 
         // Get all tool publications without new DOI
         $database->setQuery("SELECT * FROM `#__doi_mapping` WHERE `doi`='' OR `doi` IS NULL");

@@ -10,6 +10,15 @@ namespace Plugins\Authentication\Scistarter;
 
 use Hubzero\Plugin\Plugin;
 use SciStarter\Oauth;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Log;
 
 class Scistarter extends \Hubzero\Plugin\OauthClient
 {

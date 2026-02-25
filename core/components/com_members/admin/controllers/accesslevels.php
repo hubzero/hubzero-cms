@@ -11,11 +11,12 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Access\Viewlevel;
 use Hubzero\Access\Group as Accessgroup;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Manage user Access Levels

@@ -11,6 +11,8 @@ namespace Plugins\Resources\About;
 use Hubzero\Plugin\Plugin;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Objct;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Resources Plugin class for about tab

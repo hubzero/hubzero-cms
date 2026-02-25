@@ -10,6 +10,10 @@ namespace Plugins\Cart\Upay;
 
 use Hubzero\Plugin\Plugin;
 use Components\Cart\Models\Cart;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * Cart plugin for Payment: UPay

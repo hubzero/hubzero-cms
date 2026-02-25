@@ -16,9 +16,11 @@ use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Collection;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
 
 /**
  * API controller for the projects files

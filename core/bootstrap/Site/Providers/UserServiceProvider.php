@@ -40,7 +40,7 @@ class UserServiceProvider extends ServiceProvider
     public function boot()
     {
         // Set the base link to use for profiles
-        User::$linkBase = 'index.php?option=com_members&id={ID}';
+        \Hubzero\User\User::$linkBase = 'index.php?option=com_members&id={ID}';
 
         // Set the picture resolver
         if ($this->app->has('component')) {
@@ -57,17 +57,17 @@ class UserServiceProvider extends ServiceProvider
             ];
 
             // File 'profile.png'
-            User::$pictureResolvers[] = new File($config);
+            \Hubzero\User\User::$pictureResolvers[] = new File($config);
 
             // Legacy picture 'mypicture.jpg'
-            User::$pictureResolvers[] = new Namedfile($config);
+            \Hubzero\User\User::$pictureResolvers[] = new Namedfile($config);
 
             // Specified resolver
             if ($resolver = $params->get('picture', '')) {
                 $cls = 'Hubzero\\User\\Picture\\' . ucfirst($resolver);
 
                 if (class_exists($cls)) {
-                    User::$pictureResolvers[] = new $cls($config);
+                    \Hubzero\User\User::$pictureResolvers[] = new $cls($config);
                 }
             }
         }

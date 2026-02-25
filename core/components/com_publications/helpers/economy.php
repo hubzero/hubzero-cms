@@ -10,6 +10,8 @@ namespace Components\Publications\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Publications Economy class:

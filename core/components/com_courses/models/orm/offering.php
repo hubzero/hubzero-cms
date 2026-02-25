@@ -10,7 +10,7 @@ namespace Components\Courses\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Model class for a course offering

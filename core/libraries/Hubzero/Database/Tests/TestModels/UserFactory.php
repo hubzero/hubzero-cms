@@ -16,7 +16,7 @@ use Hubzero\Database\Tests\TestModels\User;
  */
 class UserFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = \Hubzero\Facades\User::class;
 
     public function definition()
     {

@@ -3,6 +3,14 @@
 namespace Plugins\Members\Activity;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
 
 /**
  * @package   hubzero-cms

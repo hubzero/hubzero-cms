@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 // $this->row->time_zone is the event timezone
 if (!isset($this->row->time_zone) || $this->row->time_zone == '') {
     // Get the timezone preferred by the USER, if not use HUB's
-    $timezone = \Config::get('offset');
+    $timezone = \Hubzero\Facades\Config::get('offset');
     // Handle daylight savings time
     if (date('I', strtotime($this->row->publish_up))) {
         // Add 1 hour

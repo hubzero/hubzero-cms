@@ -10,6 +10,13 @@ namespace Components\Messages\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Messages\Models\Message;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
 
 /**
  * Messages list controller class.
@@ -342,8 +349,8 @@ class Messages extends AdminController
             $fromUser = $message->from;
             $toUser   = $message->to;
 
-            $debug = \Config::get('debug_lang');
-            $default_language = \Component::params('com_languages')->get('administrator');
+            $debug = \Hubzero\Facades\Config::get('debug_lang');
+            $default_language = \Hubzero\Facades\Component::params('com_languages')->get('administrator');
 
             /*$lang = Lang::getInstance($toUser->getParam('admin_language', $default_language), $debug);
             $lang->load('com_messages', PATH_APP) ||
@@ -351,7 +358,7 @@ class Messages extends AdminController
 
             $siteURL  = Request::root()
                 . 'administrator/index.php?option=com_messages&view=message&message_id=' . $message->id;
-            $sitename = \Config::get('sitename');
+            $sitename = \Hubzero\Facades\Config::get('sitename');
 
             $subject = Lang::txt('COM_MESSAGES_NEW_MESSAGE_ARRIVED', $sitename);
             $msg     = Lang::txt('COM_MESSAGES_PLEASE_LOGIN', $siteURL);

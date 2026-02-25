@@ -20,7 +20,7 @@ class Inertia
      */
     protected static function service(): InertiaService
     {
-        $app = \App::get('app');
+        $app = \Hubzero\Facades\App::get('app');
 
         if ($app->has('inertia')) {
             $service = $app->get('inertia');

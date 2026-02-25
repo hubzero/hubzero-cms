@@ -10,9 +10,9 @@ namespace Components\Feedback\Models;
 
 use Components\Members\Models\Member;
 use Hubzero\Database\Relational;
-use Filesystem;
-use Lang;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Feedback model for a quote
@@ -118,7 +118,7 @@ class Quote extends Relational
      */
     public function filespace($root = true)
     {
-        $config = \Component::params('com_feedback');
+        $config = \Hubzero\Facades\Component::params('com_feedback');
 
         $basePath = $root ? PATH_APP : substr(PATH_APP, strlen(PATH_ROOT));
         return $basePath . DS . trim($config->get('uploadpath', '/site/quotes'), DS);

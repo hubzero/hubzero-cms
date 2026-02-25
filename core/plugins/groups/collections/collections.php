@@ -3,6 +3,14 @@
 namespace Plugins\Groups\Collections;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * @package    hubzero-cms
@@ -50,7 +58,7 @@ class Collections extends Plugin
         }
 
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
@@ -66,7 +74,7 @@ class Collections extends Plugin
     public function onGroupDelete($group)
     {
         // Import needed libraries
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
+        include_once \Hubzero\Facades\Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         // Get all the IDs for collections
         $database = App::get('db');
@@ -117,7 +125,7 @@ class Collections extends Plugin
      */
     public function onGroupDeleteCount($group)
     {
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
+        include_once \Hubzero\Facades\Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         $database = App::get('db');
         $sql = "SELECT COUNT(*) FROM `#__collections` WHERE `object_type`="

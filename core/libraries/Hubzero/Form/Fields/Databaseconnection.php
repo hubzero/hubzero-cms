@@ -8,7 +8,7 @@
 
 namespace Hubzero\Form\Fields;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a list of available database connections, optionally limiting to

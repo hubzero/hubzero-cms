@@ -126,7 +126,7 @@ class Mysql implements
      */
     public function getClientDetailsById($id)
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT * FROM `#__developer_applications`
 				WHERE `id`=" . $database->quote($id);
@@ -449,7 +449,7 @@ class Mysql implements
                 }
             }
         }
-        $sessionName = md5(\App::hash($client));
+        $sessionName = md5(\Hubzero\Facades\App::hash($client));
 
         // return session id stored in cookie
         return (!empty($_COOKIE[$sessionName])) ? $_COOKIE[$sessionName] : null;
@@ -463,10 +463,10 @@ class Mysql implements
      */
     public function getUserIdFromSessionId($sessionId)
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // get session timeout period
-        $timeout = \App::get('config')->get('timeout');
+        $timeout = \Hubzero\Facades\App::get('config')->get('timeout');
 
         // load user from session table
         $sql = "SELECT userid
@@ -578,7 +578,7 @@ class Mysql implements
     public function createInternalRequestClient()
     {
         // client id/secret
-        $clientId     = md5(uniqid(\User::get('id'), true));
+        $clientId     = md5(uniqid(\Hubzero\Facades\User::get('id'), true));
         $clientSecret = sha1($clientId);
 
         // application model
@@ -590,7 +590,7 @@ class Mysql implements
         $application->set('client_secret', $clientSecret);
         $application->set('grant_types', 'client_credentials session tool');
         $application->set('created', with(new Date('now'))->toSql());
-        $application->set('created_by', \User::get('id'));
+        $application->set('created_by', \Hubzero\Facades\User::get('id'));
         $application->set('state', 1);
         $application->set('hub_account', 1);
         $application->save();

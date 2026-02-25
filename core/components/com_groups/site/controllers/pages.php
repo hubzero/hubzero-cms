@@ -12,12 +12,13 @@ use Hubzero\User\Group;
 use Components\Groups\Models\Page;
 use Components\Groups\Models\Module;
 use Components\Groups\Helpers;
-use Request;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Groups controller class

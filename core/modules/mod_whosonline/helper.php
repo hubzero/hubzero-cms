@@ -11,8 +11,7 @@ namespace Modules\Whosonline;
 use Hubzero\Module\Module;
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\User\User;
-use App;
-
+use Hubzero\Facades\App;
 /**
  * Module class for showing users online
  */

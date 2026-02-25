@@ -11,12 +11,13 @@ namespace Components\System\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Installer\Admin\Helpers\Cli;
 use stdClass;
-use Component;
-use Request;
-use Config;
-use Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
 use Lang;
 use Date;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for system tasks
@@ -78,8 +79,8 @@ class Systemv1r0 extends ApiController
             'environment' => Config::get('application_env', 'production')
         );
 
-        if (file_exists(\Component::path('com_update') . DS . 'helpers' . DS . 'cli.php')) {
-            require_once \Component::path('com_update') . DS . 'helpers' . DS . 'cli.php';
+        if (file_exists(Component::path('com_update') . DS . 'helpers' . DS . 'cli.php')) {
+            require_once Component::path('com_update') . DS . 'helpers' . DS . 'cli.php';
 
             $source = Component::params('com_update')->get('git_repository_source', null);
 

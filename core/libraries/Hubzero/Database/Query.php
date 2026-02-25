@@ -8,6 +8,10 @@
 
 namespace Hubzero\Database;
 
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
+
 /**
  * Database query class
  *

@@ -381,7 +381,7 @@ class Html extends Base
             $name = strtolower($words[$i]);
             $words[$i] = ((isset(parent::$_buffer['modules'][$name])) && (parent::$_buffer['modules'][$name] === false))
                 ? 0
-                : count(\Module::byPosition($name));
+                : count(\Hubzero\Facades\Module::byPosition($name));
         }
 
         $str = 'return ' . implode(' ', $words) . ';';
@@ -399,10 +399,10 @@ class Html extends Base
         static $children;
 
         if (!isset($children)) {
-            $menu = \App::get('menu');
+            $menu = \Hubzero\Facades\App::get('menu');
             $active = $menu->getActive();
             if ($active) {
-                $dbo = \App::get('db');
+                $dbo = \Hubzero\Facades\App::get('db');
 
                 $query = $dbo->getQuery();
                 $query
@@ -458,7 +458,7 @@ class Html extends Base
                 $path = str_replace(PATH_ROOT . '/', '', $dir);
                 $path = str_replace('\\', '/', $path);
 
-                $this->addFavicon(rtrim(\Request::root(true), '/') . '/' . $path . 'favicon.ico');
+                $this->addFavicon(rtrim(\Hubzero\Facades\Request::root(true), '/') . '/' . $path . 'favicon.ico');
                 break;
             }
         }
@@ -491,21 +491,19 @@ class Html extends Base
         }
 
         // Load the language file for the template
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         $lang->load('tpl_' .
             $template, PATH_APP .
             DS .
             'bootstrap' .
             DS .
-            \App::get('client')->name, null, false, true) ||
+            \Hubzero\Facades\App::get('client')->name, null, false, true) ||
         $lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
         // Assign the variables
         $this->template = $template;
-        // $this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) .
-        // '/templates/'. $template;
-        //$this->baseurl  = rtrim(\Request::root(true), '/');
-        $this->baseurl  = isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/');
+        $this->baseurl = $params['baseurl']
+            ?? rtrim(\Hubzero\Facades\Request::root(true), '/');
         $this->params   = isset($params['params'])  ? $params['params']  : new Registry();
 
         // Load

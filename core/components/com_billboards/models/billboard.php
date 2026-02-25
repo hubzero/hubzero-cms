@@ -9,6 +9,7 @@
 namespace Components\Billboards\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Component;
 
 /**
  * Billboard database model

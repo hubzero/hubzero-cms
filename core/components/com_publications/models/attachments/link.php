@@ -10,11 +10,11 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Handles a link attachment

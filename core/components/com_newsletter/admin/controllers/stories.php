@@ -13,10 +13,14 @@ use Components\Newsletter\Models\Primary;
 use Components\Newsletter\Models\Secondary;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Newsletter stories Controller
@@ -306,7 +310,7 @@ class Stories extends AdminController
             }
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //is there a nother story having the order we want?
         $tableName = $story->getTableName();

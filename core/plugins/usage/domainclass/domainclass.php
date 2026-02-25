@@ -4,6 +4,8 @@ namespace Plugins\Usage\Domainclass;
 
 use Hubzero\Plugin\Plugin;
 use Components\Usage\Helpers\Helper as UsageHtml;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * @package    hubzero-cms
@@ -48,12 +50,12 @@ class Domainclass extends Plugin
     private function classList(&$db, $class, $t = 0, $enddate = 0)
     {
         if (!$db->tableExists('classes')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classes');
+            \Hubzero\Facades\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classes');
             return '';
         }
 
         if (!$db->tableExists('classvals')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classvals');
+            \Hubzero\Facades\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classvals');
             return '';
         }
 

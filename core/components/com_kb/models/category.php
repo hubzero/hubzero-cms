@@ -9,6 +9,8 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Knowledgebase model for a category

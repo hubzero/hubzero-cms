@@ -200,7 +200,7 @@ $this->css('browse.css');
                 <ol class="courses entries">
                 <?php
                 if ($this->courses->total() > 0) {
-                    require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+                    require_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
                     foreach ($this->courses as $course) {
                         //get status

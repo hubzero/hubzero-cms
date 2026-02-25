@@ -39,7 +39,7 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function __construct($scope = 'project', $group_cn = '', $project_id = 0)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
         $this->_scope = $scope;
         $this->projectId = $project_id;
 
@@ -290,7 +290,7 @@ class Note extends \Components\Wiki\Models\Book
     public function getWikiPath($id = 0)
     {
         // Ensure we have an ID to work with
-        $listdir = \Request::getInt('lid', 0);
+        $listdir = \Hubzero\Facades\Request::getInt('lid', 0);
         $id = $id ? $id : $listdir;
 
         if (!$id) {
@@ -298,12 +298,12 @@ class Note extends \Components\Wiki\Models\Book
         }
 
         // Load wiki configs
-        $wiki_config = \Component::params('com_wiki');
+        $wiki_config = \Hubzero\Facades\Component::params('com_wiki');
 
         $path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 
         if (!is_dir(PATH_APP . $path)) {
-            if (!\Filesystem::makeDirectory(PATH_APP . $path)) {
+            if (!\Hubzero\Facades\Filesystem::makeDirectory(PATH_APP . $path)) {
                 return false;
             }
         }

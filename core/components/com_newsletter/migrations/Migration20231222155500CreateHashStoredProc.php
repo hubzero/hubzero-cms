@@ -22,7 +22,7 @@ class Migration20231222155500CreateHashStoredProc extends Base
                 $results = $this->db->loadObjectList();
         if ($results) {
             foreach ($results as $result) {
-                if ($result->Db == \App::get('config')->get('db') && $result->Name == 'hash_access_code') {
+                if ($result->Db == \Hubzero\Facades\App::get('config')->get('db') && $result->Name == 'hash_access_code') {
                     $found = true;
                     break;
                 }

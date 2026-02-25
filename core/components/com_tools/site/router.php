@@ -129,7 +129,7 @@ class Router extends Base
                 case 'remove':
                 case 'save':
                     $vars['option'] = 'com_tools';
-                    $vars['controller'] = \Request::getCmd('controller', 'authors');
+                    $vars['controller'] = \Hubzero\Facades\Request::getCmd('controller', 'authors');
                     $vars['task'] = $segments[0];
                     break;
 
@@ -230,7 +230,7 @@ class Router extends Base
                 case 'report':
                     $url = 'index.php?option=com_support&task=tickets&find=group:app-'
                         . $segments[0];
-                    \App::redirect(\Route::url($url));
+                    \Hubzero\Facades\App::redirect(\Hubzero\Facades\Route::url($url));
                     exit();
                 break;
 

@@ -12,6 +12,10 @@
 namespace Plugins\Support\Wishlist;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 class Wishlist extends Plugin
 {

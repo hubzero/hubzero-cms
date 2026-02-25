@@ -9,7 +9,7 @@
 namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Obj;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Helper class for HUB Presenter

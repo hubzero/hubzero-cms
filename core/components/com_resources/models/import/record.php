@@ -16,6 +16,7 @@ use Components\Resources\Helpers\Tags;
 use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource Import Record Model
@@ -48,8 +49,8 @@ class Record extends Obj
         $this->mode    = $mode;
 
         // create core objects
-        $this->database = \App::get('db');
-        $this->user     = \User::getInstance();
+        $this->database = \Hubzero\Facades\App::get('db');
+        $this->user     = \Hubzero\Facades\User::getInstance();
 
         // create resource objects
         $this->record               = new stdClass();
@@ -243,7 +244,7 @@ class Record extends Obj
                 $this->raw->id = $resource->id;
 
                 // add a notice with link to resource matched
-                $baseUrl = rtrim(str_replace('administrator', '', \Request::base()), DS);
+                $baseUrl = rtrim(str_replace('administrator', '', \Hubzero\Facades\Request::base()), DS);
                 $resourceLink = $baseUrl . DS . 'resources' . DS . $resource->id;
                 $link = '<a rel="noopener" target="_blank" href="' . $resourceLink . '">'
                     . $resourceLink . '</a>';
@@ -261,12 +262,12 @@ class Record extends Obj
             $this->record->resource = Entry::oneOrNew($this->raw->id);
         } else {
             $this->raw->standalone = 1;
-            $this->raw->created    = \Date::toSql();
+            $this->raw->created    = \Hubzero\Facades\Date::toSql();
             $this->raw->created_by = $this->user->get('id');
 
             // publish up/down
             if (!isset($this->raw->publish_up)) {
-                $this->raw->publish_up = \Date::toSql();
+                $this->raw->publish_up = \Hubzero\Facades\Date::toSql();
             }
             if (!isset($this->raw->publish_down)) {
                 $this->raw->publish_down = '0000-00-00 00:00:00';
@@ -274,7 +275,7 @@ class Record extends Obj
         }
 
         // set modified date/user
-        $this->raw->modified    = \Date::toSql();
+        $this->raw->modified    = \Hubzero\Facades\Date::toSql();
         $this->raw->modified_by = $this->user->get('id');
 
         // set status
@@ -398,7 +399,7 @@ class Record extends Obj
             $children = $this->record->resource->children()->rows();
 
             foreach ($children as $child) {
-                $rconfig = \Component::params('com_resources');
+                $rconfig = \Hubzero\Facades\Component::params('com_resources');
                 $base = PATH_APP . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
                 $file = $base . DS . $child->path;
 
@@ -407,7 +408,7 @@ class Record extends Obj
                 $directory = $info['dirname'];
 
                 if ($child->get('type') == 13 && file_exists($file)) {
-                    \Filesystem::delete($file);
+                    \Hubzero\Facades\Filesystem::delete($file);
                 }
 
                 if (is_dir($directory)) {
@@ -417,7 +418,7 @@ class Record extends Obj
 
                     // remove directory if empty
                     if ($isDirEmpty) {
-                        \Filesystem::deleteDirectory($directory);
+                        \Hubzero\Facades\Filesystem::deleteDirectory($directory);
                     }
                 }
             }

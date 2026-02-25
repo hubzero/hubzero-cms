@@ -57,7 +57,7 @@ class Local implements AdapterInterface
             return file_get_contents($path);
         }
 
-        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(\Lang::txt('File does not exist at path %s', $path));
+        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(\Hubzero\Facades\Lang::txt('File does not exist at path %s', $path));
     }
 
     /**

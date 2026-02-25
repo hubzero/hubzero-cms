@@ -26,7 +26,7 @@ class EditorServiceProvider extends ServiceProvider
         $this->app['editor'] = function ($app) {
             $global = $app['config']->get('editor');
 
-            $editor = \User::getParam('editor', $global);
+            $editor = $app['user']->getParam('editor', $global);
 
             if (!$app['plugin']->isEnabled('editors', $editor)) {
                 $editor = $global;

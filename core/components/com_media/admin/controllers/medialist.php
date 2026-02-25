@@ -11,10 +11,11 @@ namespace Components\Media\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Media\Models\Files;
 use Components\Media\Admin\Helpers\MediaHelper;
-use Filesystem;
-use Request;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Media list controller

@@ -34,7 +34,7 @@ class Permissions
             $assetName .= '.' . (int) $assetId;
         }
 
-        $user = \User::getInstance();
+        $user = \Hubzero\Facades\User::getInstance();
         $result = new Obj();
 
         $actions = array(

@@ -51,14 +51,14 @@ class Router extends Base
         $vars['controller'] = 'profiles';
 
         if (isset($segments[0])) {
-            if (($segments[0] == 'currentuser') && (\App::get('request')->method() == 'GET')) {
+            if (($segments[0] == 'currentuser') && (\Hubzero\Facades\App::get('request')->method() == 'GET')) {
                 $vars['id'] = $segments[0];
                 $vars['task'] = 'read';
             } elseif (is_numeric($segments[0])) {
                 $vars['id'] = $segments[0];
                 if (isset($segments[1])) {
                     $vars['task'] = $segments[1];
-                } elseif (\App::get('request')->method() == 'GET') {
+                } elseif (\Hubzero\Facades\App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
             } elseif ($segments[0] == 'tools') {

@@ -8,6 +8,13 @@
 
 namespace Components\Members\Admin\Helpers;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Submenu;
+
 /**
  * Members admin component helper.
  */

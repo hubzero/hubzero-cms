@@ -12,12 +12,12 @@ use Hubzero\Component\SiteController;
 use Hubzero\User\Group;
 use Components\Groups\Helpers\Permissions;
 use Components\Groups\Helpers\View;
-use Pathway;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Groups controller class
@@ -215,7 +215,7 @@ class Base extends SiteController
             }
         }
 
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**

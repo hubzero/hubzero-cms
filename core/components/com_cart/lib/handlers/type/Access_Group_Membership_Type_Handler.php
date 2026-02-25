@@ -28,7 +28,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
      */
     public function handle()
     {
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
         $ms = new \Components\Storefront\Models\Memberships();
 
         /* NEW
@@ -48,7 +48,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
             $userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
             // Get the user group ID to set the user to (from meta)
-            require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+            require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
             $userGId = \Components\Storefront\Models\Product::getMetaValue($this->item['info']->pId, 'userGroupId');
 
             if (!\Hubzero\Access\Map::addUserToGroup($userId, $userGId)) {

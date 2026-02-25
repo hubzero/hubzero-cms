@@ -12,8 +12,9 @@
 
 namespace Hubzero\Html\Builder;
 
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 /**
 
@@ -1111,7 +1112,7 @@ class Behavior
 
         // Attach tooltips to document
 
-        \App::get('document')->addScriptDeclaration($js);
+        App::get('document')->addScriptDeclaration($js);
 
         // Set static array
 

@@ -10,11 +10,13 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Models\Orm\License;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Config;
 
 /**
  * Manage publication licenses

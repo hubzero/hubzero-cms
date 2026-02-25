@@ -22,54 +22,54 @@ class Support extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_support')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_support')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'tickets');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'tickets');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'tickets';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_TICKETS'),
-            \Route::url('index.php?option=com_support&controller=tickets'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_TICKETS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=tickets'),
             $controllerName == 'tickets'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_CATEGORIES'),
-            \Route::url('index.php?option=com_support&controller=categories'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=categories'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_QUERIES'),
-            \Route::url('index.php?option=com_support&controller=queries'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_QUERIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=queries'),
             $controllerName == 'queries'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_MESSAGES'),
-            \Route::url('index.php?option=com_support&controller=messages'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_MESSAGES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=messages'),
             $controllerName == 'messages'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_STATUSES'),
-            \Route::url('index.php?option=com_support&controller=statuses'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_STATUSES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=statuses'),
             $controllerName == 'statuses'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_ABUSE'),
-            \Route::url('index.php?option=com_support&controller=abusereports'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_ABUSE'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=abusereports'),
             $controllerName == 'abusereports'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_STATS'),
-            \Route::url('index.php?option=com_support&controller=stats'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_STATS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=stats'),
             $controllerName == 'stats'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_ACL'),
-            \Route::url('index.php?option=com_support&controller=acl'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SUPPORT_ACL'),
+            \Hubzero\Facades\Route::url('index.php?option=com_support&controller=acl'),
             $controllerName == 'acl'
         );
 

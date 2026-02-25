@@ -23,13 +23,13 @@ class Storefront extends AbstractComponent
     protected function execute(): void
     {
         //build controller path and name
-        $controllerName = \Request::getCmd('controller', '');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', '');
 
         if (empty($controllerName)) {
             // Load default controller if no controller provided
             $controllerName = 'storefront';
         } elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('Page Not Found'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Page Not Found'));
         }
 
         $controllerRequested = $controllerName;
@@ -45,17 +45,17 @@ class Storefront extends AbstractComponent
 
         if ($loginRequired && $controllerRequested != 'overview') {
             // Check if they're logged in
-            if (\User::isGuest()) {
+            if (\Hubzero\Facades\User::isGuest()) {
                 $return = base64_encode($_SERVER['REQUEST_URI']);
                 // Redirect to the landing page
                 if ($controllerRequested == 'storefront') {
-                    \App::redirect(
-                        \Route::url('index.php?option=com_storefront') . 'overview'
+                    \Hubzero\Facades\App::redirect(
+                        \Hubzero\Facades\Route::url('index.php?option=com_storefront') . 'overview'
                     );
                 }
                 // Require login
-                \App::redirect(
-                    \Route::url('index.php?option=com_users&view=login&return=' . $return),
+                \Hubzero\Facades\App::redirect(
+                    \Hubzero\Facades\Route::url('index.php?option=com_users&view=login&return=' . $return),
                     'Please login to continue',
                     'warning'
                 );
@@ -64,10 +64,10 @@ class Storefront extends AbstractComponent
 
         // Update any restrictions that were entered before the account existed
         // @TODO: Move to a plugin that responds after login?
-        if (!\User::isGuest()) {
+        if (!\Hubzero\Facades\User::isGuest()) {
             \Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(
-                \User::get('id'),
-                \User::get('username')
+                \Hubzero\Facades\User::get('id'),
+                \Hubzero\Facades\User::get('username')
             );
         }
 

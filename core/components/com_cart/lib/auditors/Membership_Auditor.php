@@ -10,7 +10,7 @@ namespace Components\Cart\Lib\Auditors;
 
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
-use User;
+use Hubzero\Facades\User;
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Membership_Auditor extends BaseAuditor

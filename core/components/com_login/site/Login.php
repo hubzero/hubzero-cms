@@ -23,9 +23,9 @@ class Login extends AbstractComponent
     protected function execute(): void
     {
         // Maintian backwards compatibility
-        if ($view = \Request::getCmd('view')) {
-            if ($view != 'login' && !\Request::getCmd('task')) {
-                \Request::setVar('task', $view);
+        if ($view = \Hubzero\Facades\Request::getCmd('view')) {
+            if ($view != 'login' && !\Hubzero\Facades\Request::getCmd('task')) {
+                \Hubzero\Facades\Request::setVar('task', $view);
             }
         }
 

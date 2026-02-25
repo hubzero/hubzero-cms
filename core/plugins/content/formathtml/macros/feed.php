@@ -59,7 +59,7 @@ class Feed extends Macro
         $class = $this->getFeedClass($args);
 
         // Get feed
-        $feed = \App::get('feed.parser');
+        $feed = \Hubzero\Facades\App::get('feed.parser');
         $feed->set_feed_url($url);
         $feed->init();
 

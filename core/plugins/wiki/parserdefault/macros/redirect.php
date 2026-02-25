@@ -81,7 +81,7 @@ class Redirect extends WikiMacro
             . '};'
             . '</script>'
             . '<p class="warning">'
-            . \Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
+            . \Hubzero\Facades\Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
             . '</p>';
     }
 

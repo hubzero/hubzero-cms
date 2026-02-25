@@ -24,11 +24,11 @@ class Html
      */
     public static function scopes($val, $name, $id = null, $atts = null)
     {
-        $adapters = \Filesystem::files(dirname(dirname(__DIR__)) . '/models/adapters', '\.php$');
+        $adapters = \Hubzero\Facades\Filesystem::files(dirname(dirname(__DIR__)) . '/models/adapters', '\.php$');
 
         $selectId = $id ? $id : str_replace(array('[', ']'), '', $name);
         $out  = '<select name="' . $name . '" id="' . $selectId . '"' . ($atts ? ' ' . $atts : '') . '>';
-        $out .= '<option value="">' . \Lang::txt('COM_BLOG_SELECT_SCOPE') . '</option>';
+        $out .= '<option value="">' . \Hubzero\Facades\Lang::txt('COM_BLOG_SELECT_SCOPE') . '</option>';
         foreach ($adapters as $adapter) {
             $adapter = ltrim($adapter, DS);
             $adapter = preg_replace('#\.[^.]*$#', '', $adapter);

@@ -6,6 +6,15 @@ use Hubzero\Plugin\Plugin;
 use Components\Groups\Tables\Reason;
 use Components\Groups\Models\Role;
 use Components\Groups\Models\Member\Role as MemberRole;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
 
 /**
  * @package    hubzero-cms
@@ -46,7 +55,7 @@ class Members extends Plugin
         }
 
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
@@ -1659,7 +1668,7 @@ class Members extends Plugin
         $pageTitle .= ': ' . Lang::txt(strtoupper($profile->get('name')));
         Document::setTitle($pageTitle);
 
-        $params = \Plugin::params('members', 'profile');
+        $params = \Hubzero\Facades\Plugin::params('members', 'profile');
         $params->merge(new \Hubzero\Config\Registry($profile->get('params')));
 
         // Display form asking for a reason to deny membership

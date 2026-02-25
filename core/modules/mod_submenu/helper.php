@@ -22,12 +22,12 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin() || !class_exists('\\Submenu')) {
+        if (!\Hubzero\Facades\App::isAdmin() || !class_exists('\\Submenu')) {
             return;
         }
 
         // Initialise variables.
-        $list = \Submenu::getItems();
+        $list = \Hubzero\Facades\Submenu::getItems();
 
         if (!is_array($list) || !count($list)) {
             return;

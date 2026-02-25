@@ -12,6 +12,8 @@
 namespace Plugins\Tags\Collections;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 class Collections extends Plugin
 {
@@ -47,7 +49,7 @@ class Collections extends Plugin
             return $response;
         }
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $ids = array();
         foreach ($tags as $tag) {
@@ -123,7 +125,7 @@ class Collections extends Plugin
      */
     public static function out($row)
     {
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'post.php';
+        include_once \Hubzero\Facades\Component::path('com_collections') . DS . 'models' . DS . 'post.php';
 
         $row->object_type     = $row->params;
         $row->object_id     = $row->rcount;

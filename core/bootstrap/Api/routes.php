@@ -27,9 +27,9 @@ $router->rules('build')->append('component', function ($uri) {
         return $uri;
     }
 
-    $query['option'] = \App::get('component')->canonical($query['option']);
+    $query['option'] = \Hubzero\Facades\App::get('component')->canonical($query['option']);
 
-    if ($router = \App::get('component')->router($query['option'], 'site')) {
+    if ($router = \Hubzero\Facades\App::get('component')->router($query['option'], 'site')) {
         $query = $router->preprocess($query);
         $parts = $router->build($query);
         $parts = array_filter($parts, function ($v) {
@@ -62,7 +62,7 @@ $router->rules('build')->append('rewrite', function ($uri) {
     // Get the path data
     $route = $uri->getPath();
 
-    if (\App::get('config')->get('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/')) {
+    if (\Hubzero\Facades\App::get('config')->get('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/')) {
         if ($format = $uri->getUriVar('format', 'html')) {
             $route .= '.' . $format;
 
@@ -70,7 +70,7 @@ $router->rules('build')->append('rewrite', function ($uri) {
         }
     }
 
-    if (\App::get('config')->get('sef_rewrite')) {
+    if (\Hubzero\Facades\App::get('config')->get('sef_rewrite')) {
         if ($route == 'index.php') {
             $route = '';
         } else {
@@ -78,7 +78,7 @@ $router->rules('build')->append('rewrite', function ($uri) {
         }
     }
 
-    $base = \App::get('request')->base(true);
+    $base = \Hubzero\Facades\App::get('request')->base(true);
 
     $uri->setPath($base . '/' . $route);
 
@@ -114,7 +114,7 @@ $router->rules('parse')->append('prep', function ($uri) {
     $path = $uri->getPath();
 
     // Remove the base URI path.
-    $path = substr_replace($path, '', 0, strlen(\App::get('request')->base(true)));
+    $path = substr_replace($path, '', 0, strlen(\Hubzero\Facades\App::get('request')->base(true)));
 
     // Remove prefix
     $path = str_replace('index.php', '', $path);
@@ -147,7 +147,7 @@ $router->rules('parse')->append('version', function ($uri) {
     // Does the accept header have version identifier?
     if (
         preg_match('/application\/vnd\.[a-zA-Z]{2,
-        20}\.v([0-9x]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', \App::get('request')->headers->get('accept', ''), $matches)
+        20}\.v([0-9x]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', \Hubzero\Facades\App::get('request')->headers->get('accept', ''), $matches)
     ) {
         $version = $matches[1];
     }
@@ -182,7 +182,7 @@ $router->rules('parse')->append('version', function ($uri) {
 | Predefine task based on request method
 */
 $router->rules('parse')->append('crud', function ($uri) {
-    switch (strtolower(\App::get('request')->method())) {
+    switch (strtolower(\Hubzero\Facades\App::get('request')->method())) {
         case 'get':
             // Task could be 'list' or 'read' or
             // something else entirely so we let
@@ -227,12 +227,12 @@ $router->rules('parse')->append('component', function ($uri) {
         return;
     }
 
-    $uri->setUriVar('option', \App::get('component')->canonical($component));
+    $uri->setUriVar('option', \Hubzero\Facades\App::get('component')->canonical($component));
 
     if ($uri->getUriVar('version', null)) {
-        $router = \App::get('component')->router($component, 'api', str_replace('.', '_', $uri->getUriVar('version')));
+        $router = \Hubzero\Facades\App::get('component')->router($component, 'api', str_replace('.', '_', $uri->getUriVar('version')));
     } else {
-        $router = \App::get('component')->router($component, 'api');
+        $router = \Hubzero\Facades\App::get('component')->router($component, 'api');
     }
 
     if ($router) {

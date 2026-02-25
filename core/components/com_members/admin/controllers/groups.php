@@ -10,10 +10,10 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
-use Request;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Manage a member's group memberships

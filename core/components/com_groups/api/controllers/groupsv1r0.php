@@ -12,11 +12,11 @@ use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
-use Event;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for Groups
@@ -268,7 +268,7 @@ class Groupsv1r0 extends ApiController
         $group->set('cn', $cn);
         $group->set('type', 1);
         $group->set('published', 1);
-        $group->set('approved', \App::get('component')->params('com_groups')->get('auto_approve', 1));
+        $group->set('approved', \Hubzero\Facades\App::get('component')->params('com_groups')->get('auto_approve', 1));
         $group->set('description', $title);
         $group->set('public_desc', $publicDesc);
         $group->set('private_desc', $privateDesc);

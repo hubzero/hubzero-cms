@@ -9,7 +9,7 @@
 namespace Components\Config\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Document;
+use Hubzero\Facades\Document;
 
 /**
  * Controller class for closing the config

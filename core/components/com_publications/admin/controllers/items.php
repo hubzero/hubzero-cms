@@ -13,12 +13,17 @@ use Components\Publications\Tables;
 use Components\Publications\Helpers;
 use Components\Publications\Models;
 use Exception;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
 
 /**
  * Manage publications
@@ -712,7 +717,7 @@ class Items extends AdminController
             }
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("select params
 		               from #__extensions
 		               where folder = 'projects' and element = 'publications'");
@@ -1265,7 +1270,7 @@ class Items extends AdminController
 
                     // Append comment to activity
                     if ($message && $aid) {
-                        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
+                        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
                         $objC = new \Components\Projects\Tables\Comment($this->database);
 
                         $comment = \Hubzero\Utility\Str::truncate($message, 250);
@@ -1512,7 +1517,7 @@ class Items extends AdminController
 
         $version = count($ids) == 1 ? Request::getString('version', 'all') : 'all';
 
-        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
+        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
         foreach ($ids as $id) {
             // Load publication

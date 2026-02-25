@@ -15,11 +15,12 @@ use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Component\View;
 use Hubzero\Utility\Number;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Lang;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Collections controller class for media
@@ -245,7 +246,7 @@ class Media extends SiteController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

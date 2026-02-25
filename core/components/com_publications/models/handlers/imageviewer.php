@@ -10,9 +10,10 @@ namespace Components\Publications\Models\Handlers;
 
 use Components\Publications\Models\Handler as Base;
 use stdClass;
-use Filesystem;
-use Component;
-use Route;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
 
 /**
  * Image Viewer Handler
@@ -487,7 +488,7 @@ class ImageViewer extends Base
         // Incoming
         $active = trim(Request::getString('o', null)); // Requested image
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $attachments = $editor->get('attachments');
 

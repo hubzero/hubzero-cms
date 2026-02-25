@@ -22,7 +22,7 @@ class Tools extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'tools'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'tools'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'tools';
         }

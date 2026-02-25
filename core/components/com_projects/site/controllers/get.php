@@ -10,10 +10,10 @@ namespace Components\Projects\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
-use Request;
-use Route;
-use Event;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\App;
 
 /**
  * Projects Public links controller class

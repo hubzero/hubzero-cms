@@ -12,14 +12,15 @@ use Hubzero\Component\AdminController;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
-use Request;
-use Config;
-use Notify;
-use Event;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki controller class for comments

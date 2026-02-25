@@ -56,7 +56,7 @@ class Courses extends Obj
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new Tables\Course($this->_db);
     }

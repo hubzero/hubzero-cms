@@ -12,6 +12,8 @@
 namespace Plugins\Courses\Related;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 class Related extends Plugin
 {

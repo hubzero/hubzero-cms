@@ -3,6 +3,15 @@
 namespace Plugins\Members\Account;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
 
 /**
  * @package   hubzero-cms
@@ -171,19 +180,19 @@ class Account extends Plugin
         $view = $this->view('default', 'overview');
 
         // Get linked accounts, if any
-        \Plugin::import('authentication');
-        $view->domains_avail = \Plugin::byType('authentication');
+        \Hubzero\Facades\Plugin::import('authentication');
+        $view->domains_avail = \Hubzero\Facades\Plugin::byType('authentication');
         $view->hzalaccounts = \Hubzero\Auth\Link::find_by_user_id($this->user->get('id'));
 
         // Put the used domains into an array with details available from the providers (if applicable)
         $view->domains_used = array();
         $view->domain_names = array();
         if ($view->hzalaccounts) {
-            \Plugin::import('authentication');
+            \Hubzero\Facades\Plugin::import('authentication');
 
             $i = 0;
             foreach ($view->hzalaccounts as $authenticators) {
-                $plugin = \Plugin::byType('authentication', $authenticators['auth_domain_name']);
+                $plugin = \Hubzero\Facades\Plugin::byType('authentication', $authenticators['auth_domain_name']);
 
                 // Make sure we got the plugin
                 if (!is_object($plugin)) {
@@ -703,7 +712,7 @@ class Account extends Plugin
         }
         if (!Filesystem::exists($homeDir)) {
             // Try to create their home directory
-            include_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+            include_once \Hubzero\Facades\Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
             if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'))) {
                 App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
@@ -763,7 +772,7 @@ class Account extends Plugin
         }
         if (!Filesystem::exists($homeDir)) {
             // Try to create their home directory
-            include_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+            include_once \Hubzero\Facades\Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
             if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'))) {
                 return $key = false;

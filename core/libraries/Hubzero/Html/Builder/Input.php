@@ -9,6 +9,8 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Session;
 
 /**
  * Utility class for form elements
@@ -52,7 +54,7 @@ class Input
      */
     public static function token()
     {
-        return self::input('hidden', \App::get('session')->getFormToken(), 1, array('id' => null)) . "\n";
+        return self::input('hidden', \Hubzero\Facades\App::get('session')->getFormToken(), 1, array('id' => null)) . "\n";
     }
 
     /**
@@ -179,7 +181,7 @@ class Input
 
                 $format = (in_array($format, $altformats) ? 'yy-mm-dd' : $format);
 
-                \App::get('document')->addScriptDeclaration("
+                \Hubzero\Facades\App::get('document')->addScriptDeclaration("
 					jQuery(document).ready(function($){
 						" . ($time ? "$('#" . $id . "').datetimepicker({" : "$('#" . $id . "').datepicker({") . "
 							duration: '',

@@ -34,7 +34,7 @@ class Log extends Table
     public function check()
     {
         if (trim($this->gidNumber) == '') {
-            $this->setError(\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
+            $this->setError(\Hubzero\Facades\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
             return false;
         }
 

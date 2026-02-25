@@ -9,6 +9,10 @@
 namespace Plugins\Whatsnew\Kb;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * What's New Plugin class for com_kb articles

@@ -8,7 +8,9 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  *  Base component controller class

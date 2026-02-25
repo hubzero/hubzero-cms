@@ -12,6 +12,9 @@
 namespace Plugins\Publications\Versions;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 class Versions extends Plugin
 {
@@ -87,7 +90,7 @@ class Versions extends Plugin
             $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
 
             // Are we allowing contributions
-            $contributable = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $contributable = \Hubzero\Facades\Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
             // Instantiate a view
             $view = $this->view('default', 'browse')

@@ -8,6 +8,9 @@
 
 namespace Plugins\Wiki\Parserdefault;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+
 /**
  * Base class for wiki macros
  * Should be extended

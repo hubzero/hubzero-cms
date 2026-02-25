@@ -9,9 +9,10 @@
 namespace Components\Categories\Admin\Helpers;
 
 use Hubzero\Base\Obj;
-use Filesystem;
-use Component;
-use User;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Categories helper

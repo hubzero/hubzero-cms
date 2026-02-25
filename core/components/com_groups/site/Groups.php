@@ -23,7 +23,7 @@ class Groups extends AbstractComponent
     protected function execute(): void
     {
         //build controller path and name
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'groups'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'groups'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'groups';
         }

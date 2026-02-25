@@ -109,7 +109,7 @@ class Extension extends Base implements CommandInterface
      **/
     private function alter($method)
     {
-        $migration = new Migration(\App::get('db'));
+        $migration = new Migration(\Hubzero\Facades\App::get('db'));
 
         $name = null;
         if ($this->arguments->getOpt('name')) {

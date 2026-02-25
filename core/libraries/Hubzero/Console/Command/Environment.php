@@ -26,11 +26,11 @@ class Environment extends Base implements CommandInterface
     {
         // Note that we're using both the muse config and the global config repositories
         $this->output->addLine('Current user     : ' .
-            Config::get('user_name') .
+            \Hubzero\Facades\Config::get('user_name') .
             ' <' .
-            Config::get('user_email') .
+            \Hubzero\Facades\Config::get('user_email') .
             '>');
-        $this->output->addLine('Current database : ' . \Config::get('db'));
+        $this->output->addLine('Current database : ' . \Hubzero\Facades\Config::get('db'));
     }
 
     /**

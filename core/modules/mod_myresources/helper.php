@@ -9,8 +9,8 @@
 namespace Modules\MyResources;
 
 use Hubzero\Module\Module;
-use Request;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's resources
@@ -26,7 +26,7 @@ class Helper extends Module
     {
         $this->no_html = Request::getInt('no_html', 0);
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $this->limit = intval($this->params->get('limit', 5));
 

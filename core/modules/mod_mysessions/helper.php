@@ -9,8 +9,8 @@
 namespace Modules\MySessions;
 
 use Hubzero\Module\Module;
-use Component;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's sessions
@@ -82,7 +82,7 @@ class Helper extends Module
         include_once Component::path('com_tools') . DS . 'tables' . DS . 'recent.php';
 
         // Get database object
-        $this->database = \App::get('db');
+        $this->database = \Hubzero\Facades\App::get('db');
 
         // Get a connection to the middleware database
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();

@@ -12,6 +12,9 @@
 namespace Plugins\Hubzero\Autocompleter;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 class Autocompleter extends Plugin
 {

@@ -10,7 +10,7 @@ namespace Components\Services\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Service model
@@ -119,10 +119,10 @@ class Service extends Relational
 
         if ($specialgroup) {
             $joinCondition = $grm . '.gidNumber=' . $grp . '.gidNumber AND '
-                . $grm . '.uidNumber=' . \User::get('id');
+                . $grm . '.uidNumber=' . \Hubzero\Facades\User::get('id');
             $query->join($grp, $grp . '.cn', "'" . $specialgroup . "'", 'inner')
                 ->joinRaw($grm, $joinCondition, 'left');
-                //->whereEquals($grm . '.uidNumber', \User::get('id'));
+                //->whereEquals($grm . '.uidNumber', \Hubzero\Facades\User::get('id'));
 
             $query->whereEquals($ser . '.restricted', 0, 1)
                 ->orWhereEquals($ser . '.restricted', 1, 2)

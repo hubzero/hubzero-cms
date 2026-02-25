@@ -36,7 +36,7 @@ class Sql extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery((string) $node['query']);
 
         $key = (string) $node['key_field'];

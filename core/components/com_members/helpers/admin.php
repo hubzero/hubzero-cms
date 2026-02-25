@@ -11,10 +11,11 @@ namespace Components\Members\Helpers;
 use Hubzero\Base\Obj;
 use Request;
 use Submenu;
-use Route;
-use Lang;
-use Html;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Document;
 
 /**
  * Members admin helper
@@ -120,7 +121,7 @@ class Admin
             ->rows();
         */
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery(
             'SELECT a.id AS value, a.title AS text, COUNT(DISTINCT b.id) AS level' .
             ' FROM #__usergroups AS a' .

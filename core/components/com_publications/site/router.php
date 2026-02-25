@@ -9,6 +9,7 @@
 namespace Components\Publications\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\Request;
 
 /**
  * Routing class for the component
@@ -128,7 +129,7 @@ class Router extends Base
         } else {
             include_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
 
-            $database = \App::get('db');
+            $database = \Hubzero\Facades\App::get('db');
 
             $t = new \Components\Publications\Tables\Category($database);
             $cats = $t->getCategories();

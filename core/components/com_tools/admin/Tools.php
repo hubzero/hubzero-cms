@@ -22,58 +22,58 @@ class Tools extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_tools')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_tools')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'pipeline');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'pipeline');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'pipeline';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_PIPELINE'),
-            \Route::url('index.php?option=com_tools&controller=pipeline'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_PIPELINE'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=pipeline'),
             $controllerName == 'pipeline'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HOSTS'),
-            \Route::url('index.php?option=com_tools&controller=hosts'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_HOSTS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=hosts'),
             $controllerName == 'hosts'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HOST_TYPES'),
-            \Route::url('index.php?option=com_tools&controller=hosttypes'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_HOST_TYPES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=hosttypes'),
             $controllerName == 'hosttypes'
         );
-        if (\Component::params('com_tools')->get('zones')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_TOOLS_ZONES'),
-                \Route::url('index.php?option=com_tools&controller=zones'),
+        if (\Hubzero\Facades\Component::params('com_tools')->get('zones')) {
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_TOOLS_ZONES'),
+                \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=zones'),
                 $controllerName == 'zones'
             );
         }
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_SESSIONS'),
-            \Route::url('index.php?option=com_tools&controller=sessions'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_SESSIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=sessions'),
             $controllerName == 'sessions'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_USER_PREFS'),
-            \Route::url('index.php?option=com_tools&controller=preferences'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_USER_PREFS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=preferences'),
             $controllerName == 'preferences'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HANDLERS'),
-            \Route::url('index.php?option=com_tools&controller=handlers'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TOOLS_HANDLERS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=handlers'),
             $controllerName == 'handlers'
         );
 
-        if (\Component::params('com_tools')->get('windows_key_id')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_TOOLS_WINDOWS'),
-                \Route::url('index.php?option=com_tools&controller=windows'),
+        if (\Hubzero\Facades\Component::params('com_tools')->get('windows_key_id')) {
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_TOOLS_WINDOWS'),
+                \Hubzero\Facades\Route::url('index.php?option=com_tools&controller=windows'),
                 $controllerName == 'windows'
             );
         }

@@ -12,14 +12,16 @@ use Hubzero\Component\AdminController;
 use Components\Menus\Helpers\Menus as MenusHelper;
 use Components\Menus\Models\Menu;
 use Components\Menus\Models\Item;
-use Filesystem;
-use Component;
-use Request;
-use Notify;
-use Html;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
 
 /**
  * The Menu Item Controller
@@ -1095,6 +1097,6 @@ class Items extends AdminController
      */
     public function cleanCache()
     {
-        \Cache::clean($this->_option);
+        \Hubzero\Facades\Cache::clean($this->_option);
     }
 }

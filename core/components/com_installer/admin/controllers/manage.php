@@ -10,12 +10,12 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Installer\Admin\Models\Extension;
-use Request;
-use Notify;
-use Lang;
-use Html;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller for managing extensions
@@ -48,7 +48,7 @@ class Manage extends AdminController
         $limit = Request::getState(
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
-            \Config::get('list_limit'),
+            \Hubzero\Facades\Config::get('list_limit'),
             'int'
         );
         $start = Request::getState(

@@ -32,7 +32,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
         }
 
         // Get group folders
-        $groupFolders = \App::get('filesystem')->directories($base, '.', false, true);
+        $groupFolders = \Hubzero\Facades\App::get('filesystem')->directories($base, '.', false, true);
 
         // Make sure we have one!
         if (count($groupFolders) < 1) {
@@ -52,7 +52,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
             // Create new uploads folder if doesnt exist
             if (!is_dir($newBlogUploadFolder)) {
                 // create uploads folder
-                if (!\App::get('filesystem')->makeDirectory($newBlogUploadFolder)) {
+                if (!\Hubzero\Facades\App::get('filesystem')->makeDirectory($newBlogUploadFolder)) {
                     $this->setError(
                         'Failed to create blog uploads folder. Try running again with elevated privileges.',
                         'warning'
@@ -62,13 +62,13 @@ class Migration20140805223444PlgGroupsBlog extends Base
             }
 
             // Get group files
-            $blogFiles = \App::get('filesystem')->files($currentBlogUploadFolder);
+            $blogFiles = \Hubzero\Facades\App::get('filesystem')->files($currentBlogUploadFolder);
 
             // Move each group file
             foreach ($blogFiles as $blogFile) {
                 $from = $currentBlogUploadFolder . DS . $blogFile;
                 $to   = $newBlogUploadFolder . DS . $blogFile;
-                if (!\App::get('filesystem')->move($from, $to)) {
+                if (!\Hubzero\Facades\App::get('filesystem')->move($from, $to)) {
                     $this->setError(
                         'Failed to move files to blog uploads folder. Try running again with elevated privileges.',
                         'warning'
@@ -79,7 +79,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
 
             $res = false;
             try {
-                $res = \App::get('filesystem')->delete($currentBlogUploadFolder);
+                $res = \Hubzero\Facades\App::get('filesystem')->delete($currentBlogUploadFolder);
             } catch (\Exception $e) {
                 $this->setError('Folder deletion succeeded but failed to write to logs.', 'info');
             }

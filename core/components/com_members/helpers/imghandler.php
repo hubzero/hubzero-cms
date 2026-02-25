@@ -9,8 +9,8 @@
 namespace Components\Members\Helpers;
 
 use Hubzero\Base\Obj;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Image manipulation class

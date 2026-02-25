@@ -124,7 +124,7 @@ class View extends AbstractView
                 }
             }
 
-            $option = ($this->option ? $this->option : \Request::getCmd('option'));
+            $option = ($this->option ? $this->option : \Hubzero\Facades\Request::getCmd('option'));
             $option = ucfirst(substr($option, 4));
 
             // Namespaced

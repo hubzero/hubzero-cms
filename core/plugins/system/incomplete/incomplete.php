@@ -12,6 +12,11 @@
 namespace Plugins\System\Incomplete;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Session;
 
 class Incomplete extends Plugin
 {
@@ -101,7 +106,7 @@ class Incomplete extends Plugin
                 {
                     // Does the user even have access to the profile plugin?
                     // If not, then we can't redirect them there
-                    $plugin = \Plugin::byType('members', 'profile');
+                    $plugin = \Hubzero\Facades\Plugin::byType('members', 'profile');
 
                     if (!empty($plugin)) {
                         Request::setVar('option', 'com_members');

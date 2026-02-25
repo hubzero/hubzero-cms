@@ -25,9 +25,9 @@ class Cookie
      **/
     public static function bake($namespace, $lifetime, $data = array())
     {
-        $hash   = \App::hash(\App::get('client')->name . ':' . $namespace);
+        $hash   = \Hubzero\Facades\App::hash(\Hubzero\Facades\App::get('client')->name . ':' . $namespace);
 
-        $key = \App::hash('');
+        $key = \Hubzero\Facades\App::hash('');
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
             new \Hubzero\Encryption\Key('simple', $key, $key)
@@ -36,11 +36,11 @@ class Cookie
 
         // Determine whether cookie should be 'secure' or not
         $secure   = false;
-        $forceSsl = \Config::get('force_ssl', false);
+        $forceSsl = \Hubzero\Facades\Config::get('force_ssl', false);
 
-        if (\App::isAdmin() && $forceSsl >= 1) {
+        if (\Hubzero\Facades\App::isAdmin() && $forceSsl >= 1) {
             $secure = true;
-        } elseif (\App::isSite() && $forceSsl == 2) {
+        } elseif (\Hubzero\Facades\App::isSite() && $forceSsl == 2) {
             $secure = true;
         }
 
@@ -56,15 +56,15 @@ class Cookie
      **/
     public static function eat($namespace)
     {
-        $hash  = \App::hash(\App::get('client')->name . ':' . $namespace);
+        $hash  = \Hubzero\Facades\App::hash(\Hubzero\Facades\App::get('client')->name . ':' . $namespace);
 
-        $key = \App::hash('');
+        $key = \Hubzero\Facades\App::hash('');
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
             new \Hubzero\Encryption\Key('simple', $key, $key)
         );
 
-        if ($str = \App::get('request')->getString($hash, '', 'cookie')) {
+        if ($str = \Hubzero\Facades\App::get('request')->getString($hash, '', 'cookie')) {
             $sstr   = $crypt->decrypt($str);
             $cookie = @unserialize($sstr);
 

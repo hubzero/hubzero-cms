@@ -42,7 +42,7 @@ class Autocompleter extends AbstractHelper
         if (!in_array($what, array('tags', 'members', 'groups'))) {
             throw new \InvalidArgumentException(__METHOD__ .
                 '(); ' .
-                \Lang::txt('Autocompleter for "%s" not supported.', $what));
+                \Hubzero\Facades\Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
         $id = ($id ?: str_replace(array('[', ']'), '', $name));
@@ -60,11 +60,11 @@ class Autocompleter extends AbstractHelper
             default:
                 throw new \InvalidArgumentException(__METHOD__ .
                     '(); ' .
-                    \Lang::txt('Autocompleter type "%s" not supported.', $type));
+                    \Hubzero\Facades\Lang::txt('Autocompleter type "%s" not supported.', $type));
             break;
         }
 
-        $results = \Event::trigger(
+        $results = \Hubzero\Facades\Event::trigger(
             'hubzero.' . $event,
             array(
                 array($what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl)

@@ -19,13 +19,14 @@ use Components\Search\Helpers\SolrHelper;
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Developer\Models\Application;
 use stdClass;
-use Component;
-use Request;
-use Notify;
-use Date;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Search AdminController Class
@@ -228,7 +229,7 @@ class Solr extends AdminController
         // Make entry on blacklist
         $entry = Blacklist::oneOrNew(0);
         $entry->set('doc_id', $id);
-        $entry->set('created', \Date::of()->toSql());
+        $entry->set('created', Date::of()->toSql());
         $entry->set('created_by', User::getInstance()->get('id', 0));
         $entry->save();
 

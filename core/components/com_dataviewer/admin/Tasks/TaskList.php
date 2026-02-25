@@ -14,8 +14,8 @@ class TaskList
 {
     public static function execute()
     {
-        \Toolbar::title(\Lang::txt('Database List'), 'databases');
-        \Toolbar::preferences(\Request::getcmd('option'), '500');
+        \Hubzero\Facades\Toolbar::title(\Hubzero\Facades\Lang::txt('Database List'), 'databases');
+        \Hubzero\Facades\Toolbar::preferences(\Hubzero\Facades\Request::getcmd('option'), '500');
 
 
         $base = DvConfig::$conf['dir_base'];

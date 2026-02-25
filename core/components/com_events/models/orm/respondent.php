@@ -82,7 +82,7 @@ class Respondent extends Relational
     public function racial()
     {
         /*
-        $dbh = \App::get('db');
+        $dbh = \Hubzero\Facades\App::get('db');
         if (is_array($resp_id)) {
             $dbh->setQuery(
                 'SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', '

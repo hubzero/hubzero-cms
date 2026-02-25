@@ -18,7 +18,7 @@ class Serials
      */
     public static function countAvailableSerials($sId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT COUNT(srId) FROM `#__storefront_serials`";
         $sql .= " WHERE srStatus='available' AND srSId = " . $db->quote($sId);
 
@@ -38,7 +38,7 @@ class Serials
      */
     public static function reserveSerials($sId, $qty = 1)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "UPDATE `#__storefront_serials` SET srStatus = 'reserved'";
         $sql .= " WHERE srStatus='available' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
@@ -57,7 +57,7 @@ class Serials
      */
     public static function releaseSerials($sId, $qty = 1)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "UPDATE `#__storefront_serials` SET srStatus = 'available'";
         $sql .= " WHERE srStatus='reserved' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
@@ -76,7 +76,7 @@ class Serials
      */
     public static function issueSerials($sId, $qty = 1)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT srId, srNumber FROM `#__storefront_serials`";
         $sql .= " WHERE srStatus='reserved' AND srSId = " . $db->quote($sId) . " LIMIT " . intval($qty);
 
@@ -122,7 +122,7 @@ class Serials
             $filters['return'] = 'list';
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT s.* ";
         $sql .= "FROM #__storefront_serials s";
         $sql .= " WHERE srSId = " . $db->quote($sId);
@@ -163,7 +163,7 @@ class Serials
             $sIds .= ',' . $id;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         // delete only available
         $sql = "DELETE FROM `#__storefront_serials`";
         $sql .= " WHERE srStatus='available' AND srId IN (" . $sIds . ")";
@@ -196,7 +196,7 @@ class Serials
     {
         $serial = trim($serial);
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "INSERT IGNORE INTO `#__storefront_serials`";
         $sql .= " SET `srStatus` = 'available', `srNumber` = '{$serial}', `srSId` = {$sId}";
 

@@ -10,12 +10,12 @@ namespace Hubzero\Form\Fields\Modal;
 
 use Hubzero\Form\Field;
 use Exception;
-use Document;
-use Session;
-use Route;
-use Lang;
-use Html;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
 
 /**
  * Supports a modal article picker.

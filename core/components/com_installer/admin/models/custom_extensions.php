@@ -11,10 +11,10 @@ namespace Components\Installer\Admin\Models;
 use Hubzero\Database\Relational;
 use Filesystem;
 use Hubzero\Form\Form;
-use Lang;
+use Hubzero\Facades\Lang;
 use Hubzero\Config\Registry;
-use User;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Extension model
@@ -129,8 +129,8 @@ class Custom_extensions extends Relational
     public function unpublish()
     {
         if ($this->get('type') == 'template') {
-            if (is_file(\Component::path('com_templates') . '/models/style.php')) {
-                include_once \Component::path('com_templates') . '/models/style.php';
+            if (is_file(\Hubzero\Facades\Component::path('com_templates') . '/models/style.php')) {
+                include_once \Hubzero\Facades\Component::path('com_templates') . '/models/style.php';
 
                 $style = \Components\Templates\Models\Style::all()
                     ->whereEquals('template', $this->get('element'))

@@ -72,7 +72,7 @@ class Resources extends Macro
             }
         }
 
-        require_once \Component::path('com_resources') . '/models/entry.php';
+        require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
 
         // Is it numeric?
         if (is_numeric($resource)) {
@@ -102,7 +102,7 @@ class Resources extends Macro
             if ($nolink) {
                 return stripslashes($r->get('title'));
             } else {
-                return '<a href="' . \Route::url($link) . '">' . stripslashes($r->get('title')) . '</a>';
+                return '<a href="' . \Hubzero\Facades\Route::url($link) . '">' . stripslashes($r->get('title')) . '</a>';
             }
         } else {
             // Return error message
@@ -119,7 +119,7 @@ class Resources extends Macro
      */
     public function screenshots($alias, $num = 1)
     {
-        $config = \Component::params('com_resources');
+        $config = \Hubzero\Facades\Component::params('com_resources');
         $path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
         $alias = strtolower($alias);

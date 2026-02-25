@@ -11,14 +11,15 @@ namespace Components\Projects\Helpers;
 use Exception;
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Entity;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use StdClass;
-use Component;
-use Config;
-use Event;
-use Lang;
-use Date;
-use Plugin;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
 
 /**
  * Html helper class

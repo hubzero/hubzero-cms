@@ -119,13 +119,13 @@ namespace Hubzero\Tests {
                 DebugParityAppStub::reset();
             }
 
-            \App::set('response', new DebugParityResponseStub());
+            \Hubzero\Facades\App::set('response', new DebugParityResponseStub());
         }
 
         #[Test]
         public function htmxAndInertiaDebugPanelsExposeSameCoreControls(): void
         {
-            \App::set('request', new DebugParityRequestStub(
+            \Hubzero\Facades\App::set('request', new DebugParityRequestStub(
                 array('HX-Request' => 'true', 'X-Inertia' => 'true'),
                 array('htmx_debug' => '1', 'inertia_debug' => '1'),
                 array('REQUEST_URI' => '/debug/parity'),
@@ -153,7 +153,7 @@ namespace Hubzero\Tests {
         #[Test]
         public function debugPanelsUseProtocolSpecificSharedFactoryInit(): void
         {
-            \App::set('request', new DebugParityRequestStub(
+            \Hubzero\Facades\App::set('request', new DebugParityRequestStub(
                 array('HX-Request' => 'true', 'X-Inertia' => 'true'),
                 array('htmx_debug' => '1', 'inertia_debug' => '1'),
                 array('REQUEST_URI' => '/debug/parity'),
@@ -182,7 +182,7 @@ namespace Hubzero\Tests {
         #[Test]
         public function htmxAndInertiaShareDebugLifecycleHelpersForParamAndHiddenInput(): void
         {
-            \App::set('request', new DebugParityRequestStub(
+            \Hubzero\Facades\App::set('request', new DebugParityRequestStub(
                 array(),
                 array('htmx_debug' => '1', 'inertia_debug' => '1'),
                 array('REQUEST_URI' => '/debug/parity'),

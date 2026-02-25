@@ -5,6 +5,8 @@ namespace Plugins\Search\Projects;
 use Components\Projects\Models\Orm\Project;
 use Hubzero\Plugin\Plugin;
 use Hubzero\User\Group;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

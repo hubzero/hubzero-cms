@@ -50,7 +50,7 @@ class Spacer extends Element
     public function fetchElement($name, $value, &$node, $control_name)
     {
         if ($value) {
-            return \App::get('language')->txt($value);
+            return \Hubzero\Facades\App::get('language')->txt($value);
         }
 
         return ' ';

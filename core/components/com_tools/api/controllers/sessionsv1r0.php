@@ -11,12 +11,15 @@ namespace Components\Tools\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
-use Component;
+use Hubzero\Facades\Component;
 use stdClass;
-use Request;
-use Lang;
-use User;
-
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Plugin;
 /**
  * API controller class for tool sessions
  */
@@ -32,7 +35,7 @@ class Sessionsv1r0 extends ApiController
     public function listAllTask()
     {
         //instantiate database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //get list of tools
         $tools = \Components\Tools\Models\Tool::getAllTools();
@@ -97,7 +100,7 @@ class Sessionsv1r0 extends ApiController
         //if ($result === false) return $this->not_found();
 
         //instantiate database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //get list of tools
         $tools = \Components\Tools\Models\Tool::getMyTools();
@@ -156,7 +159,7 @@ class Sessionsv1r0 extends ApiController
      */
     public function infoTask()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $tool    = Request::getString('tool', '');
         $version = Request::getString('tool_version', 'current');
@@ -300,7 +303,7 @@ class Sessionsv1r0 extends ApiController
         // Check for valid string
         $username = $result->get('username');
         if (isset($username) && $username != '') {
-            $dbname = \App::get('config')->get('database.db');
+            $dbname = \Hubzero\Facades\App::get('config')->get('database.db');
             // take new screenshots for user
             // $cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot "
             //     . $username . " dbname=$dbname 2>&1 </dev/null";
@@ -569,7 +572,7 @@ class Sessionsv1r0 extends ApiController
         require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         //create database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //load the tool version
         $tv = new \Components\Tools\Tables\Version($database);
@@ -773,7 +776,7 @@ class Sessionsv1r0 extends ApiController
         require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         // Create database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // Load the tool version
         $tv = new \Components\Tools\Tables\Version($database);
@@ -868,12 +871,12 @@ class Sessionsv1r0 extends ApiController
             $homeDir = $profile->get('homeDirectory');
 
             // First, make sure webdav is there and that the necessary folders are there
-            if (!\Filesystem::exists($base)) {
+            if (!\Hubzero\Facades\Filesystem::exists($base)) {
                 throw new Exception(Lang::txt('Home directories are unavailable'), 500);
             }
 
             // Now see if the user has a home directory yet
-            if (!\Filesystem::exists($homeDir)) {
+            if (!\Hubzero\Facades\Filesystem::exists($homeDir)) {
                 // Try to create their home directory
                 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
 
@@ -884,18 +887,18 @@ class Sessionsv1r0 extends ApiController
 
             // Check for, and create if needed a session data directory
             $dataPath = $base . $user . $data;
-            if (!\Filesystem::exists($dataPath) && !\Filesystem::makeDirectory($dataPath, 0700)) {
+            if (!\Hubzero\Facades\Filesystem::exists($dataPath) && !\Hubzero\Facades\Filesystem::makeDirectory($dataPath, 0700)) {
                 throw new Exception(Lang::txt('Failed to create data directory'), 500);
             }
 
             // Check for, and create if needed a queued drivers directory
             $drvrPath = $base . $user . $data . $drvr;
-            if (!\Filesystem::exists($drvrPath) && !\Filesystem::makeDirectory($drvrPath, 0700)) {
+            if (!\Hubzero\Facades\Filesystem::exists($drvrPath) && !\Hubzero\Facades\Filesystem::makeDirectory($drvrPath, 0700)) {
                 throw new Exception(Lang::txt('Failed to create drivers directory'), 500);
             }
 
             // Write the driver file out
-            if (!\Filesystem::write($base . $user . $data . $drvr . $inst, $driver)) {
+            if (!\Hubzero\Facades\Filesystem::write($base . $user . $data . $drvr . $inst, $driver)) {
                 throw new Exception(Lang::txt('Failed to create driver file'), 500);
             }
         } else {
@@ -1095,7 +1098,7 @@ class Sessionsv1r0 extends ApiController
         require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         //instantiate db objects
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         //get request vars

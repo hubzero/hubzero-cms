@@ -12,6 +12,13 @@
 namespace Plugins\System\Debug;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
 
 class Debug extends Plugin
 {
@@ -881,7 +888,7 @@ class Debug extends Plugin
 
         foreach ($guesses as $file => $keys) {
             $html .= '<ul class="debug-untrans debug-varlist"><li># '
-                     . ($file ? $this->formatLink($file) : \Lang::txt('PLG_DEBUG_UNKNOWN_FILE'))
+                     . ($file ? $this->formatLink($file) : \Hubzero\Facades\Lang::txt('PLG_DEBUG_UNKNOWN_FILE'))
                      . '</li>';
             $html .= implode("\n", $keys) . '</ul>';
         }

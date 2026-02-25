@@ -8,6 +8,14 @@
 
 namespace Plugins\Resources\Reviews;
 
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Config;
+
 /**
  * Helper class for reviews
  */

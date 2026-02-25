@@ -14,12 +14,13 @@ use Components\Support\Models\Query;
 use Components\Support\Models\QueryFolder;
 use Components\Support\Helpers\Utilities;
 use stdClass;
-use Request;
-use Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
 use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Support controller class for ticket queries

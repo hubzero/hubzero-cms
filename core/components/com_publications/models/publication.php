@@ -12,12 +12,14 @@ use Hubzero\Base\Obj;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use Hubzero\Base\ItemList;
-use Filesystem;
-use Component;
-use Event;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
 
 /**
  * Information retrieval for items/info linked to a publication
@@ -89,7 +91,7 @@ class Publication extends Obj
      */
     public function __construct($oid = null, $version = 'default', $vid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         if (is_object($oid)) {
             // This mapping is used in item listings

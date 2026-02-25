@@ -13,6 +13,9 @@ use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Session;
 
 /**
  * Plugin class for Google Drive filesystem connectivity
@@ -28,7 +31,7 @@ class Googledrive extends Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = \Plugin::params('filesystem', 'googledrive');
+        $pparams = \Hubzero\Facades\Plugin::params('filesystem', 'googledrive');
 
         $app_id = isset($params['app_id']) && $params['app_id'] != '' ? $params['app_id'] : $pparams->get('app_id');
         $app_secret = isset($params['app_secret']) && $params['app_secret'] != ''
@@ -51,10 +54,10 @@ class Googledrive extends Plugin
             $connectionId = Request::getInt('connection', 0);
             $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
             $project = $connection->project;
-            $projectsFilesUrl = \Route::url($project->link('files') . '/browse?connection=' . $connectionId);
-            \Session::set('googledrive.app_id', $app_id);
-            \Session::set('googledrive.app_secret', $app_secret);
-            \Session::set('googledrive.connection_to_set_up', $connectionId);
+            $projectsFilesUrl = \Hubzero\Facades\Route::url($project->link('files') . '/browse?connection=' . $connectionId);
+            \Hubzero\Facades\Session::set('googledrive.app_id', $app_id);
+            \Hubzero\Facades\Session::set('googledrive.app_secret', $app_secret);
+            \Hubzero\Facades\Session::set('googledrive.connection_to_set_up', $connectionId);
 
             // Set upp a return and redirect to Google for auth
             $return = (Request::getString('return')) ? Request::getString('return') : $projectsFilesUrl;

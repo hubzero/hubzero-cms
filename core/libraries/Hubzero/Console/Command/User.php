@@ -8,7 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
-use App;
+use Hubzero\Facades\App;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Utility\Date;
@@ -89,8 +89,8 @@ class User extends Base implements CommandInterface
             }
         }
 
-        $suser  = \User::getInstance($sourceUser);
-        $duser  = \User::getInstance($destinationUser);
+        $suser  = \Hubzero\Facades\User::getInstance($sourceUser);
+        $duser  = \Hubzero\Facades\User::getInstance($destinationUser);
         $dbo    = App::get('db');
         $tables = $dbo->getTableList();
         $prefix = $dbo->getPrefix();
@@ -286,8 +286,8 @@ class User extends Base implements CommandInterface
         }
 
         // Now, make sure a merge between these two actually exists in the logs
-        $suser  = \User::getInstance($sourceUser);
-        $duser  = \User::getInstance($destinationUser);
+        $suser  = \Hubzero\Facades\User::getInstance($sourceUser);
+        $duser  = \Hubzero\Facades\User::getInstance($destinationUser);
         $dbo    = App::get('db');
 
         // First, make sure we were given valid user ids

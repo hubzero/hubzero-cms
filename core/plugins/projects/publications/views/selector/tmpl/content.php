@@ -45,7 +45,7 @@ $pageNav->setAdditionalUrlParam('action', 'select');
 $pageNav->setAdditionalUrlParam('pid', $this->publication->id);
 $pageNav->setAdditionalUrlParam('vid', $this->publication->version_id);
 
-$database = \App::get('db');
+$database = \Hubzero\Facades\App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
 <label for="pub-search"><?php echo Lang::txt('Search'); ?></label>

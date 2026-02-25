@@ -11,13 +11,13 @@ namespace Components\Tools\Admin\Controllers;
 use Components\Tools\Helpers\Utils;
 use Components\Tools\Tables;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Event;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for tool sessions
@@ -187,7 +187,7 @@ class Sessions extends AdminController
     {
         $retval = true; // Assume success.
         $output = new \stdClass();
-        $hubname = \App::get('config')->get('database.db');
+        $hubname = App::get('config')->get('database.db');
         //$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm dbname=$hubname 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm 2>&1 </dev/null";
 

@@ -314,15 +314,15 @@ class Paginator extends Obj
             }
         }
 
-        $data->all = new Item(\Lang::txt('JLIB_HTML_VIEW_ALL'), $this->prefix);
+        $data->all = new Item(\Hubzero\Facades\Lang::txt('JLIB_HTML_VIEW_ALL'), $this->prefix);
         if (!$this->_viewall) {
             $data->all->base = '0';
-            $data->all->link = \Route::url($params . '&' . $this->prefix . 'limitstart=');
+            $data->all->link = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=');
         }
 
         // Set the start and previous data objects.
-        $data->start    = new Item(\Lang::txt('JLIB_HTML_START'), $this->prefix);
-        $data->previous = new Item(\Lang::txt('JPREV'), $this->prefix);
+        $data->start    = new Item(\Hubzero\Facades\Lang::txt('JLIB_HTML_START'), $this->prefix);
+        $data->previous = new Item(\Hubzero\Facades\Lang::txt('JPREV'), $this->prefix);
 
         if ($this->get('pages.current') > 1) {
             $page = ($this->get('pages.current') - 2) * $this->limit;
@@ -331,24 +331,24 @@ class Paginator extends Obj
             //$page = $page == 0 ? '' : $page;
 
             $data->start->base = '0';
-            $data->start->link = \Route::url($params . '&' . $this->prefix . 'limitstart=0');
+            $data->start->link = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=0');
 
             $data->previous->base = $page;
-            $data->previous->link = \Route::url($params . '&' . $this->prefix . 'limitstart=' . $page);
+            $data->previous->link = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=' . $page);
         }
 
         // Set the next and end data objects.
-        $data->next = new Item(\Lang::txt('JNEXT'), $this->prefix);
-        $data->end  = new Item(\Lang::txt('JLIB_HTML_END'), $this->prefix);
+        $data->next = new Item(\Hubzero\Facades\Lang::txt('JNEXT'), $this->prefix);
+        $data->end  = new Item(\Hubzero\Facades\Lang::txt('JLIB_HTML_END'), $this->prefix);
 
         if ($this->get('pages.current') < $this->get('pages.total')) {
             $next = $this->get('pages.current') * $this->limit;
             $data->next->base = $next;
-            $data->next->link = \Route::url($params . '&' . $this->prefix . 'limitstart=' . $next);
+            $data->next->link = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=' . $next);
 
             $end  = ($this->get('pages.total') - 1) * $this->limit;
             $data->end->base  = $end;
-            $data->end->link  = \Route::url($params . '&' . $this->prefix . 'limitstart=' . $end);
+            $data->end->link  = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=' . $end);
         }
 
         // Set the pages.
@@ -365,7 +365,7 @@ class Paginator extends Obj
                 $data->pages[$i]->rel  = (($i + 1) == $this->get('pages.current')) ? 'prev' : '';
                 $data->pages[$i]->rel  = (($i - 1) == $this->get('pages.current')) ? 'next' : $data->pages[$i]->rel;
                 $data->pages[$i]->base = $offset;
-                $data->pages[$i]->link = \Route::url($params . '&' . $this->prefix . 'limitstart=' . $offset);
+                $data->pages[$i]->link = \Hubzero\Facades\Route::url($params . '&' . $this->prefix . 'limitstart=' . $offset);
             }
         }
 

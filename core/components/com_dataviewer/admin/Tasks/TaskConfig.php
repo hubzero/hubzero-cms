@@ -16,16 +16,16 @@ class TaskConfig
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-        $db_id = \Request::getString('db', false);
+        $db_id = \Hubzero\Facades\Request::getString('db', false);
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
         $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
 
-        \Toolbar::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database', 'databases');
-        \Toolbar::custom('back', 'back', 'back', 'Go back', false);
+        \Hubzero\Facades\Toolbar::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database', 'databases');
+        \Hubzero\Facades\Toolbar::custom('back', 'back', 'back', 'Go back', false);
 
 
         if (isset($_SESSION['dataviewer']['conf_file_updated'])) {

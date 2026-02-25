@@ -9,6 +9,7 @@
 namespace Components\Search\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -23,8 +24,8 @@ class Search extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_search')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_search')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         // Get the preferred search mechanism
@@ -38,7 +39,7 @@ class Search extends AbstractComponent
 
         if ($engine != 'basic' && $engine != 'hubgraph') {
             if ($controller == null) {
-                $controllerName = \Component::params('com_search')->get('engine', 'basic');
+                $controllerName = \Hubzero\Facades\Component::params('com_search')->get('engine', 'basic');
                 $controllerName = ($controllerName == 'hubgraph' ? 'basic' : $controllerName);
             } else {
                 $controllerName = $controller;
@@ -46,7 +47,7 @@ class Search extends AbstractComponent
         }
 
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('Controller not found'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Controller not found'));
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

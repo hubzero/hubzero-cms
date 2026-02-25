@@ -10,9 +10,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Hubzero\Utility\Str;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a course
@@ -73,7 +73,7 @@ class Courses extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
+        include_once \Hubzero\Facades\Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
         $course = null;
 
         if (!$id) {

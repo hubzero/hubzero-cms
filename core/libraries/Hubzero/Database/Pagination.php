@@ -77,17 +77,17 @@ class Pagination
         $instance = new self();
 
         $instance->total = $total;
-        $instance->start = \Request::getInt(
+        $instance->start = \Hubzero\Facades\Request::getInt(
             $start,
-            \User::getState($namespace . '.start', 0)
+            \Hubzero\Facades\User::getState($namespace . '.start', 0)
         );
-        $instance->limit = \Request::getInt(
+        $instance->limit = \Hubzero\Facades\Request::getInt(
             $limit,
-            \User::getState($namespace . '.limit', \Config::get('list_limit'))
+            \Hubzero\Facades\User::getState($namespace . '.limit', \Hubzero\Facades\Config::get('list_limit'))
         );
 
         if ($instance->limit < 0) {
-            $instance->limit = \Config::get('list_limit');
+            $instance->limit = \Hubzero\Facades\Config::get('list_limit');
         }
         $instance->start = ($instance->limit != 0)
             ? (int) (floor($instance->start / $instance->limit) * $instance->limit)
@@ -96,8 +96,8 @@ class Pagination
             $instance->start = 0;
         }
 
-        \User::setState($namespace . '.start', $instance->start);
-        \User::setState($namespace . '.limit', $instance->limit);
+        \Hubzero\Facades\User::setState($namespace . '.start', $instance->start);
+        \Hubzero\Facades\User::setState($namespace . '.limit', $instance->limit);
 
         return $instance;
     }

@@ -87,8 +87,8 @@ class Review extends \Hubzero\Base\Model
         }
         // Reports hasn't been set
         if ($this->get('reports', -1) == -1) {
-            if (is_file(\Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
-                include_once \Component::path('com_support') . DS . 'models' . DS . 'report.php';
+            if (is_file(\Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
+                include_once \Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'report.php';
 
                 $val = \Components\Support\Models\Report::all()
                     ->whereEquals('referenceid', $this->get('id'))
@@ -115,11 +115,11 @@ class Review extends \Hubzero\Base\Model
     {
         switch (strtolower($as)) {
             case 'date':
-                return \Date::of($this->get('created'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'));
+                return \Hubzero\Facades\Date::of($this->get('created'))->toLocal(\Hubzero\Facades\Lang::txt('DATE_FORMAT_HZ1'));
             break;
 
             case 'time':
-                return \Date::of($this->get('created'))->toLocal(\Lang::txt('TIME_FORMAT_HZ1'));
+                return \Hubzero\Facades\Date::of($this->get('created'))->toLocal(\Hubzero\Facades\Lang::txt('TIME_FORMAT_HZ1'));
             break;
 
             default:
@@ -230,7 +230,7 @@ class Review extends \Hubzero\Base\Model
 
                 if ($content === null) {
                     $config = array(
-                        'option'   => $this->get('option', \Request::getCmd('option', 'com_publications')),
+                        'option'   => $this->get('option', \Hubzero\Facades\Request::getCmd('option', 'com_publications')),
                         'scope'    => 'reviews',
                         'pagename' => $this->get('publication_id'),
                         'pageid'   => 0,

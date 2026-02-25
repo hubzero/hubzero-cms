@@ -22,7 +22,7 @@ class Course_Type_Handler extends Type_Handler
 
     public function handle()
     {
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
         $ms = new \Components\Storefront\Models\Memberships();
 
         // Get current registration
@@ -39,7 +39,7 @@ class Course_Type_Handler extends Type_Handler
         // Load courses model and register
         // registerForCourse($userId, $courseId, $expiration);
 
-        require_once \Component::path('com_courses') . DS . 'models' . DS . 'course.php';
+        require_once \Hubzero\Facades\Component::path('com_courses') . DS . 'models' . DS . 'course.php';
 
         $course = \Components\Courses\Models\Course::getInstance($this->item['meta']['courseId']);
 

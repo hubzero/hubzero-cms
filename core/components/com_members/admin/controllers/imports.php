@@ -17,14 +17,16 @@ use Hubzero\Content\Import\Model\Hook;
 use Hubzero\Content\Import\Model\Run;
 use Hubzero\Content\Importer;
 use Hubzero\Config\Registry;
-use Filesystem;
-use Request;
-use Config;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Session;
 
 /**
  * Member importer

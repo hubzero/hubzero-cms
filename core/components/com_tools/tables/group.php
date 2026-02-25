@@ -9,8 +9,8 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Table class for tool/group mapping

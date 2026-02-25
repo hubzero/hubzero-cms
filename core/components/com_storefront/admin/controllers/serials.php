@@ -11,10 +11,10 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Helpers\Serials as SerialsHelper;
-use Request;
-use Config;
-use Route;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for knowledge base categories

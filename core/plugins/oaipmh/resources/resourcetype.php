@@ -10,8 +10,8 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
 use Components\Resources\Models\Type;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a list of support ticket statuses
@@ -38,7 +38,7 @@ class Resourcetype extends Select
         $options   = array();
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 
-        include_once \Component::path('com_resources') . '/models/type.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . '/models/type.php';
 
         $types = Type::getMajorTypes();
 

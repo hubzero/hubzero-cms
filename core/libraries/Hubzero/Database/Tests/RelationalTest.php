@@ -39,7 +39,7 @@ class RelationalTest extends AbstractDriverTestCase
 
     protected static function getTestModelClasses(): array
     {
-        return [User::class, Post::class, Tag::class];
+        return [\Hubzero\User\User::class, Post::class, Tag::class];
     }
 
     protected static function setUpDatabase(Driver $driver): void
@@ -224,7 +224,7 @@ class RelationalTest extends AbstractDriverTestCase
      */
     protected function configureModels(string $dbName): void
     {
-        User::useTable($this->tableName('users'));
+        \Hubzero\User\User::useTable($this->tableName('users'));
         Post::useTable($this->tableName('posts'));
         Tag::useTable($this->tableName('tags'));
         Post::useTagsAssocTable($this->tableName('post_tags'));
@@ -243,7 +243,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $model = User::blank();
+        $model = \Hubzero\User\User::blank();
 
         $this->assertInstanceOf(Relational::class, $model, "[$dbName] Model should be instance of Relational");
 
@@ -259,7 +259,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::one(1);
+        $user = \Hubzero\User\User::one(1);
 
         $this->assertEquals(1, $user->get('id'), "[$dbName] Should find user with ID 1");
         $this->assertEquals('Test User', $user->get('name'), "[$dbName] User name should match");
@@ -281,7 +281,7 @@ class RelationalTest extends AbstractDriverTestCase
         // No cleanup after this — PHPUnit intercepts the exception so
         // nothing below oneOrFail() executes. seedTestData() in the
         // next test deletes all rows before re-seeding.
-        User::oneOrFail(999);
+        \Hubzero\User\User::oneOrFail(999);
     }
 
     #[Test]
@@ -293,7 +293,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::oneOrNew(999);
+        $user = \Hubzero\User\User::oneOrNew(999);
 
         $this->assertTrue($user->isNew(), "[$dbName] Model should be new for non-existent ID");
 
@@ -309,7 +309,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $users = User::all()->rows();
+        $users = \Hubzero\User\User::all()->rows();
 
         $this->assertCount(3, $users, "[$dbName] Should have 3 users");
 
@@ -325,7 +325,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $users = User::all()
+        $users = \Hubzero\User\User::all()
             ->whereEquals('name', 'Test User')
             ->rows();
 
@@ -366,7 +366,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::oneOrFail(1);
+        $user = \Hubzero\User\User::oneOrFail(1);
         $posts = $user->posts;
 
         $this->assertCount(2, $posts, "[$dbName] User 1 should have 2 posts");
@@ -400,7 +400,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $users = User::all()
+        $users = \Hubzero\User\User::all()
             ->whereRelatedHasCount('posts', 2)
             ->rows();
 
@@ -442,7 +442,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::blank();
+        $user = \Hubzero\User\User::blank();
         $user->set('name', 'New User');
         $user->set('email', 'new@example.com');
 
@@ -465,7 +465,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $user = User::one(1);
+        $user = \Hubzero\User\User::one(1);
         $user->set('name', 'Updated Name');
 
         $result = $user->save();
@@ -474,7 +474,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->assertNotFalse($result, "[$dbName] Save should not return false");
 
         // Reload and verify
-        $reloaded = User::one(1);
+        $reloaded = \Hubzero\User\User::one(1);
         $this->assertEquals('Updated Name', $reloaded->get('name'), "[$dbName] Name should be updated");
 
         $this->cleanupTestData($driver, $dbName);
@@ -491,7 +491,7 @@ class RelationalTest extends AbstractDriverTestCase
 
         // Use an existing seeded user to avoid cascade delete issues
         // User 3 (Bob Smith) has no posts, so can be safely deleted
-        $user = User::one(3);
+        $user = \Hubzero\User\User::one(3);
         $this->assertFalse($user->isNew(), "[$dbName] User 3 should exist");
         $this->assertEquals(3, $user->get('id'), "[$dbName] Should be user ID 3");
 
@@ -523,7 +523,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $users = User::all()
+        $users = \Hubzero\User\User::all()
             ->order('name', 'asc')
             ->rows();
 
@@ -549,7 +549,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $users = User::all()
+        $users = \Hubzero\User\User::all()
             ->limit(2)
             ->rows();
 
@@ -567,7 +567,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $count = User::all()->total();
+        $count = \Hubzero\User\User::all()->total();
 
         $this->assertEquals(3, $count, "[$dbName] Should count 3 users");
 

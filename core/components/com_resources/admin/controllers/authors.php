@@ -11,8 +11,8 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models\Author;
 use Components\Resources\Models\Author\Role;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
 use App;
 

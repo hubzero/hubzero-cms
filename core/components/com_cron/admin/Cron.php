@@ -22,22 +22,22 @@ class Cron extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_cron')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_cron')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_CRON_JOBS'),
-            \Route::url('index.php?option=com_cron'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_CRON_JOBS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_cron'),
             true
         );
 
         require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_CRON_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_CRON_PLUGINS'),
+                \Hubzero\Facades\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
             );
         }
 

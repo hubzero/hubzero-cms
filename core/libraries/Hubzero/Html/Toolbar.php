@@ -165,7 +165,7 @@ class Toolbar extends Obj
 
         // Check for error.
         if ($button === false) {
-            return \Lang::txt('JLIB_HTML_BUTTON_NOT_DEFINED', $type);
+            return \Hubzero\Facades\Lang::txt('JLIB_HTML_BUTTON_NOT_DEFINED', $type);
         }
         return $button->render($node);
     }
@@ -194,7 +194,7 @@ class Toolbar extends Obj
                 include_once $buttonFile;
             } else {
                 throw new \InvalidArgumentException(
-                    \Lang::txt(
+                    \Hubzero\Facades\Lang::txt(
                         'JLIB_HTML_BUTTON_NO_LOAD',
                         $buttonClass,
                         $buttonFile

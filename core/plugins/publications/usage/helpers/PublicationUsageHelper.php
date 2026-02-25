@@ -58,7 +58,7 @@ class PublicationUsageHelper
      */
     public function __construct($args = [])
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
         $this->_publication = $args['publication'];
     }
 

@@ -3,6 +3,11 @@
 namespace Plugins\Content\Pagebreak;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
 
 /**
  * @package    hubzero-cms

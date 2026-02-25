@@ -3,6 +3,12 @@
 namespace Plugins\Usage\Maps;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Pathway;
 
 /**
  * @package    hubzero-cms

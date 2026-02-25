@@ -8,6 +8,8 @@
 
 namespace Hubzero\Database\Relationship;
 
+use Hubzero\Facades\User;
+
 /**
  * Database morph one relationship (polymorphic one-to-one)
  *

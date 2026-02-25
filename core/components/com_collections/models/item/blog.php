@@ -10,9 +10,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Blog\Models\Entry;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a blog post
@@ -73,7 +73,7 @@ class Blog extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
+        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
         $post = null;
 
         if (!$id) {

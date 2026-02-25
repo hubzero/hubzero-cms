@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Components\Tools\Models\Version\Zone;
 use Components\Tools\Models\Version;
 use Components\Tools\Models\Tool;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Tools controller class for tool versions
@@ -97,9 +97,9 @@ class Versions extends AdminController
 
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
+            require_once \Hubzero\Facades\Component::path('com_resources') . '/models/doi.php';
 
             $dois = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $tool->toolname)
@@ -163,9 +163,9 @@ class Versions extends AdminController
         // and the tool version is not a dev version
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
+            require_once \Hubzero\Facades\Component::path('com_resources') . '/models/doi.php';
 
             $doi = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $row->toolname)
@@ -243,18 +243,18 @@ class Versions extends AdminController
         // and the tool version is not a dev version
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
             && substr($row->instance, -4) != '_dev'
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
+            require_once \Hubzero\Facades\Component::path('com_resources') . '/models/doi.php';
 
             // Save DOI data
             $dois = Request::getArray('doi', array(), 'post');
 
             if ($dois['doi']) {
                 if (!$dois['rid']) {
-                    if (file_exists(\Component::path('com_resources') . '/models/entry.php')) {
-                        require_once \Component::path('com_resources') . '/models/entry.php';
+                    if (file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/entry.php')) {
+                        require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
 
                         $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
                     }

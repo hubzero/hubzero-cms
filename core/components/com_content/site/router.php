@@ -9,8 +9,8 @@
 namespace Components\Content\Site;
 
 use Hubzero\Component\Router\Base;
-use Component;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 /**
  * Routing class for the component
@@ -308,7 +308,7 @@ class Router extends Base
         $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($id);
 
         if (!$category) {
-            App::abort(404, \Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+            App::abort(404, \Hubzero\Facades\Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
             return $vars;
         }
 

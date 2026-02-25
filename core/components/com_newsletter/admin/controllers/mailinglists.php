@@ -13,12 +13,14 @@ use Components\Newsletter\Models\Mailinglist\Email;
 use Components\Newsletter\Models\Mailinglist;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
-use Route;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Newsletter Mailing List Controller
@@ -418,7 +420,7 @@ class Mailinglists extends AdminController
                     'email'      => $email,
                     'status'     => 'active',
                     'confirmed'  => 0,
-                    'date_added' => \Date::toSql()
+                    'date_added' => Date::toSql()
                 ));
                 if ($insert->save()) {
                     $inserts++;

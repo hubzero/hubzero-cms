@@ -10,7 +10,7 @@ namespace Plugins\Oaipmh\Resources\Data;
 
 use Hubzero\Base\Obj;
 use Components\Oaipmh\Models\Provider;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Data miner for resources to be used by OAI-PMH
@@ -58,17 +58,17 @@ class Miner extends Obj implements Provider
     public function __construct($db = null)
     {
         if (!$db) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
         }
 
         if (!($db instanceof \Hubzero\Database\Driver)) {
-            throw new \Exception(\Lang::txt('Database must be of type \Hubzero\\Database\\Driver'), 500);
+            throw new \Exception(\Hubzero\Facades\Lang::txt('Database must be of type \Hubzero\\Database\\Driver'), 500);
         }
 
         $this->database = $db;
 
         if (is_null(self::$base)) {
-            self::$base = rtrim(\Request::getSchemeAndHttpHost(), '/');
+            self::$base = rtrim(\Hubzero\Facades\Request::getSchemeAndHttpHost(), '/');
         }
     }
 
@@ -551,7 +551,7 @@ class Miner extends Obj implements Provider
             }
         } else {
             $revPart = $rev ? '&rev=' . $rev : '';
-            $route = \Route::url('index.php?option=com_resources&id=' . $id . $revPart);
+            $route = \Hubzero\Facades\Route::url('index.php?option=com_resources&id=' . $id . $revPart);
             $identifier = self::$base . '/' . ltrim($route, '/');
         }
 

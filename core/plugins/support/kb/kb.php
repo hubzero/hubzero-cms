@@ -12,6 +12,9 @@
 namespace Plugins\Support\Kb;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 class Kb extends Plugin
 {

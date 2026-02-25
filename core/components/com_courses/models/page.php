@@ -10,9 +10,9 @@ namespace Components\Courses\Models;
 
 use Hubzero\Utility\Str;
 use Components\Courses\Tables;
-use Filesystem;
-use Request;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Courses model class for a course

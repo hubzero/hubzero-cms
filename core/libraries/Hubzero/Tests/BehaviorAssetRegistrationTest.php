@@ -132,11 +132,11 @@ namespace Hubzero\Tests {
                 BehaviorAssetAppStub::reset();
             }
 
-            \App::set('request', new BehaviorAssetRequestStub());
-            \App::set('config', new BehaviorAssetConfigStub());
-            \App::set('filesystem', new BehaviorAssetFilesystemStub());
-            \App::set('template', new BehaviorAssetTemplateStub());
-            \App::set('document', new BehaviorAssetDocumentStub());
+            \Hubzero\Facades\App::set('request', new BehaviorAssetRequestStub());
+            \Hubzero\Facades\App::set('config', new BehaviorAssetConfigStub());
+            \Hubzero\Facades\App::set('filesystem', new BehaviorAssetFilesystemStub());
+            \Hubzero\Facades\App::set('template', new BehaviorAssetTemplateStub());
+            \Hubzero\Facades\App::set('document', new BehaviorAssetDocumentStub());
 
             $ref = new \ReflectionProperty(Behavior::class, 'loaded');
             $ref->setAccessible(true);
@@ -148,7 +148,7 @@ namespace Hubzero\Tests {
         {
             Behavior::inertia();
 
-            $document = \App::get('document');
+            $document = \Hubzero\Facades\App::get('document');
             $this->assertScriptRegistered($document, '/core/assets/js/alpine/3.14.8/cdn.min.js');
             $this->assertScriptRegistered($document, '/core/assets/js/hubzero-debug-timeline.js');
             $this->assertScriptRegistered($document, '/core/assets/js/hubzero-debug-panel.js');
@@ -160,7 +160,7 @@ namespace Hubzero\Tests {
         {
             Behavior::htmxalpine();
 
-            $document = \App::get('document');
+            $document = \Hubzero\Facades\App::get('document');
             $this->assertScriptRegistered($document, '/core/assets/js/htmx/2.0.4/htmx.min.js');
             $this->assertScriptRegistered($document, '/core/assets/js/alpine/3.14.8/cdn.min.js');
             $this->assertScriptRegistered($document, '/core/assets/js/htmx/hubzero-bootstrap.js');

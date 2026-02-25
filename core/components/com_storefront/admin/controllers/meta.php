@@ -10,6 +10,12 @@ namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
 
 /**
  * Controller class for knowledge base categories
@@ -27,7 +33,7 @@ class Meta extends AdminController
         $this->view->filters = array(
             'access' => -1
         );
-        $app = \App::getInstance();
+        $app = \Hubzero\Facades\App::getInstance();
         $this->view->filters['sort'] = trim($app->getUserStateFromRequest(
             $this->_option . '.' . $this->_controller . '.sort',
             'filter_order',

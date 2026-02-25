@@ -8,6 +8,8 @@
 
 namespace Components\Saml\Site\Controllers;
 
+use Hubzero\Facades\App;
+
 class Saml extends \Hubzero\Component\SiteController
 {
     public function execute()

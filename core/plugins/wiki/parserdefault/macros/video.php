@@ -91,7 +91,7 @@ class Video extends WikiMacro
         $default_width  = 640;
         $default_height = 380;
 
-        $this->config = \Component::params('com_wiki');
+        $this->config = \Hubzero\Facades\Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -229,10 +229,10 @@ class Video extends WikiMacro
 
         // Local
         if ($type == 'local') {
-            $ext = strtolower(\Filesystem::extension($video_url));
+            $ext = strtolower(\Hubzero\Facades\Filesystem::extension($video_url));
 
-            \Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-            \Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+            \Hubzero\Facades\Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+            \Hubzero\Facades\Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 
             $html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
             $html
@@ -466,14 +466,14 @@ class Video extends WikiMacro
         }
         $type = 'File';
         $this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
-        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
-            if (\Request::getString('format') == 'pdf') {
+        if (in_array(strtolower(\Hubzero\Facades\Filesystem::extension($file)), $this->imgs)) {
+            if (\Hubzero\Facades\Request::getString('format') == 'pdf') {
                 return $this->path($file);
             }
             $type = 'Image';
         }
         $link .= $this->pagename . DS . $type . ':' . $file;
 
-        return \Route::url($link);
+        return \Hubzero\Facades\Route::url($link);
     }
 }

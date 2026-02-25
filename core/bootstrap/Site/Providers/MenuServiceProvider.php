@@ -32,7 +32,7 @@ class MenuServiceProvider extends ServiceProvider
             $options = [
                 'language_filter' => null,
                 'language'        => null,
-                'access'          => \User::getAuthorisedViewLevels()
+                'access'          => $app['user']->getAuthorisedViewLevels()
             ];
 
             $options['db'] = $app->get('db');

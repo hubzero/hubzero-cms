@@ -10,6 +10,11 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Courses controller class for managing membership and course info
@@ -141,7 +146,7 @@ class Offerings extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            \Hubzero\Facades\Notify::error($error);
         }
 
         // Output the HTML

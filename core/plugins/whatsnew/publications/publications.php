@@ -9,6 +9,12 @@
 namespace Plugins\Whatsnew\Publications;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * What's New Plugin class for com_publications entries
@@ -56,9 +62,9 @@ class Publications extends Plugin
     {
         parent::__construct($subject, $config);
 
-        include_once \Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
-        include_once \Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-        include_once \Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
+        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
+        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
+        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
     }
 
     /**
@@ -176,7 +182,7 @@ class Publications extends Plugin
     {
         \Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
-        require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
+        require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
     }
 
     /**

@@ -160,8 +160,8 @@ class Page extends Relational
             ->set(array(
                 'gidNumber' => $this->get('gidNumber'),
                 'pageid' => $this->get('id'),
-                'userid' => \User::get('id'),
-                'ip' => \Request::ip()
+                'userid' => \Hubzero\Facades\User::get('id'),
+                'ip' => \Hubzero\Facades\Request::ip()
             ));
 
         return $hit->save();

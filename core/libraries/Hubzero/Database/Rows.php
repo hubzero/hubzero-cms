@@ -10,6 +10,7 @@ namespace Hubzero\Database;
 
 use Iterator;
 use Countable;
+use Hubzero\Facades\User;
 
 /**
  * Database Iterable class

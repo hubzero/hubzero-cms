@@ -515,7 +515,7 @@ class Attachment extends Table
         $pAttach->ordering               = $att->ordering;
         $pAttach->publication_version_id = $vid;
         $pAttach->created_by             = $uid;
-        $pAttach->created                = \Date::toSql();
+        $pAttach->created                = \Hubzero\Facades\Date::toSql();
         if ($pAttach->store()) {
             return $this->bind($pAttach);
         }

@@ -25,8 +25,8 @@ class DvConfig
         }
         define('DB_RID', $_SESSION['db']['__rid']);
 
-        $document = \App::get('document');
-        static::$com_name = \Request::get('option');
+        $document = \Hubzero\Facades\App::get('document');
+        static::$com_name = \Hubzero\Facades\Request::get('option');
         static::$com_name = str_replace('com_', '', static::$com_name);
 
         $com_path = str_replace(PATH_ROOT, '', __DIR__);
@@ -42,13 +42,13 @@ class DvConfig
         static::$conf['app_title'] = 'Dataviewer';
 
         // Base directory
-        $db_params = \Component::params('com_databases');
+        $db_params = \Hubzero\Facades\Component::params('com_databases');
         static::$conf['dir_base'] = $db_params->get('base_dir');
         if (static::$conf['dir_base'] == null || static::$conf['dir_base'] == '') {
             static::$conf['dir_base'] = '/db/databases';
         }
 
-        $mode_db_enabled = \Component::params('com_dataviewer')->get('mode_db') == '1' ? true : false;
+        $mode_db_enabled = \Hubzero\Facades\Component::params('com_dataviewer')->get('mode_db') == '1' ? true : false;
         static::$conf['modes']['db'] = array('enabled' => $mode_db_enabled);
 
         // ACL

@@ -22,29 +22,29 @@ class Jobs extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_jobs')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_jobs')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'jobs');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'jobs');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'jobs';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_JOBS'),
-            \Route::url('index.php?option=com_jobs&controller=jobs'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_JOBS_JOBS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_jobs&controller=jobs'),
             $controllerName == 'jobs'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_CATEGORIES'),
-            \Route::url('index.php?option=com_jobs&controller=categories'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_JOBS_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_jobs&controller=categories'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_TYPES'),
-            \Route::url('index.php?option=com_jobs&controller=types'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_JOBS_TYPES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_jobs&controller=types'),
             $controllerName == 'types'
         );
 

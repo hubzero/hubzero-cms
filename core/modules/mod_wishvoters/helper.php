@@ -10,9 +10,9 @@ namespace Modules\WishVoters;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Models\Wishlist;
-use Component;
-use Request;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying top wish voters
@@ -44,7 +44,7 @@ class Helper extends Module
             return;
         }
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $database->setQuery(
             "SELECT DISTINCT v.userid, SUM(v.importance) as imp, COUNT(v.wishid) as times
 			FROM `#__wishlist_vote` as v

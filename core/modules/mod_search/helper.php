@@ -9,11 +9,11 @@
 namespace Modules\Search;
 
 use Hubzero\Module\Module;
-use Document;
-use Request;
-use Config;
-use Route;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a search form

@@ -237,9 +237,9 @@ abstract class Result
             if (preg_match('/^https?:\/\//', $this->link)) {
                 $this->canonicalized_link = $this->link;
             } else {
-                $base = rtrim(\Request::base(), '/');
-                $route = ltrim(\Route::url($this->link), '/');
-                $this->canonicalized_link = $base . '/' . substr($route, strlen(\Request::base(true)));
+                $base = rtrim(\Hubzero\Facades\Request::base(), '/');
+                $route = ltrim(\Hubzero\Facades\Route::url($this->link), '/');
+                $this->canonicalized_link = $base . '/' . substr($route, strlen(\Hubzero\Facades\Request::base(true)));
             }
         }
         return $this->canonicalized_link;

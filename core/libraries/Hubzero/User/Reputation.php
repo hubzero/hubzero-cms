@@ -9,7 +9,8 @@
 namespace Hubzero\User;
 
 use Hubzero\Database\Relational;
-use Session;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Plugin;
 
 /**
  * Reputation database model
@@ -35,7 +36,7 @@ class Reputation extends Relational
         // Save global spam count
         $current = $this->get('spam_count', 0);
         $this->set('spam_count', ($current + 1));
-        $this->set('user_id', \User::get('id'));
+        $this->set('user_id', \Hubzero\Facades\User::get('id'));
         $this->save();
 
         // Also increment session spam count

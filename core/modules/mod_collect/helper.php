@@ -12,9 +12,9 @@ use Hubzero\Module\Module;
 use Components\Collections\Models\Archive;
 use Components\Collections\Models\Collection;
 use Components\Collections\Tables\Post;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use stdClass;
 
 /**
@@ -33,7 +33,7 @@ class Helper extends Module
             return;
         }
 
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
+        include_once \Hubzero\Facades\Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         $this->model = new Archive('member', User::get('id'));
 
@@ -149,7 +149,7 @@ class Helper extends Module
         if (!$this->getError()) {
             // Try loading the current post to see if this has
             // already been posted to this collection (i.e., no duplicates)
-            $database = \App::get('db');
+            $database = \Hubzero\Facades\App::get('db');
 
             $post = new Post($database);
             $post->loadByBoard($collectible['collection_id'], $this->item->get('id'));

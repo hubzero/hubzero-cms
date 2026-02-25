@@ -11,7 +11,7 @@ namespace Components\Events\Models\Orm;
 use Hubzero\Database\Relational;
 use User;
 use Plugins\Groups\Calendar\Helper as CalendarHelper;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Event Calendar model
@@ -64,7 +64,7 @@ class Calendar extends Relational
     public static function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
     {
         // get request varse
-        $calendarIds = \Request::getString('calendar_id', '', 'get');
+        $calendarIds = \Hubzero\Facades\Request::getString('calendar_id', '', 'get');
         $calendarIds = array_map("intval", explode(',', $calendarIds));
 
         // array to hold events

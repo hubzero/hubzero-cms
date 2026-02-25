@@ -48,7 +48,7 @@ class Database extends Store
     public function __construct($options = array())
     {
         if (!isset($options['database']) || !($options['database'] instanceof Database)) {
-            $options['database'] = \App::get('db');
+            $options['database'] = \Hubzero\Facades\App::get('db');
         }
 
         $this->connection = $options['database'];

@@ -25,12 +25,12 @@ class Request extends ComponentController
         $response = new \stdClass();
         $response->status = 'ok';
 
-        include_once \Component::path($this->option) . DS . 'models' . DS . 'cart.php';
+        include_once \Hubzero\Facades\Component::path($this->option) . DS . 'models' . DS . 'cart.php';
         $cart = new \Components\Cart\Models\CurrentCart();
 
         // update cart
-        $updateCartRequest = \Request::getBool('updateCart', false, 'post');
-        $pIds = \Request::getArray('pId', false, 'post');
+        $updateCartRequest = \Hubzero\Facades\Request::getBool('updateCart', false, 'post');
+        $pIds = \Hubzero\Facades\Request::getArray('pId', false, 'post');
 
         // If pIds are posted, convert them to SKUs
         if (!empty($pIds)) {
@@ -50,7 +50,7 @@ class Request extends ComponentController
                 $skus[$product_skus[0]] = $qty;
             }
         } else {
-            $skus = \Request::getArray('skus', false, 'post');
+            $skus = \Hubzero\Facades\Request::getArray('skus', false, 'post');
         }
 
         // Initialize errors array
@@ -69,8 +69,8 @@ class Request extends ComponentController
         }
 
         // add coupon if needed
-        $addCouponRequest = \Request::getBool('addCouponCode', false, 'post');
-        $couponCode = \Request::getString('couponCode', false, 'post');
+        $addCouponRequest = \Hubzero\Facades\Request::getBool('addCouponCode', false, 'post');
+        $couponCode = \Hubzero\Facades\Request::getString('couponCode', false, 'post');
 
         if ($addCouponRequest && $couponCode) {
             // Sync cart before pontial coupons applying

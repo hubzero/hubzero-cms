@@ -11,7 +11,7 @@ namespace Hubzero\Html\Builder;
 use Hubzero\Utility\Arr;
 use Hubzero\Base\Obj;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Utility class for creating HTML select lists
@@ -719,7 +719,7 @@ class Select
         }
 
         if (empty($neworder)) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
             $db->setQuery($query);
 
             $items = $db->loadObjectList();

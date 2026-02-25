@@ -11,13 +11,15 @@ namespace Components\Templates\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Form\Form;
 use Components\Templates\Models\Style;
-use Filesystem;
-use Request;
-use Notify;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Cache;
-use Lang;
-use App;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * Templates controller for styles

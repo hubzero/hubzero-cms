@@ -14,11 +14,12 @@ use Hubzero\Utility\Date;
 use Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * API controller class for support messages

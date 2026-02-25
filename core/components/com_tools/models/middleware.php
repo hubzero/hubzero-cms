@@ -14,7 +14,6 @@ use Components\Tools\Helpers\Utils;
 use Hubzero\Geocode\Geocode;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Obj;
-
 /**
  * Tools middleware model
  */
@@ -216,7 +215,7 @@ class Middleware extends Obj
     public function config($key = '', $default = null)
     {
         if (!isset($this->_config)) {
-            $this->_config = \Component::params('com_tools');
+            $this->_config = \Hubzero\Facades\Component::params('com_tools');
         }
 
         if ($key) {

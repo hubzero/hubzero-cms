@@ -15,13 +15,16 @@ use Components\Wiki\Models\Version;
 use Components\Wiki\Models\Author;
 use Components\Wiki\Models\Attachment;
 use Exception;
-use Pathway;
-use Request;
-use Cache;
-use Event;
-use User;
-use Lang;
-use Date;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 /**
  * Wiki controller class for pages
@@ -576,8 +579,8 @@ class Pages extends SiteController
         $lid = Request::getInt('lid', 0, 'post');
         if ($lid != $this->page->get('id')) {
             if (is_dir($path . DS . $lid)) {
-                if (!\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id'))) {
-                    $this->setError(\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')));
+                if (!\Hubzero\Facades\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id'))) {
+                    $this->setError(\Hubzero\Facades\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')));
                 }
             }
 
@@ -1062,7 +1065,7 @@ class Pages extends SiteController
         //$pdf->SetFont('dejavusans', '', 11, '', true);
 
         $pdf->setAuthor($this->page->creator()->get('name'));
-        $pdf->setCreator(\Config::get('sitename'));
+        $pdf->setCreator(\Hubzero\Facades\Config::get('sitename'));
 
         $pdf->setDocModificationTimeStamp($this->page->modified());
         $pdf->setHeaderData(null, 0, strtoupper($this->page->title), '', array(84, 94, 124), array(146, 152, 169));

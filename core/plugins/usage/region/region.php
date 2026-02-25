@@ -3,6 +3,8 @@
 namespace Plugins\Usage\Region;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * @package    hubzero-cms
@@ -47,12 +49,12 @@ class Region extends Plugin
     private function regionList(&$db, $region, $t = 0, $enddate = 0)
     {
         if (!$db->tableExists('regions')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regions');
+            \Hubzero\Facades\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regions');
             return '';
         }
 
         if (!$db->tableExists('regionvals')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals');
+            \Hubzero\Facades\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals');
             return '';
         }
 

@@ -15,15 +15,15 @@ use Hubzero\Access\Rules;
 use Hubzero\Access\Asset;
 use Components\Categories\Models\Category;
 use Components\Categories\Admin\Helpers\CategoriesHelper;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Notify;
-use Route;
-use User;
-use Cache;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Categories controller

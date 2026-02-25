@@ -12,6 +12,10 @@
 namespace Plugins\Cron\Newsletter;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 class Newsletter extends Plugin
 {

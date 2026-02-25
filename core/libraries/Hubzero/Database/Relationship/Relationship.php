@@ -8,6 +8,8 @@
 
 namespace Hubzero\Database\Relationship;
 
+use Hubzero\Facades\Date;
+
 /**
  * Database base relationship
  *

@@ -165,7 +165,7 @@ namespace Hubzero\Component\Tests {
         public function bootRegistersAndConfiguresInertiaForEnabledComponent(): void
         {
             $container = new ContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new EnabledInertiaComponent();
             $component->boot();
@@ -182,7 +182,7 @@ namespace Hubzero\Component\Tests {
         public function bootSkipsInertiaSetupForDisabledComponent(): void
         {
             $container = new ContainerStub();
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $component = new DisabledInertiaComponent();
             $component->boot();

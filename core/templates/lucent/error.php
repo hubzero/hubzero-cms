@@ -28,7 +28,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
         <link rel="stylesheet" type="text/css" media="screen"
               href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/less/main.css" />
         <script type="text/javascript"
-                src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
+                src="<?php echo \Hubzero\Facades\Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
         <?php
         $jsBase = str_replace('/core', '', $this->baseurl) . '/templates/' . $this->template;
         ?>

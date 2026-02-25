@@ -11,10 +11,12 @@ namespace Components\Courses\Models\Orm;
 use Hubzero\Database\Relational;
 use Components\Courses\Models\Tags;
 use Hubzero\Config\Registry;
-use Component;
-use Event;
-use Html;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
 use stdClass;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
 
 /**
  * Model class for a course entry
@@ -268,7 +270,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
 
         if ($as == 'text') {
             if (!isset($access)) {
-                $access = \Html::access('assetgroups');
+                $access = Html::access('assetgroups');
             }
             foreach ($access as $a) {
                 if ($this->get('access') == $a->value) {

@@ -8,6 +8,9 @@
 
 namespace Component\Redirect\Helpers;
 
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
+
 /**
  * Instantiate and return a form field for autocompleting some value
  */

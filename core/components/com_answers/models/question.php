@@ -13,12 +13,13 @@ use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Components\Answers\Models\Response;
 
 /**
  * Question model for Q&A
@@ -514,7 +515,7 @@ class Question extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = \Hubzero\Facades\Event::trigger('content.onContentBeforeSave', array(
                 'com_answers.question.question',
                 &$this,
                 $this->isNew()
@@ -541,11 +542,11 @@ class Question extends Relational
      */
     public function config($key = null, $default = null)
     {
-        $config = \Component::params('com_answers');
+        $config = \Hubzero\Facades\Component::params('com_answers');
 
         if ($key) {
             if ($key == 'banking' && $config->get('banking', -1) == -1) {
-                $config->set('banking', \Component::params('com_members')->get('bankAccounts'));
+                $config->set('banking', \Hubzero\Facades\Component::params('com_members')->get('bankAccounts'));
             }
             return $config->get($key, $default);
         }

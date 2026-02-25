@@ -9,6 +9,7 @@
 namespace Hubzero\Database\Tests\TestModels;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\User;
 
 /**
  * Post test model for multi-database testing

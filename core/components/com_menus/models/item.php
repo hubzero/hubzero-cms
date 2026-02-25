@@ -12,10 +12,13 @@ use Hubzero\Database\Nested;
 use Hubzero\Database\Value\Raw;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
 
 /**
  * Menu item model
@@ -341,7 +344,7 @@ class Item extends Nested
     public function save()
     {
         if (!$this->get('access')) {
-            $this->set('access', (int) \Config::get('access'));
+            $this->set('access', (int) \Hubzero\Facades\Config::get('access'));
         }
 
         $isNew = $this->isNew();
@@ -448,7 +451,7 @@ class Item extends Nested
             ->order('lft', 'asc');
 
         // Assemble the query to find all children of this node.
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery($query->toString());
         $children = $db->loadObjectList();
 
@@ -683,7 +686,7 @@ class Item extends Nested
             if (isset($args['option'])) {
                 // The option determines the base path to work with.
                 $option = $args['option'];
-                $base   = \Component::path($option) . '/site';
+                $base   = \Hubzero\Facades\Component::path($option) . '/site';
             }
 
             // Confirm a view is defined.
@@ -779,7 +782,7 @@ class Item extends Nested
         // Now load the component params.
         // TODO: Work out why 'fixing' this breaks Form
         if ($isNew = false) {
-            $path = \Hubzero\Filesystem\Util::normalizePath(\Component::path($option) . '/config/config.xml');
+            $path = \Hubzero\Filesystem\Util::normalizePath(\Hubzero\Facades\Component::path($option) . '/config/config.xml');
         } else {
             $path = 'null';
         }
@@ -945,7 +948,7 @@ class Item extends Nested
             $query->order('lft', 'DESC');
             $position = 'before';
         }
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery($query->toString());
 
         $referenceId = $db->loadResult();
@@ -987,7 +990,7 @@ class Item extends Nested
             ->from($this->getTableName())
             ->whereRaw('lft BETWEEN ' . (int) $node->lft . ' AND ' . (int) $node->rgt);
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery($query->toString());
         $children = $db->loadColumn();
 

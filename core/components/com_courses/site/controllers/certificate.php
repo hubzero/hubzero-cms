@@ -13,12 +13,13 @@ use Components\Courses\Models\Member;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Exception;
-use Filesystem;
-use Request;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Courses controller class for generation and viewing of certificates

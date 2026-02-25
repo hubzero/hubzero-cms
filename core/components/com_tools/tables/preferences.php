@@ -34,14 +34,14 @@ class Preferences extends Table
     public function check()
     {
         if (!$this->user_id) {
-            $this->user_id = \User::get('id');
+            $this->user_id = \Hubzero\Facades\User::get('id');
         }
 
         if (!$this->id) {
             $test = new self($this->_db);
             $test->loadByUser($this->user_id);
             if ($test->id) {
-                $this->setError(\Lang::txt('User with ID of %s already has a record.', $this->user_id));
+                $this->setError(\Hubzero\Facades\Lang::txt('User with ID of %s already has a record.', $this->user_id));
             }
         }
 

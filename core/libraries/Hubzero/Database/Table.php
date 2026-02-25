@@ -358,7 +358,7 @@ abstract class Table extends \stdClass
             $paths = self::addIncludePath();
             $pathIndex = 0;
             while (!class_exists($tableClass) && $pathIndex < count($paths)) {
-                if ($tryThis = \Filesystem::find($paths[$pathIndex++], strtolower($type) . '.php')) {
+                if ($tryThis = \Hubzero\Facades\Filesystem::find($paths[$pathIndex++], strtolower($type) . '.php')) {
                     // Import the class file.
                     include_once $tryThis;
                 }
@@ -716,7 +716,7 @@ abstract class Table extends \stdClass
             $stored = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
         } else {
             $stored = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-            \Event::trigger($this->getTableName() . '_new', ['table' => $this]);
+            \Hubzero\Facades\Event::trigger($this->getTableName() . '_new', ['table' => $this]);
         }
 
         // If the store failed return false.
@@ -728,7 +728,7 @@ abstract class Table extends \stdClass
             return false;
         }
 
-        \Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        \Hubzero\Facades\Event::trigger('system.onContentSave', array($this->getTableName(), $this));
 
         // If the table is not set to track assets return true.
         if (!$this->_trackAssets) {

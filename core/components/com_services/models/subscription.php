@@ -10,7 +10,7 @@ namespace Components\Services\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Subscription model

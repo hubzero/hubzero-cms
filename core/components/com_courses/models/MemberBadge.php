@@ -37,7 +37,7 @@ class MemberBadge extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new $this->_tbl_name($this->_db);
 

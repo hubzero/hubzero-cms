@@ -9,7 +9,7 @@
 namespace Components\Courses\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Html;
+use Hubzero\Facades\Html;
 
 /**
  * Model class for a course page

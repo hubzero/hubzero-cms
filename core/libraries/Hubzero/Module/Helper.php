@@ -21,7 +21,7 @@ class Helper
      */
     public static function countModules($condition)
     {
-        return \Module::count($condition);
+        return \Hubzero\Facades\Module::count($condition);
     }
 
     /**
@@ -59,7 +59,7 @@ class Helper
      */
     public static function renderModule($name, $style = -1)
     {
-        return \Module::name($name, ($style == -1 ? 'none' : $style));
+        return \Hubzero\Facades\Module::name($name, ($style == -1 ? 'none' : $style));
     }
 
     /**
@@ -71,7 +71,7 @@ class Helper
      */
     public static function renderModules($position, $style = -2)
     {
-        return \Module::position($position, ($style == -1 ? 'none' : $style));
+        return \Hubzero\Facades\Module::position($position, ($style == -1 ? 'none' : $style));
     }
 
     /**
@@ -82,6 +82,6 @@ class Helper
      */
     public static function getParams($id)
     {
-        return \Module::params($id);
+        return \Hubzero\Facades\Module::params($id);
     }
 }

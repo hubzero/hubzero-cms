@@ -10,11 +10,12 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Password\Blacklist;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Manage members password blacklist

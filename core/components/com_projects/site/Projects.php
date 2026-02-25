@@ -24,7 +24,7 @@ class Projects extends AbstractComponent
     {
         require_once __DIR__ . DS . 'controllers' . DS . 'base.php';
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'projects'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'projects'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'projects';
         }

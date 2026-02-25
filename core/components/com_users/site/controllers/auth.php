@@ -12,16 +12,18 @@ use Hubzero\Component\SiteController;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Uri;
 use Exception;
-use Document;
-use Request;
-use Config;
-use Plugin;
-use Notify;
-use Event;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Session;
 
 /**
  * Login Controller
@@ -66,7 +68,7 @@ class Auth extends SiteController
             $title = $menu->title;
         } else {
             // get com_menu global settings
-            $temp = clone \Component::params('com_menus');
+            $temp = clone \Hubzero\Facades\Component::params('com_menus');
             $params->merge($temp);
 
             // if supplied, use page title

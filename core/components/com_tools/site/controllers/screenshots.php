@@ -11,14 +11,16 @@ namespace Components\Tools\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Screenshot;
-use Document;
+use Hubzero\Facades\Document;
 use Pathway;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Log;
 
 /**
  * Controller class for contributing a tool

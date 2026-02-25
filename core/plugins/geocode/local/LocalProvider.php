@@ -281,7 +281,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     {
         if (!in_array($this->type, array('countries', 'country', 'continent'))) {
             throw new \Geocoder\Exception\UnsupportedOperation(
-                \Lang::txt('The LocalProvider does not support "%s".', $this->type)
+                \Hubzero\Facades\Lang::txt('The LocalProvider does not support "%s".', $this->type)
             );
         }
 

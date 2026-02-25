@@ -9,7 +9,7 @@
 namespace Modules\Tools;
 
 use Hubzero\Module\Module;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for com_tools data

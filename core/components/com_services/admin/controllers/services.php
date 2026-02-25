@@ -10,12 +10,13 @@ namespace Components\Services\Admin\Controllers;
 
 use Components\Services\Models\Service;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for services

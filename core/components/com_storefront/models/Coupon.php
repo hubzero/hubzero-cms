@@ -8,6 +8,8 @@
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+
 /**
  *
  * Coupon class
@@ -28,7 +30,7 @@ class Coupon
     public function __construct($code = false)
     {
         // Load language file
-        \App::get('language')->load('com_storefront');
+        \Hubzero\Facades\App::get('language')->load('com_storefront');
 
         if ($code) {
             $this->setCode($code);

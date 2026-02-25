@@ -11,11 +11,12 @@ namespace Components\Groups\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Filesystem\Util;
 use Hubzero\User\Group;
-use Filesystem;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Manage files for a group
@@ -289,10 +290,10 @@ class Media extends AdminController
         $dirs = $this->recursiveListDir($this->path);
 
         $folders   = array();
-        $folders[] = \Html::select('option', '/');
+        $folders[] = \Hubzero\Facades\Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $d) {
-                $folders[] = \Html::select('option', substr($d, strlen($this->path)));
+                $folders[] = \Hubzero\Facades\Html::select('option', substr($d, strlen($this->path)));
             }
         }
         sort($folders);
@@ -303,7 +304,7 @@ class Media extends AdminController
             . '&controller=media&gidNumber=' . $this->group->get('gidNumber')
             . '&task=list&tmpl=component&dir='
         );
-        $dirPath = \Html::select(
+        $dirPath = \Hubzero\Facades\Html::select(
             'genericlist',
             $folders,
             'dir',

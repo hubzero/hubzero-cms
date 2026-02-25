@@ -10,6 +10,7 @@ namespace Components\Oaipmh\Models\Xml;
 
 use LogicException;
 use DOMElement;
+use Hubzero\Facades\Lang;
 
 /**
  * XML Response Element

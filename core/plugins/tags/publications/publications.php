@@ -3,6 +3,13 @@
 namespace Plugins\Tags\Publications;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -156,7 +163,7 @@ class Publications extends Plugin
     {
         $database = App::get('db');
 
-        include_once \Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
+        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
         $rt = new \Components\Publications\Tables\Category($database);
 
         if (isset($filters['select']) && $filters['select'] == 'count') {

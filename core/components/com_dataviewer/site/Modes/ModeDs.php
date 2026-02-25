@@ -14,7 +14,7 @@ class ModeDs
 {
     public static function getConf($db_id)
     {
-        $params = \Component::params('com_datastores');
+        $params = \Hubzero\Facades\Component::params('com_datastores');
         DvConfig::$dv_conf['db']['host'] = $params->get('db_host');
         DvConfig::$dv_conf['db']['user'] = $params->get('db_ro_user');
         DvConfig::$dv_conf['db']['password'] = $params->get('db_ro_pass');
@@ -35,9 +35,9 @@ class ModeDs
     public static function getDd($db_id)
     {
         $dd = false;
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
-        $dv_id = \Request::getVar('dv');
+        $dv_id = \Hubzero\Facades\Request::getVar('dv');
 
         if ($db_id['extra']) {
             $sql = "SELECT * FROM `#__datastore_tables` WHERE datastore_id = " . $db_id['name']
@@ -220,9 +220,9 @@ class ModeDs
         }
 
         // Giving Hub admins full access to the DataStore dataviews
-        if (\Hubzero\Access\Access::check(\User::get('id'), 'core.admin')) {
+        if (\Hubzero\Access\Access::check(\Hubzero\Facades\User::get('id'), 'core.admin')) {
             $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
-            $dd['acl']['allowed_users'][] = \User::get('username');
+            $dd['acl']['allowed_users'][] = \Hubzero\Facades\User::get('username');
         }
 
         return $dd;
@@ -230,14 +230,14 @@ class ModeDs
 
     public static function ddPost($dd)
     {
-        $id = \Request::getString('id', false);
+        $id = \Hubzero\Facades\Request::getString('id', false);
 
         if ($id) {
             $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
             $dd['single'] = true;
         }
 
-        $custom_field =  \Request::getString('custom_field', false);
+        $custom_field =  \Hubzero\Facades\Request::getString('custom_field', false);
         if ($custom_field) {
             $custom_field = explode('|', $custom_field);
             $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
@@ -245,20 +245,20 @@ class ModeDs
         }
 
         // Data for Custom Views
-        $custom_view = \Request::getString('custom_view', '');
+        $custom_view = \Hubzero\Facades\Request::getString('custom_view', '');
 
         if ($custom_view != '') {
             $custom_view = explode(',', $custom_view);
             unset($dd['customizer']);
 
             // Custom Title
-            $custom_title = \Request::getString('custom_title', '');
+            $custom_title = \Hubzero\Facades\Request::getString('custom_title', '');
             if ($custom_title !== '') {
                 $dd['title'] = htmlspecialchars($custom_title);
             }
 
             // Custom Group by
-            $group_by = \Request::getString('group_by', '');
+            $group_by = \Hubzero\Facades\Request::getString('group_by', '');
             if ($group_by !== '') {
                 $dd['group_by'] = htmlspecialchars($group_by);
             }
@@ -289,18 +289,18 @@ class ModeDs
     {
         $db_id = $dd['db_id'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         $document->setTitle($dd['title']);
 
         if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
             $ref_title = "Datastore";
-            \Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+            \Hubzero\Facades\Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
-            $ref_title = \Request::getString('ref_title', $dd['title'] . " Resource");
+            $ref_title = \Hubzero\Facades\Request::getString('ref_title', $dd['title'] . " Resource");
             $ref_title = htmlentities($ref_title);
-            \Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
+            \Hubzero\Facades\Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
         }
 
-        \Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
+        \Hubzero\Facades\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
     }
 }

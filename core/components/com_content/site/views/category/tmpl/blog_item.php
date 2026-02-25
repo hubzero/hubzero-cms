@@ -198,7 +198,7 @@ Html::behavior('framework');
             )
         );
     else :
-        $menu = \App::get('menu');
+        $menu = \Hubzero\Facades\App::get('menu');
         $active = $menu->getActive();
         $itemId = $active->id;
         $link1 = Route::url(

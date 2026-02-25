@@ -8,11 +8,14 @@
 
 namespace Components\Resources\Helpers;
 
-use Document;
-use Pathway;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
 
 /**
  * Resources helper class for misc. HTML and display
@@ -339,7 +342,7 @@ class Html
 
                 $params = new \Hubzero\Config\Registry($child->params);
 
-                $ftype    = \Filesystem::extension($child->path);
+                $ftype    = \Hubzero\Facades\Filesystem::extension($child->path);
                 //$class    = $params->get('class', $ftype);
                 $doctitle = $params->get('title', $title);
 
@@ -430,7 +433,7 @@ class Html
      */
     public static function thumbnail($pic)
     {
-        return \Filesystem::name($pic) . '-tn.gif';
+        return \Hubzero\Facades\Filesystem::name($pic) . '-tn.gif';
     }
 
     /**
@@ -565,7 +568,7 @@ class Html
      */
     public static function citationCOins($cite, $model)
     {
-        \Log::debug(__CLASS__ . '::' . __METHOD__ . '() called');
+        \Hubzero\Facades\Log::debug(__CLASS__ . '::' . __METHOD__ . '() called');
 
         return '';
     }
@@ -583,7 +586,7 @@ class Html
      */
     public static function citation($option, $cite, $id, $citations, $type, $rev = '')
     {
-        include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+        include_once \Hubzero\Facades\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
         $html  = '<p>' . Lang::txt('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
         if (trim($citations)) {
@@ -704,7 +707,7 @@ class Html
      */
     public static function primaryChild($option, $resource, $firstChild, $xact = '')
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $html = '';
 
@@ -741,7 +744,7 @@ class Html
 
                 // Generate the URL that launches a tool session
                 $lurl = '';
-                $database = \App::get('db');
+                $database = \Hubzero\Facades\App::get('db');
                 $tables = $database->getTableList();
                 $table = $database->getPrefix() . 'tool_version';
 
@@ -762,7 +765,7 @@ class Html
                     $lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
                 }
 
-                require_once \Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
+                require_once \Hubzero\Facades\Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
                 // Create some tool objects
                 $toolgroups = null;
@@ -1016,7 +1019,7 @@ class Html
                         if (!$isGroupMember || count($common) <= 0) {
                             $html .= '<p class="warning">';
                             if (User::isGuest()) {
-                                $returnPath = base64_encode(\Request::path());
+                                $returnPath = base64_encode(\Hubzero\Facades\Request::path());
                                 $html .= Lang::txt(
                                     'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
                                     $returnPath
@@ -1208,7 +1211,7 @@ class Html
 
             $path = PATH_APP . $path;
 
-            $type = strtoupper(\Filesystem::extension($path));
+            $type = strtoupper(\Hubzero\Facades\Filesystem::extension($path));
 
             //check to see if we have a json file (HUBpresenter)
             if ($type == 'JSON') {

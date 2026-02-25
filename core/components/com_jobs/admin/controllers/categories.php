@@ -11,12 +11,12 @@ namespace Components\Jobs\Admin\Controllers;
 use Components\Jobs\Tables\JobCategory;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for job categories

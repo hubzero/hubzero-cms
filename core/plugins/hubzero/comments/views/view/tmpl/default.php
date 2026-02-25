@@ -240,7 +240,7 @@ $this->css()
                         . '.Models.Comment.orderdir';
                     $defaultDir = $commentClass::blank()
                         ->orderDir;
-                    $currentOrderDir = \User::getState(
+                    $currentOrderDir = \Hubzero\Facades\User::getState(
                         $stateKey,
                         $defaultDir
                     );

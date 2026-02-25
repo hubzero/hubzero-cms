@@ -28,7 +28,7 @@ class FactoryTest extends AbstractDriverTestCase
 
     protected static function getTestModelClasses(): array
     {
-        return [User::class];
+        return [\Hubzero\User\User::class];
     }
 
     protected static function setUpDatabase(Driver $driver): void
@@ -63,7 +63,7 @@ class FactoryTest extends AbstractDriverTestCase
         } catch (\Exception $e) {
         }
 
-        User::useTable('factory_users');
+        \Hubzero\User\User::useTable('factory_users');
         Relational::setDefaultConnection($driver);
     }
 
@@ -679,7 +679,7 @@ class FactoryTest extends AbstractDriverTestCase
     public function modelClassReturnsConfiguredModel()
     {
         $factory = new UserFactory();
-        $this->assertEquals(User::class, $factory->modelClass());
+        $this->assertEquals(\Hubzero\User\User::class, $factory->modelClass());
     }
 
     #[Test]
@@ -703,7 +703,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $user = UserFactory::new()->make();
 
-        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(\Hubzero\User\User::class, $user);
         $this->assertNotEmpty($user->get('name'));
         $this->assertNotEmpty($user->get('email'));
         $this->assertEquals('active', $user->get('status'));
@@ -814,7 +814,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $user = UserFactory::new()->create();
 
-        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(\Hubzero\User\User::class, $user);
         $this->assertNotNull($user->get('id'), "[$dbName] Created model should have an ID");
 
         // Verify in database

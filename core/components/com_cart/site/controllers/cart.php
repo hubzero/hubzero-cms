@@ -8,9 +8,13 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
+use Hubzero\Facades\Request;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Pathway;
 
 /**
  * Cart controller class

@@ -12,15 +12,15 @@ use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
-use Pathway;
-use Request;
-use Config;
-use Route;
-use Event;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
@@ -35,7 +35,7 @@ class Base extends SiteController
     public function execute()
     {
         // Publishing enabled?
-        $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+        $this->_publishing = \Hubzero\Facades\Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
         // Setup complete?
         $this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -74,7 +74,7 @@ class Base extends SiteController
 
         // Include publications model
         if ($this->_publishing) {
-            require_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+            require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
         }
 
         // Logging and stats
@@ -94,7 +94,7 @@ class Base extends SiteController
     {
         // If message is set push to notifications
         if ($message) {
-            \Notify::message($message, $type);//, 'projects');
+            \Hubzero\Facades\Notify::message($message, $type);//, 'projects');
         }
     }
 
@@ -109,7 +109,7 @@ class Base extends SiteController
     {
         // Get messages in queue
         if (!isset($this->_messages)) {
-            $this->_messages = \Notify::messages('projects');
+            $this->_messages = \Hubzero\Facades\Notify::messages('projects');
         }
 
         // Return first message of type
@@ -226,7 +226,7 @@ class Base extends SiteController
                 break;
         }
 
-        \Document::setTitle($this->title);
+        \Hubzero\Facades\Document::setTitle($this->title);
 
         return $this->title;
     }

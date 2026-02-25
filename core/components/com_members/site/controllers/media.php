@@ -10,12 +10,13 @@ namespace Components\Members\Site\Controllers;
 
 use Components\Members\Models\Member;
 use Hubzero\Component\SiteController;
-use Filesystem;
-use Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Plugin;
 
 /**
  * Members controller class for media
@@ -84,7 +85,7 @@ class Media extends SiteController
         $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -313,7 +314,7 @@ class Media extends SiteController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

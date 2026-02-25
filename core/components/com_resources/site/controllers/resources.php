@@ -21,15 +21,17 @@ use Components\Resources\Helpers\Hubpresenter;
 use Components\Resources\Helpers\Helper;
 use Hubzero\Component\SiteController;
 use stdClass;
-use Document;
-use Pathway;
-use Request;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
-
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 /**
  * Resources controller class
  */
@@ -761,7 +763,7 @@ class Resources extends SiteController
         $path = $base . $path;
 
         // we must have a folder
-        if (!\Filesystem::exists(PATH_APP . DS . $path)) {
+        if (!\Hubzero\Facades\Filesystem::exists(PATH_APP . DS . $path)) {
             $this->setError(Lang::txt('Folder containing assets does not exist.'));
 
             $return = array();
@@ -774,7 +776,7 @@ class Resources extends SiteController
 
         //check to make sure we have a presentation document defining cuepoints, slides, and media
         //$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
-        $manifests = \Filesystem::files(PATH_APP . DS . $path, '.json');
+        $manifests = \Hubzero\Facades\Filesystem::files(PATH_APP . DS . $path, '.json');
         $manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
         $manifest_path_xml  = PATH_APP . DS . $path . DS . 'presentation.xml';
 
@@ -799,7 +801,7 @@ class Resources extends SiteController
             $this->setError(Lang::txt('Path to media does not exist.'));
         } else {
             //get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-            $media = \Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
+            $media = \Hubzero\Facades\Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
             $ext = array();
             foreach ($media as $m) {
                 $parts = explode('.', $m);
@@ -813,7 +815,7 @@ class Resources extends SiteController
 
             //make sure if any slides are video we have three formats of video and backup image for mobile
             $slide_path = $media_path . DS . 'slides';
-            $slides = \Filesystem::files($slide_path, '', false, false);
+            $slides = \Hubzero\Facades\Filesystem::files($slide_path, '', false, false);
 
             //array to hold slides with video clips
             $slide_video = array();
@@ -1119,7 +1121,7 @@ class Resources extends SiteController
         $path = $path ? $path : $resource->relativepath();
 
         // Get manifests
-        $manifests = \Filesystem::files(PATH_APP . DS . $base . $path, '.json');
+        $manifests = \Hubzero\Facades\Filesystem::files(PATH_APP . DS . $base . $path, '.json');
 
         // Return path to manifest if we have one
         return (count($manifests) > 0) ? $base . $path . DS . $manifests[0] : array();
@@ -1169,7 +1171,7 @@ class Resources extends SiteController
         $manifest->presentation->subtitles = array();
 
         //get the videos
-        $videos = \Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+        $videos = \Hubzero\Facades\Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
         //add each video to manifest
         foreach ($videos as $k => $video) {
@@ -1186,7 +1188,7 @@ class Resources extends SiteController
         }
 
         //get the subs
-        $subtitles = \Filesystem::files($path, '.srt|.SRT');
+        $subtitles = \Hubzero\Facades\Filesystem::files($path, '.srt|.SRT');
 
         //add each subtitle to manifest
         foreach ($subtitles as $k => $subtitle) {
@@ -1214,7 +1216,7 @@ class Resources extends SiteController
         $manifest = json_encode($manifest, JSON_PRETTY_PRINT);
 
         // attempt to create manifest file
-        if (!\Filesystem::write($path . DS . 'presentation.json', $manifest)) {
+        if (!\Hubzero\Facades\Filesystem::write($path . DS . 'presentation.json', $manifest)) {
             return false;
         }
 
@@ -1302,7 +1304,7 @@ class Resources extends SiteController
         // if ($this->checkGroupAccess($this->model)) {
         //     $groupOwner = $this->model->get('group_owner');
         //     $groupUrl = Route::url('index.php?option=com_groups&cn=' . $groupOwner);
-        //     App::abort(403, \Lang::txt(
+        //     App::abort(403, Lang::txt(
         //         'COM_RESOURCES_ALERTNOTAUTH_GROUP',
         //         $groupOwner,
         //         $groupUrl
@@ -1374,7 +1376,7 @@ class Resources extends SiteController
         // Let's get down to business...
 
         // Get contribtool params
-        $tconfig = \Component::params('com_tools');
+        $tconfig = \Hubzero\Facades\Component::params('com_tools');
 
         // Trigger the functions that return the areas we'll be using
         $cats = Event::trigger('resources.onResourcesAreas', array(
@@ -1664,7 +1666,7 @@ class Resources extends SiteController
             ENT_COMPAT,
             'UTF-8'
         );
-        $doc->copyright = \Lang::txt(
+        $doc->copyright = Lang::txt(
             'COM_RESOURCES_RSS_COPYRIGHT',
             date("Y"),
             Config::get('sitename')
@@ -1895,7 +1897,7 @@ class Resources extends SiteController
 
                             $enclosure = new \Hubzero\Document\Type\Feed\Enclosure();
                             $enclosure->url = $podcast;
-                            switch (\Filesystem::extension($podcast)) {
+                            switch (\Hubzero\Facades\Filesystem::extension($podcast)) {
                                 case 'm4v':
                                     $enclosure->type = 'video/x-m4v';
                                     break;
@@ -2289,7 +2291,7 @@ class Resources extends SiteController
             App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
         }
 
-        $ext = strtolower(\Filesystem::extension($path));
+        $ext = strtolower(\Hubzero\Facades\Filesystem::extension($path));
 
         // Set disposition to attachment unless we think the browser can inline the file
         $inlineTypes = [
@@ -2482,7 +2484,7 @@ class Resources extends SiteController
         $path .= $row->relativePath();
 
         if (!is_dir($path)) {
-            if (!\Filesystem::makeDirectory($path)) {
+            if (!\Hubzero\Facades\Filesystem::makeDirectory($path)) {
                 $this->setError('Error. Unable to create path.');
             }
         }

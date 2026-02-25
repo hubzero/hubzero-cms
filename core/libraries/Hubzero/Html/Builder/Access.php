@@ -9,8 +9,8 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Error\Exception\Exception;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Extended Utility class for all HTML drawing classes.
@@ -135,7 +135,7 @@ class Access
 
         $count++;
 
-        $isSuperAdmin = \User::authorise('core.admin');
+        $isSuperAdmin = \Hubzero\Facades\User::authorise('core.admin');
 
         $db = App::get('db');
         $query = $db->getQuery()

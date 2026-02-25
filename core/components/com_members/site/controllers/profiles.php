@@ -14,19 +14,20 @@ use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Profile;
 use Components\Members\Models\Member;
 use Components\Members\Helpers\Filters;
-use Component;
-use Document;
-use Pathway;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Cache;
-use Event;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Plugin;
 
 /**
  * Members controller class for profiles
@@ -1495,7 +1496,7 @@ class Profiles extends SiteController
 
         // Querying the organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = Component::params('com_members')->get('rorApi');
         if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
             $profile['orgid'] = $this->getOrganizationId($profile['organization']);
         }
@@ -1866,7 +1867,7 @@ class Profiles extends SiteController
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($term);
@@ -1919,7 +1920,7 @@ class Profiles extends SiteController
         $org = trim($organization);
         $orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);

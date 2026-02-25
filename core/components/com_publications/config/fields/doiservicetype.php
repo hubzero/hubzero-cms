@@ -9,8 +9,9 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Document;
 
 /**
  * Renders a list of DOI service types

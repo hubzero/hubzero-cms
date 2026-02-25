@@ -10,7 +10,6 @@ namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Hubzero\Utility\Date;
-
 /**
  * Migration script for moving member manager notes to user notes table
  *

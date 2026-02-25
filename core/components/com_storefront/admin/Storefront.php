@@ -9,6 +9,7 @@
 namespace Components\Storefront\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Lang;
 
 /**
  * Component entry point
@@ -24,27 +25,27 @@ class Storefront extends AbstractComponent
     {
         $option = 'com_storefront';
 
-        if (!\User::authorise('core.manage', $option)) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', $option)) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $scope = \Request::getCmd('scope', 'site');
-        $controllerName = \Request::getCmd('controller', 'products');
+        $scope = \Hubzero\Facades\Request::getCmd('scope', 'site');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'products');
 
-        \Submenu::addEntry(
+        \Hubzero\Facades\Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_PRODUCTS'),
-            \Route::url('index.php?option=com_storefront&id=0'),
+            \Hubzero\Facades\Route::url('index.php?option=com_storefront&id=0'),
             $controllerName == 'products'
         );
-        \Submenu::addEntry(
+        \Hubzero\Facades\Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_COLLECTIONS'),
-            \Route::url('index.php?option=com_storefront&controller=collections&id=0'),
+            \Hubzero\Facades\Route::url('index.php?option=com_storefront&controller=collections&id=0'),
             $controllerName == 'collections'
         );
-        \Submenu::addEntry(
+        \Hubzero\Facades\Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_OPTION_GROUPS'),
-            \Route::url('index.php?option=com_storefront&controller=optiongroups&id=0'),
+            \Hubzero\Facades\Route::url('index.php?option=com_storefront&controller=optiongroups&id=0'),
             $controllerName == 'optiongroups'
         );
 

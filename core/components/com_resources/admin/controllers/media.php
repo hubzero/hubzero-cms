@@ -10,9 +10,9 @@ namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Helpers\Utilities;
 use Hubzero\Component\AdminController;
-use Filesystem;
-use Request;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Methods for listing and managing files and folders
@@ -263,16 +263,16 @@ class Media extends AdminController
         $dirs = $this->recursiveListDir($path);
 
         $folders   = array();
-        $folders[] = \Html::select('option', '/');
+        $folders[] = \Hubzero\Facades\Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
-                $folders[] = \Html::select('option', substr($dir, strlen($path)));
+                $folders[] = \Hubzero\Facades\Html::select('option', substr($dir, strlen($path)));
             }
         }
         sort($folders);
 
         // Create folder <select> list
-        $dirPath = \Html::select(
+        $dirPath = \Hubzero\Facades\Html::select(
             'genericlist',
             $folders,
             'dirPath',

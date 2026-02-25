@@ -13,9 +13,9 @@ use Hubzero\Database\Rows;
 use Hubzero\Utility\Str;
 use Components\Tags\Models\Tag;
 use stdClass;
-use Request;
-use Route;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Hubs database model
@@ -644,7 +644,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             return $this->get('formatted');
         }
         //get hub specific details
-        $hub_name = \Config::get('sitename');
+        $hub_name = \Hubzero\Facades\Config::get('sitename');
         $hub_url  = rtrim(Request::base(), '/');
 
         //get scope specific details
@@ -1058,7 +1058,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'index.php?option=com_citations&task=download&id=' . $this->id
             . '&citationFormat=bibtex&no_html=1'
         );
-        $bibtexTxt = \Lang::txt('COM_CITATIONS_BIBTEX');
+        $bibtexTxt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_BIBTEX');
         $details .= '<a class="icon-download bibtex" rel="nofollow" href="' . $bibtexUrl . '" title="'
             . $bibtexTxt . '">' . $bibtexTxt . '</a>';
         $details .= '<span class="separator"> | </span>';
@@ -1066,7 +1066,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'index.php?option=com_citations&task=download&id=' . $this->id
             . '&citationFormat=endnote&no_html=1'
         );
-        $endnoteTxt = \Lang::txt('COM_CITATIONS_ENDNOTE');
+        $endnoteTxt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_ENDNOTE');
         $details .= '<a class="icon-download endnote" rel="nofollow" href="' . $endnoteUrl . '" title="'
             . $endnoteTxt . '">' . $endnoteTxt . '</a>';
 
@@ -1082,7 +1082,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         if ($this->eprint) {
             $details .= '<span>|</span>';
-            $details .= '<a href="' . Str::ampReplace($this->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+            $details .= '<a href="' . Str::ampReplace($this->eprint) . '">' . \Hubzero\Facades\Lang::txt('Electronic Paper') . '</a>';
         }
 
         return $details;
@@ -1100,7 +1100,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         } else {
             $resourceCount = count($this->resources);
             if ($resourceCount > 0) {
-                $config = \Component::params('com_citations');
+                $config = \Hubzero\Facades\Component::params('com_citations');
                 $internallyCitedImage = $config->get('citation_cited', 0);
                 $internallyCitedImageSingle = $config->get('citation_cited_single', '');
                 $internallyCitedImageMultiple = $config->get('citation_cited_multiple', '');
@@ -1111,7 +1111,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 $multiple = false;
 
                 if ($resourceCount > 1) {
-                    $citedTxt = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+                    $citedTxt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                     $links .= '<span>|</span><span class="cited-resources">' . $citedTxt . ':</span>';
                     $multiple = true;
                 } else {
@@ -1123,7 +1123,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     $imageSrc = $internallyCitedImageSingle;
                 }
 
-                $linkText = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+                $linkText = \Hubzero\Facades\Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                 $linkImage = '<img src="' . $imageSrc . '" />';
 
                 $displayValue = ($internallyCitedImage) ? 'linkImage' : 'linkText';

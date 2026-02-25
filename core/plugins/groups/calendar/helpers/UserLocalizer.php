@@ -36,8 +36,8 @@ class UserLocalizer
      */
     public function __construct()
     {
-        $this->db = \App::get('db');
-        $this->systemTimezone = \Config::get('offset');
+        $this->db = \Hubzero\Facades\App::get('db');
+        $this->systemTimezone = \Hubzero\Facades\Config::get('offset');
     }
 
     /**
@@ -47,7 +47,7 @@ class UserLocalizer
      */
     public function getTimezone()
     {
-        if (!\User::isGuest()) {
+        if (!\Hubzero\Facades\User::isGuest()) {
             $timezone = $this->_getUserTimezone();
         } else {
             $timezone = $this->systemTimezone;
@@ -64,7 +64,7 @@ class UserLocalizer
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getUserTimezone()
     {
-        $userParams = json_decode(\User::get('params', '[]'), 1);
+        $userParams = json_decode(\Hubzero\Facades\User::get('params', '[]'), 1);
 
         return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
     }

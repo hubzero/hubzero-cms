@@ -57,7 +57,7 @@ class Page extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // load page table
         $this->_tbl = new $this->_tbl_name($this->_db);
@@ -278,7 +278,7 @@ class Page extends Model
         // base link
         $pageLink = '';
         if ($includeBase) {
-            $pageLink = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
+            $pageLink = \Hubzero\Facades\Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
         }
 
         // get our parents

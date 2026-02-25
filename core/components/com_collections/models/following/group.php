@@ -55,7 +55,7 @@ class Group extends Base
     public function image()
     {
         if (!isset($this->image)) {
-            $config = \Component::params('com_groups');
+            $config = \Hubzero\Facades\Component::params('com_groups');
             if ($this->obj->get('logo')) {
                 $this->image = DS . trim($config->get('uploadpath', '/site/groups'), DS)
                     . DS . $this->obj->get('gidNumber') . DS . $this->obj->get('logo');

@@ -11,9 +11,9 @@ namespace Components\Collections\Models\Item;
 use Components\Collections\Models\Item as GenericItem;
 use Components\Kb\Models\Article;
 use Components\Kb\Models\Category;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a Knowledge base article
@@ -74,7 +74,7 @@ class Kb extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_kb') . DS . 'models' . DS . 'article.php';
+        include_once \Hubzero\Facades\Component::path('com_kb') . DS . 'models' . DS . 'article.php';
         $article = null;
 
         if (!$id) {

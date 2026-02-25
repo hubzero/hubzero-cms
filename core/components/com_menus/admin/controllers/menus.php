@@ -11,11 +11,12 @@ namespace Components\Menus\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Menus\Models\Module;
 use Components\Menus\Models\Menu;
-use Request;
-use Notify;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * The Menu List Controller

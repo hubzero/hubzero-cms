@@ -155,7 +155,7 @@ class Request
         }
 
         if ($tag_ids) {
-            $dbh = \App::get('db');
+            $dbh = \Hubzero\Facades\App::get('db');
             $dbh->setQuery(
                 'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')'
             );

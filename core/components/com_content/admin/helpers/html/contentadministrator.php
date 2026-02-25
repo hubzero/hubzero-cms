@@ -9,7 +9,7 @@
 namespace Components\Content\Admin\Helpers\Html;
 
 use Hubzero\Utility\Arr;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * HTML helper
@@ -40,7 +40,7 @@ abstract class ContentAdministrator
             ),
         );
         $state = Arr::getValue($states, (int) $value, $states[1]);
-        $html  = \Html::asset('image', 'admin/' . $state[0], Lang::txt($state[2]), null, true);
+        $html  = \Hubzero\Facades\Html::asset('image', 'admin/' . $state[0], Lang::txt($state[2]), null, true);
         if ($canChange) {
             $html = '<a href="#" class="state ' . ($value ? 'yes' : 'no') . '" '
                 . 'onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" '

@@ -22,17 +22,18 @@ use Hubzero\Component\View;
 use Hubzero\Utility\Sanitize;
 use DateTimezone;
 use DateTime;
-use Document;
+use Hubzero\Facades\Document;
 use Exception;
-use Request;
-use Pathway;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 use Hubzero\Event as Evt;
-
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Session;
 /**
  * Controller class for events
  */
@@ -1144,7 +1145,7 @@ class Events extends SiteController
             } else {
                 // Start/end are on different day
                 if (empty($tz)) {
-                    $tz = \Config::get('offset');
+                    $tz = \Hubzero\Facades\Config::get('offset');
                 }
                 $tzStart = Date::of($start, $tz)->format('T', true);
                 $tzEnd = Date::of($end, $tz)->format('T', true);
@@ -1395,11 +1396,11 @@ class Events extends SiteController
             )->format('H:i', true);
 
             $arr = array(
-                \Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
-                \Html::select('option', 1, strtolower(Lang::txt('EVENTS_YES')), 'value', 'text'),
+                \Hubzero\Facades\Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
+                \Hubzero\Facades\Html::select('option', 1, strtolower(Lang::txt('EVENTS_YES')), 'value', 'text'),
             );
 
-            $lists['state'] = \Html::select(
+            $lists['state'] = \Hubzero\Facades\Html::select(
                 'genericlist',
                 $arr,
                 'state',
@@ -1901,14 +1902,14 @@ class Events extends SiteController
         $publishtime = date('Y-m-d 00:00:00');
         if ($row->publish_up) {
             $publishtime = $row->publish_up . ' ' . $start_time . ':00';
-            $row->publish_up = \Date::of($publishtime)->toSql();
+            $row->publish_up = Date::of($publishtime)->toSql();
         }
 
         // create publish down date/time string
         $publishtime = date('Y-m-d 00:00:00');
         if ($row->publish_down) {
             $publishtime = $row->publish_down . ' ' . $end_time . ':00';
-            $row->publish_down = \Date::of($publishtime)->toSql();
+            $row->publish_down = Date::of($publishtime)->toSql();
         }
 
         // Verify that the event doesn't start after it ends or ends before it starts.

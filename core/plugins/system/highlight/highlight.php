@@ -12,6 +12,11 @@
 namespace Plugins\System\Highlight;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
 
 class Highlight extends Plugin
 {

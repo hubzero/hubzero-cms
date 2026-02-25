@@ -53,7 +53,7 @@ class Slider extends WikiMacro
         $id = uniqid();
 
         //get the group
-        $gid = \Request::getString('cn');
+        $gid = \Hubzero\Facades\Request::getString('cn');
 
         //get the group object based on gid
         $group = \Hubzero\User\Group::getInstance($gid);
@@ -99,13 +99,13 @@ class Slider extends WikiMacro
         $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
         $html .= '</div>';
 
-        \Document::addStyleSheet(\Request::root()
+        \Hubzero\Facades\Document::addStyleSheet(\Hubzero\Facades\Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
             . css?t='
             . filemtime(__DIR__
             . '/macro-assets/slider/slider
             . css'));
-        \Document::addScript(\Request::root()
+        \Hubzero\Facades\Document::addScript(\Hubzero\Facades\Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
             . js?t='
             . filemtime(__DIR__

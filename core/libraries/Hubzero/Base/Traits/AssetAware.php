@@ -45,9 +45,9 @@ trait AssetAware
 
         if ($asset->exists()) {
             if ($asset->isDeclaration()) {
-                \App::get('document')->addStyleDeclaration($asset->contents());
+                \Hubzero\Facades\App::get('document')->addStyleDeclaration($asset->contents());
             } else {
-                \App::get('document')->addStyleSheet($asset->link(), $attr['type'], $attr['media'], $attr['attribs']);
+                \Hubzero\Facades\App::get('document')->addStyleSheet($asset->link(), $attr['type'], $attr['media'], $attr['attribs']);
             }
         }
 
@@ -78,9 +78,9 @@ trait AssetAware
 
         if ($asset->exists()) {
             if ($asset->isDeclaration()) {
-                \App::get('document')->addScriptDeclaration($asset->contents());
+                \Hubzero\Facades\App::get('document')->addScriptDeclaration($asset->contents());
             } else {
-                \App::get('document')->addScript($asset->link(), $attr['type'], $attr['defer'], $attr['async']);
+                \Hubzero\Facades\App::get('document')->addScript($asset->link(), $attr['type'], $attr['defer'], $attr['async']);
             }
         }
 
@@ -113,7 +113,7 @@ trait AssetAware
         if ($this instanceof Plugin) {
             return 'plg_' . $this->_type . '_' . $this->_name;
         } elseif ($this instanceof ControllerInterface) {
-            return \Request::getCmd('option', $this->_option);
+            return \Hubzero\Facades\Request::getCmd('option', $this->_option);
         } elseif ($this instanceof Module) {
             return $this->module->module;
         }

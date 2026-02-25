@@ -10,8 +10,8 @@ namespace Components\Projects\Models;
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for a todo entry
@@ -84,7 +84,7 @@ class Entry extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new Tables\Todo($this->_db);
 
@@ -273,7 +273,7 @@ class Entry extends Model
     public function owner($property = null, $default = null)
     {
         if (!($this->owner instanceof \Hubzero\User\User)) {
-            $this->owner = \User::getInstance($this->get('assigned_to'));
+            $this->owner = \Hubzero\Facades\User::getInstance($this->get('assigned_to'));
         }
         if ($property) {
             if ($property == 'picture') {
@@ -298,7 +298,7 @@ class Entry extends Model
     public function closer($property = null, $default = null)
     {
         if (!($this->closer instanceof \Hubzero\User\User)) {
-            $this->closer = \User::getInstance($this->get('closed_by'));
+            $this->closer = \Hubzero\Facades\User::getInstance($this->get('closed_by'));
         }
         if ($property) {
             if ($property == 'picture') {

@@ -3,6 +3,13 @@
 namespace Plugins\Groups\Usage;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
 
 /**
  * @package    hubzero-cms
@@ -43,7 +50,7 @@ class Usage extends Plugin
         }
 
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
@@ -236,7 +243,7 @@ class Usage extends Plugin
             return 0;
         }
 
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         return \Components\Resources\Models\Entry::all()
             ->whereEquals('group_owner', $gid)
@@ -312,7 +319,7 @@ class Usage extends Plugin
             return 0;
         }
 
-        include_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
+        include_once \Hubzero\Facades\Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
         $filters = array();
         switch ($state) {
@@ -493,7 +500,7 @@ class Usage extends Plugin
             return 0;
         }
 
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
+        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
         $total = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')

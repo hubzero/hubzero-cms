@@ -9,14 +9,15 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Filesystem;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use Log;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for contributing a tool
@@ -484,7 +485,7 @@ class Admin extends SiteController
 
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
-            include_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
+            include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
             // Collect metadata
             $url = Request::base() . ltrim(Route::url(

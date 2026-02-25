@@ -8,6 +8,8 @@
 
 namespace Hubzero\Component;
 
+use Hubzero\Facades\Request;
+
 class DefaultSiteController extends SiteController
 {
     public function execute()

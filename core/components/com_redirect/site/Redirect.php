@@ -9,6 +9,10 @@
 namespace Components\Redirect\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Component entry point

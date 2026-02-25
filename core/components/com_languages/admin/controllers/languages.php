@@ -11,12 +11,13 @@ namespace Components\Languages\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Languages\Models\Language;
 use Components\Languages\Helpers\Multilangstatus;
-use Request;
-use Notify;
-use Route;
-use Cache;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Languages Controller for installed languages

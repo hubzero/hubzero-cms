@@ -9,6 +9,15 @@ use Hubzero\Activity\Recipient;
 use Hubzero\Module\Helper as ModuleHelper;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Sanitize;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 /**
  * @package    hubzero-cms

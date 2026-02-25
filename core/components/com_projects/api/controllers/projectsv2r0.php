@@ -14,10 +14,12 @@ use Components\Projects\Models\Repo;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 use stdClass;
-use Route;
-use Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * API controller for the projects component
@@ -598,7 +600,7 @@ class Projectsv2r0 extends ApiController
             throw new Exception($row->getError());
         }
 
-        require_once \Component::path('com_projects') . '/models/repo.php';
+        require_once \Hubzero\Facades\Component::path('com_projects') . '/models/repo.php';
 
         $repo = new Repo($row, 'local');
         if (!$repo->iniLocal()) {

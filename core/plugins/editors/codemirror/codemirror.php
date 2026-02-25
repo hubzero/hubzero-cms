@@ -12,6 +12,11 @@
 namespace Plugins\Editors\Codemirror;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
 
 class Codemirror extends Plugin
 {

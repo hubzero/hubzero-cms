@@ -10,8 +10,8 @@ namespace Components\Wiki\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
-use Plugin;
-use Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * Hubzero helper class for retrieving the current wiki editor
@@ -40,7 +40,7 @@ class Editor extends Obj
     public function __construct($editor = '')
     {
         if (!$editor) {
-            $database = \App::get('db');
+            $database = \Hubzero\Facades\App::get('db');
             $database->setQuery(
                 "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin'"
                 . " AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1"
@@ -99,7 +99,7 @@ class Editor extends Obj
         }
 
         if ($return) {
-            \Document::addCustomTag($return);
+            \Hubzero\Facades\Document::addCustomTag($return);
         }
     }
 

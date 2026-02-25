@@ -8,6 +8,9 @@
 
 namespace Components\Storefront\Models\ProductTypes\Subscriptions;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+
 class BaseSubscription
 {
     /**

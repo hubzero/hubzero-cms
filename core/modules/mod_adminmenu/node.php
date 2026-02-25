@@ -82,7 +82,7 @@ class Node extends Obj
     {
         $this->title  = $titleicon ? $title . $titleicon : $title;
         if ($link && substr($link, 0, strlen('index.php')) == 'index.php') {
-            $link = \Route::url($link);
+            $link = \Hubzero\Facades\Route::url($link);
         }
         $this->link   = $link ? \Hubzero\Utility\Str::ampReplace($link) : '';
         $this->class  = $class;

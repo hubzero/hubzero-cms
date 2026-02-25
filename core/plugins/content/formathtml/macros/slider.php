@@ -57,14 +57,14 @@ class Slider extends Macro
         $base_url = '';
 
         // needed objects
-        $db     = \App::get('db');
-        $option = \Request::getCmd('option');
-        $config = \Component::params($option);
+        $db     = \Hubzero\Facades\App::get('db');
+        $option = \Hubzero\Facades\Request::getCmd('option');
+        $config = \Hubzero\Facades\Component::params($option);
 
         // define a base url
         switch ($option) {
             case 'com_groups':
-                $cn = \Request::getString('cn');
+                $cn = \Hubzero\Facades\Request::getString('cn');
                 $group = Group::getInstance($cn);
 
                 $base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;
@@ -72,7 +72,7 @@ class Slider extends Macro
                 break;
 
             case 'com_resources':
-                require_once \Component::path('com_resources') . '/models/entry.php';
+                require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
 
                 $row = \Components\Resources\Models\Entry::oneOrNew($this->pageid);
 
@@ -117,11 +117,11 @@ class Slider extends Macro
 
         $cssPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css';
         $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js';
-        \Document::addStyleSheet(
-            \Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
+        \Hubzero\Facades\Document::addStyleSheet(
+            \Hubzero\Facades\Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
         );
-        \Document::addScript(
-            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
+        \Hubzero\Facades\Document::addScript(
+            \Hubzero\Facades\Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
         );
 
         return $html;

@@ -22,11 +22,11 @@ class System extends AbstractComponent
      */
     protected function execute(): void
     {
-        \App::abort(404);
+        \Hubzero\Facades\App::abort(404);
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'info'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404);
+            \Hubzero\Facades\App::abort(404);
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

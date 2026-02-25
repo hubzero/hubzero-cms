@@ -10,6 +10,7 @@ namespace Plugins\Filesystem\Dropbox;
 
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox as VendorDropboxOauthClient;
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\Request;
 
 class DropboxOauthClient
 {
@@ -34,7 +35,7 @@ class DropboxOauthClient
      **/
     public function __construct($args = [])
     {
-        $config = \Plugin::params('filesystem', 'dropbox');
+        $config = \Hubzero\Facades\Plugin::params('filesystem', 'dropbox');
         $this->clientId = $config->get('app_key');
         $this->clientSecret = $config->get('app_secret');
         $this->redirectUri = Request::base() . 'developer/callback/dropboxAuthorize';

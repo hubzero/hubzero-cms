@@ -23,12 +23,12 @@ class Usage extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_usage')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_usage')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'data');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'data');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'data';
         }

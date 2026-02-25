@@ -237,8 +237,8 @@ class Migration20151001185523ComKb extends Base
     {
         $id = 0;
 
-        if (is_file(\Component::path('com_categories') . DS . 'models' . DS . 'category.php')) {
-            include_once \Component::path('com_categories') . DS . 'models' . DS . 'category.php';
+        if (is_file(\Hubzero\Facades\Component::path('com_categories') . DS . 'models' . DS . 'category.php')) {
+            include_once \Hubzero\Facades\Component::path('com_categories') . DS . 'models' . DS . 'category.php';
 
             // NOTE: We're using a model to do this as creating an entry involves
             // multiple queries due to the 'nested set' structure of the table

@@ -17,14 +17,19 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Association;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Document;
-use Notify;
-use Event;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Pathway;
 
 /**
  * Citations controller class for citation entries

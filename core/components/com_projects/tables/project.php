@@ -9,7 +9,7 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for projects
@@ -144,7 +144,7 @@ class Project extends Table
                 }
             } else {
                 $access = array();
-                if (!\User::isGuest()) {
+                if (!\Hubzero\Facades\User::isGuest()) {
                     $access[] = 2;
                 }
 

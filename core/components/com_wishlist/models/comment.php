@@ -9,6 +9,8 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Item\Comment as ItemComment;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
 
 /**
  * Wishlist class for a wish comment model
@@ -141,7 +143,7 @@ class Comment extends ItemComment
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = \Hubzero\Facades\Event::trigger('content.onContentBeforeSave', array(
                 'com_wishlist.comment.content',
                 &$this,
                 $this->isNew()

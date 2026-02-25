@@ -105,7 +105,7 @@ class Children extends WikiMacro
             foreach ($rows as $row) {
                 $row = new \Components\Wiki\Models\Page($row);
 
-                $html .= '<li><a href="' . \Route::url($row->link()) . '">';
+                $html .= '<li><a href="' . \Hubzero\Facades\Route::url($row->link()) . '">';
                 $html .= stripslashes($row->get('title', $row->get('pagename')));
                 $html .= '</a>';
                 $html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('id'));

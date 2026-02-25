@@ -8,9 +8,9 @@
 
 namespace Components\Members\Models\Incremental;
 
-use Module;
-use User;
-use App;
+use Hubzero\Facades\Module;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Class for incremental registration options

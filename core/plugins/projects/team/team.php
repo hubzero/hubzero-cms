@@ -5,6 +5,16 @@ namespace Plugins\Projects\Team;
 use Hubzero\Document\Assets;
 use Hubzero\Plugin\Plugin;
 use Hubzero\User\Helper as UserHelper;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 /**
  * @package    hubzero-cms

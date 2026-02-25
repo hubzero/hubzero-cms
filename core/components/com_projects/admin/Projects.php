@@ -22,24 +22,24 @@ class Projects extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_projects')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_projects')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'projects');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'projects');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'projects';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_PROJECTS'),
-            \Route::url('index.php?option=com_projects'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PROJECTS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_projects'),
             ($controllerName == 'projects' || $controllerName == 'team')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_PROJECTS_ACTIVITY'),
-            \Route::url('index.php?option=com_projects&controller=activity&project=0'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PROJECTS_ACTIVITY'),
+            \Hubzero\Facades\Route::url('index.php?option=com_projects&controller=activity&project=0'),
             $controllerName == 'activity'
         );
 

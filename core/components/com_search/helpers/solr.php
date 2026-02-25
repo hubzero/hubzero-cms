@@ -11,6 +11,7 @@ namespace Components\Search\Helpers;
 use Components\Search\Models\HubType;
 use stdClass;
 use Solarium;
+use Hubzero\Facades\Component;
 
 /**
  * Solr helper class

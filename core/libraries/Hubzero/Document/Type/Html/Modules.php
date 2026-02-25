@@ -30,7 +30,7 @@ class Modules extends Renderer
         $renderer = $this->doc->loadRenderer('module');
 
         $buffer = '';
-        foreach (\App::get('module')->byPosition($position) as $mod) {
+        foreach (\Hubzero\Facades\App::get('module')->byPosition($position) as $mod) {
             $buffer .= $renderer->render($mod, $params, $content);
         }
 

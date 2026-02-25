@@ -9,6 +9,11 @@
 namespace Plugins\User\Domainrestriction;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * User plugin for blocking registration by domains or IPs

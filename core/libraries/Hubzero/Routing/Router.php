@@ -92,7 +92,7 @@ class Router
 
             if (!$prefix)
             {
-                $prefix = \App::get('request');
+                $prefix = \Hubzero\Facades\App::get('request');
             }*/
 
             // Determine which scheme we want.

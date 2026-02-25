@@ -9,13 +9,14 @@
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Members API controller class

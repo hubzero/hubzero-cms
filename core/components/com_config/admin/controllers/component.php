@@ -11,11 +11,12 @@ namespace Components\Config\Admin\Controllers;
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use Notify;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Controller class for a component's config

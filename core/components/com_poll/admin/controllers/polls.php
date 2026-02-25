@@ -14,11 +14,12 @@ use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Exception;
 use stdClass;
-use Request;
-use Notify;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Controller class for polls
@@ -110,7 +111,7 @@ class Polls extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        $filters['states'] = \Html::grid('states', $filters['state']);
+        $filters['states'] = \Hubzero\Facades\Html::grid('states', $filters['state']);
 
         $this->view
             ->set('filters', $filters)

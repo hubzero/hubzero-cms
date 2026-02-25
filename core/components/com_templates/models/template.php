@@ -11,8 +11,8 @@ namespace Components\Templates\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Base\Obj;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Template style model

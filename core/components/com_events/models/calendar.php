@@ -17,8 +17,8 @@ use DateInterval;
 use DateTimezone;
 use Config;
 use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Event calendar model
@@ -69,7 +69,7 @@ class Calendar extends Model
     public function __construct($oid = null)
     {
         // create needed objects
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // load page table
         $this->_tbl = new $this->_tbl_name($this->_db);
@@ -209,7 +209,7 @@ class Calendar extends Model
         }
 
         // get refresh interval
-        $interval = \Plugin::params('calendar', 'groups')->get('import_subscription_interval', 60);
+        $interval = \Hubzero\Facades\Plugin::params('calendar', 'groups')->get('import_subscription_interval', 60);
 
         // get datetimes needed to refresh
         $now             = Date::of('now');

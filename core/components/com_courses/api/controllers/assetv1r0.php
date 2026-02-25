@@ -12,11 +12,12 @@ use Components\Courses\Tables\AssetAssociation;
 use Components\Courses\Tables\Asset as AssetTbl;
 use Components\Courses\Models\Asset;
 use Components\Courses\Models\Assets\Handler;
-use Request;
-use Component;
-use App;
-use Date;
-use Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Route;
 
 /**
  * API controller for the course assets

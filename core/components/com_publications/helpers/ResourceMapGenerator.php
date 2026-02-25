@@ -8,6 +8,12 @@
 
 namespace Components\Publications\Helpers;
 
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+
 /**
  * Resource map generator in XML+RDFa format
  *
@@ -69,7 +75,7 @@ class ResourceMapGenerator
         $this->componentURL = Request::base() . 'publications/';
         $this->resourceURL  = $this->componentURL . $this->id;
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $pub = new \Components\Publications\Tables\Publication($database);
         $publication = $pub->getPublication($this->id);
         $this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath(
@@ -91,7 +97,7 @@ class ResourceMapGenerator
     {
         if (!empty($id) && $id != -1) {
             // Grabs the database object
-            $database = \App::get('db');
+            $database = \Hubzero\Facades\App::get('db');
             // Attempts to load $id on this database object.
             $resource = new \Components\Publications\Tables\Version($database);
 
@@ -126,7 +132,7 @@ class ResourceMapGenerator
     private function populateRDFData()
     {
         // Grabs database object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $resource = new \Components\Publications\Tables\Version($database);
         $resource = $resource->getLastPubRelease($this->id);
 

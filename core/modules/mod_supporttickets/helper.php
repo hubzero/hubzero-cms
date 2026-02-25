@@ -11,11 +11,11 @@ namespace Modules\Supporttickets;
 use Components\Support\Models\Query;
 use Components\Support\Models\Ticket;
 use Hubzero\Module\Module;
-use Component;
+use Hubzero\Facades\Component;
 use stdClass;
 use Request;
 use Config;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for com_support ticket data

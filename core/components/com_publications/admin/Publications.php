@@ -22,47 +22,47 @@ class Publications extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_publications')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_publications')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // get controller name
-        $controllerName = \Request::getCmd('controller', 'items');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'items');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'items';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
-            \Route::url('index.php?option=com_publications&controller=items'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=items'),
             $controllerName == 'items'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_PUBLICATIONS_LICENSES'),
-            \Route::url('index.php?option=com_publications&controller=licenses'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_LICENSES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=licenses'),
             $controllerName == 'licenses'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
-            \Route::url('index.php?option=com_publications&controller=categories'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=categories'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
-            \Route::url('index.php?option=com_publications&controller=types'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=types'),
             $controllerName == 'types'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
-            \Route::url('index.php?option=com_publications&controller=batchcreate'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
+            \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=batchcreate'),
             $controllerName == 'batchcreate'
         );
-        require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_PUBLICATIONS_PLUGINS'),
-                \Route::url(
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_PLUGINS'),
+                \Hubzero\Facades\Route::url(
                     'index.php?option=com_plugins&view=plugins&filter_folder=publications&filter_type=publications'
                 )
             );

@@ -9,8 +9,8 @@
 namespace Components\Wishlist\Models\Adapters;
 
 use Components\Resources\Models\Entry;
-use Pathway;
-use Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
 
 /**
  * Adapter class for a forum post link for course forum
@@ -92,7 +92,7 @@ class Resources extends Base
         $groups = array();
 
         if ($this->_item->isTool()) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
             $query = "SELECT g.cn FROM `#__tool_groups` AS g
 				INNER JOIN `#__xgroups` AS xg ON g.cn=xg.cn
 				INNER JOIN `#__tool` AS t ON g.toolid=t.id

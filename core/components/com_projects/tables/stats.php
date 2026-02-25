@@ -9,8 +9,8 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Request;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for project log history
@@ -92,7 +92,7 @@ class Stats extends Table
     {
         $stats = array();
 
-        require_once \Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
+        require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
 
         $obj  = new Project($this->_db);
         $objO = new Owner($this->_db);

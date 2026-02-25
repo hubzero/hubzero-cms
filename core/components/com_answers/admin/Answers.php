@@ -22,24 +22,24 @@ class Answers extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_answers')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_answers')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'questions');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'questions');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'questions';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_ANSWERS_QUESTIONS'),
-            \Route::url('index.php?option=com_answers'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_ANSWERS_QUESTIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_answers'),
             ($controllerName == 'questions')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_ANSWERS_RESPONSES'),
-            \Route::url('index.php?option=com_answers&controller=answers&qid=0'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_ANSWERS_RESPONSES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_answers&controller=answers&qid=0'),
             ($controllerName == 'answers')
         );
 

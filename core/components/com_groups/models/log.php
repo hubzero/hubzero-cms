@@ -9,8 +9,8 @@
 namespace Components\Groups\Models;
 
 use Hubzero\Base\Model;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Group log model class
@@ -42,7 +42,7 @@ class Log extends Model
     public function __construct($oid = null)
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // create page cateogry table object
         $this->_tbl = new $this->_tbl_name($this->_db);

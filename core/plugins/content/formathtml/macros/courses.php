@@ -124,7 +124,7 @@ class Courses extends Macro
                     }, $instructors);
 
                     // get the profile from the instructor param
-                    $profile = \User::getInstance($this->getArg('instructor'));
+                    $profile = \Hubzero\Facades\User::getInstance($this->getArg('instructor'));
                     if ($profile->get('id')) {
                         if (!in_array($profile->get('id'), $instructorIds)) {
                             continue;
@@ -154,8 +154,8 @@ class Courses extends Macro
                         // if we have section
                         if ($section->get('id')) {
                             $html .= '<span class="entry-time">';
-                            $html .= \Date::of($section->get('start_date'))->toLocal('F d') . ' - ';
-                            $html .= \Date::of($section->get('end_date'))->toLocal('F d, Y');
+                            $html .= \Hubzero\Facades\Date::of($section->get('start_date'))->toLocal('F d') . ' - ';
+                            $html .= \Hubzero\Facades\Date::of($section->get('end_date'))->toLocal('F d, Y');
                             $html .= '</span><br />';
                         }
                     }
@@ -171,9 +171,9 @@ class Courses extends Macro
                 if (count($instructors) > 0 && !(bool) $this->getArg('hideinstructors')) {
                     $instr = array();
                     foreach ($instructors as $instructor) {
-                        $profile = \User::getInstance($instructor->get('user_id'));
+                        $profile = \Hubzero\Facades\User::getInstance($instructor->get('user_id'));
                         if ($profile->get('id')) {
-                            $profileUrl = \Route::url(
+                            $profileUrl = \Hubzero\Facades\Route::url(
                                 'index.php?option=com_members&id=' . $profile->get('id')
                             );
                             $profileName = htmlentities(stripslashes($profile->get('name')));
@@ -189,7 +189,7 @@ class Courses extends Macro
                 }
             }
         } else {
-            $html .= '<em>' . \Lang::txt('Sorry, there were no courses matching your search.') . '</em>';
+            $html .= '<em>' . \Hubzero\Facades\Lang::txt('Sorry, there were no courses matching your search.') . '</em>';
         }
 
         $html .= '</div>';

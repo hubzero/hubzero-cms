@@ -9,9 +9,10 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * Course assets table class

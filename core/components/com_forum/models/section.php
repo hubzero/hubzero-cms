@@ -10,8 +10,8 @@ namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Form\Form;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Forum model for a section
@@ -265,7 +265,7 @@ class Section extends Relational
     public function save()
     {
         if (!$this->get('access')) {
-            $this->set('access', (int) \Config::get('access'));
+            $this->set('access', (int) \Hubzero\Facades\Config::get('access'));
         }
 
         $result = parent::save();
@@ -367,7 +367,7 @@ class Section extends Relational
     {
         $name = strtolower($this->getModelName());
         $file = __DIR__ . '/forms/' . $name . '.xml';
-        $file = \Filesystem::cleanPath($file);
+        $file = \Hubzero\Facades\Filesystem::cleanPath($file);
 
         $form = new Form('com_forum.' . $name, array('control' => 'data'));
 

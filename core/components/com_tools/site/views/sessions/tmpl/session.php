@@ -325,7 +325,7 @@ if (!$this->app->sess) {
             <div class="col span8">
                 <p class="share-member-photo" id="shareform">
                     <?php
-                    include_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+                    include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
                     $jxuser = \Components\Members\Models\Member::oneOrNew(User::get('id'));
                     ?>
                     <img src="<?php echo $jxuser->picture(); ?>" alt="" />

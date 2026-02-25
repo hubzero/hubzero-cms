@@ -10,7 +10,7 @@ namespace Components\Oauth\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Controller for Authorizing OAuth
@@ -42,7 +42,7 @@ class Authorize extends SiteController
             throw new Exception('Forbidden', 403);
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token)
             . " AND user_id=0 LIMIT 1;";
         $db->setQuery($sql);

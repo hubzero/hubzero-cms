@@ -10,10 +10,12 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Str;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use stdClass;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
 
 /**
  * Model class for publication version
@@ -82,7 +84,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     {
         $status = $this->get('state');
         $name = '';
-        Lang::load('com_publications', \Component::path('com_publications') . '/admin');
+        Lang::load('com_publications', \Hubzero\Facades\Component::path('com_publications') . '/admin');
         switch ($status) {
             case 0:
                 $name = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
@@ -526,7 +528,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
         $sec = $this->get('secret');
 
         $webpath = trim(
-            \Component::params('com_publications')->get('webpath', '/site/publications'),
+            \Hubzero\Facades\Component::params('com_publications')->get('webpath', '/site/publications'),
             '/'
         );
 
@@ -719,7 +721,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function tags()
     {
-        include_once \Component::path('com_tags') . '/models/cloud.php';
+        include_once \Hubzero\Facades\Component::path('com_tags') . '/models/cloud.php';
 
         $cloud = new \Components\Tags\Models\Cloud();
 

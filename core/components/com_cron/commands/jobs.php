@@ -13,8 +13,8 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Utility\Date;
 use Hubzero\Utility\Str;
 use Components\Cron\Models\Job;
-use Event;
-use Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
 
 /**
  * CRON jobs

@@ -10,8 +10,8 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Forum\Models\Post;
-use Request;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for an item
@@ -78,7 +78,7 @@ class Forum extends GenericItem
             return true;
         }
 
-        include_once \Component::path('com_forum') . DS . 'models' . DS . 'post.php';
+        include_once \Hubzero\Facades\Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
         $thread = Post::oneOrNew($id);
 

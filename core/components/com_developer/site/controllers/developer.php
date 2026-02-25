@@ -9,9 +9,9 @@
 namespace Components\Developer\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
 
 /**
  * Main developer portal controller

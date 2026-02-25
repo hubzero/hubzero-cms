@@ -22,7 +22,7 @@ class Events extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', 'events');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'events');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'events';
         }

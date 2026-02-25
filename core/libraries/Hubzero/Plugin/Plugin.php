@@ -111,7 +111,7 @@ class Plugin extends Obj
 
         // Load the language files if needed.
         if ($this->_autoloadLanguage) {
-            $this->loadLanguage('', PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name);
+            $this->loadLanguage('', PATH_APP . DS . 'bootstrap' . DS . \Hubzero\Facades\App::get('client')->name);
         }
     }
 
@@ -128,7 +128,7 @@ class Plugin extends Obj
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP .
                 DS .
@@ -155,7 +155,7 @@ class Plugin extends Obj
      */
     public static function getParams($name, $folder)
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // load the params from databse
         $sql = "SELECT params FROM `#__extensions` WHERE folder=" .

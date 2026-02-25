@@ -23,8 +23,8 @@ class Poll extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_poll')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_poll')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';

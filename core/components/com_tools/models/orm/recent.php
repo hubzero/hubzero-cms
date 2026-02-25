@@ -9,7 +9,7 @@
 namespace Components\Tools\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Tool preferences model

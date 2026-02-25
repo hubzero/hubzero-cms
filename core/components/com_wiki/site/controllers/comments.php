@@ -13,13 +13,15 @@ use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
-use Document;
-use Pathway;
-use Request;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
 
 /**
  * Wiki controller class for comments

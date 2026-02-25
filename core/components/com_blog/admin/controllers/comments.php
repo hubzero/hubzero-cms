@@ -11,14 +11,15 @@ namespace Components\Blog\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Entry;
 use Components\Blog\Models\Comment;
-use Request;
-use Config;
-use Notify;
-use Route;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Blog controller class for comments

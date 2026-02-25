@@ -15,6 +15,7 @@ use Hubzero\Database\Exception\QueryFailedException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Hubzero\Facades\User;
 
 /**
  * Base database driver
@@ -1831,7 +1832,7 @@ abstract class Driver implements LoggerAwareInterface
         // Only trigger event if Event facade is available (allows standalone usage)
         if (class_exists('Event', false)) {
             try {
-                \Event::trigger('database_query', [
+                \Hubzero\Facades\Event::trigger('database_query', [
                     'query' => $query,
                     'time'  => $time
                 ]);

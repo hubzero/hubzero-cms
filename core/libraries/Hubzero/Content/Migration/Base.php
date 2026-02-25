@@ -291,7 +291,7 @@ class Base
         }
 
         // Socket authentication only works for local databases
-        $host = \Config::get('host', 'localhost');
+        $host = \Hubzero\Facades\Config::get('host', 'localhost');
         if (!$this->isLocalHost($host)) {
             return false;
         }
@@ -333,7 +333,7 @@ class Base
 
         // Try to connect as MySQL root using socket authentication
         try {
-            $database = \Config::get('db');
+            $database = \Hubzero\Facades\Config::get('db');
             $dsn = "mysql:unix_socket={$socket};charset=utf8";
             if ($database) {
                 $dsn .= ";dbname={$database}";
@@ -345,7 +345,7 @@ class Base
                 'user'     => 'root',
                 'password' => '',
                 'database' => $database,
-                'prefix'   => \Config::get('dbprefix')
+                'prefix'   => \Hubzero\Facades\Config::get('dbprefix')
             ]);
 
             if ($db->connected()) {

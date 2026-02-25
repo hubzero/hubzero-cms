@@ -14,10 +14,11 @@ use Components\Support\Models\Ticket;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Number;
 use Hubzero\Component\View;
-use Filesystem;
-use Request;
-use Lang;
-use User;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Collections controller class for media

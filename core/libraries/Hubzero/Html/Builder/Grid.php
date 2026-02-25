@@ -10,8 +10,8 @@ namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Date;
 use Hubzero\Utility\Arr;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Utility class for creating HTML Grids
@@ -350,7 +350,7 @@ class Grid
 
         if (!$loaded) {
             // Add the behavior to the document head.
-            /*\App::get('document')->addScriptDeclaration(
+            /*\Hubzero\Facades\App::get('document')->addScriptDeclaration(
                 'jQuery(document).ready(function($){
                     $("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
                         .on("click", function(){
@@ -548,10 +548,10 @@ class Grid
 
         // Special state for dates
         if ($publish_up || $publish_down) {
-            $nullDate = \App::get('db')->getNullDate();
+            $nullDate = \Hubzero\Facades\App::get('db')->getNullDate();
             $nowDate = with(new Date())->toUnix();
 
-            $tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));
+            $tz = new \DateTimeZone(User::getParam('timezone', \Hubzero\Facades\Config::get('offset')));
             $publish_up   = ($publish_up != $nullDate)   ? with(new Date(
                 $publish_up,
                 'UTC'
@@ -563,10 +563,10 @@ class Grid
             // Create tip text, only we have publish up or down settings
             $tips = array();
             if ($publish_up) {
-                $tips[] = Lang::txt('JLIB_HTML_PUBLISHED_START', $publish_up->format(Date::$format, true));
+                $tips[] = Lang::txt('JLIB_HTML_PUBLISHED_START', $publish_up->format(\Hubzero\Utility\Date::$format, true));
             }
             if ($publish_down) {
-                $tips[] = Lang::txt('JLIB_HTML_PUBLISHED_FINISHED', $publish_down->format(Date::$format, true));
+                $tips[] = Lang::txt('JLIB_HTML_PUBLISHED_FINISHED', $publish_down->format(\Hubzero\Utility\Date::$format, true));
             }
             $tip = empty($tips) ? false : implode('<br/>', $tips);
 

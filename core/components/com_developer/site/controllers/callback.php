@@ -10,10 +10,11 @@ namespace Components\Developer\Site\Controllers;
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
-use Hubzero\Session;
+use Hubzero\Facades\Session;
 use Exception;
-use Notify;
-use App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Handles hub callbacks from external applications
@@ -31,7 +32,7 @@ class Callback extends SiteController
      **/
     public function dropboxAuthorizeTask()
     {
-        $config = \Plugin::params('filesystem', 'dropbox');
+        $config = \Hubzero\Facades\Plugin::params('filesystem', 'dropbox');
         $connectionId = Session::get('dropbox.connection_to_set_up', false);
         $authorizationCode = Request::getString('code');
         $localOriginUrl = Session::get('dropbox.local_origin_url');
@@ -66,7 +67,7 @@ class Callback extends SiteController
      **/
     public function githubAuthorizeTask()
     {
-        $pparams = \Plugin::params('filesystem', 'github');
+        $pparams = \Hubzero\Facades\Plugin::params('filesystem', 'github');
         $new_connection = Session::get('github.connection_to_set_up', false);
 
         if (!$code = Request::getString('code')) {
@@ -125,7 +126,7 @@ class Callback extends SiteController
      **/
     public function globusAuthorizeTask()
     {
-        $params = \Plugin::params('authentication', 'globus');
+        $params = \Hubzero\Facades\Plugin::params('authentication', 'globus');
 
         if (!$code = Request::getString('code')) {
             throw new \Exception("No code found", 400);
@@ -150,7 +151,7 @@ class Callback extends SiteController
             'code' => $code
         ]);
 
-        \Session::set('globus.token', $accessToken);
+        \Hubzero\Facades\Session::set('globus.token', $accessToken);
 
         // Redirect to the local endpoint
         App::redirect(base64_decode($state));
@@ -163,7 +164,7 @@ class Callback extends SiteController
      **/
     public function googledriveAuthorizeTask()
     {
-        $pparams = \Plugin::params('filesystem', 'googledrive');
+        $pparams = \Hubzero\Facades\Plugin::params('filesystem', 'googledrive');
 
         $new_connection = Session::get('googledrive.connection_to_set_up', false);
 
@@ -195,6 +196,6 @@ class Callback extends SiteController
         }
 
         // Redirect to the local endpoint
-        App::redirect(base64_decode(\Session::get('googledrive.state')));
+        App::redirect(base64_decode(\Hubzero\Facades\Session::get('googledrive.state')));
     }
 }

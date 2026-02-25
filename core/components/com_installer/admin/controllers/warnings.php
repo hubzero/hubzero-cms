@@ -10,8 +10,8 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Number;
-use Config;
-use Lang;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 
 /**
  * Controller for discovering extensions

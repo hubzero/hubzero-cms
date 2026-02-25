@@ -55,7 +55,7 @@ class Timezone extends Groupedlist
 
         // If the timezone is not set use the server setting.
         if (strlen($this->value) == 0 && empty($keyValue)) {
-            $this->value = \App::get('config')->get('offset');
+            $this->value = \Hubzero\Facades\App::get('config')->get('offset');
         }
 
         // Get the list of time zones from the server.

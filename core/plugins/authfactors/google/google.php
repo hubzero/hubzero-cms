@@ -5,6 +5,9 @@ namespace Plugins\Authfactors\Google;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Auth\Factor;
 use OTPHP\TOTP;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * @package    hubzero-cms

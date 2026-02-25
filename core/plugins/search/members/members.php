@@ -4,6 +4,8 @@ namespace Plugins\Search\Members;
 
 use Components\Members\Models\Member;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

@@ -10,7 +10,7 @@ namespace Hubzero\Access;
 
 use Hubzero\Utility\Arr;
 use SimpleXMLElement;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Class that handles all access authorization routines.
@@ -248,7 +248,7 @@ class Access
         if (!isset(self::$groupsByUser[$storeId])) {
             // Guest user (if only the actually assigned group is requested)
             if (empty($userId) && !$recursive) {
-                $result = array(\Component::params('com_members')->get('guest_usergroup', 1));
+                $result = array(\Hubzero\Facades\Component::params('com_members')->get('guest_usergroup', 1));
             } else {
             // Registered user and guest if all groups are requested
                 $db = App::get('db');
@@ -260,7 +260,10 @@ class Access
 
                 if (empty($userId)) {
                     $query->from('#__usergroups', 'a')
-                        ->whereEquals('a.id', (int) \Component::params('com_members')->get('guest_usergroup', 1));
+                        ->whereEquals(
+                            'a.id',
+                            (int) \Hubzero\Facades\Component::params('com_members')->get('guest_usergroup', 1)
+                        );
                 } else {
                     $query->from('#__user_usergroup_map', 'map')
                         ->whereEquals('map.user_id', (int) $userId)

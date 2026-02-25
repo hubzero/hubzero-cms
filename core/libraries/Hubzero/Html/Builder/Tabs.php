@@ -99,7 +99,7 @@ class Tabs
 
             Behavior::framework(true);
 
-            \App::get('document')->addScriptDeclaration(
+            \Hubzero\Facades\App::get('document')->addScriptDeclaration(
                 'jQuery(document).ready(function($){
 					$("dl#' . $group . '.tabs").tabs();
 				});'

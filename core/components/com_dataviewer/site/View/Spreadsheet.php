@@ -16,7 +16,7 @@ class Spreadsheet
     {
         $name = $dd['dv_id'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
 
 
         \Components\Dataviewer\Site\Lib\Html::dvAddScript('util.js');
@@ -74,7 +74,7 @@ class Spreadsheet
 
 
         // Get the list of IDs if any
-        $rec_ids = \Request::getString('id', '');
+        $rec_ids = \Hubzero\Facades\Request::getString('id', '');
         if ($rec_ids != '') {
             DvConfig::$dv_conf['settings']['data_url'] .= '&id=' . htmlentities($rec_ids);
             DvConfig::$dv_conf['settings']['view_url'] .= '?id=' . htmlentities($rec_ids);
@@ -93,13 +93,13 @@ class Spreadsheet
             DvConfig::$dv_conf['settings']['show_filter_options'] = $showFilter;
 
             $custom_field_url = '';
-            $custom_field = \Request::getString('custom_field', false);
+            $custom_field = \Hubzero\Facades\Request::getString('custom_field', false);
             if ($custom_field) {
                 $custom_field_url = '&custom_field=' . $custom_field;
             }
 
             // Custom views
-            $custom_view = \Request::getString('custom_view', false);
+            $custom_view = \Hubzero\Facades\Request::getString('custom_view', false);
             $custom_view_url = '';
             if ($custom_field) {
                 $custom_view_url = '&custom_view=' . $custom_field;
@@ -186,7 +186,7 @@ class Spreadsheet
             }
 
             // Filtered Views
-            $filter = \Request::getVar('filter', false);
+            $filter = \Hubzero\Facades\Request::getVar('filter', false);
             $filted_view = array();
             $filted_view_str = '';
             if ($filter !== false) {
@@ -202,7 +202,7 @@ class Spreadsheet
     <span id="dv_top"></span>
     <div id="dv-spreadsheet">
 
-            <?php if (!\Request::getString('show_table_only', false)) : ?>
+            <?php if (!\Hubzero\Facades\Request::getString('show_table_only', false)) : ?>
         <div id="dv_title" style="margin: 0;">
             <h2 class="ui-corner-all" style="display: inline-block;">
                 <i class="icon-table"></i>
@@ -550,13 +550,13 @@ class Spreadsheet
         // Filter dialog show/hide parameter
             $dv_show_filters = 'false';
 
-            $path = explode('/', \Request::path());
+            $path = explode('/', \Hubzero\Facades\Request::path());
             if (isset($path[5]) && $path[5] == 'filter_dialog') {
                 $dv_show_filters = 'true';
             }
 
         //Legacy support
-            if (\Request::getString('show_filters', 'false') === 'true') {
+            if (\Hubzero\Facades\Request::getString('show_filters', 'false') === 'true') {
                 $dv_show_filters = 'true';
             }
 
@@ -575,9 +575,9 @@ class Spreadsheet
             dv_data = <?php print $f_data; ?>;
             dv_settings = <?php print json_encode(DvConfig::$dv_conf['settings']); ?>;
             dv_show_filters = <?php print $dv_show_filters; ?>;
-            dv_settings.show_charts = <?php print \Request::getInt('show_chart', 'undefined');?>;
+            dv_settings.show_charts = <?php print \Hubzero\Facades\Request::getInt('show_chart', 'undefined');?>;
             dv_show_customizer = <?php print ($show_customizer) ? 'true' : 'false';?>;
-            var dv_show_maps = <?php print \Request::getString('show_map', 'undefined');?>;
+            var dv_show_maps = <?php print \Hubzero\Facades\Request::getString('show_map', 'undefined');?>;
         </script>
 
         <form style="display: none;" id="dv-spreadsheet-dl" method="POST"

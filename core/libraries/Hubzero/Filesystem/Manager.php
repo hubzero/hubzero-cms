@@ -8,6 +8,8 @@
 
 namespace Hubzero\Filesystem;
 
+use Hubzero\Facades\Plugin;
+
 /**
  * Hubzero filesystem manager
  */

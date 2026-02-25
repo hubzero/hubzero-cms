@@ -18,7 +18,7 @@ class Htmx
      */
     protected static function service(): HtmxService
     {
-        $app = \App::get('app');
+        $app = \Hubzero\Facades\App::get('app');
 
         if ($app->has('htmx')) {
             $service = $app->get('htmx');

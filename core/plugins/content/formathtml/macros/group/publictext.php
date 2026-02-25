@@ -57,7 +57,7 @@ class Publictext extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // get args
@@ -86,7 +86,7 @@ class Publictext extends GroupMacro
      */
     public function postProcess($text)
     {
-        if (!\User::isGuest() && in_array(\User::get('id'), $this->group->get('members'))) {
+        if (!\Hubzero\Facades\User::isGuest() && in_array(\Hubzero\Facades\User::get('id'), $this->group->get('members'))) {
             $text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
         }
 

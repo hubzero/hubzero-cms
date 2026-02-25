@@ -11,12 +11,12 @@ namespace Components\Collections\Admin\Controllers;
 use Components\Collections\Models\Orm\Item;
 use Components\Collections\Models\Orm\Post;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for collection posts

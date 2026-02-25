@@ -12,13 +12,14 @@ use Hubzero\Module\Module;
 use Hubzero\Utility\Str;
 use Components\Content\Models\Article;
 use Components\Categories\Models\Category;
-use Component;
+use Hubzero\Facades\Component;
 use stdClass;
-use Request;
-use Route;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
 
 /**
  * Module class for displaying articles in a category
@@ -74,7 +75,7 @@ class Helper extends Module
         $cacheparams->methodparams = $params;
         $cacheparams->modeparams   = $cacheid;
 
-        $list = self::getList($params); //\Module::cache($module, $params, $cacheparams);
+        $list = self::getList($params); //\Hubzero\Facades\Module::cache($module, $params, $cacheparams);
 
         if (!empty($list)) {
             $grouped = false;
@@ -301,7 +302,7 @@ class Helper extends Module
                 $item->link = Route::url($articleRoute);
             } else {
                 // Angie Fixed Routing
-                $menu = \App::get('menu');
+                $menu = App::get('menu');
                 $menuitems = $menu->getItems('link', 'index.php?option=com_login');
                 if (isset($menuitems[0])) {
                     $Itemid = $menuitems[0]->id;

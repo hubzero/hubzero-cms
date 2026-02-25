@@ -11,11 +11,13 @@ namespace Components\Kb\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Knowledgebase model for an article

@@ -11,9 +11,9 @@ namespace Hubzero\Document\Type;
 use Hubzero\Document\Type\Opensearch\Image;
 use Hubzero\Document\Type\Opensearch\Url;
 use Hubzero\Document\Base;
-use Request;
-use Route;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * OpenSearch document class for parsing and displaying an OpenSearch page
@@ -67,7 +67,7 @@ class Opensearch extends Base
         $update = new Url();
         $update->type     = 'application/opensearchdescription+xml';
         $update->rel      = 'self';
-        $update->template = Route::url(\Request::current());
+        $update->template = Route::url(Request::current());
         $this->addUrl($update);
 
         // Add the favicon as the default image
@@ -80,7 +80,7 @@ class Opensearch extends Base
                 $path = str_replace('\\', '/', $path);
 
                 $favicon = new Image();
-                $favicon->data   = \Request::root() . $path . '/favicon.ico';
+                $favicon->data   = Request::root() . $path . '/favicon.ico';
                 $favicon->height = '16';
                 $favicon->width  = '16';
                 $favicon->type   = 'image/vnd.microsoft.icon';

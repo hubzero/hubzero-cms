@@ -10,8 +10,8 @@ namespace Components\Projects\Models\Adapters;
 
 use Components\Projects\Models;
 use Components\Projects\Helpers;
-use Component;
-use Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Projects Git adapter class
@@ -396,7 +396,7 @@ class Nogit extends Models\Adapter
                 $file->set('author', $profile->get('name'));
                 $file->set('email', $profile->get('email'));
             } else {
-                $profile = \User::getInstance(trim($file->get('author')));
+                $profile = \Hubzero\Facades\User::getInstance(trim($file->get('author')));
                 if ($profile->get('id')) {
                     $this->_profileAssoc[trim($file->get('author'))] = $profile;
                     $file->set('author', $profile->get('name'));

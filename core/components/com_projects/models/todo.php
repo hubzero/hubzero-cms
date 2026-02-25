@@ -51,11 +51,11 @@ class Todo extends Model
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
-        $this->config = \Component::params('com_projects');
+        $this->config = \Hubzero\Facades\Component::params('com_projects');
     }
 
     /**

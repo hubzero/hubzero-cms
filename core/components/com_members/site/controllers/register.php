@@ -12,17 +12,19 @@ use Hubzero\Component\SiteController;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Member;
 use Components\Members\Models\Registration;
-use Component;
-use Pathway;
-use Session;
-use Request;
-use Config;
-use Route;
-use Event;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
 
 /**
  * Controller class for member registration
@@ -511,7 +513,7 @@ class Register extends SiteController
                 // Save profile data
                 $member = Member::oneOrNew($xprofile->get('id'));
                 if (!$member->saveProfile($profile, $access)) {
-                    \Notify::error($member->getError());
+                    \Hubzero\Facades\Notify::error($member->getError());
                     // Don't stop the registration process!
                     // At this point, the account was successfully created.
                     // The profile info, however, may have issues. But, it's not crucial.
@@ -645,7 +647,7 @@ class Register extends SiteController
 
             // Querying the organization id on ror.org
             // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-            $useRorApi = \Component::params('com_members')->get('rorApi');
+            $useRorApi = Component::params('com_members')->get('rorApi');
             if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
                 $profile['orgid'] = $this->getOrganizationId($profile['organization']);
             }
@@ -823,14 +825,14 @@ class Register extends SiteController
                         $profile['orcid'] = $orcidID;
                     }
                     if (!$member->saveProfile($profile, $access)) {
-                        \Notify::error($member->getError());
+                        \Hubzero\Facades\Notify::error($member->getError());
                         // Don't stop the registration process!
                         // At this point, the account was successfully created.
                         // The profile info, however, may have issues. But, it's not crucial.
                         //$result = false;
                     }
                 } else {
-                    \Notify::error($user->getError());
+                    \Hubzero\Facades\Notify::error($user->getError());
                     $result = false;
                 }
 
@@ -1551,7 +1553,7 @@ class Register extends SiteController
         } else {
             $title = Lang::txt('COM_MEMBERS_REGISTER');
         }
-        \Document::setTitle($title);
+        \Hubzero\Facades\Document::setTitle($title);
     }
 
     /**
@@ -1565,7 +1567,7 @@ class Register extends SiteController
         $org = trim($organization);
         $orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);

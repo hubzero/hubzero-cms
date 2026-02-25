@@ -10,12 +10,13 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Exception;
-use Request;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Projects Reports controller class
@@ -100,7 +101,7 @@ class Reports extends Base
 
         // Get stats
         if (!$this->getError()) {
-            require_once \Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
+            require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
 
             $objLog = new \Components\Publications\Tables\Log($this->database);
 

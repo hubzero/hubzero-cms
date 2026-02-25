@@ -81,7 +81,7 @@ class MathRenderer
     {
         $this->tex    = $tex;
         $this->params = $params;
-        $this->config = \Component::params('com_wiki');
+        $this->config = \Hubzero\Facades\Component::params('com_wiki');
     }
 
     /**

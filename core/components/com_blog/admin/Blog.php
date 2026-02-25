@@ -22,22 +22,22 @@ class Blog extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_blog')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_blog')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $scope = \Request::getCmd('scope', 'site');
-        $controllerName = \Request::getCmd('controller', 'entries');
+        $scope = \Hubzero\Facades\Request::getCmd('scope', 'site');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'entries');
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_BLOG_MENU_ENTRIES'),
-            \Route::url('index.php?option=com_blog&controller=entries'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_BLOG_MENU_ENTRIES'),
+            \Hubzero\Facades\Route::url('index.php?option=com_blog&controller=entries'),
             ($controllerName == 'entries')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_BLOG_MENU_COMMENTS'),
-            \Route::url('index.php?option=com_blog&controller=comments'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_BLOG_MENU_COMMENTS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_blog&controller=comments'),
             ($controllerName == 'comments')
         );
 

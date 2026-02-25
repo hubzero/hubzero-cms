@@ -82,7 +82,7 @@ class Rules extends Rule
         $component = $element['component'] ? (string) $element['component'] : '';
 
         // Get the asset actions for the element.
-        $component = $component ? \App::get('component')->path($component) . '/config/access.xml' : '';
+        $component = $component ? \Hubzero\Facades\App::get('component')->path($component) . '/config/access.xml' : '';
         $section   = $section ? "/access/section[@name='" . $section . "']/" : '';
 
         $elActions = Access::getActionsFromFile($component, $section);

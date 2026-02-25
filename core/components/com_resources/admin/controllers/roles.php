@@ -11,13 +11,13 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models\Author\Role;
 use Components\Resources\Models\Type;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Manage resource author roles

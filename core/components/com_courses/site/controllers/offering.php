@@ -14,14 +14,14 @@ use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Config\Registry;
 use Exception;
-use Pathway;
-use Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
 use Config;
-use Route;
-use Event;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Courses controller class for an offering
@@ -141,7 +141,7 @@ class Offering extends SiteController
         }
 
         //set title of browser window
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**
@@ -229,7 +229,7 @@ class Offering extends SiteController
         $this->view->course        = $this->course;
         $this->view->config        = $this->config;
         $this->view->plugins       = $plugins;
-        $this->view->notifications = \Notify::messages('courses');
+        $this->view->notifications = \Hubzero\Facades\Notify::messages('courses');
         $this->view->display();
     }
 
@@ -390,9 +390,9 @@ class Offering extends SiteController
         }
 
         if ($this->getError()) {
-            \Notify::error($this->getError(), 'courses');
+            \Hubzero\Facades\Notify::error($this->getError(), 'courses');
         }
-        $this->view->notifications = \Notify::messages('courses');
+        $this->view->notifications = \Hubzero\Facades\Notify::messages('courses');
         $this->view->display();
     }
 
@@ -413,7 +413,7 @@ class Offering extends SiteController
      */
     public function editTask()
     {
-        $this->view->notifications = \Notify::messages('courses');
+        $this->view->notifications = \Hubzero\Facades\Notify::messages('courses');
         $this->view
             ->setLayout('edit')
             ->display();

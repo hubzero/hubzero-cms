@@ -53,7 +53,7 @@ class Tag extends WikiMacro
             if ($a) {
                 // Build and return the link
                 return '<a href="'
-                    . \Route::url('index
+                    . \Hubzero\Facades\Route::url('index
                     . php?option=com_tags&tag='
                     . $tag)
                     . '">'

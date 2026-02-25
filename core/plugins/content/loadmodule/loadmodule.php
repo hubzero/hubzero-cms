@@ -3,6 +3,8 @@
 namespace Plugins\Content\Loadmodule;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Module;
 
 /**
  * @package    hubzero-cms

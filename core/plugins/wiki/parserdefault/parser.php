@@ -8,6 +8,11 @@
 
 namespace Plugins\Wiki\Parserdefault;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Html;
+
 /**
  * Wiki parser class
  * converts wiki syntax to HTML
@@ -1121,7 +1126,7 @@ class WikiParser
                         $hl = new \Highlight\Highlighter();
                         try {
                             $result = $hl->highlight($hlLangMap[$t] ?? $t, $txt);
-                            \Document::addStyleSheet('/core/plugins/content/geshi/assets/css/highlight.css');
+                            \Hubzero\Facades\Document::addStyleSheet('/core/plugins/content/geshi/assets/css/highlight.css');
                             return '<div class="pre ' . $t . '"><code class="hljs">' . $result->value . '</code></div>';
                         } catch (\DomainException $e) {
                             // Fall through to plain output
@@ -2729,7 +2734,7 @@ class WikiParser
         $toclevel      = 0;
         $prevtoclevel  = 0;
 
-        include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'sanitizer.php';
+        include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'helpers' . DS . 'sanitizer.php';
 
         foreach ($matches[3] as $headline) {
             $istemplate = 0;

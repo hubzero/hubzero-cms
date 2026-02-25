@@ -14,10 +14,13 @@ use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
 use Components\Cart\Helpers\Download;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for knowledge base categories
@@ -296,7 +299,7 @@ class Products extends AdminController
             $accessgroups = Request::getArray('accessgroupsno', array(), 'post');
             $product->setAccessGroups($accessgroups, 'exclude');
         } catch (\Exception $e) {
-            \Notify::error($e->getMessage());
+            \Hubzero\Facades\Notify::error($e->getMessage());
             // Get the product
             //$product = $obj->product($fields['pId']);
             $this->editTask($product);
@@ -307,7 +310,7 @@ class Products extends AdminController
 
         if ($warnings && !$redirect) {
             foreach ($warnings as $warning) {
-                \Notify::warning($warning);
+                \Hubzero\Facades\Notify::warning($warning);
             }
         }
 
@@ -319,7 +322,7 @@ class Products extends AdminController
 
             if ($warnings) {
                 foreach ($warnings as $warning) {
-                    \Notify::warning($warning);
+                    \Hubzero\Facades\Notify::warning($warning);
                 }
             }
             return;

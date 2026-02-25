@@ -33,7 +33,7 @@ class ContentLanguages extends Select
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getOptions(&$node)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = $db->getQuery()
             ->select('a.lang_code', 'value')

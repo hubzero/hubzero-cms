@@ -38,7 +38,7 @@ class PrunableTest extends AbstractDriverTestCase
      */
     public static function setUpBeforeClass(): void
     {
-        // Mock Event facade for tests - MassPrunable trait calls \Event::trigger()
+        // Mock Event facade for tests - MassPrunable trait calls \Hubzero\Facades\Event::trigger()
         // Using spl_autoload_register to intercept Event class loading
         if (!class_exists('Event', false)) {
             spl_autoload_register(function ($class) {

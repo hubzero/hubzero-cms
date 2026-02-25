@@ -12,6 +12,10 @@
 namespace Plugins\Publications\Opengraph;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 class Opengraph extends Plugin
 {

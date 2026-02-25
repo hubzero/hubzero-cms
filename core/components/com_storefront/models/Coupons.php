@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+
 /**
  *
  * Coupons lookup and management
@@ -29,10 +31,10 @@ class Coupons
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Load language file
-        \App::get('language')->load('com_storefront', PATH_CORE . '/components/com_storefront/site/');
+        \Hubzero\Facades\App::get('language')->load('com_storefront', PATH_CORE . '/components/com_storefront/site/');
     }
 
     /**

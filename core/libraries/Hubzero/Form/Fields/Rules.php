@@ -12,7 +12,7 @@ use Hubzero\Form\Field;
 use Hubzero\Access\Access;
 use Hubzero\Html\Builder\Behavior;
 use Exception;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Field for assigning permissions to groups for a given asset

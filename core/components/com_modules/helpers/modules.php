@@ -10,10 +10,11 @@ namespace Components\Modules\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
-use Html;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Module;
 
 /**
  * Modules component helper.
@@ -37,7 +38,7 @@ abstract class Modules
         $result    = new Obj();
         $assetName = self::$extension;
 
-        $actions = Access::getActionsFromFile(\Component::path($assetName) . '/config/access.xml');
+        $actions = Access::getActionsFromFile(\Hubzero\Facades\Component::path($assetName) . '/config/access.xml');
 
         foreach ($actions as $action) {
             $result->set($action->name, User::authorise($action->name, 'com_modules'));

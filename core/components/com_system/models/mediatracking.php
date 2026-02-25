@@ -55,7 +55,7 @@ class Mediatracking extends Relational
             ->whereEquals('object_type', $object_type);
 
         if (!$user_id) {
-            $session_id = \App::get('session')->getId();
+            $session_id = \Hubzero\Facades\App::get('session')->getId();
 
             $query->whereEquals('session_id', $session_id);
         } else {

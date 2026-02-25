@@ -14,7 +14,7 @@ class Controller
     {
         $db_id = array();
 
-        $db_id['id'] = \Request::getString('db', '');
+        $db_id['id'] = \Hubzero\Facades\Request::getString('db', '');
         $db_info = explode(':', $db_id['id']);
         $db_id['name'] = $db_info[0];
         $db_id['mode'] = isset($db_info[1]) ? $db_info[1] : 'db';
@@ -31,13 +31,13 @@ class Controller
         /* Store mode class for use in task methods */
         DvConfig::$dv_conf['settings']['mode_class'] = $modeClass;
 
-        $task = strtolower(\Request::getCmd('task'));
+        $task = strtolower(\Hubzero\Facades\Request::getCmd('task'));
         $taskMethod = 'task' . ucfirst($task);
 
         if (method_exists(self::class, $taskMethod)) {
             self::$taskMethod($db_id);
         } else {
-            \App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+            \Hubzero\Facades\App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
         }
     }
 
@@ -58,7 +58,7 @@ class Controller
             return;
         }
 
-        $filter = strtolower(\Request::getString('format', 'json'));
+        $filter = strtolower(\Hubzero\Facades\Request::getString('format', 'json'));
         $filterClass = __NAMESPACE__ . '\\Filter\\' . ucfirst($filter);
 
         $modeClass::pathway($dd);
@@ -78,7 +78,7 @@ class Controller
             return;
         }
 
-        $filter = strtolower(\Request::getString('type', 'csv'));
+        $filter = strtolower(\Hubzero\Facades\Request::getString('type', 'csv'));
         $filterClass = __NAMESPACE__ . '\\Filter\\' . ucfirst($filter);
 
         if ($dd) {
@@ -115,7 +115,7 @@ class Controller
         $groupsAllowed = DvConfig::$dv_conf['acl']['allowed_groups'];
         if ($usersAllowed === false && $groupsAllowed === false || isset($dd['acl']['public'])) {
             return true;
-        } elseif (\User::isGuest()) {
+        } elseif (\Hubzero\Facades\User::isGuest()) {
             $redir_url = '?return=' . base64_encode($_SERVER['REQUEST_URI']);
             $login_url = '/login';
             $url = $login_url . $redir_url;
@@ -123,20 +123,20 @@ class Controller
             return;
         }
 
-        if (!\User::isGuest() && isset($dd['acl']['registered'])) {
+        if (!\Hubzero\Facades\User::isGuest() && isset($dd['acl']['registered'])) {
             return true;
         }
 
-        if ($usersAllowed !== false && $usersAllowed == 'registered' && !\User::isGuest()) {
+        if ($usersAllowed !== false && $usersAllowed == 'registered' && !\Hubzero\Facades\User::isGuest()) {
             return true;
-        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !\User::isGuest()) {
-            if (in_array(\User::get('username'), DvConfig::$dv_conf['acl']['allowed_users'])) {
+        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !\Hubzero\Facades\User::isGuest()) {
+            if (in_array(\Hubzero\Facades\User::get('username'), DvConfig::$dv_conf['acl']['allowed_users'])) {
                 return true;
             }
         }
 
-        if ($groupsAllowed !== false && is_array($groupsAllowed) && !\User::isGuest()) {
-            $groups = \Hubzero\User\Helper::getGroups(\User::get('id'));
+        if ($groupsAllowed !== false && is_array($groupsAllowed) && !\Hubzero\Facades\User::isGuest()) {
+            $groups = \Hubzero\User\Helper::getGroups(\Hubzero\Facades\User::get('id'));
             if ($groups && count($groups)) {
                 foreach ($groups as $g) {
                     if (in_array($g->cn, DvConfig::$dv_conf['acl']['allowed_groups'])) {

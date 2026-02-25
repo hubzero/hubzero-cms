@@ -12,6 +12,11 @@
 namespace Plugins\Tags\Events;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 class Events extends Plugin
 {

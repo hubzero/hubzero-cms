@@ -9,10 +9,10 @@
 namespace Hubzero\Form\Fields;
 
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Html;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * CategoryParent form field
@@ -119,7 +119,7 @@ class CategoryParent extends Select
                 // To take save or create in a category you need to have create rights for that category
                 // unless the item is already in that category.
                 // Unset the option if the user isn't authorised for it. In this field assets are always categories.
-                if (\User::authorise('core.create', $extension . '.category.' . $option->value) != true) {
+                if (\Hubzero\Facades\User::authorise('core.create', $extension . '.category.' . $option->value) != true) {
                     unset($options[$i]);
                 }
             }
@@ -129,7 +129,7 @@ class CategoryParent extends Select
                 // If you are only allowed to edit in this category but not edit.state, you should not get any
                 // option to change the category parent for a category or the category for a content item,
                 // but you should be able to save in that category.
-                if (\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true) {
+                if (\Hubzero\Facades\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true) {
                     if ($option->value != $oldCat) {
                         echo 'y';
                         unset($options[$i]);
@@ -137,7 +137,7 @@ class CategoryParent extends Select
                 } elseif (
                     // However, if you can edit.state you can also move this to another category for which you have
                     // create permission and you should also still be able to save in the current category.
-                    (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
+                    (\Hubzero\Facades\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && $option->value != $oldCat
                 ) {
                     echo 'x';

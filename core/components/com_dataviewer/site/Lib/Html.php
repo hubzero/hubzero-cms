@@ -12,7 +12,7 @@ class Html
 {
     public static function dvAddScript($script, $local = true)
     {
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
 
         if (!$local) {
             $document->addScript($script);
@@ -40,7 +40,7 @@ class Html
 
     public static function dvAddCss($css, $local = true)
     {
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
 
         if (!$local) {
             $document->addStyleSheet($css);

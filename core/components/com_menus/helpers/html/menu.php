@@ -8,6 +8,9 @@
 
 namespace Components\Menus\Helpers\Html;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+
 /**
  * Utility class working with menu select lists
  */

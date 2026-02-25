@@ -25,17 +25,17 @@ class Config extends AbstractComponent
         // Access checks are done internally because of different requirements for the two controllers.
 
         // Tell the browser not to cache this page.
-        \App::get('response')->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT', true);
+        \Hubzero\Facades\App::get('response')->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT', true);
 
-        if (strstr(\Request::getCmd('task'), '.')) {
-            @list($ctrl, $task) = explode('.', \Request::getCmd('task'));
-            \Request::setVar('controller', $ctrl);
-            \Request::setVar('task', $task);
+        if (strstr(\Hubzero\Facades\Request::getCmd('task'), '.')) {
+            @list($ctrl, $task) = explode('.', \Hubzero\Facades\Request::getCmd('task'));
+            \Hubzero\Facades\Request::setVar('controller', $ctrl);
+            \Hubzero\Facades\Request::setVar('task', $task);
         }
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'application'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'application'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 

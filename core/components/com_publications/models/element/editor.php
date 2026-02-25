@@ -50,7 +50,7 @@ class Editor extends Base
 
         $fieldName = $control_name . '[' . $name . ']';
         $fieldId = $control_name . '-' . $name;
-        $editorHtml = \App::get('editor')->display(
+        $editorHtml = \Hubzero\Facades\App::get('editor')->display(
             $fieldName,
             $value,
             '',

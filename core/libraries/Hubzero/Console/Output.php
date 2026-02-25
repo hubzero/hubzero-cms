@@ -609,7 +609,7 @@ class Output
             }
         }
 
-        if (!Config::get('color', $this->colored)) {
+        if (!\Hubzero\Facades\Config::get('color', $this->colored)) {
             $message = $style['indentation'] . $message;
         } else {
             $messageStyles  = $style['format'];

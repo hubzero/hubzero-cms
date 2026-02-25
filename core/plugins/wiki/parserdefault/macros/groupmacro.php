@@ -28,7 +28,7 @@ class GroupMacro extends WikiMacro
      */
     public function __construct()
     {
-        $cname = \Request::getString('cn', \Request::getString('gid', ''));
+        $cname = \Hubzero\Facades\Request::getString('cn', \Hubzero\Facades\Request::getString('gid', ''));
         $this->group = Group::getInstance($cname);
     }
 
@@ -59,6 +59,6 @@ class GroupMacro extends WikiMacro
      */
     protected function canRender()
     {
-        return \Request::getCmd('option', '') == 'com_groups';
+        return \Hubzero\Facades\Request::getCmd('option', '') == 'com_groups';
     }
 }

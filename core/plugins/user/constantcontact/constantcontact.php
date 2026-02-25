@@ -61,14 +61,14 @@ class Constantcontact extends Plugin
         $this->params->set('ccTokenExpires', $tokenExpires);
 
         try {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
             $db->setQuery(
                 "UPDATE `#__extensions` SET `params` = " . $db->quote($this->params->toString())
                 . " WHERE `type` = 'plugin' AND `folder` = 'user' AND `element` = 'constantcontact'"
             );
             $db->query();
         } catch (\Exception $e) {
-            \Log::error('Constant Contact: failed to persist refreshed tokens: ' . $e->getMessage());
+            \Hubzero\Facades\Log::error('Constant Contact: failed to persist refreshed tokens: ' . $e->getMessage());
         }
     }
 
@@ -152,7 +152,7 @@ class Constantcontact extends Plugin
                 $client->deleteContact($contactId);
             }
         } catch (\RuntimeException $e) {
-            \Log::error('Constant Contact: onAfterStoreProfile: ' . $e->getMessage());
+            \Hubzero\Facades\Log::error('Constant Contact: onAfterStoreProfile: ' . $e->getMessage());
         }
     }
 
@@ -184,7 +184,7 @@ class Constantcontact extends Plugin
                 $client->deleteContact($contact['contact_id']);
             }
         } catch (\RuntimeException $e) {
-            \Log::error('Constant Contact: onAfterDeleteProfile: ' . $e->getMessage());
+            \Hubzero\Facades\Log::error('Constant Contact: onAfterDeleteProfile: ' . $e->getMessage());
         }
     }
 }

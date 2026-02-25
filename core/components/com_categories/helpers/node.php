@@ -10,7 +10,7 @@ namespace Components\Categories\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Helper class to load Categorytree

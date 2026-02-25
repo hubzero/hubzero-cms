@@ -11,6 +11,12 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Courses controller class for managing membership and course info
@@ -223,7 +229,7 @@ class Students extends AdminController
             if (!is_int($user_id)) {
                 $user = User::getInstance($user_id);
                 if (!is_object($user)) {
-                    \Notify::error(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
+                    \Hubzero\Facades\Notify::error(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
                     $this->editTask();
                     return;
                 }
@@ -245,12 +251,12 @@ class Students extends AdminController
 
             // Is there an existing record and are they a student?
             if ($model->exists() && !$model->get('student')) {
-                \Notify::error(Lang::txt('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id));
+                \Hubzero\Facades\Notify::error(Lang::txt('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id));
                 continue;
             }
             // If the section is the same
             if ($model->exists() && $model->get('section_id') == $fields['section_id']) {
-                \Notify::warning(Lang::txt('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id));
+                \Hubzero\Facades\Notify::warning(Lang::txt('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id));
                 continue;
             }
 
@@ -262,14 +268,14 @@ class Students extends AdminController
 
             // Bind posted data
             if (!$model->bind($fields)) {
-                \Notify::error($model->getError());
+                \Hubzero\Facades\Notify::error($model->getError());
                 $this->editTask($model);
                 return;
             }
 
             // Store data
             if (!$model->store()) {
-                \Notify::error($model->getError());
+                \Hubzero\Facades\Notify::error($model->getError());
                 $this->editTask($model);
                 return;
             }
@@ -330,7 +336,7 @@ class Students extends AdminController
 
                 // Delete course
                 if (!$model->delete()) {
-                    \Notify::error(Lang::txt(
+                    \Hubzero\Facades\Notify::error(Lang::txt(
                         'COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT',
                         $model->get('user_id'),
                         $model->get('section_id')

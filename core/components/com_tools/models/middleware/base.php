@@ -10,7 +10,7 @@ namespace Components\Tools\Models\Middleware;
 
 use Components\Tools\Helpers\Utils;
 use Hubzero\Base\Model;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Abstract model class
@@ -71,7 +71,7 @@ class Base extends Model
     public function config($key = '', $default = null)
     {
         if (!isset($this->_config)) {
-            $this->_config = \Component::params('com_tools');
+            $this->_config = \Hubzero\Facades\Component::params('com_tools');
         }
 
         if ($key) {

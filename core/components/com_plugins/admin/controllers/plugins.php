@@ -11,13 +11,14 @@ namespace Components\Plugins\Admin\Controllers;
 use Hubzero\Utility\Arr;
 use Hubzero\Component\AdminController;
 use Components\Plugins\Models\Plugin;
-use Request;
-use Notify;
-use Route;
-use Cache;
-use Event;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Plugins controller class.

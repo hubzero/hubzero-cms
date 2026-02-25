@@ -13,10 +13,11 @@ use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
-use Config;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller for the publications component
@@ -79,7 +80,7 @@ class Publicationsv1r0 extends ApiController
         $response->publications = array();
         $response->total = $model->entries('count', $filters);
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $pa = new \Components\Publications\Tables\Author($database);
 
         if ($response->total) {

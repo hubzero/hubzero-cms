@@ -9,6 +9,8 @@
 namespace Components\Publications\Models\BlockElement;
 
 use Components\Publications\Models\BlockElement as Base;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Renders metadata element

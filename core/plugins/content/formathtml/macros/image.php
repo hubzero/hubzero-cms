@@ -118,7 +118,7 @@ class Image extends Macro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = \Component::params('com_wiki');
+        $this->config = \Hubzero\Facades\Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -130,7 +130,7 @@ class Image extends Macro
         $ret = false;
         // Is it numeric?
         if (is_numeric($file)) {
-            include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
+            include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
 
             // Get resource by ID
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
@@ -155,7 +155,7 @@ class Image extends Macro
 
         // Does the file exist?
         if ($ret) {
-            if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+            if (!in_array(strtolower(\Hubzero\Facades\Filesystem::extension($file)), $this->imgs)) {
                 return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
             }
 
@@ -366,7 +366,7 @@ class Image extends Macro
 
         $file = trim($file, DS);
 
-        if (\Request::getString('format') == 'pdf') {
+        if (\Hubzero\Facades\Request::getString('format') == 'pdf') {
             return $this->path($file);
         }
         $link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
@@ -377,7 +377,7 @@ class Image extends Macro
         }
         $link .= $this->pagename . DS . 'Image:' . $file;
 
-        return \Route::url($link);
+        return \Hubzero\Facades\Route::url($link);
     }
 
     /**

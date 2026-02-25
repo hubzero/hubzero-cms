@@ -12,6 +12,7 @@
 namespace Plugins\Publications\Groups;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 class Groups extends Plugin
 {

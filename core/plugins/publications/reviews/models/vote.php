@@ -9,10 +9,10 @@
 namespace Plugins\Publications\Reviews\Models;
 
 use Hubzero\Database\Relational;
-use Request;
-use User;
-use Lang;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Wishlist model class for a vote

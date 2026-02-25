@@ -54,7 +54,7 @@ class Xml extends Base
 
         parent::render();
 
-        \App::get('response')->headers->set('Content-disposition', 'inline; filename="' .
+        \Hubzero\Facades\App::get('response')->headers->set('Content-disposition', 'inline; filename="' .
             $this->getName() .
             '.xml"', true);
 

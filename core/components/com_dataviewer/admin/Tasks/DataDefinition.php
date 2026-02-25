@@ -16,17 +16,17 @@ class DataDefinition
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-        $db_id = \Request::getString('db', false);
+        $db_id = \Hubzero\Facades\Request::getString('db', false);
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
         $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-        $dd_name = \Request::getString('dd', false);
+        $dd_name = \Hubzero\Facades\Request::getString('dd', false);
 
 
-        $full_screen = \Request::getString('tmpl', false);
+        $full_screen = \Hubzero\Facades\Request::getString('tmpl', false);
 
 
         $dd_file = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . "/datadefinitions/$dd_name.json";
@@ -34,8 +34,8 @@ class DataDefinition
         $dd = json_decode($dd_json, true);
 
 
-        \Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
-        \Toolbar::custom('back', 'back', 'back', 'Go back', false);
+        \Hubzero\Facades\Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
+        \Hubzero\Facades\Toolbar::custom('back', 'back', 'back', 'Go back', false);
 
 
         $dd_file_php = $base . '/' . $db_id . '/applications/'

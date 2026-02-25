@@ -8,6 +8,8 @@
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+
 /**
  *
  * Storefront option class
@@ -28,7 +30,7 @@ class Option
     public function __construct($oId = false)
     {
         $this->data = new \stdClass();
-        $this->db = \App::get('db');
+        $this->db = \Hubzero\Facades\App::get('db');
 
         if (isset($oId) && is_numeric($oId) && $oId) {
             $this->load($oId);

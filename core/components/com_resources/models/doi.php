@@ -76,7 +76,7 @@ class Doi extends Relational
     public function automaticDoiShoulder($data)
     {
         if (!isset($data['doi_shoulder']) || !$data['doi_shoulder']) {
-            $data['doi_shoulder'] = \Component::params('com_tools')->get('doi_shoulder');
+            $data['doi_shoulder'] = \Hubzero\Facades\Component::params('com_tools')->get('doi_shoulder');
         }
         return $data['doi_shoulder'];
     }

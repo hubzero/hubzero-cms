@@ -12,6 +12,7 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Facades\App;
 
 /**
  * Hooks configuration class for adding a new hook

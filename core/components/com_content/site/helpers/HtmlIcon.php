@@ -10,10 +10,14 @@ namespace Components\Content\Site\Helpers;
 
 use Hubzero\Utility\Arr;
 use Hubzero\Utility\Uri;
-use Route;
-use Request;
-use Lang;
-use Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Html;
 
 /**
  * Content Component HTML Helper

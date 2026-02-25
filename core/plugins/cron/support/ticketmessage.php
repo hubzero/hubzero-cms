@@ -39,7 +39,7 @@ class Ticketmessage extends Element
 
         $html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 
-        include_once \Component::path('com_support') . DS . 'models' . DS . 'message.php';
+        include_once \Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'message.php';
         $messages = \Components\Support\Models\Message::all()->rows();
 
         $html[] = '<option value="0"' . (!$value ? ' selected="selected"' : '') . '>[ none ]</option>';

@@ -10,14 +10,15 @@ namespace Components\Wishlist\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Wishlist\Models\Wishlist;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Cotnroller class for wish lists

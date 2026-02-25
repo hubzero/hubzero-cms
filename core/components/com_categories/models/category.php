@@ -13,9 +13,11 @@ use Hubzero\Database\Rows;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Component;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Model class for a category
@@ -280,7 +282,7 @@ class Category extends Nested
 
         // Remove any '-' from the string since they will be used as concatenaters
         $alias = str_replace('-', ' ', $alias);
-        $alias = \Lang::transliterate($alias);
+        $alias = Lang::transliterate($alias);
 
         // Trim white spaces at beginning and end of alias and make lowercase
         $alias = strtolower($alias);
@@ -426,7 +428,7 @@ class Category extends Nested
             ->order('lft', 'asc');
 
         // Assemble the query to find all children of this node.
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery($query->toString());
         $children = $db->loadObjectList();
 

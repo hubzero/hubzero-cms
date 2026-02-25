@@ -38,7 +38,7 @@ class Instance extends Model
      */
     public function __construct($oid, $parent = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new Tables\ToolInstance($this->_db);
 

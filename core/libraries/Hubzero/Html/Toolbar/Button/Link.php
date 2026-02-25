@@ -34,7 +34,7 @@ class Link extends Button
      */
     public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null, $target = null)
     {
-        $text   = \Lang::txt($text);
+        $text   = \Hubzero\Facades\Lang::txt($text);
         $class  = $this->fetchIconClass($name);
         $doTask = $this->_getCommand($url);
 

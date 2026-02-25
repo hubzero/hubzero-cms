@@ -12,15 +12,16 @@ use Hubzero\Utility\Arr;
 use Hubzero\Component\AdminController;
 use Components\Modules\Models\Module;
 use Components\Modules\Helpers\Modules as ModulesHelper;
-use Request;
-use Notify;
-use Config;
-use Route;
-use Cache;
-use Event;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Modules controller class.
@@ -71,7 +72,7 @@ class Modules extends AdminController
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
-                \Config::get('list_limit'),
+                Config::get('list_limit'),
                 'int'
             ),
             'start' => Request::getState(
@@ -527,7 +528,7 @@ class Modules extends AdminController
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.limit',
                 'limit',
-                \Config::get('list_limit'),
+                Config::get('list_limit'),
                 'int'
             ),
             'start' => Request::getState(
@@ -1348,5 +1349,4 @@ class Modules extends AdminController
 
         return true;
     }
-
 }

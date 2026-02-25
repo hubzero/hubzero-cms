@@ -10,8 +10,8 @@ namespace Components\Wiki\Models;
 
 use Components\Wiki\Helpers\Parser;
 use Hubzero\Database\Relational;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Wiki model for a page version
@@ -183,7 +183,7 @@ class Version extends Relational
         $route = ($route ? $route . '/' : $route);
 
         $wikiconfig = array(
-            'option'    => ($option ?: \Request::getCmd('option')),
+            'option'    => ($option ?: \Hubzero\Facades\Request::getCmd('option')),
             'scope'     => $page->get('path'), // $route . $page->get('path'),
             'pagename'  => $page->get('pagename'),
             'pageid'    => $page->get('id'),

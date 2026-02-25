@@ -45,7 +45,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function diff()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
 
         $table1 = $this->arguments->getOpt('table1') ?: $this->arguments->getOpt(3);
@@ -137,7 +137,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function sql()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
 
         $table1 = $this->arguments->getOpt('from') ?: $this->arguments->getOpt(3);
@@ -221,14 +221,14 @@ class Schema extends Base implements CommandInterface
      **/
     public function tables()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $tables = $db->getTableList();
         $prefix = $db->getPrefix();
 
         $showAll = $this->arguments->getOpt('all');
         $filter = $this->arguments->getOpt('filter');
 
-        $this->output->addLine("Tables in database '" . \Config::get('db') . "':");
+        $this->output->addLine("Tables in database '" . \Hubzero\Facades\Config::get('db') . "':");
         $this->output->addSpacer();
 
         // Apply prefix filter (unless --all)
@@ -267,7 +267,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function export()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
         $prefix = $this->arguments->getOpt('prefix') ?: $db->getPrefix();
         $filter = $this->arguments->getOpt('filter');
@@ -321,7 +321,7 @@ class Schema extends Base implements CommandInterface
             return;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
         $prefix = $this->arguments->getOpt('prefix') ?: $db->getPrefix();
         $filter = $this->arguments->getOpt('filter');
@@ -401,7 +401,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function generate()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
 
         // Check for dry-run mode
@@ -484,7 +484,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function blank()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Determine migration directory
         $migrationDir = $this->arguments->getOpt('dir')
@@ -546,7 +546,7 @@ class Schema extends Base implements CommandInterface
             return;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
         $prefix = $this->arguments->getOpt('prefix') ?: $db->getPrefix();
 
@@ -646,7 +646,7 @@ class Schema extends Base implements CommandInterface
         string $description,
         bool $dryRun = false
     ): void {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
 
         if (!$schema->tableExists($table1)) {
@@ -792,7 +792,7 @@ class Schema extends Base implements CommandInterface
         $snapshotDir = $this->getSnapshotDirectory();
         $filter = $this->arguments->getOpt('filter');
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $prefix = $this->arguments->getOpt('prefix') ?: $db->getPrefix();
 
         // Build filter callback if filter is specified
@@ -832,7 +832,7 @@ class Schema extends Base implements CommandInterface
             return;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $snapshot = new SchemaSnapshot($db, $snapshotDir);
 
         $sortBy = $this->arguments->getOpt('sort') ?: 'date';
@@ -877,7 +877,7 @@ class Schema extends Base implements CommandInterface
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         try {
             $snapshot = new SchemaSnapshot($db, $snapshotDir);
@@ -938,7 +938,7 @@ class Schema extends Base implements CommandInterface
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $filter = $this->arguments->getOpt('filter');
 
         // Build filter callback if filter is specified
@@ -1029,7 +1029,7 @@ class Schema extends Base implements CommandInterface
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $filter = $this->arguments->getOpt('filter');
 
         // Build filter callback if filter is specified
@@ -1131,7 +1131,7 @@ class Schema extends Base implements CommandInterface
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         try {
             $snapshot = new SchemaSnapshot($db, $snapshotDir);
@@ -1178,7 +1178,7 @@ class Schema extends Base implements CommandInterface
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $description = $this->arguments->getOpt('description');
 
         try {
@@ -1245,7 +1245,7 @@ class Schema extends Base implements CommandInterface
      **/
     public function squash()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Check for dry-run mode
         $dryRun = $this->arguments->getOpt('dry-run');
@@ -1586,7 +1586,7 @@ class Schema extends Base implements CommandInterface
      */
     protected function introspectTable(string $table): void
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $schema = $db->schema();
 
         if (!$schema->tableExists($table)) {

@@ -3,6 +3,13 @@
 namespace Plugins\Members\Todo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
 
 /**
  * @package   hubzero-cms
@@ -76,8 +83,8 @@ class Todo extends Plugin
         );
 
         // Include models
-        include_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-        include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
+        include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+        include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
         // Get our models
         $this->todo = new \Components\Projects\Models\Todo();

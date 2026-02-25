@@ -10,12 +10,12 @@ namespace Modules\WhatsNew;
 
 use Hubzero\Module\Module;
 use Components\Whatsnew\Helpers\Period;
-use Component;
-use Request;
-use Event;
-use Route;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
 use Lang;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying what's new in a category of content

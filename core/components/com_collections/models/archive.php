@@ -12,8 +12,8 @@ use Components\Collections\Tables;
 use Hubzero\Base\Obj;
 use Hubzero\Base\ItemList;
 use Hubzero\Plugin\Params;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections archive model
@@ -92,7 +92,7 @@ class Archive extends Obj
      */
     public function __construct($object_type = '', $object_id = 0)
     {
-        $this->db = \App::get('db');
+        $this->db = \Hubzero\Facades\App::get('db');
 
         $this->objectType = (string) $object_type;
         $this->objectId   = (int) $object_id;

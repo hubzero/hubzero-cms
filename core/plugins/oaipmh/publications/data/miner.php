@@ -57,17 +57,17 @@ class Miner extends Obj implements Provider
     public function __construct($db = null)
     {
         if (!$db) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
         }
 
         if (!($db instanceof \Hubzero\Database\Driver)) {
-            throw new \Exception(\Lang::txt('Database must be of type \Hubzero\Database\Driver'), 500);
+            throw new \Exception(\Hubzero\Facades\Lang::txt('Database must be of type \Hubzero\Database\Driver'), 500);
         }
 
         $this->database = $db;
 
         if (is_null(self::$base)) {
-            self::$base = rtrim(\Request::getSchemeAndHttpHost(), '/');
+            self::$base = rtrim(\Hubzero\Facades\Request::getSchemeAndHttpHost(), '/');
         }
     }
 
@@ -268,7 +268,7 @@ class Miner extends Obj implements Provider
         // Size and MIME type
         $record->format = [];
 
-        $pubHelper = \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
+        $pubHelper = \Hubzero\Facades\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
         if (file_exists($pubHelper)) {
             include_once $pubHelper;
 
@@ -441,7 +441,7 @@ class Miner extends Obj implements Provider
 			ORDER BY `year` DESC"
         );
         $references = $this->database->loadObjectList();
-        $citationHelper = \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+        $citationHelper = \Hubzero\Facades\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
         if (count($references) && file_exists($citationHelper)) {
             include_once $citationHelper;
 
@@ -508,7 +508,7 @@ class Miner extends Obj implements Provider
             $identifier = $this->doiResolver() . $doi;
         } else {
             $revPart = $rev ? '&v=' . $rev : '';
-            $route = \Route::url('index.php?option=com_publications&pid=' . $id . $revPart);
+            $route = \Hubzero\Facades\Route::url('index.php?option=com_publications&pid=' . $id . $revPart);
             $identifier = self::$base . '/' . ltrim($route, '/');
         }
 
@@ -525,7 +525,7 @@ class Miner extends Obj implements Provider
         static $resolver;
 
         if (!$resolver) {
-            $resolver = \Component::params('com_publications')->get('doi_resolve', 'https://doi.org/');
+            $resolver = \Hubzero\Facades\Component::params('com_publications')->get('doi_resolve', 'https://doi.org/');
             $resolver = rtrim($resolver, '/') . '/';
         }
 

@@ -9,6 +9,8 @@
 namespace Plugins\Captcha\Math;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Plugin class for displaying math CAPTCHAs

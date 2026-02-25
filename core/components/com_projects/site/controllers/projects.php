@@ -16,13 +16,16 @@ use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Description\Field;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Event;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Session;
 
 /**
  * Primary component controller
@@ -274,7 +277,7 @@ class Projects extends Base
         $filters = array();
         $filters['limit'] = Request::getInt(
             'limit',
-            intval(\Config::get('list_limit', 25)),
+            intval(\Hubzero\Facades\Config::get('list_limit', 25)),
             'request'
         );
         $filters['start']    = Request::getInt('limitstart', 0, 'get');

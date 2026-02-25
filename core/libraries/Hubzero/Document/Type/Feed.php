@@ -230,13 +230,13 @@ class Feed extends Base
     public function render($cache = false, $params = array())
     {
         // Get the feed type
-        $type = \Request::getCmd('type', 'Rss');
+        $type = \Hubzero\Facades\Request::getCmd('type', 'Rss');
 
         // Instantiate feed renderer and set the mime encoding
         $renderer = $this->loadRenderer(($type) ? $type : 'rss');
 
         if (!($renderer instanceof Renderer)) {
-            \App::abort(404, \Lang::txt('Resource Not Found'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Resource Not Found'));
         }
 
         $this->setMimeEncoding($renderer->getContentType());

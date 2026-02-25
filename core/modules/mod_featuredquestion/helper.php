@@ -10,7 +10,7 @@ namespace Modules\Featuredquestion;
 
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Module class for displaying a random featured question

@@ -11,13 +11,14 @@ namespace Components\Forum\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
-use Pathway;
-use Request;
-use Notify;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for forum sections

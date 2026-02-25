@@ -12,11 +12,11 @@ use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Hubzero\Base\Obj;
 use Exception;
-use Filesystem;
-use Request;
-use Event;
-use Cache;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for Component config
@@ -81,10 +81,10 @@ class Component extends Obj
      */
     public function getForm($data = array())
     {
-        $file = \Component::path($this->get('component.option')) . '/config/config.xml';
+        $file = \Hubzero\Facades\Component::path($this->get('component.option')) . '/config/config.xml';
         $file = Filesystem::cleanPath($file);
 
-        Form::addFieldPath(\Component::path($this->get('component.option')) . '/models/fields');
+        Form::addFieldPath(\Hubzero\Facades\Component::path($this->get('component.option')) . '/models/fields');
 
         $form = new Form('com_config.component', array('control' => 'hzform'));
 
@@ -99,12 +99,7 @@ class Component extends Obj
 
             // Check for errors encountered while preparing the form.
             if (count($results) && in_array(false, $results, true)) {
-                // Get the last error.
-                $error = Event::getError();
-
-                if (!($error instanceof Exception)) {
-                    throw new Exception($error);
-                }
+                throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
             }
         } catch (Exception $e) {
             $this->setError($e->getMessage());
@@ -130,15 +125,15 @@ class Component extends Obj
 
         // Load common and local language files.
         Lang::load($option, PATH_APP . '/bootstrap/administrator', null, false, true)
-        || Lang::load($option, \Component::path($option) . '/admin', null, false, true)
-        || Lang::load($option, \Component::path($option) . '/site', null, false, true);
+        || Lang::load($option, \Hubzero\Facades\Component::path($option) . '/admin', null, false, true)
+        || Lang::load($option, \Hubzero\Facades\Component::path($option) . '/site', null, false, true);
 
         if ($path = $this->get('component.path')) {
             Lang::load($option, PATH_ROOT . dirname($path) . DS . 'Admin', null, false, true);
             Lang::load($option, PATH_ROOT . dirname($path) . DS . 'Site', null, false, true);
         }
 
-        return \Component::load($option);
+        return \Hubzero\Facades\Component::load($option);
     }
 
     /**

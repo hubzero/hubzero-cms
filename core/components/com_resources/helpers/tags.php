@@ -9,6 +9,7 @@
 namespace Components\Resources\Helpers;
 
 use Components\Tags\Models\Cloud;
+use Hubzero\Facades\Route;
 
 /**
  * Resources Tagging class
@@ -45,7 +46,7 @@ class Tags extends Cloud
      */
     public function getTagsWithObjects($id = 0, $type = 0, $tag = '')
     {
-        $now = \Date::toSql();
+        $now = \Hubzero\Facades\Date::toSql();
 
         $this->_db->setQuery(
             "SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o " .
@@ -79,8 +80,8 @@ class Tags extends Cloud
             $sql .= "AND r.type=" . $this->_db->quote($type) . " ";
         }
 
-        if (!\User::isGuest()) {
-            $xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
+        if (!\Hubzero\Facades\User::isGuest()) {
+            $xgroups = \Hubzero\User\Helper::getGroups(\Hubzero\Facades\User::get('id'), 'all');
             if ($xgroups != '') {
                 $usersgroups = self::getUsersGroups($xgroups);
                 if (count($usersgroups) > 1) {
@@ -160,7 +161,7 @@ class Tags extends Cloud
      */
     public function getObjectsOnTag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = array())
     {
-        $now  = \Date::toSql();
+        $now  = \Hubzero\Facades\Date::toSql();
 
         if ($tag || $tag2) {
             $query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
@@ -253,8 +254,8 @@ class Tags extends Cloud
         $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' ";
         $query .= "OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 
-        if (!\User::isGuest()) {
-            $xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
+        if (!\Hubzero\Facades\User::isGuest()) {
+            $xgroups = \Hubzero\User\Helper::getGroups(\Hubzero\Facades\User::get('id'), 'all');
             if ($xgroups != '') {
                 $usersgroups = self::getUsersGroups($xgroups);
                 if (count($usersgroups) > 1) {

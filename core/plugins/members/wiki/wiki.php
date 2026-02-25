@@ -3,6 +3,7 @@
 namespace Plugins\Members\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * @package   hubzero-cms
@@ -95,7 +96,7 @@ class Wiki extends Plugin
             }
         }
 
-        include_once \Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+        include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
         $versions = \Components\Wiki\Models\Version::all()
             ->whereEquals('created_by', $uidNumber)

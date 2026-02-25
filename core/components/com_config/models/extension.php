@@ -11,8 +11,8 @@ namespace Components\Config\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Plugin extension model

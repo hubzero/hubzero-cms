@@ -10,11 +10,12 @@ namespace Components\Tags\Admin\Controllers;
 
 use Components\Tags\Models\Objct;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Tags controller class for listing tagged objects

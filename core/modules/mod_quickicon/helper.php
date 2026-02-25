@@ -9,11 +9,11 @@
 namespace Modules\QuickIcon;
 
 use Hubzero\Module\Module;
-use Plugin;
-use Route;
-use Event;
-use Lang;
-use User;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying shortcut idons for common tasks
@@ -34,7 +34,7 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!\Hubzero\Facades\App::isAdmin()) {
             return;
         }
 

@@ -9,7 +9,7 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Publications blocks class

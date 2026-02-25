@@ -13,10 +13,11 @@ use Components\Publications\Helpers;
 use Components\Publications\Tables;
 use stdClass;
 use ZipArchive;
-use Request;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Component;
 
 /**
  * Publications curation class
@@ -125,7 +126,7 @@ class Curation extends Obj
      */
     public function __construct($manifest = null, $masterManifest = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Parse blocks
         $this->_setBlocks($manifest, $masterManifest);

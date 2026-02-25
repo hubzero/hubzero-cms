@@ -8,6 +8,10 @@
 
 namespace Components\Menus\Helpers\Html;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+
 /**
  * Menus HTML helper
  */

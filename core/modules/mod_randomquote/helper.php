@@ -10,8 +10,8 @@ namespace Modules\RandomQuote;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
-use Component;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a random quote

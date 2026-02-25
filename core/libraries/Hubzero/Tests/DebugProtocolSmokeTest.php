@@ -134,14 +134,14 @@ namespace Hubzero\Tests {
                 DebugSmokeAppStub::reset();
             }
 
-            \App::set('response', new DebugSmokeResponseStub());
-            \App::set('config', new DebugSmokeConfigStub(['debug' => false]));
+            \Hubzero\Facades\App::set('response', new DebugSmokeResponseStub());
+            \Hubzero\Facades\App::set('config', new DebugSmokeConfigStub(['debug' => false]));
         }
 
         #[Test]
         public function htmxDebugHeadersAndPanelMarkersArePresent(): void
         {
-            \App::set('request', new DebugSmokeRequestStub(
+            \Hubzero\Facades\App::set('request', new DebugSmokeRequestStub(
                 ['HX-Request' => 'true'],
                 'POST',
                 ['htmx_debug' => '1', 'option' => 'com_todo', 'task' => 'add'],
@@ -157,7 +157,7 @@ namespace Hubzero\Tests {
             $service->emitDebugHeader();
             $service->emitProfileHeader();
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
             $this->assertArrayHasKey('X-Hubzero-Htmx-Debug', $headers);
             $this->assertArrayHasKey('X-Hubzero-Htmx-Profile', $headers);
             $this->assertStringContainsString('"branch":"smoke"', $headers['X-Hubzero-Htmx-Debug']);
@@ -171,7 +171,7 @@ namespace Hubzero\Tests {
         #[Test]
         public function inertiaDebugHeadersAndPanelMarkersArePresent(): void
         {
-            \App::set('request', new DebugSmokeRequestStub(
+            \Hubzero\Facades\App::set('request', new DebugSmokeRequestStub(
                 ['X-Inertia' => 'true'],
                 'GET',
                 ['inertia_debug' => '1', 'option' => 'com_games', 'task' => 'app'],
@@ -186,7 +186,7 @@ namespace Hubzero\Tests {
             $service->emitDebugHeader();
             $service->emitProfileHeader();
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
             $this->assertArrayHasKey('X-Hubzero-Inertia-Debug', $headers);
             $this->assertArrayHasKey('X-Hubzero-Inertia-Profile', $headers);
             $this->assertStringContainsString('"branch":"smoke"', $headers['X-Hubzero-Inertia-Debug']);

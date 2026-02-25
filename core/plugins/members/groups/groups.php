@@ -3,6 +3,10 @@
 namespace Plugins\Members\Groups;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 
 /**
  * @package   hubzero-cms
@@ -262,7 +266,7 @@ class Groups extends Plugin
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $g = '';
         if ($cat == 1) {

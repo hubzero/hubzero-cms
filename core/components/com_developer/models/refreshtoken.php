@@ -10,6 +10,7 @@ namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for a refresh token
@@ -149,15 +150,15 @@ class Refreshtoken extends Relational
         $as = strtolower($as);
 
         if ($as == 'date') {
-            return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+            return \Hubzero\Facades\Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
         }
 
         if ($as == 'time') {
-            return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+            return \Hubzero\Facades\Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
         }
 
         if ($as) {
-            return Date::of($this->get('created'))->toLocal($as);
+            return \Hubzero\Facades\Date::of($this->get('created'))->toLocal($as);
         }
 
         return $this->get('created');
@@ -174,15 +175,15 @@ class Refreshtoken extends Relational
         $as = strtolower($as);
 
         if ($as == 'date') {
-            return Date::of($this->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+            return \Hubzero\Facades\Date::of($this->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
         }
 
         if ($as == 'time') {
-            return Date::of($this->get('expires'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+            return \Hubzero\Facades\Date::of($this->get('expires'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
         }
 
         if ($as) {
-            return Date::of($this->get('expires'))->toLocal($as);
+            return \Hubzero\Facades\Date::of($this->get('expires'))->toLocal($as);
         }
 
         return $this->get('expires');

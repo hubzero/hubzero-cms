@@ -12,11 +12,12 @@ use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Components\Groups\Models\Orm\Page\Category;
 use Components\Groups\Models\Log;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Groups controller class for page categories
@@ -169,7 +170,7 @@ class Categories extends AdminController
         $action = (isset($fields['id']) && $fields['id'])
             ? 'group_pagecategory_updated'
             : 'group_pagecategory_created';
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => $action,
             'comments'  => array(
@@ -233,7 +234,7 @@ class Categories extends AdminController
             Notify::success(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'));
 
             // Log change
-            Log::log(array(
+            \Hubzero\Facades\Log::log(array(
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => 'group_pagecategory_deleted',
                 'comments'  => $deleted

@@ -10,6 +10,8 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * License block

@@ -698,7 +698,7 @@ class Base extends Obj
         $class = __NAMESPACE__ . '\\Type\\' . ucfirst($this->_type) . '\\' . ucfirst($type);
 
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(\Lang::txt('Unable to load renderer class'), 500);
+            throw new \InvalidArgumentException(\Hubzero\Facades\Lang::txt('Unable to load renderer class'), 500);
         }
 
         return new $class($this);
@@ -725,11 +725,11 @@ class Base extends Obj
     public function render($cache = false, $params = array())
     {
         if ($mdate = $this->getModifiedDate()) {
-            \App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) .
+            \Hubzero\Facades\App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) .
                 ' GMT' */);
         }
 
-        \App::get('response')->headers->set('Content-Type', $this->_mime .
+        \Hubzero\Facades\App::get('response')->headers->set('Content-Type', $this->_mime .
             ($this->_charset ? '; charset=' .
             $this->_charset : ''));
     }

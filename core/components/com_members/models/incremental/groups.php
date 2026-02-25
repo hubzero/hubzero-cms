@@ -8,7 +8,7 @@
 
 namespace Components\Members\Models\Incremental;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Class for incremental registration groups

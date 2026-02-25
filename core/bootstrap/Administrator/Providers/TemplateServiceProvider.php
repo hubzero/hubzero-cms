@@ -32,7 +32,7 @@ class TemplateServiceProvider extends ServiceProvider
                 'lang'      => ''
             ];
 
-            $options['style'] = \User::getParam('admin_style', $options['style']);
+            $options['style'] = $app['user']->getParam('admin_style', $options['style']);
 
             return new Loader($app, $options);
         };

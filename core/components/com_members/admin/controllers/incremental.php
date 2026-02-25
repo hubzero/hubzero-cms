@@ -9,9 +9,9 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for incremental registration

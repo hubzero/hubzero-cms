@@ -10,14 +10,15 @@ namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Resources\Models\Entry;
-use Document;
-use Pathway;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for contributing a tool
@@ -355,9 +356,9 @@ class Resources extends SiteController
             $this->setError($resource->getError());
             return false;
         } elseif ($newtool) {
-            \Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'), 'tools');
+            \Hubzero\Facades\Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'), 'tools');
         } else {
-            \Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'), 'tools');
+            \Hubzero\Facades\Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'), 'tools');
         }
 
         return true;

@@ -22,28 +22,28 @@ class System extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_system')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_system')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'info'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'info';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_LDAP'),
-            \Route::url('index.php?option=com_system&controller=ldap'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SYSTEM_LDAP'),
+            \Hubzero\Facades\Route::url('index.php?option=com_system&controller=ldap'),
             $controllerName == 'ldap'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_GEO'),
-            \Route::url('index.php?option=com_system&controller=geodb'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SYSTEM_GEO'),
+            \Hubzero\Facades\Route::url('index.php?option=com_system&controller=geodb'),
             $controllerName == 'geodb'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_CACHE'),
-            \Route::url('index.php?option=com_system&controller=cache'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_SYSTEM_CACHE'),
+            \Hubzero\Facades\Route::url('index.php?option=com_system&controller=cache'),
             $controllerName == 'cache'
         );
 

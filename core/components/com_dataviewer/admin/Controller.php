@@ -17,8 +17,8 @@ class Controller
 
             if (DvConfig::$conf['modes']['db']['enabled']) {
                 $group = DvConfig::$conf['access_limit_to_group'];
-                \Toolbar::title('Databases', 'databases');
-                \Toolbar::preferences('com_databases', '200');
+                \Hubzero\Facades\Toolbar::title('Databases', 'databases');
+                \Hubzero\Facades\Toolbar::preferences('com_databases', '200');
                 $err_str = '<p class="error">Not authorized, access is limited to '
                     . "\"<em>$group</em>\"</p>. "
                     . '<h3>Use the Databases component parameters to change this</h3>';
@@ -30,7 +30,7 @@ class Controller
 
 
         // Get the task
-        $task = \Request::getCmd('task', 'list');
+        $task = \Hubzero\Facades\Request::getCmd('task', 'list');
 
         $taskMap = [
             'list' => Tasks\TaskList::class,
@@ -47,7 +47,7 @@ class Controller
         if (isset($taskMap[$task])) {
             // Add task JS if exists
             if (file_exists(__DIR__ . DS . 'Tasks' . DS . 'html' . DS . $task . '.js')) {
-                $document = \App::get('document');
+                $document = \Hubzero\Facades\App::get('document');
                 $document->addScript(DB_PATH . DS . 'Tasks' . DS . 'html' . DS . $task . '.js?v=2');
             }
             $taskMap[$task]::execute();
@@ -60,8 +60,8 @@ class Controller
             return true;
         }
 
-        if (DvConfig::$conf['access_limit_to_group'] !== false && !\User::isGuest()) {
-            $groups = \Hubzero\User\Helper::getGroups(\User::get('id'));
+        if (DvConfig::$conf['access_limit_to_group'] !== false && !\Hubzero\Facades\User::isGuest()) {
+            $groups = \Hubzero\User\Helper::getGroups(\Hubzero\Facades\User::get('id'));
             if ($groups && count($groups)) {
                 foreach ($groups as $g) {
                     if ($g->cn == DvConfig::$conf['access_limit_to_group']) {

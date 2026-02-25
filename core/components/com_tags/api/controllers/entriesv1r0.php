@@ -13,10 +13,11 @@ use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Event;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for tags

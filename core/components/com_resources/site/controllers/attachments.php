@@ -15,13 +15,13 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Str;
 use Hubzero\Utility\Number;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Component;
-use Request;
-use Date;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for adding attachments to a parent resource
@@ -280,7 +280,7 @@ class Attachments extends SiteController
 
         // Make the filename safe
         $filename = urldecode($filename);
-        $filename = \Filesystem::clean($filename);
+        $filename = Filesystem::clean($filename);
         $filename = str_replace(' ', '_', $filename);
 
         $ext = $pathinfo['extension'];
@@ -829,7 +829,7 @@ class Attachments extends SiteController
      */
     private function getChildType($filename)
     {
-        $ftype = strtolower(\Filesystem::extension($filename));
+        $ftype = strtolower(Filesystem::extension($filename));
 
         switch ($ftype) {
             case 'mov':

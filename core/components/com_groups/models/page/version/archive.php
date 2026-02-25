@@ -44,7 +44,7 @@ class Archive extends Model
     public function __construct()
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
     }
 
     /**

@@ -12,6 +12,9 @@ use Hubzero\Plugin\Plugin;
 use Potherca\Flysystem\Github\Api;
 use Potherca\Flysystem\Github\GithubAdapter;
 use Potherca\Flysystem\Github\Settings;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Session;
 
 /**
  * Plugin class for github filesystem connectivity
@@ -27,7 +30,7 @@ class Github extends Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = \Plugin::params('filesystem', 'github');
+        $pparams = \Hubzero\Facades\Plugin::params('filesystem', 'github');
 
         $app_key = $pparams['app_key'];
         $app_secret = $pparams['app_secret'];

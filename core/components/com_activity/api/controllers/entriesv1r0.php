@@ -15,10 +15,10 @@ use Hubzero\Activity\Recipient;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * API controller class for activity entries

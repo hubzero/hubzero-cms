@@ -85,7 +85,7 @@ class Honeypot
      */
     public static function getName()
     {
-        return 'hypt' . substr(\App::get('session')->getFormToken(), 0, 7);
+        return 'hypt' . substr(\Hubzero\Facades\App::get('session')->getFormToken(), 0, 7);
     }
 
     /**
@@ -98,7 +98,7 @@ class Honeypot
         static $crypt;
 
         if (!$crypt) {
-            $key = \App::get('session')->getFormToken();
+            $key = \Hubzero\Facades\App::get('session')->getFormToken();
 
             $crypt = new Encrypter(
                 new Simple(),

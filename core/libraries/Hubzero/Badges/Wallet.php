@@ -36,14 +36,14 @@ class Wallet
         $cls = __NAMESPACE__ . '\\Provider\\' . ucfirst(strtolower($provider));
 
         if (!class_exists($cls)) {
-            throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
+            throw new ProviderNotFoundException(\Hubzero\Facades\Lang::txt('Invalid badges provider of "%s".', $provider));
         }
 
         $this->provider = new $cls($requestType);
 
         if (!($this->provider instanceof ProviderInterface)) {
             throw new InvalidProviderException(
-                \Lang::txt(
+                \Hubzero\Facades\Lang::txt(
                     'Invalid badges provider of "%s". Provider must implement ProviderInterface',
                     $provider
                 )

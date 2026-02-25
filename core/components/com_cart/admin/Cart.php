@@ -24,22 +24,22 @@ class Cart extends AbstractComponent
     {
         $option = 'com_cart';
 
-        if (!\User::authorise('core.manage', $option)) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', $option)) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $scope = \Request::getCmd('scope', 'site');
-        $controllerName = \Request::getCmd('controller', 'downloads');
+        $scope = \Hubzero\Facades\Request::getCmd('scope', 'site');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'downloads');
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
-            \Route::url('index.php?option=com_cart&controller=downloads'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_cart&controller=downloads'),
             $controllerName == 'downloads'
         );
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_CART_ORDERS'),
-            \Route::url('index.php?option=com_cart&controller=orders'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_CART_ORDERS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_cart&controller=orders'),
             $controllerName == 'orders'
         );
 

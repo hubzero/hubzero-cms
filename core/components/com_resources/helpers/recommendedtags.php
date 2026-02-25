@@ -8,6 +8,8 @@
 
 namespace Components\Resources\Helpers;
 
+use Hubzero\Facades\App;
+
 class RecommendedTags
 {
     private $tags = array();

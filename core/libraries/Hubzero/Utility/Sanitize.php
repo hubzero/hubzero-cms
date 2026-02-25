@@ -8,6 +8,8 @@
 
 namespace Hubzero\Utility;
 
+use Hubzero\Facades\Config;
+
 /**
  * Data Sanitization.
  *
@@ -327,7 +329,7 @@ class Sanitize
     protected static function _buildHtmlPurifierConfig($options)
     {
         $config = \HTMLPurifier_Config::createDefault();
-        $root = str_replace(['http://', 'https://', '.'], ['', '', '\.'], \App::get('request')->root());
+        $root = str_replace(['http://', 'https://', '.'], ['', '', '\.'], \Hubzero\Facades\App::get('request')->root());
         $defaultSettings = [
             'AutoFormat.Linkify' => false,
             'AutoFormat.RemoveEmpty' => true,
@@ -361,12 +363,12 @@ class Sanitize
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _findOrCreateClientSerializerDirectory($purifierConfigSettings)
     {
-        $client = \App::get('client');
+        $client = \Hubzero\Facades\App::get('client');
         $clientAlias = isset($client->alias) ? $client->alias : $client->name;
         $clientSerializerPath = PATH_APP . "/cache/$clientAlias/htmlpurifier";
 
         if (!is_dir($clientSerializerPath)) {
-            \App::get('filesystem')->makeDirectory($clientSerializerPath);
+            \Hubzero\Facades\App::get('filesystem')->makeDirectory($clientSerializerPath);
         }
 
         if (is_dir($clientSerializerPath)) {

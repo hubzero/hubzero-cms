@@ -10,10 +10,10 @@ namespace Modules\RelatedItems;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Request;
-use Route;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying related articles
@@ -27,7 +27,7 @@ class Helper extends Module
      */
     public function display()
     {
-        require_once \Component::path('com_content') . '/site/helpers/route.php';
+        require_once \Hubzero\Facades\Component::path('com_content') . '/site/helpers/route.php';
 
         // [!] Legacy compatibility
         $params = $this->params;
@@ -42,7 +42,7 @@ class Helper extends Module
             'Itemid' => 'int'
         );
 
-        $list = \Module::cache($module, $params, $cacheparams);
+        $list = \Hubzero\Facades\Module::cache($module, $params, $cacheparams);
 
         if (!count($list)) {
             return;
@@ -62,11 +62,11 @@ class Helper extends Module
      */
     public static function getList($params)
     {
-        $db     = \App::get('db');
+        $db     = \Hubzero\Facades\App::get('db');
         $userId = (int) User::get('id');
         $count  = intval($params->get('count', 5));
         $groups = implode(',', User::getAuthorisedViewLevels());
-        $date   = \Date::toSql();
+        $date   = \Hubzero\Facades\Date::toSql();
 
         $option = Request::getCmd('option');
         $view   = Request::getCmd('view');
@@ -155,7 +155,7 @@ class Helper extends Module
                     );
 
                     // Filter by language
-                    if (\App::get('language.filter')) {
+                    if (\Hubzero\Facades\App::get('language.filter')) {
                         $query->where(
                             'a.language in (' . $db->quote(Lang::getTag()) . ',' .
                             $db->quote('*') . ')'

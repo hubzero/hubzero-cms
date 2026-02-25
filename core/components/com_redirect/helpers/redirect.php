@@ -10,9 +10,9 @@ namespace Components\Redirect\Helpers;
 
 use Hubzero\Base\Obj;
 use Exception;
-use User;
-use Html;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Redirect component helper.
@@ -74,7 +74,7 @@ class Redirect
      */
     public static function isEnabled()
     {
-        return \Plugin::isEnabled('system', 'redirect');
+        return \Hubzero\Facades\Plugin::isEnabled('system', 'redirect');
     }
 
     /**

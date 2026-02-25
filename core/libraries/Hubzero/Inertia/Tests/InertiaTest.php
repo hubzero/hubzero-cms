@@ -257,8 +257,8 @@ namespace Hubzero\Inertia\Tests {
             }
 
             $request = new RequestStub([], 'GET', ['REQUEST_URI' => '/unit/inertia']);
-            \App::set('request', $request);
-            \App::set('response', new ResponseStub());
+            \Hubzero\Facades\App::set('request', $request);
+            \Hubzero\Facades\App::set('response', new ResponseStub());
         }
 
         #[Test]
@@ -282,7 +282,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function flushGuardrailPreventsLateStateResetUnlessForced(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
             $service = new InertiaService();
             $service->share('user', 'alice');
             $service->profileStart('phase');
@@ -301,7 +301,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function flushGuardrailAddsWarningInDebugModeWhenCalledTooLate(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
             $service = new InertiaService();
 
             $service->profileStart('phase');
@@ -319,7 +319,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceDetectsInertiaHeaderCaseInsensitively(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'x-inertia' => 'TrUe'
             ], 'GET', ['REQUEST_URI' => '/inertia']));
 
@@ -369,7 +369,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceRenderProducesInertiaJsonEnvelopeForInertiaRequests(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true'
             ], 'GET', ['REQUEST_URI' => '/inertia/page']));
 
@@ -392,7 +392,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function terminalJsonFlowSetsStatusHeadersAndBody(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true'
             ], 'GET', ['REQUEST_URI' => '/inertia/page']));
 
@@ -466,7 +466,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceResolvesPartialPropsOnlyForMatchingComponent(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
                 'X-Inertia-Partial-Component' => 'Polls/Show',
                 'X-Inertia-Partial-Data' => 'alpha,gamma'
@@ -495,7 +495,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function resolvePropsSkipsPartialFilteringWhenRequestIsNotInertia(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia-Partial-Component' => 'Polls/Show',
                 'X-Inertia-Partial-Data' => 'alpha'
             ], 'GET', ['REQUEST_URI' => '/polls2/1']));
@@ -517,7 +517,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceRedirectNormalizesMutationRedirectTo303ForInertiaRequests(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true'
             ], 'POST', ['REQUEST_URI' => '/polls2/vote']));
 
@@ -532,7 +532,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function terminalRedirectFlowNormalizes302To303ForMutations(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true'
             ], 'PATCH', ['REQUEST_URI' => '/polls2/vote']));
 
@@ -547,7 +547,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function serviceVersionMismatchTriggersInertiaLocationResponse(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
                 'X-Inertia-Version' => 'old'
             ], 'GET', ['REQUEST_URI' => '/polls2/1']));
@@ -568,7 +568,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function terminalLocationFlowReturns409AndLocationHeaderOnVersionMismatch(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
                 'X-Inertia-Version' => 'old'
             ], 'GET', ['REQUEST_URI' => '/polls2/2']));
@@ -586,7 +586,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function requestDetailsExposeInertiaHeaders(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
                 'X-Inertia-Version' => 'v-test',
                 'X-Inertia-Partial-Component' => 'Games/App',
@@ -628,7 +628,7 @@ namespace Hubzero\Inertia\Tests {
         {
             $container = new ContainerStub();
             $container->set('inertia', new InertiaService());
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             Inertia::share('flash', 'saved');
 
@@ -646,8 +646,8 @@ namespace Hubzero\Inertia\Tests {
 
             $container = new ContainerStub();
             $container->set('inertia', $service);
-            \App::set('app', $container);
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/from/facade']));
+            \Hubzero\Facades\App::set('app', $container);
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/from/facade']));
 
             $page = Inertia::page('Docs/Index', ['a' => 1]);
 
@@ -664,8 +664,8 @@ namespace Hubzero\Inertia\Tests {
 
             $container = new ContainerStub();
             $container->set('inertia', $service);
-            \App::set('app', $container);
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/from/facade']));
+            \Hubzero\Facades\App::set('app', $container);
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/from/facade']));
 
             $html = Inertia::renderRootNode('Docs/Index', ['x' => 1], 'docs-root');
 
@@ -677,7 +677,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function debugHeaderCanBeEnabledViaQueryFlag(): void
         {
-            \App::set('request', new RequestStub(
+            \Hubzero\Facades\App::set('request', new RequestStub(
                 [],
                 'GET',
                 ['REQUEST_URI' => '/inertia?page=1'],
@@ -688,7 +688,7 @@ namespace Hubzero\Inertia\Tests {
             $service->debugContext('branch', 'inertia');
             $service->render('Games/App', ['ok' => true]);
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $headers = $response->headers->headers;
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', array(
                 '"outgoing"',
@@ -702,7 +702,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function renderDebugPanelOutputsMarkupWhenDebugEnabled(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
             $service = new InertiaService();
             $service->debugContext('branch', 'panel');
 
@@ -714,7 +714,7 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function preserveDebugParamAndHiddenInputAreGeneratedWhenEnabled(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
             $service = new InertiaService();
 
             $params = $service->preserveDebugParam(['task' => 'app']);
@@ -728,8 +728,8 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function profilerEmitsHeaderWhenDebugEnabled(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
-            \App::set('config', new ConfigStub(['debug' => false]));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('config', new ConfigStub(['debug' => false]));
 
             $service = new InertiaService();
             $service->profileStart('page.render');
@@ -737,7 +737,7 @@ namespace Hubzero\Inertia\Tests {
             $service->profileStop('page.render');
             $service->emitProfileHeader();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $headers = $response->headers->headers;
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', array('page.render'));
         }
@@ -745,13 +745,13 @@ namespace Hubzero\Inertia\Tests {
         #[Test]
         public function facadeDelegatesInertiaDebugAndProfileHelpers(): void
         {
-            \App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
-            \App::set('config', new ConfigStub(['debug' => false]));
+            \Hubzero\Facades\App::set('request', new RequestStub([], 'GET', ['REQUEST_URI' => '/inertia'], ['inertia_debug' => '1']));
+            \Hubzero\Facades\App::set('config', new ConfigStub(['debug' => false]));
 
             $service = new InertiaService();
             $container = new ContainerStub();
             $container->set('inertia', $service);
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             Inertia::debugContext('branch', 'facade');
             Inertia::profileStart('facade.render');
@@ -768,7 +768,7 @@ namespace Hubzero\Inertia\Tests {
             $this->assertSame('1', Inertia::preserveDebugParam(array())['inertia_debug']);
             $this->assertStringContainsString('name="inertia_debug"', Inertia::renderDebugHiddenInput());
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', array('"outgoing"'));
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', array('facade.render'));
         }

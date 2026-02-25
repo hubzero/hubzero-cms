@@ -11,13 +11,13 @@ namespace Components\BillBoards\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Billboard;
 use Components\Billboards\Models\Collection;
-use Request;
-use Notify;
-use Route;
-use Cache;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Primary controller for the Billboards component
@@ -155,14 +155,14 @@ class BillBoards extends AdminController
 
             // Make sure upload directory exists and is writable
             if (!is_dir($uploadDirectory)) {
-                if (!\Filesystem::makeDirectory($uploadDirectory)) {
+                if (!\Hubzero\Facades\Filesystem::makeDirectory($uploadDirectory)) {
                     Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
                     return $this->editTask($billboard);
                 }
             }
 
             // Scan for viruses
-            if (!\Filesystem::isSafe($billboard_image['tmp_name'])) {
+            if (!\Hubzero\Facades\Filesystem::isSafe($billboard_image['tmp_name'])) {
                 Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
                 return $this->editTask($billboard);
             }
@@ -173,7 +173,7 @@ class BillBoards extends AdminController
             } else {
                 if ($old = $billboard->get('background_img')) {
                     if (file_exists($uploadDirectory . $old)) {
-                        \Filesystem::delete($uploadDirectory . $old);
+                        \Hubzero\Facades\Filesystem::delete($uploadDirectory . $old);
                     }
                 }
                 // Move successful, save the image url to the billboard entry

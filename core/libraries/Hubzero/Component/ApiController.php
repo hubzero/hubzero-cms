@@ -15,12 +15,12 @@ use Hubzero\Utility\Date;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
-use Request;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Base API controller for components to extend.
@@ -959,7 +959,7 @@ class ApiController implements ControllerInterface
             $file = explode('\\', $model);
             $file = strtolower(end($file));
 
-            $path = \Component::path($this->_option) . '/models/' . $file . '.php';
+            $path = \Hubzero\Facades\Component::path($this->_option) . '/models/' . $file . '.php';
             $can_path = realpath($path);
             if ($can_path != $path) {
                 App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND', $model));

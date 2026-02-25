@@ -10,11 +10,11 @@ namespace Components\Newsletter\Site\Controllers;
 
 use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\SiteController;
-use Pathway;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Newsletter Controller
@@ -172,7 +172,7 @@ class Newsletters extends SiteController
         // check for upload path
         if (!is_dir($newsletterPdfFolder)) {
             // Build the path if it doesn't exist
-            if (!\Filesystem::makeDirectory($newsletterPdfFolder)) {
+            if (!\Hubzero\Facades\Filesystem::makeDirectory($newsletterPdfFolder)) {
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&id=' . $id),
                     Lang::txt('Unable to create the filepath.'),

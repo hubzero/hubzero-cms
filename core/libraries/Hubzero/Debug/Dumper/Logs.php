@@ -32,7 +32,7 @@ class Logs extends AbstractRenderer
     {
         parent::__construct($messages);
 
-        $this->_logger = \Log::getRoot();
+        $this->_logger = \Hubzero\Facades\Log::getRoot();
     }
 
     /**

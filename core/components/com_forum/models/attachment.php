@@ -10,8 +10,9 @@ namespace Components\Forum\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Filesystem\Util;
-use Filesystem;
-use Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 /**
  * Class for comment files (attachments)

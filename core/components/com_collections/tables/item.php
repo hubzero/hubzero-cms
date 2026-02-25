@@ -9,9 +9,9 @@
 namespace Components\Collections\Tables;
 
 use Hubzero\Database\Table;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for collection items
@@ -240,7 +240,7 @@ class Item extends Table
         } else {
             if (isset($filters['created_by']) && $filters['created_by']) {
                 $where[] = "b.created_by=" . $this->_db->quote($filters['created_by']);
-            } elseif (!\App::isAdmin()) {
+            } elseif (!\Hubzero\Facades\App::isAdmin()) {
                 $where[] = "d.access=0";
                 $where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 "
                     . "WHERE s.item_id = s2.item_id)";

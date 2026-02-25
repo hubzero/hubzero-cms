@@ -10,7 +10,7 @@ namespace Modules\Featuredblog;
 
 use Hubzero\Module\Module;
 use Components\Blog\Models\Entry;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a random, featured blog entry
@@ -39,7 +39,7 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
+        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
         $this->row = null;
 

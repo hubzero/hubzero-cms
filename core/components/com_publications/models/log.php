@@ -11,7 +11,7 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Model;
 use Components\Publications\Helpers\Html;
 use Components\Publications\Tables;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Publications log model class

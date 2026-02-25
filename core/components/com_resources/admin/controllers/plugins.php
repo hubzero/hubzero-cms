@@ -12,13 +12,14 @@ use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Components\Plugins\Models\Plugin;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Event;
+use Hubzero\Facades\Event;
 use Route;
-use Cache;
-use Lang;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
 use App;
+use Hubzero\Facades\Notify;
 
 /**
  * Manage resource types

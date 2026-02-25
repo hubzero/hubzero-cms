@@ -12,12 +12,14 @@ use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
-use Pathway;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
 
 /**
  * Courses controller class

@@ -47,7 +47,7 @@ class Migration20141120161609ComTime extends Base
 
                 foreach ($results as $result) {
                     $date = with(
-                        new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset'))
+                        new \Hubzero\Utility\Date($result->date, \Hubzero\Facades\App::get('config')->get('offset'))
                     )->toSql();
 
                     $this->db->getQuery(true)

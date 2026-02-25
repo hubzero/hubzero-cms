@@ -8,12 +8,13 @@
 
 namespace Hubzero\Console\Command;
 
-use App;
+use Hubzero\Facades\App;
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;
 use Hubzero\Console\Command\Database\SchemaConverter;
 use Hubzero\Database\DatabaseManager;
+use Hubzero\Facades\Config;
 
 /**
  * Database class
@@ -104,11 +105,11 @@ class Database extends Base implements CommandInterface
 
         // First, set some things aside that we need to reapply after the update
         $params = [];
-        $params['com_system']             = \Component::params('com_system');
-        $params['com_tools']              = \Component::params('com_tools');
-        $params['com_usage']              = \Component::params('com_usage');
-        $params['com_members']            = \Component::params('com_members');
-        $params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
+        $params['com_system']             = \Hubzero\Facades\Component::params('com_system');
+        $params['com_tools']              = \Hubzero\Facades\Component::params('com_tools');
+        $params['com_usage']              = \Hubzero\Facades\Component::params('com_usage');
+        $params['com_members']            = \Hubzero\Facades\Component::params('com_members');
+        $params['plg_projects_databases'] = \Hubzero\Facades\Plugin::params('projects', 'databases');
 
         $tables = App::get('db')->getTableList();
 

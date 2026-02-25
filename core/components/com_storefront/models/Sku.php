@@ -8,6 +8,9 @@
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
+
 /**
  *
  * Storefront SKU class
@@ -291,7 +294,7 @@ class Sku
 
     public function save()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sId = $this->saveBase();
 
         // Do SKU meta (if any)
@@ -360,7 +363,7 @@ class Sku
 
     private function saveBase()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if ($this->getActiveStatus() && $this->getActiveStatus() != 'DEFAULT') {
             // verify SKU if it gets published
@@ -414,7 +417,7 @@ class Sku
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Delete the SKU record
         $sql = 'DELETE FROM `#__storefront_skus` WHERE `sId` = ' . $db->quote($this->getId());
@@ -689,7 +692,7 @@ class Sku
 
     public function getOptions()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (!isset($this->data->options)) {
             $sql = 'SELECT oId';
@@ -761,7 +764,7 @@ class Sku
 
     private static function updateOptions($product)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $productOptionGroups = $product->getOptionGroups();
         $optionsSql = '(0';

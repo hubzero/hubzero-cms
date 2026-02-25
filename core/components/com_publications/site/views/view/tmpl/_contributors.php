@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \App::get('db');
+$database = \Hubzero\Facades\App::get('db');
 
 if ($this->contributors) {
     $html     = '';

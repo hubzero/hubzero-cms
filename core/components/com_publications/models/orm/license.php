@@ -246,7 +246,7 @@ class License extends Relational
             return true;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $query = $db->getQuery()
             ->update($this->getTableName())
             ->set(array('main' => 1))

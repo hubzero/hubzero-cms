@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Projects;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
 
 class Projects extends Plugin
 {
@@ -57,7 +62,7 @@ class Projects extends Plugin
     public function computeStats(\Components\Cron\Models\Job $job)
     {
         $database   = App::get('db');
-        $publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+        $publishing = \Hubzero\Facades\Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
         require_once Component::path('com_projects') . DS . 'tables' . DS . 'stats.php';

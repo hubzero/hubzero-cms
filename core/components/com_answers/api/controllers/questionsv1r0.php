@@ -13,10 +13,10 @@ use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for Questions

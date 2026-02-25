@@ -156,7 +156,7 @@ if (count($this->authors) > 0) {
                             maxlength="255"/>
                         <?php
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
-                        if (\Component::params('com_members')->get('rorApi')) {
+                        if (\Hubzero\Facades\Component::params('com_members')->get('rorApi')) {
                             echo "<div id='autocomplete-organization' class='rorApiAvailable'></div>";
                         }
                         ?>

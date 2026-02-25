@@ -11,15 +11,16 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Bank\MarketHistory;
 use Hubzero\Bank\Transaction;
-use Component;
-use Notify;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
 use Config;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Plugin;
 
 /**
  * Members controller class for user points
@@ -421,7 +422,7 @@ class Points extends AdminController
                 $users = array_unique($users); // get rid of duplicates
 
                 foreach ($users as $user) {
-                    $validuser = \User::getInstance($user);
+                    $validuser = User::getInstance($user);
                     if ($user && $validuser->get('id')) {
                         $BTL = new \Hubzero\Bank\Teller($user);
                         switch ($data['type']) {

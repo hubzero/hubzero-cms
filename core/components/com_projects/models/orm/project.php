@@ -9,11 +9,11 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Request;
-use Event;
-use Route;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use stdClass;
 
 /**
@@ -429,7 +429,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     public function config($key = null, $default = null)
     {
         if (!isset($this->config)) {
-            $this->config = \Component::params('com_projects');
+            $this->config = \Hubzero\Facades\Component::params('com_projects');
         }
         if ($key) {
             return $this->config->get($key, $default);
@@ -543,7 +543,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 $link = $this->url;
 
                 if ($type) {
-                    if (\Plugin::isEnabled('projects', $type)) {
+                    if (\Hubzero\Facades\Plugin::isEnabled('projects', $type)) {
                         $link .= '&active=' . $type;
                     }
                 }

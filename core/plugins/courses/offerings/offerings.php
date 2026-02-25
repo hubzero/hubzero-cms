@@ -12,6 +12,9 @@
 namespace Plugins\Courses\Offerings;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Offerings extends Plugin
 {

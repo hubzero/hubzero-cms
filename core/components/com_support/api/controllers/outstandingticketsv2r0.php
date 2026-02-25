@@ -25,7 +25,7 @@ class OutstandingTicketsv2r0 extends ApiController
     public function execute()
     {
         $this->acl = \Components\Support\Helpers\ACL::getACL();
-        $this->acl->setUser(\User::get('id'));
+        $this->acl->setUser(\Hubzero\Facades\User::get('id'));
 
         parent::execute();
     }

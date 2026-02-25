@@ -9,7 +9,7 @@
 namespace Components\Events\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Events table class for configuration

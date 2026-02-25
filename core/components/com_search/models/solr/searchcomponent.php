@@ -13,6 +13,11 @@ use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Search\Models\Solr\Blacklist;
 use Solarium\Exception\HttpException;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * Database model for search components

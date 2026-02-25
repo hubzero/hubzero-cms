@@ -42,7 +42,7 @@ class Auth extends Relational
      **/
     public function automaticLogged($data)
     {
-        return \Date::of()->toSql();
+        return \Hubzero\Facades\Date::of()->toSql();
     }
 
     /**

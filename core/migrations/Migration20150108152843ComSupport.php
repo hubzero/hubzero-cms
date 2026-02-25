@@ -24,7 +24,7 @@ class Migration20150108152843ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $params = \Component::params('com_support');
+            $params = \Hubzero\Facades\Component::params('com_support');
 
             $defs = str_replace("\r", '', $params->get('emails', '{config.mailfrom}'));
             $defs = str_replace('\n', "\n", $defs);
@@ -49,7 +49,7 @@ class Migration20150108152843ComSupport extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $params = \Component::params('com_support');
+            $params = \Hubzero\Facades\Component::params('com_support');
 
             $defs = explode(',', $params->get('emails', '{config.mailfrom}'));
             $defs = array_map('trim', $defs);

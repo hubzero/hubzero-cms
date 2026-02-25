@@ -8,6 +8,8 @@
 
 namespace Components\Jobs\Helpers;
 
+use Hubzero\Facades\Lang;
+
 /**
  * Jobs helper class for misc. HTML
  */

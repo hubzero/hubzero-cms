@@ -11,8 +11,8 @@ namespace Components\Wiki\Helpers;
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Exception;
-use Plugin;
-use Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * Hubzero helper class for retrieving wiki parser
@@ -41,7 +41,7 @@ class Parser extends Obj
     public function __construct($parser = '')
     {
         if (!$parser) {
-            $database = \App::get('db');
+            $database = \Hubzero\Facades\App::get('db');
             $database->setQuery(
                 "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin'"
                 . " AND enabled=1 AND element LIKE 'parser%' ORDER BY enabled DESC LIMIT 1"

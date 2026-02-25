@@ -13,9 +13,10 @@ use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller for the projects component

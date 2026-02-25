@@ -90,7 +90,7 @@ class Macro
      */
     public function __construct($config = array())
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Set the controller name
         if (empty($this->_name)) {
@@ -189,7 +189,7 @@ class Macro
      */
     public function description()
     {
-        return \Lang::txt('Not implemented.');
+        return \Hubzero\Facades\Lang::txt('Not implemented.');
     }
 
     /**

@@ -102,7 +102,7 @@ class Collection extends Base
             case 'member':
             default:
                 if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = \User::getInstance($this->obj->get('created_by'));
+                    $this->_creator = \Hubzero\Facades\User::getInstance($this->obj->get('created_by'));
                 }
                 if ($property) {
                     switch ($property) {

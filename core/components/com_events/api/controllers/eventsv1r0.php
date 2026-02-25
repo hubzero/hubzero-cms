@@ -10,7 +10,7 @@ namespace Components\Events\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 
 // phpcs:disable PSR1.Methods.CamelCapsMethodName
 
@@ -47,7 +47,7 @@ class Eventsv1r0 extends ApiController
         $start = Request::getInt('limitstart', 0);
 
         // load up the events
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $query = "SELECT * FROM `#__events` as e
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE publish_down >= UTC_TIMESTAMP()
@@ -86,7 +86,7 @@ class Eventsv1r0 extends ApiController
         $nicedate = Request::getInt('niceDate', 0);
 
         // load up the events
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $query = "SELECT * FROM `#__events` as e
 					/* WHERE publish_up <= UTC_TIMESTAMP() */
 					WHERE state=1

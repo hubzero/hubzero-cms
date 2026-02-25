@@ -32,7 +32,7 @@ class Criterion extends Relational
         $violations = array();
 
         if ($query = $this->get('query')) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
 
             $violations = $db->setQuery($query)
                 ->execute()

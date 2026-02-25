@@ -37,21 +37,21 @@ class PageVersion extends Table
         // need page ID
         if ($this->get('pageid') == null || $this->get('pageid') == 0)
         {
-            $this->setError(\Lang::txt('Page version must have a page ID.'));
+            $this->setError(\Hubzero\Facades\Lang::txt('Page version must have a page ID.'));
             return false;
         }
 
         // need page version number
         if ($this->get('version') == null)
         {
-            $this->setError(\Lang::txt('Page version must have a version number.'));
+            $this->setError(\Hubzero\Facades\Lang::txt('Page version must have a version number.'));
             return false;
         }
         */
 
         // need page content
         if ($this->get('content') == null || $this->get('content') == '') {
-            $this->setError(\Lang::txt('Page version must contain content.'));
+            $this->setError(\Hubzero\Facades\Lang::txt('Page version must contain content.'));
             return false;
         }
 

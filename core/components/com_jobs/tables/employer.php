@@ -39,7 +39,7 @@ class Employer extends Table
             return false;
         }
 
-        $now = \Date::toSql();
+        $now = \Hubzero\Facades\Date::toSql();
         $query  = "SELECT e.id FROM `$this->_tbl` AS e  ";
         if (!$admin) {
             $query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";

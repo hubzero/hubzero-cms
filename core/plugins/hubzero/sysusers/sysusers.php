@@ -12,6 +12,7 @@
 namespace Plugins\Hubzero\Sysusers;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Sysusers extends Plugin
 {

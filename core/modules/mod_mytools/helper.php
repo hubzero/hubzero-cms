@@ -9,11 +9,11 @@
 namespace Modules\MyTools;
 
 use Hubzero\Module\Module;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's recently used/favorite tools
@@ -33,7 +33,7 @@ class Helper extends Module
         $toollist = array();
 
         // Create a Tool object
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         if (is_array($lst)) {
             $tools = array();
@@ -114,7 +114,7 @@ class Helper extends Module
             $favs = $this->favs;
         }
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         $html  = "\t\t" . '<ul>' . "\n";
         if (count($toollist) <= 0) {
@@ -230,7 +230,7 @@ class Helper extends Module
         $rconfig = Component::params('com_resources');
         $this->supportedtag = $rconfig->get('supportedtag');
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         if ($this->supportedtag) {
             include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
             $this->rt = new \Components\Resources\Helpers\Tags(0);

@@ -57,7 +57,7 @@ class Category extends Model
     public function __construct($oid = null)
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // create page cateogry table object
         $this->_tbl = new $this->_tbl_name($this->_db);

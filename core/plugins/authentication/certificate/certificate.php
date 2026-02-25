@@ -3,6 +3,14 @@
 namespace Plugins\Authentication\Certificate;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Log;
 
 /**
  * @package    hubzero-cms

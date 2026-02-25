@@ -8,6 +8,11 @@
 
 namespace Components\Members\Helpers;
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+
 /**
  * Helper class for registration.
  * Use primarily for input validation.
@@ -264,7 +269,7 @@ class Utility
      */
     public static function isActiveCode($code)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT `id` FROM `#__users` WHERE `activation` = " . $db->quote('-' . $code) . " LIMIT 1";
         $db->setQuery($query);

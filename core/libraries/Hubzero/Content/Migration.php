@@ -249,7 +249,7 @@ class Migration
      **/
     public function getDBO()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Test the connection
         if (!$db->connected()) {
@@ -829,7 +829,7 @@ class Migration
                 'hash'      => $hash,
                 'direction' => $direction,
                 'date'      => $date->toSql(),
-                'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \User::get('id')
+                'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \Hubzero\Facades\User::get('id')
             );
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {

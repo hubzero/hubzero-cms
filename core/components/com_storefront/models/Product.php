@@ -11,9 +11,9 @@ namespace Components\Storefront\Models;
 use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;
-use Filesystem;
-use Component;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 /**
  * Storefront product class
@@ -34,7 +34,7 @@ class Product
     public function __construct($pId = false)
     {
         // Load language file
-        \App::get('language')->load('com_storefront');
+        \Hubzero\Facades\App::get('language')->load('com_storefront');
 
         $this->data = new \stdClass();
 
@@ -52,7 +52,7 @@ class Product
      */
     private function load()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $pId = $this->getId();
 
         //$warehouse = new Warehouse();
@@ -178,7 +178,7 @@ class Product
 
         $type = ($type == 'include' ? 0 : 1);
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT * FROM `#__storefront_product_access_groups`";
         $sql .= " WHERE `pId`=" . $db->quote($id) . " AND `exclude`=" . $db->quote($type);
         $db->setQuery($sql);
@@ -212,7 +212,7 @@ class Product
 
         $groups = array_map('intval', $groups);
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Get the previous list of groups
         $prev = $this->getAccessGroups($type);
@@ -269,7 +269,7 @@ class Product
     {
         if (!isset($this->data->collections)) {
             if ($this->getId()) {
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
                 $sql = "SELECT `cId` FROM `#__storefront_product_collections`";
                 $sql .= " WHERE `pId` = " . $db->quote($this->getId());
                 $db->setQuery($sql);
@@ -318,7 +318,7 @@ class Product
     {
         if (!isset($this->skus)) {
             if ($this->getId()) {
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
                 $sql = "SELECT `sId` FROM `#__storefront_skus` WHERE `pId` = " . $db->quote($this->getId());
                 $db->setQuery($sql);
                 $db->execute();
@@ -562,7 +562,7 @@ class Product
         if (!isset($this->data->images) || $forceReload) {
             if ($this->getId()) {
                 // Get product image(s)
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
                 $sql = "SELECT imgId, imgName FROM `#__storefront_images`
 				WHERE `imgObject` = 'product'
 				AND `imgObjectId` = " . $db->quote($this->getId()) . "
@@ -822,7 +822,7 @@ class Product
     {
         if (!isset($this->data->optionGroups)) {
             if ($this->getId()) {
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
 
                 $sql = "SELECT ogId
 						FROM `#__storefront_product_option_groups` pog
@@ -921,7 +921,7 @@ class Product
             $sql = "INSERT INTO `#__storefront_products` SET ";
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql .= "
 				`ptId` = " . $db->quote($this->getType()) . ",
@@ -1051,7 +1051,7 @@ class Product
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // First get all SKUs to delete later
         $skus = $this->getSkus();
@@ -1175,7 +1175,7 @@ class Product
      */
     public function setMeta($meta)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         foreach ($meta as $key => $val) {
             $sql  = "	INSERT INTO `#__storefront_product_meta` (`pmKey`, `pmValue`, `pId`)
@@ -1193,7 +1193,7 @@ class Product
      */
     public function getMeta()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = 'SELECT `pmKey`, `pmValue` FROM `#__storefront_product_meta`';
         $sql .= ' WHERE `pId` = ' . $db->quote($this->getId());
@@ -1218,7 +1218,7 @@ class Product
      */
     public static function getMetaValue($pId, $metaKey)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql  = 'SELECT ';
         if (!$metaKey) {
@@ -1239,7 +1239,7 @@ class Product
      */
     public static function getInstance($pId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Get product type first
         $sql = "SELECT pt.ptName, pt.ptId FROM `#__storefront_products` p

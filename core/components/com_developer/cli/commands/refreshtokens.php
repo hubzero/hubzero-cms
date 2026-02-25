@@ -41,7 +41,7 @@ class Refreshtokens extends Base implements CommandInterface
     {
         // Attempt to delete tokens
         try {
-            \App::get('db')->getQuery()->delete('#__developer_refresh_tokens')->execute();
+            \Hubzero\Facades\App::get('db')->getQuery()->delete('#__developer_refresh_tokens')->execute();
         } catch (QueryFailedException $e) {
             $this->output->error('Error:' . $e->getMessage());
         }

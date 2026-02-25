@@ -12,6 +12,7 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Facades\App;
 
 /**
  * User class for terms of use functions
@@ -73,7 +74,7 @@ class Terms extends Base implements CommandInterface
             $dbo = App::get('db');
 
             // Update registration config value to require re-agreeing upon next login
-            $params = \Component::params('com_members');
+            $params = \Hubzero\Facades\Component::params('com_members');
             $currentTOU = $params->get('registrationTOU', 'RHRH');
             $newTOU     = substr_replace($currentTOU, 'R', 3);
             $params->set('registrationTOU', $newTOU);

@@ -43,6 +43,6 @@ class RandomPage extends WikiMacro
             ->row();
 
         // Build and return the link
-        return '<a href="' . \Route::url($row->link()) . '">' . $row->title . '</a>';
+        return '<a href="' . \Hubzero\Facades\Route::url($row->link()) . '">' . $row->title . '</a>';
     }
 }

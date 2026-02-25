@@ -91,7 +91,7 @@ class Links implements Test
                     $meta['error'] = $e->getMessage();
                 }
             } else {
-                $params = \Component::params('com_resources');
+                $params = \Hubzero\Facades\Component::params('com_resources');
                 $base = $params->get('uploadpath', '/site/resources');
                 $base = PATH_APP . DS . trim($base, DS) . DS;
 

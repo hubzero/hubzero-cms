@@ -12,15 +12,14 @@ use Hubzero\User\Group;
 use Hubzero\Config\Registry;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables\Reason;
-use Request;
-use Config;
-use Event;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
-
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 /**
  * Groups controller class
  */
@@ -240,7 +239,7 @@ class Membership extends Base
                     }
                 }
             } else {
-                require_once \Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
+                require_once \Hubzero\Facades\Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
                 $l = strtolower($l);
 

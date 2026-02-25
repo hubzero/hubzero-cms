@@ -4,6 +4,9 @@ namespace Plugins\Search\Events;
 
 use Components\Events\Models\Orm\Event as CalEvent;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * @package    hubzero-cms

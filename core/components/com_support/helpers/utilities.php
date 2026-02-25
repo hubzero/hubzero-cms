@@ -9,8 +9,9 @@
 namespace Components\Support\Helpers;
 
 use Hubzero\Mail\Message;
-use Request;
-use Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 
 /**
  * Support Utilities class

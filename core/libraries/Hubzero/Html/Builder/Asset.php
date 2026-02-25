@@ -9,7 +9,7 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Arr;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Utility class for pushing assets to the document

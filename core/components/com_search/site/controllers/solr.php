@@ -13,14 +13,17 @@ use Components\Search\Helpers\BoostQueryHelper;
 use Components\Search\Models\Solr\Facet;
 use Components\Search\Models\Solr\SearchComponent;
 use Components\Tags\Models\Tag as Tag;
-use Document;
-use Pathway;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
 use Plugin;
-use Config;
-use Lang;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 use stdClass;
 use Components\Resources\Models\Entry;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
 
 /**
  * Search controller class
@@ -199,7 +202,7 @@ class Solr extends SiteController
             $query = $query->run();
         } catch (\Solarium\Exception\HttpException $e) {
             $query->query('')->limit($limit)->start($start)->run();
-            \Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
         }
 
         $results  = $query->getResults();
@@ -246,7 +249,7 @@ class Solr extends SiteController
         }
 
         // Set breadcrumbs
-        \Pathway::append(
+        Pathway::append(
             Lang::txt('COM_SEARCH'),
             'index.php?option=' . $this->_option
         );
@@ -255,7 +258,7 @@ class Solr extends SiteController
         $title = $terms
             ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms))
             : Lang::txt('COM_SEARCH');
-        \Document::setTitle($title);
+        Document::setTitle($title);
         $viewOverrides = array();
         foreach ($searchComponents as $component) {
             if (!$viewOverride = $component->getViewOverride()) {

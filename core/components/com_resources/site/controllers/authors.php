@@ -11,10 +11,12 @@ namespace Components\Resources\Site\Controllers;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Author;
 use Hubzero\Component\SiteController;
-use Request;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for contributing a tool

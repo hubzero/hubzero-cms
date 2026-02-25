@@ -11,11 +11,11 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Image\Processor;
 use Hubzero\Utility\Str;
-use Filesystem;
-use Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 use App;
 
 /**
@@ -46,7 +46,7 @@ class Media extends AdminController
         $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

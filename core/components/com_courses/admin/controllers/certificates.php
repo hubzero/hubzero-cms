@@ -10,12 +10,13 @@ namespace Components\Courses\Admin\Controllers;
 
 use Components\Courses\Models\Certificate;
 use Hubzero\Component\AdminController;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Courses controller class for managing membership and course info

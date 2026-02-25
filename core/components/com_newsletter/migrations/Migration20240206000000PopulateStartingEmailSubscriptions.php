@@ -3,6 +3,7 @@
 namespace Components\Newsletter\Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Date;
 
 class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
 {

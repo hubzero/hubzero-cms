@@ -10,6 +10,12 @@ namespace Plugins\Courses\Announcements;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 /**
  * Plugin class for course announcements

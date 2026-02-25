@@ -11,9 +11,9 @@ namespace Components\Resources\Models;
 use Hubzero\Database\Relational;
 use Components\Resources\Models\Import\Run;
 use Exception;
-use Date;
-use Lang;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Resource import model
@@ -164,7 +164,7 @@ class Import extends Relational
     public function fileSpacePath()
     {
         // get com resources params
-        $params = \Component::params('com_resources');
+        $params = \Hubzero\Facades\Component::params('com_resources');
 
         // build upload path
         $uploadPath = $params->get('import_uploadpath', '/site/resources/import');

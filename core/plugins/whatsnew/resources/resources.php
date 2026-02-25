@@ -9,6 +9,9 @@
 namespace Plugins\Whatsnew\Resources;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 /**
  * What's New Plugin class for com_resources entries
@@ -56,7 +59,7 @@ class Resources extends Plugin
     {
         parent::__construct($subject, $config);
 
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**
@@ -154,7 +157,7 @@ class Resources extends Plugin
         }
 
         $access = array(0, 3);
-        if (!\User::isGuest()) {
+        if (!\Hubzero\Facades\User::isGuest()) {
             $access[] = 1;
         }
 
@@ -272,7 +275,7 @@ class Resources extends Plugin
         \Hubzero\Document\Assets::addComponentStylesheet('com_resources');
         \Hubzero\Document\Assets::addComponentScript('com_resources');
 
-        include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
     }
 
     /**

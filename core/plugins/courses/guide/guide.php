@@ -10,6 +10,9 @@ namespace Plugins\Courses\Guide;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Courses Plugin class for intro guide
@@ -167,11 +170,11 @@ class Guide extends Plugin
                 $lifetime = time() + 365 * 24 * 60 * 60;
 
                 \Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
-                    'first_visit' => Date::of()->toSql()
+                    'first_visit' => \Hubzero\Facades\Date::of()->toSql()
                 ));
             }
         }
-        $member->set('first_visit', Date::of()->toSql());
+        $member->set('first_visit', \Hubzero\Facades\Date::of()->toSql());
         $member->store();
     }
 }

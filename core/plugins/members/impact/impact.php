@@ -3,6 +3,13 @@
 namespace Plugins\Members\Impact;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * @package   hubzero-cms
@@ -65,7 +72,7 @@ class Impact extends Plugin
 
         $this->_database = App::get('db');
 
-        $path = \Component::path('com_publications');
+        $path = \Hubzero\Facades\Component::path('com_publications');
 
         include_once $path . DS . 'tables' . DS . 'Log.php';
         include_once $path . DS . 'tables' . DS . 'publication.php';
@@ -136,7 +143,7 @@ class Impact extends Plugin
         );
 
         if ($returnhtml) {
-            include_once \Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
+            include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
 
             $this->_option = $option;
 

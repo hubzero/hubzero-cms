@@ -8,6 +8,8 @@
 
 namespace Components\Cart\Helpers;
 
+use Hubzero\Facades\User;
+
 /**
  * Cart orders helpers
  */
@@ -33,7 +35,7 @@ class Orders
             unset($filters['limit']);
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT ti.sId, ti.tiQty, ti.tiPrice, t.tId, t.crtId, t.`tLastUpdated`, crt.`uidNumber`, x.name
 				FROM `#__cart_transaction_items` ti
@@ -122,7 +124,7 @@ class Orders
      */
     public static function getOrderItems($tId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT `sId`, `tiQty`, `tiPrice` FROM `#__cart_transaction_items` ti WHERE ti.`tId` = {$tId}";
         $db->setQuery($sql);
@@ -166,7 +168,7 @@ class Orders
     {
         //print_r(json_encode($orderChanges)); die;
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "INSERT INTO `#__activity_logs` SET `created` = NOW(), ";
         $sql .= "`created_by` = " . User::get('id') . ", `description` = 'Order updated', ";
@@ -186,7 +188,7 @@ class Orders
     {
         //print_r(json_encode($orderChanges)); die;
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT * FROM `#__activity_logs` WHERE `action` = 'updated' ";
         $sql .= "AND `scope` = 'cart.order' AND `scope_id` = {$tId} ORDER BY `created` DESC";

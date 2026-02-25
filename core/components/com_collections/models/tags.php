@@ -59,7 +59,7 @@ class Tags extends Cloud
                 break;
         }
         $sql .= "ORDER BY raw_tag ASC";
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $db->setQuery($sql);
 
         $tags = array();

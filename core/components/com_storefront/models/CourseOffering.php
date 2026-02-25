@@ -8,6 +8,8 @@
 
 namespace Components\Storefront\Models;
 
+use Hubzero\Facades\Lang;
+
 class CourseOffering extends Sku
 {
     public function __construct()

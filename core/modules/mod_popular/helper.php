@@ -11,11 +11,11 @@ namespace Modules\Popular;
 use Hubzero\Module\Module;
 use Components\Content\Models\Article;
 use Components\Categories\Models\Category;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying popular articles
@@ -29,7 +29,7 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!\Hubzero\Facades\App::isAdmin()) {
             return;
         }
 

@@ -11,6 +11,12 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Collection;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
 
 /**
  * Controller class for storefront collections
@@ -164,7 +170,7 @@ class Collections extends AdminController
             // TODO: move the integrity check to the collection verify method (same as SKU)
             $collection->save();
         } catch (\Exception $e) {
-            \Notify::error($e->getMessage());
+            \Hubzero\Facades\Notify::error($e->getMessage());
             $this->editTask($collection);
             return;
         }

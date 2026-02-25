@@ -108,7 +108,7 @@ class RateLimiter
     private function createRateLimitData($applicationId, $userId)
     {
         // data needed to create record
-        $ipAddress    = \Request::ip();
+        $ipAddress    = \Hubzero\Facades\Request::ip();
         $countShort   = 0;
         $countLong    = 0;
         $limitShort   = $this->config['short']['limit'];

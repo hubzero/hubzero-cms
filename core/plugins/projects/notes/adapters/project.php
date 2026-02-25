@@ -10,8 +10,9 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-use Request;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 require_once Component::path('com_wiki') . '/models/adapters/base.php';
 
@@ -52,7 +53,7 @@ class Project extends Base
             $project = $project->get('alias');
         }
         if (!$project) {
-            require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+            require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
             $p = new \Components\Projects\Models\Project($this->_scope_id);
             $project = $p->get('alias');
@@ -152,7 +153,7 @@ class Project extends Base
 
         $page->config()->set('access-check-done', true);
 
-        require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         $project = new \Components\Projects\Models\Project($this->_scope_id);
 

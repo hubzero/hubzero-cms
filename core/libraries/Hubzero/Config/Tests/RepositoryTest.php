@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Repository;
 use Hubzero\Config\Registry;
 use stdClass;
+use Hubzero\Facades\Config;
 
 /**
  * Repository tests

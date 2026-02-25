@@ -34,7 +34,7 @@ class Htmx extends Base implements CommandInterface
         }
 
         $this->arguments->setOpt(3, 'htmx');
-        \App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
     }
 
     /**

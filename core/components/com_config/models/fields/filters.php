@@ -9,8 +9,8 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Text Filters form field.

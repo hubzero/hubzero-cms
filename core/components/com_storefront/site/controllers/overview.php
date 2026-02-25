@@ -9,6 +9,9 @@
 namespace Components\Storefront\Site\Controllers;
 
 use Components\Content\Models\Article;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
 
 /**
  * Courses controller class

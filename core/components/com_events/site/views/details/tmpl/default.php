@@ -255,7 +255,7 @@ $dayUrl = Route::url(
                     if (!isset($tz) || $tz == '') {
                         // Get the timezone preferred by the USER,
                         // if not use HUB's
-                        $event_timezone = \Config::get('offset');
+                        $event_timezone = \Hubzero\Facades\Config::get('offset');
 
                         // Case if spanning across two days that are
                         // on different DST or ST

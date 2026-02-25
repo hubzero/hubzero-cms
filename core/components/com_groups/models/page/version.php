@@ -12,7 +12,8 @@ use Components\Groups\Models\Page;
 use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Group page version model class
@@ -51,7 +52,7 @@ class Version extends Model
     public function __construct($oid = null)
     {
         // Create database object
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Create page cateogry table object
         $this->_tbl = new $this->_tbl_name($this->_db);
@@ -122,7 +123,7 @@ class Version extends Model
                     $group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')));
 
                     // Get base path
-                    $basePath = \Component::params('com_groups')->get('uploadpath');
+                    $basePath = \Hubzero\Facades\Component::params('com_groups')->get('uploadpath');
 
                     // Build config
                     $config = array(
@@ -233,6 +234,6 @@ class Version extends Model
                 $url .= '&controller=pages&task=raw&pageid=' . $pageId . '&version=' . $version;
         }
 
-        return \Route::url($url);
+        return \Hubzero\Facades\Route::url($url);
     }
 }

@@ -11,14 +11,14 @@ namespace Components\Groups\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Groups\Models\Orm\Field;
 use Components\Groups\Models\Orm\Option;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Notify;
+use Hubzero\Facades\Notify;
 use Route;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Applications controller class for forms

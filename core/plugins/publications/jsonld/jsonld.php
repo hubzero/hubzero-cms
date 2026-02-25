@@ -12,6 +12,12 @@
 namespace Plugins\Publications\Jsonld;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
 
 class Jsonld extends Plugin
 {

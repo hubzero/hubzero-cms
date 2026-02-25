@@ -9,6 +9,7 @@
 namespace Components\Publications\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,7 +23,7 @@ class Publications extends AbstractComponent
      */
     protected function execute(): void
     {
-        $componentPath = \Component::path('com_publications');
+        $componentPath = \Hubzero\Facades\Component::path('com_publications');
         $sitePath = "$componentPath/site";
 
         $view = Request::getCmd('view', 'publications');

@@ -8,6 +8,8 @@
 
 namespace Components\Tools\Helpers;
 
+use Hubzero\Facades\Date;
+
 /**
  * Short description for 'Helper'
  *
@@ -111,7 +113,7 @@ class Helper
     {
         if (is_array($uids)) {
             foreach ($uids as $uid) {
-                $user = \User::getInstance($uid);
+                $user = \Hubzero\Facades\User::getInstance($uid);
                 if ($user && $user->get('username')) {
                     $logins[] = $user->get('username');
                 }
@@ -133,7 +135,7 @@ class Helper
         $when = Date::toSql();
 
         $sql = "SELECT * FROM `#__tool_statusviews` WHERE ticketid=" . $database->quote($ticketid)
-            . " AND uid=" . $database->quote(\User::get('id'));
+            . " AND uid=" . $database->quote(\Hubzero\Facades\User::get('id'));
         $database->setQuery($sql);
         $found = $database->loadObjectList();
         if ($found) {
@@ -141,7 +143,7 @@ class Helper
             $database->setQuery(
                 "UPDATE `#__tool_statusviews` SET viewed=" . $database->quote($when)
                 . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid="
-                . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id'))
+                . $database->quote($ticketid) . " AND uid=" . $database->quote(\Hubzero\Facades\User::get('id'))
             );
             if (!$database->query()) {
                 return $database->getErrorMsg();
@@ -149,7 +151,7 @@ class Helper
         } else {
             $database->setQuery(
                 "INSERT INTO `#__tool_statusviews` (uid, ticketid, viewed, elapsed) VALUES ("
-                . \User::get('id') . ", " . $database->quote($ticketid) . ", "
+                . \Hubzero\Facades\User::get('id') . ", " . $database->quote($ticketid) . ", "
                 . $database->quote($when) . ", " . $database->quote(500000) . ")"
             );
             if (!$database->query()) {

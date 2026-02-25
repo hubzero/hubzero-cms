@@ -22,24 +22,24 @@ class Billboards extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_billboards')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_billboards')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'billboards');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'billboards');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'billboards';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_BILLBOARDS'),
-            \Route::url('index.php?option=com_billboards&controller=billboards'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_BILLBOARDS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_billboards&controller=billboards'),
             $controllerName == 'billboards'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
-            \Route::url('index.php?option=com_billboards&controller=collections'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_billboards&controller=collections'),
             $controllerName == 'collections'
         );
 

@@ -12,11 +12,11 @@ use Components\Collections\Models\Collection;
 use Components\Collections\Models\Orm\Post;
 use Components\Collections\Models\Archive;
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Request;
-use Lang;
-use User;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for collections and posts

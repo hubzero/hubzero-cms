@@ -36,7 +36,7 @@ class Router extends Base
 
         if (!empty($query['gid'])) {
             //log regardless
-            \Log::debug('Group Route Build Path sending gid instead of cn: ' . $_SERVER['REQUEST_URI']);
+            \Hubzero\Facades\Log::debug('Group Route Build Path sending gid instead of cn: ' . $_SERVER['REQUEST_URI']);
 
             $segments[] = $query['gid'];
             unset($query['gid']);
@@ -207,7 +207,7 @@ class Router extends Base
                 $vars['option'] = 'com_groups';
 
                 // build url to redirect to based on vars
-                \App::redirect(\Route::url('index.php?' . http_build_query($vars)), null, null, true);
+                \Hubzero\Facades\App::redirect(\Hubzero\Facades\Route::url('index.php?' . http_build_query($vars)), null, null, true);
                 exit();
             }
         }
@@ -237,7 +237,7 @@ class Router extends Base
             }
 
             // build upload path
-            $groupsConfig = \Component::params('com_groups');
+            $groupsConfig = \Hubzero\Facades\Component::params('com_groups');
             $uploadPath = trim($groupsConfig->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
             // build path to component
@@ -249,10 +249,10 @@ class Router extends Base
             }
 
             // rewrite all query string params to have "g_" prefix
-            foreach (\Request::query() as $k => $v) {
+            foreach (\Hubzero\Facades\Request::query() as $k => $v) {
                 $old = (isset($vars[$k])) ? $vars[$k] : null;
-                \Request::setVar('sg_' . $k, $v);
-                \Request::setVar($k, $old);
+                \Hubzero\Facades\Request::setVar('sg_' . $k, $v);
+                \Hubzero\Facades\Request::setVar($k, $old);
             }
         }
     }

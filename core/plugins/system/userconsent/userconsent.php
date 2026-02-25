@@ -12,6 +12,10 @@
 namespace Plugins\System\Userconsent;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Session;
 
 class Userconsent extends Plugin
 {

@@ -23,22 +23,22 @@ class Developer extends AbstractComponent
     protected function execute(): void
     {
         // permissions check
-        if (!\User::authorise('core.manage', 'com_developer')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_developer')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Make extra sure that controller exists
-        $controllerName = \Request::getCmd('controller', 'applications');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'applications');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'applications';
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
         // Add some submenu items
-        \Submenu::addEntry(
-            \Lang::txt('COM_DEVELOPER_APPLICATIONS'),
-            \Route::url('index.php?option=com_developer&controller=applications'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_DEVELOPER_APPLICATIONS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_developer&controller=applications'),
             ($controllerName == 'applications')
         );
 

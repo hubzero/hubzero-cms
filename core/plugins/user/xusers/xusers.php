@@ -9,6 +9,15 @@
 namespace Plugins\User\Xusers;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 // No direct access
 
@@ -57,7 +66,7 @@ class Xusers extends Plugin
         if ($xuser->isGuest()) {
             // user plugin hasn't run or something went very badly
 
-            $plugins = \Plugin::byType('user');
+            $plugins = \Hubzero\Facades\Plugin::byType('user');
             $xuser_order = false;
             $hubzero_order = false;
             $i = 0;

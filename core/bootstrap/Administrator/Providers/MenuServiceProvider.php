@@ -32,7 +32,7 @@ class MenuServiceProvider extends ServiceProvider
             $options = [
                 'language_filter' => null,
                 'language'        => null,
-                'access'          => \User::getAuthorisedViewLevels()
+                'access'          => $app['user']->getAuthorisedViewLevels()
             ];
 
             return $app['menu.manager']->menu($app['client']->name, $options);

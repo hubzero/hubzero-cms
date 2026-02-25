@@ -9,6 +9,12 @@
 namespace Plugins\System\Cache;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
 
 // no direct access
 /**

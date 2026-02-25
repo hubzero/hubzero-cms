@@ -24,7 +24,7 @@ class Migration20131112130740ComUsage extends Base
 
         // Get stats DB object
         $config     = $this->getParams('com_usage');
-        $siteConfig = \App::get('config');
+        $siteConfig = \Hubzero\Facades\App::get('config');
 
         $options['driver']   = $config->get('statsDBDriver');
         $options['host']     = $config->get('statsDBHost');

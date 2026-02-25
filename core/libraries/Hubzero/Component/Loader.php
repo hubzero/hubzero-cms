@@ -15,6 +15,7 @@ use Hubzero\Config\Registry;
 use ReflectionClass;
 use Exception;
 use stdClass;
+use Hubzero\Facades\Document;
 
 /**
  * Component helper class
@@ -321,7 +322,7 @@ class Loader
             ), 404);
         }
 
-        $controller = \Request::getCmd('controller', $component);
+        $controller = \Hubzero\Facades\Request::getCmd('controller', $component);
 
         if (preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", $controller) !== 1) {
             throw new \InvalidArgumentException(sprintf(

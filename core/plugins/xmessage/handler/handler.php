@@ -3,6 +3,12 @@
 namespace Plugins\Xmessage\Handler;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * @package    hubzero-cms
@@ -280,7 +286,7 @@ class Handler extends Plugin
                     $methods = $notify->getRecords($uid);
                     if (!$methods || $methods->count() <= 0) {
                         // Load the default method
-                        $p = \Plugin::byType('members', 'messages');
+                        $p = \Hubzero\Facades\Plugin::byType('members', 'messages');
                         $pp = new \Hubzero\Config\Registry((is_object($p) ? $p->params : ''));
 
                         $d = $pp->get('default_method', 'email');

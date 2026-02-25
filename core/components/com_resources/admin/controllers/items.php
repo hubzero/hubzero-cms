@@ -25,13 +25,15 @@ use Components\Resources\Helpers\Helper;
 use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Str;
-use Request;
-use Config;
-use Route;
-use Event;
-use Lang;
-use App;
-
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
 /**
  * Manage resource entries
  */
@@ -955,8 +957,8 @@ class Items extends AdminController
             $newpath = Utilities::buildUploadPath($path . DS . $dir_id);
 
             // Attempt to rename the temp directory
-            if (\Filesystem::exists($tmppath)) {
-                $result = \Filesystem::move($tmppath, $newpath);
+            if (\Hubzero\Facades\Filesystem::exists($tmppath)) {
+                $result = \Hubzero\Facades\Filesystem::move($tmppath, $newpath);
                 if ($result !== true) {
                     $this->setError($result);
                 }
@@ -1636,7 +1638,7 @@ class Items extends AdminController
      */
     private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $group_id = 'g.id';
         $aro_id = 'aro.id';
@@ -1656,13 +1658,13 @@ class Items extends AdminController
         }
 
         if ($nouser) {
-            $users[] = \Html::select('option', '0', Lang::txt('COM_RESOURCES_DO_NOT_CHANGE'), 'value', 'text');
+            $users[] = \Hubzero\Facades\Html::select('option', '0', Lang::txt('COM_RESOURCES_DO_NOT_CHANGE'), 'value', 'text');
             $users = array_merge($users, $result);
         } else {
             $users = $result;
         }
 
-        return \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        return \Hubzero\Facades\Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
     }
 
     /**

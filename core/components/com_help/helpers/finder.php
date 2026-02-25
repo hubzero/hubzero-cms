@@ -28,9 +28,9 @@ class Finder
     public static function page($component, $extension, $page)
     {
         $name   = str_replace('com_', '', $component);
-        $client = \App::isAdmin() ? 'admin' : 'site';
-        $tmpl   = \App::get('template')->path;
-        $lang   = \Lang::getLanguage();
+        $client = \Hubzero\Facades\App::isAdmin() ? 'admin' : 'site';
+        $tmpl   = \Hubzero\Facades\App::get('template')->path;
+        $lang   = \Hubzero\Facades\Lang::getLanguage();
 
         $paths = array(
             // Template override help page
@@ -83,9 +83,9 @@ class Finder
      */
     private static function path($component)
     {
-        $client = \App::isAdmin() ? 'admin' : 'site';
+        $client = \Hubzero\Facades\App::isAdmin() ? 'admin' : 'site';
 
-        return \App::get('component')->path($component) . DS . $client;
+        return \Hubzero\Facades\App::get('component')->path($component) . DS . $client;
 
         /*if (file_exists(PATH_CORE . DS . 'components' . DS . $component . DS . $client))
         {
@@ -105,7 +105,7 @@ class Finder
      */
     public static function pages($component)
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // Get component name from database
         $database->setQuery(
@@ -129,13 +129,13 @@ class Finder
         }
 
         // Path to help pages
-        $helpPagesPath = self::path($component) . DS . 'help' . DS . \Lang::getTag();
+        $helpPagesPath = self::path($component) . DS . 'help' . DS . \Hubzero\Facades\Lang::getTag();
 
         // Make sure directory exists
         $pages = array();
         if (is_dir($helpPagesPath)) {
             // Get help pages for this component
-            $pages = \Filesystem::files($helpPagesPath, '.' . self::$ext);
+            $pages = \Hubzero\Facades\Filesystem::files($helpPagesPath, '.' . self::$ext);
         }
 
         $pages = array_map(function ($file) {

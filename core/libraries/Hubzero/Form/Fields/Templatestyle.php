@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Base\ClientManager;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports a select grouped list of template styles

@@ -8,6 +8,9 @@
 
 namespace Plugins\Wiki\Parsermarkdown;
 
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Html;
+
 /**
  * Markdown parser class
  */

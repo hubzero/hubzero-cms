@@ -24,12 +24,12 @@ $router->rules('build')->append('base', function ($uri) {
     // Get the path data
     $route = $uri->getPath();
 
-    $base = \App::get('request')->base(true);
+    $base = \Hubzero\Facades\App::get('request')->base(true);
     if (
-        substr($base, -strlen(\App::get('client')->name)) != \App::get('client')->name
-        && substr($base, -strlen(\App::get('client')->url)) != \App::get('client')->url
+        substr($base, -strlen(\Hubzero\Facades\App::get('client')->name)) != \Hubzero\Facades\App::get('client')->name
+        && substr($base, -strlen(\Hubzero\Facades\App::get('client')->url)) != \Hubzero\Facades\App::get('client')->url
     ) {
-        $base .= '/' . \App::get('client')->name;
+        $base .= '/' . \Hubzero\Facades\App::get('client')->name;
     }
 
     // Add basepath to the uri
@@ -53,13 +53,13 @@ $router->rules('build')->append('base', function ($uri) {
 | Remove the base URI path. This will strip everything up to the bas
 */
 $router->rules('parse')->append('prep', function ($uri) {
-    \App::get('router')->forget('option');
+    \Hubzero\Facades\App::get('router')->forget('option');
 
     // Get the path
     $path = $uri->getPath();
 
     // Remove the base URI path.
-    $path = substr_replace($path, '', 0, strlen(\App::get('request')->base(true)));
+    $path = substr_replace($path, '', 0, strlen(\Hubzero\Facades\App::get('request')->base(true)));
 
     // Remove prefix
     $path = str_replace('index.php', '', $path);
@@ -83,13 +83,13 @@ $router->rules('parse')->append('component', function ($uri) {
         $option = implode('', $option);
     }
 
-    if (\User::isGuest() || !\User::authorise('core.login.admin')) {
+    if (\Hubzero\Facades\User::isGuest() || !\Hubzero\Facades\User::authorise('core.login.admin')) {
         $option = 'com_login';
     }
 
     if (empty($option)) {
-        if (strtoupper(\App::get('request')->method()) == 'POST') {
-            $option = \App::get('request')->getCmd('option', '', 'post');
+        if (strtoupper(\Hubzero\Facades\App::get('request')->method()) == 'POST') {
+            $option = \Hubzero\Facades\App::get('request')->getCmd('option', '', 'post');
         }
     }
 

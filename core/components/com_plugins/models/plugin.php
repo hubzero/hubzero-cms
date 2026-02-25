@@ -11,10 +11,10 @@ namespace Components\Plugins\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Plugin extension model
@@ -206,7 +206,7 @@ class Plugin extends Relational
         if (!$this->get('folder') || !$this->get('element')) {
             return '';
         }
-        return \Plugin::path($this->get('folder'), $this->get('element'));
+        return \Hubzero\Facades\Plugin::path($this->get('folder'), $this->get('element'));
     }
 
     /**

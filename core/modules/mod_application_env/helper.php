@@ -9,7 +9,7 @@
 namespace Modules\ApplicationEnv;
 
 use Hubzero\Module\Module;
-use Config;
+use Hubzero\Facades\Config;
 
 /**
  * Module class for displaying current system environment

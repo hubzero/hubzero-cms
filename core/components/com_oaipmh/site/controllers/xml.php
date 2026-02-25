@@ -10,10 +10,11 @@ namespace Components\Oaipmh\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
-use Document;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 use Session;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * OAIPMH controller for XML output
@@ -31,11 +32,11 @@ class Xml extends SiteController
         $metadata   = Request::getString('metadataPrefix');
         $from       = Request::getString('from');
         if ($from) {
-            $from = \Date::of($from)->toSql();
+            $from = \Hubzero\Facades\Date::of($from)->toSql();
         }
         $until      = Request::getString('until');
         if ($until) {
-            $until = \Date::of($until)->toSql();
+            $until = \Hubzero\Facades\Date::of($until)->toSql();
         }
         $set        = Request::getString('set');
         $resumption = urldecode(Request::getString('resumptionToken', ''));
@@ -59,10 +60,10 @@ class Xml extends SiteController
         $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . $stylesheetUrl);
 
         $service->set('metadataPrefix', $metadata)
-                ->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
+                ->set('repositoryName', $this->config->get('repository_name', \Hubzero\Facades\Config::get('sitename')))
                 ->set('baseURL', $hubname)
                 ->set('protocolVersion', '2.0')
-                ->set('adminEmail', $this->config->get('email', \Config::get('mailfrom')))
+                ->set('adminEmail', $this->config->get('email', \Hubzero\Facades\Config::get('mailfrom')))
                 ->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
                 ->set('deletedRecord', $this->config->get('del'))
                 ->set('granularity', $igran)

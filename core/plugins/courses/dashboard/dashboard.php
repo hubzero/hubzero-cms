@@ -12,6 +12,10 @@
 namespace Plugins\Courses\Dashboard;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 class Dashboard extends Plugin
 {

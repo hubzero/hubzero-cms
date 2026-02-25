@@ -9,6 +9,8 @@
 namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Database model for search blacklist

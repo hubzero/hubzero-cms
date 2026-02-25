@@ -70,19 +70,19 @@ class Processor extends Obj
 
         // check to see if we have an image to work with
         if (is_null($this->source)) {
-            $this->setError(\Lang::txt('[ERROR] Image Source not set.'));
+            $this->setError(\Hubzero\Facades\Lang::txt('[ERROR] Image Source not set.'));
             return;
         }
 
         //check to make sure its a file if not remote
         if (!$isRemoteImage && !is_file($this->source)) {
-            $this->setError(\Lang::txt('[ERROR] Image doesn\'t exist on the server.'));
+            $this->setError(\Hubzero\Facades\Lang::txt('[ERROR] Image doesn\'t exist on the server.'));
             return;
         }
 
         //open image
         if (!$this->openImage()) {
-            $this->setError(\Lang::txt('[ERROR] Invalid/corrupted image file'));
+            $this->setError(\Hubzero\Facades\Lang::txt('[ERROR] Invalid/corrupted image file'));
             return;
         }
     }
@@ -119,7 +119,7 @@ class Processor extends Obj
 
         $installed_exts = get_loaded_extensions();
         if (!in_array($package, $installed_exts)) {
-            $this->setError(\Lang::txt('[ERROR] You are missing the required PHP package %s.', $package));
+            $this->setError(\Hubzero\Facades\Lang::txt('[ERROR] You are missing the required PHP package %s.', $package));
             return false;
         }
 
@@ -198,7 +198,7 @@ class Processor extends Obj
     public function autoRotate()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
+            $this->setError(\Hubzero\Facades\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
                 Orientation value.'));
             return false;
         }
@@ -423,7 +423,7 @@ class Processor extends Obj
     public function getGeoLocation()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
+            $this->setError(\Hubzero\Facades\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
                 Orientation value.'));
             return false;
         }
@@ -582,11 +582,11 @@ class Processor extends Obj
             $info = pathinfo($save_path);
 
             if ($make_paths) {
-                \App::get('filesystem')->makeDirectory($info['dirname']);
+                \Hubzero\Facades\App::get('filesystem')->makeDirectory($info['dirname']);
             }
 
             if (!is_dir($info['dirname']) && $make_paths == false) {
-                $this->setError(\Lang::txt('You must supply a valid path or 
+                $this->setError(\Hubzero\Facades\Lang::txt('You must supply a valid path or 
                     allow save function to create recursive path'));
                 return;
             }

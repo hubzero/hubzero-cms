@@ -10,6 +10,8 @@ namespace Hubzero\Console;
 
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
+use Hubzero\Console\Event;
+use Hubzero\Facades\Config;
 
 /**
  * Console output service provider

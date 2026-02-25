@@ -8,8 +8,9 @@
 
 namespace Components\Blog\Models\Adapters;
 
-use Component;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Adapter class for an entry link for the site-wide blog

@@ -41,7 +41,7 @@ class Menu extends Element
         foreach ($menuTypes as $menutype) {
             $options[] = Builder\Select::option($menutype, $menutype);
         }
-        array_unshift($options, Builder\Select::option(\App::get('language')->txt('JOPTION_SELECT_MENU')));
+        array_unshift($options, Builder\Select::option(\Hubzero\Facades\App::get('language')->txt('JOPTION_SELECT_MENU')));
 
         return Builder\Select::genericlist(
             $options,

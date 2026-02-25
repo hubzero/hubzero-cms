@@ -13,7 +13,9 @@ use Hubzero\Oauth\Server;
 use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Hubzero\Config\Registry;
 use Exception;
-use Event;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Session;
 
 /**
  * Authentication class, provides an interface for the authentication system

@@ -12,6 +12,9 @@
 namespace Plugins\System\Unconfirmed;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 class Unconfirmed extends Plugin
 {

@@ -9,8 +9,8 @@
 namespace Modules\Custom;
 
 use Hubzero\Module\Module;
-use Plugin;
-use Html;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Html;
 
 /**
  * Module class for displaying custom HTML

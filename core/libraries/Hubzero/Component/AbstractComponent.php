@@ -137,7 +137,7 @@ abstract class AbstractComponent
             return;
         }
 
-        $app = \App::get('app');
+        $app = \Hubzero\Facades\App::get('app');
         if (!$app) {
             return;
         }
@@ -171,7 +171,7 @@ abstract class AbstractComponent
             return;
         }
 
-        $app = \App::get('app');
+        $app = \Hubzero\Facades\App::get('app');
         if (!$app) {
             return;
         }

@@ -51,7 +51,7 @@ class Popup extends Button
     ) {
         Behavior::modal();
 
-        $text  = \Lang::txt($text);
+        $text  = \Hubzero\Facades\Lang::txt($text);
         $class = $this->fetchIconClass($name);
         $url   = $this->_getCommand($name, $url, $width, $height, $top, $left);
         $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" 
@@ -93,7 +93,7 @@ class Popup extends Button
     protected function _getCommand($name, $url, $width, $height, $top, $left)
     {
         if (substr($url, 0, 4) !== 'http') {
-            $root = rtrim(\Request::root(true), '/');
+            $root = rtrim(\Hubzero\Facades\Request::root(true), '/');
             if (substr($url, 0, strlen($root)) != $root) {
                 $url = $root . '/' . ltrim($url, '/');
             }

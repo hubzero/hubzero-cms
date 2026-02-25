@@ -9,7 +9,7 @@
 namespace Components\Kb\Admin\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Knowledge Base permissions helper

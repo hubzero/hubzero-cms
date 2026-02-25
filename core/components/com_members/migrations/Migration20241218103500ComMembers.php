@@ -47,7 +47,7 @@ class Migration20241218103500ComMembers extends Base
         $results = $this->db->loadColumn();
 
         foreach ($results as $result) {
-            $user = \Hubzero\User::getInstance($result);
+            $user = \Hubzero\Facades\User::getInstance($result);
             $user->set('surname', $user->get('surname'));
             $user->set('givenName', $user->get('givenName'));
             $user->set('middleName', $user->get('middleName'));

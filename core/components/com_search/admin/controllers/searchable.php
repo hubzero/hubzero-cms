@@ -22,6 +22,14 @@ use Components\Developer\Models\Application;
 use Hubzero\Access\Group as Accessgroup;
 use stdClass;
 use Hubzero\Utility\Inflector as Inflector;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Search AdminController Class
@@ -52,7 +60,7 @@ class Searchable extends AdminController
         try {
             $query = $query->run();
         } catch (\Solarium\Exception\HttpException $e) {
-            \Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
         }
 
         if (isset($query->resultsFacetSet) && $query->resultsFacetSet) {
@@ -383,10 +391,10 @@ class Searchable extends AdminController
         $components = $componentModel->getNewComponents();
         if ($components->count() > 0) {
             if ($components->save()) {
-                \Notify::success('New Searchable Components found');
+                \Hubzero\Facades\Notify::success('New Searchable Components found');
             }
         } else {
-            \Notify::warning('No new components found.');
+            \Hubzero\Facades\Notify::warning('No new components found.');
         }
 
         App::redirect(

@@ -11,10 +11,11 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Admin\Helpers\RestrictionsHelper;
-use Request;
-use Route;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Controller class

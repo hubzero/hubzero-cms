@@ -12,14 +12,15 @@ use Hubzero\Component\ApiController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Helpers\Filters;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Members API controller class

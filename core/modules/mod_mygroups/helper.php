@@ -11,7 +11,7 @@ namespace Modules\MyGroups;
 use Hubzero\Module\Module;
 use Components\Groups\Models\Recent;
 use Hubzero\User\Group;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a list of groups for a user
@@ -27,7 +27,7 @@ class Helper extends Module
      */
     private function getGroups($uid, $type = 'all', $groups = array())
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $where = '';
         if (!$this->params->get('include_archived', 1)) {
@@ -133,7 +133,7 @@ class Helper extends Module
         // Get the user's groups
         $this->allgroups = $this->getGroups(User::get('id'), 'all');
 
-        include_once \Component::path('com_groups') . DS . 'models' . DS . 'recent.php';
+        include_once \Hubzero\Facades\Component::path('com_groups') . DS . 'models' . DS . 'recent.php';
 
         $recents = Recent::all()
             ->whereEquals('user_id', User::get('id'))

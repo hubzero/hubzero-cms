@@ -12,8 +12,8 @@ use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Post;
 use Hubzero\User\Group;
-use Component;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying the latest forum posts
@@ -27,7 +27,7 @@ class Helper extends Module
      */
     public function run()
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //get the params
         $this->limit = $this->params->get('limit', 5);

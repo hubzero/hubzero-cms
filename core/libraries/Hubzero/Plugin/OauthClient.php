@@ -72,19 +72,19 @@ abstract class OauthClient extends Plugin
     protected static function getRedirectUri($name)
     {
         // Get the hub url
-        $service = trim(\Request::base(), '/');
+        $service = trim(\Hubzero\Facades\Request::base(), '/');
 
         $task = 'login';
         $option = 'login';
 
-        if (\App::isSite()) {
+        if (\Hubzero\Facades\App::isSite()) {
             // Legacy support
-            if (\App::has('component') && \App::get('component')->isEnabled('com_users')) {
+            if (\Hubzero\Facades\App::has('component') && \Hubzero\Facades\App::get('component')->isEnabled('com_users')) {
                 // If someone is logged in already, then we're linking an account
-                $task   = (\User::isGuest()) ? 'user.login' : 'user.link';
+                $task   = (\Hubzero\Facades\User::isGuest()) ? 'user.login' : 'user.link';
                 $option = 'users';
             } else {
-                $task   = (\User::isGuest()) ? 'login' : 'link';
+                $task   = (\Hubzero\Facades\User::isGuest()) ? 'login' : 'link';
             }
         }
 

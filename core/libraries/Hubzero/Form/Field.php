@@ -11,7 +11,7 @@ namespace Hubzero\Form;
 use Hubzero\Utility\Str;
 use SimpleXMLElement;
 use ReflectionClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Abstract Form Field class.

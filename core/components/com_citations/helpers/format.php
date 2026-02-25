@@ -170,12 +170,12 @@ class Format
     public function formatCitation($citation, $highlight, $include_coins, $config, $coins_only = false)
     {
         //get hub specific details
-        $hub_name = \Config::get('sitename');
-        $hub_url  = rtrim(\Request::base(), '/');
+        $hub_name = \Hubzero\Facades\Config::get('sitename');
+        $hub_url  = rtrim(\Hubzero\Facades\Request::base(), '/');
 
         $c_type = 'journal';
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $types = Type::all()->rows();
 
@@ -282,9 +282,9 @@ class Format
                         if (!empty($matches)) {
                             $id = trim($matches[1]);
                             if (is_numeric($id)) {
-                                $user = \User::getInstance($id);
+                                $user = \Hubzero\Facades\User::getInstance($id);
                                 if (is_object($user)) {
-                                    $url = \Route::url('index.php?option=com_members&id=' . $matches[1]);
+                                    $url = \Hubzero\Facades\Route::url('index.php?option=com_members&id=' . $matches[1]);
                                     $name = str_replace($matches[0], '', $author);
                                     $a[] = '<a rel="external" href="' . $url . '">' . $name . '</a>';
                                 } else {
@@ -352,7 +352,7 @@ class Format
                     //do we want to display single citation
                     $singleCitationView = $config->get('citation_single_view', 0);
                     if ($singleCitationView && isset($citation->id)) {
-                        $url = \Route::url('index.php?option=com_citations&task=view&id=' . $citation->id);
+                        $url = \Hubzero\Facades\Route::url('index.php?option=com_citations&task=view&id=' . $citation->id);
                         $title = '<a href="' . $url . '">' . $t . '</a>';
                     }
 
@@ -493,19 +493,19 @@ class Format
 
         // are we allowing downloading
         if ($downloading) {
-            $bibtexUrl = \Route::url(
+            $bibtexUrl = \Hubzero\Facades\Route::url(
                 'index.php?option=com_citations&task=download&id=' . $citation->id
                 . '&citationFormat=bibtex&no_html=1'
             );
-            $bibtexTitle = \Lang::txt('COM_CITATIONS_BIBTEX');
+            $bibtexTitle = \Hubzero\Facades\Lang::txt('COM_CITATIONS_BIBTEX');
             $html .= '<a rel="nofollow" href="' . $bibtexUrl . '" title="' . $bibtexTitle . '">'
                 . $bibtexTitle . '</a>';
             $html .= '<span> | </span>';
-            $endnoteUrl = \Route::url(
+            $endnoteUrl = \Hubzero\Facades\Route::url(
                 'index.php?option=com_citations&task=download&id=' . $citation->id
                 . '&citationFormat=endnote&no_html=1'
             );
-            $endnoteTitle = \Lang::txt('COM_CITATIONS_ENDNOTE');
+            $endnoteTitle = \Hubzero\Facades\Lang::txt('COM_CITATIONS_ENDNOTE');
             $html .= '<a rel="nofollow" href="' . $endnoteUrl . '" title="' . $endnoteTitle . '">'
                 . $endnoteTitle . '</a>';
         }
@@ -638,14 +638,14 @@ class Format
         $internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
 
         //database
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         // Get the associations
         $assocs = Association::all()->whereEquals('cid', $citation->id);
 
         if (count($assocs) > 0) {
             if (count($assocs) > 1) {
-                $citedTxt = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+                $citedTxt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                 $html .= '<span>|</span> <span class="cited-resources">' . $citedTxt . ':</span> ';
                 $k = 0;
                 $rrs = array();
@@ -656,9 +656,9 @@ class Format
                         $state = $database->loadResult();
                         if ($state == 1) {
                             $k++;
-                            $resUrl = \Route::url('index.php?option=com_resources&id=' . $rid->oid);
+                            $resUrl = \Hubzero\Facades\Route::url('index.php?option=com_resources&id=' . $rid->oid);
                             if ($internally_cited_image) {
-                                $alt = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+                                $alt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                                 $rrs[] = '<a class="internally-cited" href="' . $resUrl . '">'
                                     . '[<img src="' . $internally_cited_image_multiple . '" alt="' . $alt . '" />]</a>';
                             } else {
@@ -675,8 +675,8 @@ class Format
                     $database->setQuery($query);
                     $state = $database->loadResult();
                     if ($state == 1) {
-                        $resUrl = \Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid);
-                        $citedTxt = \Lang::txt('COM_CITATIONS_RESOURCES_CITED');
+                        $resUrl = \Hubzero\Facades\Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid);
+                        $citedTxt = \Hubzero\Facades\Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                         if ($internally_cited_image) {
                             $html .= ' <span>|</span> <a class="internally-cited" href="' . $resUrl . '">'
                                 . '<img src="' . $internally_cited_image_single . '" alt="' . $citedTxt . '" /></a>';
@@ -691,7 +691,7 @@ class Format
 
         if ($citation->eprint) {
             $html .= '<span>|</span>';
-            $html .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+            $html .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Hubzero\Facades\Lang::txt('Electronic Paper') . '</a>';
         }
 
         return $html;
@@ -749,7 +749,7 @@ class Format
         $cite->separateTagsAndBadges();
         $tags = $cite->get('filteredTags');
         $html = '';
-        $isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
+        $isAdmin = (\Hubzero\Facades\User::authorise('core.manage', 'com_citations') ? true : false);
         if (is_array($tags) && count($tags) > 0) {
             if ($includeHtml) {
                 $html  = '<ul class="tags">';
@@ -758,7 +758,7 @@ class Format
 
                     //display tag if not admin tag or if admin tag and user is administrator
                     if (!$tag->admin || ($tag->admin && $isAdmin)) {
-                        $tagUrl = \Route::url('index.php?option=com_tags&tag=' . $tag->tag);
+                        $tagUrl = \Hubzero\Facades\Route::url('index.php?option=com_tags&tag=' . $tag->tag);
                         $tagCls = 'tag' . ($tag->admin ? ' admin' : '');
                         $html .= '<li class="' . $cls . '"><a class="' . $tagCls . '" href="' . $tagUrl . '">'
                             . stripslashes($tag->raw_tag) . '</a></li>';
@@ -857,14 +857,14 @@ class Format
                     if (is_numeric($matches[0])) {
                         $aid = $matches[0];
                     } else {
-                        $zuser = \User::getInstance(trim($matches[0]));
+                        $zuser = \Hubzero\Facades\User::getInstance(trim($matches[0]));
                         if (is_object($zuser)) {
                             $aid = $zuser->get('id');
                         }
                     }
                     $auth = preg_replace('/{{(.*?)}}/s', '', $auth);
                     if ($aid) {
-                        $memberUrl = \Route::url('index.php?option=com_members&id=' . $aid);
+                        $memberUrl = \Hubzero\Facades\Route::url('index.php?option=com_members&id=' . $aid);
                         $a[] = '<a href="' . $memberUrl . '">' . trim($auth) . '</a>';
                     } else {
                         $a[] = trim($auth);
@@ -909,10 +909,10 @@ class Format
         if ($row->type) {
             switch ($row->type) {
                 case 'phdthesis':
-                    $html .= ' (' . \Lang::txt('PhD Thesis') . ')';
+                    $html .= ' (' . \Hubzero\Facades\Lang::txt('PhD Thesis') . ')';
                     break;
                 case 'mastersthesis':
-                    $html .= ' (' . \Lang::txt('Masters Thesis') . ')';
+                    $html .= ' (' . \Hubzero\Facades\Lang::txt('Masters Thesis') . ')';
                     break;
                 default:
                     break;
@@ -980,7 +980,7 @@ class Format
             $row->doi = str_replace('http://dx.doi.org/', '', $row->doi);
 
             $html  = self::grammarCheck($html, '.');
-            $html .= ' (' . \Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . $row->doi . '">'
+            $html .= ' (' . \Hubzero\Facades\Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . $row->doi . '">'
                 . $row->doi . '</a>)';
         }
         $html  = self::grammarCheck($html, '.');

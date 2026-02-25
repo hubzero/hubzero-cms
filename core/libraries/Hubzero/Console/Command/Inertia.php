@@ -34,7 +34,7 @@ class Inertia extends Base implements CommandInterface
         }
 
         $this->arguments->setOpt(3, 'inertia');
-        \App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
     }
 
     /**

@@ -22,12 +22,12 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!\Hubzero\Facades\App::isAdmin()) {
             return;
         }
 
         // Get the toolbar.
-        $toolbar = \Toolbar::render('toolbar');
+        $toolbar = \Hubzero\Facades\Toolbar::render('toolbar');
 
         // Get the view
         require $this->getLayoutPath($this->params->get('layout', 'default'));

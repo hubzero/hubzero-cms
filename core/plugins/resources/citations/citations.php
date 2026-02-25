@@ -12,6 +12,8 @@
 namespace Plugins\Resources\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 class Citations extends Plugin
 {
@@ -74,7 +76,7 @@ class Citations extends Plugin
         }
 
         // Get a needed library
-        include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+        include_once \Hubzero\Facades\Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
         $cc = \Components\Citations\Models\Citation::all();
 

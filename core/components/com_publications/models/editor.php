@@ -47,7 +47,7 @@ class Editor extends Obj
      */
     public function __construct($handler, $configs)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->handler  = $handler;
         $this->configs  = $configs;

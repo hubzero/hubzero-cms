@@ -10,7 +10,7 @@ namespace Modules\PollTitle;
 
 use Hubzero\Module\Module;
 use Components\Poll\Models\Poll;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Module class for displaying the latest poll's title

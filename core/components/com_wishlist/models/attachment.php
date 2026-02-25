@@ -9,10 +9,10 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Database\Relational;
-use Filesystem;
-use Component;
-use Route;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for a wish attachment

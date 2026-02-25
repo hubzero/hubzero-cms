@@ -12,6 +12,11 @@ namespace Plugins\Tags\Resources;
 
 use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Tags plugin class for resources

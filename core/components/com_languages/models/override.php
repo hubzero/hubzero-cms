@@ -9,8 +9,8 @@
 namespace Components\Languages\Models;
 
 use Hubzero\Base\Obj;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Language override model
@@ -261,7 +261,7 @@ class Override extends Obj
             return false;
         }
 
-        \Cache::clean();
+        \Hubzero\Facades\Cache::clean();
 
         return count($cids);
     }

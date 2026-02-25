@@ -13,6 +13,7 @@ use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Console\Command\Utilities\Git;
 use Hubzero\Filesystem\Adapter\Local;
+use Hubzero\Facades\Lang;
 
 /**
  * Repository class
@@ -50,7 +51,7 @@ class Repository extends Base implements CommandInterface
         // Try to figure out the mechanism
         if (is_dir($directory . DS . '.git')) {
             // Set update source
-            $source = Config::get('repository_source_name', null);
+            $source = \Hubzero\Facades\Config::get('repository_source_name', null);
             $source = $this->arguments->getOpt('source', $source);
 
             if (is_null($source) || preg_match('/^[[:alnum:]\-\_\.]*\/[[:alnum:]\-\_\.]*$/', $source)) {
@@ -415,7 +416,7 @@ class Repository extends Base implements CommandInterface
         // Did we find any files?
         if ($files && count($files) > 0) {
             // Base standards directory
-            if (!$standards = Config::get('repository_standards_dir')) {
+            if (!$standards = \Hubzero\Facades\Config::get('repository_standards_dir')) {
                 $this->output
                      ->addSpacer()
                      ->addLine('You must specify your standards directory first via:')
@@ -632,6 +633,6 @@ class Repository extends Base implements CommandInterface
         $repoPath = $this->arguments->getOpt('r');
         $this->arguments->setOpt('r', $repoPath);
 
-        \App::get('client')->call('repository', 'update', $this->arguments, $this->output);
+        \Hubzero\Facades\App::get('client')->call('repository', 'update', $this->arguments, $this->output);
     }
 }

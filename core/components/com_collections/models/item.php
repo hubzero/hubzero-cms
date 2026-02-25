@@ -13,11 +13,12 @@ use Components\Collections\Tables;
 use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\Str;
-use Filesystem;
-use Request;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Collections model for an item
@@ -89,7 +90,7 @@ class Item extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $tbl = $this->_tbl_name;
         $this->_tbl = new $tbl($this->_db);

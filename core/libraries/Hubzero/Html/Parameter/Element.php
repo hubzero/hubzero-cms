@@ -99,14 +99,14 @@ class Element extends Obj
         $output = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
         if ($description) {
             $output .= ' class="hasTip" title="' .
-                \App::get('language')->txt($label) .
+                \Hubzero\Facades\App::get('language')->txt($label) .
                 '::' .
-                \App::get('language')->txt($description) .
+                \Hubzero\Facades\App::get('language')->txt($description) .
                 '">';
         } else {
             $output .= '>';
         }
-        $output .= \App::get('language')->txt($label) . '</label>';
+        $output .= \Hubzero\Facades\App::get('language')->txt($label) . '</label>';
 
         return $output;
     }

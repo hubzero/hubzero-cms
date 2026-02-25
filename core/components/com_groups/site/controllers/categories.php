@@ -10,11 +10,12 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
 use Components\Groups\Models\Page;
-use Request;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Groups controller class

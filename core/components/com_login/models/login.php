@@ -10,8 +10,9 @@ namespace Components\Login\Models;
 
 use Hubzero\Base\Obj;
 use Hubzero\Utility\Uri;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Login Model
@@ -228,7 +229,7 @@ class Login extends Obj
             $modules = $db->loadObjectList();
 
             if ($db->getErrorNum()) {
-                App::abort(500, \Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+                App::abort(500, \Hubzero\Facades\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
                 return $loginmodule;
             }
 

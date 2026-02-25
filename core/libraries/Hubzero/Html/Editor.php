@@ -10,8 +10,8 @@ namespace Hubzero\Html;
 
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
-use Plugin;
-use Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * Editor class to handle WYSIWYG editors
@@ -154,7 +154,7 @@ class Editor extends Obj
             }
         }
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
         if ($document->getType() != 'html') {
             return;
         }
@@ -352,7 +352,7 @@ class Editor extends Obj
         if (!is_file($path)) {
             $path = PATH_CORE . '/plugins/editors/' . $name . '/' . $name . '.php';
             if (!is_file($path)) {
-                \Notify::error(Lang::txt('JLIB_HTML_EDITOR_CANNOT_LOAD'));
+                \Hubzero\Facades\Notify::error(Lang::txt('JLIB_HTML_EDITOR_CANNOT_LOAD'));
                 return false;
             }
         }

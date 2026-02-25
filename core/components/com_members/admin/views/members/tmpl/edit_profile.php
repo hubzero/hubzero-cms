@@ -78,7 +78,7 @@ $fields = $form->getFieldset('basic');
                             }
 
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
-                            $rorApiBoolean = \Component::params('com_members')->get('rorApi');
+                            $rorApiBoolean = \Hubzero\Facades\Component::params('com_members')->get('rorApi');
                             if (
                                 strtolower($field->fieldname) == "organization"
                                 && strtolower($field->type) == "text"

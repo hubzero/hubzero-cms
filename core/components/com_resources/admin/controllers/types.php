@@ -12,11 +12,12 @@ use Components\Resources\Models\Type;
 use Components\Resources\Models\Entry;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Manage resource types

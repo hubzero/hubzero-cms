@@ -34,7 +34,7 @@ class Resourcetype extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 

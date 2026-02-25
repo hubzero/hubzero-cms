@@ -11,11 +11,13 @@ namespace Components\Courses\Site\Controllers;
 use Components\Courses\Models;
 use Hubzero\Component\SiteController;
 use Exception;
-use Pathway;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Config;
 
 /**
  * Courses controller class
@@ -92,7 +94,7 @@ class Courses extends SiteController
         }
 
         //set title of browser window
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**
@@ -132,7 +134,7 @@ class Courses extends SiteController
         $this->view->database = $this->database;
         $this->view->title    = $this->_title;
 
-        $this->view->notifications = \Notify::messages('courses');
+        $this->view->notifications = \Hubzero\Facades\Notify::messages('courses');
         $this->view->display();
     }
 
@@ -207,7 +209,7 @@ class Courses extends SiteController
         $this->view->model  = $model;
         $this->view->title  = $this->_title;
         $this->view->config = $this->config;
-        $this->view->notifications = \Notify::messages('courses');
+        $this->view->notifications = \Hubzero\Facades\Notify::messages('courses');
         $this->view->display();
     }
 

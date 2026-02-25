@@ -10,15 +10,15 @@ namespace Components\Blog\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Entry;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Event;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Blog controller class for entries

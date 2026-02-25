@@ -21,7 +21,7 @@ class Download
      */
     public static function countProductDownloads($pId)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = 'SELECT COUNT(*) FROM `#__cart_downloads` d
 				LEFT JOIN `#__storefront_skus` s ON d.`sId` = s.`sId`
 				WHERE d.dStatus > 0 AND s.pId = ' . $db->quote($pId);
@@ -39,7 +39,7 @@ class Download
      */
     public static function countSkuDownloads($sId, $uId = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = 'SELECT COUNT(*) FROM `#__cart_downloads`
 				WHERE dStatus > 0 AND sId = ' . $db->quote($sId);
         if ($uId) {
@@ -83,7 +83,7 @@ class Download
             unset($filters['limit']);
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.id AS uidNumber, x.name AS dName, ';
         $sql .= 'x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
@@ -219,7 +219,7 @@ class Download
             unset($filters['limit']);
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql  = 'SELECT p.pId, p.pName, s.sId, s.sSku, d.sId, COUNT(d.sId) AS downloaded FROM `#__cart_downloads` d';
         $sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
@@ -299,7 +299,7 @@ class Download
             $ids .= ',' . $dId;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql  = 'UPDATE `#__cart_downloads` SET `dStatus` = ' . $db->quote($status) . ' WHERE dId IN(';
         $sql .= $ids;
         $sql .= ')';

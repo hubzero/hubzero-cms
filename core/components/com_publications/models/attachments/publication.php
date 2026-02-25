@@ -10,11 +10,11 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Handles a publication link attachment
@@ -112,7 +112,7 @@ class Publication extends Base
                     continue;
                 }
 
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
                 $version = new \Components\Publications\Tables\Version($db);
                 $version->load($attach->object_id);
 
@@ -426,7 +426,7 @@ class Publication extends Base
             }
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $version = new \Components\Publications\Tables\Version($db);
         $version->load($id);
 

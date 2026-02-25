@@ -10,11 +10,11 @@ namespace Modules\Languages;
 
 use Hubzero\Module\Module;
 use Components\Menus\Helpers\Menus as MenusHelper;
-use Config;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a menu
@@ -50,7 +50,7 @@ class Helper extends Module
      */
     public static function getList(&$params)
     {
-        require_once \Component::path('com_menus') . '/helpers/menus.php';
+        require_once \Hubzero\Facades\Component::path('com_menus') . '/helpers/menus.php';
 
         $lang = Lang::getRoot();
         $menu = App::get('menu');

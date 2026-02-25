@@ -9,10 +9,10 @@
 namespace Components\Tools\Models;
 
 use Components\Tools\Helpers;
-use Component;
-use Lang;
-use User;
-use Log;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Log;
 use Hubzero\User\Group;
 
 /**
@@ -187,7 +187,7 @@ class Tool
      */
     public function getToolNames()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $db->setQuery("SELECT toolname FROM `#__tool`;");
         return $db->loadColumn();
@@ -265,7 +265,7 @@ class Tool
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function _sql_create()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -340,7 +340,7 @@ class Tool
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function _sql_read()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $lazyloading = false;
 
         if (empty($db)) {
@@ -433,7 +433,7 @@ class Tool
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function _sql_update($all = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "UPDATE `#__tool` SET ";
 
@@ -610,7 +610,7 @@ class Tool
             return false;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -682,7 +682,7 @@ class Tool
 
         if (in_array($property, $this->_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db = \App::get('db');
+                $db = \Hubzero\Facades\App::get('db');
 
                 if (is_object($db)) {
                     if (in_array($property, array('version'))) {
@@ -927,7 +927,7 @@ class Tool
      */
     public function getDevelopmentGroup()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT cn FROM `#__tool_groups` WHERE toolid=" . $db->Quote($this->id) . " AND role='1';";
 
@@ -952,7 +952,7 @@ class Tool
      */
     public function unpublishVersion($instance)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($this->toolname)) {
             return false;
@@ -994,7 +994,7 @@ class Tool
      */
     public function unpublishAllVersions()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($this->toolname)) {
             return false;
@@ -1097,7 +1097,7 @@ class Tool
      */
     protected static function buildQuerySearch($filters = array(), $admin = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($filters['search'])) {
             return '';
@@ -1149,7 +1149,7 @@ class Tool
         $sql = '';
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $db = \App::get('db');
+            $db = \Hubzero\Facades\App::get('db');
 
             $sql .= " AND t.state=" . $db->Quote($filters['state']) . " ";
         }
@@ -1182,7 +1182,7 @@ class Tool
      */
     public static function getToolCount($filters = array(), $admin = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
         $query .= "WHERE 1=1 ";
@@ -1203,7 +1203,7 @@ class Tool
      */
     public static function getToolSummaries($filters = array(), $admin = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT t.id,t.toolname,t.title,count(v.revision) as versions,t.registered," .
             " t.state_changed,t.state FROM #__tool as t, " . "#__tool_version as v " .
@@ -1232,7 +1232,7 @@ class Tool
     {
         // id  instance  version revision state
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT v.id,v.instance,v.version,v.revision,v.state FROM `#__tool_version` AS v " .
             " WHERE v.toolid=" . $db->Quote($this->id);
@@ -1254,7 +1254,7 @@ class Tool
             return false;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $sql = "SELECT f.toolname FROM `#__tool` AS f
 			JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1
@@ -1275,7 +1275,7 @@ class Tool
      */
     public static function getResourceId($toolname = null, $id = null)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (is_numeric($toolname) && empty($id)) {
             $id = $toolname;
@@ -1322,7 +1322,7 @@ class Tool
      */
     public static function validate(&$tool, &$err, $id, $group_prefix = 'app-')
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query = "SELECT t.id FROM `#__tool` AS t " .
             "WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
@@ -1481,7 +1481,7 @@ class Tool
      */
     public static function validateVersion($newversion, &$err, $id)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $err = '';
 
@@ -1540,7 +1540,7 @@ class Tool
      */
     public static function getMyTools()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
 				FROM `#__resources` AS r, `#__tool_version` AS v
 				WHERE r.published=1
@@ -1562,7 +1562,7 @@ class Tool
      */
     public static function getAllTools()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $sql = "SELECT r.alias, r.published, v.toolaccess AS access, GROUP_CONCAT(v.revision SEPARATOR ',') AS versions
 				FROM `#__resources` AS r LEFT OUTER JOIN  `#__tool_version` AS v 
 				ON
@@ -1584,7 +1584,7 @@ class Tool
      */
     public static function getToolId($toolname = null)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         if ($toolname === null) {
             return false;
         }
@@ -1600,7 +1600,7 @@ class Tool
      */
     public static function getToolDevelopers($toolid)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query  = "SELECT m.uidNumber, u.username FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
@@ -1621,7 +1621,7 @@ class Tool
      */
     public static function getToolGroups($toolid, $groups = array())
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // @FIXME cn should be unique, this was a workaround for a nanohub data bug
         $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g ";
@@ -1652,7 +1652,7 @@ class Tool
      */
     public static function getToolGroupsRestriction($toolid, $instance)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query  = "SELECT tv.toolname, tg.cn ";
         $query .= "FROM `#__tool_groups` AS tg, `#__tool_version` AS tv ";
@@ -1673,7 +1673,7 @@ class Tool
      */
     public static function saveTicketId($toolid = null, $ticketid = null)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         if ($toolid === null or $ticketid === null) {
             return false;
         }
@@ -1693,7 +1693,7 @@ class Tool
      */
     public static function getTicketId($toolid = null)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         if ($toolid === null) {
             return false;
         }
@@ -1766,7 +1766,7 @@ class Tool
      */
     public static function getTools($filters = array(), $admin = false)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $filter = self::xbuildQuery($filters, $admin);
 
         $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, " .

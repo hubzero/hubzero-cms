@@ -22,15 +22,15 @@ class Newsletter extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_newsletter')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_newsletter')) {
+            \Hubzero\Facades\App::abort(403, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Instantiate controller
-        $controllerName = \Request::getCmd('controller', 'newsletters');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'newsletters');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('JERROR_INVALID_CONTROLLER'));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_INVALID_CONTROLLER'));
             return;
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
@@ -38,17 +38,17 @@ class Newsletter extends AbstractComponent
 
         // Menu items
         $menuItems = array(
-            'newsletters'  => \Lang::txt('COM_NEWSLETTER_NEWSLETTERS'),
-            'mailings'     => \Lang::txt('COM_NEWSLETTER_MAILINGS'),
-            'mailinglists' => \Lang::txt('COM_NEWSLETTER_LISTS'),
-            'templates'    => \Lang::txt('COM_NEWSLETTER_TEMPLATES'),
-            'tools'        => \Lang::txt('COM_NEWSLETTER_TOOLS'),
-            'campaigns'    => \Lang::txt('COM_NEWSLETTER_CAMPAIGNS')
+            'newsletters'  => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_NEWSLETTERS'),
+            'mailings'     => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_MAILINGS'),
+            'mailinglists' => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_LISTS'),
+            'templates'    => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_TEMPLATES'),
+            'tools'        => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_TOOLS'),
+            'campaigns'    => \Hubzero\Facades\Lang::txt('COM_NEWSLETTER_CAMPAIGNS')
         );
 
         foreach ($menuItems as $k => $v) {
-            $active = (\Request::getCmd('controller', 'newsletters') == $k) ? true : false;
-            \Submenu::addEntry($v, \Route::url('index.php?option=com_newsletter&controller=' . $k), $active);
+            $active = (\Hubzero\Facades\Request::getCmd('controller', 'newsletters') == $k) ? true : false;
+            \Hubzero\Facades\Submenu::addEntry($v, \Hubzero\Facades\Route::url('index.php?option=com_newsletter&controller=' . $k), $active);
         }
 
         // Execute controller

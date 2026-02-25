@@ -191,7 +191,7 @@ class Comment extends Table
         $this->parent_activity = $parent_activity;
         $this->comment         = $comment;
         $this->admin           = $admin;
-        $this->created         = \Date::of('now')->toSql();
+        $this->created         = \Hubzero\Facades\Date::of('now')->toSql();
         $this->created_by      = $by;
 
         if (!$this->store()) {

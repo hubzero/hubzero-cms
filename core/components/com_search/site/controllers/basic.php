@@ -11,12 +11,12 @@ namespace Components\Search\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Search\Models\Basic\Result\Set;
 use Components\Search\Models\Basic\Terms;
-use Document;
-use Pathway;
-use Request;
-use Plugin;
-use Config;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 
 /**
  * Search controller class

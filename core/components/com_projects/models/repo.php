@@ -12,11 +12,12 @@ use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Plugin;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Project Repository model
@@ -59,7 +60,7 @@ class Repo extends Obj
      */
     public function __construct($project = null, $name = 'local')
     {
-        $this->db = \App::get('db');
+        $this->db = \Hubzero\Facades\App::get('db');
 
         $this->set('project', $project);
         $this->set('name', $name);

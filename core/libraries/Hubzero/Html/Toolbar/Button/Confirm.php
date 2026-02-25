@@ -45,8 +45,8 @@ class Confirm extends Button
         $list = true,
         $hideMenu = false
     ) {
-        $text   = \Lang::txt($text);
-        $msg    = \Lang::txt($msg, true);
+        $text   = \Hubzero\Facades\Lang::txt($text);
+        $msg    = \Hubzero\Facades\Lang::txt($msg, true);
         $class  = $this->fetchIconClass($name);
         $message = $this->_getCommand($msg, $name, $task, $list);
 
@@ -102,7 +102,7 @@ class Confirm extends Button
     {
         Behavior::framework();
 
-        $message = \Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+        $message = \Hubzero\Facades\Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
         $message = str_replace('"', '&quot;', $message);
 
         return $message;

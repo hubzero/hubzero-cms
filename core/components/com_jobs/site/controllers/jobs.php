@@ -24,15 +24,17 @@ use Components\Services\Models\Service;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
-use Request;
-use Pathway;
-use Event;
-use Route;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 use ZipArchive;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * Jobs controller class for postings
@@ -117,7 +119,7 @@ class Jobs extends SiteController
         } elseif ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**
@@ -403,7 +405,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -500,7 +502,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -591,7 +593,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         $this->view->setName('subscribe')
@@ -608,7 +610,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -810,7 +812,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -854,7 +856,7 @@ class Jobs extends SiteController
 
         // cancel previous subscription & issue a refund if applicable
         if ($subscription->cancel($refund, $unitsleft)) {
-            \Notify::success(Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED'));
+            \Hubzero\Facades\Notify::success(Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED'));
         }
 
         App::redirect(
@@ -871,7 +873,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -970,7 +972,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         $this->view->setName('dashboard')
@@ -1074,7 +1076,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         $view->display();
@@ -1155,13 +1157,13 @@ class Jobs extends SiteController
                 if ($appid) {
                     $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_EDITS_ACCEPTED');
                 }
-                \Notify::success($this->_msg);
+                \Hubzero\Facades\Notify::success($this->_msg);
             }
         }
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         // return to the job posting
@@ -1287,7 +1289,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         $this->view->setName('job')
@@ -1312,7 +1314,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1413,11 +1415,11 @@ class Jobs extends SiteController
                 } else {
                     $this->_msg = Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
                 }
-                \Notify::success($this->_msg);
+                \Hubzero\Facades\Notify::success($this->_msg);
             }
         } elseif ($job->status == 1 && $this->_task == 'unpublish') {
             $job->status = 3;
-            \Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
         } elseif ($job->status == 3 && $this->_task == 'reopen') {
             // make sure we aren't over quota
             $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
@@ -1426,7 +1428,7 @@ class Jobs extends SiteController
                 $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
             } else {
                 $job->status = 1;
-                \Notify::success(Lang::txt('COM_JOBS_MSG_JOB_REOPENED'));
+                \Hubzero\Facades\Notify::success(Lang::txt('COM_JOBS_MSG_JOB_REOPENED'));
             }
         } elseif ($this->_task == 'remove') {
             $job->status = 2;
@@ -1464,7 +1466,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         App::redirect(
@@ -1488,7 +1490,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1608,7 +1610,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            \Hubzero\Facades\Notify::error($this->getError());
         }
 
         $this->view->setName('editjob')
@@ -1849,7 +1851,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            \Hubzero\Facades\Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1878,7 +1880,7 @@ class Jobs extends SiteController
             $result = $xserver->serve_attachment($archive['path'], $archive['name'], false);
 
             // Delete downloaded zip
-            \Filesystem::delete($archive['path']);
+            \Hubzero\Facades\Filesystem::delete($archive['path']);
 
             if (!$result) {
                 throw new Exception(Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'), 500);

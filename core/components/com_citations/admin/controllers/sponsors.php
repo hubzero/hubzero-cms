@@ -10,10 +10,11 @@ namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Sponsor;
-use Request;
-use Notify;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for citation types

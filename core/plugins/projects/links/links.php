@@ -5,6 +5,14 @@ namespace Plugins\Projects\Links;
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
@@ -302,12 +310,12 @@ class Links extends Plugin
                 }
             }
 
-            \Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
+            \Hubzero\Facades\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
         }
 
         // Pass success or error message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         }
 
         // Build pub url

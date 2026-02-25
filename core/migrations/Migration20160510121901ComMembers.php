@@ -45,7 +45,7 @@ class Migration20160510121901ComMembers extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $params = \Component::params('com_members');
+            $params = \Hubzero\Facades\Component::params('com_members');
 
             // Build field value arrays for cleaner INSERT query
             $orgCreate = self::state($params->get('registrationOrganization'), 'HHHH', 'create');

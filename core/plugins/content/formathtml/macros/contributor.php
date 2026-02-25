@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\User;
 
 /**
  * Macro class for linking contributor
@@ -108,7 +109,7 @@ class Contributor extends Macro
 
         // Did we get a result from the database?
         if ($name && $id) {
-            return '<a href="' . \Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+            return '<a href="' . \Hubzero\Facades\Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
         } else {
             // Return error message
             return '(contributor:' . $et . ' not found)';

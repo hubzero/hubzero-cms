@@ -3,6 +3,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Component;
 
 // no direct access
 /**

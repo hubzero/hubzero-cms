@@ -8,6 +8,8 @@
 
 namespace Hubzero\Database\Schema;
 
+use Hubzero\Facades\User;
+
 /**
  * Table definition for defining table structure
  *

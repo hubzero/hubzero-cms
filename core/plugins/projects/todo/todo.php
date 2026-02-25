@@ -11,6 +11,14 @@ namespace Plugins\Projects\Todo;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Utility\Str;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Pathway;
 
 /**
  * Projects todo's
@@ -607,9 +615,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -701,9 +709,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect back to todo list
@@ -796,9 +804,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -872,9 +880,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect

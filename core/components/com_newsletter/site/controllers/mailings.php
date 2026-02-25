@@ -12,9 +12,9 @@ use Components\Newsletter\Helpers\Helper;
 use Components\Newsletter\Models\Mailing\Recipient\Action;
 use Hubzero\Component\SiteController;
 use stdClass;
-use Request;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Newsletter Mailing Controller

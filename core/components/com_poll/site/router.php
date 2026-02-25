@@ -35,8 +35,8 @@ class Router extends Base
 
         // Get the menu items for this component.
         if (!$items) {
-            $menu      = \App::get('menu');
-            $component = \Component::load('com_poll');
+            $menu      = \Hubzero\Facades\App::get('menu');
+            $component = \Hubzero\Facades\Component::load('com_poll');
             $items     = $menu->getItems('component_id', $component->id);
         }
 
@@ -125,7 +125,7 @@ class Router extends Base
         }
 
         //Get the active menu item
-        $menu  = \App::get('menu');
+        $menu  = \Hubzero\Facades\App::get('menu');
         $item  = $menu->getActive();
 
         $count = count($segments);

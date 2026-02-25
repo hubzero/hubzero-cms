@@ -76,7 +76,7 @@ class Page extends WikiMacro
 
         // Build and return the link
         return '<a href="'
-            . \Route::url($row->link())
+            . \Hubzero\Facades\Route::url($row->link())
             . '">'
             . stripslashes($row->get('title', $row->get('pagename')))
             . '</a>';

@@ -546,12 +546,12 @@ class Loader
             case 'safeuri':
                 $secureid = null;
                 if (is_array($cacheparams->modeparams)) {
-                    $uri = \Request::get();
+                    $uri = \Hubzero\Facades\Request::get();
                     $safeuri = new \stdClass();
                     foreach ($cacheparams->modeparams as $key => $value) {
                         // Use int filter for id/catid to clean out spamy slugs
                         if (isset($uri[$key])) {
-                            $safeuri->$key = \Request::_cleanVar($uri[$key], 0, $value);
+                            $safeuri->$key = \Hubzero\Facades\Request::_cleanVar($uri[$key], 0, $value);
                         }
                     }
                 }
@@ -590,7 +590,7 @@ class Loader
                 $ret = $cache->get(
                     array($cacheparams->class, $cacheparams->method),
                     $cacheparams->methodparams,
-                    $module->id . $view_levels . \Request::getInt('Itemid', 0),
+                    $module->id . $view_levels . \Hubzero\Facades\Request::getInt('Itemid', 0),
                     $wrkarounds,
                     $wrkaroundoptions
                 );

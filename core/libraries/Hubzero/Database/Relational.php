@@ -23,6 +23,8 @@ use Hubzero\Database\Relationship\MorphToMany;
 use Hubzero\Database\Exception\BadMethodCallException;
 use Hubzero\Database\Exception\RuntimeException;
 use Closure;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Config;
 
 /**
  * Database ORM base class
@@ -1676,7 +1678,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Only trigger if Event facade is available (may not be in tests)
         if (class_exists('Event')) {
             $eventName = 'model.' . $class . '.' . $event;
-            $results = \Event::trigger($eventName, [$this]);
+            $results = \Hubzero\Facades\Event::trigger($eventName, [$this]);
 
             // Check if any plugin listener returned false
             if ($halt && in_array(false, $results, true)) {
@@ -4325,7 +4327,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 $this->changes[$pk] = empty($existingPk) ? $result : $existingPk;
 
                 if (class_exists('Event')) {
-                    \Event::trigger($this->getTableName() . '_new', ['model' => $this, 'changes' => $this->changes]);
+                    \Hubzero\Facades\Event::trigger($this->getTableName() . '_new', ['model' => $this, 'changes' => $this->changes]);
                 }
             }
 
@@ -4340,7 +4342,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             // Existing HubZero system event (only if Event facade is available)
             if (class_exists('Event')) {
-                \Event::trigger('system.onContentSave', array($this->getTableName(), $this, $this->changes));
+                \Hubzero\Facades\Event::trigger('system.onContentSave', array($this->getTableName(), $this, $this->changes));
             }
 
             // Handle cascade saves and orphan removal (opt-in)
@@ -4813,7 +4815,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             // Existing HubZero system event (only if Event facade is available)
             if (class_exists('Event')) {
-                \Event::trigger('system.onContentDestroy', array($this->getTableName(), $this));
+                \Hubzero\Facades\Event::trigger('system.onContentDestroy', array($this->getTableName(), $this));
             }
         }
 
@@ -5138,8 +5140,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function ordered($orderBy = 'orderby', $orderDir = 'orderdir')
     {
         // Look for our request vars of interest
-        $this->orderBy  = \Request::getCmd($orderBy, $this->getState('orderby', $this->orderBy));
-        $this->orderDir = \Request::getCmd($orderDir, $this->getState('orderdir', $this->orderDir));
+        $this->orderBy  = \Hubzero\Facades\Request::getCmd($orderBy, $this->getState('orderby', $this->orderBy));
+        $this->orderDir = \Hubzero\Facades\Request::getCmd($orderDir, $this->getState('orderdir', $this->orderDir));
 
         $qualifiedOrderBy = $this->orderBy;
 
@@ -5184,7 +5186,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function getState($var, $default = null)
     {
         $key = str_replace('\\', '.', $this->getModelNamespace()) . '.' . $this->getModelName() . ".{$var}";
-        return \User::getState($key, $default);
+        return \Hubzero\Facades\User::getState($key, $default);
     }
 
     /**
@@ -5197,7 +5199,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function setState($key, $value)
     {
         $key = str_replace('\\', '.', $this->getModelNamespace()) . '.' . $this->getModelName() . ".{$key}";
-        \User::setState($key, $value);
+        \Hubzero\Facades\User::setState($key, $value);
     }
 
     /**

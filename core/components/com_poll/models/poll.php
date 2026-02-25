@@ -59,7 +59,7 @@ class Poll extends Relational
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
         if (trim(str_replace('-', '', $this->alias)) == '') {
-            $alias = \Date::of('now')->format("%Y-%m-%d-%H-%M-%S");
+            $alias = \Hubzero\Facades\Date::of('now')->format("%Y-%m-%d-%H-%M-%S");
         }
         return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
     }
@@ -135,7 +135,7 @@ class Poll extends Relational
 
         $dt = new Date();
         $dt->set([
-            'date'    => \Date::toSql(),
+            'date'    => \Hubzero\Facades\Date::toSql(),
             'vote_id' => (int) $option_id,
             'poll_id' => (int) $this->get('id')
         ]);

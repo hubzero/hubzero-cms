@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Groups controller class for managing membership and group info
@@ -256,7 +256,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_added',
             'comments'  => $users
@@ -333,7 +333,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_approved',
             'comments'  => $users
@@ -401,7 +401,7 @@ class Membership extends AdminController
         // Save changes
         $this->group->update();
 
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_promoted',
             'comments'  => $users
@@ -483,7 +483,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_demoted',
             'comments'  => $users
@@ -568,7 +568,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_deleted',
             'comments'  => $users_mem
@@ -646,7 +646,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_uninvited',
             'comments'  => array_merge($users, $useremails)
@@ -709,7 +709,7 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_denied',
             'comments'  => $users

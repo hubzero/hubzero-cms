@@ -9,8 +9,8 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Arr;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Utility class for categories

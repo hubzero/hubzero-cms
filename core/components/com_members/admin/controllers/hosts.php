@@ -11,9 +11,10 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Host;
-use Request;
-use Event;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Manage host entries for a member

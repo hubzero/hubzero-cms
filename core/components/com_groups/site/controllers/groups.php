@@ -17,16 +17,18 @@ use Components\Groups\Models\Tags;
 use Components\Groups\Models\Log;
 use Components\Groups\Models\Recent;
 use Components\Groups\Models\Orm\Field;
-use Filesystem;
-use Request;
-use Config;
-use Event;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
-
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Session;
 /**
  * Groups controller class
  */
@@ -96,7 +98,7 @@ class Groups extends Base
         // If we have a users profile load their groups and groups matching their tags
         if (!User::isGuest()) {
             // Get users tags
-            include_once \Component::path('com_members') . DS . 'models' . DS . 'tags.php';
+            include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'tags.php';
             $mt = new \Components\Members\Models\Tags(User::get('id'));
             $mytags = $mt->render('string');
 
@@ -1387,7 +1389,7 @@ class Groups extends Base
             }
 
             // Get the config and build base path
-            $wiki_config = \Component::params('com_wiki');
+            $wiki_config = \Hubzero\Facades\Component::params('com_wiki');
             $base_path = $wiki_config->get('filepath') . DS . $page->get('id');
         } elseif ($this->active == 'blog') {
             // Get access setting of group blog

@@ -17,6 +17,13 @@ use Components\Events\Models\Tags;
 use Components\Events\Helpers\Html;
 use Hubzero\Component\AdminController;
 use Exception;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 /**
  * Events controller for entries
@@ -100,7 +107,7 @@ class Events extends AdminController
         $this->view->rows = $ee->getRecords($this->view->filters);
 
         // Get list of categories
-        $categories[] = \Html::select(
+        $categories[] = \Hubzero\Facades\Html::select(
             'option',
             '0',
             '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'),
@@ -112,7 +119,7 @@ class Events extends AdminController
         );
 
         $categories = array_merge($categories, $this->database->loadObjectList());
-        $this->view->clist = \Html::select(
+        $this->view->clist = \Hubzero\Facades\Html::select(
             'genericlist',
             $categories,
             'catid',
@@ -125,7 +132,7 @@ class Events extends AdminController
         );
 
         //get list of groups
-        $groups[] = \Html::select(
+        $groups[] = \Hubzero\Facades\Html::select(
             'option',
             '0',
             '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'),
@@ -138,7 +145,7 @@ class Events extends AdminController
 				AND e.scope_id=g.gidNumber";
         $this->database->setQuery($sql);
         $groups = array_merge($groups, $this->database->loadObjectList());
-        $this->view->glist = \Html::select(
+        $this->view->glist = \Hubzero\Facades\Html::select(
             'genericlist',
             $groups,
             'group_id',
@@ -498,7 +505,7 @@ class Events extends AdminController
 
         // make sure we have a start date
         if (!$row->publish_up) {
-            $row->publish_up = \Date::toSql();
+            $row->publish_up = \Hubzero\Facades\Date::toSql();
         }
 
         // If this is a new event, publish it, otherwise retain its state

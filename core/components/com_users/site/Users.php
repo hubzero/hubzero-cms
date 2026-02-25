@@ -23,21 +23,21 @@ class Users extends AbstractComponent
     protected function execute(): void
     {
         // Maintain backwards compatibility
-        if ($view = \Request::getCmd('view')) {
+        if ($view = \Hubzero\Facades\Request::getCmd('view')) {
             if ($view != 'login') {
-                \Request::setVar('task', $view);
+                \Hubzero\Facades\Request::setVar('task', $view);
             }
         }
 
-        $task = \Request::getCmd('task');
+        $task = \Hubzero\Facades\Request::getCmd('task');
 
         if (strstr($task, '.')) {
             $task = explode('.', $task);
             $task = end($task);
         }
 
-        $uri = new \Hubzero\Utility\Uri(\Request::current());
-        $uri->setQuery(\Request::query());
+        $uri = new \Hubzero\Utility\Uri(\Hubzero\Facades\Request::current());
+        $uri->setQuery(\Hubzero\Facades\Request::query());
 
         switch ($task) {
             case 'reset':
@@ -49,7 +49,7 @@ class Users extends AbstractComponent
                 $url = $uri->toString();
 
                 $redirect = new \Hubzero\Http\RedirectResponse($url, 301);
-                $redirect->setRequest(\App::get('request'));
+                $redirect->setRequest(\Hubzero\Facades\App::get('request'));
                 $redirect->send();
                 break;
 
@@ -60,11 +60,11 @@ class Users extends AbstractComponent
             case 'endsinglesignon':
             case 'spamjail':
             case 'login':
-                \Request::setVar('task', $task);
+                \Hubzero\Facades\Request::setVar('task', $task);
                 break;
 
             default:
-                \Request::setVar('task', '');
+                \Hubzero\Facades\Request::setVar('task', '');
                 break;
         }
 

@@ -203,9 +203,9 @@ namespace Hubzero\Component\Tests {
                 HtmxFlowAppStub::reset();
             }
 
-            \App::set('request', new HtmxFlowRequestStub(array('HX-Request' => 'true')));
-            \App::set('response', new HtmxFlowResponseStub());
-            \App::set('app', new HtmxFlowContainerStub());
+            \Hubzero\Facades\App::set('request', new HtmxFlowRequestStub(array('HX-Request' => 'true')));
+            \Hubzero\Facades\App::set('response', new HtmxFlowResponseStub());
+            \Hubzero\Facades\App::set('app', new HtmxFlowContainerStub());
         }
 
         #[Test]
@@ -217,11 +217,11 @@ namespace Hubzero\Component\Tests {
             $controller->fragmentTask();
             $output = ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame('<li>ok</li>', $output);
             $this->assertSame(200, $response->statusCode);
             $this->assertStringContainsString('HX-Request', (string) $response->headers->get('Vary', ''));
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
 
         #[Test]
@@ -248,11 +248,11 @@ namespace Hubzero\Component\Tests {
             $controller->noContentTask();
             $output = ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame('', $output);
             $this->assertSame(204, $response->statusCode);
             $this->assertStringContainsString('HX-Request', (string) $response->headers->get('Vary', ''));
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
 
         #[Test]
@@ -264,11 +264,11 @@ namespace Hubzero\Component\Tests {
             $controller->stopPollingTask();
             $output = ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame('', $output);
             $this->assertSame(286, $response->statusCode);
             $this->assertStringContainsString('HX-Request', (string) $response->headers->get('Vary', ''));
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
     }
 }

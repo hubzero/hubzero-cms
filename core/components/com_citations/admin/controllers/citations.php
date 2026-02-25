@@ -16,12 +16,15 @@ use Components\Citations\Helpers\Format;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Route;
-use Event;
-use Lang;
-use App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
 
 /**
  * Controller class for citations

@@ -49,7 +49,7 @@ class Events extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // get args
@@ -86,7 +86,7 @@ class Events extends GroupMacro
     private function getGroupEvents($group, $filters = array())
     {
         //instantiate database
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //build query
         $sql = "SELECT * FROM `#__events`
@@ -121,7 +121,7 @@ class Events extends GroupMacro
         if (count($events) > 0) {
             foreach ($events as $event) {
                 //build link
-                $link = \Route::url('index
+                $link = \Hubzero\Facades\Route::url('index
                     . php?option=com_groups&cn='
                     . $group->get('cn')
                     . '&active=calendar&action=details&event_id='
@@ -133,17 +133,17 @@ class Events extends GroupMacro
                 $publishDown = $event->publish_down;
 
                 if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown))) {
-                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
-                    $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
+                    $date  = \Hubzero\Facades\Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                    $date .= ' &mdash; ' . \Hubzero\Facades\Date::of($publishDown)->toLocal('g:i a');
                 } elseif (
                     isset($event->publish_down)
                     && $event->publish_down
                     && $event->publish_down != '0000-00-00 00:00:00'
                 ) {
-                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
-                    $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
+                    $date  = \Hubzero\Facades\Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                    $date .= ' &mdash; ' . \Hubzero\Facades\Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
                 } else {
-                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                    $date  = \Hubzero\Facades\Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
                 }
 
                 //shorten content
@@ -168,7 +168,7 @@ class Events extends GroupMacro
             $content
                 .= '<p>Currently there are no upcoming group events
                 . Add an event by <a href="'
-                . \Route::url('index
+                . \Hubzero\Facades\Route::url('index
                 . php?option=com_groups&cn='
                 . $group->get('cn')
                 . '&active=calendar&action=add')

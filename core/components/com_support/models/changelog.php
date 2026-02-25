@@ -12,8 +12,8 @@ use Hubzero\Base\Obj;
 use Hubzero\Utility\Validate;
 use InvalidArgumentException;
 use stdClass;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Support mdoel for a ticket changelog
@@ -441,10 +441,10 @@ class Changelog extends Obj
             $b = Lang::txt('COM_SUPPORT_BLANK');
             $a = Lang::txt('COM_SUPPORT_BLANK');
             if ($before->get('target_date') && $before->get('target_date') != '0000-00-00 00:00:00') {
-                $b = \Date::of($before->get('target_date'))->toLocal('Y-m-d H:i:s');
+                $b = \Hubzero\Facades\Date::of($before->get('target_date'))->toLocal('Y-m-d H:i:s');
             }
             if ($after->get('target_date') && $after->get('target_date') != '0000-00-00 00:00:00') {
-                $a = \Date::of($after->get('target_date'))->toLocal('Y-m-d H:i:s');
+                $a = \Hubzero\Facades\Date::of($after->get('target_date'))->toLocal('Y-m-d H:i:s');
             }
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TARGET_DATE'),

@@ -43,8 +43,8 @@ class Database
      */
     public function __construct()
     {
-        $this->servers = (array) \Config::get('redis_server', array());
-        $this->options = (array) \Config::get('redis_server_options', array());
+        $this->servers = (array) \Hubzero\Facades\Config::get('redis_server', array());
+        $this->options = (array) \Hubzero\Facades\Config::get('redis_server_options', array());
 
         if (isset($this->options['cluster']) && $this->options['cluster']) {
             $this->clients = $this->createAggregateClient();

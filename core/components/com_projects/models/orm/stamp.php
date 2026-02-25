@@ -9,7 +9,7 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Projects Stamp model
@@ -146,7 +146,7 @@ class Stamp extends Relational
         }
 
         // Generate stamp
-        require_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
+        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
         $stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
         $obj->set(array(

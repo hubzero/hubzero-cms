@@ -47,8 +47,8 @@ class View extends AbstractView
         if (!array_key_exists('override_path', $config)) {
             $config['override_path'] = '';
 
-            if (\App::has('template')) {
-                $config['override_path'] = \App::get('template')->path;
+            if (\Hubzero\Facades\App::has('template')) {
+                $config['override_path'] = \Hubzero\Facades\App::get('template')->path;
             }
         }
         $this->_overridePath = $config['override_path'];
@@ -124,7 +124,7 @@ class View extends AbstractView
         $this->setLayout($config['layout']);
 
         // Set the site's base URL
-        $this->baseurl = \Request::base(true);
+        $this->baseurl = \Hubzero\Facades\Request::base(true);
     }
 
     /**

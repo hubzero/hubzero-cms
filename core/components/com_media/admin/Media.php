@@ -22,21 +22,21 @@ class Media extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_media')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_media')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $params = \Component::params('com_media');
+        $params = \Hubzero\Facades\Component::params('com_media');
         $path = trim($params->get('file_path', 'site/media'), '/');
         $path = $path ? $path . '/' : '';
 
         define('COM_MEDIA_BASE', PATH_APP . '/' . $path);
 
-        $baseurl = rtrim(\Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
+        $baseurl = rtrim(\Hubzero\Facades\Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
         define('COM_MEDIA_BASEURL', $baseurl);
 
-        $controllerName = \Request::getCmd('controller', 'media_test');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'media_test');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'media';
         }

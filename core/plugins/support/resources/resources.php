@@ -12,6 +12,9 @@
 namespace Plugins\Support\Resources;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 class Resources extends Plugin
 {

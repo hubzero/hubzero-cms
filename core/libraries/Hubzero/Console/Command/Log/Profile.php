@@ -45,7 +45,7 @@ class Profile extends Base
      **/
     public static function path()
     {
-        $dir = \Config::get('log_path');
+        $dir = \Hubzero\Facades\Config::get('log_path');
 
         if (is_dir('/var/log/hubzero-cms')) {
             $dir = '/var/log/hubzero-cms';

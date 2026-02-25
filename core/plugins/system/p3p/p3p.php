@@ -12,6 +12,7 @@
 namespace Plugins\System\P3p;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class P3p extends Plugin
 {

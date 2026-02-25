@@ -15,14 +15,15 @@ use Components\Jobs\Tables\JobType;
 use Components\Jobs\Tables\Employer;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for job postings
@@ -164,7 +165,7 @@ class Jobs extends AdminController
         }
 
         // Get subscription info
-        include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
+        include_once \Hubzero\Facades\Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
         $subId = $this->view->employer->subscriptionid;
         $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
@@ -227,7 +228,7 @@ class Jobs extends AdminController
                 return;
             }
         } else { // saving new job
-            include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
+            include_once \Hubzero\Facades\Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
             $subscription = \Components\Services\Models\Subscription::blank();
             $code = $subscription->generateCode(8, 8, 0, 1, 0);
             $job->code = $code;
@@ -345,7 +346,7 @@ class Jobs extends AdminController
     private function checkQuota($job, $uid, $database)
     {
         // make sure we aren't over quota
-        include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
+        include_once \Hubzero\Facades\Component::path('com_services') . DS . 'models' . DS . 'service.php';
 
         $maxads = 3;
         if (

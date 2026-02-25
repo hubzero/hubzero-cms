@@ -4,6 +4,8 @@ namespace Plugins\Citation\Bibtex;
 
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * @package    hubzero-cms

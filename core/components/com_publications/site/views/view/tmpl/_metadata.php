@@ -41,7 +41,7 @@ if (!$this->publication->isPublished()) {
     return;
 }
 
-$database = \App::get('db');
+$database = \Hubzero\Facades\App::get('db');
 
 $data = '';
 foreach ($this->sections as $section) {

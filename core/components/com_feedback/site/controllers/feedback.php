@@ -14,15 +14,16 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\Number;
 use Hubzero\Utility\Sanitize;
 use DirectoryIterator;
-use Filesystem;
-use Component;
-use Pathway;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Feedback controller class
@@ -76,7 +77,7 @@ class Feedback extends SiteController
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
 
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**

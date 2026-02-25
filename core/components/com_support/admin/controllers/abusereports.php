@@ -14,15 +14,16 @@ use Hubzero\Component\AdminController;
 use Hubzero\Mail\Message;
 use Hubzero\Mail\View;
 use Exception;
-use Component;
-use Request;
-use Config;
-use Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
 use Route;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 use App;
+use Hubzero\Facades\Notify;
 
 /**
  * Support cotnroller for Abuse Reports
@@ -342,11 +343,11 @@ class Abusereports extends AdminController
         }
 
         // Check the HUB configuration to see if banking is turned on
-        $banking = \Component::params('com_members')->get('bankAccounts');
+        $banking = Component::params('com_members')->get('bankAccounts');
 
         // Give some points to whoever reported abuse
         if ($banking && $gratitude) {
-            $BC = \Hubzero\Bank\Config::values();
+            $BC = \Hubzero\BankConfig::values();
             $ar = $BC->get('abusereport');  // How many points?
             if ($ar) {
                 $ruser = User::getInstance($report->get('created_by'));

@@ -11,9 +11,10 @@ namespace Components\Projects\Models;
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
-use Component;
-use Date;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Project Tool model
@@ -61,7 +62,7 @@ class Tool extends Model
      */
     public function __construct($oid = null, $projectid = null, $instance = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new Tables\Tool($this->_db);
 
@@ -232,7 +233,7 @@ class Tool extends Model
             }
             if ($property == 'actor') {
                 if (!isset($this->_actor) || !($this->_actor instanceof \Hubzero\User\User)) {
-                    $this->_actor = \User::getInstance($this->_lastUpdate->actor);
+                    $this->_actor = \Hubzero\Facades\User::getInstance($this->_lastUpdate->actor);
                 }
                 if ($as) {
                     return $this->_actor->get($as);
@@ -515,7 +516,7 @@ class Tool extends Model
     public function creator($property = null)
     {
         if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = \User::getInstance($this->get('created_by'));
+            $this->_creator = \Hubzero\Facades\User::getInstance($this->get('created_by'));
         }
         if ($property) {
             return $this->_creator->get($property);
@@ -536,7 +537,7 @@ class Tool extends Model
     public function statusChanger($property = null)
     {
         if (!isset($this->_statusChanger) || !($this->_statusChanger instanceof \Hubzero\User\User)) {
-            $this->_statusChanger = \User::getInstance($this->get('status_changed_by'));
+            $this->_statusChanger = \Hubzero\Facades\User::getInstance($this->get('status_changed_by'));
         }
         if ($property) {
             return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : null;

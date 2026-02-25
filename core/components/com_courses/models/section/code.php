@@ -10,7 +10,7 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for a course
@@ -49,7 +49,7 @@ class Code extends Base
      */
     public function __construct($oid = null, $section_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;
@@ -133,7 +133,7 @@ class Code extends Base
             return true;
         }
 
-        $now = \Date::of('now')->toSql();
+        $now = \Hubzero\Facades\Date::of('now')->toSql();
 
         if (
             $this->get('expires')
@@ -178,7 +178,7 @@ class Code extends Base
             $redeemed_by = User::get('id');
         }
         $this->set('redeemed_by', $redeemed_by);
-        $this->set('redeemed', \Date::of('now')->toSql());
+        $this->set('redeemed', \Hubzero\Facades\Date::of('now')->toSql());
         return $this->store();
     }
 }

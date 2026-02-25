@@ -28,7 +28,7 @@ class CodeHelper
         $pageExists = (1 == Page::all()->whereEquals('id', $pageId)->total());
 
         // Calculate and compare hash of hub, user, and campaign secrets to passed code:
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $vars = array(
                     $campaignId,
                     $username
@@ -46,7 +46,7 @@ class CodeHelper
     // Validate code obtained from user's URL, using email subscription page id
     public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
     {
-        require_once \Component::path('com_newsletter') . '/secrets/page_code.php';
+        require_once \Hubzero\Facades\Component::path('com_newsletter') . '/secrets/page_code.php';
 
         // Acquire page Id for email subscription:
         $emailSubsPageId = PAGE_CODE['email_subscriptions_page_id'];

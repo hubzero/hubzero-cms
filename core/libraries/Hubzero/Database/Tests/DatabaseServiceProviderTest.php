@@ -13,6 +13,8 @@ namespace Hubzero\Database {
         {
             public static array $values = [];
 
+use Hubzero\Facades\Config;
+
             public static function get($key, $default = null)
             {
                 return self::$values[$key] ?? $default;

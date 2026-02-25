@@ -10,7 +10,7 @@ namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
 use Lang;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for project shared files

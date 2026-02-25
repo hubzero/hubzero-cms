@@ -92,7 +92,7 @@ $version = $record['summary']['version'];
                 foreach ($layout[$idx - 1] as $qid => $group) :
                     foreach ($group['answers'] as $aidx => $ans) :
                         if (!isset($record['detail'][$qid]) || $record['detail'][$qid]['answer_id'] == 0) :
-                                \Document::addstyleDeclaration('
+                                \Hubzero\Facades\Document::addstyleDeclaration('
                                                                 #question-' . $qid . '-marker {
                                                                         top: ' . ($ans['top'] - 4) . 'px;
                                                                         left: ' . $ans['left'] . 'px;
@@ -104,7 +104,7 @@ $version = $record['summary']['version'];
                                     id="question-' . $qid . '-marker">No answer provided</div>';
                                 continue 2;
                         elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']) :
-                                                       \Document::addstyleDeclaration('
+                                                       \Hubzero\Facades\Document::addstyleDeclaration('
                                                                 #question-' . $qid . '-marker-correct {
                                                                         top: ' . ($ans['top'] - 4) . 'px;
                                                                         left: ' . $ans['left'] . 'px;
@@ -117,7 +117,7 @@ $version = $record['summary']['version'];
                                                             class="answer-marker correct"
                                                             type="radio">&#10004;</div>';
                         elseif ($record['detail'][$qid]['answer_id'] == $ans['id']) :
-                                                      \Document::addstyleDeclaration('
+                                                      \Hubzero\Facades\Document::addstyleDeclaration('
                                                                 #question-' . $qid . '-marker-incorrect {
                                                                         top: ' . ($ans['top'] - 4) . 'px;
                                                                         left: ' . $ans['left'] . 'px;

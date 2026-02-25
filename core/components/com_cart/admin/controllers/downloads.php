@@ -11,11 +11,11 @@ namespace Components\Cart\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\Download;
 use Components\Storefront\Models\Warehouse;
-use Request;
-use Config;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for knowledge base categories
@@ -245,7 +245,7 @@ class Downloads extends AdminController
         try {
             Download::setStatus($ids, $state);
         } catch (\Exception $e) {
-            \Notify::error($e->getMessage());
+            \Hubzero\Facades\Notify::error($e->getMessage());
             return;
         }
 

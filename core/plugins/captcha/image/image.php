@@ -9,6 +9,8 @@
 namespace Plugins\Captcha\Image;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Plugin class for displaying image CAPTCHAs

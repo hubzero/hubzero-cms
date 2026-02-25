@@ -10,11 +10,13 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Installer\Admin\Helpers\Cli;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Migrations Controller

@@ -8,8 +8,8 @@
 
 namespace Components\Cart\Site;
 
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 use Hubzero\Component\AbstractComponent;
 
 /**
@@ -32,7 +32,7 @@ class Cart extends AbstractComponent
             App::redirect(Request::base() . 'cart/cart');
         }
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            App::abort(404, \Lang::txt('Page Not Found'));
+            App::abort(404, \Hubzero\Facades\Lang::txt('Page Not Found'));
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

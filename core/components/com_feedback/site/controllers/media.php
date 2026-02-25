@@ -11,11 +11,11 @@ namespace Components\Feedback\Site\Controllers;
 use Components\Feedback\Models\Quote;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Str;
-use Filesystem;
-use Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Feedback controller class for media management
@@ -71,7 +71,7 @@ class Media extends SiteController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = \Hubzero\Facades\Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -105,7 +105,6 @@ class Media extends SiteController
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_UPLOADING'));
             $file = $curfile;
         } else {
-
             if ($curfile != '' && file_exists($path . DS . $curfile)) {
                 if (!Filesystem::delete($path . DS . $curfile)) {
                     $this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));

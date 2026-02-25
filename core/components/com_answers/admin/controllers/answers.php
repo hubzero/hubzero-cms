@@ -12,12 +12,14 @@ use Hubzero\Component\AdminController;
 use Components\Answers\Models\Question;
 use Components\Answers\Models\Response;
 use Exception;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Config;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for question responses
@@ -31,7 +33,7 @@ class Answers extends AdminController
      */
     public function execute()
     {
-        $this->banking = \Component::params('com_members')->get('bankAccounts');
+        $this->banking = \Hubzero\Facades\Component::params('com_members')->get('bankAccounts');
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');

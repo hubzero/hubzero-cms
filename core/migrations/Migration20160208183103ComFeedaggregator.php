@@ -38,7 +38,7 @@ class Migration20160208183103ComFeedaggregator extends Base
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
-                $dt = \Date::of(date("F j, Y, g:i a", $row->created))->toSql();
+                $dt = \Hubzero\Facades\Date::of(date("F j, Y, g:i a", $row->created))->toSql();
                 $this->db->getQuery(true)
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])
@@ -69,7 +69,7 @@ class Migration20160208183103ComFeedaggregator extends Base
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
-                $dt = \Date::of($row->created)->toUnix();
+                $dt = \Hubzero\Facades\Date::of($row->created)->toUnix();
                 $this->db->getQuery(true)
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])

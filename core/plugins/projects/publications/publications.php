@@ -20,6 +20,19 @@ use Components\Publications\Models\Publication;
 use Components\Publications\Models\Handlers;
 use Components\Publications\Models\Status;
 use Components\Publications\Helpers\Html as PubHtml;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Log;
 
 /**
  * Project publications
@@ -756,7 +769,7 @@ class Publications extends Plugin
 
         // Error loading publication record
         if (!$pub->exists() && $new == false) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+            \Hubzero\Facades\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
             return;
         }
@@ -937,7 +950,7 @@ class Publications extends Plugin
 
         // Error loading publication record
         if (!$pub->exists()) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+            \Hubzero\Facades\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
             return;
         }
@@ -976,9 +989,9 @@ class Publications extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Record activity
@@ -1285,7 +1298,7 @@ class Publications extends Plugin
 
         // If publication not found, raise error
         if (!$pub->exists() || $pub->isDeleted()) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
+            \Hubzero\Facades\Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
             return;
         }
@@ -1656,9 +1669,9 @@ class Publications extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -1809,9 +1822,9 @@ class Publications extends Plugin
 
         // Pass success or error message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -2330,9 +2343,9 @@ class Publications extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         return;
@@ -2570,9 +2583,9 @@ class Publications extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            \Hubzero\Facades\Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
         }
 
         App::redirect($baseUrl);
@@ -2693,7 +2706,7 @@ class Publications extends Plugin
 
         if (!is_dir(PATH_APP . $path)) {
             if (!Filesystem::makeDirectory(PATH_APP . $path)) {
-                $this->setError(\Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
+                $this->setError(\Hubzero\Facades\Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
                 return;
             }
         }

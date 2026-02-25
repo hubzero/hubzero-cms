@@ -12,9 +12,10 @@ use Hubzero\Database\Relational;
 use Hubzero\Content\Moderator;
 use Hubzero\Utility\Validate;
 use stdClass;
-use Event;
-use Lang;
-use Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Group model
@@ -940,7 +941,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             $access_level = 'private';
         }
 
-        $group->url = \Request::root() . 'groups/' . $this->cn;
+        $group->url = \Hubzero\Facades\Request::root() . 'groups/' . $this->cn;
         $group->access_level = $access_level;
         $group->owner_type = 'group';
         $group->owner = $this->get('id');

@@ -25,7 +25,7 @@ class Html
     {
         $selectId = $id ? $id : str_replace(array('[', ']'), '', $name);
         $out  = '<select name="' . $name . '" id="' . $selectId . '"' . ($atts ? ' ' . $atts : '') . '>';
-        $out .= '<option value="">' . \Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
+        $out .= '<option value="">' . \Hubzero\Facades\Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
         foreach ($categories as $category) {
             $selected = ($category->get('id') == $val)
                       ? ' selected="selected"'

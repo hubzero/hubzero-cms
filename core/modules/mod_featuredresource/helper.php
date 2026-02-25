@@ -10,7 +10,7 @@ namespace Modules\Featuredresource;
 
 use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
-use Component;
+use Hubzero\Facades\Component;
 use User;
 
 /**
@@ -34,7 +34,7 @@ class Helper extends Module
     {
         include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         //Get the admin configured settings
         $filters = array(

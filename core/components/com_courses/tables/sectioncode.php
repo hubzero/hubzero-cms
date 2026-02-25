@@ -9,9 +9,9 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Courses table class for section coupon codes

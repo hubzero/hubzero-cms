@@ -77,7 +77,7 @@ class Page implements RendererInterface
                 ob_end_clean();
             }
 
-            $this->document->setTitle(\Lang::txt('Error') . ': ' . $error->getCode());
+            $this->document->setTitle(\Hubzero\Facades\Lang::txt('Error') . ': ' . $error->getCode());
 
             $template = $this->template->load();
 

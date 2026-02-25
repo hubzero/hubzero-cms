@@ -12,9 +12,9 @@ use Hubzero\Config\Registry;
 use Components\Courses\Models\Assets\Handler;
 use Components\Courses\Models\Assetgroup;
 use Components\Courses\Models\Assets\Tool;
-use App;
-use Request;
-use Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
 use stdClass;
 
 /**
@@ -216,7 +216,7 @@ class Assetgroupv1r0 extends base
     // COURSES - LEVEL 1
     public function getAllCoursesTask()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__courses`";
 
         $database->setQuery($query);
@@ -239,7 +239,7 @@ class Assetgroupv1r0 extends base
             throw new \Exception("Course Id is required");
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__courses_offerings` WHERE `course_id` = " . $courseId;
 
         $database->setQuery($query);
@@ -262,7 +262,7 @@ class Assetgroupv1r0 extends base
             throw new \Exception("Offering Id is required");
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__courses_units` WHERE `offering_id` = " . $offeringId;
 
         $database->setQuery($query);
@@ -286,7 +286,7 @@ class Assetgroupv1r0 extends base
             throw new \Exception("Unit Id is required");
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__courses_asset_groups` WHERE `unit_id` = " . $unitId;
 
         // Recursive

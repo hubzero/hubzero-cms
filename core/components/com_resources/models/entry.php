@@ -12,12 +12,15 @@ use Components\Resources\Helpers\Tags;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
-use Component;
-use Date;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 use stdClass;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Resource entry model
@@ -827,7 +830,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
         $content = str_replace(array('="/site/', '="site/'), '="/app/site/', $content);
 
-        $content = \Html::content('prepare', $content);
+        $content = \Hubzero\Facades\Html::content('prepare', $content);
 
         $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 

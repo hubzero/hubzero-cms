@@ -23,15 +23,15 @@ class DatabaseServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['db'] = function ($app) {
-            $driver = \Config::get('dbtype');
+            $driver = \Hubzero\Facades\Config::get('dbtype');
 
             $options = [
                 'driver'   => $driver,
-                'host'     => \Config::get('host'),
-                'user'     => \Config::get('user'),
-                'password' => \Config::get('password'),
-                'database' => \Config::get('db'),
-                'prefix'   => \Config::get('dbprefix')
+                'host'     => \Hubzero\Facades\Config::get('host'),
+                'user'     => \Hubzero\Facades\Config::get('user'),
+                'password' => \Hubzero\Facades\Config::get('password'),
+                'database' => \Hubzero\Facades\Config::get('db'),
+                'prefix'   => \Hubzero\Facades\Config::get('dbprefix')
             ];
 
             return Driver::getInstance($options);

@@ -11,12 +11,13 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Access\Group as Accessgroup;
 use Hubzero\Access\Access;
-use Request;
-use Notify;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
 use App;
+use Hubzero\Facades\User;
 
 /**
  * Manage user Access Groups

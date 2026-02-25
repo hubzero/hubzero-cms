@@ -125,7 +125,7 @@ $sort = @$this->filters['sort'];
 <?php
 $k = 0;
 $i = 0;
-$db = \App::get('db');
+$db = \Hubzero\Facades\App::get('db');
 
 foreach ($this->rows as $row) {
     switch ($row->pActive) {

@@ -11,8 +11,13 @@ namespace Components\Cart\Models;
 use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\Helper;
 use Hubzero\Base\Model;
-use User;
+use Hubzero\Facades\User;
 use Components\Storefront\Models\Product;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Current user shopping cart
@@ -871,7 +876,7 @@ class CurrentCart extends Cart
     public function addCoupon($couponCode)
     {
         // Check if coupon is valid and active (throws exception if invalid)
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $coupons = new \Components\Storefront\Models\Coupons();
 
         // Get coupons
@@ -910,7 +915,7 @@ class CurrentCart extends Cart
      */
     public function applyCoupon($cnId)
     {
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
         $coupon = $storefrontCoupons->getCouponInfo($cnId, true, true, true, true);
 
@@ -983,7 +988,7 @@ class CurrentCart extends Cart
         $cnIds = $this->db->loadColumn();
 
         // Get coupon types
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
         $coupons = $storefrontCoupons->getCouponsInfo($cnIds);
 
@@ -1350,7 +1355,7 @@ class CurrentCart extends Cart
         // init membership info
         $memberships = array();
 
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
         $ms = new \Components\Storefront\Models\Memberships();
 
         // Get membership types
@@ -1534,7 +1539,7 @@ class CurrentCart extends Cart
             echo "<br>Lifting session cart";
         }
 
-        $session = \App::get('session');
+        $session = \Hubzero\Facades\App::get('session');
         $cart = $session->get('cart');
 
         if ($cart && !empty($cart->crtId)) {
@@ -1596,7 +1601,7 @@ class CurrentCart extends Cart
      */
     private function updateSession()
     {
-        $session = \App::get('session');
+        $session = \Hubzero\Facades\App::get('session');
         $session->set('cart', $this->cart);
     }
 
@@ -1608,7 +1613,7 @@ class CurrentCart extends Cart
      */
     private function clearSessionCart()
     {
-        $session = \App::get('session');
+        $session = \Hubzero\Facades\App::get('session');
         $session->clear('cart');
     }
 
@@ -1701,7 +1706,7 @@ class CurrentCart extends Cart
         $this->db->query();
         $crtId = $this->db->insertid();
 
-        $session = \App::get('session');
+        $session = \Hubzero\Facades\App::get('session');
         $cart->crtId = $crtId;
         $this->crtId = $cart->crtId;
         $session->set('cart', $cart);
@@ -1820,7 +1825,7 @@ class CurrentCart extends Cart
             $this->crtId = $userCartId;
         }
 
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
 
         // Go through each coupon and apply all that are not applied
@@ -1933,7 +1938,7 @@ class CurrentCart extends Cart
             }
 
             // Reserve/lock items
-            require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+            require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);
 
             $sku->reserveInventory($skuInfo['cartInfo']->qty);
@@ -2014,7 +2019,7 @@ class CurrentCart extends Cart
         // lock transaction items
         $warehouse = $this->warehouse;
 
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
         foreach ($tItems as $sId => $item) {
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);

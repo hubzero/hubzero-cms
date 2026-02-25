@@ -9,6 +9,8 @@
 namespace Plugins\User\Autoapprove;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 // No direct access.
 

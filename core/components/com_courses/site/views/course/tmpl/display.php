@@ -752,7 +752,7 @@ $this->css('course.css')
 
         $instructors = $this->course->instructors();
         if (count($instructors) > 0) {
-            require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+            require_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
             ?>
             <div class="course-instructors" data-bio-length="200">
                 <h3>

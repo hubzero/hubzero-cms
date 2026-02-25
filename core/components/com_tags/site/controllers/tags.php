@@ -13,17 +13,17 @@ use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Utility\Str;
 use Hubzero\Utility\Sanitize;
-use Document;
-use Request;
-use Pathway;
-use Config;
-use Notify;
-use Event;
-use Cache;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for tags
@@ -544,7 +544,7 @@ class Tags extends SiteController
                 // Load individual item creator class
                 $item = new \Hubzero\Document\Type\Feed\Item();
                 $item->title       = $title;
-                $item->link        = \Route::url($row->href);
+                $item->link        = Route::url($row->href);
                 $item->description = '<![CDATA[' . $description . ']]>';
                 $item->date        = $date;
                 $item->category    = (isset($row->data1) && $row->data1) ? $row->data1 : $row->section;

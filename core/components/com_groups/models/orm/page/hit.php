@@ -9,8 +9,8 @@
 namespace Components\Groups\Models\Orm\Page;
 
 use Hubzero\Database\Relational;
-use Request;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
 
 /**
  * Group page hit model

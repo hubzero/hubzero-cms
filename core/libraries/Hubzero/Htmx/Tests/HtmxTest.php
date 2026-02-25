@@ -214,14 +214,14 @@ namespace Hubzero\Htmx\Tests {
                 AppStub::reset();
             }
 
-            \App::set('request', new RequestStub());
-            \App::set('response', new ResponseStub());
+            \Hubzero\Facades\App::set('request', new RequestStub());
+            \Hubzero\Facades\App::set('response', new ResponseStub());
         }
 
         #[Test]
         public function serviceDetectsHtmxHeaders(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'HX-Request' => 'true',
                 'HX-Boosted' => 'TRUE',
                 'HX-History-Restore-Request' => 'true'
@@ -254,7 +254,7 @@ namespace Hubzero\Htmx\Tests {
             $service = new HtmxService();
             $service->trigger('saved', ['ok' => true]);
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertArrayHasKey('HX-Trigger', $response->headers->headers);
             $this->assertStringContainsString('saved', $response->headers->headers['HX-Trigger']);
         }
@@ -262,14 +262,14 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function redirectUsesHxRedirectForHtmxRequests(): void
         {
-            \App::set('request', new RequestStub(['HX-Request' => 'true']));
+            \Hubzero\Facades\App::set('request', new RequestStub(['HX-Request' => 'true']));
             $service = new HtmxService();
 
             $service->redirect('/todo');
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertHtmxRedirect($response, '/todo');
-            $this->assertNull(\App::get('redirect_to'));
+            $this->assertNull(\Hubzero\Facades\App::get('redirect_to'));
         }
 
         #[Test]
@@ -278,7 +278,7 @@ namespace Hubzero\Htmx\Tests {
             $service = new HtmxService();
             $service->redirect('/classic');
 
-            $this->assertSame('/classic', \App::get('redirect_to'));
+            $this->assertSame('/classic', \Hubzero\Facades\App::get('redirect_to'));
         }
 
         #[Test]
@@ -297,7 +297,7 @@ namespace Hubzero\Htmx\Tests {
         {
             $container = new ContainerStub();
             $container->set('htmx', new HtmxService());
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             Htmx::state('alpha', 1);
             $this->assertSame(1, Htmx::getState('alpha'));
@@ -308,7 +308,7 @@ namespace Hubzero\Htmx\Tests {
         {
             $container = new ContainerStub();
             $container->set('htmx', new HtmxService());
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $url = Htmx::actionUrl('todo', 'toggle', ['id' => 7]);
 
@@ -329,7 +329,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function debugHeaderCanBeEnabledViaQueryFlag(): void
         {
-            \App::set('request', new RequestStub(
+            \Hubzero\Facades\App::set('request', new RequestStub(
                 ['HX-Request' => 'true'],
                 ['REQUEST_METHOD' => 'POST', 'REQUEST_URI' => '/todo/?task=add'],
                 ['htmx_debug' => '1', 'option' => 'com_todo', 'task' => 'add']
@@ -339,7 +339,7 @@ namespace Hubzero\Htmx\Tests {
             $service->debugContext('branch', 'fragment');
             $service->trigger('saved', ['ok' => true]);
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertDebugHeaderContains($response->headers->headers, 'X-Hubzero-Htmx-Debug', array(
                 '"outgoing"',
                 'HX-Trigger',
@@ -351,8 +351,8 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function profilerEmitsHeaderWhenDebugEnabled(): void
         {
-            \App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
-            \App::set('config', new ConfigStub(['debug' => false]));
+            \Hubzero\Facades\App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
+            \Hubzero\Facades\App::set('config', new ConfigStub(['debug' => false]));
             $service = new HtmxService();
 
             $service->profileStart('fragment.render');
@@ -360,7 +360,7 @@ namespace Hubzero\Htmx\Tests {
             $service->profileStop('fragment.render');
             $service->emitProfileHeader();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertDebugHeaderContains(
                 $response->headers->headers,
                 'X-Hubzero-Htmx-Profile',
@@ -371,7 +371,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function preserveDebugParamAndHiddenInputAreGeneratedWhenEnabled(): void
         {
-            \App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
             $service = new HtmxService();
 
             $params = $service->preserveDebugParam(['task' => 'display']);
@@ -385,7 +385,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function debugPanelMarkupRendersWhenEnabled(): void
         {
-            \App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
+            \Hubzero\Facades\App::set('request', new RequestStub([], [], ['htmx_debug' => '1']));
             $service = new HtmxService();
             $service->debugContext('branch', 'fragment');
 
@@ -399,7 +399,7 @@ namespace Hubzero\Htmx\Tests {
         {
             $container = new ContainerStub();
             $container->set('htmx', new HtmxService());
-            \App::set('app', $container);
+            \Hubzero\Facades\App::set('app', $container);
 
             $payload = '<div id="fragment-ok">ok</div>';
             ob_start();
@@ -407,9 +407,9 @@ namespace Hubzero\Htmx\Tests {
             $output = (string) ob_get_clean();
 
             $this->assertSame($payload, $output);
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertArrayHasKey('Content-Type', $response->headers->headers);
             $this->assertSame('text/html; charset=utf-8', $response->headers->headers['Content-Type']);
             $this->assertSame(200, $response->statusCode);
@@ -427,7 +427,7 @@ namespace Hubzero\Htmx\Tests {
             $service->triggerAfterSettle('saved', ['ok' => true]);
             $service->triggerAfterSwap('ready', ['state' => 'done']);
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
 
             $this->assertSame('outerHTML', $headers['HX-Reswap']);
             $this->assertSame('/projects', $headers['HX-Push-Url']);
@@ -445,7 +445,7 @@ namespace Hubzero\Htmx\Tests {
             $service->retarget("#todo\r\nX-Test: injected");
             $service->reselect('<script>alert(1)</script>');
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
             $this->assertArrayNotHasKey('HX-Retarget', $headers);
             $this->assertArrayNotHasKey('HX-Reselect', $headers);
         }
@@ -453,7 +453,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function varyAndRequestDetailsAreAvailable(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'HX-Request' => 'true',
                 'HX-Boosted' => 'true',
                 'HX-History-Restore-Request' => 'true',
@@ -473,10 +473,10 @@ namespace Hubzero\Htmx\Tests {
             $service->varyOnRequest();
             $details = $service->requestDetails();
 
-            $headers = \App::get('response')->headers->headers;
+            $headers = \Hubzero\Facades\App::get('response')->headers->headers;
             $this->assertArrayHasKey('Vary', $headers);
             $this->assertStringContainsString('HX-Request', $headers['Vary']);
-            $this->assertHtmxVaryHeader(\App::get('response'));
+            $this->assertHtmxVaryHeader(\Hubzero\Facades\App::get('response'));
             $this->assertTrue($details['request']);
             $this->assertTrue($details['boosted']);
             $this->assertTrue($details['history_restore']);
@@ -494,7 +494,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function currentUrlAbsPathReturnsNullForCrossOriginUrl(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'HX-Current-URL' => 'https://evil.example/phish'
             ], [
                 'REQUEST_SCHEME' => 'https',
@@ -517,11 +517,11 @@ namespace Hubzero\Htmx\Tests {
             $service->noContent();
             $output = (string) ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame('', $output);
             $this->assertSame(204, $response->statusCode);
             $this->assertHtmxStatus($response, 204);
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
 
         #[Test]
@@ -533,11 +533,11 @@ namespace Hubzero\Htmx\Tests {
             $service->stopPolling();
             $output = (string) ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame('', $output);
             $this->assertSame(286, $response->statusCode);
             $this->assertHtmxStatus($response, 286);
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
 
         #[Test]
@@ -559,7 +559,7 @@ namespace Hubzero\Htmx\Tests {
             $service->validation($html, array('title' => 'Required'));
             $output = (string) ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $this->assertSame($html, $output);
             $this->assertSame(422, $response->statusCode);
             $this->assertHtmxStatus($response, 422);
@@ -570,7 +570,7 @@ namespace Hubzero\Htmx\Tests {
         #[Test]
         public function htmxLifecycleCanEmitHeadersAndFragmentResponse(): void
         {
-            \App::set('request', new RequestStub([
+            \Hubzero\Facades\App::set('request', new RequestStub([
                 'HX-Request' => 'true',
                 'HX-Target' => 'todo-list'
             ], [
@@ -588,7 +588,7 @@ namespace Hubzero\Htmx\Tests {
             $service->fragment($payload, 201);
             $output = (string) ob_get_clean();
 
-            $response = \App::get('response');
+            $response = \Hubzero\Facades\App::get('response');
             $headers = $response->headers->headers;
 
             $this->assertSame($payload, $output);
@@ -597,7 +597,7 @@ namespace Hubzero\Htmx\Tests {
             $this->assertStringContainsString('HX-Request', $headers['Vary']);
             $this->assertSame('#todo-list', $headers['HX-Retarget']);
             $this->assertStringContainsString('todo:added', $headers['HX-Trigger']);
-            $this->assertTrue((bool) \App::get('closed'));
+            $this->assertTrue((bool) \Hubzero\Facades\App::get('closed'));
         }
     }
 }

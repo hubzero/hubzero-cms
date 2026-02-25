@@ -3,6 +3,13 @@
 namespace Plugins\Groups\Messages;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
 
 /**
  * @package    hubzero-cms
@@ -43,7 +50,7 @@ class Messages extends Plugin
         }
 
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)

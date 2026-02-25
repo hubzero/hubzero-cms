@@ -71,7 +71,7 @@ class Verb
             $redis = new \Predis\Client(array(
                 "host" => "127.0.0.1",
                 "port" => 6379,
-                "password" => \Config::get('redis_password'),
+                "password" => \Hubzero\Facades\Config::get('redis_password'),
                 "database" => 9,
             ));
         } catch (Exception $e) {
@@ -101,7 +101,7 @@ class Verb
             $redis = new \Predis\Client(array(
                 "host" => "127.0.0.1",
                 "port" => 6379,
-                "password" => \Config::get('redis_password'),
+                "password" => \Hubzero\Facades\Config::get('redis_password'),
                 "database" => 8,
             ));
         } catch (Exception $e) {
@@ -194,7 +194,7 @@ class Verb
             $redis = new \Predis\Client(array(
                 "host" => "127.0.0.1",
                 "port" => 6379,
-                "password" => \Config::get('redis_password'),
+                "password" => \Hubzero\Facades\Config::get('redis_password'),
                 "database" => 8,
             ));
         } catch (Exception $e) {

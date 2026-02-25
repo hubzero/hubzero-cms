@@ -9,8 +9,8 @@
 namespace Components\Newsletter\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Newsletter model
@@ -433,13 +433,13 @@ class Newsletter extends Relational
                 // Make sure we're doing "it" on the right token
                 if ($parts[0] == "AUTOGEN") {
                     // Get the content
-                    $enabledPlugins = \Event::trigger('newsletter.onGetEnabledDigests');
+                    $enabledPlugins = \Hubzero\Facades\Event::trigger('newsletter.onGetEnabledDigests');
 
                     // Ascertain the key, based on plugin ordering
                     $key = array_keys($enabledPlugins, strtolower($parts[1]))[0];
 
                     // Get the content for the desired plugin
-                    $content = \Event::trigger('newsletter.onGetLatest', array($parts[2]))[$key];
+                    $content = \Hubzero\Facades\Event::trigger('newsletter.onGetLatest', array($parts[2]))[$key];
 
                     // Apply the view template
                     $view = new \Hubzero\Component\View(array());
@@ -447,12 +447,12 @@ class Newsletter extends Relational
                     // Written emphatically, set the paths and whatnot
                     $view->setName('storytemplates');
                     $view->setLayout(strtolower($parts[3]));
-                    $view->setBasePath(\Component::path('com_newsletter') . DS . 'admin');
+                    $view->setBasePath(\Hubzero\Facades\Component::path('com_newsletter') . DS . 'admin');
 
                     // Pass the object through to the view
                     $view->object = $content;
                     $view->addTemplatePath(
-                        \Component::path('com_newsletter') . DS . 'admin' . DS . 'views'
+                        \Hubzero\Facades\Component::path('com_newsletter') . DS . 'admin' . DS . 'views'
                         . DS . 'storytemplates' . DS . 'tmpl'
                     );
 

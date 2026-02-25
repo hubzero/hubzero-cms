@@ -32,7 +32,7 @@ class Message extends Renderer
         $lists  = array();
 
         // Get the message queue
-        $messages = \App::get('notification')->messages();
+        $messages = \Hubzero\Facades\App::get('notification')->messages();
 
         // Build the sorted message list
         if (is_array($messages) && !empty($messages)) {
@@ -59,7 +59,7 @@ class Message extends Renderer
                         '<dt class="' .
                         strtolower($type) .
                         '">' .
-                        \App::get('language')->txt($type) .
+                        \Hubzero\Facades\App::get('language')->txt($type) .
                         '</dt>';
                     $buffer[] = $tab . $tab . '<dd class="' . strtolower($type) . ' message">';
                     $buffer[] = $tab . $tab . $tab . '<ul>';

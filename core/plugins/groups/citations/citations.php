@@ -11,6 +11,17 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 /**
  * @package    hubzero-cms
@@ -57,7 +68,7 @@ class Citations extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = \Hubzero\Facades\App::get('language');
         $ext = strtolower($extension);
         $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
 

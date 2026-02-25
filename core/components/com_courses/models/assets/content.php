@@ -9,6 +9,9 @@
 namespace Components\Courses\Models\Assets;
 
 use Components\Courses\Tables;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Content based asset handler (i.e. things like notes, wiki, html, etc...)
@@ -59,7 +62,7 @@ class Content extends Handler
         $asset->set('url', (!empty($a['url']) ? $a['url'] : ''));
         $asset->set('graded', (!empty($a['graded']) ? $a['graded'] : 0));
         $asset->set('grade_weight', (!empty($a['grade_weight']) ? $a['grade_weight'] : ''));
-        $asset->set('created', \Date::toSql());
+        $asset->set('created', \Hubzero\Facades\Date::toSql());
         $asset->set('created_by', App::get('authn')['user_id']);
         $asset->set('course_id', Request::getInt('course_id', 0));
         $asset->set('state', 0);

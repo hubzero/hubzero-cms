@@ -12,6 +12,10 @@
 namespace Plugins\Editors\Ckeditor5;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
 
 class Ckeditor5 extends Plugin
 {

@@ -29,7 +29,7 @@ class Migration20140108233319ComGroups extends Base
         }
 
         // get group folders
-        $groupFolders = \App::get('filesystem')->directories($base, '.', false, true);
+        $groupFolders = \Hubzero\Facades\App::get('filesystem')->directories($base, '.', false, true);
 
         // make sure we have one!
         if (count($groupFolders) < 1) {
@@ -43,7 +43,7 @@ class Migration20140108233319ComGroups extends Base
             // make sure we havent already moved files
             if (!is_dir($groupUploadFolder)) {
                 // create uploads folder
-                if (!\App::get('filesystem')->makeDirectory($groupUploadFolder)) {
+                if (!\Hubzero\Facades\App::get('filesystem')->makeDirectory($groupUploadFolder)) {
                     $this->setError(
                         'Failed to create uploads folder. Try running again with elevated privileges',
                         'warning'
@@ -53,13 +53,13 @@ class Migration20140108233319ComGroups extends Base
             }
 
             //get group files
-            $groupFiles = \App::get('filesystem')->files($groupFolder);
+            $groupFiles = \Hubzero\Facades\App::get('filesystem')->files($groupFolder);
 
             // move each group file
             foreach ($groupFiles as $groupFile) {
                 $from = $groupFolder . DS . $groupFile;
                 $to   = $groupUploadFolder . DS . $groupFile;
-                if (!\App::get('filesystem')->move($from, $to)) {
+                if (!\Hubzero\Facades\App::get('filesystem')->move($from, $to)) {
                     $this->setError(
                         'Failed to move files to uploads folder. Try running again with elevated privileges',
                         'warning'

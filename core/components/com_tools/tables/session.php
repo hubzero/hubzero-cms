@@ -9,6 +9,7 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\User;
 
 /**
  * Table class for middleware sessions
@@ -84,7 +85,7 @@ class Session extends Table
             $query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
 					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
-					  AND v.viewuser=" . $this->_db->quote(\User::get('username'));
+					  AND v.viewuser=" . $this->_db->quote(\Hubzero\Facades\User::get('username'));
         }
 
         $this->_db->setQuery($query);
@@ -120,8 +121,8 @@ class Session extends Table
             $query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
 					  WHERE v.sessnum=" . $this->_db->quote($sess) . "
-					  AND s.username=" . $this->_db->quote(\User::get('username')) . "
-					  AND v.viewuser=" . $this->_db->quote(\User::get('username'));
+					  AND s.username=" . $this->_db->quote(\Hubzero\Facades\User::get('username')) . "
+					  AND v.viewuser=" . $this->_db->quote(\Hubzero\Facades\User::get('username'));
         }
 
         $this->_db->setQuery($query);

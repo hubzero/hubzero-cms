@@ -14,14 +14,18 @@ use Components\Projects\Models;
 use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description\Option;
 use Components\Projects\Helpers;
-use Component;
-use Request;
-use Notify;
-use Plugin;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
 
 /**
  * Manage projects
@@ -1302,7 +1306,7 @@ class Projects extends AdminController
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations"
@@ -1356,7 +1360,7 @@ class Projects extends AdminController
         $agency = trim($grantAgency);
         $agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations"

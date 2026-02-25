@@ -10,14 +10,15 @@ namespace Components\Services\Admin\Controllers;
 
 use Components\Services\Models\Subscription;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
 use Route;
-use Lang;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Controller class for service subscriptions

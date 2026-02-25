@@ -9,18 +9,18 @@
 namespace Components\Redirect\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use Document;
 use Pathway;
-use Request;
+use Hubzero\Facades\Request;
 use Plugin;
 use Notify;
 use Route;
 use Event;
 use Lang;
 use User;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Primary component controller

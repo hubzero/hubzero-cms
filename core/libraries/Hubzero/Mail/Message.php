@@ -93,14 +93,14 @@ class Message extends \Symfony\Component\Mime\Email
             // Use the registered custom HUBzero transport
             $transport = self::getTransporter($transport);
         } else {
-            $dsn = \Config::get('mailer_dsn', '');
+            $dsn = \Hubzero\Facades\Config::get('mailer_dsn', '');
 
             if (!$dsn) {
-                $scheme = strtolower(trim(\Config::get('mailer', 'sendmail')));
-                $host = strtolower(trim(\Config::get('smtphost', 'localhost')));
-                $port = strtolower(trim(\Config::get('smtpport', '0')));
-                $username = strtolower(trim(\Config::get('smtpuser', '')));
-                $password = strtolower(trim(\Config::get('smtppass', '')));
+                $scheme = strtolower(trim(\Hubzero\Facades\Config::get('mailer', 'sendmail')));
+                $host = strtolower(trim(\Hubzero\Facades\Config::get('smtphost', 'localhost')));
+                $port = strtolower(trim(\Hubzero\Facades\Config::get('smtpport', '0')));
+                $username = strtolower(trim(\Hubzero\Facades\Config::get('smtpuser', '')));
+                $password = strtolower(trim(\Hubzero\Facades\Config::get('smtppass', '')));
 
                 switch ($scheme) {
                     case 'smtp':

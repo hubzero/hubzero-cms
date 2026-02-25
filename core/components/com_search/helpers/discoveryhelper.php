@@ -10,6 +10,7 @@ namespace Components\Search\Helpers;
 
 use ReflectionClass;
 use Hubzero\Search\Searchable;
+use Hubzero\Facades\Component;
 
 /**
  * Solr helper class

@@ -9,8 +9,9 @@
 namespace Components\Members\Models\Quota;
 
 use Hubzero\Database\Relational;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
 
 /**
  * Quota class model

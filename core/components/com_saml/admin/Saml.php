@@ -22,11 +22,11 @@ class Saml extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_saml')) {
-                \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_saml')) {
+                \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'saml');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'saml');
 
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
                 $controllerName = 'saml';

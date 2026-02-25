@@ -14,12 +14,13 @@ use Components\Wiki\Models\Attachment;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
-use Filesystem;
-use Request;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Wiki controller class for media

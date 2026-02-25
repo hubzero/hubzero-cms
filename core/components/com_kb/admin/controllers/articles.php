@@ -12,12 +12,13 @@ use Hubzero\Component\AdminController;
 use Hubzero\Html\Parameter;
 use Components\Kb\Models\Category;
 use Components\Kb\Models\Article;
-use Request;
-use Notify;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for knowledge base articles

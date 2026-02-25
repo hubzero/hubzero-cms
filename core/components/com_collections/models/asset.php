@@ -9,8 +9,9 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Image\Processor;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Collections model class for an Asset
@@ -50,7 +51,7 @@ class Asset extends Base
      */
     public function __construct($oid = null, $item_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $tbl = $this->_tbl_name;
         $this->_tbl = new $tbl($this->_db);

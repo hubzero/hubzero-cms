@@ -16,12 +16,12 @@ class DataDefinitionNew
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = \Hubzero\Facades\App::get('document');
 
-        $db_id = \Request::getString('db', false);
-        $table = \Request::getString('table', false);
-        $name = \Request::getString('name', false);
-        $title = \Request::getString('title', false);
+        $db_id = \Hubzero\Facades\Request::getString('db', false);
+        $table = \Hubzero\Facades\Request::getString('table', false);
+        $name = \Hubzero\Facades\Request::getString('name', false);
+        $title = \Hubzero\Facades\Request::getString('title', false);
 
         $name = strtolower(preg_replace('/\W/', '_', $name));
 
@@ -80,7 +80,7 @@ class DataDefinitionNew
 
         $dd_name = $name;
 
-        $author = \User::get('name') . ' <' . \User::get('email') . '>';
+        $author = \Hubzero\Facades\User::get('name') . ' <' . \Hubzero\Facades\User::get('email') . '>';
 
         $dd_file_php = $base . '/' . $db_id . '/applications/'
             . DvConfig::$com_name . "/datadefinitions-php/$dd_name.php";

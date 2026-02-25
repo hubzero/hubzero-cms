@@ -23,15 +23,15 @@ class Redirect extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_redirect')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_redirect')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Include controller
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'links'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'links'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-            \App::abort(404, \Lang::txt('Controller "%s" not found.', $controllerName));
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Controller "%s" not found.', $controllerName));
             return;
         }
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';

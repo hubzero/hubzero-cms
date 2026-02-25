@@ -478,7 +478,7 @@ class Parser
             if ($this->get('pageid') > 0) {
                 $macro->pageid = $this->get('pageid');
             } else {
-                $macro->pageid = \Request::getInt('lid', 0, 'post');
+                $macro->pageid = \Hubzero\Facades\Request::getInt('lid', 0, 'post');
             }
             $macro->filepath   = $this->get('filepath');
 

@@ -10,9 +10,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Wishlist\Models\Wish;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a wish
@@ -79,7 +79,7 @@ class Wishlist extends GenericItem
             return true;
         }
 
-        include_once \Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
+        include_once \Hubzero\Facades\Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
         $wish = new Wish($id);
 

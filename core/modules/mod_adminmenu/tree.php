@@ -122,7 +122,7 @@ class Tree extends \Hubzero\Base\Obj
 
         if ($this->css) {
             // Add style to document head
-            \Document::addStyleDeclaration($this->css);
+            \Hubzero\Facades\Document::addStyleDeclaration($this->css);
         }
     }
 

@@ -98,7 +98,7 @@ class Asset
         // Register an event to update the asset name once we know the model id
         if ($this->model->isNew()) {
             $me = $this;
-            \Event::listen(
+            \Hubzero\Facades\Event::listen(
                 function ($event) use ($asset, $me) {
                     $asset->set('name', $me->getAssetName());
                     $asset->save();

@@ -14,9 +14,8 @@ use Hubzero\Base\Obj;
 use Hubzero\Bank\Config;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
-use Lang;
-use User;
-
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 /**
  * Answers Economy class:
  * Stores economy funtions for com_answers

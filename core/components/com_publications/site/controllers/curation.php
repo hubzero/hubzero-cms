@@ -14,14 +14,18 @@ use Components\Publications\Models;
 use Components\Publications\Helpers;
 use stdClass;
 use Exception;
-use Document;
-use Pathway;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)

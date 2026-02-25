@@ -42,7 +42,7 @@ class Geo extends Plugin
 
             // Update group if that group exists
             if (is_object($group)) {
-                $group->add('members', array(\User::getInstance($user['username'])->get('id')));
+                $group->add('members', array(\Hubzero\Facades\User::getInstance($user['username'])->get('id')));
                 $group->update();
             }
         }

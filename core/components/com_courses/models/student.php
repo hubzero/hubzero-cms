@@ -34,7 +34,7 @@ class Student extends Member
      */
     public function __construct($uid, $cid = null, $oid = null, $sid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;

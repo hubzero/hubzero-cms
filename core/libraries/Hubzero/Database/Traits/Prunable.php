@@ -8,6 +8,8 @@
 
 namespace Hubzero\Database\Traits;
 
+use Hubzero\Facades\Date;
+
 /**
  * Prunable trait for automatic old record cleanup
  *

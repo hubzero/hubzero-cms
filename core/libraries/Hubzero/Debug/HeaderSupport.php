@@ -44,7 +44,7 @@ class HeaderSupport
      */
     public static function emitHeader(string $name, string $value): void
     {
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers)) {
             $response->headers->set($name, $value);
             return;
@@ -58,7 +58,7 @@ class HeaderSupport
      */
     public static function isDebugLogEnabled(): bool
     {
-        $config = \App::get('config');
+        $config = \Hubzero\Facades\App::get('config');
         if ($config && method_exists($config, 'get')) {
             return (bool) $config->get('debug');
         }

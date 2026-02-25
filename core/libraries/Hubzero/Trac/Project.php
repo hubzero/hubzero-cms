@@ -79,7 +79,7 @@ class Project
      */
     private function logDebug($msg)
     {
-        $xlog = \App::get('log')->logger('debug');
+        $xlog = \Hubzero\Facades\App::get('log')->logger('debug');
         $xlog->debug($msg);
     }
 
@@ -163,7 +163,7 @@ class Project
      */
     public function create()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -218,7 +218,7 @@ class Project
      */
     public function read()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $lazyloading = false;
 
@@ -261,7 +261,7 @@ class Project
      */
     public function update($all = false)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
 
         $query = "UPDATE `#__trac_project` SET ";
 
@@ -343,7 +343,7 @@ class Project
             return false;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (empty($db)) {
             return false;
@@ -393,7 +393,7 @@ class Project
 
         if (in_array($property, $this->_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db =  \App::get('db');
+                $db =  \Hubzero\Facades\App::get('db');
 
                 if (is_object($db)) {
                     // Note: query logic not yet implemented
@@ -551,7 +551,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function add_user_permission($user, $action)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
 
         if ($user == 'anonymous') {
             $user = '0';
@@ -599,7 +599,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function add_group_permission($group, $action)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
 
         if ($group == 'authenticated') {
             $group = '0';
@@ -645,7 +645,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_user_permission($user, $action)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
         $all = false;
 
         if ($user == 'anonymous') {
@@ -698,7 +698,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_group_permission($group, $action)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
         $all = false;
 
         if ($group == 'authenticated') {
@@ -748,7 +748,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_user_permission($user)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
         $quoted_project_id = $db->quote($this->id);
 
         if ($user == "anonymous") {
@@ -779,7 +779,7 @@ class Project
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_group_permission($group)
     {
-        $db =  \App::get('db');
+        $db =  \Hubzero\Facades\App::get('db');
         $quoted_project_id = $db->quote($this->id);
 
         if ($group == 'authenticated') {

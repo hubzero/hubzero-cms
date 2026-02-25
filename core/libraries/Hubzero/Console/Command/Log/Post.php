@@ -49,7 +49,7 @@ class Post extends Base
         $ciphertext = substr($ciphertext, $ivSize);
 
         // Generate key and decrypt
-        $key       = md5(\App::get('config')->get('secret'));
+        $key       = md5(\Hubzero\Facades\App::get('config')->get('secret'));
         $plaintext = openssl_decrypt($ciphertext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
 
         return $plaintext;
@@ -62,7 +62,7 @@ class Post extends Base
      **/
     public static function path()
     {
-        $dir = \Config::get('log_path');
+        $dir = \Hubzero\Facades\Config::get('log_path');
 
         if (is_dir('/var/log/hubzero-cms')) {
             $dir = '/var/log/hubzero-cms';

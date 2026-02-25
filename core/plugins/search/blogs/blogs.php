@@ -5,6 +5,9 @@ namespace Plugins\Search\Blogs;
 use Components\Blog\Models\Entry;
 use Hubzero\Plugin\Plugin;
 use Hubzero\User\Group;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * @package    hubzero-cms

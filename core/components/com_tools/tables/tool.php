@@ -9,8 +9,10 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Tools table for a Tool
@@ -413,7 +415,7 @@ class Tool extends Table
      */
     public static function getToolDevelopers($toolid)
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";

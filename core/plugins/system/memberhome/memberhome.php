@@ -9,6 +9,9 @@
 namespace Plugins\System\Memberhome;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 // no direct access
 

@@ -301,7 +301,7 @@ class Provider
      */
     public function consumerHandler()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (!is_object($db)) {
             return OAUTH_ERR_INTERNAL_ERROR;
@@ -349,7 +349,7 @@ class Provider
             return OAUTH_BAD_TIMESTAMP;
         }
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (!is_object($db)) {
             return OAUTH_ERR_INTERNAL_ERROR;
@@ -390,7 +390,7 @@ class Provider
      */
     public function tokenHandler()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         if (!is_object($db)) {
             return OAUTH_ERR_INTERNAL_ERROR;

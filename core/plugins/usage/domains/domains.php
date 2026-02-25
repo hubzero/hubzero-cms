@@ -3,6 +3,8 @@
 namespace Plugins\Usage\Domains;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * @package    hubzero-cms

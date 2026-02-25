@@ -12,6 +12,7 @@
 namespace Plugins\Update\Cache;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Config;
 
 class Cache extends Plugin
 {
@@ -26,6 +27,6 @@ class Cache extends Plugin
             return;
         }
 
-        \Cache::gc();
+        \Hubzero\Facades\Cache::gc();
     }
 }

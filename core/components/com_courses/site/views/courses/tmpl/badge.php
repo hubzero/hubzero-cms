@@ -58,7 +58,7 @@ switch ($this->action) {
 
         require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
 
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $memberBadge = new \Components\Courses\Tables\MemberBadge($db);
         $memberBadge->load(array('validation_token' => $this->token));

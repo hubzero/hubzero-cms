@@ -9,10 +9,10 @@
 namespace Hubzero\Message;
 
 use Hubzero\Base\Obj;
-use Event;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Hubzero message class for handling message routing

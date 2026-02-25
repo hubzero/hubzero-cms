@@ -50,7 +50,7 @@ class Resources extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get args
@@ -61,7 +61,7 @@ class Resources extends GroupMacro
         $limit = $this->getLimit($args, 5);
         $class = $this->getClass($args);
 
-        require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+        require_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         // Get resources
         $groupResources = $this->getResources($type, $limit);
@@ -69,8 +69,8 @@ class Resources extends GroupMacro
         $html = '<div class="resources ' . $class . '">';
 
         foreach ($groupResources as $resource) {
-            $resourceLink = \Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
-            $resourceTypeLink = \Route::url(
+            $resourceLink = \Hubzero\Facades\Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
+            $resourceTypeLink = \Hubzero\Facades\Route::url(
                 'index.php?option=com_groups&cn=' . $this->group->get('cn') .
                 '&active=resources&area=' . $resource->type->get('alias')
             );

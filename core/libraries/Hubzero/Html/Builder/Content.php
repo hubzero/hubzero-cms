@@ -32,7 +32,7 @@ class Content
         $article = new \stdClass();
         $article->text = $text;
 
-        \App::get('dispatcher')->trigger('content.onContentPrepare', array($context, &$article, &$params, 0));
+        \Hubzero\Facades\App::get('dispatcher')->trigger('content.onContentPrepare', array($context, &$article, &$params, 0));
 
         return $article->text;
     }

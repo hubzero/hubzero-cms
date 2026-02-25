@@ -8,7 +8,7 @@
 
 namespace Hubzero\Html\Builder;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Extended Utility class for batch processing widgets.
@@ -115,7 +115,7 @@ class Batch
         }
 
         // Get the database object and a new query object.
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         // Build the query.
         $query = $db->getQuery()

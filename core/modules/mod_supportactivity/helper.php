@@ -9,7 +9,7 @@
 namespace Modules\SupportActivity;
 
 use Hubzero\Module\Module;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Module class for an activity feed
@@ -23,11 +23,11 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!\Hubzero\Facades\App::isAdmin()) {
             return;
         }
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $limit = (int) $this->params->get('limit', 25);
         $query = $database->getQuery()
             ->select('a.*')

@@ -8,6 +8,14 @@
 
 namespace Components\Cart\Lib\Cartmessenger;
 
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
+
 /**
  * Logs cart activity and sends emails out as necessary
  */
@@ -106,7 +114,7 @@ class CartMessenger
 
             $hzl = new \Hubzero\Log\Writer(
                 new \Monolog\Logger(Config::get('application_env')),
-                \App::get('dispatcher')
+                \Hubzero\Facades\App::get('dispatcher')
             );
             $hzl->useFiles($this->logFile);
 

@@ -10,11 +10,11 @@ namespace Modules\AdminMenu;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
-use Component;
-use Request;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying the admin menu

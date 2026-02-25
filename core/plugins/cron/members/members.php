@@ -12,6 +12,10 @@
 namespace Plugins\Cron\Members;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 class Members extends Plugin
 {
@@ -114,7 +118,7 @@ class Members extends Plugin
             $reviews = $RE->getReviews();
 
             // do we have ratings on reviews enabled?
-            $param = \Plugin::byType('resources', 'reviews');
+            $param = \Hubzero\Facades\Plugin::byType('resources', 'reviews');
             $plparam = new \Hubzero\Config\Registry($param->params);
             $voting = $plparam->get('voting');
 

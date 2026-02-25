@@ -10,13 +10,14 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Message;
-use Notify;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Manage messaging settings
@@ -253,7 +254,7 @@ class Messages extends AdminController
                 $settings[$method->get('type')]['ids'][$method->get('method')] = $method->get('id');
             }
         } else {
-            $default_method = \Plugin::params('members', 'messages')->get('default_method');
+            $default_method = \Hubzero\Facades\Plugin::params('members', 'messages')->get('default_method');
         }
 
         // Fill in any settings that weren't set.

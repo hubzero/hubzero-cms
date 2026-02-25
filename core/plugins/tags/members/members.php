@@ -12,6 +12,11 @@
 namespace Plugins\Tags\Members;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 class Members extends Plugin
 {
@@ -126,7 +131,7 @@ class Members extends Plugin
      */
     public static function out($row)
     {
-        require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+        require_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $member = \Components\Members\Models\Member::oneOrNew($row->id);
 

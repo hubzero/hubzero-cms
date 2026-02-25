@@ -11,13 +11,14 @@ namespace Components\Languages\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Languages\Models\Override;
 use Components\Languages\Models\Overrider;
-use Filesystem;
-use Request;
-use Notify;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Languages Overrides Controller

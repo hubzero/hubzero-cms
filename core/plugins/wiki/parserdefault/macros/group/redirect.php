@@ -47,7 +47,7 @@ class Redirect extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get the arguments
@@ -65,7 +65,7 @@ class Redirect extends GroupMacro
 
         // No delay time? Redirect now.
         if (!$delay) {
-            return \App::redirect($url);
+            return \Hubzero\Facades\App::redirect($url);
         }
 
         // Delayed redirect
@@ -76,6 +76,6 @@ class Redirect extends GroupMacro
             . '"; }, '
             . ($delay * 1000)
             . ');</script>
-                <p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+                <p class="warning">' . \Hubzero\Facades\Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
     }
 }

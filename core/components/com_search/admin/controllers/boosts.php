@@ -13,6 +13,8 @@ use Components\Search\Helpers\RecordProcessingHelper;
 use Components\Search\Helpers\TypeOptionsHelper;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Component\AdminController;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Boosts extends AdminController
 {

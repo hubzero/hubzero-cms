@@ -8,6 +8,8 @@
 
 namespace Hubzero\Database\Relationship;
 
+use Hubzero\Facades\Event;
+
 /**
  * Database many to many relationship
  */

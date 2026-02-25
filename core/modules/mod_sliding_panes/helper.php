@@ -10,7 +10,7 @@ namespace Modules\SlidingPanes;
 
 use Hubzero\Module\Module;
 use Hubzero\Database\Expression;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Module class for displaying sliding panes of content
@@ -45,7 +45,7 @@ class Helper extends Module
      */
     private function getList()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         $catid   = (int) $this->params->get('catid', 0);
         $random  = $this->params->get('random', 0);

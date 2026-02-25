@@ -15,12 +15,14 @@ use Components\Newsletter\Models\Mailing;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use stdClass;
-use Pathway;
-use Route;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 
 /**
  * Newsletter Mailing List Controller
@@ -193,8 +195,8 @@ class Mailinglists extends SiteController
         Request::checkToken();
 
         //get request vars
-        $list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');
-        $email  = Request::getString('email_' . \Session::getFormToken(), User::get('email'), 'post');
+        $list   = Request::getInt('list_' . \Hubzero\Facades\Session::getFormToken(), '', 'post');
+        $email  = Request::getString('email_' . \Hubzero\Facades\Session::getFormToken(), User::get('email'), 'post');
         $sid    = Request::getInt('subscriptionid', 0);
         $hp1    = Request::getString('hp1', '', 'post');
         $return = base64_decode(Request::getString('return', '/', 'post'));
@@ -237,7 +239,7 @@ class Mailinglists extends SiteController
                     'mid'        => $list,
                     'email'      => $email,
                     'status'     => 'inactive',
-                    'date_added' => \Date::toSql()
+                    'date_added' => Date::toSql()
                 ));
 
             //mail confirmation email and save subscription

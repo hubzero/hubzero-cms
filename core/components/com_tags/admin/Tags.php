@@ -22,36 +22,36 @@ class Tags extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_tags')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!\Hubzero\Facades\User::authorise('core.manage', 'com_tags')) {
+            \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'entries');
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'entries');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'entries';
         }
-        $task = \Request::getCmd('task', '');
+        $task = \Hubzero\Facades\Request::getCmd('task', '');
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_TAGS'),
-            \Route::url('index.php?option=com_tags'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TAGS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tags'),
             ($controllerName == 'entries')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TAGS_RELATIONSHIPS'),
-            \Route::url('index.php?option=com_tags&controller=relationships'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TAGS_RELATIONSHIPS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tags&controller=relationships'),
             ($controllerName == 'relationships' && $task != 'meta' && $task != 'updatefocusareas')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TAGS_FOCUS_AREAS'),
-            \Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
+        \Hubzero\Facades\Submenu::addEntry(
+            \Hubzero\Facades\Lang::txt('COM_TAGS_FOCUS_AREAS'),
+            \Hubzero\Facades\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
             ($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
         );
-        require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_TAGS_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
+            \Hubzero\Facades\Submenu::addEntry(
+                \Hubzero\Facades\Lang::txt('COM_TAGS_PLUGINS'),
+                \Hubzero\Facades\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
             );
         }
 

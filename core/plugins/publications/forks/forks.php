@@ -3,6 +3,11 @@
 namespace Plugins\Publications\Forks;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * @package    hubzero-cms

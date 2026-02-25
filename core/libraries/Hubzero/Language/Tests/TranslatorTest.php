@@ -16,7 +16,7 @@ namespace Hubzero\Language\Tests {
     /**
      * A Translator subclass that lets us inject paths and bypass App dependencies.
      *
-     * The real Translator constructor calls \App::get('config') and uses PATH_APP/PATH_CORE
+     * The real Translator constructor calls \Hubzero\Facades\App::get('config') and uses PATH_APP/PATH_CORE
      * constants, which are set by the project's autoloader. To test the Translator in isolation
      * we subclass it, skip the constructor, and inject state directly.
      */
@@ -66,7 +66,7 @@ namespace Hubzero\Language\Tests {
         }
 
         /**
-         * Override load() to bypass the \App::get('config')->get('debug_lang') call.
+         * Override load() to bypass the \Hubzero\Facades\App::get('config')->get('debug_lang') call.
          * This makes the method testable without the App facade.
          */
         public function load(

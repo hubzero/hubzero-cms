@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Courses;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 class Courses extends Plugin
 {
@@ -126,7 +131,7 @@ class Courses extends Plugin
      */
     public function emailInstructorDigest(\Components\Cron\Models\Job $job)
     {
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
         $cconfig  = Component::params('com_courses');
 
         Lang::load('com_courses') ||

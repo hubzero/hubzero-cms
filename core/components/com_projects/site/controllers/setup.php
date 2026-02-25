@@ -14,12 +14,14 @@ use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Project as ProjectORM;
 use Exception;
-use Request;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Session;
 
 /**
  * Projects setup controller class
@@ -1158,7 +1160,7 @@ class Setup extends Base
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = \Hubzero\Facades\Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $baseUrl = "https://api.ror.org/$verNum/organizations";
@@ -1215,7 +1217,7 @@ class Setup extends Base
         $agency = trim($grantAgency);
         $agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = \Hubzero\Facades\Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $baseUrl = "https://api.ror.org/$verNum/organizations";

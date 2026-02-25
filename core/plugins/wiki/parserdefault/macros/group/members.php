@@ -49,7 +49,7 @@ class Members extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return \Hubzero\Facades\Lang::txt('[This macro is designed for Groups only]');
         }
 
         // get args
@@ -64,7 +64,7 @@ class Members extends GroupMacro
         $members = $this->getGroupMembers($this->group, $filters);
 
         //are we a group member
-        $isMember = (in_array(\User::get('id'), $this->group->get('members'))) ? true : false;
+        $isMember = (in_array(\Hubzero\Facades\User::get('id'), $this->group->get('members'))) ? true : false;
 
         //get the members plugin access for this group
         $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
@@ -72,7 +72,7 @@ class Members extends GroupMacro
         // make sure we can actually display for the current user
         if (
             $memberAccess == 'anyone'
-            || ($memberAccess == 'registered' && !\User::isGuest())
+            || ($memberAccess == 'registered' && !\Hubzero\Facades\User::isGuest())
             || ($memberAccess == 'members' && $isMember)
         ) {
             $html = $this->renderMembers($this->group, $members);
@@ -97,7 +97,7 @@ class Members extends GroupMacro
         $members = $group->get('members');
 
         // get group params
-        $params = \Component::params("com_groups");
+        $params = \Hubzero\Facades\Component::params("com_groups");
         $displaySystemUsers = $params->get('display_system_users', 'no');
 
         //get this groups params
@@ -136,11 +136,11 @@ class Members extends GroupMacro
     {
         $content = '<div class="member_browser">';
         if (count($members) > 0) {
-            include_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+            include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
             foreach ($members as $member) {
                 $profile = \Components\Members\Models\Member::oneOrNew($member);
-                $link    = \Route::url($profile->link());
+                $link    = \Hubzero\Facades\Route::url($profile->link());
 
                 $content
                     .= '<a href="'

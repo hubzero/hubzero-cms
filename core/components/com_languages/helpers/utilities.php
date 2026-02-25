@@ -10,8 +10,9 @@ namespace Components\Languages\Helpers;
 
 use Hubzero\Access\Access;
 use Hubzero\Base\Obj;
-use User;
-use Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Component;
 
 /**
  * Languages component helper.

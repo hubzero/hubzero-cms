@@ -85,9 +85,9 @@ class Main extends WikiMacro
 
             // Build and return the link
             if (!$g->get('id')) {
-                $l[] = '<a href="' . \Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
+                $l[] = '<a href="' . \Hubzero\Facades\Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
             } else {
-                $l[] = '<a class="int-link" href="' . \Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
+                $l[] = '<a class="int-link" href="' . \Hubzero\Facades\Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
             }
         }
 

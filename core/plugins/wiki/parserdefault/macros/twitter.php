@@ -98,7 +98,7 @@ class Twitter extends WikiMacro
             $atts[] = 'data-tweet-limit="' . $args[1] . '"';
         }
 
-        \Document::addScript(\Request::root()
+        \Hubzero\Facades\Document::addScript(\Hubzero\Facades\Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/twitter/twitter
             . js?t='
             . filemtime(__DIR__

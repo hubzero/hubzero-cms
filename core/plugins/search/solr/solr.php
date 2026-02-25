@@ -7,6 +7,10 @@ use Components\Search\Helpers\DiscoveryHelper;
 use Components\Search\Models\Solr\SearchComponent;
 use Components\Search\Models\Solr\Blacklist;
 use Hubzero\Search\Index;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Component;
 
 /**
  * @package    hubzero-cms

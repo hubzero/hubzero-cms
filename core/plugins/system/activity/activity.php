@@ -12,6 +12,7 @@
 namespace Plugins\System\Activity;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Activity extends Plugin
 {

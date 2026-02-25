@@ -9,7 +9,7 @@
 namespace Components\Forum\Models\Adapters;
 
 use Hubzero\Utility\Str;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Adapter class for a forum post link for course forum
@@ -36,7 +36,7 @@ class Course extends Base
     {
         $this->set('scope_id', $scope_id);
 
-        include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
+        include_once \Hubzero\Facades\Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 
         $offering = \Components\Courses\Models\Offering::getInstance($this->get('scope_id'));
         $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));

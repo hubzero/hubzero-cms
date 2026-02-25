@@ -50,9 +50,9 @@ class Json extends Base
      */
     public function render($cache = false, $params = array())
     {
-        \App::get('response')->headers->set('Cache-Control', 'no-cache', false);
-        \App::get('response')->headers->set('Pragma', 'no-cache');
-        \App::get('response')->headers->set('Content-disposition', 'attachment; filename="' .
+        \Hubzero\Facades\App::get('response')->headers->set('Cache-Control', 'no-cache', false);
+        \Hubzero\Facades\App::get('response')->headers->set('Pragma', 'no-cache');
+        \Hubzero\Facades\App::get('response')->headers->set('Content-disposition', 'attachment; filename="' .
             $this->getName() .
             '.json"', true);
 

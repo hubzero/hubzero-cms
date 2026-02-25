@@ -56,7 +56,7 @@ class Router extends Base
             //  /tags/##
             if (is_numeric($segments[0])) {
                 $vars['id'] = $segments[0];
-                if (\App::get('request')->method() == 'GET') {
+                if (\Hubzero\Facades\App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
             } else {

@@ -8,7 +8,7 @@
 
 namespace Components\Courses\Models;
 
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Courses model class for grade book
@@ -40,7 +40,7 @@ class GradePolicies extends Base
      */
     public function __construct($oid, $sid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new $this->_tbl_name($this->_db);
 

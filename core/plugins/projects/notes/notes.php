@@ -11,6 +11,14 @@ namespace Plugins\Projects\Notes;
 use Hubzero\Utility\Str;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 
 /**
  * Projects Notes (wiki) plugin
@@ -447,7 +455,7 @@ class Notes extends Plugin
                 ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED')
                 : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
 
-            \Notify::message($this->_msg, 'success', 'projects');
+            \Hubzero\Facades\Notify::message($this->_msg, 'success', 'projects');
 
             App::redirect(Route::url(
                 'index.php?option=' . $this->_option . '&scope=' . $page->get('scope')

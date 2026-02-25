@@ -10,8 +10,8 @@ namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
-use Component;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 use Date;
 
 /**

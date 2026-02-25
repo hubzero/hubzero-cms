@@ -12,13 +12,13 @@ use Components\Courses\Models\Course;
 use Components\Courses\Models\PdfForm;
 use Components\Courses\Models\PdfFormDeployment;
 use Hubzero\Component\SiteController;
-use Request;
-use Pathway;
-use Route;
-use User;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Courses form controller class
@@ -106,7 +106,7 @@ class Form extends SiteController
         }
 
         //set title of browser window
-        \Document::setTitle($this->_title);
+        \Hubzero\Facades\Document::setTitle($this->_title);
     }
 
     /**

@@ -88,7 +88,7 @@ class DocumentServiceProvider extends Middleware
             // Strip off the base path
             $path = substr(dirname($params['directory']), strlen($basepath));
 
-            $params['baseurl'] = rtrim(\Request::root(true), '/') . rtrim($path, '/');
+            $params['baseurl'] = rtrim($this->app['request']->root(true), '/') . rtrim($path, '/');
         }
 
         if (!$document->getTitle()) {
@@ -112,7 +112,7 @@ class DocumentServiceProvider extends Middleware
         $document->parse($params);
 
         $caching = false;
-        if ($this->app['config']->get('caching', 2) == 2 && !\User::get('id')) {
+        if ($this->app['config']->get('caching', 2) == 2 && !$this->app['user']->get('id')) {
             $caching = true;
         }
         $this->app['dispatcher']->trigger('system.onBeforeRender');

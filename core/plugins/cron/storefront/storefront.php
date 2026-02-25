@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Storefront;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 class Storefront extends Plugin
 {

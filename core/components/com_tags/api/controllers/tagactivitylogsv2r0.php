@@ -11,6 +11,7 @@ namespace Components\Tags\Api\Controllers;
 use Components\Tags\Helpers\ActivityLogPresenter;
 use Components\Tags\Models\Log;
 use Hubzero\Component\ApiController;
+use Hubzero\Facades\Request;
 
 class TagActivityLogsv2r0 extends ApiController
 {
@@ -57,7 +58,7 @@ class TagActivityLogsv2r0 extends ApiController
         if ($tagId && $logId) {
             $parser = new ActivityLogPresenter();
 
-            $previousLogs = Log::all()
+            $previousLogs = \Hubzero\Facades\Log::all()
                 ->ordered()
                 ->whereEquals('tag_id', $tagId)
                 ->where('id', '<', $logId)

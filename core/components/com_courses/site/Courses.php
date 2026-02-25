@@ -23,7 +23,7 @@ class Courses extends AbstractComponent
     protected function execute(): void
     {
         // Build controller path and name
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'courses'));
+        $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'courses'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'courses';
         }

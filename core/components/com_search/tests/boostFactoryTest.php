@@ -11,6 +11,8 @@ namespace Components\Search\Tests;
 use Components\Search\Helpers\BoostFactory;
 use Components\Search\Tests\Traits\canMock;
 use Hubzero\Test\Basic;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 class BoostFactoryTest extends Basic
 {

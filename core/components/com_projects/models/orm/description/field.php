@@ -9,6 +9,7 @@
 namespace Components\Projects\Models\Orm\Description;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Component;
 
 /**
  * User profile field model

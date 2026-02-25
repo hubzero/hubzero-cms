@@ -15,15 +15,15 @@ use Hubzero\Access\Rules;
 use Hubzero\Access\Asset;
 use Components\Content\Models\Article;
 use Components\Content\Models\Frontpage as Featured;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Notify;
+use Hubzero\Facades\Notify;
 use Route;
-use User;
-use Cache;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for content articles

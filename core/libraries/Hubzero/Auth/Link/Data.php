@@ -9,7 +9,7 @@
 namespace Hubzero\Auth\Link;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Authentication Link data

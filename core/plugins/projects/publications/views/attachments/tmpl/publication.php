@@ -16,7 +16,7 @@ $row     = $this->data->row;
 $title   = $row->title ? $row->title : $row->path;
 $viewer  = $this->data->viewer;
 
-$db = \App::get('db');
+$db = \Hubzero\Facades\App::get('db');
 $version = new \Components\Publications\Tables\Version($db);
 $version->load($row->object_id);
 

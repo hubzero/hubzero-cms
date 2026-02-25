@@ -4,6 +4,7 @@ namespace Plugins\Search\Courses;
 
 use Components\Courses\Models\Orm\Course;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

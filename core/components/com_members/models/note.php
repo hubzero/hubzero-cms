@@ -9,6 +9,8 @@
 namespace Components\Members\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * User note model

@@ -108,7 +108,7 @@ class Resources extends WikiMacro
             if ($nolink) {
                 return stripslashes($r[1]);
             } else {
-                return '<a href="' . \Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
+                return '<a href="' . \Hubzero\Facades\Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
             }
         }
 
@@ -125,7 +125,7 @@ class Resources extends WikiMacro
      */
     public function screenshots($alias, $num = 1)
     {
-        $config = \Component::params('com_resources');
+        $config = \Hubzero\Facades\Component::params('com_resources');
         $path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
         $alias = strtolower($alias);

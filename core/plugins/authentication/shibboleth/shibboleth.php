@@ -4,6 +4,11 @@ namespace Plugins\Authentication\Shibboleth;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Cookie;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Log;
 
 /**
  * @package    hubzero-cms
@@ -28,16 +33,16 @@ class Shibboleth extends Plugin
         static $params;
 
         if (!isset($params)) {
-            $params = \Plugin::params('authentication', 'shibboleth');
+            $params = \Hubzero\Facades\Plugin::params('authentication', 'shibboleth');
         }
 
         if ($params->get('debug_enabled', true)) {
-            if (!\Log::has('shib')) {
+            if (!\Hubzero\Facades\Log::has('shib')) {
                 $location = $params->get('debug_location', '/var/log/apache2/php/shibboleth.log');
                 $location = explode(DS, $location);
                 $file     = array_pop($location);
 
-                \Log::register('shib', [
+                \Hubzero\Facades\Log::register('shib', [
                     'path'   => implode(DS, $location),
                     'file'   => $file,
                     'level'  => 'info',
@@ -59,7 +64,7 @@ class Shibboleth extends Plugin
                 $toBeLogged .= ":\t" . (is_string($data) ? $data : json_encode($data));
             }
 
-            \Log::logger('shib')->info("$toBeLogged");
+            \Hubzero\Facades\Log::logger('shib')->info("$toBeLogged");
         }
     }
 
@@ -124,7 +129,7 @@ class Shibboleth extends Plugin
     {
         static $inst = null;
         if ($inst === null) {
-            $plugin = \Plugin::byType('authentication', 'shibboleth');
+            $plugin = \Hubzero\Facades\Plugin::byType('authentication', 'shibboleth');
             $inst = json_decode(json_decode($plugin->params)->institutions, true);
             $inst = isset($inst['activeIdps']) ? $inst['activeIdps'] : [];
         }
@@ -239,7 +244,7 @@ class Shibboleth extends Plugin
     public static function onRenderOption($return = null, $title = 'With Institutional Credentials')
     {
         // Hide the login box if the plugin is in "debug mode" and the special key is not set in the request
-        $params = \Plugin::params('authentication', 'shibboleth');
+        $params = \Hubzero\Facades\Plugin::params('authentication', 'shibboleth');
         if (($testKey = $params->get('testkey', null)) && !array_key_exists($testKey, $_GET)) {
             return '<span />';
         }
@@ -573,7 +578,7 @@ class Shibboleth extends Plugin
         // anything without it
         if (isset($options['shibboleth']['eppn'])) {
             self::log('auth with', $options['shibboleth']);
-            $method = (\Component::params('com_members')->get('allowUserRegistration', false))
+            $method = (\Hubzero\Facades\Component::params('com_members')->get('allowUserRegistration', false))
                 ? 'find_or_create'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method(

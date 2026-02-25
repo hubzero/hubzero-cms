@@ -11,11 +11,13 @@ namespace Components\Projects\Models;
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
-use Component;
-use Route;
-use Date;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
 
 /**
  * Project model
@@ -61,7 +63,7 @@ class Project extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         $this->_tbl = new Tables\Project($this->_db);
 
@@ -695,7 +697,7 @@ class Project extends Model
     public function owner($property = null)
     {
         if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\User)) {
-            $this->_owner = \User::getInstance($this->get('owned_by_user'));
+            $this->_owner = User::getInstance($this->get('owned_by_user'));
         }
         if ($property) {
             return $this->_owner->get($property);
@@ -716,7 +718,7 @@ class Project extends Model
     public function creator($property = null)
     {
         if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = \User::getInstance($this->get('created_by_user'));
+            $this->_creator = User::getInstance($this->get('created_by_user'));
         }
         if ($property) {
             return $this->_creator->get($property);

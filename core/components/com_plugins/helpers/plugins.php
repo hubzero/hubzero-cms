@@ -11,9 +11,9 @@ namespace Components\Plugins\Helpers;
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
 use Filesystem;
-use Html;
-use User;
-use App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Plugins component helper.
@@ -37,7 +37,7 @@ class Plugins
         $result    = new Obj();
         $assetName = self::$extension;
 
-        $actions = Access::getActionsFromFile(\Component::path($assetName) . '/config/access.xml');
+        $actions = Access::getActionsFromFile(\Hubzero\Facades\Component::path($assetName) . '/config/access.xml');
 
         foreach ($actions as $action) {
             $result->set($action->name, User::authorise($action->name, $assetName));

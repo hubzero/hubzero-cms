@@ -10,6 +10,14 @@ namespace Plugins\System\Languagefilter;
 
 use Hubzero\Plugin\Plugin;
 use Components\Menus\Helpers\Menus as MenusHelper;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
 
 /**
  * Language Filter Plugin

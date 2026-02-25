@@ -9,8 +9,9 @@
 namespace Components\Answers\Models;
 
 use Hubzero\Item\Comment as ItemComment;
-use Event;
-use Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Components\Answers\Models\Response;
 
 /**
  * Comment model

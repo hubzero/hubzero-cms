@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Activity;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 class Activity extends Plugin
 {
@@ -50,7 +55,7 @@ class Activity extends Plugin
     public function emailMemberDigest(\Components\Cron\Models\Job $job)
     {
         // Make sure digests are enabled?  The cron job being on may be evidence enough...
-        if (!\Plugin::params('members', 'activity')->get('email_digests', false)) {
+        if (!\Hubzero\Facades\Plugin::params('members', 'activity')->get('email_digests', false)) {
             return true;
         }
 

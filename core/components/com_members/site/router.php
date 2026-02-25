@@ -9,7 +9,7 @@
 namespace Components\Members\Site;
 
 use Hubzero\Component\Router\Base;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Routing class for the component
@@ -191,7 +191,7 @@ class Router extends Base
         }
 
         // are we serving up a file
-        $uri = \Request::getString('REQUEST_URI', '', 'server');
+        $uri = \Hubzero\Facades\Request::getString('REQUEST_URI', '', 'server');
         if (strstr($uri, 'Image:') || strstr($uri, 'File:')) {
             $vars['task'] = 'download';
             $vars['controller'] = 'media';

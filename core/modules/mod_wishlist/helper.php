@@ -10,7 +10,7 @@ namespace Modules\Wishlist;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Models\Wishlist;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Module class for com_wishlist data
@@ -24,7 +24,7 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!\Hubzero\Facades\App::isAdmin()) {
             return;
         }
 
@@ -49,7 +49,7 @@ class Helper extends Module
             'removed'   => 2
         );
 
-        $database = \App::get('db');
+        $database = \Hubzero\Facades\App::get('db');
 
         foreach ($queries as $key => $state) {
             $database->setQuery(

@@ -9,6 +9,7 @@
 namespace Components\Publications\Models\BlockElement;
 
 use Components\Publications\Models\BlockElement as Base;
+use Hubzero\Facades\Request;
 
 /**
  * Renders URL selector element
@@ -72,7 +73,7 @@ class Dataselector extends Base
 
         // Git helper
         if (!$this->_git) {
-            include_once \Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
+            include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
             $this->_git = new \Components\Projects\Helpers\Git($this->path);
         }
 

@@ -10,8 +10,8 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Courses model class for a course
@@ -770,7 +770,7 @@ class Course extends Base
                 list($width, $height) = getimagesize(PATH_APP . $path);
                 $size['width']  = $width;
                 $size['height'] = $height;
-                //$path = \Request::base(true) . substr(PATH_APP, strlen(PATH_ROOT)) . $path;
+                //$path = \Hubzero\Facades\Request::base(true) . substr(PATH_APP, strlen(PATH_ROOT)) . $path;
 
                 if ($rtrn == 'url') {
                     return $this->link() . '&active=logo';
@@ -921,7 +921,7 @@ class Course extends Base
 
             // Copy tags
             $tagger = new Tags($c_id);
-            $this->tag($tagger->render('string', array('admin' => 1)), \User::get('id'), 1);
+            $this->tag($tagger->render('string', array('admin' => 1)), \Hubzero\Facades\User::get('id'), 1);
         }
 
         return true;

@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
-use Html;
+use Hubzero\Facades\Html;
 
 /**
  * Renders a list of resource types
@@ -30,7 +30,7 @@ class Resourcetype extends Select
      */
     protected function getOptions()
     {
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
+        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 

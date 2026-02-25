@@ -225,9 +225,9 @@ class Router extends Base
                         $vars['pid'] = $segments[2];
                         $blocks = array();
 
-                        if (is_file(\Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
-                            include_once \Component::path('com_publications') . DS . 'tables' . DS . 'block.php';
-                            $database = \App::get('db');
+                        if (is_file(\Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
+                            include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'block.php';
+                            $database = \Hubzero\Facades\App::get('db');
 
                             $b = new \Components\Publications\Tables\Block($database);
                             $blocks = $b->getBlocks('block');

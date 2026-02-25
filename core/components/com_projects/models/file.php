@@ -10,10 +10,10 @@ namespace Components\Projects\Models;
 
 use Hubzero\Base\Obj;
 use Components\Projects\Helpers;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use stdClass;
-use Route;
-use Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
 
 /**
  * Project File model
@@ -561,9 +561,9 @@ class File extends Obj
     {
         $ext = strtolower($ext);
 
-        $icon = \Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+        $icon = \Hubzero\Facades\Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
         if (!$icon) {
-            $icon = \Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
+            $icon = \Hubzero\Facades\Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
         }
 
         return $basename ? basename($icon) : $icon;

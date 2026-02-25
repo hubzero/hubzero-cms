@@ -95,7 +95,7 @@ class HtmxService
      */
     public function isHtmxRequest(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return false;
         }
@@ -117,7 +117,7 @@ class HtmxService
      */
     public function isHtmxBoosted(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return false;
         }
@@ -139,7 +139,7 @@ class HtmxService
      */
     public function isHtmxHistoryRestoreRequest(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return false;
         }
@@ -260,7 +260,7 @@ class HtmxService
             return;
         }
 
-        \App::redirect($url);
+        \Hubzero\Facades\App::redirect($url);
     }
 
     /**
@@ -281,7 +281,7 @@ class HtmxService
             return;
         }
 
-        \App::redirect($url);
+        \Hubzero\Facades\App::redirect($url);
     }
 
     /**
@@ -382,7 +382,7 @@ class HtmxService
             $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: array());
         }
 
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
@@ -494,7 +494,7 @@ class HtmxService
             $url .= $sep . http_build_query($params);
         }
 
-        return \Route::url($url, false);
+        return \Hubzero\Facades\Route::url($url, false);
     }
 
     /**
@@ -530,7 +530,7 @@ class HtmxService
             $status = 200;
         }
 
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers)) {
             $response->headers->set('Content-Type', 'text/html; charset=utf-8');
             if (method_exists($response, 'setStatusCode')) {
@@ -544,7 +544,7 @@ class HtmxService
         }
 
         echo $html;
-        \App::close();
+        \Hubzero\Facades\App::close();
     }
 
     /**
@@ -672,7 +672,7 @@ class HtmxService
     {
         $this->sentHeaders[$name] = $value;
 
-        $response = \App::get('response');
+        $response = \Hubzero\Facades\App::get('response');
         if ($response && isset($response->headers)) {
             $response->headers->set($name, $value);
             $this->emitDebugHeaderIfEnabled();
@@ -774,7 +774,7 @@ class HtmxService
      */
     public function isDebugEnabled(): bool
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return false;
         }
@@ -926,7 +926,7 @@ class HtmxService
      */
     protected function requestContext(): array
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if (!$request) {
             return array();
         }
@@ -953,7 +953,7 @@ class HtmxService
      */
     protected function requestHeaderValue(string $name): string
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
         if ($request && method_exists($request, 'header')) {
             $value = (string) $request->header($name, '');
             if ($value !== '') {
@@ -1004,7 +1004,7 @@ class HtmxService
      */
     protected function requestOrigin(): ?array
     {
-        $request = \App::get('request');
+        $request = \Hubzero\Facades\App::get('request');
 
         $scheme = '';
         $host = '';

@@ -15,7 +15,7 @@ use Components\Storefront\Models\CourseOffering;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  *
@@ -53,10 +53,10 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = \Hubzero\Facades\App::get('db');
 
         // Load language file
-        \App::get('language')->load('com_storefront');
+        \Hubzero\Facades\App::get('language')->load('com_storefront');
     }
 
     // Instance config functions
@@ -380,7 +380,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         // Check if the product can be viewed (if access level scope is set)
-        if (\Component::params('com_storefront')->get('productAccess')) {
+        if (\Hubzero\Facades\Component::params('com_storefront')->get('productAccess')) {
             if ($this->accessGroupsScope) {
                 $product = new Product();
                 $product->setId($pInfo->pId);
@@ -467,7 +467,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function getProducts($return = 'rows', $showOnlyActive = true, $filters = false)
     {
-        $useAccessGroups = \Component::params('com_storefront')->get('productAccess');
+        $useAccessGroups = \Hubzero\Facades\Component::params('com_storefront')->get('productAccess');
 
         $sql = "SELECT DISTINCT p.*, pt.ptName, i.imgName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`

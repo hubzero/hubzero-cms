@@ -9,8 +9,8 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a list of master types
@@ -31,7 +31,7 @@ class Mastertype extends Select
      */
     protected function getOptions()
     {
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
 
         include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'master.type.php';
 

@@ -13,7 +13,10 @@ use Hubzero\Utility\Date;
 use Hubzero\Access\Access;
 use Hubzero\Access\Map;
 use Exception;
-use Event;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 
 /**
  * Users database model
@@ -207,7 +210,7 @@ class User extends \Hubzero\Database\Relational
                 || mb_strlen($username, 'UTF-8') < 2
                 || trim($username) != $username
             ) {
-                return \Lang::txt('JLIB_DATABASE_ERROR_VALID_AZ09', 2);
+                return \Hubzero\Facades\Lang::txt('JLIB_DATABASE_ERROR_VALID_AZ09', 2);
             }
 
             return false;
@@ -218,7 +221,7 @@ class User extends \Hubzero\Database\Relational
             $user = self::oneByUsername($data['username']);
 
             if ($user->get('id') && $user->get('id') != $data['id']) {
-                return \Lang::txt('JLIB_DATABASE_ERROR_USERNAME_INUSE');
+                return \Hubzero\Facades\Lang::txt('JLIB_DATABASE_ERROR_USERNAME_INUSE');
             }
 
             return false;
@@ -261,7 +264,7 @@ class User extends \Hubzero\Database\Relational
     public function automaticRegisterIP($data)
     {
         if (!isset($data['registerIP'])) {
-            $data['registerIP'] = \Request::ip();
+            $data['registerIP'] = \Hubzero\Facades\Request::ip();
         }
         return $data['registerIP'];
     }
@@ -476,7 +479,7 @@ class User extends \Hubzero\Database\Relational
                     $jwtname = $jwt->name;
 
                     // check if we have a user by this email address
-                    $user = \User::oneByEmail($jwtemail);
+                    $user = self::oneByEmail($jwtemail);
 
                     // this user does not exist
                     // we should create this in the hub database
@@ -512,11 +515,11 @@ class User extends \Hubzero\Database\Relational
                     }
 
                     // set up the user object to be logged in
-                    \User::set('id', $user->get('id'));
-                    \User::set('email', $jwtemail);
-                    \User::set('username', $jwtuser);
-                    \User::set('guest', false);
-                    \User::set('approved', 2);
+                    \Hubzero\Facades\User::set('id', $user->get('id'));
+                    \Hubzero\Facades\User::set('email', $jwtemail);
+                    \Hubzero\Facades\User::set('username', $jwtuser);
+                    \Hubzero\Facades\User::set('guest', false);
+                    \Hubzero\Facades\User::set('approved', 2);
 
                     // set the user object in the session such that
                     // next visit and other plugins that use the session
@@ -525,7 +528,7 @@ class User extends \Hubzero\Database\Relational
                     $this->guest = false;
 
                     $data = App::get('user')->getInstance()->toArray();
-                    \Event::trigger('user.onUserLogin', array($data));
+                    Event::trigger('user.onUserLogin', array($data));
                 }
             } catch (Exception $e) {
                 // something likely went wrong with the jwt
@@ -770,7 +773,7 @@ class User extends \Hubzero\Database\Relational
             $this->isRoot = false;
 
             // Check for the configuration file failsafe.
-            $rootUser = \App::get('config')->get('root_user');
+            $rootUser = \Hubzero\Facades\App::get('config')->get('root_user');
 
             // The root_user variable can be a numeric user ID or a username.
             if (is_numeric($rootUser) && $this->get('id') > 0 && $this->get('id') == $rootUser) {
@@ -806,7 +809,7 @@ class User extends \Hubzero\Database\Relational
     {
         // Brute force method: get all published category rows for the component and check each one
         // TODO: Move to ORM-based models
-        $db = \App::get('db');
+        $db = \Hubzero\Facades\App::get('db');
         $query = $db->getQuery()
             ->select('c.id', 'id')
             ->select('a.name', 'asset_name')

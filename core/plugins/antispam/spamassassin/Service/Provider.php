@@ -51,7 +51,7 @@ class Provider extends AbstractService
         $params = array();
 
         if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php')) {
-            throw new Exception(\Lang::txt('Client type of "%s" not found.', $this->get('client')));
+            throw new Exception(\Hubzero\Facades\Lang::txt('Client type of "%s" not found.', $this->get('client')));
         }
 
         require_once __DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php';
@@ -71,7 +71,7 @@ class Provider extends AbstractService
             }
             $client = new Client\Local($params);
         } else {
-            throw new Exception(\Lang::txt('Client type of "%s" not supported.', $this->get('client')));
+            throw new Exception(\Hubzero\Facades\Lang::txt('Client type of "%s" not supported.', $this->get('client')));
         }
 
         return $client->isSpam($this->getValue());

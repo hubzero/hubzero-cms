@@ -17,8 +17,9 @@ use Hubzero\Utility\Sanitize;
 use Hubzero\Base\Obj;
 use SimpleXMLElement;
 use Exception;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Form Class.
