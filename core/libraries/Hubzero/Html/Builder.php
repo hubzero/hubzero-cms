@@ -73,6 +73,23 @@ class Builder
                 }
             }
 
+            // A Builder class may exist and still not carry the method: a
+            // component's registered helper of the same name (com_menus'
+            // HtmlMenu behind Builder\Menu) is then the intended target.
+            if (!$callable) {
+                $alt = $this->find($method);
+
+                if (is_string($alt) && $alt !== $cls && class_exists($alt)) {
+                    foreach ($candidates as $candidate) {
+                        $candidateCallable = array($alt, $candidate);
+                        if (is_callable($candidateCallable)) {
+                            $callable = $candidateCallable;
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (!$callable) {
                 throw new InvalidArgumentException(sprintf('%s %s not found.', $cls, $func), 500);
             }
