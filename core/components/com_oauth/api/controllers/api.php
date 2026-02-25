@@ -19,7 +19,7 @@ use OAuthProvider;
  *
  * Long description (if any) ...
  */
-class OauthControllerApi extends ApiController
+class Api extends ApiController
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_provider;

@@ -13,7 +13,7 @@ use Hubzero\Facades\Html;
 /**
  * HTML Helper
  */
-abstract class InstallerHtmlManage
+abstract class Manage
 {
     /**
      * Returns a published state on a grid
