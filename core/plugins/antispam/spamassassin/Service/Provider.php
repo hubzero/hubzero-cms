@@ -54,8 +54,6 @@ class Provider extends AbstractService
             throw new Exception(\Hubzero\Facades\Lang::txt('Client type of "%s" not found.', $this->get('client')));
         }
 
-        require_once __DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php';
-
         if ($this->get('client') == 'remote') {
             foreach (array('server', 'verbose') as $option) {
                 if ($this->get($option) !== null) {

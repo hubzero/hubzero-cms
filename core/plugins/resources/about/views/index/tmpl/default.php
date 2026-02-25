@@ -42,7 +42,6 @@ if (count($matches) > 0) {
 //$fulltxt = trim($fulltxt);
 //$fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $fulltxt);
 
-include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 

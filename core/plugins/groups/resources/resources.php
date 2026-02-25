@@ -301,15 +301,6 @@ class Resources extends Plugin
                     $lang = App::get('language');
                     $lang->load('com_resources', Component::path('com_resources') . DS . 'site');
 
-                    $resPath = Component::path('com_resources');
-                    $toolsPath = Component::path('com_tools');
-                    require_once $resPath . DS . 'models' . DS . 'entry.php';
-                    require_once $resPath . DS . 'site' . DS . 'controllers' . DS . 'resources.php';
-                    require_once $resPath . DS . 'helpers' . DS . 'html.php';
-                    require_once $toolsPath . DS . 'tables' . DS . 'tool.php';
-                    require_once $toolsPath . DS . 'tables' . DS . 'version.php';
-                    require_once $toolsPath . DS . 'tables' . DS . 'author.php';
-
                     // Set the request up to make it look like a user made the request
                     Request::setVar('task', 'view');
                     Request::setVar('option', 'com_resources');

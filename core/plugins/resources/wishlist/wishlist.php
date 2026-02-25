@@ -92,10 +92,6 @@ class Wishlist extends Plugin
         $admin  = 0;
         $html   = '';
 
-        // Include some classes & scripts
-        require_once Component::path($option) . DS . 'models' . DS . 'wishlist.php';
-        require_once Component::path($option) . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
-
         // Configure controller
         $controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 

@@ -47,9 +47,6 @@ if (isset($this->registration_update)) {
 
 
 // incremental registration
-require_once Component::path('com_members') . '/models/incremental/awards.php';
-require_once Component::path('com_members') . '/models/incremental/groups.php';
-require_once Component::path('com_members') . '/models/incremental/options.php';
 
 use Components\Members\Models\Profile\Field;
 

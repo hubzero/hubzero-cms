@@ -237,7 +237,6 @@ class Wiki extends Plugin
             if (!file_exists($controllerPath . DS . $controllerName . '.php')) {
                 $controllerName = 'pages';
             }
-            require_once $controllerPath . DS . $controllerName . '.php';
             $controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
             // Instantiate controller

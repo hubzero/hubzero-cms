@@ -118,8 +118,6 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                 <?php
                 if (substr($this->row->log->get('scope'), 0, strlen('project')) == 'project') {
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
-                    require_once Component::path('com_projects') . '/models/project.php';
-
                     $project = new \Components\Projects\Models\Project($this->row->log->details->get(
                         'projectid',
                         $this->row->log->get('scope_id')

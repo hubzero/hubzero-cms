@@ -8,9 +8,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-$toolComponentPath = Component::path('com_tools');
 
-require_once "$toolComponentPath/models/orm/handler.php";
 
 use Components\Tools\Models\Orm\Handler;
 use Components\Projects\Helpers\Html;

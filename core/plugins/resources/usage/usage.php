@@ -16,7 +16,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 
 class Usage extends Plugin
 {
@@ -102,7 +101,6 @@ class Usage extends Plugin
         $dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
         $period = Request::getInt('period', $this->params->get('period', 14));
 
-        include_once Component::path($option) . DS . 'models' . DS . 'stat.php';
         if ($model->isTool()) {
             $query = \Components\Resources\Models\Stat\Tool::all();
         } else {

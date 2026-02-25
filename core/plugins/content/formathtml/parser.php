@@ -379,14 +379,6 @@ class Parser
     private function macros($text)
     {
         $path = __DIR__;
-        if (is_file($path . DS . 'macro.php')) {
-            // Include abstract macro class
-            include_once $path . DS . 'macro.php';
-        } else {
-            // Abstract macro class not found
-            // Proceed no further
-            return $text;
-        }
 
         $this->addMacroPath(__DIR__ . DS . 'macros');
 

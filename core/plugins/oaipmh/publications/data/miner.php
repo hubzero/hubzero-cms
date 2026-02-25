@@ -270,8 +270,6 @@ class Miner extends Obj implements Provider
 
         $pubHelper = \Hubzero\Facades\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
         if (file_exists($pubHelper)) {
-            include_once $pubHelper;
-
             $pubIdQuoted = $this->database->quote($record->publication_id);
             $this->database->setQuery(
                 "SELECT master_type FROM `#__publications` WHERE id = " . $pubIdQuoted
@@ -443,8 +441,6 @@ class Miner extends Obj implements Provider
         $references = $this->database->loadObjectList();
         $citationHelper = \Hubzero\Facades\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
         if (count($references) && file_exists($citationHelper)) {
-            include_once $citationHelper;
-
             $formatter = new \Components\Citations\Helpers\Format();
             $formatter->setTemplate('apa');
 
@@ -472,8 +468,6 @@ class Miner extends Obj implements Provider
         );
         $references = $this->database->loadObjectList();
         if (count($references) && file_exists($citationHelper)) {
-            include_once $citationHelper;
-
             $formatter = new \Components\Citations\Helpers\Format();
             $formatter->setTemplate('apa');
 

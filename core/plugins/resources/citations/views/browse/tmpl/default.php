@@ -12,7 +12,6 @@ $numnon = 0;
 // Did we get any results back?
 if ($this->citations) {
     // Get a needed library
-    include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
     // Set some vars
     $affiliated = '';
@@ -105,7 +104,6 @@ if ($this->citations) {
             $data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
         }
     }
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
         $elements = new \Components\Resources\Models\Elements($data, $this->resource->type->customFields);
         $schema = $elements->getSchema();
         $tab = Request::getCmd('active', 'citations');  // The active tab (section)

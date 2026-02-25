@@ -11,7 +11,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 
 // Parse data
 $data = array();

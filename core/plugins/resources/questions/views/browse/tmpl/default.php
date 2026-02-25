@@ -207,7 +207,6 @@ $this->css();
             $data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
         }
     }
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
         $elements = new \Components\Resources\Models\Elements($data, $this->resource->type->customFields);
         $schema = $elements->getSchema();
         $tab = Request::getCmd('active', 'questions');  // The active tab (section)

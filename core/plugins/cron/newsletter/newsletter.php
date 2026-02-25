@@ -262,10 +262,6 @@ class Newsletter extends Plugin
      */
     public function processIps(\Components\Cron\Models\Job $job)
     {
-        // load needed libraries
-        require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailing' . DS . 'recipient' . DS
-            . 'action.php';
-
         // get db
         $database = App::get('db');
 

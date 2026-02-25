@@ -13,7 +13,6 @@ defined('_HZEXEC_') or die();
 
 // Build our citation object
 if ($this->pub->version->get('doi')) {
-    include_once \Hubzero\Facades\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
     $cite = new stdClass();
     $cite->title    = $this->pub->get('title');

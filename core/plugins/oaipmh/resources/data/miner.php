@@ -470,8 +470,6 @@ class Miner extends Obj implements Provider
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
-                include_once $formatterPath;
-
                 $formatter = new \Components\Citations\Helpers\Format();
                 $formatter->setTemplate('apa');
 
@@ -500,8 +498,6 @@ class Miner extends Obj implements Provider
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
-                include_once $formatterPath;
-
                 $formatter = new \Components\Citations\Helpers\Format();
                 $formatter->setTemplate('apa');
 

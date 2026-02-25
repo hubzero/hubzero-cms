@@ -228,8 +228,7 @@ class Domainrestriction extends Plugin
                 : Helpers\SimpleCIDR::class;
 
             if (!class_exists($require)) {
-                $file = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
-                require_once __DIR__ . '/helpers/' . $file . '.php';
+                return false;
             }
 
             foreach ($lists['whitelistnet'] as $net) {

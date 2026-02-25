@@ -31,7 +31,6 @@ $sitename = Config::get('sitename');
 // Build our citation object
 $citation = '';
 if ($this->pub->doi) {
-    include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
     $cite           = new stdClass();
     $cite->title    = $this->pub->get('title');
