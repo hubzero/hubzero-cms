@@ -8,8 +8,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-define('_HZEXEC_', 1);
-define('DS', DIRECTORY_SEPARATOR);
+if (!defined('_HZEXEC_')) {
+    define('_HZEXEC_', 1);
+}
+
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 
 if (!defined('PATH_ROOT')) {
     define('PATH_ROOT', dirname(dirname(__DIR__)));
