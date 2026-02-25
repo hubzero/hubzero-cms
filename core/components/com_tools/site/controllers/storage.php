@@ -531,7 +531,7 @@ class Storage extends SiteController
      *
      * @param   string  $assetType  Asset type
      * @param   string  $assetId    Asset id to check against
-     * @return  void
+     * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _authorize($assetType = 'component', $assetId = null)
@@ -559,5 +559,11 @@ class Storage extends SiteController
             $this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
             $this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
         }
+
+        if ($this->config->get('access-admin-' . $assetType)) {
+            return 'admin';
+        }
+
+        return '';
     }
 }

@@ -91,7 +91,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      */
     public function set($offset, $value)
     {
-        return $this->offsetSet($offset, $value);
+        $this->offsetSet($offset, $value);
     }
 
     /**
@@ -124,7 +124,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      */
     public function forget($offset)
     {
-        return $this->offsetUnset($offset);
+        $this->offsetUnset($offset);
     }
 
     /**

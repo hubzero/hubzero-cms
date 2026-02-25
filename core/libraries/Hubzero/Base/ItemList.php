@@ -67,7 +67,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function add($value)
     {
-        return $this->offsetSet(null, $value);
+        $this->offsetSet(null, $value);
     }
 
     /**
@@ -78,7 +78,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function remove($offset)
     {
-        return $this->offsetUnset($offset);
+        $this->offsetUnset($offset);
     }
 
     /**

@@ -156,7 +156,7 @@ class Container implements ArrayAccess
      */
     public function set($id, $value)
     {
-        return $this->offsetSet($id, $value);
+        $this->offsetSet($id, $value);
     }
 
     /**
@@ -192,7 +192,7 @@ class Container implements ArrayAccess
      */
     public function forget($id)
     {
-        return $this->offsetUnset($id);
+        $this->offsetUnset($id);
     }
 
     /**

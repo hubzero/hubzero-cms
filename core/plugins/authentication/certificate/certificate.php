@@ -110,7 +110,7 @@ class Certificate extends Plugin
      */
     public function onAuthenticate($credentials, $options, &$response)
     {
-        return $this->onUserAuthenticate($credentials, $options, $response);
+        $this->onUserAuthenticate($credentials, $options, $response);
     }
 
     /**
