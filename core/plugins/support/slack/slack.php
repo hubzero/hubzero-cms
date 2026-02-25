@@ -101,8 +101,6 @@ class Slack extends Plugin
             return false;
         }
 
-        // @TODO  Move to Composer so other extensions can use it
-
         // Set up the client
         $client = new \Maknz\Slack\Client(
             $endpoint,
