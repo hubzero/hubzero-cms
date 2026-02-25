@@ -183,7 +183,7 @@ class Version extends Model
 
         // Create array of custom filters
         $filters = array(
-            new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_GroupInclude()
+            new \Components\Groups\Helpers\Filters\GroupInclude()
         );
 
         // Is this trusted content
@@ -191,8 +191,8 @@ class Version extends Model
             $options['CSS.Trusted']  = true;
             $options['HTML.Trusted'] = true;
 
-            $filters[] = new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_ExternalScripts();
-            $filters[] = new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_Php();
+            $filters[] = new \Components\Groups\Helpers\Filters\ExternalScripts();
+            $filters[] = new \Components\Groups\Helpers\Filters\Php();
         }
 
         // Add our custom filters
