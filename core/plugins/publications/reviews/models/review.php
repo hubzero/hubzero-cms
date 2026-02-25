@@ -17,6 +17,10 @@ require_once __DIR__ . '/comment.php';
  */
 class Review extends \Hubzero\Base\Model
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_base;
+    protected $context;
+
     /**
      * ResourcesReview
      *

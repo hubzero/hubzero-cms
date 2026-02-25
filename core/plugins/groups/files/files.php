@@ -23,6 +23,14 @@ use Hubzero\Facades\Document;
  */
 class Files extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $action;
+    protected $authorized;
+    protected $group;
+    protected $name;
+    protected $path;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -22,6 +22,13 @@ use Hubzero\Facades\Component;
  */
 class Wishlist extends Plugin
 {
+    protected $action;
+    protected $authorized;
+    protected $config;
+    protected $database;
+    protected $group;
+    protected $members;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -20,6 +20,8 @@ use Hubzero\Facades\Notify;
  */
 class Google extends Plugin
 {
+    protected $view;
+
     /**
      * Renders the auth factor challenge
      *

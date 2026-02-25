@@ -26,6 +26,8 @@ use Hubzero\Facades\Log;
  */
 class Xusers extends Plugin
 {
+    protected $database;
+
     /**
      * Constructor
      *

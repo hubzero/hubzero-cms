@@ -22,6 +22,11 @@ use Hubzero\Facades\Html;
  */
 class Dashboard extends Plugin
 {
+    protected $action;
+    protected $controller;
+    protected $database;
+    protected $member;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

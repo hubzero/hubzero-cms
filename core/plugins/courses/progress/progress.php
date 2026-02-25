@@ -22,6 +22,12 @@ use Hubzero\Facades\Date;
  */
 class Progress extends Plugin
 {
+    protected $base;
+    protected $course;
+    protected $db;
+    protected $member;
+    protected $view;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

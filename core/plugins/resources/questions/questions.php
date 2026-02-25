@@ -23,6 +23,12 @@ use Hubzero\Facades\Config;
 
 class Questions extends Plugin
 {
+    protected $banking;
+    protected $count;
+    protected $database;
+    protected $filters;
+    protected $model;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

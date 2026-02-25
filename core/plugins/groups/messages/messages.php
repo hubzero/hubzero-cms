@@ -23,6 +23,13 @@ use Hubzero\Facades\Document;
  */
 class Messages extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $action;
+    protected $authorized;
+    protected $group;
+    protected $members;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

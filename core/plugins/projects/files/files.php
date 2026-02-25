@@ -30,6 +30,28 @@ use Hubzero\Facades\Date;
  */
 class Files extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_connect;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_publishing;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_rSync;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_remoteService;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $forceSync;
+    protected $model;
+    protected $publication;
+    protected $repo;
+    protected $subdir;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
@@ -437,7 +459,7 @@ class Files extends Plugin
                 $this->_remoteService,
                 $this->subdir
             );
-            $forceSync = $this->get('forceSync', $this->model->params->get('google_sync_queue', 0));
+            $forceSync = $this->forceSync ?? $this->model->params->get('google_sync_queue', 0);
 
             $view->sync = $sync == 2 ? 0 : $forceSync;
             $view->rSync = new Sync($this->_connect);
@@ -3239,7 +3261,7 @@ class Files extends Plugin
             // Force sync
             if ($sync) {
                 //$this->model->saveParam('google_sync_queue', 1);
-                $this->set('forceSync', 1);
+                $this->forceSync = 1;
             }
 
             // Record activity

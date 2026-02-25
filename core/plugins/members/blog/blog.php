@@ -25,6 +25,12 @@ use Hubzero\Facades\Document;
  */
 class Blog extends Plugin
 {
+    protected $database;
+    protected $member;
+    protected $model;
+    protected $task;
+    protected $user;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

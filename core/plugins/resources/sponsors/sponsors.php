@@ -22,6 +22,14 @@ use Hubzero\Facades\Config;
  */
 class Sponsors extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_controller;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    protected $database;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

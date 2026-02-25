@@ -22,6 +22,11 @@ use Hubzero\Facades\Date;
  */
 class Impact extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

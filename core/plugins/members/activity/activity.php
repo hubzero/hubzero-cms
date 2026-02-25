@@ -23,6 +23,8 @@ use Hubzero\Facades\Config;
  */
 class Activity extends Plugin
 {
+    protected $member;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

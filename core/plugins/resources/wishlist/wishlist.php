@@ -20,6 +20,8 @@ use Hubzero\Facades\Component;
 
 class Wishlist extends Plugin
 {
+    protected $config;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

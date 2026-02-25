@@ -22,6 +22,23 @@ use Hubzero\Facades\Document;
  */
 class Databases extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_configured;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_path;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $gitpath;
+    protected $model;
+    protected $repo;
+    protected $subdir;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

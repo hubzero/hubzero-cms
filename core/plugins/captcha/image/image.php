@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class Image extends Plugin
 {
+    protected $keystring;
+    protected $ly;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

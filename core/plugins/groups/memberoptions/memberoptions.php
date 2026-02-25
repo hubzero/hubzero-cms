@@ -22,6 +22,8 @@ use Hubzero\Facades\Log;
  */
 class Memberoptions extends Plugin
 {
+    protected $group;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

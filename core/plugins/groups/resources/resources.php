@@ -25,6 +25,8 @@ use Hubzero\Facades\Date;
  */
 class Resources extends Plugin
 {
+    protected $group;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

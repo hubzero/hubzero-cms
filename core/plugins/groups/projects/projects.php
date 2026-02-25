@@ -24,6 +24,18 @@ use Hubzero\Facades\Date;
  */
 class Projects extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_filters;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_projects;
+    protected $action;
+    protected $authorized;
+    protected $group;
+    protected $members;
+    protected $model;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -25,6 +25,21 @@ use Hubzero\Facades\Pathway;
  */
 class Todo extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_mine;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_todoid;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $model;
+    protected $todo;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

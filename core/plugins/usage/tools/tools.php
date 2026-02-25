@@ -19,6 +19,12 @@ use Hubzero\Facades\App;
  */
 class Tools extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    protected $totals;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

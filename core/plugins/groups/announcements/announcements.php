@@ -24,6 +24,13 @@ use Hubzero\Facades\Date;
  */
 class Announcements extends Plugin
 {
+    protected $access;
+    protected $action;
+    protected $authorized;
+    protected $group;
+    protected $members;
+    protected $total;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

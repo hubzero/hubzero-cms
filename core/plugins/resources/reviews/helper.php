@@ -21,6 +21,13 @@ use Hubzero\Facades\Config;
  */
 class Helper extends \Hubzero\Base\Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $isAuthor;
+    protected $loggedin;
+    protected $myreview;
+    protected $resource;
+
     /**
      * Execute an action
      *

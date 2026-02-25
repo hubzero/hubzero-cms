@@ -35,6 +35,17 @@ use Hubzero\Facades\Pathway;
  */
 class Citations extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $access;
+    protected $action;
+    protected $authorized;
+    protected $database;
+    protected $group;
+    protected $importer;
+    protected $members;
+    protected $path;
+
     /**
      * Plugin scope
      *

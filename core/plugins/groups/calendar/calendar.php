@@ -24,6 +24,24 @@ use Hubzero\Facades\Date;
  */
 class Calendar extends Plugin
 {
+    protected $access;
+    protected $action;
+    protected $arrival;
+    protected $authorized;
+    protected $calendar;
+    protected $database;
+    protected $departure;
+    protected $dietary;
+    protected $dinner;
+    protected $disability;
+    protected $group;
+    protected $members;
+    protected $month;
+    protected $race;
+    protected $register;
+    protected $user;
+    protected $year;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -21,6 +21,11 @@ use Hubzero\Facades\Component;
  */
 class Profile extends Plugin
 {
+    protected $areas;
+    protected $member;
+    protected $task;
+    protected $user;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

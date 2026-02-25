@@ -24,6 +24,15 @@ use Hubzero\Facades\Config;
  */
 class Collections extends Plugin
 {
+    protected $action;
+    protected $authorized;
+    protected $database;
+    protected $group;
+    protected $member;
+    protected $members;
+    protected $model;
+    protected $name;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

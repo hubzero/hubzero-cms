@@ -31,6 +31,18 @@ use Hubzero\Facades\Filesystem;
  */
 class Forum extends Plugin
 {
+    protected $authorized;
+    protected $base;
+    protected $database;
+    protected $filters;
+    protected $forum;
+    protected $group;
+    protected $group_plugin_acl;
+    protected $limit;
+    protected $limitstart;
+    protected $members;
+    protected $view;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

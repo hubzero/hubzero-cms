@@ -21,6 +21,10 @@ use Hubzero\Facades\Component;
  */
 class Questions extends Plugin
 {
+    protected $count;
+    protected $filters;
+    protected $publication;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

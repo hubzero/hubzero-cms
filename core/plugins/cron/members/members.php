@@ -19,6 +19,10 @@ use Hubzero\Facades\Date;
 
 class Members extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_message;
+    protected $database;
+
     /**
      * Return a list of events
      *
