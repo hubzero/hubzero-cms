@@ -8,6 +8,7 @@
 
 namespace Components\Search\Models\Basic;
 
+use Components\Search\Helpers\Basic;
 use Hubzero\Base\Obj;
 
 /**
@@ -184,12 +185,12 @@ class Terms extends Obj
     {
         $chunks = $this->get_positive_chunks();
         foreach ($chunks as $term) {
-            while (($stemmed = stem($term)) != $term) {
+            while (($stemmed = Basic::stem($term)) != $term) {
                 $chunks[] = $stemmed;
                 $term = $stemmed;
             }
         }
-        $chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
+        $chunks = array_unique(array_merge(array_map([Basic::class, 'stem'], $chunks), $chunks));
         \Hubzero\Facades\Event::trigger('onSearchExpandTerms', array(&$chunks));
 
         return array_unique($chunks);

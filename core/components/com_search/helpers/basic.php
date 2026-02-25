@@ -6,14 +6,20 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-if (!function_exists('stem')) {
+namespace Components\Search\Helpers;
+
+/**
+ * Basic text stemming helper
+ */
+class Basic
+{
     /**
      * Stem a string
      *
-     * @param  string $str
-     * @return string
+     * @param   string  $str
+     * @return  string
      */
-    function stem($str)
+    public static function stem($str)
     {
         return $str;
     }

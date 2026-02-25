@@ -22,15 +22,6 @@ class Basic extends AdminController
      */
     public function displayTask()
     {
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'basic.php';
-
-        foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl) {
-            require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
-        }
-        foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl) {
-            require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
-        }
-
         $this->view->display();
     }
 }
