@@ -73,7 +73,6 @@ class Dataselector extends Base
 
         // Git helper
         if (!$this->_git) {
-
             $this->_git = new \Components\Projects\Helpers\Git($this->path);
         }
 

@@ -959,7 +959,6 @@ class File extends Base
             // Catch items coming in from connections
             if (preg_match('/^([0-9]*):\/\//', $identifier, $matches)) {
                 if (isset($matches[1])) {
-
                     // Grab the connection id
                     $connection = $matches[1];
 
