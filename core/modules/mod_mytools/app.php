@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyTools;
+namespace Modules\Mytools;
 
 /**
  * This class holds information about one application.
