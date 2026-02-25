@@ -6,8 +6,31 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\GoogleAnalytics;
+namespace Modules\Googleanalytics;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Facades\Config;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for adding Google Analytics script to a page
+ */
+class Googleanalytics extends Module
+{
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (substr(strtolower(Config::get('application_env', 'production')), 0, 10) != 'production') {
+            return;
+        }
+
+        if (!$this->params->get('key')) {
+            return;
+        }
+
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}

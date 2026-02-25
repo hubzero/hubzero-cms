@@ -8,6 +8,11 @@
 
 namespace TwitterFeed;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying a Twitter feed
+ */
+class Twitterfeed extends Module
+{
+}

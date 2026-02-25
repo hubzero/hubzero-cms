@@ -249,8 +249,7 @@ class Loader
         $path = $this->path($module->module);
 
         // Load the module
-        // $module->user is a check for 1.0 custom modules and is deprecated refactoring
-        if (file_exists($path)) {
+        if ($path) {
             $this->app['language']->load($module->module, PATH_APP .
                 DS .
                 'bootstrap' .
@@ -260,11 +259,32 @@ class Loader
 
             $module->path = $path;
 
-            $content = '';
-            ob_start();
-            include $path;
-            $module->content = ob_get_contents() . $content;
-            ob_end_clean();
+            // Try class-based module loading first
+            $className = $this->resolveClassName($module->module);
+
+            if ($className) {
+                require_once $path;
+            }
+
+            if (
+                $className
+                && class_exists($className, false)
+                && is_subclass_of($className, \Hubzero\Module\Module::class)
+            ) {
+                $instance = new $className($params, $module);
+
+                ob_start();
+                $instance->run();
+                $module->content = ob_get_contents();
+                ob_end_clean();
+            } elseif (file_exists($path)) {
+                // Legacy fallback: include entry file with $params/$module in scope
+                $content = '';
+                ob_start();
+                include $path;
+                $module->content = ob_get_contents() . $content;
+                ob_end_clean();
+            }
         }
 
         // Load the module chrome functions
@@ -546,7 +566,7 @@ class Loader
             case 'safeuri':
                 $secureid = null;
                 if (is_array($cacheparams->modeparams)) {
-                    $uri = \Hubzero\Facades\Request::get();
+                    $uri = $this->app['request']->query->all();
                     $safeuri = new \stdClass();
                     foreach ($cacheparams->modeparams as $key => $value) {
                         // Use int filter for id/catid to clean out spamy slugs
@@ -590,7 +610,7 @@ class Loader
                 $ret = $cache->get(
                     array($cacheparams->class, $cacheparams->method),
                     $cacheparams->methodparams,
-                    $module->id . $view_levels . \Hubzero\Facades\Request::getInt('Itemid', 0),
+                    $module->id . $view_levels . $this->app['request']->getInt('Itemid', 0),
                     $wrkarounds,
                     $wrkaroundoptions
                 );
@@ -646,6 +666,25 @@ class Loader
             $module = 'mod_' . $module;
         }
         return $module;
+    }
+
+    /**
+     * Resolve the fully qualified class name for a module
+     *
+     * Converts a module element name (e.g. 'mod_articles_category')
+     * to its expected class name (e.g. 'Modules\ArticlesCategory\ArticlesCategory').
+     *
+     * @param   string  $module  Module element name
+     * @return  string  Fully qualified class name
+     */
+    protected function resolveClassName($module)
+    {
+        $name = $this->canonical($module);
+        $name = substr($name, 4); // strip mod_
+        $parts = explode('_', $name);
+        $pascal = implode('', array_map('ucfirst', $parts));
+
+        return "Modules\\{$pascal}\\{$pascal}";
     }
 
     /**

@@ -8,6 +8,201 @@
 
 namespace Modules\RapidContact;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Utility\Sanitize;
+use Hubzero\Mail\Message;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying a quick contact form
+ */
+class RapidContact extends Module
+{
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $anti_spam_a;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $anti_spam_q;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $button_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $email_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $enable_anti_spam;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $error_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $from_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $from_name;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $invalid_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $message_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $mod_class_suffix;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $name_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $no_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $page_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $pre_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $subject_label;
+    protected $error;
+    protected $posted;
+    protected $recipient;
+    protected $replacement;
+    protected $url;
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Field labels
+        $this->name_label    = $this->params->get('name_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_NAME'));
+        $this->email_label   = $this->params->get('email_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_EMAIL'));
+        $this->subject_label = $this->params->get('subject_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_SUBJECT'));
+        $this->message_label = $this->params->get('message_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_MESSAGE'));
+
+        // Button text
+        $this->button_text   = $this->params->get('button_text', Lang::txt('MOD_RAPID_CONTACT_SEND'));
+
+        // Pre text
+        $this->pre_text      = $this->params->get('pre_text', '');
+
+        // Thank you message
+        $this->page_text     = $this->params->get('page_text', Lang::txt('MOD_RAPID_CONTACT_THANK_YOU'));
+
+        // Error messages
+        $this->error_text    = $this->params->get('error_text', Lang::txt('MOD_RAPID_CONTACT_ERROR_SENDING'));
+        $this->no_email      = $this->params->get('no_email', Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_EMAIL'));
+        $this->invalid_email = $this->params->get('invalid_email', Lang::txt('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
+
+        // From
+        $this->from_name     = $this->params->get('from_name', Lang::txt('MOD_RAPID_CONTACT'));
+        $this->from_email    = $this->params->get('from_email', 'rapid_contact@yoursite.com');
+
+        // To
+        $this->recipient     = $this->params->get('email_recipient', Config::get('mailfrom'));
+        if (!trim($this->recipient)) {
+            $this->recipient = Config::get('mailfrom');
+        }
+
+        // Enable Anti-spam?
+        $this->enable_anti_spam = $this->params->get('enable_anti_spam', true);
+        $this->anti_spam_q   = $this->params->get('anti_spam_q', Lang::txt('MOD_RAPID_CONTACT_ANTIPSAM'));
+        $this->anti_spam_a   = $this->params->get('anti_spam_a', '2');
+
+        $this->mod_class_suffix = $this->params->get('moduleclass_sfx', '');
+
+        $disable_https       = $this->params->get('disable_https', false);
+        $exact_url           = $this->params->get('exact_url', true);
+        if (!$exact_url) {
+            $this->url = filter_var(
+                \Hubzero\Utility\Uri::getInstance()->toString(),
+                FILTER_SANITIZE_URL
+            );
+        } else {
+            if (!$disable_https) {
+                $protocol = (!empty($_SERVER['HTTPS'])) ? 'https://' : 'http://';
+                $this->url = $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            } else {
+                $this->url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            }
+        }
+
+        //$qs = str_replace(array('"', '?'), '', urldecode($_SERVER['QUERY_STRING']));
+        //$aqs = explode('?', $this->url);
+        //$this->url = $aqs[0] . '?' . urlencode($qs);
+
+        $fixed_url = $this->params->get('fixed_url', true);
+        if ($fixed_url) {
+            $this->url = $this->params->get('fixed_url_address', '');
+        }
+
+        $this->error = '';
+        $this->replacement = '';
+
+        $this->posted = array(
+            'name'    => '',
+            'email'   => '',
+            'subject' => '',
+            'message' => ''
+        );
+
+        if (isset($_POST['rp'])) {
+            // Check for request forgeries
+            Request::checkToken();
+
+            $this->posted = Request::getArray('rp', array(), 'post');
+
+            // Make sure input is of the correct type.
+            foreach ($this->posted as $key => $val) {
+                if (is_array($val)) {
+                    $val = '';
+                }
+                $this->posted[$key] = (string) $val;
+            }
+
+            if ($this->enable_anti_spam) {
+                $spamAnswer = isset($this->posted['anti_spam_answer'])
+                    ? $this->posted['anti_spam_answer']
+                    : null;
+                if ($spamAnswer != $this->anti_spam_a) {
+                    $this->error = Lang::txt('MOD_RAPID_CONTACT_INVALID_ANTIPSAM_ANSWER');
+                }
+            }
+            if ($this->posted['email'] === '') {
+                $this->error = $this->no_email;
+            }
+            $emailPattern = "#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i";
+            if (!preg_match($emailPattern, $this->posted['email'])) {
+                $this->error = $this->invalid_email;
+            }
+
+            if ($this->error == '') {
+                if (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) {
+                    $this->posted['name'] = Sanitize::clean($this->posted['name']);
+                } else {
+                    $this->posted['name'] = $this->posted['email'];
+                }
+
+                $mySubject  = Sanitize::clean($this->posted['subject']);
+                $myMessage  = Lang::txt(
+                    'MOD_RAPID_CONTACT_MESSAGE_FROM',
+                    $this->posted['name'],
+                    $this->posted['email'],
+                    Request::getString('HTTP_REFERER', '', 'SERVER'),
+                    Config::get('sitename')
+                );
+                $myMessage .= "\n\n" . Sanitize::clean($this->posted['message']);
+
+                $mailSender = new Message();
+                $mailSender->setSubject($mySubject)
+                           ->addFrom($this->from_email, $this->from_name)
+                           ->addTo($this->recipient)
+                           ->addReplyTo($this->posted['email'], $this->posted['name'])
+                           ->setBody($myMessage);
+
+                if (!$mailSender->send()) {
+                    $this->error = $this->error_text;
+                } else {
+                    $this->replacement = $this->page_text;
+                }
+
+                // Reset the message field
+                $this->posted['subject'] = '';
+                $this->posted['message'] = '';
+            }
+        }
+
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}

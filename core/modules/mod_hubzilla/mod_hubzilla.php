@@ -8,6 +8,20 @@
 
 namespace Modules\Hubzilla;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying the king of hubs
+ */
+class Hubzilla extends Module
+{
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}

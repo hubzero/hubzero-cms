@@ -8,6 +8,40 @@
 
 namespace Modules\Users;
 
-require_once __DIR__ . '/helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Facades\App;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for users data
+ */
+class Users extends Module
+{
+    protected $unapproved;
+
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!App::isAdmin()) {
+            return;
+        }
+
+        $database = App::get('db');
+        $database->setQuery(
+            "SELECT *
+			FROM `#__users`
+			WHERE `block`=0
+			AND `activation`=1
+			AND `approved`=0
+			ORDER BY `registerDate` DESC
+			LIMIT " . $this->params->get('limit', 25)
+        );
+        $this->unapproved = $database->loadObjectList();
+
+        // Get the view
+        parent::display();
+    }
+}

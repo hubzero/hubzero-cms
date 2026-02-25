@@ -8,6 +8,57 @@
 
 namespace Modules\Syndicate;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Utility\Arr;
+use Hubzero\Facades\Document;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module helper class for syndicating a feed
+ */
+class Syndicate extends Module
+{
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // [!] Legacy comptibility
+        $params = $this->params;
+
+        $params->def('format', 'rss');
+
+        $link = self::getLink($params);
+
+        if (is_null($link)) {
+            return;
+        }
+
+        $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
+
+        $text = htmlspecialchars($params->get('text'));
+
+        require $this->getLayoutPath($params->get('layout', 'default'));
+    }
+
+    /**
+     * Get a link
+     *
+     * @param   object  $params  Registry
+     * @return  string
+     */
+    public static function getLink(&$params)
+    {
+        $data = Document::getHeadData();
+
+        foreach ($data['links'] as $link => $value) {
+            $value = Arr::toString($value);
+            if (strpos($value, 'application/' . $params->get('format') . '+xml')) {
+                return $link;
+            }
+        }
+
+        return '';
+    }
+}

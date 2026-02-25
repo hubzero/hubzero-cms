@@ -6,8 +6,45 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\PollTitle;
+namespace Modules\Polltitle;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Components\Poll\Models\Poll;
+use Hubzero\Facades\Component;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying the latest poll's title
+ */
+class Polltitle extends Module
+{
+    protected $poll;
+
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+
+        // Load the latest poll
+        $this->poll = Poll::current();
+
+        require $this->getLayoutPath();
+    }
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
+
+        $this->run();
+    }
+}

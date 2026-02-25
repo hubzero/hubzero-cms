@@ -155,21 +155,30 @@ class ClassLoader
                 break;
 
             case 'module':
-                // \Modules\Menu\Helper -> modules/mod_menu/Helper.php
+                // \Modules\Menu\Menu -> modules/mod_menu/mod_menu.php
                 $name = array_shift($parts);
                 $file = implode('/', $parts) . '.php';
                 if (empty($file) || $file === '.php') {
                     $file = "{$name}.php";
                 }
                 $lname = strtolower($name);
+                // PascalCase → snake_case: "ArticlesArchive" → "articles_archive"
+                $snake = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $name));
                 $extensionDirs = [
                     "{$base}/mod_{$lname}",
+                    "{$base}/mod_{$snake}",
                     "{$base}/{$lname}",
                 ];
-                $relativePaths = [
-                    "{$base}/mod_{$lname}/{$file}",
-                    "{$base}/{$lname}/{$file}",
-                ];
+                $extensionDirs = array_unique($extensionDirs);
+                $relativePaths = [];
+                foreach (["{$base}/mod_{$lname}", "{$base}/mod_{$snake}"] as $dir) {
+                    $relativePaths[] = "{$dir}/{$file}";
+                    // Also try the prefixed entry filename: mod_menu.php
+                    $dirBase = basename($dir);
+                    $relativePaths[] = "{$dir}/{$dirBase}.php";
+                }
+                $relativePaths[] = "{$base}/{$lname}/{$file}";
+                $relativePaths = array_unique($relativePaths);
                 break;
 
             case 'plugin':

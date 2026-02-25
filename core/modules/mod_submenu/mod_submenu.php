@@ -8,6 +8,31 @@
 
 namespace Modules\Submenu;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for rendering a submenu
+ */
+class Submenu extends Module
+{
+    /**
+     * Get the items of the submenu and display them.
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!\Hubzero\Facades\App::isAdmin() || !class_exists('\\Submenu')) {
+            return;
+        }
+
+        // Initialise variables.
+        $list = \Hubzero\Facades\Submenu::getItems();
+
+        if (!is_array($list) || !count($list)) {
+            return;
+        }
+
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}
