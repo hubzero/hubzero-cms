@@ -58,5 +58,7 @@ class Helper extends Module
                 return $link;
             }
         }
+
+        return '';
     }
 }

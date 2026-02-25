@@ -266,7 +266,6 @@ class Members extends AdminController
      * Edit a member's information
      *
      * @param   object  $user
-     * @return  void
      */
     public function editTask($user = null)
     {
@@ -1760,7 +1759,7 @@ class Members extends AdminController
     /**
      * Perform querying of research organization based on the input value
      *
-     * @return  array or false  matched research organization names
+     * @return  void
      */
     public function getOrganizationsTask()
     {
@@ -1867,5 +1866,7 @@ class Members extends AdminController
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

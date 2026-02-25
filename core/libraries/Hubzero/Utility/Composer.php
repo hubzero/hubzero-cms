@@ -88,7 +88,7 @@ class Composer
      * Initialize a composer object and set the environment so composer can find its configuration
      * We currently assume PATH_APP for all composer operations
      *
-     * @return  void
+     * @return  bool
      **/
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _init()
@@ -368,7 +368,7 @@ class Composer
     /**
      * Updates all packages according to their version contraints
      *
-     * @return  boolean Indicates success or failure
+     * @return  void
      */
     public static function updatePackages()
     {

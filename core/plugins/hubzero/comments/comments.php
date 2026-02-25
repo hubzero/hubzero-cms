@@ -209,8 +209,6 @@ class Comments extends Plugin
 
     /**
      * Show a list of comments
-     *
-     * @return  void
      */
     protected function _login()
     {

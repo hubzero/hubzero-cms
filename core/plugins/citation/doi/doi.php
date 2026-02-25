@@ -350,6 +350,7 @@ class Doi extends Plugin
 
             return $result;
         }
+        return false;
     }
 
     /**

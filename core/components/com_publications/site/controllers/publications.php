@@ -303,7 +303,6 @@ class Publications extends SiteController
     /**
      * Login view
      *
-     * @return  void
      */
     protected function _login()
     {
@@ -502,7 +501,6 @@ class Publications extends SiteController
     /**
      * Retrieves the data from database and compose the RDF file for download.
      *
-     * @return  void
      */
     protected function _resourceMap()
     {
@@ -1211,7 +1209,6 @@ class Publications extends SiteController
      * Call a plugin method
      * NOTE: This view should normally only be called through AJAX
      *
-     * @return  string
      */
     public function pluginTask()
     {
@@ -2250,7 +2247,6 @@ class Publications extends SiteController
     /**
      * Block access to restricted publications
      *
-     * @return  void
      */
     protected function _blockAccess()
     {

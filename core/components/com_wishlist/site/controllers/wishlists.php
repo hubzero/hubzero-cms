@@ -892,8 +892,6 @@ class Wishlists extends SiteController
 
     /**
      * Display a form for creating a wish
-     *
-     * @return  void
      */
     public function addwishTask()
     {

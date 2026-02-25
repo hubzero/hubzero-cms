@@ -84,7 +84,7 @@ class Tree extends \Hubzero\Base\Obj
     /**
      * Add a separator
      *
-     * @return  object
+     * @return  void
      */
     public function addSeparator()
     {

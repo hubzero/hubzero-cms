@@ -181,7 +181,7 @@ class AssetGroup extends Table
     /**
      * Return a unique alias based on given alias
      *
-     * @return     integer
+     * @return     void
      */
     private function makeAliasUnique()
     {

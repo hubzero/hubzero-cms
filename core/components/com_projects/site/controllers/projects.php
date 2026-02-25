@@ -55,7 +55,7 @@ class Projects extends Base
     /**
      * Return results for autocompleter
      *
-     * @return  string  JSON
+     * @return  void
      */
     public function autocompleteTask()
     {

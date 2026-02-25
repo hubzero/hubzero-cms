@@ -28,7 +28,7 @@ class Members extends Plugin
      * Modify or append to query filters
      *
      * @param   array  $filters
-     * @return  array
+     * @return  array|null
      */
     public function onQuestionsPrepareFilters($filters)
     {
@@ -40,6 +40,8 @@ class Members extends Plugin
 
             return $filters;
         }
+
+        return [];
     }
 
     /**

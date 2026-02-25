@@ -303,7 +303,6 @@ class Pages extends SiteController
      * Show a form for editing an entry
      *
      * @param   object  $revision
-     * @return  void
      */
     public function editTask($revision = null)
     {
@@ -895,8 +894,6 @@ class Pages extends SiteController
 
     /**
      * Show a form to rename a page
-     *
-     * @return  void
      */
     public function renameTask()
     {

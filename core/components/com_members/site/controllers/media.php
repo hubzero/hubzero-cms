@@ -76,7 +76,7 @@ class Media extends SiteController
     /**
      * Upload a file to the profile via AJAX
      *
-     * @return  string
+     * @return  void
      */
     public function doajaxuploadTask()
     {
@@ -211,7 +211,7 @@ class Media extends SiteController
     /**
      * Set the picture of a profile
      *
-     * @return  string  JSON
+     * @return  void
      */
     public function ajaxuploadsaveTask()
     {
@@ -245,7 +245,7 @@ class Media extends SiteController
     /**
      * Get the size, width, height, and src attributes for a file
      *
-     * @return  string  JSON
+     * @return  void
      */
     public function getfileattsTask()
     {
@@ -482,7 +482,6 @@ class Media extends SiteController
      *
      * @param   string   $file  File name
      * @param   integer  $id    User ID
-     * @return  void
      */
     public function displayTask($file = '', $id = 0)
     {
@@ -663,8 +662,6 @@ class Media extends SiteController
 
     /**
      * Get file path
-     *
-     * @return  void
      */
     private function filespace()
     {

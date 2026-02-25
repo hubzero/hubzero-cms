@@ -892,7 +892,7 @@ class Curation extends Obj
     /**
      * Get first block ID
      *
-     * @return  integer
+     * @return  integer|null
      */
     public function getFirstBlock()
     {
@@ -901,6 +901,8 @@ class Curation extends Obj
                 return $id;
             }
         }
+
+        return 0;
     }
 
     /**
@@ -2449,7 +2451,7 @@ class Curation extends Obj
     /**
      * Draw publication draft status bar
      *
-     * @return  boolean
+     * @return  void
      */
     public function drawStatusBar()
     {

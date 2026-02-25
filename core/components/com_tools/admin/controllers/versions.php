@@ -136,7 +136,6 @@ class Versions extends AdminController
      * Edit an entry version
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

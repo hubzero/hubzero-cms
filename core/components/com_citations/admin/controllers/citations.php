@@ -95,7 +95,6 @@ class Citations extends AdminController
      * Edit a citation
      *
      * @param   object
-     * @return  void
      */
     public function editTask($row = null)
     {

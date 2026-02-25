@@ -89,7 +89,6 @@ class PasswordRules extends AdminController
      * Edit a password rule
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -378,7 +377,7 @@ class PasswordRules extends AdminController
      * Build rules select list
      *
      * @param   string  $current_rule
-     * @return  void
+     * @return  string
      */
     public function rulesList($current_rule = '')
     {

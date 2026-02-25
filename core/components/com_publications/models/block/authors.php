@@ -755,7 +755,7 @@ class Authors extends Base
      * Get default manifest for the block
      *
      * @param   boolean  $new
-     * @return  void
+     * @return  object
      */
     public function getManifest($new = false)
     {
@@ -836,5 +836,7 @@ class Authors extends Base
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

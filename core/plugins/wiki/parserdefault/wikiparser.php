@@ -1558,6 +1558,8 @@ class WikiParser
                 $macro->render()
             ));
         }
+
+        return '';
     }
 
     /**

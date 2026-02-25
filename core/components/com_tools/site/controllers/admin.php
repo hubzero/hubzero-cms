@@ -32,6 +32,7 @@ class Admin extends SiteController
      * Add a message
      *
      * @param   string $message Message
+     * @return  void
      */
     public function setMessage($msg, $type = 'message')
     {

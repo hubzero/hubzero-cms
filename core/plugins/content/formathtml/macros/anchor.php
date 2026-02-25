@@ -49,5 +49,7 @@ class Anchor extends Macro
             // Build and return the link
             return '<span id="' . urlencode($name) . '"></span>';
         }
+
+        return '';
     }
 }

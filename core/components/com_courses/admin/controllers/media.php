@@ -22,7 +22,7 @@ class Media extends AdminController
     /**
      * Build file path
      *
-     * @return  void
+     * @return  string
      */
     private function _buildUploadPath($listdir, $subdir = '')
     {
@@ -50,8 +50,6 @@ class Media extends AdminController
 
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  string
      */
     public function ajaxUploadTask()
     {
@@ -398,8 +396,6 @@ class Media extends AdminController
 
     /**
      * Display an upload form and file listing
-     *
-     * @return     void
      */
     public function displayTask()
     {

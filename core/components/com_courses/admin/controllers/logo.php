@@ -21,8 +21,6 @@ class Logo extends AdminController
 {
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  string
      */
     public function ajaxUploadTask()
     {
@@ -325,8 +323,6 @@ class Logo extends AdminController
 
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  string
      */
     public function ajaxRemoveTask()
     {
@@ -524,7 +520,6 @@ class Logo extends AdminController
      *
      * @param   string   $file  File name
      * @param   integer  $id    User ID
-     * @return  void
      */
     public function displayTask($file = '', $id = 0)
     {

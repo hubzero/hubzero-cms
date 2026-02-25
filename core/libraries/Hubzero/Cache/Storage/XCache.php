@@ -68,7 +68,7 @@ class XCache extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {

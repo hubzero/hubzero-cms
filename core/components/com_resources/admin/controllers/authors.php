@@ -86,7 +86,6 @@ class Authors extends AdminController
      * Edit an entry
      *
      * @param   array  $rows
-     * @return  void
      */
     public function editTask($rows = null)
     {

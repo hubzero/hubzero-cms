@@ -103,7 +103,7 @@ class Answers extends Plugin
      *
      * @param      integer $parentid ID to check for parents of
      * @param      string  $category Element type (determines table to look in)
-     * @return     integer
+     * @return     integer|null
      */
     public function getParentId($parentid, $category)
     {
@@ -131,6 +131,8 @@ class Answers extends Plugin
         if ($category == 'question') {
             return $refid;
         }
+
+        return null;
     }
 
     /**
@@ -172,6 +174,8 @@ class Answers extends Plugin
                 return Lang::txt('PLG_SUPPORT_ANSWERS_COMMENT_TO', $parentid);
             break;
         }
+
+        return '';
     }
 
     /**

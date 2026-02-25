@@ -216,7 +216,7 @@ class Module extends Model
      *
      * @param   string  $move      Direction and Magnitude
      * @param   string  $position  Module Position
-     * @return  integer
+     * @return  void
      */
     public function move($move, $position)
     {

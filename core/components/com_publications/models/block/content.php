@@ -180,7 +180,7 @@ class Content extends Base
     /**
      * Transfer data from one version to another
      *
-     * @return  boolean
+     * @return  void
      */
     public function transferData($manifest, $pub, $oldVersion, $newVersion)
     {
@@ -446,7 +446,7 @@ class Content extends Base
     /**
      * Get default manifest for the block element
      *
-     * @return  void
+     * @return  object
      */
     public function getElementManifest()
     {
@@ -482,7 +482,7 @@ class Content extends Base
     /**
      * Get default manifest for the block
      *
-     * @return  void
+     * @return  object
      */
     public function getManifest($new = false)
     {

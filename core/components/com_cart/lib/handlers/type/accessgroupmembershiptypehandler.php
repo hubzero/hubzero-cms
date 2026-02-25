@@ -27,7 +27,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
     /**
      * Handle
      *
-     * @return  bool
+     * @return  void
      */
     public function handle()
     {

@@ -611,7 +611,7 @@ class Form extends SiteController
     /**
      * Get form ID
      *
-     * @return  integer
+     * @return  integer|null
      */
     public function assertFormId()
     {
@@ -623,6 +623,8 @@ class Form extends SiteController
         }
 
         App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
+
+        return 0;
     }
 
     /**
@@ -644,7 +646,7 @@ class Form extends SiteController
     /**
      * Get course info from route
      *
-     * @return  bool
+     * @return  void
      */
     public function getCourseInfo()
     {

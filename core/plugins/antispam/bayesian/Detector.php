@@ -364,7 +364,7 @@ class Detector implements DetectorInterface
      *
      * @param   integer  $good_count
      * @param   integer  $bad_count
-     * @return  boolean
+     * @return  void
      */
     protected function increaseTokenCount($good_count, $bad_count)
     {

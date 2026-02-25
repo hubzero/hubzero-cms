@@ -158,7 +158,6 @@ class Solr extends AdminController
     /**
      * Display the overview
      *
-     * @return  void
      */
     public function displayTask()
     {

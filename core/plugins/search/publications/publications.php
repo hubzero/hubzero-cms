@@ -241,6 +241,8 @@ class Publications extends Plugin
         } elseif (!isset($type)) {
             return $hubtype;
         }
+
+        return '';
     }
 
     /**

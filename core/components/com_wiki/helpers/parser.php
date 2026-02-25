@@ -287,7 +287,7 @@ class Parser extends Obj
      * Detach an observer object
      *
      * @param   object   $observer  An observer object to detach.
-     * @return  boolean  True if the observer object was detached.
+     * @return  void
      */
     public function detach($observer)
     {

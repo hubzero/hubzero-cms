@@ -420,6 +420,8 @@ class Results extends SiteController
                 }
                 break;
         }
+
+        return '';
     }
 
     /**

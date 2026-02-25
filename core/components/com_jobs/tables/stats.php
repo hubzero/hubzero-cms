@@ -235,6 +235,7 @@ class Stats extends Table
                 $this->cleanup();
             }
         }
+        return false;
     }
 
     /**
@@ -266,5 +267,6 @@ class Stats extends Table
         $query .= " AND category =" . $this->_db->quote($category);
         $this->_db->setQuery($query);
         $this->_db->query();
+        return false;
     }
 }

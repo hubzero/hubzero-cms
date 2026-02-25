@@ -934,7 +934,6 @@ class Publications extends Plugin
      * Move an item up in the list
      *
      * @param   string  $dir
-     * @return  void
      */
     public function reorder($dir = 'down')
     {
@@ -981,7 +980,7 @@ class Publications extends Plugin
      * Actions after publication draft is saved
      *
      * @param   object  $pub
-     * @return  string
+     * @return  void
      */
     public function onAfterSave($pub)
     {
@@ -1015,7 +1014,7 @@ class Publications extends Plugin
      * Actions after publication draft is started
      *
      * @param   object  $pub
-     * @return  string
+     * @return  void
      */
     public function onAfterCreate($pub)
     {
@@ -1851,8 +1850,6 @@ class Publications extends Plugin
 
     /**
      * Change publication status
-     *
-     * @return     string
      */
     public function publishDraft()
     {

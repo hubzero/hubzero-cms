@@ -27,7 +27,7 @@ class Pdf extends Plugin
      * Determines if the given collection can be handled by this plugin
      *
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
-     * @return  void
+     * @return  boolean
      **/
     public function canHandle(\Hubzero\Filesystem\Collection $collection)
     {

@@ -243,7 +243,7 @@ class Migration20130924000006ComFinder extends Base
     /**
      * Get the INSERT query for common terms
      *
-     * @return string
+     * @return void
      */
     protected function getCommonTermsInsertQuery()
     {

@@ -25,6 +25,8 @@ class Cli
         if (!isset($version)) {
             $version = self::call('', 'repository', array('--version'));
         }
+
+        return $version;
     }
 
     /**

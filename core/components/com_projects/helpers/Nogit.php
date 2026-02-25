@@ -285,7 +285,7 @@ class Nogit extends Obj
      * @param   string  $file   file path
      * @param   string  $hash   Git hash
      * @param   string  $since
-     * @return  array   to be parsed
+     * @return  string|null
      */
     public function getRename($file = '', $hash = '', $since = '')
     {

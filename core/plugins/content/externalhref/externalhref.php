@@ -51,7 +51,6 @@ class Externalhref extends Plugin
      *
      * @param   string  $context  The context of the content being passed to the plugin.
      * @param   object  $article  The article object.  Note $article->text is also available
-     * @return  void
      */
     public function prepareLinks($context, &$article)
     {
