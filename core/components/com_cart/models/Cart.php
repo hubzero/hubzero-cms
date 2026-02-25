@@ -779,7 +779,7 @@ abstract class Cart
 
         // Handle each item in the transaction
         foreach ($transactionItems as $sId => $item) {
-            $productHandler = new \Components\Cart\Helpers\CartProductHandler($item, $crtId, $tId);
+            $productHandler = new \Components\Cart\Helpers\ProductHandler($item, $crtId, $tId);
             $productHandler->handle();
         }
 

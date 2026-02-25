@@ -13,7 +13,7 @@ use Components\Storefront\Models\Warehouse;
 /**
  * Product handler. Handles purchased products/items. Runs a proper handler on each purchased item.
  */
-class CartProductHandler
+class ProductHandler
 {
     // Item info
     public $item;
