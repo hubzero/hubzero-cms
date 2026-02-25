@@ -33,6 +33,8 @@ if (!(new PrivilegeNotifier())->handleStartup()) {
 
 if (@include(dirname(__DIR__) . '/vendor/autoload.php'))
 {
+    require_once dirname(__DIR__) . '/bootstrap/app.php';
+
     (new Hubzero\Base\Application())->run();
 }
 else // Start Minimal Muse
@@ -444,6 +446,8 @@ else // Start Minimal Muse
 
         if (include($vendorPath))
         {
+            require_once dirname(__DIR__) . '/bootstrap/app.php';
+
             (new Hubzero\Base\Application())->run();
         }
         else

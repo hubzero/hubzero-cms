@@ -23,6 +23,7 @@ if (!defined('PATH_APP')) {
 
 // Register Composer autoloader
 require_once __DIR__ . '/core/vendor/autoload.php';
+require_once __DIR__ . '/core/bootstrap/app.php';
 
 // Register the HubZero ClassLoader for Components\*, Plugins\*, etc.
 Hubzero\Base\ClassLoader::addDirectories([__DIR__ . '/app', __DIR__ . '/core']);
