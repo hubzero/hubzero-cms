@@ -35,6 +35,7 @@ abstract class Result
     private $excerpt;
     private $plugin;
     private $canonicalized_link;
+    private $highlight_regex;
 
     /**
      * Description for 'id'
@@ -53,6 +54,11 @@ abstract class Result
     protected $contributor_ids;
     protected $children = array();
     protected $weight_log = array();
+    protected $link;
+    protected $description_highlighted;
+    protected $title_highlighted;
+    protected $author_highlighted;
+    protected $excerpt_highlighted;
 
     /**
      * Description for 'has_parent'

@@ -16,6 +16,9 @@ use Components\Cart\Models\Cart;
  */
 class Upay extends Plugin
 {
+    protected $options;
+    protected $transactionDetails;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

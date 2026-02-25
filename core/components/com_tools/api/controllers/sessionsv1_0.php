@@ -25,6 +25,9 @@ use Plugin;
  */
 class Sessionsv1_0 extends ApiController
 {
+    protected $database;
+    protected $rt;
+
     /**
      * Method to get list of tools
      *

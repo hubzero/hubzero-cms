@@ -19,6 +19,11 @@ use Lang;
  */
 class Helper extends Module
 {
+    protected $limit;
+    protected $moduleclass;
+    protected $rows;
+    protected $total;
+
     /**
      * Display module content
      *

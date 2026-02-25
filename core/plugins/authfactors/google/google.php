@@ -17,6 +17,8 @@ use OTPHP\TOTP;
  */
 class Google extends Plugin
 {
+    protected $view;
+
     /**
      * Renders the auth factor challenge
      *

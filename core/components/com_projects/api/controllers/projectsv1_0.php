@@ -23,6 +23,8 @@ use Lang;
 // phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Projectsv1_0 extends ApiController
 {
+    protected $model;
+
     /**
      * Display projects user belongs to
      *

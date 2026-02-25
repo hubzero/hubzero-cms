@@ -25,6 +25,12 @@ use Components\Citations\Models\Importer;
  */
 class Citations extends Plugin
 {
+    protected $action;
+    protected $database;
+    protected $grand_total;
+    protected $importer;
+    protected $member;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

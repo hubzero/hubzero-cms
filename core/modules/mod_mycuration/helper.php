@@ -17,6 +17,9 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $moduleclass;
+    protected $rows;
+
     /**
      * Display module content
      *

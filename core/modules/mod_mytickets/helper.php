@@ -16,6 +16,12 @@ use User;
  */
 class Helper extends Module
 {
+    protected $moduleclass;
+    protected $rows;
+    protected $rows1;
+    protected $rows2;
+    protected $rows3;
+
     /**
      * Display module content
      *

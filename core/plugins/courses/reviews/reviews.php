@@ -15,6 +15,14 @@ use Hubzero\Plugin\Plugin;
  */
 class Reviews extends Plugin
 {
+    protected $controller;
+    protected $database;
+    protected $obj;
+    protected $obj_type;
+    protected $task;
+    protected $url;
+    protected $view;
+
     /**
      * Constructor
      *

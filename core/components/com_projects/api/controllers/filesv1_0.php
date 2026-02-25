@@ -27,6 +27,11 @@ use Filesystem;
  */
 class Filesv1_0 extends ApiController
 {
+    protected $cid;
+    protected $model;
+    protected $ormconn;
+    protected $ormproj;
+
     /**
      * Execute a request
      *

@@ -18,6 +18,8 @@ use Date;
  */
 class Helper extends Module
 {
+    protected $rows;
+
     /**
      * Display module content
      *

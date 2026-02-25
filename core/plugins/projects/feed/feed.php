@@ -15,6 +15,16 @@ use Hubzero\Plugin\Plugin;
 
 class Feed extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $model;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

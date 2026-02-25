@@ -17,6 +17,9 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $unapprovedModules;
+    protected $unapprovedPages;
+
     /**
      * Display module contents
      *

@@ -26,6 +26,8 @@ use Event;
  */
 class Messagesv2_1 extends ApiController
 {
+    protected $acl;
+
     /**
      * Execute a request
      *

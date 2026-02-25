@@ -16,6 +16,8 @@ use App;
  */
 class Helper extends Module
 {
+    protected $unapproved;
+
     /**
      * Display module contents
      *

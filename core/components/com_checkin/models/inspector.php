@@ -17,6 +17,8 @@ use App;
  */
 class Inspector extends Obj
 {
+    protected $items;
+
     /**
      * Database connection
      *

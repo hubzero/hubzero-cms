@@ -14,6 +14,27 @@ namespace Components\Wiki\Helpers;
 class DoubleReplacer extends Replacer
 {
     /**
+     * String to search for
+     *
+     * @var  string
+     */
+    protected $from;
+
+    /**
+     * Replacement string
+     *
+     * @var  string
+     */
+    protected $to;
+
+    /**
+     * Match index to use
+     *
+     * @var  integer
+     */
+    protected $index;
+
+    /**
      * Short description for '__construct'
      *
      * Long description (if any) ...

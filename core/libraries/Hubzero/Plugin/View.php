@@ -18,6 +18,8 @@ use Exception;
  */
 class View extends AbstractView
 {
+    protected $baseurl;
+
     /**
      * Folder
      *

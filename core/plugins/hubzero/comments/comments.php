@@ -15,6 +15,17 @@ use Hubzero\Plugin\Plugin;
 
 class Comments extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $action;
+    protected $comment;
+    protected $obj;
+    protected $obj_id;
+    protected $obj_type;
+    protected $task;
+    protected $url;
+    protected $view;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

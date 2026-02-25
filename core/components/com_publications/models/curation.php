@@ -26,6 +26,13 @@ use Component;
  */
 class Curation extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_curationVersion;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tblHistory;
+
     /**
      * Database
      *

@@ -41,6 +41,13 @@ class AuthorizationCode implements GrantTypeInterface
     private $authorizationCode;
 
     /**
+     * Authorization code data from validated request
+     *
+     * @var  array
+     */
+    private $authCode;
+
+    /**
      * Constructor
      *
      * @param   object  $storage  Storage object

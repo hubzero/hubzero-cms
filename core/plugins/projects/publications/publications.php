@@ -24,6 +24,28 @@ use Components\Publications\Helpers\Html as PubHtml;
  */
 class Publications extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_activity;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_image_ext;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_pid;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_pubconfig;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_video_ext;
+    protected $model;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
@@ -966,10 +988,10 @@ class Publications extends Plugin
         }
 
         // Record activity
-        if ($this->get('_activity')) {
+        if ($this->_activity) {
             $pubTitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
             $aid = $this->model->recordActivity(
-                $this->get('_activity'),
+                $this->_activity,
                 $pub->id,
                 $pubTitle,
                 Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
@@ -1731,13 +1753,13 @@ class Publications extends Plugin
                     $pub->_curationModel->transfer($pub, $pub->version, $new);
 
                     // Set response message
-                    $this->set('_msg', Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
+                    $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
 
                     // Set activity message
                     $pubTitle = \Hubzero\Utility\Str::truncate($new->title, 100);
                     $action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION') . ' ' . $new->version_label . ' ';
                     $action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
-                    $this->set('_activity', $action);
+                    $this->_activity = $action;
 
                     // Record action, notify team
                     $pub->set('version_number', $new->version_number);

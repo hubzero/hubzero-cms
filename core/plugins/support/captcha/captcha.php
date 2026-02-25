@@ -15,6 +15,9 @@ use Hubzero\Plugin\Plugin;
 
 class Captcha extends Plugin
 {
+    protected $keystring;
+    protected $ly;
+
     /**
      * If the user is a verified, logged-in user
      * @var boolean

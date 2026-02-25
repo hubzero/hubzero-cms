@@ -44,6 +44,8 @@ class SolrQueryAdapter implements QueryInterface
 
     public $debug = false;
 
+    public $facetSet = null;
+
     /**
      * __construct
      *

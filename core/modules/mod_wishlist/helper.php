@@ -17,6 +17,14 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $accepted;
+    protected $granted;
+    protected $pending;
+    protected $rejected;
+    protected $removed;
+    protected $wishlist;
+    protected $withdrawn;
+
     /**
      * Display module contents
      *

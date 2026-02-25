@@ -18,6 +18,11 @@ use User;
  */
 class Helper extends Module
 {
+    protected $allgroups;
+    protected $limit;
+    protected $moduleclass;
+    protected $recentgroups;
+
     /**
      * Get groups for a user
      *

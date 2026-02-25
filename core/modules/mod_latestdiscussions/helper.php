@@ -20,6 +20,12 @@ use User;
  */
 class Helper extends Module
 {
+    protected $categories;
+    protected $charlimit;
+    protected $limit;
+    protected $posts;
+    protected $threads;
+
     /**
      * Display module contents
      *

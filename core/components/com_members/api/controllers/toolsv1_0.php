@@ -23,6 +23,8 @@ use User;
  */
 class Toolsv1_0 extends ApiController
 {
+    protected $rt;
+
     /**
      * Get a member's tool sessions
      *

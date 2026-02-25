@@ -17,6 +17,8 @@ use App;
  */
 class Helper extends Module
 {
+    protected $rows;
+
     /**
      * Display module content
      *

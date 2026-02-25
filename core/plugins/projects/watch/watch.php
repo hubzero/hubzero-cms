@@ -18,6 +18,13 @@ use Hubzero\Plugin\Plugin;
  */
 class Watch extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    protected $action;
+    protected $database;
+    protected $project;
+    protected $watch;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

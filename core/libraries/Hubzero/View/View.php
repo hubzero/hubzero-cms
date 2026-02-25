@@ -21,6 +21,8 @@ class View extends Obj
 {
     use \Hubzero\Base\Traits\Escapable;
 
+    protected $baseurl;
+
     /**
      * The name of the view
      *
