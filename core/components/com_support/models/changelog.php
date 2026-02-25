@@ -20,6 +20,9 @@ use Hubzero\Facades\Lang;
  */
 class Changelog extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_raw;
+
     /**
      * ItemList
      *

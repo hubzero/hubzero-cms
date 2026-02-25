@@ -15,6 +15,9 @@ use Hubzero\Base\Obj;
  */
 class Attachment extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_connector;
+
     /**
      * Element name
      *

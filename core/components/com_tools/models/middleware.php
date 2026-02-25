@@ -14,11 +14,15 @@ use Components\Tools\Helpers\Utils;
 use Hubzero\Geocode\Geocode;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Obj;
+
 /**
  * Tools middleware model
  */
 class Middleware extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+
     /**
      * \Hubzero\ItemList
      *

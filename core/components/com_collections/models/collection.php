@@ -21,6 +21,9 @@ use Hubzero\Facades\Lang;
  */
 class Collection extends Base
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_counts;
+
     /**
      * Authorization checked?
      *

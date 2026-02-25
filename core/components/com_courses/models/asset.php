@@ -23,6 +23,8 @@ use Hubzero\Facades\Filesystem;
  */
 class Asset extends Base
 {
+    protected $units;
+
     /**
      * Table class name
      *

@@ -19,6 +19,8 @@ use Hubzero\Facades\User;
  */
 class Manager extends Obj
 {
+    protected $config;
+
     /**
      * Cached data
      *

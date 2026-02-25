@@ -19,6 +19,8 @@ use Exception;
  */
 class View extends Obj
 {
+    protected $baseurl;
+
     use \Hubzero\Base\Traits\Escapable;
 
     /**

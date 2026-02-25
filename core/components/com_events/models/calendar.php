@@ -25,6 +25,8 @@ use Hubzero\Facades\User;
  */
 class Calendar extends Model
 {
+    protected $id;
+
     /**
      * Table
      *

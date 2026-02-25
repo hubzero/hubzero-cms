@@ -17,6 +17,8 @@ use Hubzero\Facades\App;
  */
 class Inspector extends Obj
 {
+    protected $items;
+
     /**
      * Database connection
      *

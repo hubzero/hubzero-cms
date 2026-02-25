@@ -21,6 +21,10 @@ use Hubzero\Facades\App;
  */
 class Set extends Obj implements Iterator
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+    protected $terms;
+
     /**
      * Description for 'plugin_weights'
      *

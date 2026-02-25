@@ -19,6 +19,9 @@ use Hubzero\Facades\App;
  */
 class Entity extends Obj
 {
+    protected $path;
+    protected $timestamp;
+
     /**
      * The filesystem adapter use for actually interacting with the entity
      *

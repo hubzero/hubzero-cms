@@ -22,6 +22,8 @@ use Hubzero\Facades\User;
  */
 class Economy extends Obj
 {
+    protected $qid;
+
     /**
      * Database
      *

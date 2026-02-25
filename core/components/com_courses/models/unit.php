@@ -17,6 +17,9 @@ use Hubzero\Facades\User;
  */
 class Unit extends Base
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_assetgroups;
+
     protected $course_id = 0;
 
     /**
