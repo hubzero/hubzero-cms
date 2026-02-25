@@ -13,7 +13,7 @@ use Hubzero\Database\Table;
 /**
  * Table class for job types
  */
-class JobType extends Table
+class Type extends Table
 {
     /**
      * Constructor

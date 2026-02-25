@@ -11,8 +11,8 @@ defined('_HZEXEC_') or die();
 
 $database = App::get('db');
 
-$jt = new \Components\Jobs\Tables\JobType($database);
-$jc = new \Components\Jobs\Tables\JobCategory($database);
+$jt = new \Components\Jobs\Tables\Type($database);
+$jc = new \Components\Jobs\Tables\Category($database);
 
 $profile = \Components\Members\Models\Member::oneOrNew($this->seeker->uid);
 

@@ -8,7 +8,7 @@
 
 namespace Components\Jobs\Admin\Controllers;
 
-use Components\Jobs\Tables\JobType;
+use Components\Jobs\Tables\Type;
 use Hubzero\Component\AdminController;
 use Exception;
 use Hubzero\Facades\Request;
@@ -58,7 +58,7 @@ class Types extends AdminController
         );
 
         // Instantiate an object
-        $jt = new JobType($this->database);
+        $jt = new Type($this->database);
 
         // Get records
         $this->view->rows = $jt->getTypes($this->view->filters['sort'], $this->view->filters['sort_Dir']);
@@ -131,7 +131,7 @@ class Types extends AdminController
             $id = (is_array($id)) ? $id[0] : $id;
 
             // Load the object
-            $row = new JobType($this->database);
+            $row = new Type($this->database);
             $row->load($id);
         }
 
@@ -154,7 +154,7 @@ class Types extends AdminController
         Request::checkToken();
 
         // Initiate extended database class
-        $row = new JobType($this->database);
+        $row = new Type($this->database);
         if (!$row->bind($_POST)) {
             Notify::error($row->getError());
             return $this->editTask($row);
@@ -197,7 +197,7 @@ class Types extends AdminController
             return;
         }
 
-        $jt = new JobType($this->database);
+        $jt = new Type($this->database);
 
         foreach ($ids as $id) {
             // Delete the type

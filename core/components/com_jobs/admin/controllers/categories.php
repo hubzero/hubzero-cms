@@ -8,7 +8,7 @@
 
 namespace Components\Jobs\Admin\Controllers;
 
-use Components\Jobs\Tables\JobCategory;
+use Components\Jobs\Tables\Category;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Request;
@@ -58,7 +58,7 @@ class Categories extends AdminController
         );
 
         // Instantiate an object
-        $jc = new JobCategory($this->database);
+        $jc = new Category($this->database);
 
         // Get records
         $this->view->rows = $jc->getCats($this->view->filters['sort'], $this->view->filters['sort_Dir'], 1);
@@ -83,7 +83,7 @@ class Categories extends AdminController
         Arr::toInteger($order);
 
         // Instantiate an object
-        $jc = new JobCategory($this->database);
+        $jc = new Category($this->database);
 
         if (count($order) > 0) {
             foreach ($order as $id => $num) {
@@ -122,7 +122,7 @@ class Categories extends AdminController
             $id = (is_array($id)) ? $id[0] : $id;
 
             // Load the object
-            $row = new JobCategory($this->database);
+            $row = new Category($this->database);
             $row->load($id);
         }
 
@@ -145,7 +145,7 @@ class Categories extends AdminController
         Request::checkToken();
 
         // Initiate extended database class
-        $row = new JobCategory($this->database);
+        $row = new Category($this->database);
         if (!$row->bind($_POST)) {
             Notify::error($row->getError());
             return $this->editTask($row);
@@ -188,7 +188,7 @@ class Categories extends AdminController
             return;
         }
 
-        $jc = new JobCategory($this->database);
+        $jc = new Category($this->database);
 
         foreach ($ids as $id) {
             // Delete the type

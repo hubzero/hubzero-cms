@@ -15,7 +15,7 @@ use Hubzero\Facades\Date;
 /**
  * Table class for job stats
  */
-class JobStats extends Table
+class Stats extends Table
 {
     /**
      * Constructor
@@ -103,7 +103,7 @@ class JobStats extends Table
         );
 
         // get total resumes in the pool
-        $row = new JobSeeker($this->_db);
+        $row = new Seeker($this->_db);
         $filters = array(
             'filterby' => 'all',
             'sortby' => '',

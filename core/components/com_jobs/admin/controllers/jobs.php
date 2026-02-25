@@ -9,9 +9,9 @@
 namespace Components\Jobs\Admin\Controllers;
 
 use Components\Jobs\Tables\Job;
-use Components\Jobs\Tables\JobAdmin;
-use Components\Jobs\Tables\JobCategory;
-use Components\Jobs\Tables\JobType;
+use Components\Jobs\Tables\Admin;
+use Components\Jobs\Tables\Category;
+use Components\Jobs\Tables\Type;
 use Components\Jobs\Tables\Employer;
 use Hubzero\Component\AdminController;
 use Exception;
@@ -124,7 +124,7 @@ class Jobs extends AdminController
 
         $this->view->row = new Job($this->database);
 
-        $this->view->jobadmin = new JobAdmin($this->database);
+        $this->view->jobadmin = new Admin($this->database);
         $this->view->employer = new Employer($this->database);
 
         // Is this a new job?
@@ -170,8 +170,8 @@ class Jobs extends AdminController
         $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
 
         // Get job types and categories
-        $jt = new JobType($this->database);
-        $jc = new JobCategory($this->database);
+        $jt = new Type($this->database);
+        $jc = new Category($this->database);
 
         // get job types
         $this->view->types = $jt->getTypes();

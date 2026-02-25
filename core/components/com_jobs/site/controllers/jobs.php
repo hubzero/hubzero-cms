@@ -8,17 +8,17 @@
 
 namespace Components\Jobs\Site\Controllers;
 
-use Components\Jobs\Tables\JobAdmin;
-use Components\Jobs\Tables\JobApplication;
-use Components\Jobs\Tables\JobCategory;
+use Components\Jobs\Tables\Admin;
+use Components\Jobs\Tables\Application;
+use Components\Jobs\Tables\Category;
 use Components\Jobs\Tables\Employer;
 use Components\Jobs\Tables\Job;
 use Components\Jobs\Tables\Prefs;
 use Components\Jobs\Tables\Resume;
-use Components\Jobs\Tables\JobSeeker;
+use Components\Jobs\Tables\Seeker;
 use Components\Jobs\Tables\Shortlist;
-use Components\Jobs\Tables\JobStats;
-use Components\Jobs\Tables\JobType;
+use Components\Jobs\Tables\Stats;
+use Components\Jobs\Tables\Type;
 use Components\Services\Models\Subscription;
 use Components\Services\Models\Service;
 use Hubzero\Component\SiteController;
@@ -427,17 +427,17 @@ class Jobs extends SiteController
             $filters = self::_getFilters($this->_admin, $this->_emp);
 
             // get job types
-            $jt       = new JobType($this->database);
+            $jt       = new Type($this->database);
             $types    = $jt->getTypes();
             $types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
 
             // get job categories
-            $jc      = new JobCategory($this->database);
+            $jc      = new Category($this->database);
             $cats    = $jc->getCats();
             $cats[0] = Lang::txt('COM_JOBS_CATEGORY_ANY');
 
             // get users with resumes
-            $js      = new JobSeeker($this->database);
+            $js      = new Seeker($this->database);
             $seekers = $js->getSeekers($filters, User::get('id'), 0, $this->_masterAdmin);
             $total   = $js->countSeekers($filters, User::get('id'), 0, $this->_masterAdmin);
 
@@ -932,7 +932,7 @@ class Jobs extends SiteController
         }
 
         // Get current stats for dashboard
-        $jobstats = new JobStats($this->database);
+        $jobstats = new Stats($this->database);
         $stats = $jobstats->getStats($uid, 'employer', $admin);
 
         // Get job postings
@@ -1047,7 +1047,7 @@ class Jobs extends SiteController
             return;
         }
 
-        $ja = new JobApplication($this->database);
+        $ja = new Application($this->database);
 
         // if application already exists, load it to edit
         if ($ja->loadApplication(User::get('id'), 0, $code) && $ja->status != 2) {
@@ -1058,7 +1058,7 @@ class Jobs extends SiteController
             $ja->cover = '';
         }
 
-        $js = new JobSeeker($this->database);
+        $js = new Seeker($this->database);
         $seeker = $js->getSeeker(User::get('id'), User::get('id'));
         $seeker = count($seeker) > 0 ? $seeker[0] : null;
 
@@ -1116,7 +1116,7 @@ class Jobs extends SiteController
         }
 
         $job = new Job($this->database);
-        $ja  = new JobApplication($this->database);
+        $ja  = new Application($this->database);
         $now = Date::toSql();
 
         if (!$job->loadJob($code)) {
@@ -1125,7 +1125,7 @@ class Jobs extends SiteController
 
         // Load application if exists
         if (!$ja->loadApplication(User::get('id'), 0, $code)) {
-            $ja = new JobApplication($this->database);
+            $ja = new Application($this->database);
         }
 
         if ($this->_task == 'withdraw' && !$ja->id) {
@@ -1254,20 +1254,20 @@ class Jobs extends SiteController
         $this->_buildTitle();
 
         // Get category & type names
-        $jt = new JobType($this->database);
-        $jc = new JobCategory($this->database);
+        $jt = new Type($this->database);
+        $jc = new Category($this->database);
         $job->type = $jt->getType($job->type);
         $job->cat = $jc->getCat($job->cid);
 
         // Get applications
-        $ja = new JobApplication($this->database);
+        $ja = new Application($this->database);
         $canViewApps = $this->_admin || ($this->_emp && User::get('id') == $job->employerid);
         $job->applications = $canViewApps ? $ja->getApplications($job->id) : array();
 
         // Get profile info of applicants
         $job->withdrawnlist = array();
         if (count($job->applications) > 0) {
-            $js = new JobSeeker($this->database);
+            $js = new Seeker($this->database);
             foreach ($job->applications as $ap) {
                 $seeker = $js->getSeeker($ap->uid, $job->employerid);
                 $ap->seeker = (!$seeker or count($seeker) == 0) ? null : $seeker[0];
@@ -1323,7 +1323,7 @@ class Jobs extends SiteController
         $autoapprove = $this->config->get('autoapprove', 1);
 
         $job      = new Job($this->database);
-        $jobadmin = new JobAdmin($this->database);
+        $jobadmin = new Admin($this->database);
         $employer = new Employer($this->database);
 
         if ($code) {
@@ -1496,7 +1496,7 @@ class Jobs extends SiteController
         }
 
         $job = new Job($this->database);
-        $jobadmin = new JobAdmin($this->database);
+        $jobadmin = new Admin($this->database);
         $employer = new Employer($this->database);
 
         if (!$this->_emp && !$this->_admin) {
@@ -1574,8 +1574,8 @@ class Jobs extends SiteController
         // Push some styles to the tmeplate
         $this->css('calendar.css');
 
-        $jt = new JobType($this->database);
-        $jc = new JobCategory($this->database);
+        $jt = new Type($this->database);
+        $jc = new Category($this->database);
 
         // get job types
         $types = $jt->getTypes();
