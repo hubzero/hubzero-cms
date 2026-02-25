@@ -103,8 +103,7 @@ if ($this->row->get('id')) {
                                                  } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
                             <option value="embedded"<?php if ($this->row->get('subtype') == 'embedded') {
                                 echo ' selected="selected"';
-                                                    <  ? php $txt = Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?>
-                                                    } ?>><?php echo $txt; ?></option>
+                                                    } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?></option>
                             <option value="file"<?php if ($this->row->get('subtype') == 'file') {
                                 echo ' selected="selected"';
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
@@ -116,8 +115,7 @@ if ($this->row->get('id')) {
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ'); ?></option>
                             <option value="homework"<?php if ($this->row->get('subtype') == 'homework') {
                                 echo ' selected="selected"';
-                                                    <  ? php $txt = Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?>
-                                                    } ?>><?php echo $txt; ?></option>
+                                                    } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?></option>
                             <option value="note"<?php if ($this->row->get('subtype') == 'note') {
                                 echo ' selected="selected"';
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_NOTE'); ?></option>
