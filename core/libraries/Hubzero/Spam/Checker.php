@@ -227,7 +227,7 @@ class Checker
      * @param   string   $name     Name of the detector
      * @param   boolean  $value    If spam or not
      * @param   string   $message  Message set by detector
-     * @return  string
+     * @return  void
      */
     protected function mark($name, $value, $message = null)
     {

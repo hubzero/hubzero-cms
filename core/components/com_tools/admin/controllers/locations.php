@@ -111,8 +111,6 @@ class Locations extends AdminController
 
     /**
      * Edit a record
-     *
-     * @return  void
      */
     public function editTask($row = null)
     {

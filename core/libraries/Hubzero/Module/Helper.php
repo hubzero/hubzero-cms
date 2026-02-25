@@ -30,7 +30,7 @@ class Helper
      *
      * @param   string   $position  Position to render modules for
      * @param   integer  $style     Module style (deprecated?)
-     * @return  string   HTML
+     * @return  void
      */
     public static function displayModules($position, $style = -2)
     {

@@ -421,8 +421,6 @@ class Notes extends Plugin
 
     /**
      * List/unlist on public project page
-     *
-     * @return  void
      */
     protected function _list()
     {

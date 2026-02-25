@@ -97,7 +97,7 @@ class Batchcreate extends AdminController
     /**
      * Validate XML
      *
-     * @return  void
+     * @return  string|null
      */
     public function validateTask()
     {
@@ -747,7 +747,6 @@ class Batchcreate extends AdminController
      * @param   integer  $ordering
      * @param   integer  $uid
      * @param   object   $item
-     * @return  string
      */
     public function collectAuthorData($author, $ordering, $uid, &$item)
     {

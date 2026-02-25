@@ -329,8 +329,6 @@ class Feed extends Plugin
 
     /**
      * Save new blog entry
-     *
-     * @return  void  redirect
      */
     protected function _save()
     {
@@ -443,8 +441,6 @@ class Feed extends Plugin
 
     /**
      * Delete entry
-     *
-     * @return  void  redirect
      */
     protected function _delete()
     {

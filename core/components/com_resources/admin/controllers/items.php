@@ -558,7 +558,6 @@ class Items extends AdminController
      * Edit form for a resource
      *
      * @param   integer  $isnew  Flag for editing (0) or creating new (1)
-     * @return  void
      */
     public function editTask($isnew = 0)
     {
@@ -1334,7 +1333,6 @@ class Items extends AdminController
     /**
      * Checks in a checked-out resource and redirects
      *
-     * @return     void
      */
     public function cancelTask()
     {
@@ -1603,7 +1601,6 @@ class Items extends AdminController
     /**
      * Gets the full name of a user from their ID #
      *
-     * @return  string
      */
     public function authorTask()
     {
@@ -1666,7 +1663,7 @@ class Items extends AdminController
     /**
      * Gets the full name of a user from their ID #
      *
-     * @return  string
+     * @return  void
      */
     public function acluserTask()
     {
@@ -1699,7 +1696,7 @@ class Items extends AdminController
     /**
      * Gets the full name of a user from their ID #
      *
-     * @return  string
+     * @return  void
      */
     public function aclgroupTask()
     {

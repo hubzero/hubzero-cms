@@ -1271,7 +1271,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Add product coupon
      *
      * @param   StorefrontModelCoupon   Instance of a coupon to add
-     * @return  int                         coupon ID
+     * @return  void
      */
     public function addCoupon($coupon)
     {
@@ -1287,7 +1287,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Delete coupon
      *
      * @param   string      coupon code
-     * @return  bool
+     * @return  void
      */
     public function deleteCoupon($code)
     {
@@ -1460,7 +1460,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * Get all non-empty (those that have at least one active product) root (no parents) collections
      *
      * @param  $collectionType -- type of collection, category by default
-     * @return void
+     * @return array
      */
     private function _getCollections($collectionType = 'category', $filters = false)
     {
@@ -1485,7 +1485,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * TODO: implement subcategories
      *
      * @param  $collectionType -- type of collection, category by default
-     * @return void
+     * @return array|int
      */
     private function _getAllCollections($return = 'list', $filters = array())
     {

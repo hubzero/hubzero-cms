@@ -692,7 +692,7 @@ class Validate
      * an array.
      *
      * @param   array  $params  Parameters sent to validation method
-     * @return  void
+     * @return  array
      * @codeCoverageIgnore
      */
     protected static function _defaults($params)

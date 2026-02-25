@@ -78,7 +78,6 @@ class Jobs extends AdminController
      * Displays a form for editing an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

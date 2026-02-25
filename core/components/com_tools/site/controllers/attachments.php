@@ -89,7 +89,7 @@ class Attachments extends SiteController
     /**
      * Rename an attachment
      *
-     * @return  string
+     * @return  void
      */
     public function renameTask()
     {
@@ -287,7 +287,6 @@ class Attachments extends SiteController
      * Display a list of attachments
      *
      * @param   integer  $id  Resource ID
-     * @return  void
      */
     public function displayTask($id = null)
     {

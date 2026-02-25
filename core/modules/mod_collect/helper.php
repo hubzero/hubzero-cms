@@ -55,8 +55,6 @@ class Helper extends Module
 
     /**
      * Collect an item
-     *
-     * @return  void
      */
     public function collect()
     {

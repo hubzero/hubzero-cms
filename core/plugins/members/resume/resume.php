@@ -713,7 +713,6 @@ class Resume extends Plugin
      * Download a file
      *
      * @param  object  $member
-     * @return void
      */
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _download($member)

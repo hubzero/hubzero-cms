@@ -26,7 +26,7 @@ class DefaultHandler extends Plugin
     /**
      * Return file type
      *
-     * @return  string  HTML
+     * @return  void
      */
     public function onImportAcceptedFiles()
     {
@@ -39,7 +39,7 @@ class DefaultHandler extends Plugin
      * @param   array    $file
      * @param   string   $scope
      * @param   integer  $scope_id
-     * @return  array
+     * @return  array|null
      */
     public function onImport($file, $scope = null, $scope_id = null)
     {

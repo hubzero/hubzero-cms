@@ -124,7 +124,6 @@ class Languages extends AdminController
      * Displays a form for editing
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -191,7 +190,10 @@ class Languages extends AdminController
         }
 
         if ($this->getTask() == 'save2new') {
-            return App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit', false));
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller . '&task=edit';
+            App::redirect(Route::url($url, false));
+            return;
         }
 
         // Redirect

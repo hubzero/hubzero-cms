@@ -24,7 +24,7 @@ class Googlescholar extends Plugin
      * @param   string   $rtrn         Data to be returned
      * @param   string   $version      Version name
      * @param   boolean  $extended     Whether or not to show panel
-     * @return  array
+     * @return  void
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {

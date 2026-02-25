@@ -41,7 +41,7 @@ class Users extends Plugin
      * Remove user accounts with negative, numeric, usernames
      *
      * @param   object   $job  \Components\Cron\Models\Job
-     * @return  boolean
+     * @return  void
      */
     public function cleanAuthTempAccounts(\Components\Cron\Models\Job $job)
     {

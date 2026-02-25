@@ -179,8 +179,6 @@ class Authors extends SiteController
 
     /**
      * Display a list of authors for a citation
-     *
-     * @return  void
      */
     public function displayTask()
     {

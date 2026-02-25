@@ -396,8 +396,6 @@ class Projects extends Plugin
 
     /**
      * Update one or all projects
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _update()

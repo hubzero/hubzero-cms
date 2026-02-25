@@ -383,7 +383,7 @@ class Todo extends Plugin
     /**
      * Save item
      *
-     * @return  string
+     * @return  string|void
      */
     public function save()
     {
@@ -766,8 +766,6 @@ class Todo extends Plugin
 
     /**
      * Delete comment
-     *
-     * @return  void  redirect
      */
     protected function _deleteComment()
     {
@@ -813,8 +811,6 @@ class Todo extends Plugin
 
     /**
      * Save comment
-     *
-     * @return  void  redirect
      */
     protected function _saveComment()
     {

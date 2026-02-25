@@ -110,7 +110,7 @@ class Certificate extends Plugin
      */
     public function onAuthenticate($credentials, $options, &$response)
     {
-        return $this->onUserAuthenticate($credentials, $options, $response);
+        $this->onUserAuthenticate($credentials, $options, $response);
     }
 
     /**
@@ -119,7 +119,6 @@ class Certificate extends Plugin
      * @param   array   $credentials  the user credentials
      * @param   array   $options      any extra options
      * @param   object  $response     authentication response object
-     * @return  void
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {

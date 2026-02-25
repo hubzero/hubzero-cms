@@ -32,7 +32,7 @@ class UsersCategoriesv2r0 extends ApiController
      *      "type":          "integer",
      *      "required":      true
      * }
-     * @return    TODO
+     * @return    void
      */
     public function createTask()
     {
@@ -121,7 +121,7 @@ class UsersCategoriesv2r0 extends ApiController
      *      "type":          "integer",
      *      "required":      true
      * }
-     * @return    TODO
+     * @return    void
      */
     public function destroyTask()
     {

@@ -459,7 +459,7 @@ class Languagefilter extends Plugin
      *
      * @param   array    $user     Holds the user data
      * @param   array    $options  Array holding options (remember, autoregister, group)
-     * @return  boolean  True on success
+     * @return  void
      */
     public function onUserLogin($user, $options = array())
     {
@@ -513,7 +513,7 @@ class Languagefilter extends Plugin
     /**
      * This method adds alternate meta tags for associated menu items
      *
-     * @return  nothing
+     * @return  void
      */
     public function onAfterDispatch()
     {

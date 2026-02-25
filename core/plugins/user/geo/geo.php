@@ -22,7 +22,7 @@ class Geo extends Plugin
      *
      * @param array $user    holds the user data
      * @param array $options holding options (remember, autoregister, group)
-     * @return bool
+     * @return void
      */
     public function onUserLogin($user, $options = array())
     {

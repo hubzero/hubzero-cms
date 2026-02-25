@@ -22,7 +22,7 @@ class ConfigHelper
      *
      * @param string $name
      * @access public
-     * @return void
+     * @return array|mixed|false
      */
     public function loadConfig($name = '')
     {

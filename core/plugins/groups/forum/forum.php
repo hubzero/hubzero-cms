@@ -566,8 +566,6 @@ class Forum extends Plugin
 
     /**
      * Saves a section and redirects to main page afterward
-     *
-     * @return  void
      */
     public function savesection()
     {
@@ -640,8 +638,6 @@ class Forum extends Plugin
 
     /**
      * Deletes a section and redirects to main page afterwards
-     *
-     * @return  void
      */
     public function deletesection()
     {
@@ -969,8 +965,6 @@ class Forum extends Plugin
 
     /**
      * Save a category
-     *
-     * @return  void
      */
     public function savecategory()
     {
@@ -1045,8 +1039,6 @@ class Forum extends Plugin
 
     /**
      * Delete a category
-     *
-     * @return  void
      */
     public function deletecategory()
     {
@@ -1330,8 +1322,6 @@ class Forum extends Plugin
 
     /**
      * Saves posted data for a new/edited forum thread post
-     *
-     * @return  void
      */
     public function savethread()
     {
@@ -1821,8 +1811,6 @@ class Forum extends Plugin
 
     /**
      * Remove a thread
-     *
-     * @return  void
      */
     public function deletethread()
     {
@@ -1992,8 +1980,6 @@ class Forum extends Plugin
 
     /**
      * Serves up files only after passing access checks
-     *
-     * @return  void
      */
     public function download()
     {
@@ -2146,8 +2132,6 @@ class Forum extends Plugin
 
     /**
      * Save settings
-     *
-     * @return  void
      */
     private function savesettings()
     {
@@ -2204,8 +2188,6 @@ class Forum extends Plugin
 
     /**
      * Unsubscribe user from forum emails
-     *
-     * @return void
      */
     public function unsubscribe()
     {
@@ -2270,8 +2252,6 @@ class Forum extends Plugin
 
     /**
      * Reorder a record up
-     *
-     * @return  void
      */
     public function orderup()
     {
@@ -2280,8 +2260,6 @@ class Forum extends Plugin
 
     /**
      * Reorder a record up
-     *
-     * @return  void
      */
     public function orderdown()
     {
@@ -2292,7 +2270,6 @@ class Forum extends Plugin
      * Reorder a section
      *
      * @param   integer  $dir  Direction
-     * @return  void
      */
     public function reorder($dir = 1)
     {

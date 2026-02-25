@@ -353,7 +353,6 @@ class Authors extends SiteController
      * Display a list of authors
      *
      * @param   integer  $id  Resource ID
-     * @return  void
      */
     public function displayTask($id = null)
     {

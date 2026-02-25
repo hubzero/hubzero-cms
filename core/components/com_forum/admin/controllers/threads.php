@@ -333,7 +333,6 @@ class Threads extends AdminController
      * Displays a question response for editing
      *
      * @param   mixed  $post
-     * @return  void
      */
     public function editTask($post = null)
     {

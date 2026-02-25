@@ -283,7 +283,6 @@ class Categories extends SiteController
      * Show a form for editing an entry
      *
      * @param   object  $category
-     * @return  void
      */
     public function editTask($category = null)
     {

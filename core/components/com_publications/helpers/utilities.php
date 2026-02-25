@@ -42,7 +42,7 @@ class Utilities
      * Run mkAIP
      *
      * @param            object $row            Publication version object
-     * @return       void
+     * @return       bool
      */
     public static function mkAip($row)
     {

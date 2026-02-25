@@ -135,7 +135,6 @@ class Share extends Plugin
      * @param   string  $with      Social site to share with
      * @param   string  $url       The URL to share
      * @param   object  $resource  Resource to share
-     * @return  void
      */
     public function share($with, $url, $resource)
     {

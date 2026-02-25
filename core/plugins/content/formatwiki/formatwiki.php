@@ -24,7 +24,7 @@ class Formatwiki extends Plugin
      * @param  string  $content The context of the content passed to the plugin
      * @param  object  $article
      * @param  boolean $isNew Unnecessary?
-     * @return multi
+     * @return void
      */
     public function onContentBeforeSave($context, &$article, $isNew)
     {

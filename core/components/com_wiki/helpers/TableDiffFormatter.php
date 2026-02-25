@@ -161,7 +161,6 @@ class TableDiffFormatter extends DiffFormatter
      *
      * Long description (if any) ...
      *
-     * @return     void
      */
     public function emptyLine()
     {

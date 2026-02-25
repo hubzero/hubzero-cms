@@ -44,8 +44,6 @@ class Articles extends SiteController
 
     /**
      * Displays an overview of categories and articles in the knowledge base
-     *
-     * @return  void
      */
     public function displayTask()
     {
@@ -115,8 +113,6 @@ class Articles extends SiteController
 
     /**
      * Displays a knowledge base article
-     *
-     * @return  void
      */
     public function articleTask()
     {

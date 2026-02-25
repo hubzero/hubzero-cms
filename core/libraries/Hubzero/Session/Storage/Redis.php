@@ -68,6 +68,7 @@ class Redis extends Store
     {
         $this->database = RedisDatabase::connect('default');
         $this->database->connect();
+        return true;
     }
 
     /**
@@ -79,6 +80,7 @@ class Redis extends Store
     public function close()
     {
         $this->database->disconnect();
+        return true;
     }
 
     /**
@@ -149,6 +151,7 @@ class Redis extends Store
     public function gc($maxlifetime = null)
     {
         //'redis gc';
+        return true;
     }
 
     /**

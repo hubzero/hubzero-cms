@@ -280,8 +280,6 @@ class Profile extends Plugin
 
     /**
      * Method to add a user address
-     *
-     * @return void
      */
     public function addAddress()
     {
@@ -292,7 +290,6 @@ class Profile extends Plugin
      * Method to edit a user address
      *
      * @param  objct $address
-     * @return void
      */
     public function editAddress($address = null)
     {
@@ -316,8 +313,6 @@ class Profile extends Plugin
 
     /**
      * Method to save a user address
-     *
-     * @return void
      */
     public function saveAddress()
     {
@@ -347,8 +342,6 @@ class Profile extends Plugin
 
     /**
      * Method to delete a user address
-     *
-     * @return void
      */
     public function deleteAddress()
     {

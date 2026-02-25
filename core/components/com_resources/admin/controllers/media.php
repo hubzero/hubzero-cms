@@ -240,8 +240,6 @@ class Media extends AdminController
 
     /**
      * Display an upload form and file listing
-     *
-     * @return  void
      */
     public function displayTask()
     {

@@ -358,7 +358,7 @@ class License extends Base
     /**
      * Get default manifest for the block
      *
-     * @return  void
+     * @return  object
      */
     public function getManifest($new = false)
     {

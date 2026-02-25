@@ -239,7 +239,7 @@ class SolrQueryAdapter implements QueryInterface
      * returns Solarium query debug object
      *
      * @access public
-     * @return Solarium\QueryType\Select\Query\Component\Debug
+     * @return mixed
      */
     public function getDebug()
     {
@@ -433,7 +433,7 @@ class SolrQueryAdapter implements QueryInterface
      * getResults
      *
      * @access public
-     * @return void
+     * @return array
      */
     public function getResults()
     {
@@ -458,7 +458,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param array $query
      * @access private
-     * @return void
+     * @return string
      */
     private function makeQueryString($query = array())
     {

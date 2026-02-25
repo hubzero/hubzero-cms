@@ -452,6 +452,7 @@ class Screenshots extends SiteController
                 return false;
             }
         }
+        return false;
     }
 
     /**
@@ -510,6 +511,7 @@ class Screenshots extends SiteController
                 return false;
             }
         }
+        return false;
     }
 
     /**
@@ -655,7 +657,6 @@ class Screenshots extends SiteController
      *
      * @param      integer $rid     Resource ID
      * @param      string  $version Tool version
-     * @return     void
      */
     public function displayTask($rid = null, $version = null)
     {

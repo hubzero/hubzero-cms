@@ -270,7 +270,6 @@ class Xusers extends Plugin
      * @param   boolean  $isnew    true if a new user is stored
      * @param   boolean  $success  true if user was succesfully stored in the database
      * @param   string   $msg      message
-     * @return  void
      */
     public function onAfterStoreUser($user, $isnew, $success, $msg)
     {

@@ -61,7 +61,6 @@ class BillBoards extends AdminController
      * Edit a billboard
      *
      * @param   object  $billboard
-     * @return  void
      */
     public function editTask($billboard = null)
     {
@@ -290,8 +289,6 @@ class BillBoards extends AdminController
     /**
      * Cancels out of the billboard edit view, makes sure to
      * check the billboard back in for other people to edit
-     *
-     * @return  void
      */
     public function cancelTask()
     {

@@ -461,8 +461,6 @@ class Relationships extends AdminController
 
     /**
      * Get data for a tag
-     *
-     * @return  void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tag($tag_str, $detailed = true)

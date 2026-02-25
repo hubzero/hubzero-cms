@@ -124,7 +124,6 @@ class Share extends Plugin
      * @param   string  $mediaUrl
      * @param   object  $publication
      * @param   object  $version
-     * @return  void
      */
     public function share($with, $url, $mediaUrl, $publication, $version)
     {

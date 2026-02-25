@@ -980,7 +980,7 @@ class Threadsv1r0 extends ApiController
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type
-     * @return  void
+     * @return  array
      */
     private function treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {

@@ -122,7 +122,6 @@ class Quotas extends AdminController
      * Edit a member quota
      *
      * @param   integer  $id  ID of entry to edit
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -348,7 +347,6 @@ class Quotas extends AdminController
      * Edit a quota class
      *
      * @param   object  $row
-     * @return  void
      */
     public function editClassTask($row = null)
     {
@@ -496,8 +494,6 @@ class Quotas extends AdminController
 
     /**
      * Cancel a task (redirects to default task)
-     *
-     * @return  void
      */
     public function cancelClassTask()
     {
