@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unit tests for plgAuthenticationOrcid::suggestUsername().
+ * Unit tests for Orcid::suggestUsername().
  *
  * Historical bug: the plugin used the ORCID email local-part as the
  * suggested username, which fails the login regex whenever the email
@@ -11,6 +11,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use Plugins\Authentication\Orcid\Orcid;
 
 final class OrcidSuggestUsernameTest extends TestCase
 {
@@ -18,7 +19,7 @@ final class OrcidSuggestUsernameTest extends TestCase
     {
         $this->assertSame(
             'u0000_0002_6885_6310',
-            plgAuthenticationOrcid::suggestUsername('0000-0002-6885-6310')
+            Orcid::suggestUsername('0000-0002-6885-6310')
         );
     }
 
@@ -27,14 +28,14 @@ final class OrcidSuggestUsernameTest extends TestCase
         // ORCID check digit "10" is written as 'X'; the hint must be lowercase.
         $this->assertSame(
             'u0009_0002_3538_094x',
-            plgAuthenticationOrcid::suggestUsername('0009-0002-3538-094X')
+            Orcid::suggestUsername('0009-0002-3538-094X')
         );
     }
 
     public function testDifferentOrcidsProduceDifferentHints()
     {
-        $a = plgAuthenticationOrcid::suggestUsername('0000-0001-7697-7422');
-        $b = plgAuthenticationOrcid::suggestUsername('0000-0002-6885-6310');
+        $a = Orcid::suggestUsername('0000-0001-7697-7422');
+        $b = Orcid::suggestUsername('0000-0002-6885-6310');
         $this->assertNotSame($a, $b);
     }
 
@@ -54,7 +55,7 @@ final class OrcidSuggestUsernameTest extends TestCase
             '0000-0003-2074-2178',
         ];
         foreach ($ids as $id) {
-            $out = plgAuthenticationOrcid::suggestUsername($id);
+            $out = Orcid::suggestUsername($id);
             $this->assertMatchesRegularExpression('/^[a-z0-9_]+$/', $out, "hint for $id must be login-safe");
             $this->assertGreaterThanOrEqual(2, strlen($out), "hint for $id must be at least 2 chars");
         }
@@ -64,8 +65,8 @@ final class OrcidSuggestUsernameTest extends TestCase
     {
         // Same ORCID iD must always produce the same hint — a user whose
         // account is deleted and reregisters gets the same username back.
-        $a = plgAuthenticationOrcid::suggestUsername('0000-0001-7697-7422');
-        $b = plgAuthenticationOrcid::suggestUsername('0000-0001-7697-7422');
+        $a = Orcid::suggestUsername('0000-0001-7697-7422');
+        $b = Orcid::suggestUsername('0000-0001-7697-7422');
         $this->assertSame($a, $b);
     }
 }
