@@ -22,12 +22,60 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Plugin;
 
 /**
  * API controller for the projects files
  */
 class Filefsv1r0 extends ApiController
 {
+    /**
+     * Project being acted on
+     *
+     * @var  Project
+     */
+    protected $model = null;
+
+    /**
+     * Repository of the project
+     *
+     * @var  \Components\Projects\Models\Repo
+     */
+    protected $repo = null;
+
+    /**
+     * Subdirectory within the repository, from the request
+     *
+     * @var  string
+     */
+    protected $subdir = '';
+
+    /**
+     * Database and acting user, set alongside the repository
+     *
+     * @var  object
+     */
+    protected $_database = null;
+
+    /**
+     * @var  integer
+     */
+    protected $_uid = 0;
+
+    /**
+     * Connection id from the request, when a task targets a connection
+     *
+     * @var  string
+     */
+    protected $cid = '';
+
+    /**
+     * ORM connection for that id, or null for the local repository
+     *
+     * @var  \Components\Projects\Models\Orm\Connection|null
+     */
+    protected $ormconn = null;
+
     /**
      * Execute a request
      *
@@ -51,6 +99,14 @@ class Filefsv1r0 extends ApiController
         // Project did not load?
         if (!$this->model->exists()) {
             throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
+        }
+
+        // A connection id makes the metadata tasks operate on that
+        // connection's adapter; without one they cannot run
+        $this->cid = Request::getString('cid', '');
+
+        if ($this->cid) {
+            $this->ormconn = \Components\Projects\Models\Orm\Connection::oneOrFail($this->cid);
         }
 
         // Read-only tasks; every other task writes and needs content access.
@@ -916,7 +972,7 @@ class Filefsv1r0 extends ApiController
 
         if (is_array($files)) {
             foreach ($files as $file) {
-                $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+                $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
 
                 if ($entity->exists()) {
                     try {
@@ -996,7 +1052,7 @@ class Filefsv1r0 extends ApiController
         if (is_array($files)) {
             if (is_array($metadata)) {
                 foreach ($files as $file) {
-                    $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+                    $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
 
                     if ($entity->exists()) {
                         try {
@@ -1041,7 +1097,7 @@ class Filefsv1r0 extends ApiController
             $results = array();
             foreach ($files as $result) {
                 // Access file metadata
-                $results[] = $this->ormconn->adapter()->getMetadata($result->getPath());
+                $results[] = $this->connectionAdapter()->getMetadata($result->getPath());
             }
             return $results;
         }
@@ -1171,7 +1227,7 @@ class Filefsv1r0 extends ApiController
             foreach ($entities as $entity) {
                 $path = trim(Request::getString('subdir', ''), '/') . '/' . urldecode($entity);
 
-                $collection->add(Entity::fromPath($path, $this->ormconn->adapter()));
+                $collection->add(Entity::fromPath($path, $this->connectionAdapter()));
             }
         }
 
@@ -1297,4 +1353,20 @@ class Filefsv1r0 extends ApiController
 
         return true;
     }
+
+    /**
+     * The adapter of the connection a metadata task operates on
+     *
+     * @return  object
+     * @throws  Exception  when the request named no connection
+     */
+    private function connectionAdapter()
+    {
+        if (!$this->ormconn) {
+            throw new Exception('This action is only supported by connection adapters; pass a connection id (cid)', 400);
+        }
+
+        return $this->ormconn->adapter();
+    }
+
 }
