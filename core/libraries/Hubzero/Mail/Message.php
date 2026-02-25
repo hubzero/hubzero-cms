@@ -159,7 +159,7 @@ class Message extends \Symfony\Component\Mime\Email
         try {
             $mailer->send($this, $this->_failures);
             $result = true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $result = false;
         }
 
@@ -198,7 +198,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function addAttachment($attachment, $filename = null)
     {
-        if (!($attachment instanceof Symfony\Component\Mime\Part\DataPart)) {
+        if (!($attachment instanceof \Symfony\Component\Mime\Part\DataPart)) {
             $attachment = \Symfony\Component\Mime\Part\DataPart::fromPath($attachment, $filename);
         }
 
@@ -439,8 +439,8 @@ class Message extends \Symfony\Component\Mime\Email
                 $address = new \Symfony\Component\Mime\Address($key, $value);
             }
 
-            if (isset($first_set)) {
-                parent::reply($address);
+            if (!isset($first_set)) {
+                parent::replyTo($address);
                 $first_set = true;
             } else {
                 parent::addReplyTo($address);

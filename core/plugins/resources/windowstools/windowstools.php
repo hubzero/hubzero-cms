@@ -33,7 +33,7 @@ class Windowstools extends Plugin
     {
         $no_html = Request::getInt('no_html', 0);
 
-        $response = new StdClass();
+        $response = new \stdClass();
         $response->success = false;
         $response->message = Lang::txt('No invoke URL found.');
 

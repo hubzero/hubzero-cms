@@ -244,7 +244,7 @@ class Editor extends Obj
             $path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
             if (!is_file($path)) {
-                throw new Exception(Lang::txt('Cannot load the editor'), 500);
+                throw new \Exception(Lang::txt('Cannot load the editor'), 500);
                 return false;
             }
         }

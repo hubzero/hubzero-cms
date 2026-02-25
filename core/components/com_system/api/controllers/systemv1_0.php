@@ -9,7 +9,7 @@
 namespace Components\System\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Components\Update\Helpers\Cli;
+use Components\Installer\Admin\Helpers\Cli;
 use stdClass;
 use Component;
 use Request;

@@ -15,6 +15,7 @@ use Components\Projects\Models\Orm\Provider;
 use Hubzero\Filesystem\Collection;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Manager;
+use Hubzero\View\View;
 
 /**
  * Projects Files plugin (connections extension)

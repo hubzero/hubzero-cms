@@ -9,7 +9,7 @@
 namespace Modules\Languages;
 
 use Hubzero\Module\Module;
-use MenusHelper;
+use Components\Menus\Helpers\Menus as MenusHelper;
 use Config;
 use Route;
 use User;

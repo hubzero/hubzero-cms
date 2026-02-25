@@ -8,6 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
+use App;
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;

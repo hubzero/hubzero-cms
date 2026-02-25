@@ -24,6 +24,7 @@ use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
 use Hubzero\Utility\Validate;
+use Hubzero\Utility\Number;
 use Exception;
 use Filesystem;
 use Request;

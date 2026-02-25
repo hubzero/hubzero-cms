@@ -31,9 +31,9 @@ use Lang;
 use User;
 use Date;
 use App;
-use Hubzero\Event as Evt;
-use Config;
-use Session;
+use Hubzero\Facades\Event as Evt;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Session;
 
 /**
  * Controller class for events

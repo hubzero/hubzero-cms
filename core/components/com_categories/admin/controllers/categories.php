@@ -20,6 +20,7 @@ use Config;
 use Notify;
 use Route;
 use User;
+use Cache;
 use Lang;
 use Date;
 use App;

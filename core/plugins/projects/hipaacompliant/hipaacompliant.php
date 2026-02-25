@@ -80,7 +80,7 @@ class Hipaacompliant extends Plugin
                 }
             }
 
-            $params = new Registry($pub->version->params);
+            $params = new \Hubzero\Config\Registry($pub->version->params);
             $params->set('hipaacompliant', $compliant);
 
             $pub->version->params = $params->toString();

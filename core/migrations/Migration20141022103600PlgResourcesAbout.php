@@ -32,30 +32,16 @@ class Migration20141022103600PlgResourcesAbout extends Base
                 ->whereLike('params', 'plg_abouttool=1')
                 ->loadObjectList();
             if ($records) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
-                    . DS . 'type.php';
-                if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
-                        . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
-                }
-                include_once $path;
-
-                $tbl = '\\Components\\Resources\\Tables\\Type';
-                if (class_exists('ResourcesType')) {
-                    $tbl = 'ResourcesType';
-                }
-
-                // Update the query
                 foreach ($records as $record) {
-                    $row = new $tbl($this->db);
-                    $row->bind($record);
-
-                    $p = new \Hubzero\Config\Registry($row->params);
+                    $p = new \Hubzero\Config\Registry($record->params);
                     $p->set('plg_about', 1);
                     $p->set('plg_abouttool', 0);
 
-                    $row->params = $p->toString();
-                    $row->store();
+                    $this->db->getQuery(true)
+                        ->update('#__resource_types')
+                        ->set(['params' => $p->toString()])
+                        ->where('id', '=', $record->id)
+                        ->execute();
                 }
             }
         }
@@ -73,8 +59,6 @@ class Migration20141022103600PlgResourcesAbout extends Base
         $this->addPluginEntry('resources', 'abouttool');
 
         if ($schema->tableExists('#__resource_types')) {
-            // Get all the "mine" queries
-            // Get all the "mine" queries
             $records = $this->db->getQuery(true)
                 ->select(['id', 'params'])
                 ->from('#__resource_types')
@@ -82,30 +66,16 @@ class Migration20141022103600PlgResourcesAbout extends Base
                 ->where('alias', '=', 'tools')
                 ->loadObjectList();
             if ($records) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
-                    . DS . 'type.php';
-                if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
-                        . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
-                }
-                include_once $path;
-
-                $tbl = '\\Components\\Resources\\Tables\\Type';
-                if (class_exists('ResourcesType')) {
-                    $tbl = 'ResourcesType';
-                }
-
-                // Update the query
                 foreach ($records as $record) {
-                    $row = new $tbl($this->db);
-                    $row->bind($record);
-
-                    $p = new \Hubzero\Config\Registry($row->params);
+                    $p = new \Hubzero\Config\Registry($record->params);
                     $p->set('plg_about', 0);
                     $p->set('plg_abouttool', 1);
 
-                    $row->params = $p->toString();
-                    $row->store();
+                    $this->db->getQuery(true)
+                        ->update('#__resource_types')
+                        ->set(['params' => $p->toString()])
+                        ->where('id', '=', $record->id)
+                        ->execute();
                 }
             }
         }
