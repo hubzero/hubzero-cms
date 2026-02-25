@@ -11,12 +11,12 @@ namespace Hubzero\Content\Migration\Macros;
 use Hubzero\Content\Migration\Macro;
 
 /**
- * Migration macro to enable a component
+ * Migration macro to enable a template
  **/
-class EnableComponent extends Macro
+class EnableTemplate extends Macro
 {
     /**
-     * Enable component
+     * Enable template
      *
      * @param   string  $element  Element
      * @return  bool
@@ -35,7 +35,7 @@ class EnableComponent extends Macro
                 ->toString();
             $this->db->setQuery($query);
             if ($this->db->query()) {
-                $this->log(sprintf('Set component "%s" status to "%s"', $element, $enabled));
+                $this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
                 return true;
             }
         }
