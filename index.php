@@ -19,5 +19,6 @@ if (!file_exists(PATH_CORE . '/vendor/autoload.php')) {
 }
 
 require PATH_CORE . '/vendor/autoload.php';
+require PATH_CORE . '/bootstrap/app.php';
 
 (new Hubzero\Base\Application())->run();

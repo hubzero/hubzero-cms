@@ -36,6 +36,7 @@ if (PrivilegeManager::getInstance()->isSudo() || PrivilegeManager::getInstance()
 
 if (@include(dirname(__DIR__) . '/vendor/autoload.php'))
 {
+    require dirname(__DIR__) . '/bootstrap/app.php';
     (new Hubzero\Base\Application())->run();
 }
 else // Start Minimal Muse

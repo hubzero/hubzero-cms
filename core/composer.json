@@ -89,6 +89,7 @@
         "tecnickcom/tcpdf": "6.8.*",
         "theiconic/name-parser": "0.1.*",
         "voku/simple_html_dom": "^4.8",
+        "wamania/php-stemmer": "^4.0",
         "willdurand/geocoder": "4.6.*"
     },
     "require-dev": {
@@ -104,10 +105,7 @@
         "psr-4": {
             "Hubzero\\": "libraries/Hubzero/",
             "Bootstrap\\": "bootstrap/"
-        },
-        "files": [
-            "bootstrap/app.php"
-        ]
+        }
     },
     "config": {
         "allow-plugins": {
