@@ -8,8 +8,6 @@
 
 namespace Hubzero\User;
 
-use Hubzero\Facades\User;
-
 /**
  * User manager
  */

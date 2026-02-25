@@ -170,6 +170,9 @@ class Translator extends Obj
         $this->setLanguage($lang);
         $this->setDebug($debug);
 
+        // Load base language strings (app overrides core)
+        $this->load('', PATH_APP) || $this->load('', PATH_CORE);
+
         // App language path (new flat structure)
         $appLangPath = PATH_APP . "/language/" . strtolower($client) . "/$lang";
 
@@ -1364,7 +1367,8 @@ class Translator extends Obj
                         }
                     }
 
-                    $cache->put('com_languages.languages', $languages, \Hubzero\Facades\App::get('config')->get('cachetime', 15));
+                    $cachetime = \Hubzero\Facades\App::get('config')->get('cachetime', 15);
+                    $cache->put('com_languages.languages', $languages, $cachetime);
                 }
             }
         }
