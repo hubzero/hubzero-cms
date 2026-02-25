@@ -22,12 +22,60 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Plugin;
 
 /**
  * API controller for the projects files
  */
 class Filefsv1r0 extends ApiController
 {
+    /**
+     * Project being acted on
+     *
+     * @var  Project
+     */
+    protected $model = null;
+
+    /**
+     * Repository of the project
+     *
+     * @var  \Components\Projects\Models\Repo
+     */
+    protected $repo = null;
+
+    /**
+     * Subdirectory within the repository, from the request
+     *
+     * @var  string
+     */
+    protected $subdir = '';
+
+    /**
+     * Database and acting user, set alongside the repository
+     *
+     * @var  object
+     */
+    protected $_database = null;
+
+    /**
+     * @var  integer
+     */
+    protected $_uid = 0;
+
+    /**
+     * Connection id from the request, when a task targets a connection
+     *
+     * @var  string
+     */
+    protected $cid = '';
+
+    /**
+     * ORM connection for that id, or null for the local repository
+     *
+     * @var  \Components\Projects\Models\Orm\Connection|null
+     */
+    protected $ormconn = null;
+
     /**
      * Execute a request
      *
@@ -51,6 +99,14 @@ class Filefsv1r0 extends ApiController
         // Project did not load?
         if (!$this->model->exists()) {
             throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
+        }
+
+        // A connection id makes the metadata tasks operate on that
+        // connection's adapter; without one they cannot run
+        $this->cid = Request::getString('cid', '');
+
+        if ($this->cid) {
+            $this->ormconn = \Components\Projects\Models\Orm\Connection::oneOrFail($this->cid);
         }
 
         $contentTasks = array('insert', 'update', 'delete', 'move', 'rename', 'makedirectory');
@@ -684,7 +740,7 @@ class Filefsv1r0 extends ApiController
                 App::abort(404, Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
             } else {
                 $downloadPath   = $archive['path'];
-                $serveas        = 'Project Files ' . Date::toSql() . '.zip';
+                $serveas        = 'Project Files ' . Date::of('now')->toSql() . '.zip';
             }
         } else {
             $file = isset($collector[0]) ? $collector[0] : null;
@@ -891,7 +947,7 @@ class Filefsv1r0 extends ApiController
 
         if (is_array($files)) {
             foreach ($files as $file) {
-                $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+                $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
 
                 if ($entity->exists()) {
                     try {
@@ -965,7 +1021,7 @@ class Filefsv1r0 extends ApiController
         if (is_array($files)) {
             if (is_array($metadata)) {
                 foreach ($files as $file) {
-                    $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
+                    $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
 
                     if ($entity->exists()) {
                         try {
@@ -1010,7 +1066,7 @@ class Filefsv1r0 extends ApiController
             $results = array();
             foreach ($files as $result) {
                 // Access file metadata
-                $results[] = $this->ormconn->adapter()->getMetadata($result->getPath());
+                $results[] = $this->connectionAdapter()->getMetadata($result->getPath());
             }
             return $results;
         }
@@ -1076,7 +1132,7 @@ class Filefsv1r0 extends ApiController
             foreach ($entities as $entity) {
                 $path = trim(Request::getString('subdir', ''), '/') . '/' . urldecode($entity);
 
-                $collection->add(Entity::fromPath($path, $this->ormconn->adapter()));
+                $collection->add(Entity::fromPath($path, $this->connectionAdapter()));
             }
         }
 
@@ -1157,5 +1213,89 @@ class Filefsv1r0 extends ApiController
         }
 
         return $packedMetadata;
+    }
+
+    /**
+     * The adapter of the connection a metadata task operates on
+     *
+     * @return  object
+     * @throws  Exception  when the request named no connection
+     */
+    private function connectionAdapter()
+    {
+        if (!$this->ormconn) {
+            throw new Exception('This action is only supported by connection adapters; pass a connection id (cid)', 400);
+        }
+
+        return $this->ormconn->adapter();
+    }
+
+    /**
+     * Zip a set of repository files into a temporary archive
+     *
+     * The files plugin carries the same routine for the site; this is the
+     * API's copy, on the controller's repository path and subdir.
+     *
+     * @param   array  $items  Elements of [type => name], as _sortIncoming() builds them
+     * @return  array|false    ['path' => archive path] or false
+     */
+    private function _archiveFiles($items)
+    {
+        if (!extension_loaded('zip') || empty($items)) {
+            return false;
+        }
+
+        $base = $this->repo->get('path');
+
+        if (!$base || !is_dir($base)) {
+            return false;
+        }
+
+        $maxDownload  = intval(Plugin::params('projects', 'files')->get('maxDownload', 104857600));
+        $path         = $this->subdir ? $base . DS . $this->subdir : $base;
+        $tarpath      = sys_get_temp_dir() . DS . 'project_files_' . Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip';
+        $combinedSize = 0;
+        $added        = 0;
+
+        $zip = new \ZipArchive();
+
+        if ($zip->open($tarpath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            return false;
+        }
+
+        foreach ($items as $element) {
+            foreach ($element as $type => $item) {
+                if ($type != 'file') {
+                    continue;
+                }
+
+                $fpath = $path . DS . $item;
+
+                if (!is_file($fpath)) {
+                    continue;
+                }
+
+                $combinedSize += filesize($fpath);
+
+                // Check against maximum allowable size
+                if ($combinedSize > $maxDownload) {
+                    $zip->close();
+                    @unlink($tarpath);
+                    App::abort(413, Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT'));
+                }
+
+                $zip->addFile($fpath, basename($item));
+                $added++;
+            }
+        }
+
+        $zip->close();
+
+        if (!$added) {
+            @unlink($tarpath);
+            return false;
+        }
+
+        return array('path' => $tarpath);
     }
 }
