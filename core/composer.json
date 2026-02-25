@@ -24,6 +24,7 @@
         }
     ],
     "require": {
+        "alek13/slack": "^2.3",
         "apereo/phpcas": "1.6.*",
         "bordoni/phpass": "0.3.*",
         "bshaffer/oauth2-server-php": "1.11.*",
