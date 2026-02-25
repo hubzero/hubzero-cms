@@ -31,7 +31,7 @@ class Application implements \ArrayAccess
      */
     public function set($key, $val)
     {
-        return $this->offsetSet($key, $val);
+        $this->offsetSet($key, $val);
     }
 
     /**

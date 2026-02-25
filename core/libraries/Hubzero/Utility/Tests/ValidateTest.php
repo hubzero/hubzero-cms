@@ -25,17 +25,17 @@ class ValidateTest extends Basic
     public function testBoolean()
     {
         $tests = array(
-            0 => true,
-            1 => true,
-            'foo' => false,
-            '1' => true,
-            '0' => true,
-            'true' => false,
-            3543 => false
+            array(0, true),
+            array(1, true),
+            array('foo', false),
+            array('1', true),
+            array('0', true),
+            array('true', false),
+            array(3543, false),
         );
 
-        foreach ($tests as $test => $result) {
-            $this->assertEquals(Validate::boolean($test), $result);
+        foreach ($tests as $test) {
+            $this->assertEquals(Validate::boolean($test[0]), $test[1]);
         }
 
         $this->assertTrue(Validate::boolean(true));
@@ -89,19 +89,19 @@ class ValidateTest extends Basic
     public function testNumeric()
     {
         $tests = array(
-            "42" => true,
-            1337 => true,
-            0x539 => true,
-            02471 => true,
-            0b10100111001 => true,
-            1337e0 => true,
-            "not numeric" => false,
-            "9.1" => true,
-            null => false
+            array("42", true),
+            array(1337, true),
+            array(0x539, true),
+            array(02471, true),
+            array(0b10100111001, true),
+            array(1337e0, true),
+            array("not numeric", false),
+            array("9.1", true),
+            array(null, false),
         );
 
-        foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::numeric($value), $result);
+        foreach ($tests as $test) {
+            $this->assertEquals(Validate::numeric($test[0]), $test[1]);
         }
 
         $this->assertFalse(Validate::numeric(array()));
@@ -115,20 +115,20 @@ class ValidateTest extends Basic
     public function testInteger()
     {
         $tests = array(
-            "42" => true,
-            '+51' => true,
-            -16 => true,
-            1337 => true,
-            0x539 => true,
-            02471 => true,
-            1337e0 => true,
-            "not numeric" => false,
-            "9.1" => false,
-            null => false
+            array("42", true),
+            array('+51', true),
+            array(-16, true),
+            array(1337, true),
+            array(0x539, true),
+            array(02471, true),
+            array(1337e0, true),
+            array("not numeric", false),
+            array("9.1", false),
+            array(null, false),
         );
 
-        foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::integer($value), $result);
+        foreach ($tests as $test) {
+            $this->assertEquals(Validate::integer($test[0]), $test[1]);
         }
 
         $this->assertFalse(Validate::integer(array()));
@@ -142,21 +142,21 @@ class ValidateTest extends Basic
     public function testPositiveInteger()
     {
         $tests = array(
-            0 => false,
-            "42" => true,
-            '+51' => true,
-            -16 => false,
-            1337 => true,
-            0x539 => true,
-            02471 => true,
-            1337e0 => true,
-            "not numeric" => false,
-            "9.1" => false,
-            null => false
+            array(0, false),
+            array("42", true),
+            array('+51', true),
+            array(-16, false),
+            array(1337, true),
+            array(0x539, true),
+            array(02471, true),
+            array(1337e0, true),
+            array("not numeric", false),
+            array("9.1", false),
+            array(null, false),
         );
 
-        foreach ($tests as $value => $result) {
-            $this->assertEquals(Validate::positiveInteger($value), $result);
+        foreach ($tests as $test) {
+            $this->assertEquals(Validate::positiveInteger($test[0]), $test[1]);
         }
 
         $this->assertFalse(Validate::positiveInteger(array()));
