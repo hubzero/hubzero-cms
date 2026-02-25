@@ -11,6 +11,15 @@ namespace Hubzero\Facades;
 /**
  * Flash message facade
  *
+ * @method static object  info(string $message, string $domain = null)
+ * @method static object  success(string $message, string $domain = null)
+ * @method static object  error(string $message, string $domain = null)
+ * @method static object  warning(string $message, string $domain = null)
+ * @method static object  message(string $message, string $type = 'info', string $domain = null)
+ * @method static bool    any(string $domain = null)
+ * @method static array   messages(string $domain = null)
+ * @method static object  clear(string $domain = null)
+ *
  * @codeCoverageIgnore
  */
 class Notify extends Facade
