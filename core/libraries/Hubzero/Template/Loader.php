@@ -194,6 +194,49 @@ class Loader
     }
 
     /**
+     * Build the template named by the config file for a client, without
+     * touching the database
+     *
+     * Reads site_template (client 0) or administrator_template (client 1)
+     * and returns a template object if that template exists on disk, app
+     * directory first, then core.
+     *
+     * @param   integer  $client_id
+     * @return  object|null
+     */
+    public function getConfiguredTemplate($client_id = 0)
+    {
+        if (!$this->app->has('config')) {
+            return null;
+        }
+
+        $key  = ((int)$client_id === 1) ? 'administrator_template' : 'site_template';
+        $name = $this->app['config']->get($key);
+
+        if (!is_string($name) || $name === '' || !preg_match('/^[A-Za-z0-9_-]+$/', $name)) {
+            return null;
+        }
+
+        foreach (array('app', 'core') as $base) {
+            $path = $this->getPath($base) . DIRECTORY_SEPARATOR . $name;
+
+            if (file_exists($path . DIRECTORY_SEPARATOR . 'index.php')) {
+                $template = new stdClass();
+                $template->id        = 0;
+                $template->home      = 1;
+                $template->template  = $name;
+                $template->params    = new Registry();
+                $template->protected = 0;
+                $template->path      = $path;
+
+                return $template;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Get a list of templates for the specified client
      *
      * @param   integer  $client_id
@@ -258,6 +301,15 @@ class Loader
                 $cache->put('com_templates.templates' . $client_id . $this->lang, $templates, $this->app['config']->get('cachetime', 15));
             } catch (Exception $e) {
                 $templates = array();
+            }
+        }
+
+        // The database could not answer (unreachable, or no styles yet):
+        // fall back to the template the config file names, which the
+        // template save action keeps current
+        if (empty($templates)) {
+            if ($configured = $this->getConfiguredTemplate($client_id)) {
+                $templates = array(0 => $configured);
             }
         }
 
