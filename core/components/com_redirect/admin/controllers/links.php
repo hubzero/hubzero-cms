@@ -148,7 +148,6 @@ class Links extends AdminController
     /**
      * Display edit form
      *
-     * @return  void
      */
     public function editTask($row = null)
     {

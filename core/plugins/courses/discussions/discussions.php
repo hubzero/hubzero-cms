@@ -457,7 +457,6 @@ class Discussions extends Plugin
      * @param   object  $course
      * @param   object  $unit
      * @param   object  $lecture
-     * @return  void
      */
     public function onCourseAfterLecture($course, $unit, $lecture)
     {
@@ -735,8 +734,6 @@ class Discussions extends Plugin
 
     /**
      * Get a list of instructors for this course
-     *
-     * @return  void
      */
     protected function _instructors()
     {
@@ -1043,7 +1040,6 @@ class Discussions extends Plugin
      * @param   array    $list      List of records
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
-     * @return  void
      */
     public function treeRecurse($children, $list, $maxlevel = 9999, $level = 0)
     {
@@ -1516,8 +1512,6 @@ class Discussions extends Plugin
 
     /**
      * Saves a section and redirects to main page afterward
-     *
-     * @return  void
      */
     public function savesection()
     {
@@ -2160,7 +2154,6 @@ class Discussions extends Plugin
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type
-     * @return  void
      */
     public function _treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {
@@ -2256,8 +2249,6 @@ class Discussions extends Plugin
 
     /**
      * Saves posted data for a new/edited forum thread post
-     *
-     * @return  void
      */
     public function savethread()
     {
@@ -2437,7 +2428,6 @@ class Discussions extends Plugin
      *
      * @param   integer  $id
      * @param   boolean  $redirect
-     * @return  void
      */
     public function deletethread($id = 0, $redirect = true)
     {
@@ -2609,8 +2599,6 @@ class Discussions extends Plugin
 
     /**
      * Serves up files only after passing access checks
-     *
-     * @return  void
      */
     public function download()
     {
@@ -2704,8 +2692,6 @@ class Discussions extends Plugin
 
     /**
      * Reorder a record up
-     *
-     * @return  void
      */
     public function orderup()
     {
@@ -2714,8 +2700,6 @@ class Discussions extends Plugin
 
     /**
      * Reorder a record up
-     *
-     * @return  void
      */
     public function orderdown()
     {

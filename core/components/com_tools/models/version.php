@@ -992,7 +992,6 @@ class Version
      *
      * @param     string $property Parameter description (if any) ...
      * @param     array $value Parameter description (if any) ...
-     * @return   void
      */
     public function __set($property = null, $value = null)
     {

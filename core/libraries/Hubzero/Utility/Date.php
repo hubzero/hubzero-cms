@@ -227,6 +227,8 @@ class Date extends DateTime
             case 6:
                 return $abbr ? \Lang::txt('SAT') : \Lang::txt('SATURDAY');
         }
+
+        return '';
     }
 
     /**
@@ -346,6 +348,8 @@ class Date extends DateTime
             case 12:
                 return $abbr ? \Lang::txt('DECEMBER_SHORT') : \Lang::txt('DECEMBER');
         }
+
+        return '';
     }
 
     /**

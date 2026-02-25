@@ -617,8 +617,6 @@ class Calendar extends Plugin
     }
     /**
      * Save an entry
-     *
-     * @return  string
      */
     private function save()
     {
@@ -824,8 +822,6 @@ class Calendar extends Plugin
 
     /**
      * Delete an event
-     *
-     * @return     string
      */
     private function delete()
     {
@@ -953,8 +949,6 @@ class Calendar extends Plugin
 
     /**
      * Export Event Details
-     *
-     * @return  void
      */
     private function export()
     {
@@ -978,8 +972,6 @@ class Calendar extends Plugin
 
     /**
      * Subscribe to a calendar
-     *
-     * @return  void
      */
     private function subscribe()
     {
@@ -1239,8 +1231,6 @@ class Calendar extends Plugin
 
     /**
      * Process Registration
-     *
-     * @return  string
      */
     private function doRegister()
     {
@@ -1700,8 +1690,6 @@ class Calendar extends Plugin
 
     /**
      * Save Group Calendar
-     *
-     * @return  string
      */
     private function saveCalendar()
     {
@@ -1780,8 +1768,6 @@ class Calendar extends Plugin
 
     /**
      * Delete Group Calendar
-     *
-     * @return  void
      */
     private function deleteCalendar()
     {
@@ -1822,8 +1808,6 @@ class Calendar extends Plugin
 
     /**
      * Method to refresh Group Calendar
-     *
-     * @return  void
      */
     private function refreshCalendar()
     {

@@ -1300,7 +1300,7 @@ class Projects extends AdminController
     /**
      * Querying the grant agency name based on the input value
      *
-     * @return  array   grant agency names that match the input value
+     * @return  void
      */
     public function getGrantAgencyTask()
     {
@@ -1397,5 +1397,7 @@ class Projects extends AdminController
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

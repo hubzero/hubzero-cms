@@ -62,8 +62,6 @@ class Posts extends SiteController
 
     /**
      * Display a post
-     *
-     * @return  string
      */
     public function displayTask()
     {
@@ -145,8 +143,6 @@ class Posts extends SiteController
 
     /**
      * Display a form for editing an entry
-     *
-     * @return  string
      */
     public function editTask()
     {
@@ -401,7 +397,7 @@ class Posts extends SiteController
     /**
      * Save a comment
      *
-     * @return  string
+     * @return  void
      */
     public function savecommentTask()
     {
@@ -532,7 +528,7 @@ class Posts extends SiteController
     /**
      * Delete a comment
      *
-     * @return  string
+     * @return  void
      */
     public function deletecommentTask()
     {
@@ -692,7 +688,7 @@ class Posts extends SiteController
     /**
      * Repost an entry
      *
-     * @return  string
+     * @return  void
      */
     public function collectTask()
     {

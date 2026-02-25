@@ -125,8 +125,6 @@ class History extends SiteController
 
     /**
      * Display a history of the current wiki page
-     *
-     * @return  void
      */
     public function displayTask()
     {

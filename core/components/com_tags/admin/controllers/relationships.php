@@ -440,8 +440,6 @@ class Relationships extends AdminController
 
     /**
      * Get data for a tag
-     *
-     * @return  void
      */
     public function get_tag($tag_str, $detailed = true, $create = true)
     {

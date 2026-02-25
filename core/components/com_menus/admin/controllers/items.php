@@ -401,7 +401,6 @@ class Items extends AdminController
      * Show a form for editing an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -813,7 +812,7 @@ class Items extends AdminController
     /**
      * Rebuild the nested set tree.
      *
-     * @return  bool  False on failure or error, true on success.
+     * @return  void
      */
     public function rebuildTask()
     {
@@ -1025,8 +1024,6 @@ class Items extends AdminController
 
     /**
      * Cancels a task and redirects to default view
-     *
-     * @return  void
      */
     public function cancelTask()
     {

@@ -77,7 +77,7 @@ class Resources extends Plugin
      *
      * @param   integer  $parentid  ID to check for parents of
      * @param   string   $category  Element type (determines table to look in)
-     * @return  integer
+     * @return  integer|null
      */
     public function getParentId($parentid, $category)
     {
@@ -95,6 +95,8 @@ class Resources extends Plugin
             $database->setQuery("SELECT resource_id FROM `#__resource_ratings` WHERE id=" . $refid);
             return $database->loadResult();
         }
+
+        return null;
     }
 
     /**
@@ -132,6 +134,8 @@ class Resources extends Plugin
                 return Lang::txt('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
                 break;
         }
+
+        return '';
     }
 
     /**

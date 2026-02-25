@@ -140,7 +140,6 @@ class Comments extends AdminController
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
      * @param   integer  $type      Indention type
-     * @return  void
      */
     public function treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {
@@ -176,7 +175,6 @@ class Comments extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -378,8 +376,6 @@ class Comments extends AdminController
 
     /**
      * Cancels a task and redirects to listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

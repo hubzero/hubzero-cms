@@ -982,8 +982,6 @@ class Membership extends Base
 
     /**
      * Show request membership form
-     *
-     * @return  array
      */
     public function requestTask()
     {
@@ -1012,7 +1010,7 @@ class Membership extends Base
     /**
      * Add membership request for user
      *
-     * @return  array
+     * @return  void
      */
     public function dorequestTask()
     {
@@ -1066,10 +1064,12 @@ class Membership extends Base
 
         // Check and store the reason
         if (!$row->check()) {
-            return App::abort(500, $row->getError());
+            App::abort(500, $row->getError());
+            return;
         }
         if (!$row->store()) {
-            return App::abort(500, $row->getError());
+            App::abort(500, $row->getError());
+            return;
         }
 
         // Log the membership request

@@ -49,5 +49,7 @@ class Anchor extends WikiMacro
             // Build and return the link
             return '<span id="' . urlencode($name) . '"></span>';
         }
+
+        return '';
     }
 }

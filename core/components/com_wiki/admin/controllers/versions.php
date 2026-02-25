@@ -100,7 +100,6 @@ class Versions extends AdminController
      * Edit a revision
      *
      * @param   object  $row  Record
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -384,8 +383,6 @@ class Versions extends AdminController
 
     /**
      * Cancel a task and redirect to main listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

@@ -69,8 +69,6 @@ class Pages extends Base
 
     /**
      * Display Group Pages
-     *
-     * @return  void
      */
     public function displayTask()
     {
@@ -136,8 +134,6 @@ class Pages extends Base
 
     /**
      * Edit Group Page
-     *
-     * @return  void
      */
     public function editTask()
     {
@@ -454,8 +450,6 @@ class Pages extends Base
 
     /**
      * Display page versions page
-     *
-     * @return  void
      */
     public function versionsTask()
     {

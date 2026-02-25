@@ -156,7 +156,7 @@ class Container implements ArrayAccess
      */
     public function set($id, $value)
     {
-        return $this->offsetSet($id, $value);
+        $this->offsetSet($id, $value);
     }
 
     /**
@@ -187,12 +187,10 @@ class Container implements ArrayAccess
      * Checks if a parameter or an object is set.
      *
      * @param string $id The unique identifier for the parameter or object
-     *
-     * @return bool
      */
     public function forget($id)
     {
-        return $this->offsetUnset($id);
+        $this->offsetUnset($id);
     }
 
     /**

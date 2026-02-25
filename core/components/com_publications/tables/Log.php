@@ -33,7 +33,7 @@ class Log extends Table
      * Check if bot
      *
      * @param   string  $ip
-     * @return  void
+     * @return  bool|int
      */
     public function checkBotIp($ip)
     {

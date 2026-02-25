@@ -133,7 +133,6 @@ class Services extends AdminController
      * Edit an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

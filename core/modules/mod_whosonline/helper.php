@@ -39,8 +39,6 @@ class Helper extends Module
 
     /**
      * Display module contents
-     *
-     * @return  void
      */
     public function displaySite()
     {
@@ -74,8 +72,6 @@ class Helper extends Module
 
     /**
      * Display module contents for Admin
-     *
-     * @return  void
      */
     public function displayAdmin()
     {

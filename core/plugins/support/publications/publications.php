@@ -63,7 +63,7 @@ class Publications extends Plugin
      *
      * @param      integer $parentid ID to check for parents of
      * @param      string  $category Element type (determines table to look in)
-     * @return     integer
+     * @return     integer|null
      */
     public function getParentId($parentid, $category)
     {
@@ -96,6 +96,8 @@ class Publications extends Plugin
             $database->setQuery("SELECT publication_id FROM `#__publication_ratings` WHERE id=" . $refid);
             return $database->loadResult();
         }
+
+        return null;
     }
 
     /**

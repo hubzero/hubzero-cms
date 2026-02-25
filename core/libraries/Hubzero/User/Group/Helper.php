@@ -34,7 +34,7 @@ class Helper
      * Get popular groups
      *
      * @param   integer  $limit
-     * @return  array
+     * @return  array|null
      */
     public static function getPopularGroups($limit = 0)
     {
@@ -61,13 +61,15 @@ class Helper
         if (!$database->getError()) {
             return $database->loadObjectList();
         }
+
+        return [];
     }
 
     /**
      * Gets featured groups
      *
      * @param   string  $groupList
-     * @return  array
+     * @return  array|null
      */
     public static function getFeaturedGroups($groupList)
     {
@@ -96,6 +98,8 @@ class Helper
         if (!$database->getError()) {
             return $database->loadObjectList();
         }
+
+        return [];
     }
 
     /**
@@ -227,7 +231,7 @@ class Helper
      *
      * @param   object  $group
      * @param   string  $role
-     * @return  array
+     * @return  array|null
      */
     public static function search_roles($group, $role = '')
     {
@@ -248,6 +252,8 @@ class Helper
         if (count($result) > 0) {
             return $result;
         }
+
+        return [];
     }
 
     /**

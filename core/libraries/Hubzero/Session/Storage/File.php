@@ -89,6 +89,7 @@ class File extends Store
     public function write($id, $data)
     {
         $this->files->write($this->path . DS . $id, $data, true);
+        return true;
     }
 
     /**
@@ -102,6 +103,7 @@ class File extends Store
     public function destroy($id)
     {
         $this->files->delete($this->path . DS . $id);
+        return true;
     }
 
     /**
@@ -126,6 +128,7 @@ class File extends Store
                 $this->files->delete($file->getPathname());
             }
         }
+        return true;
     }
 
     /**

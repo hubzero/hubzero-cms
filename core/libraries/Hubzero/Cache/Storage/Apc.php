@@ -72,7 +72,7 @@ class Apc extends None
      * @param   string  $key
      * @param   mixed   $value
      * @param   int     $minutes
-     * @return  void
+     * @return  bool
      */
     public function put($key, $value, $minutes)
     {
@@ -153,7 +153,7 @@ class Apc extends None
     /**
      * Force garbage collect expired cache data as items are removed only on fetch!
      *
-     * @return  boolean  True on success, false otherwise.
+     * @return  void
      */
     public function gc()
     {

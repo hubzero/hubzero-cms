@@ -43,7 +43,7 @@ class Sku
      * Load existing SKU
      *
      * @param   int         SKU ID
-     * @return  bool        true on success, exception otherwise
+     * @return  void
      */
     public function load($sId)
     {

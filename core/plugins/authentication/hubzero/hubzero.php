@@ -30,11 +30,10 @@ class Hubzero extends Plugin
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
      */
     public function onAuthenticate($credentials, $options, &$response)
     {
-        return $this->onUserAuthenticate($credentials, $options, $response);
+        $this->onUserAuthenticate($credentials, $options, $response);
     }
 
     /**
@@ -161,6 +160,7 @@ class Hubzero extends Plugin
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
         }
+        return false;
     }
 
     /**

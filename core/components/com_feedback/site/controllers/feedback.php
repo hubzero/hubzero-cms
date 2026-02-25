@@ -133,7 +133,6 @@ class Feedback extends SiteController
      * Show a form for sending a success story
      *
      * @param   object  $row
-     * @return  void
      */
     public function storyTask($row = null)
     {

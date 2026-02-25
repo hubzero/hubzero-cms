@@ -52,7 +52,7 @@ class Renderer extends Obj
      */
     public function render($name, $params = null, $content = null)
     {
-        // ...
+        return '';
     }
 
     /**

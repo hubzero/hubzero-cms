@@ -43,7 +43,7 @@ class Collaborator extends Relational
     /**
      * Generates automatic id field value
      *
-     * @return  string
+     * @return  void
      */
     public function automaticId()
     {

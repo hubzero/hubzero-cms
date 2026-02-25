@@ -218,6 +218,8 @@ class Helper
                 return str_replace('/administrator', '', rtrim(\App::get('request')->base(true), '/')) . $path;
             }
         }
+
+        return '';
     }
 
     /**

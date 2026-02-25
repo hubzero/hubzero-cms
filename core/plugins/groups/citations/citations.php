@@ -547,8 +547,6 @@ class Citations extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return  void
      */
     private function _save()
     {
@@ -729,8 +727,6 @@ class Citations extends Plugin
 
     /**
      * Publish method for group citations
-     *
-     * @return  void
      */
     private function _publish()
     {
@@ -869,8 +865,6 @@ class Citations extends Plugin
 
     /**
      * Delete method for group citations
-     *
-     * @return  void
      */
     private function _delete()
     {
@@ -996,8 +990,6 @@ class Citations extends Plugin
 
     /**
      * Settings for group citations
-     *
-     * @return  void
      */
     private function _settings()
     {
@@ -1249,8 +1241,6 @@ class Citations extends Plugin
 
     /**
      * Upload task
-     *
-     * @return  string
      */
     private function _process()
     {

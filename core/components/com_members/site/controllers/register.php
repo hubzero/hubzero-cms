@@ -86,7 +86,8 @@ class Register extends SiteController
         $self  = ($xprofile->get('username') == $username);
 
         if (!$admin && !$self) {
-            return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_SESSION_EDITING'));
+            App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_SESSION_EDITING'));
+            return;
         }
 
         // Set the pathway
@@ -111,7 +112,8 @@ class Register extends SiteController
         }
 
         if ($username != $xregistration->get('login')) {
-            return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_REGISTRATION_DATA_MISMATCH'));
+            App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_REGISTRATION_DATA_MISMATCH'));
+            return;
         }
 
         if (!$xregistration->check('edit')) {
@@ -708,7 +710,8 @@ class Register extends SiteController
         // If user registration is not allowed, show 403 not authorized.
         $usersConfig = Component::params('com_members');
         if ($usersConfig->get('allowUserRegistration') == '0') {
-            return App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
+            App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
+            return;
         }
 
         $hzal = null;
@@ -911,7 +914,8 @@ class Register extends SiteController
 
                     // Did we successfully create/update an account?
                     if (!$result) {
-                        return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_CREATING_ACCOUNT'));
+                        App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_CREATING_ACCOUNT'));
+                        return;
                     }
 
                     // Send confirmation email
@@ -975,7 +979,6 @@ class Register extends SiteController
      *
      * @param   object  &$xregistration
      * @param   string  $task
-     * @return  void
      */
     private function _show_registration_form(&$xregistration = null, $task = 'create')
     {
@@ -1846,5 +1849,7 @@ class Register extends SiteController
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

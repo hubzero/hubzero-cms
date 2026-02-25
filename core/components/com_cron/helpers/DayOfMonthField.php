@@ -63,7 +63,7 @@ class DayOfMonthField extends AbstractField
      * @param int $currentYear Current month
      * @param int $targetDay Target day of the month
      *
-     * @return DateTime Returns the nearest date
+     * @return DateTime|null Returns the nearest date
      */
     private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
     {

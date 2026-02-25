@@ -73,7 +73,6 @@ class Categories extends AdminController
      * Display a form for adding/editing a record
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

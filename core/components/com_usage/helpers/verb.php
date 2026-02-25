@@ -21,7 +21,7 @@ class Verb
     /**
      * Submit a Celery job via direct job request insertion into Redis.
      *
-     * @return  int
+     * @return  void
      */
 
     public static function celerySubmit($params)

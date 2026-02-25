@@ -1634,8 +1634,6 @@ class Items extends AdminController
 
     /**
      * Checks in a checked-out publication and redirects
-     *
-     * @return  void
      */
     public function cancelTask()
     {
@@ -1824,8 +1822,6 @@ class Items extends AdminController
 
     /**
      * Gets the full name of a user from their ID #
-     *
-     * @return  string
      */
     public function authorTask()
     {

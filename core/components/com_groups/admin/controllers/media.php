@@ -310,8 +310,6 @@ class Media extends AdminController
 
     /**
      * Display a file and its info
-     *
-     * @return  void
      */
     public function displayTask()
     {

@@ -75,7 +75,6 @@ class ImportHooks extends AdminController
      * Edit an Import
      *
      * @param   object  $hook
-     * @return  void
      */
     public function editTask($hook = null)
     {

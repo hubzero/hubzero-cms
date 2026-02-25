@@ -65,7 +65,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
     /**
      * Check login status of current user with regards to LinkedIn
      *
-     * @return  array  $status
+     * @return  void
      */
     public function status()
     {
@@ -136,11 +136,10 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
      */
     public function onAuthenticate($credentials, $options, &$response)
     {
-        return $this->onUserAuthenticate($credentials, $options, $response);
+        $this->onUserAuthenticate($credentials, $options, $response);
     }
 
     /**
@@ -149,7 +148,6 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {

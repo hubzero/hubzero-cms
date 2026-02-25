@@ -204,7 +204,7 @@ class Groups extends Base
     /**
      * View Group
      *
-     * @return  array
+     * @return  void
      */
     public function viewTask()
     {
@@ -400,8 +400,6 @@ class Groups extends Base
 
     /**
      *  Show group edit
-     *
-     * @return  void
      */
     public function editTask()
     {
@@ -929,8 +927,6 @@ class Groups extends Base
 
     /**
      * Show confirm delete view
-     *
-     * @return  void
      */
     public function deleteTask()
     {
@@ -1176,7 +1172,7 @@ class Groups extends Base
     /**
      * View to Suggest User to Create Group
      *
-     * @return  array
+     * @return  void
      */
     public function suggestNonExistingGroupTask()
     {
@@ -1202,8 +1198,6 @@ class Groups extends Base
 
     /**
      * Group is Unapproved
-     *
-     * @return  array
      */
     public function unapprovedGroupTask()
     {
@@ -1220,8 +1214,6 @@ class Groups extends Base
 
     /**
      * Return data for the autocompleter
-     *
-     * @return  string  JSON
      */
     public function autocompleteTask()
     {
@@ -1352,7 +1344,6 @@ class Groups extends Base
      * Download a file
      *
      * @param   string  $filename  File name
-     * @return  void
      */
     public function downloadTask($filename = '')
     {

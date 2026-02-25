@@ -345,7 +345,7 @@ class Setup extends Base
     /**
      * Finalize project
      *
-     * @return  void
+     * @return  bool
      */
     protected function _finalize()
     {
@@ -1132,7 +1132,7 @@ class Setup extends Base
     /**
      * Querying the grant agency name based on the input value
      *
-     * @return  array   grant agency names that match the input value
+     * @return  void
      */
     public function getGrantAgencyTask()
     {
@@ -1244,5 +1244,7 @@ class Setup extends Base
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

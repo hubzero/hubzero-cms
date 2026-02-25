@@ -64,7 +64,6 @@ class Abuse extends SiteController
     /**
      * Reports an item as abusive
      *
-     * @return     void
      */
     public function displayTask()
     {

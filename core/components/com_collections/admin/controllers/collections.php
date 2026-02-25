@@ -116,7 +116,6 @@ class Collections extends AdminController
      * Edit a collection
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -277,7 +276,6 @@ class Collections extends AdminController
      * Set the access level of an entry
      *
      * @param   integer  $access  Access level to set
-     * @return  void
      */
     public function accessTask($access = 0)
     {

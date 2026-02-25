@@ -86,5 +86,7 @@ class Blacklist extends Field
                 return $field->value;
             }
         }
+
+        return '';
     }
 }

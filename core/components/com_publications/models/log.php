@@ -48,7 +48,7 @@ class Log extends Model
      * @param   string  $logFile
      * @param   string  $type     primary or view
      * @param   string  $category
-     * @return  void
+     * @return  int|null
      */
     public function parseLog($pubLog = null, $logFile = null, $type = 'view', $category = 'unique')
     {

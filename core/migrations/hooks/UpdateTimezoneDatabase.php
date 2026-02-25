@@ -26,7 +26,7 @@ class UpdateTimezoneDatabase extends Base
     /**
      * Execute hook
      *
-     * @return bool
+     * @return void
      **/
     public function fire()
     {

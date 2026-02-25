@@ -26,7 +26,7 @@ class Cache extends Plugin
     /**
      * Converting the site URL to fit to the HTTP request
      *
-     * @return  void
+     * @return  string
      */
     public function getId()
     {
