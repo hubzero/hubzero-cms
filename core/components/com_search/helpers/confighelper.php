@@ -11,6 +11,7 @@ namespace Components\Search\Helpers;
 use Hubzero\Utility\Date;
 use Hubzero\User\Group;
 use Hubzero\Facades\Filesystem;
+
 /**
  * Search config helper
  */
@@ -187,7 +188,7 @@ class ConfigHelper
     private function Year($date, $row)
     {
         $date = $row->$date;
-        return Date::of(strtotime($date))->toLocal('Y');
+        return \Hubzero\Facades\Date::of(strtotime($date))->toLocal('Y');
     }
 
     /**
@@ -202,7 +203,7 @@ class ConfigHelper
     private function Month($date, $row)
     {
         $date = $row->$date;
-        return Date::of(strtotime($date))->toLocal('m');
+        return \Hubzero\Facades\Date::of(strtotime($date))->toLocal('m');
     }
 
     /**
