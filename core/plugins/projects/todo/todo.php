@@ -10,6 +10,8 @@
 namespace Plugins\Projects\Todo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Sanitize;
+use Hubzero\Utility\Str;
 
 use Hubzero\Utility\Arr;
 
@@ -253,7 +255,7 @@ class Todo extends Plugin
     {
         // Get default view from owner params
         $member = $this->model->member();
-        $mparams = new \Hubzero\Html\Parameter($member ? $member->params : '');
+        $mparams = new \Hubzero\Config\Registry($member ? $member->params : '');
         $defaultView = $mparams->get('todo_layout', 'pinboard');
 
         // Incoming

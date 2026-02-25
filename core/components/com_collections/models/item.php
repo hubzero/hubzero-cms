@@ -35,7 +35,7 @@ class Item extends Base
     /**
      * Table class name
      *
-     * @var strong
+     * @var string
      */
     protected $_tbl_name = '\\Components\\Collections\\Tables\\Item';
 

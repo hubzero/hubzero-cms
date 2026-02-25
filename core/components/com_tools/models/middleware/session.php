@@ -131,7 +131,7 @@ class Session extends Base
      */
     public function shared($rtrn = 'list', $filters = array(), $clear = false)
     {
-        $tbl = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $tbl = new \Components\Tools\Tables\Viewperm($this->_db);
 
         if (!isset($filters['sessnum'])) {
             $filters['sessnum'] = $this->get('sessnum');
@@ -208,7 +208,7 @@ class Session extends Base
 
         // The owner's own view entry carries the connection details a share copies
         $sess = $this->get('sessnum');
-        $mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $mwViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
         $rows = $mwViewperm->loadViewperm($sess, $this->get('username'));
         if (!$rows) {
             $this->setError(Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND'));
@@ -230,7 +230,7 @@ class Session extends Base
             }
 
             //load current view perm
-            $mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+            $mwViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
             $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username'));
 
             // If there are no matching entries in viewperm, add a new entry,
@@ -274,7 +274,7 @@ class Session extends Base
      */
     public function unshare($with = null)
     {
-        $mv = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $mv = new \Components\Tools\Tables\Viewperm($this->_db);
         if (!$mv->deleteViewperm($this->get('sessnum'), $with)) {
             $this->setError($mv->getError());
             return false;

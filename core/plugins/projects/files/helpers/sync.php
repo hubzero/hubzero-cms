@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Projects\Files\Helpers;
 
 /**
  * Sync helper

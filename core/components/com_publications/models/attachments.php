@@ -458,7 +458,7 @@ class Attachments extends Obj
 
         if (
             (isset($this->_types[$signature])
-            && !($this->_types[$signature] instanceof __PHP_Incomplete_Class))
+            && !($this->_types[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
             return $this->_types[$signature];

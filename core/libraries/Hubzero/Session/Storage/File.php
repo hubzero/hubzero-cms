@@ -136,7 +136,7 @@ class File extends Store
      */
     public function session($id)
     {
-        $session = new Object();
+        $session = new \stdClass();
         $session->session_id = $id;
         $session->data       = $this->read($id);
 
@@ -160,7 +160,7 @@ class File extends Store
                 continue;
             }
 
-            $session = new Object();
+            $session = new \stdClass();
             $session->session_id = $file->getName();
             $session->data       = $this->files->read($file->getPathname());
 

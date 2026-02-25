@@ -35,7 +35,7 @@ class Request extends ComponentController
         if (!empty($pIds)) {
             $skus = array();
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
 
             foreach ($pIds as $pId => $qty) {
                 $product_skus = $warehouse->getProductSkus($pId);

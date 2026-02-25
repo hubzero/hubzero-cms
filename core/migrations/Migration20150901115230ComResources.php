@@ -35,46 +35,41 @@ class Migration20150901115230ComResources extends Base
                     ->select('ordering')
                     ->from('#__resource_licenses')
                     ->order('ordering', 'desc');
-                $ordering = intval($query->value('ordering')) + 1;
+                $ordering = (int) $query->value('ordering');
 
                 // Written directly rather than through Components\Resources\Tables\License,
                 // which this migration used to include: that class was removed when
                 // com_resources moved to ORM models, so the include is now fatal and
                 // takes any fresh install down with it.
-                $text = 'You are free:
-
-to Share — copy and redistribute the material in any medium or format
-to Adapt — remix, transform, and build upon the material
-
-The licensor cannot revoke these freedoms as long as you follow the license terms.
-Under the following terms:
-
-Attribution — You must give appropriate credit, provide a link to the license, and indicate if '
-                    . 'changes were made. You may do so in any reasonable manner, but not in any way that suggests '
-                    . 'the licensor endorses you or your use.
-NonCommercial — You may not use the material for commercial purposes.
-ShareAlike — If you remix, transform, or build upon the material, you must distribute your '
-                    . 'contributions under the same license as the original.
-No additional restrictions — You may not apply legal terms or technological measures that legally '
-                    . 'restrict others from doing anything the license permits.
-
-Notices:
-You do not have to comply with the license for elements of the material in the public domain or '
-                    . 'where your use is permitted by an applicable exception or limitation.
-No warranties are given. The license may not give you all of the permissions necessary for your '
-                    . 'intended use. For example, other rights such as publicity, privacy, or moral rights may '
-                    . 'limit how you use the material.
-
-For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.';
+                $text = "You are free:\n\n"
+                    . "to Share — copy and redistribute the material in any medium or format\n"
+                    . "to Adapt — remix, transform, and build upon the material\n\n"
+                    . "The licensor cannot revoke these freedoms as long as you follow the license terms.\n"
+                    . "Under the following terms:\n\n"
+                    . "Attribution — You must give appropriate credit, provide a link to the license, "
+                    . "and indicate if changes were made. You may do so in any reasonable manner, but "
+                    . "not in any way that suggests the licensor endorses you or your use.\n"
+                    . "NonCommercial — You may not use the material for commercial purposes.\n"
+                    . "ShareAlike — If you remix, transform, or build upon the material, you must "
+                    . "distribute your contributions under the same license as the original.\n"
+                    . "No additional restrictions — You may not apply legal terms or technological "
+                    . "measures that legally restrict others from doing anything the license permits.\n\n"
+                    . "Notices:\n"
+                    . "You do not have to comply with the license for elements of the material in the "
+                    . "public domain or where your use is permitted by an applicable exception or limitation.\n"
+                    . "No warranties are given. The license may not give you all of the permissions "
+                    . "necessary for your intended use. For example, other rights such as publicity, "
+                    . "privacy, or moral rights may limit how you use the material.\n\n"
+                    . "For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.";
 
                 $this->db->getQuery(true)
                     ->insert('#__resource_licenses')
                     ->set([
+                        'ordering' => $ordering + 1,
                         'name'     => 'cc40-by-nc-sa',
                         'title'    => 'Creative Commons BY-NC-SA 4.0',
                         'url'      => 'http://creativecommons.org/licenses/by-nc-sa/4.0/',
                         'text'     => $text,
-                        'ordering' => $ordering
                     ])
                     ->execute();
             }

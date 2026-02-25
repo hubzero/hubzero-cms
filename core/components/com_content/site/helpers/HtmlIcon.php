@@ -8,6 +8,13 @@
 
 namespace Components\Content\Site\Helpers;
 
+use Hubzero\Utility\Arr;
+use Hubzero\Utility\Uri;
+use Route;
+use Request;
+use Lang;
+use Component;
+
 /**
  * Content Component HTML Helper
  */

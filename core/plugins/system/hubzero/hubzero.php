@@ -146,7 +146,17 @@ class Hubzero extends Plugin
     public function onUserLoginFailure($response)
     {
         $post_username = isset($_POST['username']) ? $_POST['username'] : '';
-        $input_username = is_array($post_username) ? self::_flatten('', $post_username) : $post_username;
+        if (is_array($post_username)) {
+            // Flatten recursively: a nested username[] would make implode() emit
+            // an "Array to string conversion" warning, which this tree escalates
+            $parts = array();
+            array_walk_recursive($post_username, function ($value) use (&$parts) {
+                $parts[] = is_scalar($value) ? (string) $value : '';
+            });
+            $input_username = implode('', $parts);
+        } else {
+            $input_username = $post_username;
+        }
         $filter = '/[^A-Z0-9_\.-]/i';
         $filtered_username = (string) preg_replace($filter, '', $input_username);
         $log_username = empty($filtered_username) ? '[unknown]' : $filtered_username;

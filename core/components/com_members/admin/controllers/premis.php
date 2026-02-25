@@ -9,6 +9,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Members\Helpers\Premis as PremisHelper;
 use Filesystem;
 use Request;
 use Config;
@@ -145,7 +146,7 @@ class Premis extends AdminController
                     $courses['add'] = $data[6];
                     $courses['drop'] = $data[7];
 
-                    $return = \MembersHelperPremis::doRegistration($user, $courses);
+                    $return = PremisHelper::doRegistration($user, $courses);
                     if ($return['status'] == 'ok') {
                         $line['msg'] = $return['message'];
                         $ok++;

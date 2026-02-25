@@ -102,7 +102,7 @@ class Blocks extends Obj
 
         if (
             (isset($this->_blocks[$signature])
-            && !($this->_blocks[$signature] instanceof __PHP_Incomplete_Class))
+            && !($this->_blocks[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
             return $this->_blocks[$signature];

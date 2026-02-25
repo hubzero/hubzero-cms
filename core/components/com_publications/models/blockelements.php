@@ -179,7 +179,7 @@ class BlockElements extends Obj
 
         if (
             (isset($this->_elements[$signature])
-            && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))
+            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
             return $this->_elements[$signature];

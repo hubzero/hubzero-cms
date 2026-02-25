@@ -53,7 +53,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
             // make sure we have object
             if (!isset($params) || !is_object($params)) {
-                $params = new stdClass();
+                $params = new \stdClass();
             }
 
             $params->defaults = $newDefaults;

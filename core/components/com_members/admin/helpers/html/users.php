@@ -24,7 +24,7 @@ class HtmlUsers
         $src = preg_replace('#[^A-Z0-9\-_\./]#i', '', $src);
         $file = PATH_ROOT . '/' . $src;
 
-        Hubzero\Filesystem\Util::checkPath($file);
+        \Hubzero\Filesystem\Util::checkPath($file);
 
         if (!file_exists($file)) {
             return '';
