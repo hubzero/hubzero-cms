@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unit tests for plgUserHubzero::isThirdPartyPlaceholder().
+ * Unit tests for Hubzero::isThirdPartyPlaceholder().
  *
  * Third-party-auth users (ORCID, Google, Shibboleth, etc.) are inserted
  * with a placeholder username of the form "-<hzal_id>" and an email of
@@ -12,12 +12,13 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use Plugins\User\Hubzero\Hubzero;
 
 final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
 {
     public function testPlaceholderUsernameIsDetected()
     {
-        $this->assertTrue(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertTrue(Hubzero::isThirdPartyPlaceholder([
             'username' => '-2843',
             'email'    => '-2843@invalid',
         ]));
@@ -25,7 +26,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
 
     public function testNormalUsernameIsNotPlaceholder()
     {
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => 'u0000_0002_6885_6310',
             'email'    => 'nkissebe+rhys@gmail.com',
         ]));
@@ -35,18 +36,18 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
     {
         // Only "-<digits>" is a placeholder; a leading dash with letters is
         // something else (unlikely, but should not falsely match).
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => '-abc',
         ]));
     }
 
     public function testEmptyOrMissingUsernameIsNotPlaceholder()
     {
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => '',
         ]));
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([]));
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([]));
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'email' => '-2843@invalid',
         ]));
     }
@@ -55,7 +56,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
     {
         // A username that happens to be all digits (unusual but valid on
         // some hubs) is not a placeholder — the dash prefix is required.
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => '12345',
         ]));
     }
@@ -64,7 +65,7 @@ final class HubzeroIsThirdPartyPlaceholderTest extends TestCase
     {
         // Callers pass whatever User::get('username') returned. Coerce to
         // string internally — an integer-shaped username shouldn't crash.
-        $this->assertFalse(plgUserHubzero::isThirdPartyPlaceholder([
+        $this->assertFalse(Hubzero::isThirdPartyPlaceholder([
             'username' => 12345,
         ]));
     }
