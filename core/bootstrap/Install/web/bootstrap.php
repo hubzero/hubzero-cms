@@ -96,7 +96,7 @@ use Hubzero\System\Requirements;
         // Check for Windows first - HUBzero does not support Windows
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             http_response_code(500);
-            include __DIR__ . '/views/windows-error.php';
+            include __DIR__ . '/views/tmpl/windows-error.php';
             exit;
         }
 
@@ -106,7 +106,7 @@ use Hubzero\System\Requirements;
         if (!$storageResult['available']) {
             $tried = $storageResult['tried'];
             $docRoot = $storageResult['docRoot'];
-            include __DIR__ . '/views/storage-error.php';
+            include __DIR__ . '/views/tmpl/storage-error.php';
             exit;
         }
 
@@ -131,7 +131,7 @@ use Hubzero\System\Requirements;
         if (!$validation['valid']) {
             $security->logSecurityEvent('CLIENT_VALIDATION_FAIL', $validation['error']);
             $errorMessage = $validation['error'];
-            include __DIR__ . '/views/bootstrap-verify.php';
+            include __DIR__ . '/views/tmpl/bootstrap-verify.php';
             return;
         }
 
@@ -204,7 +204,7 @@ use Hubzero\System\Requirements;
         }
 
         // Show verification page
-        include __DIR__ . '/views/bootstrap-verify.php';
+        include __DIR__ . '/views/tmpl/bootstrap-verify.php';
     }
 
     /**

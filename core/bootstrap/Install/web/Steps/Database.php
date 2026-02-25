@@ -36,7 +36,7 @@ class Database implements StepInterface
         $config = $this->existingConfig;
         $errors = $this->errors;
         ob_start();
-        include __DIR__ . '/../views/steps/database.php';
+        include __DIR__ . '/../views/steps/tmpl/database.php';
         return ob_get_clean();
     }
 

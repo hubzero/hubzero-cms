@@ -42,7 +42,7 @@ class Schema implements StepInterface
             $this->installer->setSessionData('schema_data_loaded', false);
         }
         ob_start();
-        include __DIR__ . '/../views/steps/schema.php';
+        include __DIR__ . '/../views/steps/tmpl/schema.php';
         return ob_get_clean();
     }
 

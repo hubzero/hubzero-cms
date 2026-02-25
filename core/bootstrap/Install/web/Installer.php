@@ -1235,7 +1235,7 @@ class Installer
         $stepId = $this->currentStep;
         $messages = $this->messages;
 
-        include __DIR__ . '/views/layout.php';
+        include __DIR__ . '/views/tmpl/layout.php';
     }
 
     /**
@@ -1252,7 +1252,7 @@ class Installer
         $docRoot = $storageCheck['docRoot'];
         $installer = $this;
 
-        include __DIR__ . '/views/storage-error.php';
+        include __DIR__ . '/views/tmpl/storage-error.php';
     }
 
     /**

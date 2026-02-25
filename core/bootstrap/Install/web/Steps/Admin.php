@@ -16,6 +16,7 @@ use Hubzero\Access\Map;
 use Hubzero\Base\Application;
 use Hubzero\Database\ConnectionInterface;
 use PDOException;
+
 class Admin implements StepInterface
 {
     private $installer;
@@ -51,7 +52,7 @@ class Admin implements StepInterface
         $existingAdmin = $this->existingAdmin;
         $defaultEmail = $this->installer->getSessionData('settings')['mailfrom'] ?? '';
         ob_start();
-        include __DIR__ . '/../views/steps/admin.php';
+        include __DIR__ . '/../views/steps/tmpl/admin.php';
         $content = ob_get_clean();
 
         // Clear errors from session after rendering (they've been displayed)
