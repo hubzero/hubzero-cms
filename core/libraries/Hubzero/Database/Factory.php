@@ -100,6 +100,16 @@ namespace Hubzero\Database;
 abstract class Factory
 {
     /**
+     * Constructor
+     *
+     * Declared final so that subclasses cannot change the signature,
+     * which ensures new static() in the new() method is always safe.
+     */
+    final public function __construct()
+    {
+    }
+
+    /**
      * The model class this factory creates
      *
      * @var string
@@ -183,7 +193,7 @@ abstract class Factory
      */
     public static function new()
     {
-        return new static(); // @phpstan-ignore new.static
+        return new static();
     }
 
     /**
