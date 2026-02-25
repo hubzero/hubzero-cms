@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugins\Projects\Files\Helpers;
+namespace Plugins\Projects\Files\Helpers\Diff\Renderer\Html;
 
 /**
  * Inline HTML diff generator for PHP DiffLib.
