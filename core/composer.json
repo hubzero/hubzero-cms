@@ -87,6 +87,7 @@
         "symfony/yaml": "4.*",
         "tecnickcom/tcpdf": "6.8.*",
         "theiconic/name-parser": "0.1.*",
+        "voku/simple_html_dom": "^4.8",
         "willdurand/geocoder": "4.6.*"
     },
     "require-dev": {

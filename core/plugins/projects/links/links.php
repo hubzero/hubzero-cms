@@ -13,6 +13,7 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
+use voku\helper\HtmlDomParser;
 
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
@@ -903,12 +904,10 @@ class Links extends Plugin
             }
 
             if ($content) {
-                require_once __DIR__ . DS . 'helpers' . DS . 'simple_html_dom.php';
-
                 $out = '';
 
-                // Create DOM from URL or file
-                $html = file_get_html($finalUrl);
+                // Parse the already-fetched HTML content
+                $html = new HtmlDomParser($content);
 
                 $title = $html->find('title', 0)->innertext; //Title Of Page
 
