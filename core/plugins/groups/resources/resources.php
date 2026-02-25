@@ -4,6 +4,7 @@ namespace Plugins\Groups\Resources;
 
 use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
+use Components\Resources\Models\Type;
 
 /**
  * @package    hubzero-cms

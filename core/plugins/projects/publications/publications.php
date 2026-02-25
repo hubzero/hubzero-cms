@@ -11,6 +11,10 @@
 namespace Plugins\Projects\Publications;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Str;
+use Hubzero\Document\Assets;
+use Hubzero\User\Group;
+use Hubzero\Activity\Recipient;
 use Components\Projects\Helpers\Html;
 use Components\Publications\Models\Publication;
 use Components\Publications\Models\Handlers;

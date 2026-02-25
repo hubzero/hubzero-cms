@@ -16,6 +16,7 @@ use Components\Members\Models\Profile\Option;
 use Hubzero\Access\Group as Accessgroup;
 use Hubzero\Access\Access;
 use Hubzero\Component\AdminController;
+use Hubzero\User\Profile\Helper as ProfileHelper;
 use Hubzero\Utility\Validate;
 use Filesystem;
 use Request;
@@ -1168,7 +1169,7 @@ class Members extends AdminController
         $member = Member::oneOrFail($id);
 
         $file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
-        $file .= DS . Profile\Helper::niceidformat($member->get('uidNumber'));
+        $file .= DS . ProfileHelper::niceidformat($member->get('uidNumber'));
         $file .= DS . Request::getString('image', $member->get('picture'));
 
         // Ensure the file exist

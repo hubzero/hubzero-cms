@@ -15,6 +15,7 @@ use Filesystem;
 use Request;
 use Notify;
 use Route;
+use Cache;
 use Lang;
 use App;
 

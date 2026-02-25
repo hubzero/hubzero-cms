@@ -3,6 +3,7 @@
 namespace Plugins\Usage\Domainclass;
 
 use Hubzero\Plugin\Plugin;
+use Components\Usage\Helpers\Helper as UsageHtml;
 
 /**
  * @package    hubzero-cms

@@ -16,6 +16,7 @@ use Request;
 use Config;
 use Event;
 use Route;
+use Cache;
 use Lang;
 use App;
 

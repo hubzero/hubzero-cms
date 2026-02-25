@@ -10,6 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
+use Hubzero\Html\Builder\Select;
 use App;
 
 /**
@@ -112,12 +113,12 @@ class MenuItem extends Element
 
         // Assemble menu items to the array
         $options = array();
-        $options[] = Builder\Select::option('', App::get('language')->txt('JOPTION_SELECT_MENU_ITEM'));
+        $options[] = Select::option('', App::get('language')->txt('JOPTION_SELECT_MENU_ITEM'));
 
         foreach ($menuTypes as $type) {
             if ($menuType == '') {
-                $options[] = Builder\Select::option('0', '&#160;', 'value', 'text', true);
-                $options[] = Builder\Select::option($type->menutype, $type->title .
+                $options[] = Select::option('0', '&#160;', 'value', 'text', true);
+                $options[] = Select::option($type->menutype, $type->title .
                     ' - ' .
                     App::get('language')->txt('JGLOBAL_TOP'), 'value', 'text', true);
             }
@@ -137,13 +138,13 @@ class MenuItem extends Element
                     }
 
                     $disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-                    $options[] = Builder\Select::option($item->id, '&#160;&#160;&#160;' .
+                    $options[] = Select::option($item->id, '&#160;&#160;&#160;' .
                         $item->treename, 'value', 'text', $disable);
                 }
             }
         }
 
-        return Builder\Select::genericlist(
+        return Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
             array(

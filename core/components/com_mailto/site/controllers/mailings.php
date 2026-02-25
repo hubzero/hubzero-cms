@@ -11,7 +11,7 @@ namespace Components\Mailto\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use Hubzero\Mail\Message;
-use Components\Mailto\Helpers\Mailto as MailtoHelper;
+use Components\Mailto\Site\Helpers\Mailto as MailtoHelper;
 use stdClass;
 use Request;
 use Session;

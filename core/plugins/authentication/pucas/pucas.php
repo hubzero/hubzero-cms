@@ -3,6 +3,7 @@
 namespace Plugins\Authentication\Pucas;
 
 use Hubzero\Plugin\Plugin;
+use phpCAS;
 
 /**
  * @package    hubzero-cms

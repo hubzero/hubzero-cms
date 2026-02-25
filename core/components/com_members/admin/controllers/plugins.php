@@ -17,6 +17,7 @@ use Route;
 use Event;
 use User;
 use Html;
+use Cache;
 use Lang;
 use App;
 

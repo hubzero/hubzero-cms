@@ -6,7 +6,9 @@
 namespace Plugins\Projects\Feed;
 
 use Hubzero\Activity\Recipient;
+use Hubzero\Module\Helper as ModuleHelper;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Sanitize;
 
 /**
  * @package    hubzero-cms

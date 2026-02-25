@@ -220,7 +220,7 @@ class ModeDs
         }
 
         // Giving Hub admins full access to the DataStore dataviews
-        if (\JAccess::check(\User::get('id'), 'core.admin')) {
+        if (\Hubzero\Access\Access::check(\User::get('id'), 'core.admin')) {
             $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
             $dd['acl']['allowed_users'][] = \User::get('username');
         }

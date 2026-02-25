@@ -2,7 +2,9 @@
 
 namespace Plugins\Projects\Team;
 
+use Hubzero\Document\Assets;
 use Hubzero\Plugin\Plugin;
+use Hubzero\User\Helper as UserHelper;
 
 /**
  * @package    hubzero-cms

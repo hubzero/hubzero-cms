@@ -378,7 +378,7 @@ class Entries extends AdminController
                 }
 
                 if ($this->getError()) {
-                    Notyf::error($this->getError());
+                    Notify::error($this->getError());
                     return $this->cancelTask();
                 }
 

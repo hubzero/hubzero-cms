@@ -9,6 +9,8 @@
 namespace Plugins\Projects\Files;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Str;
+use Hubzero\Filesystem\Entity;
 use Plugins\Projects\Files\Helpers\Sync;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;

@@ -9,6 +9,8 @@
 namespace Plugins\Projects\Todo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Sanitize;
+use Hubzero\Utility\Str;
 
 /**
  * Projects todo's

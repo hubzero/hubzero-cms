@@ -228,7 +228,7 @@ class Commentsv2r0 extends ApiController
                             $old_status->set('title', 'Closed');
                             $old_status->set('open', 0);
                         } else {
-                            $old_status = \Components\Support\Models\Orm\Status::oneOrFail($ticket->get('status'));
+                            $old_status = \Components\Support\Models\Status::oneOrFail($ticket->get('status'));
                         }
                         $temp->before = $old_status->get('title');
                         $temp->after = $status_model->get('title');

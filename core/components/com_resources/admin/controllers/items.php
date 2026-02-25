@@ -12,7 +12,7 @@ use Components\Members\Models\Member;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
-use Components\Resources\Models\Rating;
+use Components\Resources\Models\Review as Rating;
 use Components\Resources\Models\Author;
 use Components\Resources\Models\AclUser;
 use Components\Resources\Models\AclGroup;

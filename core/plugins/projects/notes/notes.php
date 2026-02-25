@@ -8,6 +8,8 @@
 
 namespace Plugins\Projects\Notes;
 
+use Hubzero\Utility\Str;
+
 use Hubzero\Plugin\Plugin;
 
 /**

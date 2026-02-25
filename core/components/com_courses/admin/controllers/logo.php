@@ -247,7 +247,7 @@ class Logo extends AdminController
         if ($file['size'] > $sizeLimit) {
             $msg = Lang::txt(
                 'COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG',
-                \Hubsero\Utility\Number::formatBytes($sizeLimit)
+                \Hubzero\Utility\Number::formatBytes($sizeLimit)
             );
             $this->setError($msg);
             return $this->displayTask($file['name'], $id);

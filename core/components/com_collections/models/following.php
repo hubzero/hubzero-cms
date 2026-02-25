@@ -178,7 +178,7 @@ class Following extends Model
 
             case 'collections':
                 if ($value === null && $this->get('following_type') != 'collection') {
-                    $model = Collections::getInstance($this->get('following_type'), $this->get('following_id'));
+                    $model = Collection::getInstance($this->get('following_type'), $this->get('following_id'));
                     $value = $model->collections(array('count'));
                     $this->set($what, $value);
                 }

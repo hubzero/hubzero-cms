@@ -8,9 +8,12 @@
 
 namespace Components\Content\Site\Helpers;
 
+use Hubzero\Utility\Arr;
+use Hubzero\Utility\Uri;
 use Route;
 use Request;
 use Lang;
+use Component;
 
 /**
  * Content Component HTML Helper
@@ -53,7 +56,7 @@ class HtmlIcon
         if (file_exists($path)) {
             require_once $path;
 
-            $base     = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+            $base     = Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
             $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $article->slug,
@@ -70,7 +73,7 @@ class HtmlIcon
             $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
 
             $output = '<a class="icon-email" href="' . Route::url($url) . '" '
-                . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
+                . Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
         }
 
         return $output;
@@ -179,7 +182,7 @@ class HtmlIcon
         $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
         $attribs['rel']     = 'nofollow';
 
-        return '<a href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs)
+        return '<a href="' . Route::url($url) . '" ' . Arr::toString($attribs)
             . '>' . $text . '</a>';
     }
 
