@@ -42,6 +42,7 @@ if (!defined('PATH_APP')) {
 }
 
 require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/bootstrap/app.php';
 
 // Minimal container so facades called at file scope resolve. Test classes
 // replace what they need; this only has to get the files loaded.
