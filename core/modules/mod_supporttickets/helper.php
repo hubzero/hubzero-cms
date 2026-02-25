@@ -22,6 +22,14 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $closed;
+    protected $closedTickets;
+    protected $closedmonths;
+    protected $opened;
+    protected $openedmonths;
+    protected $topened;
+    protected $year;
+
     /**
      * Display module contents
      *

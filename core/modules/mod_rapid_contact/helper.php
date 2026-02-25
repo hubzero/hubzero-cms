@@ -20,6 +20,44 @@ use Hubzero\Facades\Lang;
  */
 class Helper extends Module
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $anti_spam_a;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $anti_spam_q;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $button_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $email_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $enable_anti_spam;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $error_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $from_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $from_name;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $invalid_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $message_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $mod_class_suffix;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $name_label;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $no_email;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $page_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $pre_text;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $subject_label;
+    protected $error;
+    protected $posted;
+    protected $recipient;
+    protected $replacement;
+    protected $url;
+
     /**
      * Display module content
      *

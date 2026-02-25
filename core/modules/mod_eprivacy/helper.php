@@ -20,6 +20,11 @@ use Hubzero\Facades\Config;
  */
 class Helper extends Module
 {
+    protected $duration;
+    protected $message;
+    protected $moduleid;
+    protected $uri;
+
     /**
      * Display module contents
      *

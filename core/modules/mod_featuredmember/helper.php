@@ -19,6 +19,10 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $cls;
+    protected $row;
+    protected $txt_length;
+
     /**
      * Generate module contents
      *

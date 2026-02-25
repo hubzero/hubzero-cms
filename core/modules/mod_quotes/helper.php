@@ -19,6 +19,9 @@ use Date;
  */
 class Helper extends Module
 {
+    protected $filters;
+    protected $quotes;
+
     /**
      * Get module contents
      *

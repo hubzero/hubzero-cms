@@ -18,6 +18,12 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $charlimit;
+    protected $quote;
+    protected $quote_to_show;
+    protected $showall;
+    protected $showauthor;
+
     /**
      * Get module contents
      *

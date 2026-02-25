@@ -20,6 +20,17 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $alltools;
+    protected $can_launch;
+    protected $fav;
+    protected $favs;
+    protected $favtools;
+    protected $no_html;
+    protected $rectools;
+    protected $rt;
+    protected $supportedtag;
+    protected $supportedtagusage;
+
     /**
      * Get a list of applications that the user might invoke.
      *

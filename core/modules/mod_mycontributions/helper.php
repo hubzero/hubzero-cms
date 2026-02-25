@@ -17,6 +17,15 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $contributions;
+    protected $limit_other;
+    protected $limit_tools;
+    protected $show_questions;
+    protected $show_tickets;
+    protected $show_tools;
+    protected $show_wishes;
+    protected $tools;
+
     /**
      * Get a list of contributions
      *

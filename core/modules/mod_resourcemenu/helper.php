@@ -17,6 +17,10 @@ use Hubzero\Facades\Event;
  */
 class Helper extends Module
 {
+    protected $html;
+    protected $moduleclass;
+    protected $moduleid;
+
     /**
      * Display module content
      *

@@ -14,6 +14,7 @@ use Hubzero\Facades\App;
 
 /**
  * Parameters:
+
  * ===========
  *
  * maxEvents = max. no. of events to display in the module (1 to 10, default is 5)
@@ -40,6 +41,9 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $error;
+    protected $events;
+
     /**
      * Display module output
      *

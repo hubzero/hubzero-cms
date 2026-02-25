@@ -19,6 +19,9 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $parentLink;
+    protected $rootLink;
+
     /**
      * Display module
      *

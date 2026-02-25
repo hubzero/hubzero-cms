@@ -19,6 +19,12 @@ use Hubzero\Facades\Date;
  */
 class Helper extends Module
 {
+    protected $alertlevel;
+    protected $days_left;
+    protected $message;
+    protected $moduleid;
+    protected $publish;
+
     /**
      * Calculate the time left from a date time
      *

@@ -19,6 +19,16 @@ use Hubzero\Facades\Request;
  */
 class Helper extends Module
 {
+    protected $allowed;
+    protected $browser;
+    protected $browser_ver;
+    protected $guestOrTmpAccount;
+    protected $os;
+    protected $os_version;
+    protected $referrer;
+    protected $supportParams;
+    protected $verified;
+
     /**
      * Display module content
      *

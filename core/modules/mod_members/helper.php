@@ -16,6 +16,13 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $approved;
+    protected $confirmed;
+    protected $domains;
+    protected $pastDay;
+    protected $unapproved;
+    protected $unconfirmed;
+
     /**
      * Display module contents
      *

@@ -17,6 +17,12 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $archived;
+    protected $draft;
+    protected $published;
+    protected $totals;
+    protected $unpublished;
+
     /**
      * Display module contents
      *

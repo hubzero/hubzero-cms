@@ -22,6 +22,17 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $area;
+    protected $cssId;
+    protected $feed;
+    protected $feedlink;
+    protected $period;
+    protected $rows;
+    protected $rows2;
+    protected $searchareas;
+    protected $tagged;
+    protected $tags;
+
     /**
      * Get the categories for What's New
      *

@@ -17,6 +17,13 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $closed;
+    protected $myclosed;
+    protected $myopen;
+    protected $open;
+    protected $pastDay;
+    protected $username;
+
     /**
      * Display module contents
      *

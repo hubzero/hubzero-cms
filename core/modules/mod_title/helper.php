@@ -16,6 +16,8 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $title;
+
     /**
      * Display module contents
      *

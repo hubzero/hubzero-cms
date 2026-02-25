@@ -19,6 +19,9 @@ use App;
  */
 class Helper extends Module
 {
+    protected $rows;
+    protected $steps;
+
     /**
      * Check if the type selection step is completed
      *

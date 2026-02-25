@@ -16,6 +16,10 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $rows;
+    protected $rows1;
+    protected $rows2;
+
     /**
      * Display module content
      *

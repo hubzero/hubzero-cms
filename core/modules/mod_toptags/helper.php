@@ -16,6 +16,8 @@ use Components\Tags\Models\Tag;
  */
 class Helper extends Module
 {
+    protected $tags;
+
     /**
      * Get module contents
      *

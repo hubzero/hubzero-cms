@@ -17,6 +17,10 @@ use Hubzero\Facades\Date;
  */
 class Helper extends Module
 {
+    protected $cid;
+    protected $container;
+    protected $content;
+
     /**
      * Get a list of content pages
      *

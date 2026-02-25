@@ -18,6 +18,8 @@ use Hubzero\Facades\Date;
  */
 class Helper extends Module
 {
+    protected $rows;
+
     /**
      * Display module content
      *

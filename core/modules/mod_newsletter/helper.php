@@ -16,6 +16,11 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $database;
+    protected $mailinglist;
+    protected $subscription;
+    protected $subscriptionId;
+
     /**
      * Display module
      *

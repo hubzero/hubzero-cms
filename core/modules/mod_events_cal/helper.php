@@ -18,6 +18,8 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $content;
+
     /**
      * Display module utput
      *

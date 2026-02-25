@@ -18,6 +18,8 @@ use Hubzero\Facades\Lang;
  */
 class Helper extends Module
 {
+    protected $feed;
+
     /**
      * Display module contents
      *

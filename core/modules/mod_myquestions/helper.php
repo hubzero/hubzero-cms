@@ -20,6 +20,18 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $assigned;
+    protected $banking;
+    protected $interests;
+    protected $intext;
+    protected $limit_assigned;
+    protected $limit_interest;
+    protected $limit_mine;
+    protected $openquestions;
+    protected $otherquestions;
+    protected $show_assigned;
+    protected $show_interests;
+
     /**
      * Format the tags
      *

@@ -16,6 +16,18 @@ use Hubzero\Facades\App;
  */
 class Helper extends Module
 {
+    protected $abandoned;
+    protected $approved;
+    protected $created;
+    protected $data;
+    protected $installed;
+    protected $published;
+    protected $registered;
+    protected $retired;
+    protected $total;
+    protected $updated;
+    protected $uploaded;
+
     /**
      * Display module contents
      *

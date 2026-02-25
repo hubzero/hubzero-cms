@@ -17,6 +17,9 @@ use Hubzero\Facades\Component;
  */
 class Helper extends Module
 {
+    protected $categories;
+    protected $tags;
+
     /**
      * Generate module contents
      *

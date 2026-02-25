@@ -16,6 +16,9 @@ use Hubzero\Facades\Request;
  */
 class Helper extends Module
 {
+    protected $feed;
+    protected $results;
+
     /**
      * Display module contents
      *

@@ -17,6 +17,11 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $contributions;
+    protected $limit;
+    protected $no_html;
+    protected $sort;
+
     /**
      * Display module content
      *

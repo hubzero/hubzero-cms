@@ -18,6 +18,11 @@ use User;
  */
 class Helper extends Module
 {
+    protected $cls;
+    protected $row;
+    protected $thumb;
+    protected $txt_length;
+
     /**
      * Container for properties
      *

@@ -18,6 +18,13 @@ use Hubzero\Facades\User;
  */
 class Helper extends Module
 {
+    protected $filters;
+    protected $limit;
+    protected $moduleclass;
+    protected $pconfig;
+    protected $rows;
+    protected $total;
+
     /**
      * Display module content
      *

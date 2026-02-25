@@ -16,6 +16,8 @@ use Hubzero\Facades\Config;
  */
 class Helper extends Module
 {
+    protected $environment;
+
     /**
      * Display module
      *

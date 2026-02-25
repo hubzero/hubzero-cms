@@ -17,6 +17,8 @@ use Hubzero\Facades\Component;
  */
 class Helper extends Module
 {
+    protected $poll;
+
     /**
      * Get module contents
      *

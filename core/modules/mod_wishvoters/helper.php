@@ -19,6 +19,8 @@ use Hubzero\Facades\Lang;
  */
 class Helper extends Module
 {
+    protected $rows;
+
     /**
      * Display module contents
      *
