@@ -258,11 +258,34 @@ class Loader
 
             $module->path = $path;
 
-            $content = '';
-            ob_start();
-            include $path;
-            $module->content = ob_get_contents() . $content;
-            ob_end_clean();
+            // Try class-based module loading first
+            $className = $this->resolveClassName($module->module);
+            $output = '';
+
+            if (!class_exists($className, false)) {
+                // Load the entry file inside a buffer: a class-based module only
+                // declares its class here, while a legacy procedural module
+                // renders itself with $params and $module in scope
+                $content = '';
+                ob_start();
+                include $path;
+                $output = ob_get_contents() . $content;
+                ob_end_clean();
+            }
+
+            if (
+                class_exists($className, false)
+                && is_subclass_of($className, \Hubzero\Module\Module::class)
+            ) {
+                $instance = new $className($params, $module);
+
+                ob_start();
+                $instance->run();
+                $module->content = ob_get_contents();
+                ob_end_clean();
+            } else {
+                $module->content = $output;
+            }
         }
 
         // Load the module chrome functions
@@ -639,6 +662,25 @@ class Loader
             $module = 'mod_' . $module;
         }
         return $module;
+    }
+
+    /**
+     * Resolve the fully qualified class name for a module
+     *
+     * Converts a module element name (e.g. 'mod_articles_category')
+     * to its expected class name (e.g. 'Modules\ArticlesCategory\ArticlesCategory').
+     *
+     * @param   string  $module  Module element name
+     * @return  string  Fully qualified class name
+     */
+    protected function resolveClassName($module)
+    {
+        $name = $this->canonical($module);
+        $name = substr($name, 4); // strip mod_
+        $parts = explode('_', $name);
+        $pascal = implode('', array_map('ucfirst', $parts));
+
+        return "Modules\\{$pascal}\\{$pascal}";
     }
 
     /**
