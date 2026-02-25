@@ -70,7 +70,7 @@ class Pages extends AdminController
             )
         );
 
-        $event = \Components\Events\Models\OrmEvent::oneOrFail($filters['event_id']);
+        $event = \Components\Events\Models\Orm\Event::oneOrFail($filters['event_id']);
 
         // Get records
         $query = $event->pages();

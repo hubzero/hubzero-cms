@@ -347,7 +347,7 @@ class Abusereports extends AdminController
 
         // Give some points to whoever reported abuse
         if ($banking && $gratitude) {
-            $BC = \Hubzero\BankConfig::values();
+            $BC = \Hubzero\Bank\Config::values();
             $ar = $BC->get('abusereport');  // How many points?
             if ($ar) {
                 $ruser = User::getInstance($report->get('created_by'));

@@ -31,9 +31,10 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\App;
-use Hubzero\Event as Evt;
+use Hubzero\Facades\Event as Evt;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Session;
+
 /**
  * Controller class for events
  */
