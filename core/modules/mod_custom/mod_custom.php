@@ -8,6 +8,33 @@
 
 namespace Modules\Custom;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Html;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying custom HTML
+ */
+class Custom extends Module
+{
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Legacy compatibility for older view overrides
+        $params = $this->params;
+        $module = $this->module;
+
+        if ($params->def('prepare_content', 1)) {
+            Plugin::import('content');
+            $module->content = Html::content('prepare', $module->content, '', 'mod_custom.content');
+        }
+
+        $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
+
+        require $this->getLayoutPath($params->get('layout', 'default'));
+    }
+}

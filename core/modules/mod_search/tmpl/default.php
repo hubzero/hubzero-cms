@@ -6,17 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Modules\Search\Helper;
+use Modules\Search\Search;
 use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die;
 
-$inputId = 'searchword' . (Helper::$instances > 1 ? $this->module->id : '');
-$formId  = 'searchform' . (Helper::$instances > 1 ? $this->module->id : '');
+$inputId = 'searchword' . (Search::$instances > 1 ? $this->module->id : '');
+$formId  = 'searchform' . (Search::$instances > 1 ? $this->module->id : '');
 ?>
 <?php
-$formSuffix = (Helper::$instances > 1) ? $this->module->id : '';
+$formSuffix = (Search::$instances > 1) ? $this->module->id : '';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>"
     method="get"
@@ -27,7 +27,7 @@ $formSuffix = (Helper::$instances > 1) ? $this->module->id : '';
         <legend><?php echo ($text ?: $label); ?></legend>
 
         <?php
-            $sfx = Helper::$instances > 1 ? $this->module->id : '';
+            $sfx = Search::$instances > 1 ? $this->module->id : '';
             $output = '<label for="searchword' . $sfx . '"'
                 . ' class="' . $moduleclass_sfx . 'searchword-label"'
                 . ' id="searchword-label' . $sfx . '">'

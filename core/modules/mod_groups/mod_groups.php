@@ -8,6 +8,79 @@
 
 namespace Modules\Groups;
 
-require_once __DIR__ . '/helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Utility\Date;
+use Hubzero\Facades\App;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for com_groups data
+ */
+class Groups extends Module
+{
+    protected $approved;
+    protected $closed;
+    protected $hidden;
+    protected $invite;
+    protected $open;
+    protected $pastDay;
+    protected $pending;
+    protected $restricted;
+    protected $type;
+    protected $visible;
+
+    /**
+     * Display module contents
+     *
+     * @return     void
+     */
+    public function display()
+    {
+        if (!App::isAdmin()) {
+            return;
+        }
+
+        $type = $this->params->get('type', '1');
+
+        switch ($type) {
+            case '0':
+                $this->type = 'system';
+                break;
+            case '1':
+                $this->type = 'hub';
+                break;
+            case '2':
+                $this->type = 'project';
+                break;
+            case '3':
+                $this->type = 'partner';
+                break;
+        }
+
+        $queries = array(
+            'visible'    => "approved=1 AND discoverability=0",
+            'hidden'     => "approved=1 AND discoverability=1",
+            'closed'     => "join_policy=3",
+            'invite'     => "join_policy=2",
+            'restricted' => "join_policy=1",
+            'open'       => "join_policy=0",
+            'approved'   => "approved=1",
+            'pending'    => "approved=0"
+        );
+
+        $database = App::get('db');
+
+        foreach ($queries as $key => $where) {
+            $database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE type='$type' AND $where");
+            $this->$key = $database->loadResult();
+        }
+
+        // Last 24 hours
+        $lastDay = with(new Date('now'))->modify('-1 Day')->toSql();
+
+        $database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE created >= '$lastDay' AND type='$type'");
+        $this->pastDay = $database->loadResult();
+
+        // Get the view
+        parent::display();
+    }
+}

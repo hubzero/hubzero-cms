@@ -8,6 +8,28 @@
 
 namespace Modules\ApplicationEnv;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Facades\Config;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying current system environment
+ */
+class ApplicationEnv extends Module
+{
+    protected $environment;
+
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        $this->environment = strtolower(Config::get('application_env', 'production'));
+        if (substr($this->environment, 0, 10) == 'production') {
+            return;
+        }
+
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}

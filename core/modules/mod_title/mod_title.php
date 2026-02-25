@@ -8,6 +8,29 @@
 
 namespace Modules\Title;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Hubzero\Facades\App;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying component title
+ */
+class Title extends Module
+{
+    protected $title;
+
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Get the component title div
+        if (App::has('ComponentTitle')) {
+            $this->title = App::get('ComponentTitle');
+        }
+
+        // Get the view
+        parent::display();
+    }
+}
