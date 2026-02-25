@@ -9,6 +9,7 @@
 namespace Components\Resources\Helpers;
 
 use Hubzero\Facades\App;
+use Wamania\Snowball\Stemmer\English as EnglishStemmer;
 
 class RecommendedTags
 {
@@ -96,17 +97,18 @@ class RecommendedTags
             --$word_count;
         }
 
+        $stemmer = new EnglishStemmer();
         $freq = array();
         $last = array();
         foreach ($words as $idx => $word) {
             if (self::isStopWord($word, $opts['min_len'])) {
                 continue;
             }
-            $stems = array(array(stem($word), strtolower($word)));
+            $stems = array(array($stemmer->stem($word), strtolower($word)));
             if (isset($words[$idx + 1]) && !self::isStopWord($words[$idx + 1], $opts['min_len'])) {
                 $nextWord = strtolower($words[$idx + 1]);
                 $stems[] = array(
-                    $stems[0][0] . ' ' . stem($words[$idx + 1]),
+                    $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]),
                     strtolower($word) . ' ' . $nextWord
                 );
             }
@@ -115,7 +117,7 @@ class RecommendedTags
                 $word1 = strtolower($words[$idx + 1]);
                 $word2 = strtolower($words[$idx + 2]);
                 $stems[] = array(
-                    $stems[0][0] . ' ' . stem($words[$idx + 1]) . ' ' . stem($words[$idx + 2]),
+                    $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]) . ' ' . $stemmer->stem($words[$idx + 2]),
                     $singWord . ' ' . $word1 . ' ' . $word2
                 );
             }
