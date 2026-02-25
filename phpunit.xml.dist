@@ -20,6 +20,9 @@
         <testsuite name="Components">
             <directory suffix="Test.php">core/components/com_courses/tests/helpers/</directory>
         </testsuite>
+        <testsuite name="Plugins">
+            <directory suffix="Test.php">core/plugins/</directory>
+        </testsuite>
     </testsuites>
     <php>
         <!--
