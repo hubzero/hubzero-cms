@@ -11,6 +11,7 @@ namespace Plugins\Projects\Links;
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
+use voku\helper\HtmlDomParser;
 
 /**
  * Projects Links plugin
@@ -947,18 +948,17 @@ class Links extends Plugin
             }
 
             if ($content) {
-                require_once __DIR__ . DS . 'helpers' . DS . 'simple_html_dom.php';
-
                 $out = '';
 
-                // Create DOM from URL or file
                 // Parse the body we already fetched (and checked) rather than fetching
-                // the final URL a second time with no check at all
-                $html = str_get_html($content);
-                if (!$html) {
+                // the final URL a second time with no check at all. HtmlDomParser
+                // always hands back a parser, so an empty body is caught here instead
+                if (trim((string) $content) === '') {
                     $output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
                     return json_encode($output);
                 }
+
+                $html = new HtmlDomParser($content);
 
                 // Title Of Page -- find() returns null when there is none, and the
                 // remote markup is rendered into the preview, so escape it
