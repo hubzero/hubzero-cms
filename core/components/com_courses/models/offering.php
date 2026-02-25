@@ -19,6 +19,11 @@ use User;
  */
 class Offering extends Base
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_membership;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_plugins;
+
     /**
      * Table class name
      *

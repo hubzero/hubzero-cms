@@ -22,6 +22,12 @@ use stdClass;
  */
 class Helper extends Module
 {
+    protected $collections;
+    protected $groupboards;
+    protected $item;
+    protected $model;
+    protected $myboards;
+
     /**
      * Display module contents
      *

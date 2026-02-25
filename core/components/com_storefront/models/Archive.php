@@ -16,6 +16,11 @@ use Components\Storefront\Models\Sku;
  */
 class Archive extends \Hubzero\Base\Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_count;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+
     /**
      * Products
      *

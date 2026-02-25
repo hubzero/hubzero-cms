@@ -21,6 +21,11 @@ use User;
  */
 class Helper extends Module
 {
+    protected $drafts;
+    protected $filters;
+    protected $moduleclass;
+    protected $published;
+
     /**
      * Display module content
      *

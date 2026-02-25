@@ -10,7 +10,6 @@
 namespace Plugins\Projects\Notes;
 
 use Hubzero\Utility\Str;
-
 use Hubzero\Plugin\Plugin;
 
 /**
@@ -18,6 +17,19 @@ use Hubzero\Plugin\Plugin;
  */
 class Notes extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_area;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_task;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_uid;
+    protected $model;
+    protected $note;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

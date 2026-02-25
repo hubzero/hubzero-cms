@@ -29,6 +29,9 @@ use Date;
  */
 class Connect extends Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_active;
+
     /**
      * Project
      *

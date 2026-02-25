@@ -18,6 +18,8 @@ class PaymentProvider
     private $options;
     private $siteDetails;
     private $transactionDetails;
+    private $postBack;
+    private $error;
 
     /**
      * Constructor

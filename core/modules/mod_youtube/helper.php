@@ -17,6 +17,10 @@ use Lang;
  */
 class Helper extends Module
 {
+    protected $html;
+    protected $id;
+    protected $lazy;
+
     /**
      * Display module contents
      *

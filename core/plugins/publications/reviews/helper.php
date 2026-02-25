@@ -13,6 +13,12 @@ namespace Plugins\Publications\Reviews;
  */
 class Helper extends \Hubzero\Base\Obj
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    protected $loggedin;
+    protected $myreview;
+    protected $publication;
+
     /**
      * Execute an action
      *

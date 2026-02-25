@@ -26,6 +26,8 @@ use Event;
  */
 class Categoriesv2_1 extends ApiController
 {
+    protected $acl;
+
     /**
      * Execute a request
      *
@@ -284,7 +286,7 @@ class Categoriesv2_1 extends ApiController
 
         $row->set('title', Request::getString('title', '', 'post'));
         $row->set('alias', Request::getString('alias', '', 'post'));
-        $row->set('created', Request::getString('created', Date::of('now')->toSql(), 'post'));
+        $row->set('created', Request::getString('created', \Hubzero\Facades\Date::of('now')->toSql(), 'post'));
         $row->set('created_by', Request::getInt('created_by', User::get('id'), 'post'));
 
         if (!$row->save()) {
@@ -407,7 +409,7 @@ class Categoriesv2_1 extends ApiController
         $row->set('alias', Request::getString('alias', $row->get('alias')));
         $row->set('created', Request::getString('created', $row->get('created')));
         $row->set('created_by', Request::getInt('created_by', $row->get('created_by')));
-        $row->set('modified', Request::getString('modified', Date::of('now')->toSql()));
+        $row->set('modified', Request::getString('modified', \Hubzero\Facades\Date::of('now')->toSql()));
         $row->set('modified_by', Request::getInt('modified_by', User::get('id')));
 
         if (!$row->save()) {

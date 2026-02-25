@@ -15,6 +15,18 @@ use Hubzero\Plugin\Plugin;
  */
 class Projects extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_config;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_database;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_filters;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_total;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_user;
+    protected $model;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

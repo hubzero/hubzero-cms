@@ -32,6 +32,13 @@ include_once __DIR__ . '/markdown/GithubMarkdown.php';
 class MarkdownParser
 {
     /**
+     * Token storage for stripped blocks
+     *
+     * @var  array
+     */
+    private $tokens = array();
+
+    /**
      * A unique token
      *
      * @var string

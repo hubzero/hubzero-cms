@@ -20,6 +20,12 @@ use Components\Forum\Models\Attachment;
  */
 class Discussions extends Plugin
 {
+    protected $config;
+    protected $limit;
+    protected $limitstart;
+    protected $name;
+    protected $sections;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

@@ -26,6 +26,10 @@ use User;
  */
 class Ticketsv2_0 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *

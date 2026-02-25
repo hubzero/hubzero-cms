@@ -17,6 +17,8 @@ use Components\Resources\Models\Type;
  */
 class Resources extends Plugin
 {
+    protected $group;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

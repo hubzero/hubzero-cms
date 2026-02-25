@@ -16,6 +16,9 @@ use Hubzero\Plugin\Plugin;
 
 class Watch extends Plugin
 {
+    protected $action;
+    protected $publication;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

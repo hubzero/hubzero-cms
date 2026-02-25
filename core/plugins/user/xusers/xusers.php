@@ -17,6 +17,8 @@ use Hubzero\Plugin\Plugin;
  */
 class Xusers extends Plugin
 {
+    protected $database;
+
     /**
      * Constructor
      *

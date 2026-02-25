@@ -22,6 +22,8 @@ defined('_HZEXEC_') or die();
  */
 class SingleSkuProduct extends Product
 {
+    protected $defaultSku;
+
     /**
      * Contructor
      *

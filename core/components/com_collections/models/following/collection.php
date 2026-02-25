@@ -15,6 +15,9 @@ use Components\Collections\Models;
  */
 class Collection extends Base
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_creator;
+
     /**
      * Collection
      *

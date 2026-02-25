@@ -24,6 +24,8 @@ use Route;
  */
 class CurrentCart extends Cart
 {
+    protected $db;
+
     // Session cart
     var $cart = null;
 

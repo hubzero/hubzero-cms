@@ -17,6 +17,11 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $cls;
+    protected $row;
+    protected $thumb;
+    protected $txt_length;
+
     /**
      * Generate module contents
      *

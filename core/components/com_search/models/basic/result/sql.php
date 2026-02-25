@@ -16,6 +16,8 @@ use Exception;
  */
 class Sql extends SearchResult
 {
+    protected $sql;
+
     /**
      * Constructor
      *

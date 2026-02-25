@@ -24,6 +24,8 @@ use Lang;
 // phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Teamv1_0 extends ApiController
 {
+    protected $model;
+
     /**
      * Execute a request
      *

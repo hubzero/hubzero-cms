@@ -15,6 +15,9 @@ use Hubzero\Plugin\Plugin;
  */
 class Courses extends Plugin
 {
+    protected $database;
+    protected $member;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

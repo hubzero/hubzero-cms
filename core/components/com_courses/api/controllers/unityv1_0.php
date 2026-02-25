@@ -21,6 +21,8 @@ use Date;
  */
 class Unityv1_0 extends base
 {
+    protected $db;
+
     /**
      * Processes grade save from unity app
      *

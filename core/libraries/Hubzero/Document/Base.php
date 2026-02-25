@@ -20,6 +20,20 @@ use Hubzero\Base\Obj;
 class Base extends Obj
 {
     /**
+     * Document mime type (non-underscored alias)
+     *
+     * @var  string
+     */
+    public $mime = '';
+
+    /**
+     * Document type identifier (non-underscored alias)
+     *
+     * @var  string
+     */
+    public $type = null;
+
+    /**
      * Document title
      *
      * @var  string

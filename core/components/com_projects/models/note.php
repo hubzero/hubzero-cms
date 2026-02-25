@@ -15,6 +15,13 @@ use Components\Projects\Tables;
  */
 class Note extends \Components\Wiki\Models\Book
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_cache;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope;
+
     /**
      * Project group cn
      *
