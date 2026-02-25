@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace SciStarter\Http;
+namespace Plugins\Authentication\Scistarter\Http;
 
 /**
  * Curl http transport class

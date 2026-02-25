@@ -9,7 +9,6 @@
 namespace Plugins\Authentication\Scistarter;
 
 use Hubzero\Plugin\Plugin;
-use SciStarter\Oauth;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;

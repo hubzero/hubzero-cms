@@ -6,9 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace SciStarter;
+namespace Plugins\Authentication\Scistarter;
 
-use SciStarter\Http\Curl;
+use Plugins\Authentication\Scistarter\Http\Curl;
 use Exception;
 
 /**
