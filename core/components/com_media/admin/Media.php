@@ -37,11 +37,10 @@ class Media extends AbstractComponent
         define('COM_MEDIA_BASEURL', $baseurl);
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'media_test');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'media';
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         $controller = new $controllerName();

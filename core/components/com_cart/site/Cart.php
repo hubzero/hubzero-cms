@@ -30,10 +30,9 @@ class Cart extends AbstractComponent
         if (empty($controllerName)) {
             App::redirect(Request::base() . 'cart/cart');
         }
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             App::abort(404, \Hubzero\Facades\Lang::txt('Page Not Found'));
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller

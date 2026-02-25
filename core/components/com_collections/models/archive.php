@@ -578,12 +578,10 @@ class Archive extends Obj
         if ($option != 'com_collections') {
             $option = strtolower(substr($option, 4));
 
-            $path = __DIR__ . DS . 'item' . DS . $option . '.php';
+            $subCls = __NAMESPACE__ . '\\Item\\' . ucfirst($option);
 
-            if (file_exists($path)) {
-                include_once $path;
-
-                $cls = __NAMESPACE__ . '\\Item\\' . ucfirst($option);
+            if (class_exists($subCls)) {
+                $cls = $subCls;
             }
         }
 

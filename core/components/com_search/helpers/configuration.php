@@ -84,7 +84,6 @@ class ConfigHelper
     public function instantiate($name = '')
     {
         if ($name != '') {
-            require_once PATH_ROOT . DS . $this->getFilePath($name);
             $class = $this->getClassPath($name);
 
             return new $class();

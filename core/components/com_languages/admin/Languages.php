@@ -34,7 +34,7 @@ class Languages extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'installed');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             App::abort(404, Lang::txt('Controller not found.'));
         }
 
@@ -59,7 +59,6 @@ class Languages extends AbstractComponent
             ($controllerName == 'overrides')
         );
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // initiate controller

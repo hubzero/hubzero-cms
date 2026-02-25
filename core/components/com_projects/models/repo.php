@@ -160,11 +160,7 @@ class Repo extends Obj
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($engine);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $engine . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid engine of "%s"', $engine));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid engine of "%s"', $engine));
             }
 
             $this->adapter = new $cls($this->get('path'), $this->get('remote'));

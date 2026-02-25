@@ -27,7 +27,7 @@ class Kb extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'articles');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'articles';
         }
 
@@ -41,7 +41,6 @@ class Kb extends AbstractComponent
             \Hubzero\Facades\Route::url('index.php?option=com_categories&extension=com_kb', false)
         );
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

@@ -27,7 +27,7 @@ class Events extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'events');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'events';
         }
 
@@ -47,7 +47,6 @@ class Events extends AbstractComponent
             $controllerName == 'configure'
         );
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

@@ -56,8 +56,6 @@ switch ($this->action) {
             App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
         }
 
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
-
         $db = \Hubzero\Facades\App::get('db');
 
         $memberBadge = new \Components\Courses\Tables\MemberBadge($db);

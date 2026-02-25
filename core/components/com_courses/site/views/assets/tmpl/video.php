@@ -187,9 +187,6 @@ if ($type == 'hubpresenter') {
 }
 
 if ($type == 'hubpresenter' || $type == 'html5') {
-    // Include media tracking for html5 and hubpresenter videos
-    require_once Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php';
-
     // Get tracking for this user for this resource
     $tracking = \Components\Resources\Models\MediaTracking::oneByUserAndResource(
         User::get('id'),

@@ -28,11 +28,10 @@ class Saml extends AbstractComponent
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'saml');
 
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
                 $controllerName = 'saml';
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

@@ -157,7 +157,6 @@ class Migration20140528145010ComRegister extends Base
                 ])
                 ->execute();
 
-            require_once PATH_CORE . '/components/com_menus/models/menu.php';
             $table = \Components\Menus\Models\Menu::blank();
             $table->rebuild();
         }

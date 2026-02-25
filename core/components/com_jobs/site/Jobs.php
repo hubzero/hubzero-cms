@@ -24,10 +24,9 @@ class Jobs extends AbstractComponent
     {
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'jobs');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'jobs';
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller

@@ -24,11 +24,10 @@ class Oauth extends AbstractComponent
     {
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'authorize');
 
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             throw new \Exception('Specified controller does not exist.', 404);
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

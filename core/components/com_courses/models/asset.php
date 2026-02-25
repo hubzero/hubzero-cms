@@ -552,10 +552,8 @@ class Asset extends Base
     public function loadHandler()
     {
         $handlerName = $this->get('type');
-        $filePath = Component::path('com_courses') . '/models/assets/' . $handlerName . '.php';
-        if (file_exists($filePath)) {
-            require_once $filePath;
-            $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+        $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+        if (class_exists($handlerClassString)) {
             $handlerModel = new $handlerClassString($this->_db);
             return $handlerModel;
         }

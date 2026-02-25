@@ -36,13 +36,12 @@ class Installer extends AbstractComponent
             }
         }
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'manage');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         \Components\Installer\Admin\Helpers\Installer::addSubmenu($controllerName);
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // initiate controller

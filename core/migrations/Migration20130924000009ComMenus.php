@@ -333,16 +333,12 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // If we have the nested set class available, use it to rebuild lft/rgt
-            if (file_exists(PATH_CORE . '/components/com_menus/models/menu.php')) {
-                include_once PATH_CORE . '/components/com_menus/models/menu.php';
-
-                if (
-                    class_exists('Components\Menus\Models\Menu')
-                    && method_exists('Components\Menus\Models\Menu', 'rebuild')
-                ) {
-                    $table = \Components\Menus\Models\Menu::blank();
-                    $table->rebuild();
-                }
+            if (
+                class_exists('Components\Menus\Models\Menu')
+                && method_exists('Components\Menus\Models\Menu', 'rebuild')
+            ) {
+                $table = \Components\Menus\Models\Menu::blank();
+                $table->rebuild();
             }
 
             // Update menu params (specifically to fix menu_image)

@@ -11,8 +11,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_resources') . DS . 'helpers' . DS . 'recommendedtags.php';
-
 if (!function_exists('stem')) {
     function stem($str)
     {

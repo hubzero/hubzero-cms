@@ -39,10 +39,6 @@ defined('_HZEXEC_') or die('Restricted access');
                 echo '<table id="cartContents">';
                 echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
 
-                $warehousePath = PATH_CORE . DS . 'components'
-                    . DS . 'com_storefront' . DS . 'models'
-                    . DS . 'Warehouse.php';
-                require_once $warehousePath;
                 $warehouse = new \Components\Storefront\Models\Warehouse();
 
                 foreach ($transactionItems as $sId => $item) {

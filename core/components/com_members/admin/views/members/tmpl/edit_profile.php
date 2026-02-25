@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
-
 $fields = \Components\Members\Models\Profile\Field::all()
     ->including(['options', function ($option) {
         $option

@@ -27,7 +27,7 @@ class Tags extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'entries');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'entries';
         }
         $task = \Hubzero\Facades\Request::getCmd('task', '');
@@ -56,7 +56,6 @@ class Tags extends AbstractComponent
         }
 
         // Include scripts
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Initiate controller

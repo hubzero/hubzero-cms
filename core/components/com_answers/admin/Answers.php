@@ -28,7 +28,7 @@ class Answers extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'questions');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'questions';
         }
 
@@ -43,7 +43,6 @@ class Answers extends AbstractComponent
             ($controllerName == 'answers')
         );
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // initiate controller

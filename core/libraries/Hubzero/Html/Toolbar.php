@@ -185,27 +185,16 @@ class Toolbar extends Obj
         }
 
         $buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
-        if (!class_exists($buttonClass)) {
-            $dirs = isset($this->_buttonPath) ? $this->_buttonPath : array();
-            $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))  .
-                '.php';
-
-            if ($buttonFile = $this->find($dirs, $file)) {
-                include_once $buttonFile;
-            } else {
-                throw new \InvalidArgumentException(
-                    \Hubzero\Facades\Lang::txt(
-                        'JLIB_HTML_BUTTON_NO_LOAD',
-                        $buttonClass,
-                        $buttonFile
-                    ),
-                    500
-                );
-            }
-        }
 
         if (!class_exists($buttonClass)) {
-            throw new \Exception("Module file $buttonFile does not contain class $buttonClass.", 500);
+            throw new \InvalidArgumentException(
+                \Hubzero\Facades\Lang::txt(
+                    'JLIB_HTML_BUTTON_NO_LOAD',
+                    $buttonClass,
+                    ''
+                ),
+                500
+            );
         }
 
         $this->_buttons[$signature] = new $buttonClass($this);

@@ -737,26 +737,6 @@ class Elements
         $elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 
         if (!class_exists($elementClass)) {
-            if (isset($this->_elementPath)) {
-                $dirs = $this->_elementPath;
-            } else {
-                $dirs = array();
-            }
-
-            $source = str_replace('_', DS, $type) . '.php';
-            $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*'
-                . '([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
-            preg_match($pattern, (string) $source, $matches);
-            $file = @ (string) $matches[0];
-
-            if ($elementFile = \Hubzero\Facades\Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
-        if (!class_exists($elementClass)) {
             return false;
         }
 

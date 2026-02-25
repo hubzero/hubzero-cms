@@ -281,8 +281,6 @@ if (!$tmpl && !$no_html) {
                 <label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
                 <select name="fields[folder_id]" id="field-folder_id">
                     <?php
-                    include_once Component::path('com_support') . DS . 'models' . DS . 'queryfolder.php';
-
                     $folders = \Components\Support\Models\QueryFolder::all()
                         ->whereEquals('user_id', User::get('id'))
                         ->order('ordering', 'ASC')

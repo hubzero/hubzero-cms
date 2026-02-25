@@ -24,10 +24,9 @@ class Support extends AbstractComponent
     protected function execute(): void
     {
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'index'));
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'index';
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

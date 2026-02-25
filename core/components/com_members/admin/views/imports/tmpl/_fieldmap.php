@@ -123,9 +123,6 @@ if ($this->import->get('id')) { ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_PROFILE'); ?>">
                                 <?php
-                                include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS .
-                                'field.php';
-
                                 $fields = \Components\Members\Models\Profile\Field::all()
                                     ->ordered()
                                     ->rows();

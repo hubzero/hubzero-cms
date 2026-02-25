@@ -10,7 +10,6 @@
 defined('_HZEXEC_') or die();
 
 // Initiasile related data.
-require_once Component::path('com_menus') . '/helpers/menus.php';
 $menuTypes = \Components\Menus\Helpers\Menus::getMenuLinks();
 ?>
         <fieldset class="adminform">

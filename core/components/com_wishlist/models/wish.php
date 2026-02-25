@@ -516,8 +516,6 @@ class Wish extends Relational
                     continue;
                 }
 
-                include_once __DIR__ . '/adapters/' . $file;
-
                 // Derive the class name from the type
                 $cls = __NAMESPACE__ . '\\Adapters\\' . str_ireplace('.php', '', ucfirst(trim($file)));
 

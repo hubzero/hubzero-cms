@@ -75,10 +75,6 @@ if ($this->import->get('id')) { ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">
                                 <?php
-                                $path = Component::path('com_groups')
-                                    . DS . 'models' . DS . 'orm' . DS . 'field.php';
-                                include_once $path;
-
                                 $fields = \Components\Groups\Models\Orm\Field::all()
                                     ->ordered()
                                     ->rows();

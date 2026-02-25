@@ -30,11 +30,10 @@ class Redirect extends AbstractComponent
 
         // Include controller
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'links'));
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Controller "%s" not found.', $controllerName));
             return;
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller

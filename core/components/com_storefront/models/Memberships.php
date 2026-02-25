@@ -84,20 +84,14 @@ class Memberships
      */
     public static function getSubscriptionObject($type, $pId, $uId)
     {
-        // Find if there is a corresponding object
-        $lookupPath = dirname(dirname(__DIR__)) . DS . 'com_storefront';
-        $lookupPath .= DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions';
-
         $objectClass = str_replace(' ', '_', ucwords(strtolower($type)));
         $objectClass .= '_Subscription';
 
-        if (!file_exists($lookupPath . DS . $objectClass . '.php')) {
-            $objectClass = 'BaseSubscription';
-        }
-
-        require_once $lookupPath . DS . $objectClass . '.php';
-
         $fqcn = '\Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\' . $objectClass;
+
+        if (!class_exists($fqcn)) {
+            $fqcn = '\Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\BaseSubscription';
+        }
 
         return new $fqcn($pId, $uId);
     }

@@ -465,15 +465,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $scope . '.php';
-
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(
-                        Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
-                    );
-                }
-
-                include_once $path;
+                throw new \InvalidArgumentException(
+                    Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
+                );
             }
 
             $this->adapter = with(new $cls($this->get('scope_id')))

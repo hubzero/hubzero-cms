@@ -211,7 +211,7 @@ class Arguments
     public static function routeCommand($command = 'help')
     {
         // Aliases take precedence, so parse for them first
-        if ($aliases = Config::get('aliases')) {
+        if ($aliases = \Hubzero\Facades\Config::get('aliases')) {
             if (property_exists($aliases, $command)) {
                 if (strpos($aliases->$command, '::') !== false) {
                     $bits      = explode('::', $aliases->$command);
@@ -259,17 +259,6 @@ class Arguments
                 }
             }
 
-            // Check for existence
-            if (!class_exists($namespace) && !empty($paths)) {
-                foreach ($paths as $path) {
-                    $path = strtolower($path);
-                    if (file_exists($path . '.php')) {
-                        require_once $path . '.php';
-                        break;
-                    }
-                }
-            }
-
             if (class_exists($namespace)) {
                 $class = $namespace;
                 break;
@@ -294,7 +283,7 @@ class Arguments
     public static function routeTask($command, $class, $task = 'execute')
     {
         // Aliases take precedence, so parse for them first
-        if ($aliases = Config::get('aliases')) {
+        if ($aliases = \Hubzero\Facades\Config::get('aliases')) {
             if (property_exists($aliases, $command)) {
                 if (strpos($aliases->$command, '::') !== false) {
                     $bits = explode('::', $aliases->$command);

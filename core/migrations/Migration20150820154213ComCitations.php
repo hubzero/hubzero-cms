@@ -17,24 +17,10 @@ use Components\Citations\Models\Format;
 class Migration20150820154213ComCitations extends Base
 {
     /**
-     * Needed models
-     *
-     * @var  string
-     **/
-    private static $file = PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'models' . DS . 'format.php';
-
-    /**
      * Up
      **/
     public function up()
     {
-        if (!file_exists(self::$file)) {
-            $this->log('Required citation model not found.', 'error');
-            return;
-        }
-
-        require_once self::$file;
-
         // get all formats on the hub
         $formats = Format::all();
         $ieee = false; // flag for IEEE format
@@ -88,13 +74,6 @@ class Migration20150820154213ComCitations extends Base
      **/
     public function down()
     {
-        if (!file_exists(self::$file)) {
-            $this->log('Required citation model not found.', 'error');
-            return;
-        }
-
-        require_once self::$file;
-
         // get all formats on the hub
         $formats = Format::all();
         $ieee = false; // flag for IEEE format

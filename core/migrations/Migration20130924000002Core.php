@@ -339,16 +339,12 @@ class Migration20130924000002Core extends Base
                 ->execute();
 
             // If we have the nested set class available, use it to rebuild lft/rgt
-            if (file_exists(PATH_CORE . '/components/com_categories/models/category.php')) {
-                include_once PATH_CORE . '/components/com_categories/models/category.php';
-
-                if (
-                    class_exists('Components\Categories\Models\Category')
-                    && method_exists('Components\Categories\Models\Category', 'rebuild')
-                ) {
-                    $table = \Components\Categories\Models\Category::blank();
-                    $table->rebuild(1);
-                }
+            if (
+                class_exists('Components\Categories\Models\Category')
+                && method_exists('Components\Categories\Models\Category', 'rebuild')
+            ) {
+                $table = \Components\Categories\Models\Category::blank();
+                $table->rebuild(1);
             }
         }
     }

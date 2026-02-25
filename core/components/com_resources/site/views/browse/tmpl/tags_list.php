@@ -241,8 +241,6 @@ switch ($this->level) {
         $xtra = '';
 
         if ($params->get('show_audience')) {
-            include_once Component::path('com_resources') . DS . 'models' . DS . 'audience.php';
-
             $audience = \Components\Resources\Models\Audience::all()
                 ->whereEquals('rid', $resource->id)
                 ->row();

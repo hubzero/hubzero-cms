@@ -195,8 +195,7 @@ class Registration
         }
 
         //get member addresses
-        /*require_once __DIR__ . DS . 'address.php';
-        $addresses = Address::getAddressesForMember($xprofile->get("uidNumber"));
+        /*$addresses = Address::getAddressesForMember($xprofile->get("uidNumber"));
 
         $this->set('countryresident', $xprofile->get('countryresident'));
         $this->set('countryorigin', $xprofile->get('countryorigin'));

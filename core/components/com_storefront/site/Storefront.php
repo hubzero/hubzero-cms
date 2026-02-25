@@ -28,13 +28,12 @@ class Storefront extends AbstractComponent
         if (empty($controllerName)) {
             // Load default controller if no controller provided
             $controllerName = 'storefront';
-        } elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        } elseif (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('Page Not Found'));
         }
 
         $controllerRequested = $controllerName;
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller and execute

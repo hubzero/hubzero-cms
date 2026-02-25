@@ -53,12 +53,9 @@ class HtmlIcon
      */
     public static function email($article, $params, $attribs = array())
     {
-        $path = Component::path('com_mailto') . '/site/helpers/mailto.php';
-
         $output = '';
 
-        if (file_exists($path)) {
-            require_once $path;
+        if (class_exists('\Components\Mailto\Site\Helpers\Mailto')) {
 
             $base     = Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;

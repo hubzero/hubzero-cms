@@ -29,7 +29,7 @@ class Publications extends AbstractComponent
 
         // get controller name
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'items');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'items';
         }
 
@@ -68,7 +68,6 @@ class Publications extends AbstractComponent
             );
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

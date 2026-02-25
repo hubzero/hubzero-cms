@@ -30,7 +30,7 @@ class Services extends AbstractComponent
         // Include scripts
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'services');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'services';
         }
 
@@ -45,7 +45,6 @@ class Services extends AbstractComponent
             $controllerName == 'subscriptions'
         );
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Initiate controller

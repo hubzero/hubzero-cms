@@ -237,35 +237,31 @@ class Migration20151001185523ComKb extends Base
     {
         $id = 0;
 
-        if (is_file(\Hubzero\Facades\Component::path('com_categories') . DS . 'models' . DS . 'category.php')) {
-            include_once \Hubzero\Facades\Component::path('com_categories') . DS . 'models' . DS . 'category.php';
+        // NOTE: We're using a model to do this as creating an entry involves
+        // multiple queries due to the 'nested set' structure of the table
+        $tbl = \Components\Categories\Models\Category::blank();
+        $tbl->set('title', $category->title);
+        $tbl->set('alias', $category->alias);
+        $tbl->set('description', $category->description);
+        $tbl->set('extension', 'com_kb');
+        $tbl->set('published', $category->state);
+        $tbl->set('access', $category->access);
+        $tbl->set('parent_id', ($category->section ? $category->section : 1));
+        $tbl->set('language', '*');
+        $tbl->set('level', $category->level);
+        $tbl->set('path', $category->path);
+        $tbl->set('note', '');
+        $tbl->set('metakey', '');
+        $tbl->set('metadesc', '');
+        $tbl->set('metadata', '');
+        $tbl->set('params', '');
 
-            // NOTE: We're using a model to do this as creating an entry involves
-            // multiple queries due to the 'nested set' structure of the table
-            $tbl = \Components\Categories\Models\Category::blank();
-            $tbl->set('title', $category->title);
-            $tbl->set('alias', $category->alias);
-            $tbl->set('description', $category->description);
-            $tbl->set('extension', 'com_kb');
-            $tbl->set('published', $category->state);
-            $tbl->set('access', $category->access);
-            $tbl->set('parent_id', ($category->section ? $category->section : 1));
-            $tbl->set('language', '*');
-            $tbl->set('level', $category->level);
-            $tbl->set('path', $category->path);
-            $tbl->set('note', '');
-            $tbl->set('metakey', '');
-            $tbl->set('metadesc', '');
-            $tbl->set('metadata', '');
-            $tbl->set('params', '');
+        $tbl->assetRules = new \Hubzero\Access\Rules(array());
+        $tbl->setNameSpace('com_kb');
 
-            $tbl->assetRules = new \Hubzero\Access\Rules(array());
-            $tbl->setNameSpace('com_kb');
+        $tbl->save();
 
-            $tbl->save();
-
-            $id = $tbl->get('id');
-        }
+        $id = $tbl->get('id');
 
         return $id;
     }

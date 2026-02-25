@@ -266,14 +266,6 @@ class View extends AbstractView
     public function __call($method, $parameters)
     {
         if (!static::hasHelper($method)) {
-            foreach ($this->_path['helper'] as $path) {
-                $file = $path . DIRECTORY_SEPARATOR . $method . '.php';
-                if (file_exists($file)) {
-                    include_once $file;
-                    break;
-                }
-            }
-
             // Namespaced
             $invokable1 = '\\Plugins\\' .
                 ucfirst($this->_folder) .

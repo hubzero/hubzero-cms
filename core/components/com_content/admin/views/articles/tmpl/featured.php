@@ -9,7 +9,6 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path($this->option) . '/admin/helpers/permissions.php';
 $canDo = \Components\Content\Admin\Helpers\Permissions::getActions($this->filters['category_id']);
 
 Toolbar::title(Lang::txt('COM_CONTENT_FEATURED_TITLE'), 'featured');

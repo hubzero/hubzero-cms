@@ -187,22 +187,6 @@ class BlockElements extends Obj
 
         $elementClass = __NAMESPACE__ . '\\BlockElement\\' . ucfirst($name);
         if (!class_exists($elementClass)) {
-            if (isset($this->_path)) {
-                $dirs = $this->_path;
-            } else {
-                $dirs = array();
-            }
-
-            $file = Filesystem::clean(str_replace('_', DS, $name) . '.php', 'path');
-
-            if ($elementFile = Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
-        if (!class_exists($elementClass)) {
             return false;
         }
 

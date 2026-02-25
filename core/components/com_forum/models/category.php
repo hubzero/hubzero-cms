@@ -393,11 +393,7 @@ class Category extends Relational
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
             $this->adapter = new $cls($this->get('scope_id'));

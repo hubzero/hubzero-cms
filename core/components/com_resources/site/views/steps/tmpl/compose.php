@@ -25,8 +25,6 @@ if (count($matches) > 0) {
 $this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
 $this->row->fulltxt = trim($this->row->fulltxt);
 
-include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-
 $elements = new \Components\Resources\Models\Elements($data, $type->get('customFields'));
 $fields = $elements->render();
 

@@ -163,15 +163,7 @@ class Document extends Obj
         $renderClass = '\\Components\\Groups\\Helpers\\Document\\Renderer\\'
             . ucfirst($type);
 
-        // build path to renderer
-        $path = __DIR__ . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
-
-        // include renderer if exists
-        if (file_exists($path)) {
-            require_once $path;
-        }
-
-        // if we still dont have a class return null
+        // if we dont have a class return null
         if (!class_exists($renderClass)) {
             return null;
         }

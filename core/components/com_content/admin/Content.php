@@ -47,10 +47,9 @@ class Content extends AbstractComponent
             \Hubzero\Facades\Route::url('index.php?option=com_categories&extension=com_content')
         );
 
-        if (!file_exists(__DIR__ . '/controllers/' . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = $defaultController;
         }
-        require_once __DIR__ . '/controllers/' . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         $controller = new $controllerName();

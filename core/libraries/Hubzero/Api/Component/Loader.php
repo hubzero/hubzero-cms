@@ -91,21 +91,12 @@ class Loader extends Base
                     }
                 }
 
-                $path       = PATH_COMPONENT .
-                    DIRECTORY_SEPARATOR .
-                    'controllers' .
-                    DIRECTORY_SEPARATOR .
-                    $controller .
-                    '.php';
                 $controllerClass = '\\Components\\' .
                     ucfirst(substr($option, 4)) .
                     '\\Api\\Controllers\\' .
                     ucfirst($controller);
 
-                // Include the file
-                if (file_exists($path)) {
-                    require_once $path;
-                }
+                // Class will be autoloaded by ClassLoader
             }
 
             // Check to see if the class exists

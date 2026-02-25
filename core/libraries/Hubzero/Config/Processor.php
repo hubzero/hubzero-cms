@@ -75,7 +75,7 @@ abstract class Processor
                 $class = __NAMESPACE__ . '\\Processor\\' . ucfirst($type);
 
                 if (!class_exists($class)) {
-                    include_once $path;
+                    continue;
                 }
 
                 self::$instances[$type] = new $class();

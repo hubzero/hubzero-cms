@@ -37,7 +37,7 @@ class Menus extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'menus'));
-        if (!file_exists(__DIR__ . '/controllers/' . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'menus';
         }
 
@@ -52,7 +52,6 @@ class Menus extends AbstractComponent
             $controllerName == 'items'
         );
 
-        require_once __DIR__ . '/controllers/' . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller

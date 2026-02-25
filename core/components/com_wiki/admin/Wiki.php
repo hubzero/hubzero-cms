@@ -30,10 +30,9 @@ class Wiki extends AbstractComponent
 
         // Initiate controller
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'pages');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'pages';
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         \Hubzero\Facades\Submenu::addEntry(

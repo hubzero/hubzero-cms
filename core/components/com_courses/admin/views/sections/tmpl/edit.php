@@ -128,7 +128,6 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     <?php echo $selectTxt; ?>
                                 </option>
                                 <?php
-                                    require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
                                     $model = \Components\Courses\Models\Courses::getInstance();
                                 if ($model->courses()->total() > 0) {
                                     foreach ($model->courses() as $course) {

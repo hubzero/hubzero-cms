@@ -956,23 +956,7 @@ class ApiController implements ControllerInterface
 
         // Make sure the class exists
         if (!class_exists($model)) {
-            $file = explode('\\', $model);
-            $file = strtolower(end($file));
-
-            $path = \Hubzero\Facades\Component::path($this->_option) . '/models/' . $file . '.php';
-            $can_path = realpath($path);
-            if ($can_path != $path) {
-                App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND', $model));
-            }
-            if (is_readable($path)) {
-                require_once $path;
-            } else {
-                App::abort(500, 'Required file is not readable', $model);
-            }
-
-            if (!class_exists($model)) {
-                App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
-            }
+            App::abort(500, Lang::txt('JLIB_APPLICATION_ERROR_MODEL_GET_NAME', $model));
         }
 
         return new $model();

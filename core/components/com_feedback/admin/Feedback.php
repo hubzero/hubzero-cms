@@ -28,7 +28,6 @@ class Feedback extends AbstractComponent
         }
 
         $controllerName = 'quotes';
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Initiate controller

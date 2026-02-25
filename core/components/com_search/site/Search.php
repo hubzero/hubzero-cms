@@ -43,11 +43,10 @@ class Search extends AbstractComponent
             $controllerName = $force;
         }
 
-        if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if ($fallback || !class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'basic';
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller

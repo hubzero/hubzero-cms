@@ -71,18 +71,15 @@ class Importer
      */
     private function bootAdapters()
     {
-        // include all adapters
+        $this->adapters = array();
+
         foreach (glob(__DIR__ . DS . 'Import' . DS . 'Adapter' . DS . '*.php') as $adapter) {
-            require_once $adapter;
+            $class = __NAMESPACE__ . '\\Import\\Adapter\\' . basename($adapter, '.php');
+
+            if (class_exists($class) && in_array('Hubzero\Content\Import\Adapter', class_implements($class))) {
+                $this->adapters[] = $class;
+            }
         }
-
-        // anonymous function to get adapters
-        $isAdapterClass = function ($class) {
-            return (in_array('Hubzero\Content\Import\Adapter', class_implements($class)));
-        };
-
-        // set our adapters (any declared class implementing the ResourcesImportInterface)
-        $this->adapters = array_values(array_filter(get_declared_classes(), $isAdapterClass));
     }
 
     /**

@@ -25,7 +25,6 @@ class Request extends ComponentController
         $response = new \stdClass();
         $response->status = 'ok';
 
-        include_once \Hubzero\Facades\Component::path($this->option) . DS . 'models' . DS . 'cart.php';
         $cart = new \Components\Cart\Models\CurrentCart();
 
         // update cart

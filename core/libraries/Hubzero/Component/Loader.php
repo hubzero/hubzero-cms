@@ -337,9 +337,7 @@ class Loader
         $namespace = 'Components\\' . ucfirst($component) . '\Site\Controllers';
         $class = ucfirst($controller);
 
-        if (file_exists($path . "/controllers/{$controller}.php")) {
-            require_once($path . "/controllers/{$controller}.php");
-        } else {
+        if (!class_exists($namespace . '\\' . $class)) {
             eval("namespace {$namespace}; class {$class} extends \\Hubzero\\Component\\DefaultSiteController\n{\n}\n");
         }
 

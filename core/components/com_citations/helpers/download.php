@@ -212,9 +212,6 @@ class Download
         if (!$formatter || !is_object($formatter)) {
             $cls = '\\Components\\Citations\\Download\\' . $format;
 
-            if (is_file(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php')) {
-                include_once dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php';
-            }
             if (!class_exists($cls)) {
                 throw new Exception(Lang::txt('Download format unavailable.'), 500);
             }

@@ -30,10 +30,9 @@ class Developer extends AbstractComponent
 
         // Make extra sure that controller exists
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'applications');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'applications';
         }
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
         // Add some submenu items
         \Hubzero\Facades\Submenu::addEntry(

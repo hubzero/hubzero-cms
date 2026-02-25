@@ -28,7 +28,7 @@ class Members extends AbstractComponent
         }
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'members');
-        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'members';
         }
 
@@ -36,7 +36,6 @@ class Members extends AbstractComponent
         \Components\Members\Admin\Helpers\MembersHelper::addSubmenu($controllerName);
 
         // Instantiate controller
-        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         $controller = new $controllerName();

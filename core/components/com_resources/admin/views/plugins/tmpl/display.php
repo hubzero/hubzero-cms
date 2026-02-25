@@ -20,8 +20,6 @@ if ($canDo->get('core.edit.state')) {
     Toolbar::unpublishList();
 }
 
-include_once Component::path('com_plugins') . '/helpers/plugins.php';
-
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', 'com_plugins');
