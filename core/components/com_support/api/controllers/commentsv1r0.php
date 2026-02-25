@@ -20,6 +20,7 @@ use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Log;
 use Hubzero\Facades\User;
+
 /**
  * API controller class for support tickets
  */
@@ -51,7 +52,7 @@ class Commentsv1r0 extends ApiController
      * @param   string  $val  Date string (e.g., 'year', 'month', 'week', 'day', or Y-m-d)
      * @return  string|null
      */
-    private function _toTimestamp($val = null)
+    private function toTimestamp($val = null)
     {
         if ($val) {
             $val = strtolower($val);
@@ -59,7 +60,7 @@ class Commentsv1r0 extends ApiController
             if (strstr($val, ',')) {
                 $vals = explode(',', $val);
                 foreach ($vals as $i => $v) {
-                    $vals[$i] = $this->_toTimestamp(trim($v));
+                    $vals[$i] = $this->toTimestamp(trim($v));
                 }
                 return $vals;
             }
@@ -93,17 +94,21 @@ class Commentsv1r0 extends ApiController
                         . "[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
                     if (preg_match($pattern, $val, $regs)) {
                         // Time already matches pattern
-                    } elseif (preg_match(
-                        "/([0-9]{4})-([0-9]{2})-([0-9]{2})/",
-                        $val,
-                        $regs
-                    )) {
+                    } elseif (
+                        preg_match(
+                            "/([0-9]{4})-([0-9]{2})-([0-9]{2})/",
+                            $val,
+                            $regs
+                        )
+                    ) {
                         $val .= ' 00:00:00';
-                    } elseif (preg_match(
-                        "/([0-9]{4})-([0-9]{2})/",
-                        $val,
-                        $regs
-                    )) {
+                    } elseif (
+                        preg_match(
+                            "/([0-9]{4})-([0-9]{2})/",
+                            $val,
+                            $regs
+                        )
+                    ) {
                         $val .= '-01 00:00:00';
                     }
                     break;
@@ -181,8 +186,8 @@ class Commentsv1r0 extends ApiController
             'tag'        => Request::getWord('tag', ''),
         );
 
-        $filters['opened'] = $this->_toTimestamp(Request::getString('opened', ''));
-        $filters['closed'] = $this->_toTimestamp(Request::getString('closed', ''));
+        $filters['opened'] = $this->toTimestamp(Request::getString('opened', ''));
+        $filters['closed'] = $this->toTimestamp(Request::getString('closed', ''));
 
         $response = new stdClass();
         $response->success  = true;
@@ -268,7 +273,7 @@ class Commentsv1r0 extends ApiController
         // If an existing ticket AND closed AND previously open
         if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open')) {
             // Record the closing time
-            $ticket->set('closed', Date::of('now')->toSql());
+            $ticket->set('closed', \Hubzero\Facades\Date::of('now')->toSql());
         }
 
         // Any tags?
@@ -293,7 +298,7 @@ class Commentsv1r0 extends ApiController
                 $ticket->open();
             }
         }
-        $comment->set('created', Date::of('now')->toSql());
+        $comment->set('created', \Hubzero\Facades\Date::of('now')->toSql());
         $comment->set('created_by', $user->get('uidNumber'));
         $comment->set('access', Request::getInt('access', 0, 'post'));
 

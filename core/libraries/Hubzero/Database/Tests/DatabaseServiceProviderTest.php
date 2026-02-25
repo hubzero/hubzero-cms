@@ -13,8 +13,6 @@ namespace Hubzero\Database {
         {
             public static array $values = [];
 
-use Hubzero\Facades\Config;
-
             public static function get($key, $default = null)
             {
                 return self::$values[$key] ?? $default;
@@ -28,6 +26,7 @@ use Hubzero\Facades\Config;
 }
 
 namespace Hubzero\Database\Tests {
+
 
     use Hubzero\Database\Config;
     use Hubzero\Database\DatabaseServiceProvider;
