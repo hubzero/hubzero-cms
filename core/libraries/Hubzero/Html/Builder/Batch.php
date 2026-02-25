@@ -94,7 +94,7 @@ class Batch
             '</label>',
             '<select name="batch[language_id]" class="inputbox" id="batch-language-id">',
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>',
-            Select::options(ContentLanguage::existing(true, true), 'value', 'text'),
+            Select::options(Contentlanguage::existing(true, true), 'value', 'text'),
             '</select>'
         );
 
