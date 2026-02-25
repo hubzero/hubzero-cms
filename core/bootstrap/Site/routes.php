@@ -301,7 +301,7 @@ $router->rules('parse')->append('limit', function ($uri) {
 | further segments.
 */
 $router->rules('parse')->append('menu', function ($uri) {
-    $menu  = App::get('menu');
+    $menu  = \Hubzero\Facades\App::get('menu');
     $route = $uri->getPath();
 
     // Remove the suffix
@@ -614,7 +614,7 @@ $router->rules('parse')->append('redirect', function ($uri) {
     // the $uri by adding/removing vars
     $alturi = new \Hubzero\Utility\Uri($uri->uri());
 
-    $menu  = App::get('menu');
+    $menu  = \Hubzero\Facades\App::get('menu');
 
     $db = \Hubzero\Facades\App::get('db');
     $db->setQuery(

@@ -243,7 +243,7 @@ class Resume extends Plugin
         $title = Request::getString('title', '');
 
         if ($task == 'saveprefs') {
-            $js = new \Components\Jobs\Tables\JobSeeker($database);
+            $js = new \Components\Jobs\Tables\Seeker($database);
 
             if (!$js->loadSeeker($member->get('id'))) {
                 $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
@@ -288,7 +288,7 @@ class Resume extends Plugin
         // are we activating or disactivating?
         $active = Request::getInt('on', 0);
 
-        $js = new \Components\Jobs\Tables\JobSeeker($database);
+        $js = new \Components\Jobs\Tables\Seeker($database);
 
         if (!$js->loadSeeker($member->get('id'))) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
@@ -329,10 +329,10 @@ class Resume extends Plugin
         $self = $member->get('id') == User::get('id') ? 1 : 0;
 
         // get job seeker info on the user
-        $js = new \Components\Jobs\Tables\JobSeeker($database);
+        $js = new \Components\Jobs\Tables\Seeker($database);
         if (!$js->loadSeeker($member->get('id'))) {
             // make a new entry
-            $js = new \Components\Jobs\Tables\JobSeeker($database);
+            $js = new \Components\Jobs\Tables\Seeker($database);
             $js->uid = $member->get('id');
             $js->active = 0;
 
@@ -349,8 +349,8 @@ class Resume extends Plugin
             }
         }
 
-        $jt = new \Components\Jobs\Tables\JobType($database);
-        $jc = new \Components\Jobs\Tables\JobCategory($database);
+        $jt = new \Components\Jobs\Tables\Type($database);
+        $jc = new \Components\Jobs\Tables\Category($database);
 
         // get active resume
         $resume = new \Components\Jobs\Tables\Resume($database);
@@ -365,7 +365,7 @@ class Resume extends Plugin
         }
 
         // get seeker stats
-        $jobstats = new \Components\Jobs\Tables\JobStats($database);
+        $jobstats = new \Components\Jobs\Tables\Stats($database);
         $stats = $jobstats->getStats($member->get('id'), 'seeker');
 
         $view = $this->view('default', 'resume');
@@ -507,7 +507,7 @@ class Resume extends Plugin
             Filesystem::delete($path . DS . $row->filename);
 
             // Remove stats for prev resume
-            $jobstats = new \Components\Jobs\Tables\JobStats($database);
+            $jobstats = new \Components\Jobs\Tables\Stats($database);
             $jobstats->deleteStats($member->get('id'), 'seeker');
         }
 
@@ -573,11 +573,11 @@ class Resume extends Plugin
                 $row->delete();
 
                 // Remove stats for prev resume
-                $jobstats = new \Components\Jobs\Tables\JobStats($database);
+                $jobstats = new \Components\Jobs\Tables\Stats($database);
                 $jobstats->deleteStats($member->get('id'), 'seeker');
 
                 // Do not include profile in search without a resume
-                $js = new \Components\Jobs\Tables\JobSeeker($database);
+                $js = new \Components\Jobs\Tables\Seeker($database);
                 $js->loadSeeker($member->get('id'));
                 $js->bind(array('active' => 0));
                 if (!$js->store()) {
@@ -632,7 +632,7 @@ class Resume extends Plugin
 
             if ($ajax) {
                 // get seeker info
-                $js = new \Components\Jobs\Tables\JobSeeker($database);
+                $js = new \Components\Jobs\Tables\Seeker($database);
                 $seeker = $js->getSeeker($oid, User::get('id'));
 
                 $view = $this->view('seeker', 'resume');
@@ -760,7 +760,7 @@ class Resume extends Plugin
         $xserver->filename($file);
 
         // record view
-        $stats = new \Components\Jobs\Tables\JobStats($database);
+        $stats = new \Components\Jobs\Tables\Stats($database);
         if (User::get('id') != $uid) {
             $stats->saveView($uid, 'seeker');
         }

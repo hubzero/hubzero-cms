@@ -1277,7 +1277,7 @@ class Connections
         }
 
         // Look for plugins that know how to handle them
-        $plugins = \Plugin::byType('metadata');
+        $plugins = Plugin::byType('metadata');
 
         if (count($plugins) == 0) {
             \Hubzero\Facades\Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ANNOTATION_PLUGINS'), 'error', 'projects');
