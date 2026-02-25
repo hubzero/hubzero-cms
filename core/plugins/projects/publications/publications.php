@@ -1792,7 +1792,7 @@ class Publications extends Plugin
                     $pub->_curationModel->transfer($pub, $pub->version, $new);
 
                     // Set response message
-                    $this->set('_msg', Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
+                    $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
 
                     // Set activity message
                     $pubTitle = Str::truncate($new->title, 100);

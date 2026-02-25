@@ -13,7 +13,7 @@ use Hubzero\Form\Form;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
-use Hubzero\Facades\Module;
+use Components\Menus\Models\Module;
 
 /**
  * Menu type model

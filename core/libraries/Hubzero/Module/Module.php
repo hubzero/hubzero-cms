@@ -17,6 +17,7 @@ use Hubzero\Facades\App;
  */
 class Module
 {
+    use \Hubzero\Base\Traits\ErrorBag;
     use \Hubzero\Base\Traits\AssetAware;
     use \Hubzero\Base\Traits\Escapable;
 
