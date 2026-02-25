@@ -99,8 +99,7 @@
         "psr-4": {
             "Hubzero\\": "libraries/Hubzero/",
             "Bootstrap\\": "bootstrap/"
-        },
-        "files": [ "bootstrap/app.php" ]
+        }
     },
     "config": {
         "preferred-install": "dist",
