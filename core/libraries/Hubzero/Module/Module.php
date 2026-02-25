@@ -8,7 +8,6 @@
 
 namespace Hubzero\Module;
 
-use Hubzero\Base\Obj;
 use Hubzero\Document\Assets;
 use Hubzero\Utility\Date;
 use App;
@@ -16,8 +15,9 @@ use App;
 /**
  * Base class for modules
  */
-class Module extends Obj
+class Module
 {
+    use \Hubzero\Base\Traits\ErrorBag;
     use \Hubzero\Base\Traits\AssetAware;
     use \Hubzero\Base\Traits\Escapable;
 
