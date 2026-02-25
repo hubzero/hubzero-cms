@@ -14,6 +14,7 @@ use Components\Billboards\Models\Collection;
 use Request;
 use Notify;
 use Route;
+use Cache;
 use Lang;
 use User;
 use App;

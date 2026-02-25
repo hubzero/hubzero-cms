@@ -355,7 +355,7 @@ class Nogit extends Obj
             return false;
         }
 
-        $file_obj = new Models\File($file, $this->path);
+        $file_obj = new \Components\Projects\Models\File($file, $this->path);
         $out = '';
 
         // Set exec command for retrieving different commit information

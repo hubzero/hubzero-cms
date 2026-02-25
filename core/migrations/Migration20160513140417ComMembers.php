@@ -200,7 +200,7 @@ class Migration20160513140417ComMembers extends Base
                 }
 
                 foreach ($addresses as $address) {
-                    $a = new stdClass();
+                    $a = new \stdClass();
                     $a->address1  = $address->address1;
                     $a->address2  = $address->address2;
                     $a->city      = $address->addressCity;

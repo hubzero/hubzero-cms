@@ -114,7 +114,7 @@ class Google extends \Hubzero\Plugin\OauthClient
         $options['return'] = $b64dreturn;
 
         // Set up the config for the google api instance
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId($this->params->get('app_id'));
         $client->setClientSecret($this->params->get('app_secret'));
         $client->setRedirectUri(self::getRedirectUri('google'));
@@ -157,7 +157,7 @@ class Google extends \Hubzero\Plugin\OauthClient
     public function display($view, $tpl)
     {
         // Set up the config for the google api instance
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId($this->params->get('app_id'));
         $client->setClientSecret($this->params->get('app_secret'));
         $client->setRedirectUri(self::getRedirectUri('google'));
@@ -197,12 +197,12 @@ class Google extends \Hubzero\Plugin\OauthClient
     public function onUserAuthenticate($credentials, $options, &$response)
     {
         // Set up the config for the google api instance
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId($this->params->get('app_id'));
         $client->setClientSecret($this->params->get('app_secret'));
 
         // Create OAuth2 Instance
-        $oauth2 = new Google_Service_Oauth2($client);
+        $oauth2 = new \Google_Service_Oauth2($client);
 
         // Check if there's an active token in the session
         $session = App::get('session');
@@ -286,13 +286,13 @@ class Google extends \Hubzero\Plugin\OauthClient
     public function link($options = array())
     {
         // Set up the config for the google api instance
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId($this->params->get('app_id'));
         $client->setClientSecret($this->params->get('app_secret'));
         $client->setRedirectUri(self::getRedirectUri('google'));
 
         // Create OAuth2 Instance
-        $oauth2 = new Google_Service_Oauth2($client);
+        $oauth2 = new \Google_Service_Oauth2($client);
 
         // A code this browser did not ask for is not redeemed: redeemed in a
         // victim's session it would link someone else's Google account to theirs.

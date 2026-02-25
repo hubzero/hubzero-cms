@@ -54,7 +54,7 @@ class DefaultHomePage extends GroupMacro
         // add required helper lib
 
         // get default home page
-        $html = \GroupsHelperPages::getDefaultHomePage($this->group);
+        $html = \Components\Groups\Helpers\Pages::getDefaultHomePage($this->group);
 
         //return rendered events
         return $html;

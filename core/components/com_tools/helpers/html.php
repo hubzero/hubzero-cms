@@ -462,7 +462,7 @@ class Html
      */
     public static function getGroups($groups, $obj = 1, $list = '')
     {
-        if (is_array($groups) || $groups instanceof Traversable) {
+        if (is_array($groups) || $groups instanceof \Traversable) {
             foreach ($groups as $group) {
                 $cn = ($obj) ? $group->cn : $group;
                 $list .= ($group != end($groups)) ? $cn . ', ' : $cn;

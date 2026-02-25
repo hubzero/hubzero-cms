@@ -26,6 +26,6 @@ class Cache extends Plugin
             return;
         }
 
-        Cache::gc();
+        \Cache::gc();
     }
 }

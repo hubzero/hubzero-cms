@@ -8,6 +8,7 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Request;
 use App;
 use Lang;
 // Unimported, Request resolved to this namespace's Request controller

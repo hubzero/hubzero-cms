@@ -413,7 +413,7 @@ class Mysql implements
     public function unsetRefreshToken($refresh_token)
     {
         // create refresh token
-        $token = \Components\Developer\Models\RefreshToken::oneByToken($refresh_token);
+        $token = \Components\Developer\Models\Refreshtoken::oneByToken($refresh_token);
 
         // make sure we have a token
         if (!$token->get('id')) {

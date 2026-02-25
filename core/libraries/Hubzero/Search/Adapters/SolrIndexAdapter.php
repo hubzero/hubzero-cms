@@ -134,7 +134,7 @@ class SolrIndexAdapter implements IndexInterface
             if (isset($pong['status']) && $pong['status'] === "OK") {
                 return true;
             }
-        } catch (\Solarium\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

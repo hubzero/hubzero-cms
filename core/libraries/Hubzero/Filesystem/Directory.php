@@ -75,7 +75,7 @@ class Directory extends Entity
         $contents = $this->hasAdapterOrFail()->adapter->listContents($this->getPath(), false);
         foreach ($contents as $item) {
             if ($item->isDir()) {
-                $thisDir = new stdClass();
+                $thisDir = new \stdClass();
                 $thisDir->depth = $depth;
                 $thisDir->subdirs = $item->getSubDirs($depth + 1);
                 $thisDir->name = $item->getDisplayName();
