@@ -10,6 +10,7 @@ namespace Components\Newsletter\Helpers;
 
 use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;
+use Components\Newsletter\Secrets\PageCode;
 
 class CodeHelper
 {
@@ -46,10 +47,7 @@ class CodeHelper
     // Validate code obtained from user's URL, using email subscription page id
     public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
     {
-        require_once \Hubzero\Facades\Component::path('com_newsletter') . '/secrets/page_code.php';
-
-        // Acquire page Id for email subscription:
-        $emailSubsPageId = PAGE_CODE['email_subscriptions_page_id'];
+        $emailSubsPageId = PageCode::$emailSubscriptionsPageId;
 
         // Validate user-supplied URL and code for this page:
         return self::validateCode($username, $campaignId, $emailSubsPageId, $code);
