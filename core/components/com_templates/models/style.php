@@ -9,8 +9,10 @@
 namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Config\FileWriter;
 use Hubzero\Config\Registry;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
 
 /**
  * Template style model
@@ -160,7 +162,61 @@ class Style extends Relational
             $query->execute();
         }
 
-        return parent::save();
+        $result = parent::save();
+
+        // The config file is the loader's fallback when the database cannot
+        // answer, so it has to follow every change of default
+        if ($result && $this->get('home')) {
+            $this->syncTemplateConfig();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Write the default template's name to app/config/app.php.
+     *
+     * client_id 0 maps to site_template, client_id 1 to administrator_template.
+     * Best effort: an unwritable config file is logged, not treated as a
+     * failed save - the database remains the primary source.
+     *
+     * @return  bool  Whether the file was updated
+     */
+    public function syncTemplateConfig()
+    {
+        $key = ((int)$this->get('client_id') === 1) ? 'administrator_template' : 'site_template';
+
+        $configPath = PATH_APP . DS . 'config';
+        $configFile = $configPath . DS . 'app.php';
+
+        if (!is_file($configFile)) {
+            return false;
+        }
+
+        $config = include $configFile;
+
+        if (!is_array($config)) {
+            return false;
+        }
+
+        if (isset($config[$key]) && $config[$key] === $this->get('template')) {
+            return true;
+        }
+
+        $config[$key] = $this->get('template');
+
+        $writer = new FileWriter('php', $configPath);
+
+        if (!$writer->write($config, 'app')) {
+            Log::warning(sprintf(
+                'Default template changed to "%s" but %s could not be updated; the config fallback is stale.',
+                $this->get('template'),
+                $configFile
+            ));
+            return false;
+        }
+
+        return true;
     }
 
     /**

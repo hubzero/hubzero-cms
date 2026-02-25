@@ -331,6 +331,50 @@ class LoaderTest extends TestCase
     }
 
     /**
+     * Test that the configured template name is used when the database cannot answer
+     *
+     * @return  void
+     */
+    public function testConfigFallbackOnDatabaseError()
+    {
+        $driver = $this->getMockDriver('testBad.sqlite3');
+
+        $app = new Application();
+        $app['client'] = new \Hubzero\Base\Client\Site();
+        $app['db']     = $driver;
+        $app['config'] = new Registry([
+            'site_template'          => 'sitefoo',
+            'administrator_template' => 'adminbar'
+        ]);
+
+        $this->loader = new Loader($app, [
+            'path_app'  => __DIR__ . '/Mock/app',
+            'path_core' => __DIR__ . '/Mock/core'
+        ]);
+
+        // Site: named in config, found under core
+        $template = $this->loader->load();
+        $this->assertEquals('sitefoo', $template->template);
+        $this->assertEquals(1, $template->home);
+        $this->assertInstanceOf('Hubzero\Config\Registry', $template->params);
+        $this->assertEquals($this->loader->getPath('core') . DIRECTORY_SEPARATOR . 'sitefoo', $template->path);
+
+        // Administrator: named in config, found under app, which wins over core
+        $template = $this->loader->load('administrator');
+        $this->assertEquals('adminbar', $template->template);
+        $this->assertEquals($this->loader->getPath('app') . DIRECTORY_SEPARATOR . 'adminbar', $template->path);
+
+        // A specific style id cannot be honoured without the database
+        $template = $this->loader->getTemplate(0, 8);
+        $this->assertEquals('system', $template->template);
+
+        // A configured name with no directory behind it falls through to system
+        $app['config'] = new Registry(['site_template' => 'nosuchtemplate']);
+        $template = $this->loader->load();
+        $this->assertEquals('system', $template->template);
+    }
+
+    /**
      * Gets a mock SQLite database driver using the requested fixture database
      *
      * @param   string  $fixture
