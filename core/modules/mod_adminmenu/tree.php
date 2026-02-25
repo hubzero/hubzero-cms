@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\AdminMenu;
+namespace Modules\Adminmenu;
 
 /**
  * Extended class for rendering nested menus

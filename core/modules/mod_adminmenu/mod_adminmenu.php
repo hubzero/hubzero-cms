@@ -32,11 +32,6 @@ class Adminmenu extends Module
             return;
         }
 
-        // Include the module helper classes.
-        if (!class_exists('\\Modules\\AdminMenu\\Tree')) {
-            require __DIR__ . DS . 'tree.php';
-        }
-
         // Initialise variables.
         $lang    = App::get('language');
         $user    = User::getInstance();

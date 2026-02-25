@@ -9,7 +9,6 @@
 namespace Modules\Mycontributions;
 
 use Hubzero\Module\Module;
-use Hubzero\Facades\Component;
 use Hubzero\Facades\User;
 
 /**
@@ -115,10 +114,6 @@ class Mycontributions extends Module
 
                     if ($show_wishes) {
                         // Get open wishes
-                        $wishlistControllerPath = Component::path('com_wishlist') . DS . 'site' .
-                            DS . 'controllers' . DS . 'wishlists.php';
-                        require_once $wishlistControllerPath;
-
                         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource');
                         //$objWish = new \Components\Wishlist\Models\Wish($database);
                         $listid = $wishlist->get('id');
