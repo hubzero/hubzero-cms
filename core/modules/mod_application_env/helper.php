@@ -16,6 +16,8 @@ use Config;
  */
 class Helper extends Module
 {
+    protected $environment;
+
     /**
      * Display module
      *

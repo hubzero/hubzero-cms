@@ -17,6 +17,8 @@ use User;
  */
 class ACL extends Obj
 {
+    protected $user_groups;
+
     /**
      * Current user
      *

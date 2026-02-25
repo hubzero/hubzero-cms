@@ -17,6 +17,10 @@ use Components\Billboards\Models\Billboard;
  */
 class Helper extends Module
 {
+    protected $collection;
+    protected $pager;
+    protected $slides;
+
     /**
      * Tracker for number of instances
      *

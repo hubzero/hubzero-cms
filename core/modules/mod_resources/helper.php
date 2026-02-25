@@ -16,6 +16,13 @@ use App;
  */
 class Helper extends Module
 {
+    protected $draftInternal;
+    protected $draftUser;
+    protected $pending;
+    protected $published;
+    protected $removed;
+    protected $unpublished;
+
     /**
      * Display module contents
      *

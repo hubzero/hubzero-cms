@@ -20,6 +20,12 @@ use Date;
  */
 class Helper extends Module
 {
+    protected $cssClass;
+    protected $cssId;
+    protected $rows;
+    protected $style;
+    protected $tag;
+
     /**
      * Get module contents
      *

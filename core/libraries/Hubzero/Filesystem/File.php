@@ -15,6 +15,11 @@ use Hubzero\Filesystem\Util\MimeType;
  */
 class File extends Entity
 {
+    protected $contents;
+    protected $extension;
+    protected $mimetype;
+    protected $size;
+
     /**
      * Creates a new object using a path as our starting point
      *

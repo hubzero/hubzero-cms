@@ -19,6 +19,9 @@ use Hubzero\Plugin\Plugin;
 
 class Account extends Plugin
 {
+    protected $member;
+    protected $user;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

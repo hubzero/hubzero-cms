@@ -15,6 +15,8 @@ use Hubzero\Base\Obj;
  */
 class Editor extends Obj
 {
+    protected $configs;
+
     /**
      * Handler object
      *

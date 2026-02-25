@@ -18,6 +18,18 @@ use Components\Groups\Tables\Reason;
  */
 class Members extends Plugin
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_option;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_output;
+    protected $action;
+    protected $authorized;
+    protected $database;
+    protected $display_system_users;
+    protected $group;
+    protected $membership_control;
+    protected $name;
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *

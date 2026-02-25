@@ -27,6 +27,10 @@ use User;
  */
 class Commentsv2_1 extends ApiController
 {
+    protected $acl;
+    protected $config;
+    protected $database;
+
     /**
      * Execute a request
      *

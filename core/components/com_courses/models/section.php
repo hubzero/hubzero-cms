@@ -18,6 +18,9 @@ use Date;
  */
 class Section extends Base
 {
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_permissions;
+
     /**
      * Table class name
      *

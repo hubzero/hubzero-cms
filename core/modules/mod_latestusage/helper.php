@@ -15,6 +15,12 @@ use Hubzero\Module\Module;
  */
 class Helper extends Module
 {
+    protected $cls;
+    protected $resources;
+    protected $sims;
+    protected $tools;
+    protected $users;
+
     /**
      * Display module content
      *

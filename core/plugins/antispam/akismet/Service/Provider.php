@@ -128,7 +128,7 @@ class Provider extends AbstractService
      *
      * @var array
      */
-    public $_ignore = array(
+    public $ignore = array(
         'server' => array(
             'HTTP_COOKIE',
             'HTTP_X_FORWARDED_FOR',

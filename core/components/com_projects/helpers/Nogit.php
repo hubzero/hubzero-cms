@@ -19,6 +19,8 @@ use Lang;
  */
 class Nogit extends Obj
 {
+    protected $adapter;
+
     /**
      * User ID
      *

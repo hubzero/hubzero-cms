@@ -14,6 +14,13 @@ namespace Components\Cart\Lib\Payment\Dummy;
 class PaymentProvider
 {
     /**
+     * Payment options
+     *
+     * @var  object
+     */
+    private $options;
+
+    /**
      * List of button vars
      *
      * @var  array

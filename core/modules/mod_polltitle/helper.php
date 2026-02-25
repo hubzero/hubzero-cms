@@ -17,6 +17,8 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $poll;
+
     /**
      * Get module contents
      *

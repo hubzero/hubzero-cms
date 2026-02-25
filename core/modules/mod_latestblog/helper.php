@@ -20,6 +20,11 @@ use Component;
  */
 class Helper extends Module
 {
+    protected $feedlink;
+    protected $limit;
+    protected $posts;
+    protected $pullout;
+
     /**
      * Display module contents
      *

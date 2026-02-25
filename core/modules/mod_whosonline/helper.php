@@ -18,6 +18,11 @@ use App;
  */
 class Helper extends Module
 {
+    protected $guestCount;
+    protected $loggedInCount;
+    protected $loggedInList;
+    protected $rows;
+
     /**
      * Display module contents
      *
