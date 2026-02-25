@@ -28,6 +28,43 @@ class Radio extends Field
 	 *
 	 * @return  string  The field input markup.
 	 */
+	protected function getLabel()
+	{
+		if ($this->hidden)
+		{
+			return '';
+		}
+
+		$text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+		$text = $this->translateLabel ? \App::get('language')->txt($text) : $text;
+
+		$class = !empty($this->description) ? 'hasTip' : '';
+		$class = $this->required == true ? $class . ' required-field' : $class;
+		$class = !empty($this->labelClass) ? $class . ' ' . $this->labelClass : $class;
+
+		$label = '<span id="' . $this->id . '-lbl" class="' . $class . '"';
+
+		if (!empty($this->description))
+		{
+			$label .= ' title="'
+				. htmlspecialchars(
+				trim($text, ':') . '::' . ($this->translateDescription ? \App::get('language')->txt($this->description) : $this->description),
+				ENT_COMPAT, 'UTF-8'
+			) . '"';
+		}
+
+		if ($this->required)
+		{
+			$label .= '>' . $text . ' <span class="required star">' . \App::get('language')->txt('JOPTION_REQUIRED') . '</span></span>';
+		}
+		else
+		{
+			$label .= '>' . $text . '</span>';
+		}
+
+		return $label;
+	}
+
 	protected function getInput()
 	{
 		// Initialize variables.
@@ -36,8 +73,13 @@ class Radio extends Field
 		// Initialize some field attributes.
 		$class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
 
+		// Get the label text for the legend.
+		$legendText = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
+		$legendText = $this->translateLabel ? App::get('language')->txt($legendText) : $legendText;
+
 		// Start the radio field output.
 		$html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+		$html[] = '<legend class="sr-only">' . $legendText . '</legend>';
 
 		// Get the field options.
 		$options = $this->getOptions();
@@ -87,7 +129,7 @@ class Radio extends Field
 			$html[] = '<li>';
 			$html[] = '<input type="radio" id="' . $this->id . ($i + 1) . '" name="' . $this->name . '" value=""' . $checked . $class . $onclick . $disabled . '/>';
 			$html[] = '<label for="' . $this->id . ($i + 1) . '"' . $class . '>' . App::get('language')->txt('JOTHER') . '</label>';
-			$html[] = '<input type="text" id="' . $this->id . '_other" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($checked ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : '') . '"' . $class . $onclick . $disabled . '/>';
+			$html[] = '<input type="text" id="' . $this->id . '_other" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($checked ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : '') . '" aria-label="' . App::get('language')->txt('Other') . '"' . $class . $onclick . $disabled . '/>';
 			$html[] = '</li>';
 		}
 

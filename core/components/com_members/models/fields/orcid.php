@@ -62,8 +62,8 @@ class Orcid extends Text
 
 		$html = array();
 
-		$html[] = '<div class="grid">';
-		$html[] = '	<div class="col span9">';
+		$html[] = '<div class="orcid-field">';
+		$html[] = '	<div class="orcid-input">';
 		$html[] = '		<input ' . $attr . ' placeholder="####-####-####-####" />';
 		$html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
 		$html[] = '	</div>';
@@ -77,8 +77,8 @@ class Orcid extends Text
 		{
 			$profile = \Components\Members\Models\Member::oneOrFail($userID);
 		}
-		
-		$html[] = '	<div class="col span3 omega">';
+
+		$html[] = '	<div class="orcid-actions">';
 		if ($userID != 0 && !empty($profile->get('orcid')))
 		{
 			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ID_AUTHORIZED') . '</p>';
@@ -94,11 +94,9 @@ class Orcid extends Text
 			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt=""/>'
 			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
 		}
-		$html[] = '	</div>';
-		
+
 		// Grant permission to manage ORCID record
 		$permissionURI = $config->get('orcid_' . $srv . '_permission_uri', '');
-		$html[] = '	<div class="col span3 omega">';
 		if ($userID != 0 && !empty($profile->get('orcid')) && !empty($profile->get('access_token')))
 		{
 			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_PERMISSION_AUTHORIZED') . '</p>';
@@ -115,7 +113,7 @@ class Orcid extends Text
 			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
 		}
 		$html[] = '	</div>';
-		
+
 		$html[] = '</div>';
 		$html[] = '<p><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
 

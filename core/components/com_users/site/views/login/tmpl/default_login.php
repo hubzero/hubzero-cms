@@ -128,12 +128,12 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 						<?php else : ?>
 							<div class="label-input-pair username">
 								<label for="username"><?php echo Lang::txt('COM_USERS_LOGIN_USERNAME'); ?>:</label>
-								<input tabindex="1" type="text" name="username" id="username" class="username" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')); ?>" />
+								<input type="text" name="username" id="username" class="username" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')); ?>" />
 							</div>
 						<?php endif; ?>
 						<div class="label-input-pair">
 							<label for="password"><?php echo Lang::txt('COM_USERS_LOGIN_PASSWORD'); ?>:</label>
-							<input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" />
+							<input type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" />
 							<div class="spinner">
 								<div class="bounce1"></div>
 								<div class="bounce2"></div>
