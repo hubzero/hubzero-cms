@@ -8,6 +8,62 @@
 
 namespace Modules\Quotes;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Components\Feedback\Models\Quote;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Date;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying quotes
+ */
+class Quotes extends Module
+{
+    protected $filters;
+    protected $quotes;
+
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+
+        //Get the admin configured settings
+        $this->filters = array(
+            'limit'         => trim($this->params->get('maxquotes', '')),
+            'id'            => Request::getInt('quoteid', 0),
+            'notable_quote' => 1
+        );
+
+        // Get quotes
+        $sq = Quote::all()->whereEquals('notable_quote', 1)->where('quote', 'IS NOT', null)->order('date', 'desc');
+        if ($this->filters['id']) {
+            $sq->whereEquals('id', $this->filters['id']);
+        }
+
+        $this->quotes = $sq->limit($this->filters['limit'])->rows();
+
+        require $this->getLayoutPath($this->module->module);
+    }
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Push the module CSS to the template
+        $this->css()
+             ->js();
+
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
+
+        $this->run();
+    }
+}

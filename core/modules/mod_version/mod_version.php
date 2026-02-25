@@ -8,6 +8,35 @@
 
 namespace Modules\Version;
 
-require_once __DIR__ . '/helper.php';
+use Hubzero\Module\Module;
+use App;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying CMS version
+ */
+class Version extends Module
+{
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        $version = '';
+
+        if ($this->params->get('product', 0)) {
+            $version .= 'HUBzero CMS';
+        }
+
+        if ($this->params->get('format', 'short') == 'short') {
+            $parts = explode('-', HVERSION);
+            $version .= ' ' . array_shift($parts);
+        } else {
+            $version .= ' ' . HVERSION;
+        }
+
+        // Get the view
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}
