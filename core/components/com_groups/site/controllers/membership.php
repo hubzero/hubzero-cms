@@ -1026,10 +1026,12 @@ class Membership extends Base
 
         // Check and store the reason
         if (!$row->check()) {
-            return App::abort(500, $row->getError());
+            App::abort(500, $row->getError());
+            return;
         }
         if (!$row->store()) {
-            return App::abort(500, $row->getError());
+            App::abort(500, $row->getError());
+            return;
         }
 
         // Log the membership request

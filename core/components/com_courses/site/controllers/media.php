@@ -623,7 +623,8 @@ class Media extends SiteController
 
         //check to make sure we can access it
         if (!in_array(User::get('id'), $course->get('members')) || User::isGuest()) {
-            return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
+            App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
+            return;
         }
 
         // Build the path
@@ -634,7 +635,8 @@ class Media extends SiteController
 
         // Ensure the file exist
         if (!file_exists(PATH_APP . DS . $file_path)) {
-            return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
+            App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
+            return;
         }
 
         // Serve up the file
@@ -644,7 +646,8 @@ class Media extends SiteController
         $xserver->acceptranges(false); // @TODO fix byte range support
 
         if (!$xserver->serve()) {
-            return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
+            App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
+            return;
         }
 
         exit;

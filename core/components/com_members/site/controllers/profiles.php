@@ -1256,7 +1256,8 @@ class Profiles extends SiteController
             if (!$msg->send()) {
                 $errMsg = 'xHUB Internal Error: \Error mailing'
                     . ' resource request to site administrator(s).';
-                return App::abort(500, $errMsg);
+                App::abort(500, $errMsg);
+                return;
             }
 
             // Output the view

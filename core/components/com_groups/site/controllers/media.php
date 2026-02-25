@@ -769,12 +769,14 @@ class Media extends Base
 
         // make sure we have a file
         if (!file_exists($source)) {
-            return App::abort(500, Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_LOCATE_SOURCE'));
+            App::abort(500, Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_LOCATE_SOURCE'));
+            return;
         }
 
         // make sure we have a destination
         if (!is_dir($destination) || !is_writable($destination)) {
-            return App::abort(500, Lang::txt('COM_GROUPS_MEDIA_DESTINATION_UNAVAILABLE'));
+            App::abort(500, Lang::txt('COM_GROUPS_MEDIA_DESTINATION_UNAVAILABLE'));
+            return;
         }
 
         // add file name to destination for rename

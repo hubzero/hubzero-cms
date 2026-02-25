@@ -66,7 +66,8 @@ class Redirect extends GroupMacro
 
         // No delay time? Redirect now.
         if (!$delay) {
-            return \Hubzero\Facades\App::redirect($url);
+            \Hubzero\Facades\App::redirect($url);
+            return;
         }
 
         // Delayed redirect

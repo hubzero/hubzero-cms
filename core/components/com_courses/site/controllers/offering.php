@@ -51,7 +51,8 @@ class Offering extends SiteController
             || $this->course->isDeleted()
             || $this->course->isUnpublished();
         if ($courseNotFound) {
-            return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+            App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+            return;
         }
 
         // No offering provided
@@ -72,13 +73,15 @@ class Offering extends SiteController
             || $offeringObj->isDeleted()
             || (!$canManageSection && $offeringObj->isUnpublished())
         ) {
-            return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
+            App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
+            return;
         }
 
         // Ensure the course has been published or has been approved
         $canManage = $this->course->offering()->access('manage', 'section');
         if (!$canManage && !$this->course->isAvailable()) {
-            return App::abort(404, Lang::txt('COM_COURSES_NOT_PUBLISHED'));
+            App::abort(404, Lang::txt('COM_COURSES_NOT_PUBLISHED'));
+            return;
         }
 
         parent::execute();
@@ -174,7 +177,8 @@ class Offering extends SiteController
         $canManage = $this->course->offering()->access('manage', 'section');
         $isAvailable = $this->course->offering()->isAvailable();
         if (!$canManage && !$isAvailable) {
-            return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
+            App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
+            return;
         }
 
         $tmpl = $this->config->get('tmpl', '');
@@ -484,7 +488,8 @@ class Offering extends SiteController
         $sectionPublished = $this->course->offering()->section()->isPublished();
         if (!$canManage && (!$offeringPublished || !$sectionPublished)) {
             $unavailableMsg = Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE');
-            return App::abort(403, $unavailableMsg);
+            App::abort(403, $unavailableMsg);
+            return;
         }
 
         $canManageAsset = $this->course->offering()->access('manage');
