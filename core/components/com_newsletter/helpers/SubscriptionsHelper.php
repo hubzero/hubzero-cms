@@ -13,6 +13,13 @@ use Hubzero\Facades\App;
 
 class SubscriptionsHelper
 {
+    /**
+     * Database connection
+     *
+     * @var object
+     */
+    private $db;
+
     private static $activeReferenceField = 'preference';
     private static $activePattern = '/^yes/i';
     private static $badDataSubmitted = 'Unable to process your updates';

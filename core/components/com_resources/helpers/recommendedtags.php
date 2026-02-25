@@ -211,7 +211,7 @@ class RecommendedTags
     }
     public function getFocusAreasMap()
     {
-        return $this->focusAreas_map;
+        return $this->focusAreasMap;
     }
     public function getExistingFocusAreasMap()
     {

@@ -16,6 +16,13 @@ use Hubzero\Facades\Request;
 class PaymentProvider
 {
     /**
+     * Payment options
+     *
+     * @var  object
+     */
+    private $options;
+
+    /**
      * List of button vars
      *
      * @var  array

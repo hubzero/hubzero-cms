@@ -18,6 +18,14 @@ use Hubzero\Facades\Lang;
 class Download
 {
     /**
+     * Active formatter instance
+     *
+     * @var object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_formatter;
+
+    /**
      * Download formt
      *
      * @var string

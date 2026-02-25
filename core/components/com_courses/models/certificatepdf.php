@@ -10,6 +10,13 @@ namespace Components\Courses\Models;
 
 class CertificatePdf extends \TCPDF
 {
+    /**
+     * Background image file path
+     *
+     * @var  string
+     */
+    public $img_file;
+
     //Page header
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function Header()

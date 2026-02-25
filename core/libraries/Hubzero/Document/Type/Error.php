@@ -27,6 +27,34 @@ class Error extends Base
     protected $error;
 
     /**
+     * Base URL for the template
+     *
+     * @var  string
+     */
+    protected $baseurl = '';
+
+    /**
+     * Template name
+     *
+     * @var  string
+     */
+    protected $template = '';
+
+    /**
+     * Debug mode flag
+     *
+     * @var  bool
+     */
+    protected $debug = false;
+
+    /**
+     * Template file path
+     *
+     * @var  string
+     */
+    protected $file = '';
+
+    /**
      * Class constructor
      *
      * @param   array  $options  Associative array of attributes
@@ -72,10 +100,6 @@ class Error extends Base
         if (!isset($this->error)) {
             return;
         }
-
-        // Set the status header
-        // \Hubzero\Facades\App::get('response')->headers->set('status', $this->error->getCode() . ' ' . str_replace("\n", ' ',
-        // $this->error->getMessage()));
 
         $file = 'error.php';
 

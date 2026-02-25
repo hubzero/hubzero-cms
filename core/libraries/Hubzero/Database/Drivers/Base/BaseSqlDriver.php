@@ -56,6 +56,13 @@ use Hubzero\Database\Drivers\Base\BasePdoDriver as PdoDriver;
 abstract class BaseSqlDriver extends PdoDriver
 {
     /**
+     * Nested transaction depth counter
+     *
+     * @var  int
+     */
+    protected $transactionDepth = 0;
+
+    /**
      * Abstract-to-native type mapping for this driver
      *
      * Maps camelCase abstract type names (e.g., 'integer', 'string', 'boolean')

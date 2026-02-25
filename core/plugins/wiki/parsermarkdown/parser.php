@@ -17,6 +17,13 @@ use Hubzero\Facades\Html;
 class MarkdownParser
 {
     /**
+     * Token storage for stripped blocks
+     *
+     * @var  array
+     */
+    private $tokens = array();
+
+    /**
      * A unique token
      *
      * @var string

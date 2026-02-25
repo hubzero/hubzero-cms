@@ -18,6 +18,20 @@ use Hubzero\Facades\Component;
  */
 class SolrHelper
 {
+    /**
+     * Solarium client connection
+     *
+     * @var  \Solarium\Client
+     */
+    protected $connection;
+
+    /**
+     * Solarium select query
+     *
+     * @var  \Solarium\QueryType\Select\Query\Query
+     */
+    protected $query;
+
     public function __construct()
     {
         $config = Component::params('com_search');

@@ -51,6 +51,7 @@ namespace Plugins\User\Domainrestriction\Helpers;
  */
 class IPv6Net
 {
+    private $netmask; //!< alias used in non-numeric mask parsing
     private $net_addr; //!< a binary representation of the network
     private $net_addr_long; //!< a 128bit integer of ipv6 addr
     private $net_mask; //!< a binary representation of the network mask
