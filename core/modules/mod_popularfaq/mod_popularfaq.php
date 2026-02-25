@@ -6,8 +6,55 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\PopularFaq;
+namespace Modules\Popularfaq;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use Components\Kb\Models\Archive;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying popular KB articles
+ */
+class Popularfaq extends Module
+{
+    protected $cssClass;
+    protected $cssId;
+
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+
+        $a = new Archive();
+        $popular = $a->articles()
+            ->whereIn('access', User::getAuthorisedViewLevels())
+            ->whereEquals('state', 1)
+            ->order('helpful', 'desc')
+            ->limit(intval($this->params->get('limit', 5)))
+            ->rows();
+
+        $this->cssId    = $this->params->get('cssId');
+        $this->cssClass = $this->params->get('cssClass');
+
+        require $this->getLayoutPath();
+    }
+
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
+
+        $this->run();
+    }
+}

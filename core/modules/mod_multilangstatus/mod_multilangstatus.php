@@ -6,8 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MultilangStatus;
+namespace Modules\Multilangstatus;
 
 use Hubzero\Module\Module;
 
-with(new Module($params, $module))->display();
+/**
+ * Module class for multilanguage status
+ */
+class Multilangstatus extends Module
+{
+}

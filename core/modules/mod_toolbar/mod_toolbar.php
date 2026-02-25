@@ -8,6 +8,28 @@
 
 namespace Modules\Toolbar;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for displaying component toolbar
+ */
+class Toolbar extends Module
+{
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!\Hubzero\Facades\App::isAdmin()) {
+            return;
+        }
+
+        // Get the toolbar.
+        $toolbar = \Hubzero\Facades\Toolbar::render();
+
+        // Get the view
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
+}
