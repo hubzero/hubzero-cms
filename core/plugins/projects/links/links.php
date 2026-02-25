@@ -11,6 +11,7 @@ namespace Plugins\Projects\Links;
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
+use voku\helper\HtmlDomParser;
 
 /**
  * Projects Links plugin
@@ -847,12 +848,10 @@ class Links extends Plugin
             }
 
             if ($content) {
-                require_once __DIR__ . DS . 'helpers' . DS . 'simple_html_dom.php';
-
                 $out = '';
 
-                // Create DOM from URL or file
-                $html = file_get_html($finalUrl);
+                // Parse the already-fetched HTML content
+                $html = new HtmlDomParser($content);
 
                 $title = $html->find('title', 0)->innertext; //Title Of Page
 
