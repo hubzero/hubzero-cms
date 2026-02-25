@@ -70,7 +70,7 @@ class Profiles extends SiteController
             return;
         }
 
-        $ia = new \Components\Members\Models\Incremental\Awards($profile);
+        $ia = new \Components\Members\Models\Incremental\Awards(User::get('id'));
         $ia->optOut();
 
         App::redirect(
@@ -1117,7 +1117,6 @@ class Profiles extends SiteController
 
             switch ($k) {
                 case 'sessions':
-
                     $preferences = new \Components\Tools\Tables\Preferences($this->database);
                     $preferences->loadByUser($profile->get('id'));
                     if (!$preferences || !$preferences->id) {

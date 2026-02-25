@@ -485,7 +485,6 @@ class Admin extends SiteController
 
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
-
             // Collect metadata
             $url = Request::base() . ltrim(Route::url(
                 'index.php?option=com_resources&id=' . $status['resourceid']
@@ -560,7 +559,6 @@ class Admin extends SiteController
                     }
                 } else {
                     $this->setError(Lang::txt('COM_TOOLS_ERR_DOI_STORE_FAILED'));
-                    $this->setError($doierr);
                     $result = false;
                 }
             }
@@ -668,7 +666,6 @@ class Admin extends SiteController
 
                 // transfer screenshots
                 if ($devid && $currentid) {
-
                     $screenshots = new Screenshots();
                     if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) {
                         $this->setMessage(Lang::txt('COM_TOOLS_SCREENSHOTS_TRANSFERRED'));

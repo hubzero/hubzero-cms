@@ -510,7 +510,6 @@ class Sessions extends SiteController
         $preferences = new \Components\Tools\Tables\Preferences($this->database);
         $preferences->loadByUser(User::get('id'));
         if (!$preferences || !$preferences->id) {
-
             $scls = new \Components\Tools\Tables\SessionClass($this->database);
             $default = $scls->find('one', array('alias' => 'default'));
             $preferences->user_id  = User::get('id');
@@ -536,7 +535,7 @@ class Sessions extends SiteController
                 $this->view->sessions = $sessions;
 
                 foreach ($this->getErrors() as $error) {
-                    $view->setError($error);
+                    $this->view->setError($error);
                 }
 
                 $this->view->display();

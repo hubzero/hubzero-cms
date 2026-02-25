@@ -453,7 +453,6 @@ class Support extends Plugin
         if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all') {
             $severities = explode(',', $params->get('support_ticketreminder_severity', 'all'));
         } else {
-
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 
@@ -548,7 +547,7 @@ class Support extends Plugin
 
             // Send mail
             if (!$message->send()) {
-                $this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
+                $this->setError(Lang::txt('Failed to mail %s', $user->get('email')));
             }
             $mailed[] = $user->get('username');
         }
@@ -835,7 +834,6 @@ class Support extends Plugin
         if ($params->get('support_ticketlist_severity', 'all') != 'all') {
             $severities = explode(',', $params->get('support_ticketlist_severity', 'all'));
         } else {
-
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 

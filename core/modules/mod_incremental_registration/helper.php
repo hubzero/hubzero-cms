@@ -116,6 +116,8 @@ class Helper extends Module
                     $orgtype      = null;
                     $organization = null;
                     $reason       = null;
+                    $location     = null;
+                    $name         = null;
                     $mailPreferenceOption = -1;
 
                     if (isset($_POST['mailPreferenceOption'])) {
@@ -136,14 +138,19 @@ class Helper extends Module
                         $reason = trim($_POST['reason']);
                     }
 
-                    if (isset($_POST['name'])) {
-                        if (!isset($POST['name']['first']) || !isset($_POST['name']['last'])) {
+                    $nameInput = Request::getArray('name', array());
+                    if (!empty($nameInput)) {
+                        if (empty($nameInput['first']) || empty($nameInput['last'])) {
                             $errors['name'] = true;
                         }
                         $name = preg_replace(
                             '/\s+/',
                             ' ',
-                            trim(implode(' ', array($name['first'], $name['middle'], $name['last'])))
+                            trim(implode(' ', array(
+                                $nameInput['first'] ?? '',
+                                $nameInput['middle'] ?? '',
+                                $nameInput['last'] ?? ''
+                            )))
                         );
                     }
 

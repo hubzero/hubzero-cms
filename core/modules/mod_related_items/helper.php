@@ -41,7 +41,7 @@ class Helper extends Module
             'Itemid' => 'int'
         );
 
-        $list = \Hubzero\Facades\Module::cache($module, $params, $cacheparams);
+        $list = \Hubzero\Facades\Module::cache($this->module, $params, $cacheparams);
 
         if (!count($list)) {
             return;

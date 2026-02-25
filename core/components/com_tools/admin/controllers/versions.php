@@ -99,7 +99,6 @@ class Versions extends AdminController
             $this->config->get('new_doi')
             && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
         ) {
-
             $dois = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $tool->toolname)
                 ->rows()
@@ -164,7 +163,6 @@ class Versions extends AdminController
             $this->config->get('new_doi')
             && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
         ) {
-
             $doi = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $row->toolname)
                 ->whereEquals('local_revision', $row->revision)
@@ -244,15 +242,13 @@ class Versions extends AdminController
             && file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/doi.php')
             && substr($row->instance, -4) != '_dev'
         ) {
-
             // Save DOI data
             $dois = Request::getArray('doi', array(), 'post');
 
             if ($dois['doi']) {
                 if (!$dois['rid']) {
                     if (file_exists(\Hubzero\Facades\Component::path('com_resources') . '/models/entry.php')) {
-
-                        $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
+                        $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($row->toolname)->get('id');
                     }
                 }
 

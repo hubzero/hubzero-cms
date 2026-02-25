@@ -315,7 +315,7 @@ class Utils
         if (empty($toolVersion)) {
             $access->valid = 0;
             $access->error->message = 'Unable to load the tool';
-            $xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+            \Hubzero\Facades\Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
             return $access;
         }
 
