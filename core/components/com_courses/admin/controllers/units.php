@@ -112,8 +112,6 @@ class Units extends AdminController
 
     /**
      * Displays an edit form
-     *
-     * @return  void
      */
     public function editTask($model = null)
     {

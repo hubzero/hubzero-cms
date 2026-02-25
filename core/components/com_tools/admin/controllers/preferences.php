@@ -105,7 +105,6 @@ class Preferences extends AdminController
      * Edit a member quota
      *
      * @param   integer  $id  ID of user to edit
-     * @return  void
      */
     public function editTask($row = null)
     {

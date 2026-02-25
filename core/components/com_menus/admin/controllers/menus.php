@@ -92,7 +92,6 @@ class Menus extends AdminController
      * Show a form for editing an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -247,7 +246,7 @@ class Menus extends AdminController
     /**
      * Rebuild the menu tree.
      *
-     * @return  bool  False on failure or error, true on success.
+     * @return  void
      */
     public function rebuildTask()
     {

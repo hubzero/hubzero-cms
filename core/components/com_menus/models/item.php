@@ -658,7 +658,6 @@ class Item extends Nested
     /**
      * @param   object  $form  A form object.
      * @param   mixed   $data  The data expected for the form.
-     * @return  void
      * @throws  Exception if there is an error in the form event.
      */
     protected function preprocessForm(Form $form, $data, $group = 'content')

@@ -39,7 +39,7 @@ class Option
      * Load existing option
      *
      * @param   int         option ID
-     * @return  bool        true on success, exception otherwise
+     * @return  void
      */
     public function load($oId)
     {
@@ -189,7 +189,7 @@ class Option
      * Update option group info
      *
      * @param  void
-     * @return object   info
+     * @return void
      */
     public function save()
     {

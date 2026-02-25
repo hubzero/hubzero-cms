@@ -40,7 +40,6 @@ class Stories extends AdminController
      * Edit Newsletter Story Task
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($story = null)
     {
@@ -163,8 +162,6 @@ class Stories extends AdminController
 
     /**
      * Save auto Task
-     *
-     * @return  void
      */
     public function saveAutoTask()
     {
@@ -381,8 +378,6 @@ class Stories extends AdminController
 
     /**
      * Cancel task
-     *
-     * @return  void
      */
     public function cancelTask()
     {

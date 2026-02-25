@@ -90,8 +90,6 @@ class Modules extends Base
 
     /**
      * Edit Module
-     *
-     * @return  void
      */
     public function editTask()
     {

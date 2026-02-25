@@ -87,8 +87,6 @@ class Categories extends Base
 
     /**
      * Edit Page Category
-     *
-     * @return  void
      */
     public function editTask()
     {

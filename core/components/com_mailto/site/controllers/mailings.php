@@ -28,8 +28,6 @@ class Mailings extends SiteController
 {
     /**
      * Show the form so that the user can send the link to someone
-     *
-     * @return  void
      */
     public function displayTask()
     {

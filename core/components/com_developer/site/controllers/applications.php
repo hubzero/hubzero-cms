@@ -158,7 +158,6 @@ class Applications extends SiteController
      * Edit an existing developer application
      *
      * @param   object  $application  Optional application model returned from save
-     * @return  void
      */
     public function editTask($application = null)
     {

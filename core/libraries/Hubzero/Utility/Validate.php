@@ -707,7 +707,7 @@ class Validate
      * an array.
      *
      * @param   array  $params  Parameters sent to validation method
-     * @return  void
+     * @return  array
      * @codeCoverageIgnore
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

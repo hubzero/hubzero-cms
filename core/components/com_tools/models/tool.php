@@ -726,7 +726,6 @@ class Tool
      *
      * @param     string $property Parameter description (if any) ...
      * @param     unknown $value Parameter description (if any) ...
-     * @return   void
      */
     public function __set($property = null, $value = null)
     {

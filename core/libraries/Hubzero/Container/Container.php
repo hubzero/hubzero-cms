@@ -187,8 +187,6 @@ class Container implements ArrayAccess
      * Checks if a parameter or an object is set.
      *
      * @param string $id The unique identifier for the parameter or object
-     *
-     * @return bool
      */
     public function forget($id)
     {

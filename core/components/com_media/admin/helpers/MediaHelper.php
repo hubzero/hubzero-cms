@@ -272,7 +272,7 @@ class MediaHelper
      *
      * @param   array   $folders
      * @param   string  $path
-     * @return  void
+     * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public static function _buildFolderTree($folders, $parent_id = 0, $path = '')

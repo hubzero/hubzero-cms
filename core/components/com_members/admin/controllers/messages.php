@@ -96,7 +96,6 @@ class Messages extends AdminController
      * Edit a record
      *
      * @param   object  $row  Database row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -211,8 +210,6 @@ class Messages extends AdminController
 
     /**
      * Delete a record
-     *
-     * @return  void
      */
     public function settingsTask()
     {

@@ -96,7 +96,6 @@ class Pages extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -293,8 +292,6 @@ class Pages extends AdminController
 
     /**
      * Cancel a task by redirecting to main page
-     *
-     * @return  void
      */
     public function cancelTask()
     {

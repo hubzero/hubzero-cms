@@ -17,7 +17,7 @@ class CurrentUserv1r0 extends ApiController
      *
      * @apiMethod GET
      * @apiUri    /api/v1.0/users/current_user/isAuthenticated
-     * @return    bool
+     * @return    void
      */
     public function isAuthenticatedTask()
     {

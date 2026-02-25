@@ -49,7 +49,7 @@ class Logs extends AbstractRenderer
      * Render a list of messages
      *
      * @param   array  $messages
-     * @return  string
+     * @return  void
      */
     public function render($messages = null)
     {

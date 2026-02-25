@@ -323,8 +323,6 @@ class Feed extends Plugin
 
     /**
      * Save new blog entry
-     *
-     * @return  void  redirect
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -441,8 +439,6 @@ class Feed extends Plugin
 
     /**
      * Delete entry
-     *
-     * @return  void  redirect
      */
     protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

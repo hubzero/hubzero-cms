@@ -57,7 +57,7 @@ class Support extends Plugin
      * Close tickets in a pending state for a specific amount of time
      *
      * @param   object   $job  \Components\Cron\Models\Job
-     * @return  boolean
+     * @return  void
      */
     public function cleanTempUploads(\Components\Cron\Models\Job $job)
     {

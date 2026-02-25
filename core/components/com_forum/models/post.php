@@ -817,7 +817,7 @@ class Post extends Relational
      * @param   array    $list      List of records
      * @param   integer  $maxlevel  Maximum levels to descend
      * @param   integer  $level     Indention level
-     * @return  void
+     * @return  array
      */
     protected function treeRecurse($children, $list, $maxlevel = 9999, $level = 0)
     {

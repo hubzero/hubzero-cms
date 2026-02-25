@@ -41,7 +41,7 @@ class Helper extends Module
      * Display module contents
      *
      * @param   object  $params  Registry
-     * @return  array
+     * @return  array|null
      */
     public static function getList(&$params)
     {
@@ -64,5 +64,7 @@ class Helper extends Module
             }
             return $items;
         }
+
+        return [];
     }
 }

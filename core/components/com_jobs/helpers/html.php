@@ -37,7 +37,7 @@ class Html
      * @param   string  $returnurl  URL to return to if they press 'no'
      * @param   string  $actionurl  URL to go to if they press 'yes'
      * @param   string  $action     Action the confirmation is for
-     * @return  string  HTML
+     * @return  void
      */
     public static function confirmscreen($returnurl, $actionurl, $action = 'cancelsubscription')
     {

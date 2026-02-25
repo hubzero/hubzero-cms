@@ -428,7 +428,7 @@ class SolrQueryAdapter implements QueryInterface
      * getResults
      *
      * @access public
-     * @return void
+     * @return array
      */
     public function getResults()
     {
@@ -453,7 +453,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param array $query
      * @access private
-     * @return void
+     * @return string
      */
     private function makeQueryString($query = array())
     {

@@ -331,7 +331,6 @@ abstract class Model extends Obj
      *
      * @param   string  $message  Message type to log
      * @param   string  $message  Message to log
-     * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _log($type, $message)

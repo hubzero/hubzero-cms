@@ -122,7 +122,6 @@ class Languages extends AdminController
      * Displays a form for editing
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

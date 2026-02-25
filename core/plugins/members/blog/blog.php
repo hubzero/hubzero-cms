@@ -473,8 +473,6 @@ class Blog extends Plugin
 
     /**
      * Display a warning message
-     *
-     * @return string
      */
     private function login()
     {
@@ -544,8 +542,6 @@ class Blog extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return void
      */
     private function save()
     {
@@ -621,8 +617,6 @@ class Blog extends Plugin
 
     /**
      * Delete an entry
-     *
-     * @return string
      */
     private function delete()
     {
@@ -856,8 +850,6 @@ class Blog extends Plugin
 
     /**
      * Save blog settings
-     *
-     * @return void
      */
     private function savesettings()
     {

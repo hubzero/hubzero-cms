@@ -352,7 +352,7 @@ class Citations extends Base
      * Get default manifest for the block
      *
      * @param   bool  $new
-     * @return  void
+     * @return  object
      */
     public function getManifest($new = false)
     {

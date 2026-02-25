@@ -221,7 +221,6 @@ class Tickets extends AdminController
      * Displays a ticket and comments
      *
      * @param   object  $comment
-     * @return  void
      */
     public function editTask($comment = null)
     {

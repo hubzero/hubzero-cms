@@ -458,7 +458,7 @@ class Profilesv1r1 extends ApiController
      *      "required":    false,
      *      "default":     false
      * }
-     * @return array of accessgroups member belongs to
+     * @return  void
      */
 
     public function accessgroupsTask()

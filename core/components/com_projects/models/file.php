@@ -532,6 +532,8 @@ class File extends Obj
         $icon = self::getIconImage($ext, $basename);
 
         $this->set('icon', $icon);
+
+        return $this->get('icon');
     }
 
     /**

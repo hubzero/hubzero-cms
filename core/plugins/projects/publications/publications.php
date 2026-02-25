@@ -915,7 +915,6 @@ class Publications extends Plugin
      * Move an item up in the list
      *
      * @param   string  $dir
-     * @return  void
      */
     protected function _reorder($dir = 'down') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -962,7 +961,7 @@ class Publications extends Plugin
      * Actions after publication draft is saved
      *
      * @param   object  $pub
-     * @return  string
+     * @return  void
      */
     public function onAfterSave($pub)
     {
@@ -999,7 +998,7 @@ class Publications extends Plugin
      * Actions after publication draft is started
      *
      * @param   object  $pub
-     * @return  string
+     * @return  void
      */
     public function onAfterCreate($pub)
     {
@@ -1851,8 +1850,6 @@ class Publications extends Plugin
 
     /**
      * Change publication status
-     *
-     * @return     string
      */
     protected function _publishDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

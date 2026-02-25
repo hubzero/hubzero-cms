@@ -233,7 +233,7 @@ class Jobs extends SiteController
      * Call a plugin
      * NOTE: This view should only be called through AJAX
      *
-     * @return     string HTML
+     * @return     void
      */
     public function pluginTask()
     {

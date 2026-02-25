@@ -49,7 +49,7 @@ class Databases extends Plugin
     /**
      * Event call after databases initialized
      *
-     * @return  array  Plugin name and title
+     * @return  void
      */
     public function onAfterInitialise()
     {

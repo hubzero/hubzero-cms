@@ -423,8 +423,6 @@ class Notes extends Plugin
 
     /**
      * List/unlist on public project page
-     *
-     * @return  void
      */
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _list()

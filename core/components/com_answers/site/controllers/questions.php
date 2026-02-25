@@ -52,8 +52,6 @@ class Questions extends SiteController
 
     /**
      * Redirect to login form
-     *
-     * @return  void
      */
     public function loginTask()
     {
@@ -544,7 +542,6 @@ class Questions extends SiteController
      * Create a new question
      *
      * @param   object  $question
-     * @return  void
      */
     public function newTask($question = null)
     {

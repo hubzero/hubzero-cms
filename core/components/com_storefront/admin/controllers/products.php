@@ -453,7 +453,6 @@ class Products extends AdminController
      * Set the access level of an article
      *
      * @param   integer  $access  Access level to set
-     * @return  void
      */
     public function accessTask($access = 0)
     {

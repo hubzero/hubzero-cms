@@ -248,7 +248,7 @@ class Application extends AdminController
     /**
      * Method to remove the root property from the configuration.
      *
-     * @return  bool  True on success, false on failure.
+     * @return  void
      */
     public function removerootTask()
     {

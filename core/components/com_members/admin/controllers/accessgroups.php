@@ -91,7 +91,6 @@ class Accessgroups extends AdminController
      * Edit an entry
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

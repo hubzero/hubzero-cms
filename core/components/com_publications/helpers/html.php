@@ -690,7 +690,6 @@ class Html
      * @param   string   $action    Link action
      * @param   boolean  $disabled  Is the button disable?
      * @param   string   $pop       Pop-up content
-     * @return  string
      */
     public static function drawLauncher(
         $icon,
@@ -825,7 +824,6 @@ class Html
      *
      * @param   object  $pub
      * @param   string  $append
-     * @return  void
      */
     public static function showPubTitleProvisioned($pub, $append = '')
     {

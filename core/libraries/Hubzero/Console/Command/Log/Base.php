@@ -154,6 +154,8 @@ class Base
         // Who knows what's going on here!
             return false;
         }
+
+        return false;
     }
 
     /**

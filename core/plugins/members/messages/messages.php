@@ -538,7 +538,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtoarchive($database, $option, $member)
     {
@@ -592,7 +591,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtoinbox($database, $option, $member)
     {
@@ -640,7 +638,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function sendtotrash($database, $option, $member)
     {
@@ -695,7 +692,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function emptytrash($database, $option, $member)
     {
@@ -714,7 +710,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function delete($database, $option, $member)
     {
@@ -763,7 +758,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function markasread($database, $option, $member)
     {
@@ -813,7 +807,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function markasunread($database, $option, $member)
     {
@@ -859,7 +852,6 @@ class Messages extends Plugin
      * @param  object $database Database
      * @param  string $option   Name of the component
      * @param  object $member   Current member
-     * @return void
      */
     public function savesettings($database, $option, $member)
     {

@@ -149,7 +149,6 @@ class Polls extends AdminController
      * Show a form for editing an entry
      *
      * @param   object  $poll  Poll object
-     * @return  void
      */
     public function editTask($poll = null)
     {
@@ -371,8 +370,6 @@ class Polls extends AdminController
 
     /**
      * Cancels a task and redirects to listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

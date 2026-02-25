@@ -79,7 +79,7 @@ class Repo extends Obj
     /**
      * Initialize repo
      *
-     * @return  object
+     * @return  void
      */
     private function initRepo()
     {
@@ -132,7 +132,7 @@ class Repo extends Obj
     /**
      * Return the adapter for this repo
      *
-     * @return  object
+     * @return  void
      */
     private function initAdapter()
     {
@@ -1302,7 +1302,7 @@ class Repo extends Obj
     /**
      * Connect to remote repo
      *
-     * @return  boolean
+     * @return  void
      */
     public function iniRemote()
     {

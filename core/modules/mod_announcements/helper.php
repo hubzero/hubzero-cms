@@ -20,7 +20,7 @@ class Helper extends Module
     /**
      * Get a list of content pages
      *
-     * @return  void
+     * @return  array
      */
     private function getList()
     {

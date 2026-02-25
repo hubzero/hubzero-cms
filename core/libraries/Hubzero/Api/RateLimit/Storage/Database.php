@@ -36,7 +36,7 @@ class Database implements StorageInterface
      *
      * @param   int   $applicationId  Application id
      * @param   int   $userId         User identifier
-     * @return  void
+     * @return  object|null
      */
     public function getRateLimitData($applicationId, $userId)
     {

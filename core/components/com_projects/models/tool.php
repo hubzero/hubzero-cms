@@ -438,6 +438,7 @@ class Tool extends Model
         }
 
         // Clean title
+        return false;
     }
 
     /**
@@ -630,6 +631,7 @@ class Tool extends Model
                 return $this->get('status') < 5 ? true : false;
             break;
         }
+        return false;
     }
 
     /**

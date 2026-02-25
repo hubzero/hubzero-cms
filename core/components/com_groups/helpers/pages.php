@@ -220,7 +220,7 @@ class Pages
     /**
      * Is Current User a Page Approver?
      *
-     * @return void
+     * @return bool
      */
     public static function isPageApprover($username = null)
     {
@@ -231,7 +231,7 @@ class Pages
     /**
      * Get page approvers
      *
-     * @return void
+     * @return array
      */
     public static function getPageApprovers()
     {
@@ -243,7 +243,7 @@ class Pages
      * Get page approvers Emails and names
      * (used for emailing purposes)
      *
-     * @return void
+     * @return array
      */
     public static function getPageApproversEmail()
     {
@@ -389,8 +389,6 @@ class Pages
 
     /**
      * Get code flags
-     *
-     * @return void
      */
     public static function getCodeFlags()
     {
@@ -493,7 +491,6 @@ class Pages
      * Checkout Page
      *
      * @param    $pageid    Id of page to get info
-     * @return   object
      */
     public static function checkout($pageid)
     {
@@ -516,7 +513,6 @@ class Pages
      * Checkin Page
      *
      * @param    $pageid    Id of page to get info
-     * @return   object
      */
     public static function checkin($pageid)
     {
@@ -531,7 +527,7 @@ class Pages
     /**
      * Checkin all pages for user
      *
-     * @return   object
+     * @return   void
      */
     public static function checkinForUser()
     {
@@ -547,7 +543,7 @@ class Pages
     /**
      * Checkin in all abandoned checkouts
      *
-     * @return   object
+     * @return   void
      */
     public static function checkinAbandoned()
     {
@@ -730,7 +726,7 @@ class Pages
     /**
      *  Parse Page Includes & php
      *
-     * @return      void
+     * @return      string
      */
     private static function parse($group, $page, $document)
     {
@@ -793,7 +789,7 @@ class Pages
      * Generate Group Page Preview
      *
      * @param    $page   Group page object
-     * @return   void
+     * @return   string
      */
     public static function generatePreview($page, $version = 0, $contentOnly = false)
     {

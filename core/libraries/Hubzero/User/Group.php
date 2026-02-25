@@ -693,7 +693,6 @@ class Group extends Obj
      *
      * @param   string  $property
      * @param   mixed   $value
-     * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __set($property = null, $value = null)

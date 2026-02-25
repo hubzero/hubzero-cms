@@ -129,7 +129,6 @@ class Comments extends SiteController
      * Display comments for a wiki page
      *
      * @param   object  $mycomment
-     * @return  void
      */
     public function displayTask($mycomment = null)
     {

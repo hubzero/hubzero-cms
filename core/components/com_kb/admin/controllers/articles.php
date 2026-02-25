@@ -114,7 +114,6 @@ class Articles extends AdminController
      * Show a form for editing an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -326,8 +325,6 @@ class Articles extends AdminController
 
     /**
      * Cancels a task and redirects to listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

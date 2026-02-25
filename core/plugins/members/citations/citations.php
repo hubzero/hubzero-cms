@@ -469,8 +469,6 @@ class Citations extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return void
      */
     private function saveAction()
     {
@@ -617,8 +615,6 @@ class Citations extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return void
      */
     private function deleteAction()
     {
@@ -711,8 +707,6 @@ class Citations extends Plugin
 
     /**
      * Settings for group citations
-     *
-     * @return void
      */
     private function settingsAction()
     {
@@ -833,8 +827,6 @@ class Citations extends Plugin
 
     /**
      * Publish method for group citations
-     *
-     * @return void
      */
     private function publishAction()
     {
@@ -938,8 +930,6 @@ class Citations extends Plugin
 
     /**
      * Redirect to login form
-     *
-     * @return void
      */
     private function loginAction()
     {
@@ -962,8 +952,6 @@ class Citations extends Plugin
 
     /**
      * Display a form for importing citations
-     *
-     * @return void
      */
     private function importAction()
     {
@@ -998,8 +986,6 @@ class Citations extends Plugin
 
     /**
      * Upload a file
-     *
-     * @return void
      */
     private function uploadAction()
     {
@@ -1079,8 +1065,6 @@ class Citations extends Plugin
 
     /**
      * Review import items
-     *
-     * @return void
      */
     private function reviewAction()
     {
@@ -1135,8 +1119,6 @@ class Citations extends Plugin
 
     /**
      * Process import selections
-     *
-     * @return void
      */
     private function processAction()
     {
@@ -1226,8 +1208,6 @@ class Citations extends Plugin
 
     /**
      * Show the results of the import
-     *
-     * @return void
      */
     private function savedAction()
     {

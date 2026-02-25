@@ -89,7 +89,7 @@ class Csv implements \Iterator
     /**
      * Go to the next Node that matches our key
      *
-     * @return  void
+     * @return  bool
      */
 
     #[\ReturnTypeWillChange]

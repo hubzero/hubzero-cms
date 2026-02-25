@@ -143,8 +143,6 @@ class Wishlists extends SiteController
 
     /**
      * Display a login form
-     *
-     * @return  void
      */
     public function loginTask()
     {
@@ -887,8 +885,6 @@ class Wishlists extends SiteController
 
     /**
      * Display a form for creating a wish
-     *
-     * @return  void
      */
     public function addwishTask()
     {

@@ -52,8 +52,6 @@ class Citations extends SiteController
 
     /**
      * Default component view
-     *
-     * @return     void
      */
     public function displayTask()
     {
@@ -519,8 +517,6 @@ class Citations extends SiteController
 
     /**
      * Show a form for editing an entry
-     *
-     * @return  void
      */
     public function editTask($citation = null)
     {

@@ -168,7 +168,7 @@ class Forum extends Plugin
      * @param  int    $user     the user id to send to
      * @param  array  $posts    the posts to include in the email
      * @param  string $interval the distribution interval
-     * @return bool
+     * @return void
      **/
     private function sendEmail($user, $posts, $interval = 'daily')
     {

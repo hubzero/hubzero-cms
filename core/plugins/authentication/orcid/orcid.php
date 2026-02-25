@@ -33,7 +33,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     /**
      * Check login status of current user with regards to ORCID
      *
-     * @return  array  $status
+     * @return  void
      */
     public function status()
     {
@@ -119,7 +119,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
+     * @return  void
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {

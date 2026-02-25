@@ -28,7 +28,7 @@ class Reputation extends Relational
     /**
      * Increments user spam count, both globally and in current session
      *
-     * @return  bool
+     * @return  void
      */
     public function incrementSpamCount()
     {

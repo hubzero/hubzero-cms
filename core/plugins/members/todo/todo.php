@@ -193,8 +193,6 @@ class Todo extends Plugin
 
     /**
      * Save item
-     *
-     * @return string
      */
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save()

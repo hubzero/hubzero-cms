@@ -218,6 +218,7 @@ class OauthControllerApi extends ApiController
         }
 
         $this->send("Internal Server Error", 500);
+        return false;
     }
 
     /**

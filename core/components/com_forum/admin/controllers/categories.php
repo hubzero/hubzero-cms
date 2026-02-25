@@ -172,7 +172,6 @@ class Categories extends AdminController
      * Displays a question response for editing
      *
      * @param   object  $category
-     * @return  void
      */
     public function editTask($category = null)
     {
@@ -457,8 +456,6 @@ class Categories extends AdminController
 
     /**
      * Cancels a task and redirects to listing
-     *
-     * @return  void
      */
     public function cancelTask()
     {

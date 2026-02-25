@@ -278,8 +278,6 @@ class Media extends SiteController
     /**
      * Streaming file upload
      * This is used by AJAX
-     *
-     * @return  void
      */
     private function ajaxuploadTask()
     {
@@ -514,8 +512,6 @@ class Media extends SiteController
 
     /**
      * Show a form for uploading and managing files
-     *
-     * @return  void
      */
     public function displayTask()
     {

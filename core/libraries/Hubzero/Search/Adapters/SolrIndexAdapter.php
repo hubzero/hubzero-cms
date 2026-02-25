@@ -252,7 +252,7 @@ class SolrIndexAdapter implements IndexInterface
      *
      * @param  array $query - Passes in the query array
      * @access private
-     * @return void
+     * @return string
      */
     private function parseQuery($query)
     {

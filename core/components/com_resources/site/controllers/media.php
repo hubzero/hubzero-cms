@@ -164,8 +164,6 @@ class Media extends SiteController
 
     /**
      * Display an upload form and file listing
-     *
-     * @return  void
      */
     public function displayTask()
     {

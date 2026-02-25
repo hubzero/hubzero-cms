@@ -39,7 +39,7 @@ class OptionGroup
      * Load existing option group
      *
      * @param   int         option group ID
-     * @return  bool        true on success, exception otherwise
+     * @return  void
      */
     public function load($ogId)
     {
@@ -160,7 +160,7 @@ class OptionGroup
      * Update option group info
      *
      * @param  void
-     * @return object   info
+     * @return void
      */
     public function save()
     {

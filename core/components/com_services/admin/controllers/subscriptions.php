@@ -98,7 +98,6 @@ class Subscriptions extends AdminController
      * Edit Subscription
      *
      * @param   object  $subscription
-     * @return  void
      */
     public function editTask($subscription = null)
     {

@@ -131,7 +131,7 @@ class Assetgroups extends AdminController
      * @param      integer $maxlevel Maximum levels to descend
      * @param      integer $level    Indention level
      * @param      integer $type     Indention type
-     * @return     void
+     * @return     array
      */
     public function treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {

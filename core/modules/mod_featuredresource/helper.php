@@ -130,7 +130,7 @@ class Helper extends Module
      * Get a resource image
      *
      * @param   string  $path  Path to get resource image from
-     * @return  string
+     * @return  string|void
      */
     private function getImage($path)
     {
@@ -174,7 +174,7 @@ class Helper extends Module
      *
      * @param   string   $path       Path to look for screenshots in
      * @param   integer  $versionid  Tool version
-     * @return  string
+     * @return  string|void
      */
     private function getToolImage($path, $versionid = 0)
     {

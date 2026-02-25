@@ -470,8 +470,6 @@ class Team extends Plugin
 
     /**
      * Save member
-     *
-     * @return  void  redirect
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -706,8 +704,6 @@ class Team extends Plugin
 
     /**
      * Sync group members
-     *
-     * @return  void
      */
     protected function _sync() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

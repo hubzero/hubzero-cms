@@ -912,7 +912,6 @@ class Register extends SiteController
      *
      * @param   object  &$xregistration
      * @param   string  $task
-     * @return  void
      */
     private function showRegistrationForm(&$xregistration = null, $task = 'create')
     {
@@ -1603,5 +1602,7 @@ class Register extends SiteController
             curl_close($ch);
             return "";
         }
+
+        return '';
     }
 }

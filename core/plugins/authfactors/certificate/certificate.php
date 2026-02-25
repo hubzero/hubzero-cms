@@ -20,7 +20,7 @@ class Certificate extends Plugin
     /**
      * Renders the auth factor challenge
      *
-     * @return string
+     * @return void
      **/
     public function onRenderChallenge()
     {

@@ -687,8 +687,6 @@ class Blog extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return  void
      */
     private function save()
     {
@@ -1064,8 +1062,6 @@ class Blog extends Plugin
 
     /**
      * Save blog settings
-     *
-     * @return  void
      */
     private function savesettings()
     {

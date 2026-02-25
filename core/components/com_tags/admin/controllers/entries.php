@@ -133,7 +133,6 @@ class Entries extends AdminController
      * Edit an entry
      *
      * @param   object  $tag  Tag being edited
-     * @return  void
      */
     public function editTask($tag = null)
     {

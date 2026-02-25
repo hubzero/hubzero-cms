@@ -38,7 +38,7 @@ class CartProductHandler
      * Process item
      *
      * @param   void
-     * @return  bool
+     * @return  void
      */
     public function handle()
     {

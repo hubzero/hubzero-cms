@@ -25,7 +25,7 @@ class Ckeditor5 extends Plugin
      * Method to handle the onInitEditor event.
      *  - Initialises the Editor
      *
-     * @return  string JavaScript Initialization string
+     * @return  void
      */
     public function onInit()
     {

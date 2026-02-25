@@ -151,8 +151,6 @@ class Pages extends Plugin
 
     /**
      * Set layout and data for main page
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _list()
@@ -209,7 +207,6 @@ class Pages extends Plugin
      * Set layout to the edit form
      *
      * @param   mixed  $model
-     * @return  void
      */
     public function editPage($model = null)
     {
@@ -347,8 +344,6 @@ class Pages extends Plugin
 
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _ajaxUpload()
@@ -683,8 +678,6 @@ class Pages extends Plugin
 
     /**
      * Display a form for uploading files
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _files()
@@ -700,8 +693,6 @@ class Pages extends Plugin
 
     /**
      * Display a list of files
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _fileList()

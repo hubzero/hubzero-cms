@@ -160,6 +160,7 @@ class Hubzero extends Plugin
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_HUBZERO_AUTHENTICATION_FAILED');
         }
+        return false;
     }
 
     /**

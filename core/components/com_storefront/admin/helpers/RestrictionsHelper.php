@@ -228,7 +228,7 @@ class RestrictionsHelper
      *
      * @param   int  $uId  user ID
      * @param   int  $sId  SKU ID
-     * @return  int
+     * @return  void
      */
     public static function updateUser($uId, $username)
     {

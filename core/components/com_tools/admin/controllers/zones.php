@@ -114,7 +114,6 @@ class Zones extends AdminController
      * Edit a record
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -320,8 +319,6 @@ class Zones extends AdminController
 
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  string
      */
     public function ajaxUploadTask()
     {
@@ -541,8 +538,6 @@ class Zones extends AdminController
 
     /**
      * Upload a file to the wiki via AJAX
-     *
-     * @return  string
      */
     public function ajaxRemoveTask()
     {

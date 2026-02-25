@@ -179,8 +179,6 @@ class Resources extends SiteController
 
     /**
      * Browse entries
-     *
-     * @return     void
      */
     public function browseTask()
     {
@@ -2052,7 +2050,7 @@ class Resources extends SiteController
      * Call a plugin method
      * NOTE: This view should normally only be called through AJAX
      *
-     * @return  string
+     * @return  void
      */
     public function pluginTask()
     {

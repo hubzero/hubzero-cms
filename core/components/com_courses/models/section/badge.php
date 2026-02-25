@@ -62,7 +62,7 @@ class Badge extends Base
      * Load by section id
      *
      * @param      integer $id  Section id
-     * @return     void
+     * @return     static
      */
     public static function loadBySectionId($id)
     {
@@ -90,7 +90,7 @@ class Badge extends Base
      * Load by provider badge id
      *
      * @param      integer $id  Provider badge id
-     * @return     void
+     * @return     static
      */
     public static function loadByProviderBadgeId($id)
     {
@@ -158,7 +158,7 @@ class Badge extends Base
     /**
      * Get url
      *
-     * @return     void
+     * @return     string
      */
     private function getUrl($type = 'Claim')
     {

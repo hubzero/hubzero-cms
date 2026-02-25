@@ -370,7 +370,7 @@ class Application extends Relational
     /**
      * Revoke authorization codes
      *
-     * @return  void
+     * @return  bool
      */
     public function revokeAuthorizationCodes()
     {

@@ -65,7 +65,7 @@ class Manager
      * Grabs the mount name from a given path
      *
      * @param   string  $path  The path to parse for mount names
-     * @return  void
+     * @return  string
      **/
     protected static function getMountNameFromPath($path)
     {

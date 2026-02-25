@@ -231,7 +231,7 @@ class Order extends ComponentController
      *
      * @param   object   $tInfo
      * @param   boolean  $paymentInfo
-     * @return  void
+     * @return  bool
      */
     private function completeOrder($tInfo, $paymentInfo = false)
     {

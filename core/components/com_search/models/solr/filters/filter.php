@@ -71,7 +71,7 @@ class Filter extends Relational
      * Make sure params are a string
      *
      * @param   array   $data  the data being saved
-     * @return  string
+     * @return  string|void
      */
     public function automaticParams($data)
     {

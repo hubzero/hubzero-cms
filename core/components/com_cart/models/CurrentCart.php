@@ -554,7 +554,7 @@ class CurrentCart extends Cart
      * Saves transaction shipping cost and shipping discounts
      *
      * @param   double      $shippingCost shipping cost
-     * @return  bool        true
+     * @return  void
      */
     public function setTransactionShippingCost($shippingCost)
     {

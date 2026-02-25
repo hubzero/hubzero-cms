@@ -976,7 +976,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * Parse a users name and set the name parts on the instance
      *
-     * @return void
+     * @return  string
      */
     private function parseName($key = null)
     {
@@ -1021,5 +1021,7 @@ class User extends \Hubzero\Database\Relational
                     return '';
             }
         }
+
+        return '';
     }
 }

@@ -1209,7 +1209,6 @@ class Members extends Plugin
      * Edit a member role
      *
      * @param   object  $role
-     * @return  void
      */
     public function editRole($role = null)
     {

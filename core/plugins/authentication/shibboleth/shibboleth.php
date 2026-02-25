@@ -202,7 +202,7 @@ class Shibboleth extends Plugin
      * provider on it instead of something generic like "Shibboleth"
      *
      * @param   $return
-     * @return  string  HTML
+     * @return  string|void
      */
     public static function onGetSubsequentLoginDescription($return)
     {
@@ -564,7 +564,6 @@ class Shibboleth extends Plugin
      * @param   array    $credentials  Array holding the user credentials
      * @param   array    $options      Array of extra options
      * @param   object   $response     Authentication response object
-     * @return  boolean
      * @since   1.5
      */
     public function onUserAuthenticate($credentials, $options, &$response)

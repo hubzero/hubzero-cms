@@ -537,8 +537,6 @@ class Citations extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return  void
      */
     private function save()
     {
@@ -700,8 +698,6 @@ class Citations extends Plugin
 
     /**
      * Publish method for group citations
-     *
-     * @return  void
      */
     private function publish()
     {
@@ -824,8 +820,6 @@ class Citations extends Plugin
 
     /**
      * Delete method for group citations
-     *
-     * @return  void
      */
     private function delete()
     {
@@ -940,8 +934,6 @@ class Citations extends Plugin
 
     /**
      * Settings for group citations
-     *
-     * @return  void
      */
     private function settings()
     {
@@ -1189,8 +1181,6 @@ class Citations extends Plugin
 
     /**
      * Upload task
-     *
-     * @return  string
      */
     private function process()
     {

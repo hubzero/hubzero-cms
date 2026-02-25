@@ -472,8 +472,6 @@ class Collections extends Plugin
 
     /**
      * Redirect to the login form
-     *
-     * @return  void
      */
     private function login()
     {
@@ -992,8 +990,6 @@ class Collections extends Plugin
 
     /**
      * Save an entry
-     *
-     * @return  void
      */
     private function save()
     {
@@ -1321,8 +1317,6 @@ class Collections extends Plugin
 
     /**
      * Remove an entry
-     *
-     * @return  string
      */
     private function remove()
     {
@@ -1394,8 +1388,6 @@ class Collections extends Plugin
 
     /**
      * Move a post to another collection
-     *
-     * @return  void
      */
     private function move()
     {
@@ -1431,8 +1423,6 @@ class Collections extends Plugin
 
     /**
      * Delete an entry
-     *
-     * @return  string
      */
     private function delete()
     {
@@ -1683,8 +1673,6 @@ class Collections extends Plugin
 
     /**
      * Vote for an item
-     *
-     * @return  void
      */
     private function vote()
     {
@@ -1812,8 +1800,6 @@ class Collections extends Plugin
 
     /**
      * Save a collection
-     *
-     * @return  string
      */
     private function savecollection()
     {
@@ -1894,8 +1880,6 @@ class Collections extends Plugin
 
     /**
      * Delete a collection
-     *
-     * @return  string
      */
     private function deletecollection()
     {
@@ -1996,8 +1980,6 @@ class Collections extends Plugin
 
     /**
      * Display settings
-     *
-     * @return  string
      */
     private function settings()
     {
@@ -2026,8 +2008,6 @@ class Collections extends Plugin
 
     /**
      * Save blog settings
-     *
-     * @return  void
      */
     private function savesettings()
     {

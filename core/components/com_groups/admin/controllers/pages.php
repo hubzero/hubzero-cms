@@ -110,8 +110,6 @@ class Pages extends AdminController
 
     /**
      * Edit a group page
-     *
-     * @return  void
      */
     public function editTask()
     {

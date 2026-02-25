@@ -159,7 +159,7 @@ class Reader implements Iterator
     /**
      * Go to the next row that matches our key
      *
-     * @return  void
+     * @return  boolean
      */
 
     #[\ReturnTypeWillChange]

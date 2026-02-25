@@ -219,7 +219,6 @@ class Reviews extends Plugin
      * @param   string  $url      URL
      * @param   string  $msg      The message to add
      * @param   string  $msgType  Type of message
-     * @return  void
      */
     public function redirect($url, $msg = '', $msgType = '')
     {
@@ -232,8 +231,6 @@ class Reviews extends Plugin
 
     /**
      * Redirect to login page
-     *
-     * @return  void
      */
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()

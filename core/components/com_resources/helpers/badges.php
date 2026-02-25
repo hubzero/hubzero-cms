@@ -74,7 +74,7 @@ class Badges
      * Convert string of raw_tag names into formatted array
      *
      * @param   string   $rawTagNames   Comma separated list of raw_tag names
-     * @return  void
+     * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseBadgesString($newBadgesString)
@@ -93,7 +93,7 @@ class Badges
      * @param   array    $rawTagNames   raw_tag attribute list for given tags
      * @param   integer  $taggerId      ID of user who associated tag w/ record
      * @param   boolean  $admin         Mark tags as admin?
-     * @return  void
+     * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _translateRawNamesToIds($rawTagNames, $taggerId, $admin)
@@ -270,6 +270,8 @@ class Badges
                 $output = $this->_renderString();
                 return $output;
         }
+
+        return '';
     }
 
     /**

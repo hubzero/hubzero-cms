@@ -68,8 +68,6 @@ class Document extends Obj
 
     /**
      * Parse Document Content
-     *
-     * @return  void
      */
     public function parse()
     {

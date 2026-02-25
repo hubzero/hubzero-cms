@@ -277,7 +277,6 @@ class Modules extends AdminController
      * Method to edit an existing record.
      *
      * @param   object  $model
-     * @return  void
      */
     public function editTask($model = null)
     {
@@ -889,7 +888,7 @@ class Modules extends AdminController
     /**
      * Changes the order of one or more records.
      *
-     * @return  boolean  True on success
+     * @return  void
      */
     public function reorderTask()
     {
@@ -933,7 +932,7 @@ class Modules extends AdminController
     /**
      * Method to save the submitted ordering values for records.
      *
-     * @return  boolean  True on success
+     * @return  void
      */
     public function saveorderTask()
     {
@@ -1006,7 +1005,6 @@ class Modules extends AdminController
      * Method to cancel an edit.
      *
      * @param   string   $key  The name of the primary key of the URL variable.
-     * @return  boolean  True if access level checks pass, false otherwise.
      */
     public function cancelTask()
     {

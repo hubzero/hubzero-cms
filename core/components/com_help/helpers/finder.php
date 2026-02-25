@@ -23,7 +23,7 @@ class Finder
     /**
      * Get path to help page
      *
-     * @return  void
+     * @return  string
      */
     public static function page($component, $extension, $page)
     {

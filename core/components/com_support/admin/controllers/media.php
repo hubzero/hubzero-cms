@@ -27,7 +27,6 @@ class Media extends AdminController
     /**
      * Upload a file to the wiki via AJAX
      *
-     * @return  string
      */
     public function ajaxUploadTask()
     {
@@ -318,8 +317,6 @@ class Media extends AdminController
 
     /**
      * Display a form for uploading files
-     *
-     * @return  void
      */
     public function ajaxDeleteTask()
     {
@@ -346,8 +343,6 @@ class Media extends AdminController
 
     /**
      * Display a list of files
-     *
-     * @return  void
      */
     public function displayTask()
     {

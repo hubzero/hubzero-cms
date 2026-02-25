@@ -953,8 +953,6 @@ class Membership extends Base
 
     /**
      * Show request membership form
-     *
-     * @return  array
      */
     public function requestTask()
     {
@@ -975,7 +973,7 @@ class Membership extends Base
     /**
      * Add membership request for user
      *
-     * @return  array
+     * @return  void
      */
     public function dorequestTask()
     {

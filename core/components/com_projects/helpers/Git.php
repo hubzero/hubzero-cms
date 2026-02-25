@@ -1030,7 +1030,7 @@ class Git extends Obj
      * @param   array    &$versions    Versions collector array
      * @param   array    &$timestamps  Collector array
      * @param   integer  $original     Source file?
-     * @return  array    array of version info
+     * @return  void
      */
     public function sortLocalRevisions($local_path = '', &$versions = array(), &$timestamps = array(), $original = 0)
     {
@@ -1193,7 +1193,7 @@ class Git extends Obj
      * @param   string  $file   file path
      * @param   string  $hash   Git hash
      * @param   string  $since
-     * @return  array   to be parsed
+     * @return  string|null
      */
     public function getRename($file = '', $hash = '', $since = '')
     {
@@ -1236,6 +1236,8 @@ class Git extends Obj
         } else {
             return null;
         }
+
+        return null;
     }
 
     /**

@@ -161,7 +161,6 @@ class Comments extends AdminController
      * Edit an entry
      *
      * @param   mixed  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -407,8 +406,6 @@ class Comments extends AdminController
 
     /**
      * Cancel a task (redirects to default task)
-     *
-     * @return  void
      */
     public function cancelTask()
     {

@@ -314,7 +314,6 @@ class View
      * Display "Before" group content
      *
      * @param   object  $group
-     * @return  void
      */
     public static function displayBeforeSectionsContent($group)
     {
@@ -614,7 +613,7 @@ class View
      * Custom Error Callback, Builds custom error page for super groups
      *
      * @param   object  $error
-     * @return  array
+     * @return  void
      */
     public static function handleCustomError(Exception $error)
     {

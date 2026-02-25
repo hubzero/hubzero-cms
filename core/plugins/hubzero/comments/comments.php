@@ -203,8 +203,6 @@ class Comments extends Plugin
 
     /**
      * Show a list of comments
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()

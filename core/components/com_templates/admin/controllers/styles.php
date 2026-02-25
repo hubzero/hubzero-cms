@@ -162,7 +162,6 @@ class Styles extends AdminController
      * Edit an entry
      *
      * @param   object  $style
-     * @return  void
      */
     public function editTask($style = null)
     {

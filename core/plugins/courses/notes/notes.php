@@ -168,8 +168,6 @@ class Notes extends Plugin
 
     /**
      * Set layout to the listing
-     *
-     * @return  void
      */
     public function listNotes()
     {
@@ -180,8 +178,6 @@ class Notes extends Plugin
 
     /**
      * Download
-     *
-     * @return  void
      */
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _download()
@@ -210,7 +206,6 @@ class Notes extends Plugin
      * Set layout to the edit view
      *
      * @param   mixed  $model
-     * @return  void
      */
     public function edit($model = null)
     {

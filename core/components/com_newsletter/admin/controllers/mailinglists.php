@@ -91,7 +91,6 @@ class Mailinglists extends AdminController
      * Edit Mailing List Task
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -279,8 +278,6 @@ class Mailinglists extends AdminController
 
     /**
      * Add to Mailing List Task
-     *
-     * @return  void
      */
     public function addEmailTask()
     {
@@ -480,7 +477,6 @@ class Mailinglists extends AdminController
      * Edit Email On Mailing List Task
      *
      * @param   object  $row
-     * @return  void
      */
     public function editemailTask($row = null)
     {
@@ -740,7 +736,7 @@ class Mailinglists extends AdminController
      *
      * @param   $emails     Email Content
      * @param   $separator  Email Address Separator
-     * @return  void
+     * @return  array
      */
     private function parseEmails($emails)
     {

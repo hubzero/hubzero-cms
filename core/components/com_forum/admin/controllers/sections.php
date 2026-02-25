@@ -137,7 +137,6 @@ class Sections extends AdminController
      * Displays a form for editing or creating entries
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {

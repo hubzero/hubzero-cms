@@ -346,7 +346,7 @@ class Description extends Base
     /**
      * Get default manifest for the block element
      *
-     * @return  void
+     * @return  object
      */
     public function getElementManifest()
     {
@@ -374,7 +374,7 @@ class Description extends Base
     /**
      * Get default manifest for the block
      *
-     * @return  void
+     * @return  object
      */
     public function getManifest($new = false)
     {

@@ -761,8 +761,6 @@ class Files extends Plugin
     }
     /**
      * Upload view
-     *
-     * @return  void  redirect
      */
     protected function _upload() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -800,8 +798,6 @@ class Files extends Plugin
 
     /**
      * Upload file(s) and add to repository
-     *
-     * @return  void  redirect
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -896,8 +892,6 @@ class Files extends Plugin
 
     /**
      * New directory form
-     *
-     * @return  void  redirect
      */
     protected function _newDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -929,8 +923,6 @@ class Files extends Plugin
 
     /**
      * Save new directory
-     *
-     * @return  void  redirect
      */
     protected function _saveDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -972,8 +964,6 @@ class Files extends Plugin
 
     /**
      * Delete directory
-     *
-     * @return     void, redirect
      */
     protected function _deleteDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1013,8 +1003,6 @@ class Files extends Plugin
 
     /**
      * Delete items
-     *
-     * @return  void  redirect
      */
     protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1138,8 +1126,6 @@ class Files extends Plugin
 
     /**
      * Rename
-     *
-     * @return  void  redirect
      */
     protected function _rename() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1216,8 +1202,6 @@ class Files extends Plugin
 
     /**
      * Move file(s)
-     *
-     * @return  void  redirect
      */
     protected function _move() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1352,8 +1336,6 @@ class Files extends Plugin
 
     /**
      * Show file history
-     *
-     * @return  void  redirect
      */
     protected function _history() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1488,8 +1470,6 @@ class Files extends Plugin
 
     /**
      * Show revision diffs
-     *
-     * @return  void  redirect
      */
     protected function _diff() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1552,7 +1532,6 @@ class Files extends Plugin
      * @param   string   $type
      * @param   integer  $projectid
      * @param   string   $query
-     * @return  void
      */
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _serve($type = '', $projectid = 0, $query = '')
@@ -1635,8 +1614,6 @@ class Files extends Plugin
 
     /**
      * Restore deleted files
-     *
-     * @return  void  redirect
      */
     protected function _restore() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1681,8 +1658,6 @@ class Files extends Plugin
 
     /**
      * Download file(s)
-     *
-     * @return  void  redirect
      */
     protected function _download() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2227,8 +2202,6 @@ class Files extends Plugin
     /**
      * Send file back or from to remote service for remote editing
      * Local repo only
-     *
-     * @return  void  redirect
      */
     protected function _share() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2775,8 +2748,6 @@ class Files extends Plugin
 
     /**
      * Initiate sync
-     *
-     * @return  void
      */
     protected function _iniSync() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2838,8 +2809,6 @@ class Files extends Plugin
 
     /**
      * Sync error
-     *
-     * @return  string
      */
     public function _syncError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -3278,7 +3247,7 @@ class Files extends Plugin
     /**
      * Clean incoming data
      *
-     * @return  array
+     * @return  void
      */
     protected function _cleanData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

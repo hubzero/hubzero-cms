@@ -235,6 +235,7 @@ class JobStats extends Table
                 $this->cleanup();
             }
         }
+        return false;
     }
 
     /**
@@ -266,5 +267,6 @@ class JobStats extends Table
         $query .= " AND category =" . $this->_db->quote($category);
         $this->_db->setQuery($query);
         $this->_db->query();
+        return false;
     }
 }

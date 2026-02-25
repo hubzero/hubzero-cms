@@ -51,7 +51,7 @@ class Newsletters extends AdminController
     /**
      * Dependency check
      *
-     * @return  void
+     * @return  bool
      */
     private function dependencyCheck()
     {
@@ -165,7 +165,6 @@ class Newsletters extends AdminController
      * Edit newsletter task
      *
      * @param   object  $row
-     * @return  void
      */
     public function editTask($row = null)
     {
@@ -552,8 +551,6 @@ class Newsletters extends AdminController
 
     /**
      * Display send newsletter form
-     *
-     * @return  void
      */
     public function sendNewsletterTask()
     {

@@ -613,7 +613,7 @@ class Ldap
      *
      * @param   mixed   $group
      * @param   array   $members
-     * @return  boolean
+     * @return  void
      */
     public static function addGroupMemberships($group, $members)
     {
@@ -625,7 +625,7 @@ class Ldap
      *
      * @param   mixed   $group
      * @param   array   $members
-     * @return  boolean
+     * @return  void
      */
     public static function removeGroupMemberships($group, $members)
     {
@@ -637,7 +637,7 @@ class Ldap
      *
      * @param   mixed   $group
      * @param   array   $members
-     * @return  boolean
+     * @return  void
      */
     public static function changeGroupMemberships($group, $add, $delete)
     {

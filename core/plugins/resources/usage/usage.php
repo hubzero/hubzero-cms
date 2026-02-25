@@ -337,7 +337,7 @@ class Usage extends Plugin
      *
      * @param   integer  $id        Resource ID
      * @param   string   $datetime  Timestamp YYYY-MM-DD
-     * @return  array
+     * @return  void
      */
     public function getValues($id, $period)
     {

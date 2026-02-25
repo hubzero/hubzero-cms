@@ -841,7 +841,6 @@ class Sync extends \Hubzero\Base\Obj
      * @param    string   $service  Remote service name
      * @param    bool     $unlock
      * @param    integer  $queue
-     * @return   void
      */
     public function lockSync($service = 'google', $unlock = false, $queue = 0)
     {

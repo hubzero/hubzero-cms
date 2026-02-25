@@ -458,7 +458,7 @@ class Languagefilter extends Plugin
      *
      * @param   array    $user     Holds the user data
      * @param   array    $options  Array holding options (remember, autoregister, group)
-     * @return  boolean  True on success
+     * @return  void
      */
     public function onUserLogin($user, $options = array())
     {

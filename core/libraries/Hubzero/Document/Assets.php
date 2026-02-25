@@ -259,6 +259,8 @@ class Assets
                 return rtrim(Request::base(true), '/') . $path;
             }
         }
+
+        return '';
     }
 
     /**
@@ -291,6 +293,8 @@ class Assets
                 return rtrim(Request::base(true), '/') . $path;
             }
         }
+
+        return '';
     }
 
     /**
@@ -329,6 +333,8 @@ class Assets
                 return rtrim(Request::base(true), '/') . $path;
             }
         }
+
+        return '';
     }
 
     /**
@@ -436,6 +442,8 @@ class Assets
                 return $b . $path;
             }
         }
+
+        return '';
     }
 
     /**
@@ -517,6 +525,8 @@ class Assets
                 return str_replace('/administrator', '', rtrim(Request::base(true), '/')) . $path;
             }
         }
+
+        return '';
     }
 
     /**

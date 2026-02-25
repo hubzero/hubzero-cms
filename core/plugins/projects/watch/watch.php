@@ -168,8 +168,6 @@ class Watch extends Plugin
 
     /**
      * Subscribe
-     *
-     * @return  void
      */
     private function save()
     {

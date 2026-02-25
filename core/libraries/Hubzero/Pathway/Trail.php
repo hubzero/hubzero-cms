@@ -87,7 +87,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      *
      * @param   integer  $offset
      * @param   object   $value
-     * @return  void
      */
     public function set($offset, $value)
     {
@@ -120,7 +119,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      * Unset an item
      *
      * @param   integer  $offset
-     * @return  void
      */
     public function forget($offset)
     {
@@ -178,7 +176,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
     /**
      * Return next item
      *
-     * @return  object
+     * @return  void
      */
 
     #[\ReturnTypeWillChange]
@@ -217,7 +215,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      *
      * @param   integer  $offset
      * @param   object   $value
-     * @return  void
      */
 
     #[\ReturnTypeWillChange]
@@ -243,7 +240,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      * Unset an item
      *
      * @param   integer  $offset
-     * @return  void
      */
 
     #[\ReturnTypeWillChange]

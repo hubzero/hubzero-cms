@@ -364,7 +364,7 @@ class Todo extends Plugin
     /**
      * Save item
      *
-     * @return  string
+     * @return  string|void
      */
     protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -761,8 +761,6 @@ class Todo extends Plugin
 
     /**
      * Delete comment
-     *
-     * @return  void  redirect
      */
     protected function _deleteComment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -808,8 +806,6 @@ class Todo extends Plugin
 
     /**
      * Save comment
-     *
-     * @return  void  redirect
      */
     protected function _saveComment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

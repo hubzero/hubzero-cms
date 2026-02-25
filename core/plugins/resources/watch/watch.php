@@ -100,8 +100,6 @@ class Watch extends Plugin
 
     /**
      * Subscribe
-     *
-     * @return  string  HTML
      */
     protected function subscribeAction()
     {

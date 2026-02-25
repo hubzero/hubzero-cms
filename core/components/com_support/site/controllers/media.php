@@ -27,7 +27,6 @@ class Media extends SiteController
     /**
      * Upload a file to the wiki via AJAX
      *
-     * @return  string
      */
     public function ajaxUploadTask()
     {
@@ -356,8 +355,6 @@ class Media extends SiteController
 
     /**
      * Display a form for uploading files
-     *
-     * @return     void
      */
     public function ajaxDeleteTask()
     {
@@ -385,8 +382,6 @@ class Media extends SiteController
 
     /**
      * Display a list of files
-     *
-     * @return  void
      */
     public function displayTask()
     {

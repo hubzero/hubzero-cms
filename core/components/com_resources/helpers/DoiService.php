@@ -823,7 +823,7 @@ class DoiService extends Obj
      * @param   string   $doi
      * @param   boolean  $sendXML     - Whether including XML for EZID DOI Update
      * @param   string   $status      - EZID DOI status
-     * @return  string   $doi or null
+     * @return  string|false|null
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {
@@ -864,5 +864,7 @@ class DoiService extends Obj
 
             return false;
         }
+
+        return null;
     }
 }

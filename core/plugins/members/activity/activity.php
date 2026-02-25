@@ -232,8 +232,6 @@ class Activity extends Plugin
 
     /**
      * Unpublish an entry
-     *
-     * @return string
      */
     protected function removeAction()
     {
@@ -364,8 +362,6 @@ class Activity extends Plugin
 
     /**
      * Star/unstar an entry
-     *
-     * @return string
      */
     protected function starAction()
     {
@@ -510,8 +506,6 @@ class Activity extends Plugin
 
     /**
      * Redirect to the login page
-     *
-     * @return void
      */
     protected function loginAction()
     {
