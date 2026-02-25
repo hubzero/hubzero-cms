@@ -7,6 +7,9 @@
  * when admin switches group from type HUB to type Special.
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Route;
+
 // define base path
 $base = str_replace(PATH_ROOT, '', __DIR__);
 

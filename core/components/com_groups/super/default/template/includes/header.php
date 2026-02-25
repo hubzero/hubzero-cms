@@ -7,6 +7,7 @@
  * when admin switches group from type HUB to type Special.
  */
 
+use Hubzero\Facades\Route;
 ?>
 
 <div class="super-group-header-wrap">
