@@ -210,9 +210,10 @@ class Manager extends Obj
             $client = ClientManager::client(0);
         }
 
-        App::get('config')->set($handler, array(
-            'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->state('clientId') == 1 ? 'admin' : 'site')
-        ));
+        $clientPath = isset($client->alias) ? $client->alias : $client->name;
+        // Dot-notation: the config repository rejects a bare key that is not
+        // already a group, and the handler name is not one until this runs
+        App::get('config')->set($handler . '.cachebase', PATH_APP . '/cache/' . $clientPath);
 
         $cache = new \Hubzero\Cache\Manager(App::getRoot());
         $cache->storage($handler);

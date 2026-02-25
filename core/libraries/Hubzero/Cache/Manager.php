@@ -124,7 +124,11 @@ class Manager
      */
     protected function getConfig($name)
     {
-        return $this->app['config']->get($name, array());
+        $config = $this->app['config']->get($name, array());
+
+        // A group set at runtime through dot-notation comes back as an
+        // object; resolve() indexes the config as an array
+        return is_object($config) ? (array) $config : $config;
     }
 
     /**
