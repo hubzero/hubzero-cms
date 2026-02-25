@@ -58,7 +58,7 @@ class Bibtex extends Plugin
         // Include bibtex file
 
         // Create bibtex object
-        $bibtex = new Structures_BibTex();
+        $bibtex = new \Components\Citations\Helpers\BibTex();
 
         // Feed bibtex lib the file
         $bibtex->loadFile($file->getPathname());

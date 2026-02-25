@@ -9,6 +9,7 @@
 namespace Plugins\System\Languagefilter;
 
 use Hubzero\Plugin\Plugin;
+use Components\Menus\Helpers\Menus as MenusHelper;
 
 /**
  * Language Filter Plugin

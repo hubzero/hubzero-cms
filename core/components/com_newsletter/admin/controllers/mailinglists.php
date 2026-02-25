@@ -596,7 +596,7 @@ class Mailinglists extends AdminController
         $mid = Request::getInt('mid', 0);
 
         // instantiate mailing list object
-        $newsletterMailinglistEmail = new MailingListEmail($this->database);
+        $newsletterMailinglistEmail = new Email();
 
         // load email
         $newsletterMailinglistEmail->load($id);

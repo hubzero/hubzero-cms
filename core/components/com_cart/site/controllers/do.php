@@ -8,6 +8,7 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use Request;
 use App;
 
 /**

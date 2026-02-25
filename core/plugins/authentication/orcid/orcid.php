@@ -98,7 +98,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     public function display($view, $tpl)
     {
         // Set up the config for the ORCID api instance
-        $oauth = new Orcid\Oauth();
+        $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
                     $oauth->useSandboxEnvironment();
@@ -139,7 +139,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     public function onUserAuthenticate($credentials, $options, &$response)
     {
         // Set up the config for the ORCID api instance
-        $oauth = new Orcid\Oauth();
+        $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
                     $oauth->useSandboxEnvironment();
@@ -161,7 +161,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         // Check for successful authentication
         if ($oauth->isAuthenticated()) {
-            $orcid = new Orcid\Profile($oauth);
+            $orcid = new \Orcid\Profile($oauth);
 
             if (($this->params->get("email_required", false) && $orcid->email() == null)) {
                 $response->status = \Hubzero\Auth\Status::FAILURE;
@@ -189,7 +189,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
             $hzal->set('email', $orcid->email());
 
-            $parser = new TheIconic\NameParser\Parser();
+            $parser = new \TheIconic\NameParser\Parser();
 
             $name = $parser->parse($orcid->fullName());
 
@@ -287,7 +287,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     public function link($options = array())
     {
         // Set up the config for the ORCID api instance
-        $oauth = new Orcid\Oauth();
+        $oauth = new \Orcid\Oauth();
 
         if ($this->params->get('use_sandbox', false)) {
                     $oauth->useSandboxEnvironment();
@@ -320,7 +320,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
         // Check for successful authentication
         if ($oauth->isAuthenticated()) {
-            $orcid = new Orcid\Profile($oauth);
+            $orcid = new \Orcid\Profile($oauth);
 
             // Set username to ORCID iD
             $username = $orcid->id();

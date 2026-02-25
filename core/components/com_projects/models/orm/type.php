@@ -62,7 +62,7 @@ class Type extends Relational
     public function transformParams()
     {
         if (!is_object($this->paramsRegistry)) {
-            $this->paramsRegistry = new Registry($this->get('params'));
+            $this->paramsRegistry = new \Hubzero\Config\Registry($this->get('params'));
         }
 
         return $this->paramsRegistry;

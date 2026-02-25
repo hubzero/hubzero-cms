@@ -8,6 +8,7 @@
 
 namespace Components\Wiki\Models;
 
+use Components\Wiki\Models\Adapters\Base as BaseAdapter;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use stdClass;

@@ -70,7 +70,7 @@ class Support extends Plugin
 
         $old = time() - ($days * 24 * 60 * 60);
 
-        $dirIterator = new DirectoryIterator($path);
+        $dirIterator = new \DirectoryIterator($path);
         foreach ($dirIterator as $file) {
             if (!$file->isDir()) {
                 continue;

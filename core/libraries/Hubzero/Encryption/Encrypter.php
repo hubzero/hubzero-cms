@@ -43,7 +43,7 @@ class Encrypter
         $this->key = $key;
 
         // Set the encryption cipher.
-        $this->cipher = isset($cipher) ? $cipher : new Simple();
+        $this->cipher = isset($cipher) ? $cipher : new Cipher\Simple();
     }
 
     /**

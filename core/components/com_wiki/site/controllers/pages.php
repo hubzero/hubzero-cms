@@ -17,6 +17,7 @@ use Components\Wiki\Models\Attachment;
 use Exception;
 use Pathway;
 use Request;
+use Cache;
 use Event;
 use User;
 use Lang;

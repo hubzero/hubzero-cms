@@ -70,9 +70,9 @@ class Systemplate extends Plugin
         $path .= '/templates/' . $tmpl . '/html';
 
         if (is_dir($path)) {
-            $objects = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($path),
-                RecursiveIteratorIterator::SELF_FIRST
+            $objects = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path),
+                \RecursiveIteratorIterator::SELF_FIRST
             );
             foreach ($objects as $name => $file) {
                 if ($file->isDir()) {

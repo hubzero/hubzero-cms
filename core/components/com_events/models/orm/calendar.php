@@ -104,7 +104,7 @@ class Calendar extends Relational
         $output .= "CALSCALE:GREGORIAN\r\n";
 
         // get daylight start and end
-        $ttz = new DateTimezone(timezone_name_from_abbr('EST'));
+        $ttz = new \DateTimezone(timezone_name_from_abbr('EST'));
 
         $first = Date::of(date('Y') . '-01-02 00:00:00')->toUnix();
         $last  = Date::of(date('Y') . '-12-30 00:00:00')->toUnix();

@@ -30,23 +30,25 @@ class Migration20150206191525ComRedirect extends Base
                 ->loadObjectList();
 
             if ($links) {
-                include_once PATH_CORE . DS . 'components' . DS . 'com_redirect' . DS . 'tables' . DS . 'link.php';
-
                 foreach ($links as $link) {
-                    $query = $this->db->getQuery(true)
+                    $exists = $this->db->getQuery(true)
                         ->select('id')
                         ->from('#__redirect_links')
-                        ->where('old_url', '=', $link->oldurl);
+                        ->where('old_url', '=', $link->oldurl)
+                        ->exists();
 
-                    if ($query->exists()) {
+                    if ($exists) {
                         continue;
                     }
 
-                    $tbl = new \Components\Redirect\Tables\Link($this->db);
-                    $tbl->old_url      = $link->oldurl;
-                    $tbl->new_url      = $link->newurl;
-                    $tbl->created_date = $link->dateadd;
-                    $tbl->store();
+                    $this->db->getQuery(true)
+                        ->insert('#__redirect_links')
+                        ->set([
+                            'old_url'      => $link->oldurl,
+                            'new_url'      => $link->newurl,
+                            'created_date' => $link->dateadd,
+                        ])
+                        ->execute();
                 }
             }
 

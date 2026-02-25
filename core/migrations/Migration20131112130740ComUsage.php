@@ -53,7 +53,7 @@ class Migration20131112130740ComUsage extends Base
 
         try {
             $statsDb = \Hubzero\Database\Driver::getInstance($options);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Fail silently
             return true;
         }
@@ -1353,7 +1353,7 @@ class Migration20131112130740ComUsage extends Base
                     'name' => 'SAO TOME AND PRINCIPE',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1385,7 +1385,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1442,7 +1442,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1461,7 +1461,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1480,7 +1480,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1499,7 +1499,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1540,7 +1540,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1561,7 +1561,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1602,7 +1602,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1617,7 +1617,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -1643,7 +1643,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -16835,7 +16835,7 @@ class Migration20131112130740ComUsage extends Base
                     'name' => 'xx',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -16890,7 +16890,7 @@ class Migration20131112130740ComUsage extends Base
                     'name' => 'Press/Media/Publication',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -16952,7 +16952,7 @@ class Migration20131112130740ComUsage extends Base
                     'plot' => '1',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -16971,7 +16971,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -17063,7 +17063,7 @@ class Migration20131112130740ComUsage extends Base
                     'plot' => '0',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -17131,7 +17131,7 @@ class Migration20131112130740ComUsage extends Base
                     'plot' => '1',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -17211,7 +17211,7 @@ class Migration20131112130740ComUsage extends Base
                     'plot' => '0',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -17265,7 +17265,7 @@ class Migration20131112130740ComUsage extends Base
                     'continentLONG' => 'South America',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -18509,7 +18509,7 @@ class Migration20131112130740ComUsage extends Base
                     'continent' => 'AF',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -19267,7 +19267,7 @@ class Migration20131112130740ComUsage extends Base
                     'notes' => 'Purdue GSA Crawler',
                   ),
                 );
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;
@@ -19282,7 +19282,7 @@ class Migration20131112130740ComUsage extends Base
                     ->engine('MyISAM')
                     ->charset('utf8')
                     ->execute();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Internally catch errors and only return a warning.
                 $this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
                 return false;

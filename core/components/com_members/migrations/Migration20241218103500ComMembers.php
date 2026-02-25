@@ -132,7 +132,7 @@ class Migration20241218103500ComMembers extends Base
         $results = $this->db->loadAssocList();
 
         foreach ($results as $result) {
-            $parser = new TheIconic\NameParser\Parser();
+            $parser = new \TheIconic\NameParser\Parser();
 
             $parsedname = $parser->parse($result['name']);
 
@@ -156,7 +156,7 @@ class Migration20241218103500ComMembers extends Base
         $results = $this->db->loadAssocList();
 
         foreach ($results as $result) {
-            $parser = new TheIconic\NameParser\Parser();
+            $parser = new \TheIconic\NameParser\Parser();
 
             $parsedname = $parser->parse($result['name']);
 

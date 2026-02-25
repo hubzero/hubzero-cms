@@ -8,7 +8,7 @@
 
 namespace Components\Collections\Helpers;
 
-use hubzero\Base\Obj;
+use Hubzero\Base\Obj;
 use User;
 
 /**

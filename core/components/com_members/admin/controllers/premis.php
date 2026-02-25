@@ -9,6 +9,7 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Members\Helpers\Premis as PremisHelper;
 use Filesystem;
 use Request;
 use Config;
@@ -101,8 +102,6 @@ class Premis extends AdminController
             $ok = 0;
             $fail = 0;
 
-            include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php';
-
             if (($handle = fopen($filename, "r")) !== false) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                     $line = array();
@@ -126,7 +125,7 @@ class Premis extends AdminController
                     $courses['add'] = $data[6];
                     $courses['drop'] = $data[7];
 
-                    $return = \MembersHelperPremis::doRegistration($user, $courses);
+                    $return = PremisHelper::doRegistration($user, $courses);
                     if ($return['status'] == 'ok') {
                         $line['msg'] = $return['message'];
                         $ok++;

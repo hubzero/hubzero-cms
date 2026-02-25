@@ -207,10 +207,6 @@ class Author extends Table
             // development version is updated
             $to_delete = array_diff($dev_authors, $authors);
 
-            $rc = new \Components\Resources\Tables\Contributor($this->_db);
-            $rc->subtable = 'resources';
-            $rc->subid = $rid;
-
             if ($to_delete) {
                 foreach ($to_delete as $del) {
                     $query = "DELETE FROM `#__author_assoc` WHERE authorid=" . $this->_db->quote($del)
@@ -219,22 +215,34 @@ class Author extends Table
                     $this->_db->query();
                 }
             }
+
             // Get the last child in the ordering
-            $order = $rc->getLastOrder($rid, 'resources');
-            $order = $order + 1; // new items are always last
+            $this->_db->setQuery(
+                "SELECT COALESCE(MAX(ordering), 0) FROM `#__author_assoc`"
+                . " WHERE subid=" . $this->_db->quote($rid) . " AND subtable='resources'"
+            );
+            $order = (int) $this->_db->loadResult() + 1;
 
             foreach ($authors as $authid) {
                 // Check if they're already linked to this resource
-                $rc->loadAssociation($authid, $rid, 'resources');
-                if (!$rc->authorid) {
+                $this->_db->setQuery(
+                    "SELECT authorid FROM `#__author_assoc`"
+                    . " WHERE authorid=" . $this->_db->quote($authid)
+                    . " AND subid=" . $this->_db->quote($rid)
+                    . " AND subtable='resources'"
+                );
+                if (!$this->_db->loadResult()) {
                     $xprofile = User::getInstance($authid);
 
-                    // New record
-                    $rc->authorid = $authid;
-                    $rc->ordering = $order;
-                    $rc->name = addslashes($xprofile->get('name'));
-                    $rc->organization = addslashes($xprofile->get('organization'));
-                    $rc->createAssociation();
+                    $this->_db->setQuery(
+                        "INSERT INTO `#__author_assoc`"
+                        . " (subtable, subid, authorid, ordering, name, organization)"
+                        . " VALUES ('resources', " . $this->_db->quote($rid) . ","
+                        . $this->_db->quote($authid) . "," . $this->_db->quote($order) . ","
+                        . $this->_db->quote($xprofile->get('name')) . ","
+                        . $this->_db->quote($xprofile->get('organization')) . ")"
+                    );
+                    $this->_db->query();
 
                     $order++;
                 }

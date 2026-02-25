@@ -8,7 +8,7 @@
 
 namespace Hubzero\Form\Fields;
 
-use Hubzero\Form;
+use Hubzero\Form\Form;
 use Hubzero\Form\Fields\Text;
 use Hubzero\Base\ClientManager;
 use Document;

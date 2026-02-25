@@ -131,7 +131,7 @@ class Session extends Base
      */
     public function shared($rtrn = 'list', $filters = array(), $clear = false)
     {
-        $tbl = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $tbl = new \Components\Tools\Tables\Viewperm($this->_db);
 
         if (!isset($filters['sessnum'])) {
             $filters['sessnum'] = $this->get('sessnum');
@@ -207,7 +207,7 @@ class Session extends Base
         }
 
         // Load the session owner's viewperm to copy connection details for new shares
-        $ownerViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $ownerViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
         $rows = $ownerViewperm->loadViewperm($this->get('sessnum'), User::get('username'));
 
         foreach ($users as $user) {
@@ -225,7 +225,7 @@ class Session extends Base
             }
 
             //load current view perm
-            $mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+            $mwViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
             $currentViewPerm = $mwViewperm->loadViewperm($this->get('sessnum'), $zuser->get('username'));
 
             // If there are no matching entries in viewperm, add a new entry,
@@ -269,7 +269,7 @@ class Session extends Base
      */
     public function unshare($with = null)
     {
-        $mv = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+        $mv = new \Components\Tools\Tables\Viewperm($this->_db);
         if (!$mv->deleteViewperm($this->get('sessnum'), $with)) {
             $this->setError($mv->getError());
             return false;
