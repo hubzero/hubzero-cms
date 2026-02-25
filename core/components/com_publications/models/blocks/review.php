@@ -214,7 +214,7 @@ class Review extends Base
         }
 
         // Instantiate a new registration object
-        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+
         $xregistration = new \Components\Members\Models\Registration();
 
         // Get current owners

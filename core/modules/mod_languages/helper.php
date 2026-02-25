@@ -50,7 +50,6 @@ class Helper extends Module
      */
     public static function getList(&$params)
     {
-        require_once \Hubzero\Facades\Component::path('com_menus') . '/helpers/menus.php';
 
         $lang = Lang::getRoot();
         $menu = App::get('menu');

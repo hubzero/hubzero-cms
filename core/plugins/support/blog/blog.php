@@ -47,8 +47,6 @@ class Blog extends Plugin
             return null;
         }
 
-        require_once Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
-
         $query  = "SELECT rc.id, rc.entry_id, rc.content as `text`,
 					rc.created_by as author, rc.created, NULL as subject,
 					rc.anonymous as anon, 'blog' AS parent_category
@@ -87,8 +85,6 @@ class Blog extends Plugin
             return null;
         }
 
-        require_once Component::path('com_blog') . DS . 'models' . DS . 'comment.php';
-
         $comment = \Components\Blog\Models\Comment::oneOrFail($refid);
         $comment->set('state', 3);
         $comment->save();
@@ -109,8 +105,6 @@ class Blog extends Plugin
         if (!$this->canHandle($category)) {
             return null;
         }
-
-        require_once Component::path('com_blog') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Blog\Models\Comment::oneOrFail($refid);
         $comment->set('state', 1);
@@ -133,8 +127,6 @@ class Blog extends Plugin
         if (!$this->canHandle($category)) {
             return null;
         }
-
-        require_once Component::path('com_blog') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Blog\Models\Comment::oneOrFail($refid);
         $comment->set('state', 2);

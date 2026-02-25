@@ -294,11 +294,8 @@ class Certificate extends Base
         }
 
         if (!class_exists('\Components\Courses\Models\Course')) {
-            require_once __DIR__ . DS . 'course.php';
         }
         $course = Course::getInstance($this->get('course_id'));
-
-        require_once __DIR__ . DS . 'certificatepdf.php';
 
         $img = $this->path('system') . '/1.png';
 

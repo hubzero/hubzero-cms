@@ -44,8 +44,6 @@ class Subtitle extends Handler
     public function create()
     {
         // Include needed files
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
-        require_once dirname(__DIR__) . DS . 'asset.php';
 
         // Get the file
         if (isset($_FILES['files'])) {

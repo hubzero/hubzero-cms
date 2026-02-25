@@ -43,7 +43,6 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
         $this->row = null;
 

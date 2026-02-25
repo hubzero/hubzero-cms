@@ -74,12 +74,9 @@ class Base extends SiteController
 
         // Include publications model
         if ($this->_publishing) {
-            require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
         }
 
         // Logging and stats
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'stats.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'log.php';
     }
 
     /**

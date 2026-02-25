@@ -74,7 +74,6 @@ class Kb extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Hubzero\Facades\Component::path('com_kb') . DS . 'models' . DS . 'article.php';
         $article = null;
 
         if (!$id) {

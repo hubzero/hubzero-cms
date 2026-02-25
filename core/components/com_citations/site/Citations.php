@@ -22,9 +22,6 @@ class Citations extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'format.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'download.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'citation.php';
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', \Hubzero\Facades\Request::getCmd('view', 'citations'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

@@ -777,8 +777,6 @@ abstract class Cart
         // Extract transaction items
         $transactionItems = unserialize($tInfo->info->tiItems);
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'ProductHandler.php';
-
         // Handle each item in the transaction
         foreach ($transactionItems as $sId => $item) {
             $productHandler = new \Components\Cart\Helpers\CartProductHandler($item, $crtId, $tId);
@@ -1167,8 +1165,6 @@ abstract class Cart
         $warehouse = new Warehouse();
 
         if (!empty($tItems)) {
-            require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
-
             foreach ($tItems as $sId => $itemInfo) {
                 $qty = $itemInfo['transactionInfo']->qty;
                 $sku = \Components\Storefront\Models\Sku::getInstance($sId);

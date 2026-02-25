@@ -173,8 +173,6 @@ class Managers extends SiteController
 
         $entries = Request::getArray('entries', array(0), 'post');
 
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
-
         foreach ($entries as $key => $data) {
             // Retrieve user's account info
             $tbl = new Tables\Member($this->database);

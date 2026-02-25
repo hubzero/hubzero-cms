@@ -92,8 +92,6 @@ class Todo extends Plugin
         );
 
         // Include models
-        include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-        include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
         // Get our models
         $this->todo = new \Components\Projects\Models\Todo();

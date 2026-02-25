@@ -181,8 +181,6 @@ class Version extends Model
         // array to hold options
         $options = array();
 
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'GroupInclude.php';
-
         // Create array of custom filters
         $filters = array(
             new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_GroupInclude()
@@ -190,9 +188,6 @@ class Version extends Model
 
         // Is this trusted content
         if ($trustedContent) {
-            require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'ExternalScripts.php';
-            require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'Php.php';
-
             $options['CSS.Trusted']  = true;
             $options['HTML.Trusted'] = true;
 

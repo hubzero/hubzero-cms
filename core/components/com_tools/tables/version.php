@@ -344,7 +344,6 @@ class Version extends Table
      */
     public function getToolVersions($toolid, &$versions, $toolname = '', $exclude_dev = 0)
     {
-        require_once __DIR__ . '/author.php';
 
         $objA = new \Components\Tools\Tables\Author($this->_db);
 
@@ -367,8 +366,6 @@ class Version extends Table
         $versions = $this->_db->loadObjectList();
 
         if ($versions) {
-            require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
-
             foreach ($versions as $version) {
                 // get list of authors
                 if ($version->state != 3) {

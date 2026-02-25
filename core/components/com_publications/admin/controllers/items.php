@@ -1270,7 +1270,6 @@ class Items extends AdminController
 
                     // Append comment to activity
                     if ($message && $aid) {
-                        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
                         $objC = new \Components\Projects\Tables\Comment($this->database);
 
                         $comment = \Hubzero\Utility\Str::truncate($message, 250);
@@ -1516,8 +1515,6 @@ class Items extends AdminController
         }
 
         $version = count($ids) == 1 ? Request::getString('version', 'all') : 'all';
-
-        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
         foreach ($ids as $id) {
             // Load publication

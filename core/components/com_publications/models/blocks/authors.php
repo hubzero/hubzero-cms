@@ -345,7 +345,7 @@ class Authors extends Base
         $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
 
         // Instantiate a new registration object
-        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+
         $xregistration = new \Components\Members\Models\Registration();
 
         // Do we have a registered user with this email?
@@ -502,7 +502,7 @@ class Authors extends Base
         }
 
         // Instantiate a new registration object
-        include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+
         $xregistration = new \Components\Members\Models\Registration();
 
         // Get current owners

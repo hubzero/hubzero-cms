@@ -119,8 +119,6 @@ class Blog extends Plugin
             }
         }
 
-        include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
-
         $this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
         // are we returning html
@@ -264,7 +262,6 @@ class Blog extends Plugin
     public function onGroupDelete($group)
     {
         // Import needed libraries
-        include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
         $entries = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')
@@ -299,7 +296,6 @@ class Blog extends Plugin
      */
     public function onGroupDeleteCount($group)
     {
-        include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
         $entries = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')

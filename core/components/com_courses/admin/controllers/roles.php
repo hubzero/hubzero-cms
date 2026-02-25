@@ -118,7 +118,6 @@ class Roles extends AdminController
             $this->view->row->created    = Date::toSql();
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php';
         $model = \Components\Courses\Models\Courses::getInstance();
         $this->view->courses = $model->courses();
 

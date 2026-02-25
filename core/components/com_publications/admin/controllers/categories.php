@@ -205,8 +205,6 @@ class Categories extends AdminController
                 }
             }
 
-            include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
-
             $re = new Elements($elements);
             $row->set('customFields', $re->toString());
         }
@@ -306,8 +304,6 @@ class Categories extends AdminController
             $option,
             $option
         );
-
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 
         $elements = new Elements();
         echo $elements->getElementOptions($field->name, $field, $ctrl);

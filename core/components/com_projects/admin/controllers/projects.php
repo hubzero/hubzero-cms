@@ -67,7 +67,6 @@ class Projects extends AdminController
     {
         // Enable publication management
         if ($this->_publishing) {
-            require_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
         }
     }
 
@@ -908,8 +907,6 @@ class Projects extends AdminController
 
         // Erase all notes
         if (file_exists(Component::path('com_wiki') . DS . 'models' . DS . 'page.php')) {
-            include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
-
             // Get all notes
             $this->database->setQuery(
                 "SELECT DISTINCT p.id FROM `#__wiki_pages` AS p
@@ -995,7 +992,7 @@ class Projects extends AdminController
         }
 
         // Git helper
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Git.php';
+
         $gitHelper = new Helpers\Git($path);
 
         $commitMsg = '';
@@ -1022,7 +1019,6 @@ class Projects extends AdminController
         $id = Request::getInt('id', 0);
 
         // Get repo model
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'repo.php';
 
         $project = new Models\Project($id);
         if (!$project->exists()) {

@@ -64,12 +64,7 @@ class Projects extends Plugin
         $database   = App::get('db');
         $publishing = \Hubzero\Facades\Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
-        require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-        require_once Component::path('com_projects') . DS . 'tables' . DS . 'stats.php';
-
         if ($publishing) {
-            require_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-            require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
         }
 
         $tblStats = new \Components\Projects\Tables\Stats($database);
@@ -92,17 +87,6 @@ class Projects extends Plugin
         $database = App::get('db');
 
         $pconfig = Component::params('com_projects');
-
-        require_once Component::path('com_projects') . DS . 'tables' . DS . 'project.php';
-        require_once Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
-        require_once Component::path('com_projects') . DS . 'helpers' . DS . 'connect.php';
-        require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
-        require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';
-        require_once Component::path('com_projects') . DS . 'helpers' . DS . 'remote' . DS . 'google.php';
-
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'attachment.php';
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
 
         // Get all projects
         $obj = new \Components\Projects\Tables\Project($database);
@@ -167,10 +151,6 @@ class Projects extends Plugin
         $database = App::get('db');
 
         $pconfig = Component::params('com_projects');
-
-        require_once Component::path('com_projects') . DS . 'tables' . DS . 'project.php';
-        require_once Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
-        require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
         // Get all projects
         $obj = new \Components\Projects\Tables\Project($database);

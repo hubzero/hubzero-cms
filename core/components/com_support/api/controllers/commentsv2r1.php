@@ -22,6 +22,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Event;
+
 /**
  * API controller class for support tickets
  */
@@ -385,7 +386,7 @@ class Commentsv2r1 extends ApiController
                         }
 
                         if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open') {
-                            $ticket->set('closed', Date::of('now')->toSql());
+                            $ticket->set('closed', \Hubzero\Facades\Date::of('now')->toSql());
                         }
                     }
 
@@ -462,7 +463,6 @@ class Commentsv2r1 extends ApiController
         // Check if the notify list has eny entries
         if (count($comment->to()))
         {
-            include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php';
 
             $allowEmailResponses = $ticket->config('email_processing');
             if ($allowEmailResponses)

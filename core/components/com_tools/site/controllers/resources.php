@@ -110,7 +110,6 @@ class Resources extends SiteController
             // Get custom areas, add wrapper tags, and compile into fulltxt
             $type = $row->type;
 
-            include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
             $elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
             $schema = $elements->getSchema();
 
@@ -454,7 +453,6 @@ class Resources extends SiteController
         $tagcloud->setTags($newtags, User::get('id'));
 
         // Get some needed libraries
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
         // Load the resource object
         $resource = Entry::oneByAlias($alias);

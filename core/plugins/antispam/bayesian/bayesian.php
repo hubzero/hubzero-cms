@@ -23,7 +23,6 @@ class Bayesian extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Detector.php';
 
         $bayesian = new \Plugins\Antispam\Bayesian\Detector();
         $bayesian->setThreshold($this->params->get('threshold', 0.95));

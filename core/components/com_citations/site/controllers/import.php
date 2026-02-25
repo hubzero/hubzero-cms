@@ -298,7 +298,6 @@ class Import extends SiteController
         );
 
         if (isset($group) && $group != '') {
-            require_once \Hubzero\Facades\Component::path('com_groups') . DS . 'tables' . DS . 'group.php';
             $gob = new \Components\Groups\Tables\Group($this->database);
             $cn = $gob->getName($group);
 

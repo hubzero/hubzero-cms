@@ -38,9 +38,6 @@ class Helper extends Module
         $this->moduleclass = $this->params->get('moduleclass', '');
 
         // Load classes
-        include_once Component::path('com_publications') . '/models/orm/publication.php';
-        include_once Component::path('com_publications') . '/tables/author.php';
-        include_once Component::path('com_publications') . '/helpers/html.php';
 
         // Filters
         $filters = array(

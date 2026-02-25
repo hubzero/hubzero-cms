@@ -27,8 +27,6 @@ class Poll extends AbstractComponent
             \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
-
         // Create the controller
         $controller = new Controllers\Polls();
         $controller->execute();

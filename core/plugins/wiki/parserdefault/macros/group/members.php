@@ -136,8 +136,6 @@ class Members extends GroupMacro
     {
         $content = '<div class="member_browser">';
         if (count($members) > 0) {
-            include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
             foreach ($members as $member) {
                 $profile = \Components\Members\Models\Member::oneOrNew($member);
                 $link    = \Hubzero\Facades\Route::url($profile->link());

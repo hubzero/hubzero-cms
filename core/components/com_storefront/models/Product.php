@@ -329,10 +329,8 @@ class Product
                 // Find out product type to instantiate the correct object
                 // software
                 if ($this->getTypeInfo() && $this->getTypeInfo()->name == 'Software Download') {
-                    require_once __DIR__ . DS . 'SoftwareSku.php';
                     $instanceName = '\Components\Storefront\Models\SoftwareSku';
                 } else {
-                    require_once __DIR__ . DS . 'Sku.php';
                     $instanceName = '\Components\Storefront\Models\Sku';
                 }
 

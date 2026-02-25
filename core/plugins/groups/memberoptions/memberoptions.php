@@ -78,8 +78,6 @@ class Memberoptions extends Plugin
         $recvEmailOptionID    = Request::getInt('memberoptionid', 0);
         $recvEmailOptionValue = Request::getInt('recvpostemail', 0);
 
-        include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
-
         switch ($action) {
             case 'editmemberoptions':
                 $arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
@@ -191,8 +189,6 @@ class Memberoptions extends Plugin
         if (!$autosubscribe) {
             return;
         }
-
-        include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
 
         // see if they've already got something, they shouldn't, but you never know
         $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(

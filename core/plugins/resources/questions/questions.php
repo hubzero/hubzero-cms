@@ -101,7 +101,6 @@ class Questions extends Plugin
         $this->option   = $option;
 
         // Get a needed library
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
         // Get all the questions for this tool
         $this->filters = array(
@@ -370,9 +369,6 @@ class Questions extends Plugin
 
         // Get tool contributors (if question is about a tool)
         if ($this->model->isTool()) {
-            require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
-            require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
-
             $TA = new \Components\Tools\Tables\Author($this->database);
             $objV = new \Components\Tools\Tables\Version($this->database);
 

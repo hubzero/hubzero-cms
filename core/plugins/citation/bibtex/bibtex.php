@@ -58,7 +58,6 @@ class Bibtex extends Plugin
         }
 
         // Include bibtex file
-        include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
 
         // Create bibtex object
         $bibtex = new \Components\Citations\Helpers\BibTex();

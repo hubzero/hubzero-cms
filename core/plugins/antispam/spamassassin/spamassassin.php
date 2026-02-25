@@ -23,7 +23,6 @@ class Spamassassin extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Service' . DS . 'Provider.php';
 
         $service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 
@@ -56,8 +55,6 @@ class Spamassassin extends Plugin
         if (!$this->params->get('learn', 0)) {
             return;
         }
-
-        include_once __DIR__ . DS . 'Service' . DS . 'Provider.php';
 
         $service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 

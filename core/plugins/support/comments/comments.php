@@ -67,7 +67,6 @@ class Comments extends Plugin
                             break;
 
                         case 'coursescomment':
-                            require_once Component::path('com_courses') . DS . 'models' . DS . 'course.php';
                             $course = \Components\Courses\Models\Course::getInstance($parent);
                             $rows[$key]->href = Route::url($course->link() . '&active=reviews');
                             break;

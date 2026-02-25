@@ -70,8 +70,8 @@ class Helper extends Module
     {
         // Check the events component
         if (file_exists(\Hubzero\Facades\Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
-            include_once \Hubzero\Facades\Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
-            include_once \Hubzero\Facades\Component::path('com_events') . DS . 'helpers' . DS . 'date.php';
+
+            // EventsDate class is autoloaded via ClassLoader
         } else {
             $this->error = Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
             return;

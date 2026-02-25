@@ -88,8 +88,6 @@ class Entriesv1r0 extends ApiController
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
 
-        require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
         $query = Entry::all();
 
         $r = $query->getTableName();
@@ -226,8 +224,6 @@ class Entriesv1r0 extends ApiController
         $limit    = Request::getInt('limit', 25);
         $period   = Request::getString('period', 'month');
         $category = Request::getString('category', 'resources');
-
-        require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
 
         $whatsnew = \Components\Whatsnew\Helpers\Finder::getBasedOnPeriodAndCategory($period, $category, $limit);
 

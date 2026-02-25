@@ -935,8 +935,6 @@ class Course extends Base
     public function certificate()
     {
         if (!$this->_certificate) {
-            include_once __DIR__ . DS . 'certificate.php';
-
             $this->_certificate = Certificate::getInstance(0, $this->get('id'));
         }
 

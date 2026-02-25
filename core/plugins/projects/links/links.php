@@ -295,8 +295,6 @@ class Links extends Plugin
 
         $new = $cite['id'] ? false : true;
 
-        include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
         if (!$vid || !$cite['type'] || !$cite['title']) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
         } else {
@@ -355,8 +353,6 @@ class Links extends Plugin
 // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
     {
-        include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-        include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
         if (!$cid || !$vid) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_NO_DOI'));
@@ -410,8 +406,6 @@ class Links extends Plugin
     protected function _attachCitation($vid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
     {
         $componentPath = Component::path('com_citations');
-        include_once "$componentPath/models/citation.php";
-        include_once "$componentPath/helpers/format.php";
 
         $out = ['error' => null, 'success' => null];
 
@@ -518,7 +512,6 @@ class Links extends Plugin
                         $citation->set('type', $validTypes['journal-article']);
                     }
                 }
-
 
                 if (!$citation->save()) {
                     $this->setError(Lang::txt('PLG_PROJECTS_LINKS_CITATION_ERROR_SAVE'));
@@ -642,8 +635,6 @@ class Links extends Plugin
             // Incoming
             $cid = Request::getInt('cid', 0);
 
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
             // Load the object
             $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
 
@@ -729,8 +720,6 @@ class Links extends Plugin
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
-
-        include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
         // Load the object
         $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
@@ -1025,7 +1014,6 @@ class Links extends Plugin
     protected function _getDoiMetadata($doi, $citation, &$url, $rawData = false, $format = 'apa')
     {
         // Include metadata model
-        include_once Component::path('com_publications') . DS . 'models' . DS . 'metadata.php';
 
         $format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
 

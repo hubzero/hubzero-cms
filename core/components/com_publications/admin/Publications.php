@@ -58,7 +58,7 @@ class Publications extends AbstractComponent
             \Hubzero\Facades\Route::url('index.php?option=com_publications&controller=batchcreate'),
             $controllerName == 'batchcreate'
         );
-        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(
                 \Hubzero\Facades\Lang::txt('COM_PUBLICATIONS_PLUGINS'),

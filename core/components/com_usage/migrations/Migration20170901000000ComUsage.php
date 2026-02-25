@@ -26,8 +26,6 @@ class Migration20170901000000ComUsage extends Base
                 return;
             }
 
-            include_once dirname(__DIR__) . '/helpers/helper.php';
-
             $db = \Components\Usage\Helpers\Helper::getUDBO();
 
             if (!$db) {
@@ -170,8 +168,6 @@ class Migration20170901000000ComUsage extends Base
                 $this->log('Unable to locate usage helper class.', 'error');
                 return;
             }
-
-            include_once dirname(__DIR__) . '/helpers/helper.php';
 
             $db = \Components\Usage\Helpers\Helper::getUDBO();
 

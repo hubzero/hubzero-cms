@@ -20,6 +20,7 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
+
 /**
  * Groups controller class
  */
@@ -239,8 +240,6 @@ class Membership extends Base
                     }
                 }
             } else {
-                require_once \Hubzero\Facades\Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
-
                 $l = strtolower($l);
 
                 // If not a userid check if proper email
@@ -311,7 +310,7 @@ class Membership extends Base
         }
 
         // log invites
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_invites_sent',
             'comments'  => array_merge($invitees, $inviteemails)
@@ -614,7 +613,7 @@ class Membership extends Base
         }
 
         // log invites
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_invite_accepted',
             'comments'  => array(User::get('id'))
@@ -754,12 +753,11 @@ class Membership extends Base
         }
 
         // delete member roles
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member' . DS . 'role.php';
 
         \Components\Groups\Models\Member\Role::destroyByUser(User::get('id'));
 
         // Log the membership cancellation
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_cancelled',
             'comments'  => array(User::get('id'))
@@ -909,7 +907,7 @@ class Membership extends Base
             $this->view->group->update();
 
             // Log the membership approval
-            Log::log(array(
+            \Hubzero\Facades\Log::log(array(
                 'gidNumber' => $this->view->group->get('gidNumber'),
                 'action'    => 'membership_approved',
                 'comments'  => array(User::get('id'))
@@ -1035,7 +1033,7 @@ class Membership extends Base
         }
 
         // Log the membership request
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_requested',
             'comments'  => array(User::get('id'))

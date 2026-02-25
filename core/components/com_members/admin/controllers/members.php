@@ -1199,7 +1199,6 @@ class Members extends AdminController
      */
     public function debugTask()
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
 
         // Get filters
         $filters = array(
@@ -1579,7 +1578,6 @@ class Members extends AdminController
 
         echo json_encode($object);
     }
-
 
     /**
      * Perform querying of research organization based on the input value

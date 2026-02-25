@@ -36,8 +36,6 @@ class Tools extends Plugin
     public function onQuestionsPrepareFilters($filters)
     {
         if ($filters['area'] == 'assigned') {
-            require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
-
             // What tools did this user contribute?
             $db = App::get('db');
 
@@ -74,9 +72,6 @@ class Tools extends Plugin
         }
 
         $recipients = array();
-
-        require_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
-        require_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 
         $db = App::get('db');
         $TA = new \Components\Tools\Tables\Author($db);

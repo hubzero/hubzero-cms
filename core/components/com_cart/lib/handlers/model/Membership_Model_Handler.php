@@ -25,16 +25,15 @@ class Membership_Model_Handler extends Model_Handler
         $itemInfo = $this->item['info'];
 
         // Get user
-        require_once dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php';
+
         $uId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 
         // Get product type
-        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
+
         $warehouse = new \Components\Storefront\Models\Warehouse();
         $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
         $type = $pType['ptName'];
 
-        require_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
         $subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $uId);
         // Get the expiration for the current subscription (if any)
         $currentExpiration = $subscription->getExpiration();

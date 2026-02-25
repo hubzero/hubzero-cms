@@ -35,7 +35,6 @@ class Publications extends AbstractComponent
             Request::setVar('task', $task);
         }
 
-        require_once "$sitePath/controllers/$controllerName.php";
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
         // Instantiate controller

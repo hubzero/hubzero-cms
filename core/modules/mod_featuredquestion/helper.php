@@ -29,7 +29,6 @@ class Helper extends Module
      */
     public function run()
     {
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
         // randomly choose one
         $rows = Question::all()

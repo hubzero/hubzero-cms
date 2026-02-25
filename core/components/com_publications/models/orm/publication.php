@@ -130,7 +130,6 @@ class Publication extends Relational
      */
     public function project()
     {
-        require_once \Hubzero\Facades\Component::path('com_projects') . '/models/orm/project.php';
 
         return $this->belongsToOne('\Components\Projects\Models\Orm\Project', 'project_id');
     }
@@ -198,7 +197,6 @@ class Publication extends Relational
      */
     public function tags()
     {
-        include_once \Hubzero\Facades\Component::path('com_tags') . '/models/cloud.php';
 
         $cloud = new \Components\Tags\Models\Cloud();
 

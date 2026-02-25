@@ -28,7 +28,6 @@ class Helper extends Module
      */
     public function run()
     {
-        require_once Component::path('com_kb') . '/models/archive.php';
 
         $a = new Archive();
         $popular = $a->articles()

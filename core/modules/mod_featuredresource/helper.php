@@ -37,7 +37,6 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         $database = \Hubzero\Facades\App::get('db');
 
@@ -81,7 +80,6 @@ class Helper extends Module
             $path = $row->filespace();
 
             if ($row->isTool()) {
-                include_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 
                 $tv = new \Components\Tools\Tables\Version($database);
 

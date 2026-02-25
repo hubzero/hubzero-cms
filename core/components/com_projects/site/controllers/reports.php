@@ -101,8 +101,6 @@ class Reports extends Base
 
         // Get stats
         if (!$this->getError()) {
-            require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
-
             $objLog = new \Components\Publications\Tables\Log($this->database);
 
             // Get all test projects

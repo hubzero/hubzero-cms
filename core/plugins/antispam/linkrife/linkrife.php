@@ -23,7 +23,6 @@ class Linkrife extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Detector.php';
 
         $linkrife = new \Plugins\Antispam\LinkRife\Detector();
         $linkrife->setMaxLinkAllowed($this->params->get('linkFrequency', 10));

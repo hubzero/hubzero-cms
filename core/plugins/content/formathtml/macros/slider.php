@@ -72,8 +72,6 @@ class Slider extends Macro
                 break;
 
             case 'com_resources':
-                require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
-
                 $row = \Components\Resources\Models\Entry::oneOrNew($this->pageid);
 
                 $base_url  = DS . trim($config->get('uploadpath', 'site/resources'), DS) . DS;

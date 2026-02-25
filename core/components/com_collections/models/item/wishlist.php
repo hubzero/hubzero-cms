@@ -79,8 +79,6 @@ class Wishlist extends GenericItem
             return true;
         }
 
-        include_once \Hubzero\Facades\Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
-
         $wish = new Wish($id);
 
         if (!$wish->exists()) {

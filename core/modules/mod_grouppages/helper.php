@@ -32,10 +32,8 @@ class Helper extends Module
         }
 
         // include group page archive model
-        require_once Component::path('com_groups') . DS . 'models' . DS . 'page' . DS . 'archive.php';
 
         // include group module archive model
-        require_once Component::path('com_groups') . DS . 'models' . DS . 'module' . DS . 'archive.php';
 
         // get unapproved pages
         $groupModelPageArchive = new Models\Page\Archive();

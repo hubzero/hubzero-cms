@@ -276,8 +276,6 @@ class MasterType extends Table
             return false;
         }
 
-        include_once __DIR__ . DS . 'publication.php';
-
         $p = new \Components\Publications\Tables\Publication($this->_db);
 
         $this->_db->setQuery("SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->quote($id));

@@ -67,9 +67,6 @@ class Helper extends Module
         $filters['sortby'] = 'f.published DESC';
         $filters['filterby'] = 'all';
 
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
-        require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
-
         // Create a Tool object
         $rows = \Components\Tools\Models\Tool::getTools($filters, false);
         $limit = 100000;
@@ -84,7 +81,6 @@ class Helper extends Module
                 if ($rows[$i]->published == 1 && $i <= $limit_tools) {
                     if ($show_questions) {
                         // Get open questions
-                        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
                         $results = \Components\Answers\Models\Question::all()
                             ->including(['responses', function ($response) {
@@ -122,7 +118,6 @@ class Helper extends Module
                         $wishlistControllerPath = Component::path('com_wishlist') . DS . 'site' .
                             DS . 'controllers' . DS . 'wishlists.php';
                         require_once $wishlistControllerPath;
-                        require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
                         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource');
                         //$objWish = new \Components\Wishlist\Models\Wish($database);

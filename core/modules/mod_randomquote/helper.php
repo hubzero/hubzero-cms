@@ -31,7 +31,6 @@ class Helper extends Module
      */
     public function run()
     {
-        require_once Component::path('com_feedback') . '/models/quote.php';
 
         // Get the admin configured settings
         $this->charlimit  = $this->params->get('charlimit', 150);

@@ -29,6 +29,7 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Session;
+
 /**
  * Groups controller class
  */
@@ -98,7 +99,7 @@ class Groups extends Base
         // If we have a users profile load their groups and groups matching their tags
         if (!User::isGuest()) {
             // Get users tags
-            include_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'tags.php';
+
             $mt = new \Components\Members\Models\Tags(User::get('id'));
             $mytags = $mt->render('string');
 
@@ -283,8 +284,6 @@ class Groups extends Base
 
         // Record the user
         if (!User::isGuest() && in_array(User::get('id'), $this->view->group->get('members'))) {
-            include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'recent.php';
-
             Recent::hit(User::get('id'), $this->view->group->get('gidNumber'));
         }
 
@@ -752,7 +751,7 @@ class Groups extends Base
         }
 
         // log invites
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $group->get('gidNumber'),
             'action'    => $log_action,
             'comments'  => $log_comments
@@ -1100,7 +1099,7 @@ class Groups extends Base
                 ->send();
 
         // Log deleted group
-        Log::log(array(
+        \Hubzero\Facades\Log::log(array(
             'gidNumber' => $deletedgroup->get('gidNumber'),
             'action'    => 'group_deleted',
             'comments'  => $log
@@ -1360,7 +1359,7 @@ class Groups extends Base
             }
 
             // Load wiki page from db
-            require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+
             $page = new \Components\Wiki\Models\Page();
 
             $pagename = Request::getString('pagename');

@@ -39,8 +39,6 @@ class Helper extends Module
         $this->tag   = Request::getString('tag', '', 'get');
         $this->style = Request::getString('style', '', 'get');
 
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
-
         $records = Question::all();
 
         switch ($this->params->get('state', 'open')) {

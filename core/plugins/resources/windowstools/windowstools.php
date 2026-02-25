@@ -246,7 +246,6 @@ class Windowstools extends Plugin
             $isAuthorised = User::authorise('core.manage', 'com_resources');
 
             // Get the current page
-            include_once __DIR__ . DS . 'models' . DS . 'page.php';
 
             $page = \Plugins\Resources\Windowstools\Models\Page::all()
                 ->whereIn('access', User::getAuthorisedViewLevels())

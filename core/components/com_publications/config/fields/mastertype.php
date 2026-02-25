@@ -33,8 +33,6 @@ class Mastertype extends Select
     {
         $db = \Hubzero\Facades\App::get('db');
 
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'master.type.php';
-
         $mt = new \Components\Publications\Tables\MasterType($db);
         $types = $mt->getTypes('*', 0, 0, 'ordering');
 

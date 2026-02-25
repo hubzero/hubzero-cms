@@ -715,7 +715,6 @@ class Account extends Plugin
         }
         if (!Filesystem::exists($homeDir)) {
             // Try to create their home directory
-            include_once \Hubzero\Facades\Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
             if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'))) {
                 App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
@@ -775,7 +774,6 @@ class Account extends Plugin
         }
         if (!Filesystem::exists($homeDir)) {
             // Try to create their home directory
-            include_once \Hubzero\Facades\Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
             if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'))) {
                 return $key = false;

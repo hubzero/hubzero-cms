@@ -68,8 +68,6 @@ class Users extends AbstractComponent
                 break;
         }
 
-        require_once __DIR__ . '/controllers/auth.php';
-
         $controller = new Controllers\Auth();
         $controller->execute();
     }

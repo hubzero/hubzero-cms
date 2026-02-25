@@ -540,7 +540,6 @@ class Pages
         $db->query();
     }
 
-
     /**
      * Checkin in all abandoned checkouts
      *
@@ -663,8 +662,6 @@ class Pages
             // create path
             $path = Component::params('com_groups')->get('uploadpath');
 
-            include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
-
             // build wiki config
             $wikiConfig = array(
                 'option'   => 'com_groups',
@@ -784,7 +781,6 @@ class Pages
         // addresses cases where html an html tag not the first string in the content block
         return $formatHandler . $document;
     }
-
 
     /**
      * Generate Group Page Preview

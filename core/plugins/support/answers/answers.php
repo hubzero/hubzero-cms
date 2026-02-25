@@ -197,8 +197,6 @@ class Answers extends Plugin
             return null;
         }
 
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
-
         switch ($category) {
             case 'answer':
                 $comment = \Components\Answers\Models\Response::oneOrFail($refid);
@@ -232,8 +230,6 @@ class Answers extends Plugin
         if (!$this->canHandle($category)) {
             return null;
         }
-
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
         $database = App::get('db');
 

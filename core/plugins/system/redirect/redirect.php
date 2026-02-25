@@ -75,8 +75,6 @@ class Redirect extends Plugin
         }
 
         if (file_exists(Component::path('com_redirect') . DS . 'models' . DS . 'link.php')) {
-            include_once Component::path('com_redirect') . DS . 'models' . DS . 'link.php';
-
             $current = rtrim($current);
 
             // See if the current url exists in the database as a redirect.

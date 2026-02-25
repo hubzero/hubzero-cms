@@ -51,7 +51,6 @@ class Media extends AbstractComponent
         ||  Lang::load('com_media', __DIR__, null, false, true);
 
         // Load the admin HTML view
-        require_once dirname(__DIR__) . '/admin/helpers/media.php';
 
         // Make sure the user is authorized to view this page
         $cmd = Request::getCmd('task', null);

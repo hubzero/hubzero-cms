@@ -73,7 +73,6 @@ class Blog extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
         $post = null;
 
         if (!$id) {

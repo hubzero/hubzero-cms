@@ -39,8 +39,6 @@ class Publicationcategory extends Select
 
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 
-        include_once \Hubzero\Facades\Component::path('com_publications') . '/models/orm/category.php';
-
         $types = Category::all()->rows();
 
         foreach ($types as $anode) {

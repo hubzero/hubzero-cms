@@ -79,8 +79,6 @@ class Content extends GenericItem
             return true;
         }
 
-        include_once \Hubzero\Facades\Component::path('com_content') . DS . 'models' . DS . 'article.php';
-
         $article = \Components\Content\Models\Article::oneOrNew($id);
 
         if (!$article->id) {

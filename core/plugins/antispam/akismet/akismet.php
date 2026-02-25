@@ -23,7 +23,6 @@ class Akismet extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Service' . DS . 'Provider.php';
 
         if (!$this->params->get('apiKey')) {
             return;
@@ -54,8 +53,6 @@ class Akismet extends Plugin
         if (!$this->params->get('learn', 0)) {
             return;
         }
-
-        include_once __DIR__ . DS . 'Service' . DS . 'Provider.php';
 
         $akismet = new \Plugins\Antispam\Akismet\Service\Provider();
         $akismet->set('apiKey', $this->params->get('apiKey'))

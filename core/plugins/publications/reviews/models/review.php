@@ -10,8 +10,6 @@
 
 namespace Plugins\Publications\Reviews\Models;
 
-require_once __DIR__ . '/comment.php';
-
 /**
  * Publications review model
  */
@@ -92,8 +90,6 @@ class Review extends \Hubzero\Base\Model
         // Reports hasn't been set
         if ($this->get('reports', -1) == -1) {
             if (is_file(\Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
-                include_once \Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'report.php';
-
                 $val = \Components\Support\Models\Report::all()
                     ->whereEquals('referenceid', $this->get('id'))
                     ->whereEquals('category', 'pubreview')

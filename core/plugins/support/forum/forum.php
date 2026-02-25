@@ -44,8 +44,6 @@ class Forum extends Plugin
         $database->setQuery($query);
         $rows = $database->loadObjectList();
         if ($rows) {
-            require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
-
             foreach ($rows as $key => $row) {
                 /*$thread = $row->id;
                 if ($row->parent)
@@ -58,8 +56,6 @@ class Forum extends Plugin
 
                 switch ($row->scope) {
                     case 'course':
-                        require_once Component::path('com_courses') . DS . 'models' . DS . 'course.php';
-
                         $offering = \Components\Courses\Models\Offering::getInstance($row->scope_id);
                         $course = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
@@ -112,8 +108,6 @@ class Forum extends Plugin
             return null;
         }
 
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
-
         $comment = \Components\Forum\Models\Post::oneOrFail($refid);
         $comment->set('state', 3);
         $comment->save();
@@ -134,8 +128,6 @@ class Forum extends Plugin
         if ($category != 'forum') {
             return null;
         }
-
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
         $comment = \Components\Forum\Models\Post::oneOrFail($refid);
         $comment->set('state', \Components\Forum\Models\Post::STATE_PUBLISHED);
@@ -158,8 +150,6 @@ class Forum extends Plugin
         if ($category != 'forum') {
             return null;
         }
-
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
         $comment = \Components\Forum\Models\Post::oneOrFail($refid);
         $comment->set('state', \Components\Forum\Models\Post::STATE_DELETED);

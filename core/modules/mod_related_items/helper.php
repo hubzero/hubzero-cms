@@ -27,7 +27,6 @@ class Helper extends Module
      */
     public function display()
     {
-        require_once \Hubzero\Facades\Component::path('com_content') . '/site/helpers/route.php';
 
         // [!] Legacy compatibility
         $params = $this->params;

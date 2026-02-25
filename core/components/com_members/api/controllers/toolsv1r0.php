@@ -51,8 +51,6 @@ class Toolsv1r0 extends ApiController
         }
 
         // Include middleware utilities
-        include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 
         // Get db connection
         $db = App::get('db');
@@ -213,7 +211,7 @@ class Toolsv1r0 extends ApiController
         $supportedtag = $rconfig->get('supportedtag', '');
 
         // Get supportedtag usage
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
         $this->rt = new \Components\Resources\Helpers\Tags(0);
         $supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 
@@ -275,8 +273,6 @@ class Toolsv1r0 extends ApiController
         if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid') {
             throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
         }
-
-        require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
         $du = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
         if (count($du) <= 1) {

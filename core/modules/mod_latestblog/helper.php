@@ -33,7 +33,6 @@ class Helper extends Module
     public function run()
     {
         Lang::load('com_blog', Component::path('com_blog') . '/site');
-        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
         $this->pullout   = $this->params->get('pullout', 'yes');
         $this->feedlink  = $this->params->get('feedlink', 'yes');

@@ -22,7 +22,6 @@ class Help extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once __DIR__ . DS . 'controllers' . DS . 'help.php';
 
         // Instantiate controller and execute
         $controller = new Controllers\Help();

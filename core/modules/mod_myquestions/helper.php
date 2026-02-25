@@ -80,7 +80,6 @@ class Helper extends Module
      */
     private function getInterests($cloud = 0)
     {
-        require_once Component::path('com_members') . '/models/tags.php';
 
         // Get tags of interest
         $mt = new \Components\Members\Models\Tags(User::get('id'));
@@ -103,8 +102,6 @@ class Helper extends Module
     private function getQuestions($kind = 'open', $interests = array())
     {
         // Get some classes we need
-        require_once Component::path('com_answers') . '/models/question.php';
-        require_once Component::path('com_answers') . '/helpers/economy.php';
 
         $limit = intval($this->params->get('limit', 10));
         $tags  = null;
@@ -138,7 +135,6 @@ class Helper extends Module
         }
 
         if ($kind == 'assigned') {
-            require_once Component::path('com_tools') . '/tables/author.php';
 
             $database = \Hubzero\Facades\App::get('db');
 

@@ -66,8 +66,6 @@ class Comments extends Plugin
             return '';
         }
 
-        include_once __DIR__ . DS . 'models' . DS . 'comment.php';
-
         $this->view = $this->view('default', 'view');
         $this->view->option   = $this->option   = $option;
         $this->view->obj      = $this->obj      = $obj;

@@ -138,8 +138,6 @@ class Helper extends Module
         // Get the user's groups
         $this->allgroups = $this->getGroups(User::get('id'), 'all');
 
-        include_once \Hubzero\Facades\Component::path('com_groups') . DS . 'models' . DS . 'recent.php';
-
         $recents = Recent::all()
             ->whereEquals('user_id', User::get('id'))
             ->order('created', 'desc')

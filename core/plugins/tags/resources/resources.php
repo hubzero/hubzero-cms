@@ -41,8 +41,6 @@ class Resources extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**

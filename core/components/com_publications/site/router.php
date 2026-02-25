@@ -127,8 +127,6 @@ class Router extends Base
                 }
             }
         } else {
-            include_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
-
             $database = \Hubzero\Facades\App::get('db');
 
             $t = new \Components\Publications\Tables\Category($database);

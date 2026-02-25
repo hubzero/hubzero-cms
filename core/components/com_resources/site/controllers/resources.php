@@ -32,6 +32,7 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Date;
+
 /**
  * Resources controller class
  */
@@ -215,8 +216,6 @@ class Resources extends SiteController
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
-
             $tagging = new Tags(0);
             $tags = $tagging->parseTags($filters['tag']);
             if (count($tags) > 5) {
@@ -553,8 +552,6 @@ class Resources extends SiteController
                 // Get extra filter options
                 $bits['filters'] = array();
                 if ($this->config->get('show_audience') && $bits['type'] == 7) {
-                    include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'audience.php';
-
                     $bits['filters'] = Level::all();
                 }
 
@@ -737,7 +734,6 @@ class Resources extends SiteController
         $errors = array();
 
         //inlude the HUBpresenter library
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubpresenter.php';
 
         //get the presentation id
         //$id = Request::getInt('id', '');
@@ -902,7 +898,6 @@ class Resources extends SiteController
         }
 
         //media tracking object
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
         //get tracking for this user for this resource
         $tracking = MediaTracking::oneByUserAndResource(User::get('id'), $child);
@@ -1034,7 +1029,6 @@ class Resources extends SiteController
         $manifest = json_decode(file_get_contents(PATH_APP . $manifest));
 
         // Media tracking object
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
         // Get tracking for this user for this resource
         $tracking = MediaTracking::oneByUserAndResource(User::get('id'), $activechild->id);
@@ -2456,8 +2450,6 @@ class Resources extends SiteController
         $revision = Request::getString('rev', 0);
         $handle = '';
         if ($revision) {
-            require_once dirname(dirname(__DIR__)) . '/models/doi.php';
-
             $rdoi = Doi::oneByResource($id, $revision);
 
             $hasDoi = $rdoi->get('doi');

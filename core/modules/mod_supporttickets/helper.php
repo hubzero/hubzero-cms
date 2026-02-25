@@ -41,8 +41,6 @@ class Helper extends Module
             return;
         }
 
-        include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
         $database = App::get('db');
 
         $st = new Ticket($database);

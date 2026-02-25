@@ -59,10 +59,6 @@ class Publications extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once Component::path('com_publications') . '/models/orm/publication.php';
-        include_once Component::path('com_publications') . '/tables/author.php';
-        include_once Component::path('com_publications') . '/helpers/html.php';
     }
 
     /**
@@ -385,7 +381,5 @@ class Publications extends Plugin
     {
         // Push some CSS and JS to the tmeplate that may be needed
         \Hubzero\Document\Assets::addComponentStylesheet('com_publications');
-
-        include_once Component::path('com_publications') . '/helpers/usage.php';
     }
 }

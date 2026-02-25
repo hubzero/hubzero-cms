@@ -223,7 +223,6 @@ class Course extends Table
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            include_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
             $tagging = new \Components\Courses\Models\Tags();
             $tags = $tagging->parseTags($filters['tag']);
 

@@ -721,7 +721,6 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function tags()
     {
-        include_once \Hubzero\Facades\Component::path('com_tags') . '/models/cloud.php';
 
         $cloud = new \Components\Tags\Models\Cloud();
 

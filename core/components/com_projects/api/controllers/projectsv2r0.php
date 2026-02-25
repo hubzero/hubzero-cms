@@ -600,8 +600,6 @@ class Projectsv2r0 extends ApiController
             throw new Exception($row->getError());
         }
 
-        require_once \Hubzero\Facades\Component::path('com_projects') . '/models/repo.php';
-
         $repo = new Repo($row, 'local');
         if (!$repo->iniLocal()) {
             throw new Exception($repo->getError());

@@ -141,7 +141,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public $revision = null;
 
-
     /**
      * Generates automatic alias field value
      *
@@ -1165,8 +1164,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 }
             }
 
-            require_once Component::path('com_tools') . '/tables/tool.php';
-
             $db = App::get('db');
             $obj = new \Components\Tools\Tables\Tool($db);
             $obj->loadFromName($this->get('alias'));
@@ -1294,9 +1291,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         if ($this->isTool()) {
-            require_once Component::path('com_tools') . '/tables/version.php';
-            require_once Component::path('com_tools') . '/tables/author.php';
-
             $this->thistool = null;
             $this->curtool  = null;
             $this->revision = null;

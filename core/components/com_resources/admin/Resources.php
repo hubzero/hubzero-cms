@@ -66,7 +66,7 @@ class Resources extends AbstractComponent
             \Hubzero\Facades\Route::url('index.php?option=' . $option . '&controller=roles'),
             $controllerName == 'roles'
         );
-        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(
                 \Hubzero\Facades\Lang::txt('COM_RESOURCES_PLUGINS'),

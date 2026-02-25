@@ -491,8 +491,6 @@ class Import extends Base
     public function fieldMap()
     {
         if (!$this->mapped) {
-            include_once __DIR__ . DS . 'profile' . DS . 'field.php';
-
             $fields = Field::all()
                 ->ordered()
                 ->rows();

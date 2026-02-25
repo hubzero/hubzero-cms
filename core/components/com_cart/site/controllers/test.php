@@ -57,7 +57,7 @@ class Test extends ComponentController
 
         if (0) {
             // CREATE COUPON
-            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCoupon.php';
+
             try {
                 // Constructor take the coupon code
                 $coupon = new \Components\Storefront\Models\Coupon('hui');
@@ -98,7 +98,6 @@ class Test extends ComponentController
 
         if (0) {
             // CREATE NEW COURSE
-            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
             $course = new \Components\Storefront\Models\Course();
             $course->setName('Name of the course');
@@ -140,7 +139,7 @@ class Test extends ComponentController
 
         if (0) {
             // UPDATE COURSE by recreating it
-            include_once \Hubzero\Facades\Component::path('com_storefront') . DS . 'models' . DS . 'StorefrontModelCourse.php';
+
             $course = new \Components\Storefront\Models\Course();
             $course->setName('Operations Management 104');
             $course->setDescription('Operations Management 104 is some kind of test course for now...');

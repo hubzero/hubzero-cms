@@ -164,8 +164,6 @@ class Extension extends Relational
     {
         if ($this->get('type') == 'template') {
             if (is_file(\Hubzero\Facades\Component::path('com_templates') . '/models/style.php')) {
-                include_once \Hubzero\Facades\Component::path('com_templates') . '/models/style.php';
-
                 $style = \Components\Templates\Models\Style::all()
                     ->whereEquals('template', $this->get('element'))
                     ->whereEquals('client_id', $this->get('client_id'))

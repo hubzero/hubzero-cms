@@ -117,9 +117,6 @@ class Helper extends Module
      */
     public static function getList(&$params)
     {
-        require_once Component::path('com_content') . '/site/router.php';
-        require_once Component::path('com_content') . '/site/helpers/route.php';
-        require_once Component::path('com_content') . '/models/article.php';
 
         // Set application parameters in model
         $appParams = App::has('params') ? App::get('params') : new \Hubzero\Config\Registry('');

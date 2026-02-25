@@ -133,8 +133,6 @@ class Usage extends Plugin
                 return;
             }
 
-            include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
-
             $types = array();
 
             $field = \Components\Members\Models\Profile\Field::all()

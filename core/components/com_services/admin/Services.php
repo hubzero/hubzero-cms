@@ -28,8 +28,6 @@ class Services extends AbstractComponent
         }
 
         // Include scripts
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'subscription.php';
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'services');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

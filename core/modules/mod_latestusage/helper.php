@@ -30,7 +30,6 @@ class Helper extends Module
     {
         $database = \Hubzero\Facades\App::get('db');
 
-        include_once \Hubzero\Facades\Component::path('com_usage') . DS . 'helpers' . DS . 'helper.php';
         $udb = \Components\Usage\Helpers\Helper::getUDBO();
 
         $this->cls = trim($this->params->get('moduleclass_sfx', ''));

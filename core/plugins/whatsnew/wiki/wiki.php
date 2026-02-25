@@ -65,8 +65,6 @@ class Wiki extends Plugin
             return array();
         }
 
-        include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
-
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
         \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
         \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');

@@ -102,10 +102,6 @@ class Slack extends Plugin
         }
 
         // @TODO  Move to Composer so other extensions can use it
-        include_once __DIR__ . DS . 'lib' . DS . 'Client.php';
-        include_once __DIR__ . DS . 'lib' . DS . 'Message.php';
-        include_once __DIR__ . DS . 'lib' . DS . 'Attachment.php';
-        include_once __DIR__ . DS . 'lib' . DS . 'AttachmentField.php';
 
         // Set up the client
         $client = new \Maknz\Slack\Client(

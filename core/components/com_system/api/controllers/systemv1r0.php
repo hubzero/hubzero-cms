@@ -80,8 +80,6 @@ class Systemv1r0 extends ApiController
         );
 
         if (file_exists(Component::path('com_update') . DS . 'helpers' . DS . 'cli.php')) {
-            require_once Component::path('com_update') . DS . 'helpers' . DS . 'cli.php';
-
             $source = Component::params('com_update')->get('git_repository_source', null);
 
             //$response->system['repositoryVersion']   = json_decode(Cli::version());

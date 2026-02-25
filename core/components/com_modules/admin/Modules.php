@@ -28,8 +28,6 @@ class Modules extends AbstractComponent
             return;
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . 'modules.php';
-
         // initiate controller
         $controller = new Controllers\Modules();
         $controller->execute();

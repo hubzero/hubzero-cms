@@ -147,7 +147,6 @@ class Api extends SiteController
 
         if (!\Hubzero\Facades\User::isGuest()) {
             // Ensure model is loaded
-            require_once \Hubzero\Facades\Component::path('com_developer') . '/models/accesstoken.php';
 
             // Get all active tokens
             $tokens = \Components\Developer\Models\Accesstoken::all()

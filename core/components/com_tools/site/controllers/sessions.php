@@ -432,7 +432,7 @@ class Sessions extends SiteController
         }
 
         // Get the parent toolname (appname without any revision number "_r423")
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+
         $tv = new \Components\Tools\Tables\Version($this->database);
 
         switch ($app->version) {
@@ -506,12 +506,11 @@ class Sessions extends SiteController
         $jobs = $ms->getCount(User::get('username'));
 
         // Find out how many sessions the user is ALLOWED to run.
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
         $preferences = new \Components\Tools\Tables\Preferences($this->database);
         $preferences->loadByUser(User::get('id'));
         if (!$preferences || !$preferences->id) {
-            include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
+
             $scls = new \Components\Tools\Tables\SessionClass($this->database);
             $default = $scls->find('one', array('alias' => 'default'));
             $preferences->user_id  = User::get('id');
@@ -1043,7 +1042,6 @@ class Sessions extends SiteController
         $this->view->middleware = new \Components\Tools\Models\Middleware();
         //$session = $this->view->middleware->session($app->sess);
 
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
         $tv = new \Components\Tools\Tables\Version($this->database);
         $tv->loadFromInstance($row->appname);
         $this->database->setQuery(
@@ -1532,7 +1530,6 @@ class Sessions extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _recordUsage($app, $uid)
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 
         $tool = new \Components\Tools\Tables\Version($this->database);
         $tool->loadFromName($app);
@@ -1540,7 +1537,6 @@ class Sessions extends SiteController
         $created = Date::toSql();
 
         // Get a list of all their recent tools
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'recent.php';
 
         $rt = new \Components\Tools\Tables\Recent($this->database);
         $rows = $rt->getRecords($uid);
@@ -1769,9 +1765,6 @@ class Sessions extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getToolAccess($tool, $login = '')
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 
         // Ensure we have a tool
         if (!$tool) {

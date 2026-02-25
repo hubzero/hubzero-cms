@@ -296,9 +296,6 @@ class Support extends Plugin
             Lang::load('com_support') ||
             Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-            include_once Component::path('com_support') . DS . 'models' . DS . 'message.php';
-            include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
             $message = \Components\Support\Models\Message::oneOrNew($message_id);
 
             // Make sure we have a message to send
@@ -453,12 +450,10 @@ class Support extends Plugin
             return true;
         }
 
-        include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
         if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all') {
             $severities = explode(',', $params->get('support_ticketreminder_severity', 'all'));
         } else {
-            include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
+
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 
@@ -837,12 +832,10 @@ class Support extends Plugin
             return true;
         }
 
-        include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
         if ($params->get('support_ticketlist_severity', 'all') != 'all') {
             $severities = explode(',', $params->get('support_ticketlist_severity', 'all'));
         } else {
-            include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
+
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 

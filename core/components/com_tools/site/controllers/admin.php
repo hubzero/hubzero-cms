@@ -485,7 +485,6 @@ class Admin extends SiteController
 
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
-            include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
             // Collect metadata
             $url = Request::base() . ltrim(Route::url(
@@ -669,7 +668,6 @@ class Admin extends SiteController
 
                 // transfer screenshots
                 if ($devid && $currentid) {
-                    include_once __DIR__ . DS . 'screenshots.php';
 
                     $screenshots = new Screenshots();
                     if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) {
@@ -678,8 +676,6 @@ class Admin extends SiteController
                         $this->setError(Lang::txt('COM_TOOLS_ERROR_TRANSFERRING_SCREENSHOTS'));
                     }
                 }
-
-                include_once __DIR__ . DS . 'resources.php';
 
                 $resource = new Resources();
                 // update and publish resource page

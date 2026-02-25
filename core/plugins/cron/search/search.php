@@ -134,9 +134,6 @@ class Search extends Plugin
             return true;
         }
 
-        require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'indexqueue.php';
-        require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
-
         // Get the type needed to be indexed;
         $items = QueueDB::all()
             ->where('status', '=', 0)

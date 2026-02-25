@@ -58,8 +58,6 @@ class Resources extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**
@@ -274,8 +272,6 @@ class Resources extends Plugin
     {
         \Hubzero\Document\Assets::addComponentStylesheet('com_resources');
         \Hubzero\Document\Assets::addComponentScript('com_resources');
-
-        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
     }
 
     /**

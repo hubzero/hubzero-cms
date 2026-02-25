@@ -182,8 +182,6 @@ class Wishlist extends Plugin
 
         switch ($category) {
             case 'wish':
-                include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wish.php';
-
                 $wish = \Components\Wishlist\Models\Wish::oneOrFail($refid);
                 $wish->set('status', 7);
                 $wish->save();
@@ -217,8 +215,6 @@ class Wishlist extends Plugin
 
         switch ($category) {
             case 'wish':
-                include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wish.php';
-
                 $wish = \Components\Wishlist\Models\Wish::oneOrFail($refid);
                 $wish->set('status', 0);
                 $wish->save();
@@ -255,8 +251,6 @@ class Wishlist extends Plugin
 
         switch ($category) {
             case 'wish':
-                include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
-
                 // Delete the wish
                 $wish = \Components\Wishlist\Models\Wish::oneOrFail($referenceid);
                 $wish->destroy();

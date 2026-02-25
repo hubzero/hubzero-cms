@@ -399,7 +399,6 @@ class Profilesv1r1 extends ApiController
             $profile[$key] = $val;
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php';
         $cloud = new \Components\Members\Models\Tags($userid);
 
         foreach ($cloud->tags('list') as $i => $tag) {

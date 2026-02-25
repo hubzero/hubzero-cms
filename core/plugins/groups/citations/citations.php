@@ -909,7 +909,6 @@ class Citations extends Plugin
             foreach ($citationIDs as $id) {
                 $citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
-
                 // toggle the state
                 $citation->set('published', $citation::STATE_DELETED);
 
@@ -1250,7 +1249,6 @@ class Citations extends Plugin
         );
 
         if (isset($this->group) && $this->group->get('cn') != '') {
-            require_once Component::path('com_groups') . DS . 'tables' . DS . 'group.php';
             $gob = new \Components\Groups\Tables\Group($this->database);
             $cn = $gob->getName($this->group->get('gidNumber'));
 
@@ -1442,7 +1440,6 @@ class Citations extends Plugin
                     ->whereIn('scope_id', $members)
                     ->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
 
-
                 // push them to an array
                 $memberCites = array();
                 foreach ($memberCitations as $mC) {
@@ -1468,7 +1465,6 @@ class Citations extends Plugin
                     ->where('scope', '=', 'member')
                     ->whereIn('scope_id', $members)
                     ->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
-
 
                 // push them to an array
                 $memberCites = array();

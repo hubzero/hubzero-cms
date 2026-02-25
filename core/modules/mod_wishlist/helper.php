@@ -36,8 +36,6 @@ class Helper extends Module
             return;
         }
 
-        include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
-
         $wishlist = intval($this->params->get('wishlist', 0));
         if (!$wishlist) {
             $model = Wishlist::oneByReference(1, 'general');

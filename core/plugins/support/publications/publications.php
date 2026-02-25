@@ -164,9 +164,6 @@ class Publications extends Plugin
 
         switch ($category) {
             case 'review':
-                include_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-                include_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
-
                 // Delete the review
                 $review = new \Components\Publications\Tables\Review($database);
                 $review->load($referenceid);

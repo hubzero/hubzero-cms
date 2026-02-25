@@ -149,7 +149,6 @@ class Forum extends Plugin
      */
     public static function out($row)
     {
-        include_once Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
         $row->scope    = $row->rcount;
         $row->scope_id = $row->data3;

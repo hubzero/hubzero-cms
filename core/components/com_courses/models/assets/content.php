@@ -39,7 +39,6 @@ class Content extends Handler
     public function create()
     {
         // Include needed files
-        require_once dirname(__DIR__) . DS . 'asset.php';
 
         if (!empty($this->asset['tool-alias'])) {
             $this->asset['url'] = '/tools/' . $this->asset['tool-alias'] . '/invoke';
@@ -145,7 +144,6 @@ class Content extends Handler
     public function save()
     {
         // Include needed files
-        require_once dirname(__DIR__) . DS . 'asset.php';
 
         // Create our asset object
         $id    = Request::getInt('id', null);

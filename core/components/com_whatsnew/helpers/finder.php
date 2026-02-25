@@ -73,7 +73,6 @@ class Finder
      */
     public static function parseTimePeriod($period)
     {
-        require_once __DIR__ . DS . 'period.php';
 
         return new Period($period);
     }

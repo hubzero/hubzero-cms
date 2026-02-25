@@ -42,9 +42,6 @@ class Publications extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
-        include_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
     }
 
     /**
@@ -163,7 +160,6 @@ class Publications extends Plugin
     {
         $database = App::get('db');
 
-        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
         $rt = new \Components\Publications\Tables\Category($database);
 
         if (isset($filters['select']) && $filters['select'] == 'count') {
@@ -260,8 +256,6 @@ class Publications extends Plugin
      */
     public static function out($row)
     {
-        include_once Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
-        require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 
         $row->href = Route::url('index.php?option=com_publications&id=' . $row->id);
 

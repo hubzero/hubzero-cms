@@ -25,7 +25,6 @@ class Helper extends Module
      */
     public function run()
     {
-        require_once \Hubzero\Facades\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
         $this->tags = Tag::all()
             ->whereEquals('admin', 0)

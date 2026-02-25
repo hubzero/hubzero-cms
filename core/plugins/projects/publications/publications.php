@@ -95,7 +95,7 @@ class Publications extends Plugin
         // Check if plugin is restricted to certain projects
         // Check if plugin is restricted to certain projects
         $projects = $this->params->get('restricted')
-            ? Html::getParamArray($this->params->get('restricted'))
+            ? \Hubzero\Facades\Html::getParamArray($this->params->get('restricted'))
             : array();
 
         if (!empty($projects) && $alias) {
@@ -196,10 +196,10 @@ class Publications extends Plugin
 
         // Common extensions (for gallery)
         // Common extensions (for gallery)
-        $this->_image_ext = Html::getParamArray(
+        $this->_image_ext = \Hubzero\Facades\Html::getParamArray(
             $this->params->get('image_types', 'bmp, jpeg, jpg, png')
         );
-        $this->_video_ext = Html::getParamArray(
+        $this->_video_ext = \Hubzero\Facades\Html::getParamArray(
             $this->params->get('video_types', 'avi, mpeg, mov, wmv')
         );
 
@@ -457,7 +457,7 @@ class Publications extends Plugin
         $view->new_pubs = $this->params->get('new_pubs');
         $view->quota = $view->params->get('pubQuota')
             ? $view->params->get('pubQuota')
-            : Html::convertSize(
+            : \Hubzero\Facades\Html::convertSize(
                 floatval($this->model->config()->get('pubQuota', '1')),
                 'GB',
                 'b'
@@ -1524,8 +1524,6 @@ class Publications extends Plugin
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
 
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'Log.php';
-
         $view = new \Hubzero\Plugin\View(
             array(
                 'folder' => 'projects',
@@ -1595,7 +1593,6 @@ class Publications extends Plugin
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_ERROR'));
             } else {
                 // Include support scripts
-                include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
                 // Load the support config
                 $sparams = Component::params('com_support');

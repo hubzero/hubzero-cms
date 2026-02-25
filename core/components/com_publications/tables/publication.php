@@ -269,7 +269,6 @@ class Publication extends Table
             $query .= " AND (V.access != 2)  ";
         }
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
             $tagging = new \Components\Publications\Helpers\Tags($this->_db);
             $tags = $tagging->_parse_tags($filters['tag']);
 

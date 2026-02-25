@@ -27,8 +27,6 @@ class Helper extends Module
      */
     public function run()
     {
-        require_once Component::path('com_tags') . '/models/cloud.php';
-        require_once Component::path('com_resources') . '/models/type.php';
 
         $this->tags = Tag::all()
             ->whereEquals('admin', 0)

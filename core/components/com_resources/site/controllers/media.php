@@ -278,8 +278,6 @@ class Media extends SiteController
      */
     public function trackingTask()
     {
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking' . DS . 'detailed.php';
 
         // Instantiate objects
         $database = App::get('db');

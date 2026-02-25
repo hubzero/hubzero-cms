@@ -23,7 +23,6 @@ class Poll extends AbstractComponent
     protected function execute(): void
     {
         // Require the base controller
-        require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
 
         $controller = new Controllers\Polls();
         $controller->execute();

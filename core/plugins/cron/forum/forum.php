@@ -56,7 +56,6 @@ class Forum extends Plugin
     public function emailGroupForumDigest(\Components\Cron\Models\Job $job)
     {
         // Require posts file
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
         // Load language files
         Lang::load('plg_groups_forum') ||

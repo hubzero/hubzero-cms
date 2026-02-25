@@ -110,7 +110,6 @@ class Projects extends Plugin
         );
 
         // Load classes
-        include_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
         $this->model = new \Components\Projects\Models\Project();

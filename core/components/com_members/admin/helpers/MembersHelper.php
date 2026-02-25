@@ -28,7 +28,6 @@ class MembersHelper
      */
     public static function addSubmenu($vName)
     {
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'admin.php';
 
         // Groups and Levels are restricted to core.admin
         $canDo = \Components\Members\Helpers\Admin::getActions();

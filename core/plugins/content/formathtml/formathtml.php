@@ -141,8 +141,6 @@ class Formathtml extends Plugin
             $content = str_replace('href="/site', 'href="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
             $content = str_replace("href='/site", "href='" . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
 
-            include_once __DIR__ . '/parser.php';
-
             if ($this->params->get('unlink', 0)) {
                 $pattern = '/<a.*(?=href="([^"]*)")[^>]*>([^<]*)<\/a>/uiUs';
                 $content = preg_replace_callback($pattern, array(&$this, 'delink'), $content);

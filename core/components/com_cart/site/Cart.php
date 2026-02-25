@@ -25,7 +25,6 @@ class Cart extends AbstractComponent
     protected function execute(): void
     {
         // require base component controller
-        require_once __DIR__ . DS . 'controllers' . DS . 'component.php';
 
         $controllerName = Request::getCmd('controller', '');
         if (empty($controllerName)) {

@@ -37,8 +37,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
      */
     public function __construct($subject, $config)
     {
-        require_once __DIR__ . '/SciStarter/Http/Curl.php';
-        require_once __DIR__ . '/SciStarter/Oauth.php';
+
         parent::__construct($subject, $config);
     }
 

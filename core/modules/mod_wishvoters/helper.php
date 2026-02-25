@@ -28,7 +28,6 @@ class Helper extends Module
      */
     public function display()
     {
-        include_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
         // Which list is being viewed?
         $listid   = Request::getInt('id', 0);

@@ -67,7 +67,6 @@ class Queries extends SiteController
             $row->set('sort_dir', 'desc');
         }
 
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php';
         $con = new Conditions();
         $conditions = $con->getConditions();
 

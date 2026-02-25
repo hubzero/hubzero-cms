@@ -95,8 +95,6 @@ class Groups extends Plugin
             ->whereEquals('scope', 'group')
             ->rows();
 
-        include_once dirname(dirname(__DIR__)) . DS . 'groups' . DS . 'announcements' . DS . 'announcements.php';
-
         // Loop through each announcement
         foreach ($announcements as $announcement) {
             // check to see if we can send

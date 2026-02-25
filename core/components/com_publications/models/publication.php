@@ -1571,8 +1571,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_citations)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
             $cc = \Components\Citations\Models\Citation::all();
 
             $a = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1614,8 +1612,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_lastCitationDate)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
             $cc = \Components\Citations\Models\Citation::all();
 
             $a = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1645,10 +1641,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->citationsForMetadataSet)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
-
             $citations = \Components\Citations\Models\Citation::all();
             $typesTbl = \Components\Citations\Models\Type::blank()->getTableName();
             $assocTbl = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1685,8 +1677,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_tags)) {
-            include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
-
             $rt = new Helpers\Tags($this->_db);
             $this->_tags = $rt->get_tags_on_object($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         }
@@ -1708,8 +1698,6 @@ class Publication extends Obj
             return false;
         }
 
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
         $rt = new Helpers\Tags($this->_db);
         $this->_tagsForEditing = $rt->get_tag_string($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         return $this->_tagsForEditing;
@@ -1728,8 +1716,6 @@ class Publication extends Obj
         }
 
         if (!isset($this->_tagCloud)) {
-            include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
             $rt = new Helpers\Tags($this->_db);
             $this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->version->get('id'));
         }
@@ -2325,8 +2311,6 @@ class Publication extends Obj
             return false;
         }
 
-        include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
-
         $tagsObj = new Helpers\Tags($this->_db);
 
         return $tagsObj->getAllUserTags($this->version->id);
@@ -2343,8 +2327,6 @@ class Publication extends Obj
         if (!$this->exists()) {
             return false;
         }
-
-        include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
 
         $tagsObj = new Helpers\Tags($this->_db);
 

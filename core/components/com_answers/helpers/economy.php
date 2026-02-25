@@ -16,6 +16,7 @@ use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
+
 /**
  * Answers Economy class:
  * Stores economy funtions for com_answers
@@ -76,8 +77,6 @@ class Economy extends Obj
         if ($id === null) {
             return false;
         }
-
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
         // Get point values for actions
         $BC = Config::values();
@@ -144,8 +143,6 @@ class Economy extends Obj
             $qid = $this->qid;
         }
         $cat = 'answers';
-
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
         $points = $this->calculate_marketvalue($qid, $type);
 

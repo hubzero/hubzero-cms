@@ -105,7 +105,7 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'period.php';
+
         $live_site = rtrim(Request::base(), '/');
 
         // Get some initial parameters
@@ -200,7 +200,6 @@ class Helper extends Module
         $this->rows2 = null;
 
         if ($this->tagged) {
-            include_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
 
             $mt = new \Components\Members\Models\Tags(User::get('id'));
             $tags = $mt->tags();

@@ -27,7 +27,6 @@ class Notes extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-        require_once __DIR__ . DS . 'models' . DS . 'note.php';
     }
 
     /**

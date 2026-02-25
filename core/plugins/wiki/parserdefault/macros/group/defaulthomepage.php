@@ -52,7 +52,6 @@ class DefaultHomePage extends GroupMacro
         }
 
         // add required helper lib
-        require_once \Hubzero\Facades\Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
 
         // get default home page
         $html = \Components\Groups\Helpers\Pages::getDefaultHomePage($this->group);

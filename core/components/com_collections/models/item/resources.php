@@ -75,7 +75,6 @@ class Resources extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
         $resource = null;
 
         if (!$id) {

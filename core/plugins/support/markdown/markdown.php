@@ -51,24 +51,6 @@ class Markdown extends Plugin
         }
 
         if (!self::$parser) {
-            include_once __DIR__ . '/markdown/block/CodeTrait.php';
-            include_once __DIR__ . '/markdown/block/FencedCodeTrait.php';
-            include_once __DIR__ . '/markdown/block/HeadlineTrait.php';
-            include_once __DIR__ . '/markdown/block/HtmlTrait.php';
-            include_once __DIR__ . '/markdown/block/ListTrait.php';
-            include_once __DIR__ . '/markdown/block/QuoteTrait.php';
-            include_once __DIR__ . '/markdown/block/RuleTrait.php';
-            include_once __DIR__ . '/markdown/block/TableTrait.php';
-            include_once __DIR__ . '/markdown/inline/CodeTrait.php';
-            include_once __DIR__ . '/markdown/inline/EmphStrongTrait.php';
-            include_once __DIR__ . '/markdown/inline/LinkTrait.php';
-            include_once __DIR__ . '/markdown/inline/StrikeoutTrait.php';
-            include_once __DIR__ . '/markdown/inline/UrlLinkTrait.php';
-            include_once __DIR__ . '/markdown/Parser.php';
-            include_once __DIR__ . '/markdown/Markdown.php';
-            include_once __DIR__ . '/markdown/MarkdownExtra.php';
-            include_once __DIR__ . '/markdown/GithubMarkdown.php';
-
             $cls = '\\cebe\\markdown\\' . $this->params->get('type', 'Markdown');
 
             self::$parser = new $cls();

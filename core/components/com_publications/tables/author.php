@@ -378,8 +378,6 @@ class Author extends Table
             return false;
         }
 
-        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
-
         // Get project owner info
         $objO = new \Components\Projects\Tables\Owner($this->_db);
         $owner_id = $objO->getOwnerId($projectid, $by);

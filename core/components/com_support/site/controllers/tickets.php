@@ -2017,8 +2017,6 @@ class Tickets extends SiteController
         // Check for a session token
         $sessnum = '';
         if ($sess = Request::getString('sesstoken', '')) {
-            include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
-
             $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
             // retrieve the username and IP from session with this session token

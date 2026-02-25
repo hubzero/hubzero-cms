@@ -84,14 +84,12 @@ class Publications extends Plugin
 
         // Is logging enabled?
         if (is_file(Component::path('com_publications') . '/tables/Log.php')) {
-            require_once Component::path('com_publications') . '/tables/Log.php';
         } else {
             $this->setError('Publication logs not present on this hub, cannot email stats to authors');
             return false;
         }
 
         // Helpers
-        require_once Component::path('com_publications') . '/helpers/html.php';
 
         // Get all registered authors who subscribed to email
         $query  = "SELECT A.user_id ";
@@ -217,10 +215,6 @@ class Publications extends Plugin
         $numMonths = 1;
         $includeCurrent = false;
 
-        require_once Component::path('com_publications') . '/tables/publication.php';
-        require_once Component::path('com_publications') . '/tables/version.php';
-        require_once Component::path('com_publications') . '/models/log.php';
-
         // Get log model
         $modelLog = new \Components\Publications\Models\Log();
 
@@ -253,10 +247,6 @@ class Publications extends Plugin
     {
         $database = \Hubzero\Facades\App::get('db');
         $config = Component::params('com_publications');
-
-        require_once Component::path('com_publications') . '/helpers/utilities.php';
-        require_once Component::path('com_publications') . '/tables/version.php';
-        require_once Component::path('com_projects') . '/helpers/html.php';
 
         // Check that mkAIP script exists
         if (!\Components\Publications\Helpers\Utilities::archiveOn()) {
@@ -395,8 +385,6 @@ class Publications extends Plugin
             return true;
         }
 
-        include_once Component::path('com_publications') . '/models/publication.php';
-
         // Get DOI service
         $doiService = new \Components\Publications\Models\Doi();
 
@@ -446,8 +434,6 @@ class Publications extends Plugin
      */
     public function updateFtpLinks(\Components\Cron\Models\Job $job)
     {
-        include_once Component::path('com_publications') . '/models/orm/version.php';
-        include_once Component::path('com_publications') . '/models/publication.php';
 
         $params = $job->params;
         $yesterday = !empty($job->params['startdate'])

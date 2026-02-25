@@ -16,7 +16,6 @@ use Hubzero\Facades\Log;
 
 // No direct access
 
-
 /**
  * User plugin for updating quotas and session limits
  */
@@ -32,8 +31,6 @@ class Middleware extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
     }
 
     /**
@@ -62,8 +59,6 @@ class Middleware extends Plugin
                 //
                 // Quota class
                 //
-
-                require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
                 // Check for an existing quota record
                 $row = \Components\Members\Models\Quota::all()
@@ -126,9 +121,6 @@ class Middleware extends Plugin
                 //
                 // Session limits
                 //
-
-                require_once Component::path('com_tools') . DS . 'tables' . DS . 'sessionclass.php';
-                require_once Component::path('com_tools') . DS . 'tables' . DS . 'preferences.php';
 
                 $row = new \Components\Tools\Tables\Preferences($db);
 
@@ -227,7 +219,6 @@ class Middleware extends Plugin
 
         return true;
     }
-
 
     public function runSelectQuery($query)
     {

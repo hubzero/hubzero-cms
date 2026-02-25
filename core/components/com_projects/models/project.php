@@ -210,7 +210,7 @@ class Project extends Model
      */
     public function repo()
     {
-        require_once __DIR__ . DS . 'repo.php';
+
         if (!isset($this->_repo)) {
             $this->_repo = new Repo($this, 'local');
         }
@@ -269,7 +269,6 @@ class Project extends Model
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
             break;
-
 
             default:
                 return $this->get($key);

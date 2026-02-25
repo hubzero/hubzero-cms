@@ -22,7 +22,6 @@ class Whatsnew extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once __DIR__ . DS . 'controllers' . DS . 'results.php';
 
         // Instantiate controller
         $controller = new Controllers\Results();

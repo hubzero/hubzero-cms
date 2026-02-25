@@ -39,8 +39,6 @@ class Ticketstate extends Element
 
         $html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 
-        include_once \Hubzero\Facades\Component::path('com_support') . DS . 'models' . DS . 'status.php';
-
         $status = \Components\Support\Models\Status::all()
             ->order('open', 'desc')
             ->rows();

@@ -32,7 +32,6 @@ class Redirect extends AbstractComponent
         $componentPath = Component::path($component_name);
         $sitePath = "$componentPath/site";
 
-
         $view = Request::getCmd('view', 'display');
         $controllerName = Request::getCmd('controller', $view);
         $task = Request::getCmd('task', $view);
@@ -49,7 +48,7 @@ class Redirect extends AbstractComponent
             $controllerName = 'redirect';
             Request::setVar('task', $task);
         }
-        require_once "$sitePath/controllers/$controllerName.php";
+
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
         //print($controllerName); exit();
         // Instantiate controller

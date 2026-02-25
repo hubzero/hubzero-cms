@@ -28,8 +28,6 @@ class Checkin extends AbstractComponent
             return;
         }
 
-        require_once __DIR__ . DS . 'controllers' . DS . 'checkin.php';
-
         // Instantiate controller
         $controller = new Controllers\Checkin();
         $controller->execute();

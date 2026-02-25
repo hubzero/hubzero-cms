@@ -148,8 +148,6 @@ class Impact extends Plugin
         );
 
         if ($returnhtml) {
-            include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
-
             $this->_option = $option;
 
             // Which view

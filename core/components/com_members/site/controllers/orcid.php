@@ -712,7 +712,7 @@ class Orcid extends SiteController
      */
     public static function saveORCIDToCollaboratorTable($name, $orcid, $accessToken)
     {
-        require_once \Hubzero\Facades\Component::path('com_members') . DS . 'models' . DS . 'collaborator.php';
+
         $row = Collaborator::oneByName($name);
         $row->set('name', $name);
         $row->set('orcid', $orcid);

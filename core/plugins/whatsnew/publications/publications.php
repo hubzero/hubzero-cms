@@ -61,10 +61,6 @@ class Publications extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
-        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-        include_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
     }
 
     /**
@@ -181,8 +177,6 @@ class Publications extends Plugin
     public static function documents()
     {
         \Hubzero\Document\Assets::addComponentStylesheet('com_publications');
-
-        require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
     }
 
     /**

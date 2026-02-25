@@ -30,8 +30,6 @@ class Info extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'info.php';
-
         $model = new KnowItAll();
 
         $this->view

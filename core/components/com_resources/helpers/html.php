@@ -444,7 +444,6 @@ class Html
      */
     public static function license($license)
     {
-        include_once dirname(__DIR__) . DS . 'models' . DS . 'license.php';
 
         $license = str_replace(' ', '-', strtolower($license));
         $license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
@@ -526,6 +525,7 @@ class Html
      * @param   string  $active  Current plugin name
      * @param   string  $alias   Resource alias
      * @return  string  HTML
+     * @todo    Rename to avoid ambiguity with Hubzero\Html\Builder\Tabs
      */
     public static function tabs($option, $id, $cats, $active = 'about', $alias = '')
     {
@@ -586,7 +586,6 @@ class Html
      */
     public static function citation($option, $cite, $id, $citations, $type, $rev = '')
     {
-        include_once \Hubzero\Facades\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
         $html  = '<p>' . Lang::txt('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
         if (trim($citations)) {
@@ -764,8 +763,6 @@ class Html
                 } else {
                     $lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
                 }
-
-                require_once \Hubzero\Facades\Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
                 // Create some tool objects
                 $toolgroups = null;

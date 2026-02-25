@@ -47,7 +47,7 @@ class Tags extends AbstractComponent
             \Hubzero\Facades\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
             ($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
         );
-        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
+
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(
                 \Hubzero\Facades\Lang::txt('COM_TAGS_PLUGINS'),

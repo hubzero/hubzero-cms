@@ -539,7 +539,6 @@ class Log extends Table
         }
 
         if ($filter) {
-            include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
             $tagging = new \Components\Publications\Helpers\Tags($this->_db);
             $tags = $tagging->_parse_tags($filter);
 

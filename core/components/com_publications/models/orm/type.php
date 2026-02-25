@@ -61,7 +61,6 @@ class Type extends Relational
      */
     public function checkUsage()
     {
-        require_once __DIR__ . DS . 'publication.php';
 
         return Publication::all()
             ->whereEquals('master_type', $this->get('id'))

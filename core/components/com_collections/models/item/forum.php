@@ -78,8 +78,6 @@ class Forum extends GenericItem
             return true;
         }
 
-        include_once \Hubzero\Facades\Component::path('com_forum') . DS . 'models' . DS . 'post.php';
-
         $thread = Post::oneOrNew($id);
 
         if ($thread->isNew()) {

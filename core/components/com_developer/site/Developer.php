@@ -22,7 +22,6 @@ class Developer extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'application.php';
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'developer');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

@@ -524,7 +524,7 @@ class Team extends Plugin
         $objO = $this->model->table('Owner');
 
         // Instantiate a new registration object
-        include_once Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+
         $xregistration = new \Components\Members\Models\Registration();
 
         // Owner names not supplied

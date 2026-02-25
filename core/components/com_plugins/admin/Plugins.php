@@ -37,8 +37,6 @@ class Plugins extends AbstractComponent
             \Hubzero\Facades\App::abort(404, \Hubzero\Facades\Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'plugins.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'plugin.php';
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

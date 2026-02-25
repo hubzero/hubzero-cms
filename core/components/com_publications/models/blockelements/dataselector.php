@@ -73,7 +73,7 @@ class Dataselector extends Base
 
         // Git helper
         if (!$this->_git) {
-            include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
+
             $this->_git = new \Components\Projects\Helpers\Git($this->path);
         }
 

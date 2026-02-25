@@ -146,7 +146,7 @@ class Stamp extends Relational
         }
 
         // Generate stamp
-        require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
+
         $stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
         $obj->set(array(

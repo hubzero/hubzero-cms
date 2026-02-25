@@ -169,8 +169,6 @@ class Wishlist extends Plugin
         $this->action = $action;
 
         //include com_wishlist files
-        require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
-        require_once Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
 
         // Get the component parameters
         $this->config = Component::params('com_wishlist');
@@ -445,7 +443,6 @@ class Wishlist extends Plugin
     public function onGroupDeleteCount($group)
     {
         // include com_wishlist files
-        require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
         // Load some objects
         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($group->get('gidNumber'), 'group');
@@ -474,7 +471,6 @@ class Wishlist extends Plugin
     public function onGroupDelete($group)
     {
         // include com_wishlist files
-        require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
         // Load some objects
         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($group->get('gidNumber'), 'group');

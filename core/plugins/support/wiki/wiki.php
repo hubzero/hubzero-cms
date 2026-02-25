@@ -46,8 +46,6 @@ class Wiki extends Plugin
             return null;
         }
 
-        require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
-
         $query = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, "
             . "rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
@@ -85,8 +83,6 @@ class Wiki extends Plugin
             return null;
         }
 
-        require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
-
         $comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
         $comment->set('state', \Components\Wiki\Models\Comment::STATE_FLAGGED);
         $comment->save();
@@ -107,8 +103,6 @@ class Wiki extends Plugin
         if (!$this->canHandle($category)) {
             return null;
         }
-
-        require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
         $comment->set('state', \Components\Wiki\Models\Comment::STATE_PUBLISHED);
@@ -131,8 +125,6 @@ class Wiki extends Plugin
         if (!$this->canHandle($category)) {
             return null;
         }
-
-        require_once Component::path('com_wiki') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Wiki\Models\Comment::oneOrFail($refid);
         $comment->set('state', \Components\Wiki\Models\Comment::STATE_DELETED);

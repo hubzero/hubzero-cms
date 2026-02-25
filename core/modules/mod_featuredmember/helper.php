@@ -30,7 +30,6 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $database = \Hubzero\Facades\App::get('db');
         $this->row = null;

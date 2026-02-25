@@ -941,7 +941,7 @@ class File extends Base
         }
 
         // Git helper
-        include_once \Hubzero\Facades\Component::path('com_projects') . DS . 'helpers' . DS . 'githelper.php';
+
         $this->_git = new \Components\Projects\Helpers\Git($configs->path);
 
         // Counter
@@ -959,7 +959,6 @@ class File extends Base
             // Catch items coming in from connections
             if (preg_match('/^([0-9]*):\/\//', $identifier, $matches)) {
                 if (isset($matches[1])) {
-                    require_once \Hubzero\Facades\Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 
                     // Grab the connection id
                     $connection = $matches[1];

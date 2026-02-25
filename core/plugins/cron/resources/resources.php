@@ -98,7 +98,6 @@ class Resources extends Plugin
         }
 
         // Includes
-        require_once Component::path('com_publications') . '/models/doi.php';
 
         // Get DOI service
         $doiService = new \Components\Publications\Models\Doi();
@@ -107,8 +106,6 @@ class Resources extends Plugin
         if (!$doiService->on() || !$doiService->_configs->livesite) {
             return true;
         }
-
-        require_once Component::path('com_resources') . '/models/entry.php';
 
         // Go through records
         foreach ($rows as $row) {
@@ -234,8 +231,6 @@ class Resources extends Plugin
         $database->setQuery($sql);
         $queued = $database->loadObjectList();
 
-        require_once Component::path('com_resources') . '/models/entry.php';
-
         // Loop through each resource and rank it
         foreach ($queued as $item) {
             if (in_array($item->id, $processed)) {
@@ -315,8 +310,6 @@ class Resources extends Plugin
 
         // Process records
         if (count($data) > 0) {
-            include_once Component::path('com_resources') . '/helpers/tests/links.php';
-
             $auditor = new \Hubzero\Content\Auditor('resource');
             $auditor->registerTest(new \Components\Resources\Helpers\Tests\Links());
 
@@ -387,8 +380,6 @@ class Resources extends Plugin
             // Load language files
             Lang::load('plg_cron_resources') ||
             Lang::load('plg_cron_resources', __DIR__);
-
-            require_once Component::path('com_resources') . '/models/entry.php';
 
             $limit = intval($params->get('digest_limit', 3));
 

@@ -20,6 +20,7 @@ use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Plugin;
+
 /**
  * API controller class for tool sessions
  */
@@ -48,7 +49,7 @@ class Sessionsv1r0 extends ApiController
         $supportedtag = $rconfig->get('supportedtag', '');
 
         //get supportedtag usage
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
         $resource_tags = new \Components\Resources\Helpers\Tags(0);
         $supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
@@ -113,7 +114,7 @@ class Sessionsv1r0 extends ApiController
         $supportedtag = $rconfig->get('supportedtag', '');
 
         //get supportedtag usage
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
         $resource_tags = new \Components\Resources\Helpers\Tags(0);
         $supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
@@ -227,13 +228,13 @@ class Sessionsv1r0 extends ApiController
         $supportedtag = $rconfig->get('supportedtag', '');
 
         //get supportedtag usage
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
         $this->rt = new \Components\Resources\Helpers\Tags(0);
         $supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
         $tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
         //get screenshots
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+
         $tv = new \Components\Tools\Tables\Version($database);
         $vid   = $tv->getVersionIdFromResource($tool_info->id, $version);
 
@@ -250,8 +251,7 @@ class Sessionsv1r0 extends ApiController
         $object->tool->publishType = $publishType;
 
         // get tool status
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
+
         $hztt = new \Components\Tools\Tables\Tool($database);
         $status = array();
         $hztt->getToolStatus($tool_info->toolid, $this->_option, $status, $version);
@@ -350,9 +350,6 @@ class Sessionsv1r0 extends ApiController
     public function screenshotTask()
     {
         //$this->requiresAuthentication();
-
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         //instantiate middleware database object
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -570,9 +567,6 @@ class Sessionsv1r0 extends ApiController
         }
 
         //include needed tool libraries
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         //create database object
         $database = \Hubzero\Facades\App::get('db');
@@ -639,12 +633,10 @@ class Sessionsv1r0 extends ApiController
         $jobs = $ms->getCount($result->get('username'));
 
         // Find out how many sessions the user is ALLOWED to run.
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
         $preferences = new \Components\Tools\Tables\Preferences($database);
         $preferences->loadByUser($result->get('uidNumber'));
         if (!$preferences || !$preferences->id) {
-            include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
             $scls = new \Components\Tools\Tables\SessionClass($this->database);
             $default = $scls->find('one', array('alias' => 'default'));
             $preferences->user_id  = $result->get('uidNumber');
@@ -690,7 +682,7 @@ class Sessionsv1r0 extends ApiController
         // Do we have more than one session of this tool?
         if ($appcount > 1) {
             // We do, so let's append a timestamp
-            $app->caption .= ' (' . Date::of('now')->format("g:i a") . ')';
+            $app->caption .= ' (' . \Hubzero\Facades\Date::of('now')->format("g:i a") . ')';
         }
 
         // Save the changed caption
@@ -774,9 +766,6 @@ class Sessionsv1r0 extends ApiController
         }
 
         // Include needed tool libraries
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         // Create database object
         $database = \Hubzero\Facades\App::get('db');
@@ -843,7 +832,6 @@ class Sessionsv1r0 extends ApiController
         $jobs = $ms->getCount($profile->get('username'));
 
         // Find out how many sessions the user is ALLOWED to run.
-        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
 
         $preferences = new \Components\Tools\Tables\Preferences($database);
         $preferences->loadByUser($profile->get('id'));
@@ -881,7 +869,6 @@ class Sessionsv1r0 extends ApiController
             // Now see if the user has a home directory yet
             if (!\Hubzero\Facades\Filesystem::exists($homeDir)) {
                 // Try to create their home directory
-                require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
 
                 if (!\Components\Tools\Helpers\Utils::createHomeDirectory($profile->get('username'))) {
                     throw new Exception(Lang::txt('Failed to create user home directory'), 500);
@@ -956,8 +943,6 @@ class Sessionsv1r0 extends ApiController
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         // Make sure it's a valid sesssion number and the user is/was the owner of it
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         // This next part is probably redundant since we can only access the session directories that
         // are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
@@ -1044,8 +1029,7 @@ class Sessionsv1r0 extends ApiController
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         // Make sure it's a valid sesssion number and the user is/was the owner of it
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
+
         // This next part is probably redundant since we can only access the session directories that
         // are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
         // table exists only as long as the session is alive.  As soon as the session ends, the entry
@@ -1096,9 +1080,6 @@ class Sessionsv1r0 extends ApiController
         }
 
         //include needed tool libs
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         //instantiate db objects
         $database = \Hubzero\Facades\App::get('db');
@@ -1194,7 +1175,6 @@ class Sessionsv1r0 extends ApiController
         }
 
         //include needed libraries
-        require_once dirname(dirname(__DIR__)) . '/models/middleware/session.php';
 
         //instantiate middleware database object
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -1273,7 +1253,6 @@ class Sessionsv1r0 extends ApiController
         }
 
         // include needed libraries
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'mw.viewperm.php';
 
         // instantiate middleware database object
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -1327,7 +1306,7 @@ class Sessionsv1r0 extends ApiController
         $type = Request::getString('type', 'soft');
 
         // get storage quota
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utils.php';
+
         $disk_usage = \Components\Tools\Helpers\Utils::getDiskUsage($result->get('username'));
 
         // get the tools storage path
@@ -1464,9 +1443,6 @@ class Sessionsv1r0 extends ApiController
     public function fileshareTask()
     {
         //$this->requiresAuthentication();
-
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         // instantiate middleware database object
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();

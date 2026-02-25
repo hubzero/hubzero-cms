@@ -88,8 +88,6 @@ class Note extends \Components\Wiki\Models\Book
             return false;
         }
 
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'publicstamp.php';
-
         $objSt = new Tables\Stamp($this->_db);
 
         // Build reference for latest revision of page

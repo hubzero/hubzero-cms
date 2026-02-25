@@ -574,8 +574,6 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 
             // No thumb. Try to create it...
             if (!$src && $this->get('picture')) {
-                include_once dirname(dirname(__DIR__)) . '/helpers/html.php';
-
                 $thumb = \Components\Projects\Helpers\Html::createThumbName($this->get('picture'));
 
                 if ($thumb && file_exists($path . DS . $thumb)) {

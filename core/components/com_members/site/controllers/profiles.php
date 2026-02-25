@@ -70,10 +70,6 @@ class Profiles extends SiteController
             return;
         }
 
-        require_once dirname(dirname(__DIR__)) . '/models/incremental/awards.php';
-        require_once dirname(dirname(__DIR__)) . '/models/incremental/groups.php';
-        require_once dirname(dirname(__DIR__)) . '/models/incremental/options.php';
-
         $ia = new \Components\Members\Models\Incremental\Awards($profile);
         $ia->optOut();
 
@@ -1121,7 +1117,6 @@ class Profiles extends SiteController
 
             switch ($k) {
                 case 'sessions':
-                    include_once Component::path('com_tools') . DS . 'tables' . DS . 'preferences.php';
 
                     $preferences = new \Components\Tools\Tables\Preferences($this->database);
                     $preferences->loadByUser($profile->get('id'));
@@ -1614,7 +1609,6 @@ class Profiles extends SiteController
             }
 
             // Previously: sendConfirmationCode($member->get('username'), $email, ...)
-
 
             Event::trigger('onUserAfterChangeEmail', array($member->toArray()));
         }

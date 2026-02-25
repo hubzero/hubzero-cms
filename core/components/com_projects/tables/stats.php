@@ -92,8 +92,6 @@ class Stats extends Table
     {
         $stats = array();
 
-        require_once \Hubzero\Facades\Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-
         $obj  = new Project($this->_db);
         $objO = new Owner($this->_db);
         $objP = new \Components\Publications\Tables\Publication($this->_db);
@@ -290,7 +288,6 @@ class Stats extends Table
             $stats['files'] = isset($lastLog['files']) ? $lastLog['files'] : $stats['files'];
         } else {
             // Get repo model
-            require_once dirname(__DIR__) . DS . 'models' . DS . 'repo.php';
 
             // Compute
             $repo     = new \Components\Projects\Models\Repo();

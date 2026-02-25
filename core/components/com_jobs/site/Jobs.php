@@ -22,8 +22,6 @@ class Jobs extends AbstractComponent
      */
     protected function execute(): void
     {
-        include_once \Hubzero\Facades\Component::path('com_services') . DS . 'models' . DS . 'service.php';
-        include_once \Hubzero\Facades\Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
         $controllerName = \Hubzero\Facades\Request::getCmd('controller', 'jobs');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

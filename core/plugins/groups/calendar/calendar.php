@@ -205,11 +205,6 @@ class Calendar extends Plugin
             $this->database = App::get('db');
 
             //include needed event libs
-            require_once __DIR__ . '/helper.php';
-            require_once Component::path('com_events') . DS . 'models' . DS . 'event.php';
-            require_once Component::path('com_events') . DS . 'models' . DS . 'calendar' . DS . 'archive.php';
-            require_once Component::path('com_events') . DS . 'tables' . DS . 'respondent.php';
-            require_once Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
 
             //run task based on action
             switch ($this->action) {
@@ -451,7 +446,6 @@ class Calendar extends Plugin
             'non_repeating'    => true
         ));
 
-
         // get repeating events
         $rawEventsRepeating = $eventsCalendar->events('repeating', array(
             'scope'        => 'group',
@@ -562,7 +556,6 @@ class Calendar extends Plugin
 
         //load event data
         $view->event = new \Components\Events\Models\Event($eventId);
-
 
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
@@ -1085,7 +1078,6 @@ class Calendar extends Plugin
     private function import()
     {
         //include icalendar file reader
-        require_once __DIR__ . DS . 'icalparser.php';
 
         //get incoming
         $file = Request::getArray('import', array(), 'files');
@@ -1699,7 +1691,6 @@ class Calendar extends Plugin
             'passed'
         );
     }
-
 
     /**
      * Delete Group Calendar

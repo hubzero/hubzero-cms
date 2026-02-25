@@ -33,15 +33,12 @@ class Cron extends AbstractComponent
             true
         );
 
-        require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(
                 \Hubzero\Facades\Lang::txt('COM_CRON_PLUGINS'),
                 \Hubzero\Facades\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
             );
         }
-
-        require_once __DIR__ . DS . 'controllers' . DS . 'jobs.php';
 
         $controller = new Controllers\Jobs();
         $controller->execute();

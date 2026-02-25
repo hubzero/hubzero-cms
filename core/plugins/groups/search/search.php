@@ -37,8 +37,6 @@ class Search extends Plugin
     {
         $groupId = $group->gidNumber;
 
-        include_once Component::path('com_groups') . '/models/orm/group.php';
-
         $ormGroup = \Components\Groups\Models\Orm\Group::one($groupId);
         $attributes = $ormGroup->getAttributes();
 

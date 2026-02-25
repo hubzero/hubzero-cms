@@ -23,7 +23,6 @@ class Blacklist extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Detector.php';
 
         $words = $this->params->get(
             'badwords',

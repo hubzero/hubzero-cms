@@ -2734,8 +2734,6 @@ class WikiParser
         $toclevel      = 0;
         $prevtoclevel  = 0;
 
-        include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'helpers' . DS . 'sanitizer.php';
-
         foreach ($matches[3] as $headline) {
             $istemplate = 0;
             $templatetitle = '';

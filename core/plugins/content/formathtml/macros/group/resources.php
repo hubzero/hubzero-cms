@@ -61,8 +61,6 @@ class Resources extends GroupMacro
         $limit = $this->getLimit($args, 5);
         $class = $this->getClass($args);
 
-        require_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
         // Get resources
         $groupResources = $this->getResources($type, $limit);
 

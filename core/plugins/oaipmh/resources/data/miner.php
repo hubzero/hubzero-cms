@@ -365,9 +365,6 @@ class Miner extends Obj implements Provider
 			ORDER BY a.ordering, a.grouping"
         );
         if ($children = $this->database->loadObjectList()) {
-            require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
-            require_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
-
             foreach ($children as $child) {
                 $child->type = \Components\Resources\Models\Type::oneOrNew($child->type);
 

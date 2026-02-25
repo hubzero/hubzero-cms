@@ -154,7 +154,7 @@ class Stamp extends Table
         $created_by = User::get('id');
 
         // Generate stamp
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+
         $stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
         $query = "INSERT INTO $this->_tbl "

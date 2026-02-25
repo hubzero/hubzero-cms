@@ -42,8 +42,6 @@ class Reviews extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once __DIR__ . DS . 'helper.php';
     }
 
     /**
@@ -124,8 +122,6 @@ class Reviews extends Plugin
         if (empty($ar)) {
             $rtrn = '';
         }
-
-        include_once __DIR__ . DS . 'models' . DS . 'review.php';
 
         $authors = array();
         foreach ($model->contributors() as $con) {

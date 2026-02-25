@@ -362,7 +362,6 @@ class Files extends Plugin
 
                 // New connected methods
                 case 'connections':
-                    require_once __DIR__ . DS . 'connections.php';
                     $controller = new Connections($this, $this->_option, $connection);
                     $arr['html'] = $controller->execute($ctask);
                     break;

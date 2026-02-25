@@ -255,6 +255,7 @@ class Html
      * @param   string  $alias    Publication alias
      * @param   string  $version  Publication version
      * @return  string  HTML
+     * @todo    Rename to avoid ambiguity with Hubzero\Html\Builder\Tabs
      */
     public static function tabs($option, $id, $cats, $active = 'about', $alias = '', $version = '')
     {
@@ -305,7 +306,6 @@ class Html
      */
     public static function citation($cite, $pub, $citations)
     {
-        include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
         $cconfig  = Component::params('com_citations');
 
@@ -1116,7 +1116,6 @@ class Html
                 // This does not count the bundle or previous versions of each publication
                 if ($simple) {
                     if (!($row instanceof \Components\Publications\Models\Publication)) {
-                        require_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
                         $row = new \Components\Publications\Models\Publication($row);
                     }
                     $pub_size = self::computeDiskUsage($row->path('content'), PATH_APP, false);

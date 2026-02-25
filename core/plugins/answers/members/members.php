@@ -36,8 +36,6 @@ class Members extends Plugin
     public function onQuestionsPrepareFilters($filters)
     {
         if ($filters['area'] == 'interest') {
-            require_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
-
             // Get tags of interest
             $mt = new \Components\Members\Models\Tags(User::get('id'));
 

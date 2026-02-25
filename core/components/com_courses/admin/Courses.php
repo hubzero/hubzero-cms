@@ -53,7 +53,6 @@ class Courses extends AbstractComponent
             $controllerName == 'roles'
         );
 
-        require_once \Hubzero\Facades\Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';
         $canDo = \Components\Plugins\Helpers\Plugins::getActions();
         if ($canDo->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(

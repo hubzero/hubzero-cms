@@ -198,8 +198,6 @@ class Helper extends \Hubzero\Base\Obj
         $voted = $rev->getVote($id, $cat, User::get('id'), 'v.id');
 
         if ($vote) {
-            require_once __DIR__ . DS . 'models' . DS . 'vote.php';
-
             $v = \Plugins\Publications\Reviews\Models\Vote::oneByUserAndPublication(User::get('id'), $id);
             $v->set(array(
                 'referenceid' => $id,

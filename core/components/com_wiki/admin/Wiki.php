@@ -42,7 +42,6 @@ class Wiki extends AbstractComponent
             true
         );
 
-        require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             \Hubzero\Facades\Submenu::addEntry(
                 \Hubzero\Facades\Lang::txt('COM_WIKI_PLUGINS'),

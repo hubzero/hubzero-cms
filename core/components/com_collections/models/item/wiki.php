@@ -73,7 +73,6 @@ class Wiki extends GenericItem
             return true;
         }
 
-        include_once \Hubzero\Facades\Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
         $page = null;
 
         if (!$id) {

@@ -157,7 +157,6 @@ class Usage extends Plugin
             //reference group for other functions
             $this->group = $group;
 
-
             //add usage stylesheet to view
             $this->css();
 
@@ -245,8 +244,6 @@ class Usage extends Plugin
             return 0;
         }
 
-        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
         return \Components\Resources\Models\Entry::all()
             ->whereEquals('group_owner', $gid)
             ->total();
@@ -320,8 +317,6 @@ class Usage extends Plugin
         if (!$gid) {
             return 0;
         }
-
-        include_once \Hubzero\Facades\Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
         $filters = array();
         switch ($state) {
@@ -501,8 +496,6 @@ class Usage extends Plugin
         if (!$gid) {
             return 0;
         }
-
-        include_once \Hubzero\Facades\Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
         $total = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')

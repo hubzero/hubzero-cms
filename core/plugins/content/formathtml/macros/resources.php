@@ -72,8 +72,6 @@ class Resources extends Macro
             }
         }
 
-        require_once \Hubzero\Facades\Component::path('com_resources') . '/models/entry.php';
-
         // Is it numeric?
         if (is_numeric($resource)) {
             // Yes, then get resource by ID

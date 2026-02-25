@@ -69,8 +69,6 @@ class Kb extends Plugin
             return null;
         }
 
-        require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
-
         $comment = \Components\Kb\Models\Comment::oneOrFail($refid);
         $comment->set('state', 3);
         $comment->save();
@@ -91,8 +89,6 @@ class Kb extends Plugin
         if ($category != 'kb') {
             return null;
         }
-
-        require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Kb\Models\Comment::oneOrFail($refid);
         $comment->set('state', 1);
@@ -115,8 +111,6 @@ class Kb extends Plugin
         if ($category != 'kb') {
             return null;
         }
-
-        require_once Component::path('com_kb') . DS . 'models' . DS . 'comment.php';
 
         $comment = \Components\Kb\Models\Comment::oneOrFail($refid);
         $comment->set('state', 2);

@@ -37,8 +37,6 @@ class Support extends Plugin
         $status = $this->params->get('support_ticket_closed', 0);
         $status = ($status == '-1' ? 0 : $status);
         if ($status) {
-            include_once Component::path('com_support') . DS . 'models' . DS . 'status.php';
-
             $st = \Components\Support\Models\Status::oneOrFail($status);
 
             $open = $st->open;
@@ -228,9 +226,6 @@ class Support extends Plugin
         if ($message_id && !empty($tickets)) {
             Lang::load('com_support') ||
                 Lang::load('com_support', Component::path('com_support') . DS . 'site');
-
-            include_once Component::path('com_support') . DS . 'models' . DS . 'message.php';
-            include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
             $message = \Components\Support\Models\Message::oneOrNew($message_id);
 

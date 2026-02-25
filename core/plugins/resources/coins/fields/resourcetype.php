@@ -201,7 +201,6 @@ class Resourcetype extends Select
      */
     protected function getOptions()
     {
-        include_once \Hubzero\Facades\Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 

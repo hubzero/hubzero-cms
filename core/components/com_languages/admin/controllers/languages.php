@@ -308,7 +308,6 @@ class Languages extends AdminController
      */
     public function multilangstatusTask()
     {
-        require_once dirname(dirname(__DIR__)) . '/helpers/multilangstatus.php';
 
         $this->view
             ->set('homes', Multilangstatus::getHomes())

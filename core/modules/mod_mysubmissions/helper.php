@@ -116,8 +116,6 @@ class Helper extends Module
             return false;
         }
 
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
         $this->steps = array(
             'Type',
             'Compose',
