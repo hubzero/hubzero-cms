@@ -21,7 +21,7 @@ class MarkdownParser
      *
      * @var  array
      */
-    private $tokens = array();
+    private $_tokens = array();
 
     /**
      * A unique token

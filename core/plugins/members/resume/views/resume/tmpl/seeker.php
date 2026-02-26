@@ -11,6 +11,7 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Plugins\Members\Resume\Resume as plgMembersResume;
 
 // @phpcs:disable PSR1.Files.SideEffects
 

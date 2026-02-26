@@ -13,7 +13,7 @@ use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Spatie\Dropbox\Client as DropboxClient;
 use Hubzero\Utility\Arr;
-use Hubzero\Session;
+use Hubzero\Facades\Session;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 

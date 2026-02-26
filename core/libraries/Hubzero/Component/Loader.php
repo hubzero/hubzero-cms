@@ -15,7 +15,7 @@ use Hubzero\Config\Registry;
 use ReflectionClass;
 use Exception;
 use stdClass;
-use Document;
+use Hubzero\Facades\Document;
 
 /**
  * Component helper class

@@ -88,4 +88,3 @@ if ($this->group) :
     <?php endforeach; ?>
 </div>
 <?php endif; ?>
-

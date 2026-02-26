@@ -9,6 +9,7 @@
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Plugins\Members\Usage\Usage as PlgMembersUsage;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -108,10 +109,10 @@ $this->css('usage', 'com_usage');
             $sum_simcount_12  = 0;
             $sum_simcount_14  = 0;
             foreach ($this->tool_stats as $row) {
-                $user_count_12 = plgMembersUsage::get_usercount($row->id, 12, 7);
-                $user_count_14 = plgMembersUsage::get_usercount($row->id, 14, 7);
-                $sim_count_12  = plgMembersUsage::get_simcount($row->id, 12);
-                $sim_count_14  = plgMembersUsage::get_simcount($row->id, 14);
+                $user_count_12 = PlgMembersUsage::getUsercount($row->id, 12, 7);
+                $user_count_14 = PlgMembersUsage::getUsercount($row->id, 14, 7);
+                $sim_count_12  = PlgMembersUsage::getSimcount($row->id, 12);
+                $sim_count_14  = PlgMembersUsage::getSimcount($row->id, 14);
 
                 $sum_usercount_12 += intval($user_count_12);
                 $sum_usercount_14 += intval($user_count_14);
@@ -127,7 +128,7 @@ $this->css('usage', 'com_usage');
                     <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12; ?></a></td>
                     <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
                     <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php echo (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14; ?></a></td>
-                    <td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
+                    <td><?php echo PlgMembersUsage::getCitationcount($row->id, 0); ?></td>
                     <td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
                 </tr>
                 <?php
@@ -178,14 +179,14 @@ $this->css('usage', 'com_usage');
                 'citations'   => 0
             );
 
-            $serials = (array)plgMembersUsage::getSerialResourceTypes();
+            $serials = (array)PlgMembersUsage::getSerialResourceTypes();
 
             // First pass
             // See if any of the resource types are lists of other resources
             $children = array();
             foreach ($this->andmore_stats as $row) {
                 if (in_array($row->type_id, $serials)) {
-                    $children[$row->id] = (array)plgMembersUsage::getSerialResourceChildren($row->id);
+                    $children[$row->id] = (array)PlgMembersUsage::getSerialResourceChildren($row->id);
                 } else {
                     $children[$row->id] = array();
                 }
@@ -213,13 +214,13 @@ $this->css('usage', 'com_usage');
             }
 
             foreach ($andmore[0] as $row) {
-                $result = plgMembersUsage::get_usercount($row->id, 12);
+                $result = PlgMembersUsage::getUsercount($row->id, 12);
                 $usercount12 = (is_numeric($result)) ? number_format($result) : $result;
 
-                $result = plgMembersUsage::get_usercount($row->id, 14);
+                $result = PlgMembersUsage::getUsercount($row->id, 14);
                 $usercount14 = (is_numeric($result)) ? number_format($result) : $result;
 
-                $cites = plgMembersUsage::get_citationcount($row->id, 0);
+                $cites = PlgMembersUsage::getCitationcount($row->id, 0);
 
                 $total['usercount12'] += (int)str_replace(',', '', $usercount12);
                 $total['usercount14'] += (int)str_replace(',', '', $usercount14);
@@ -240,13 +241,13 @@ $this->css('usage', 'com_usage');
 
                 if (isset($andmore[$row->id])) {
                     foreach ($andmore[$row->id] as $rw) {
-                        $result = plgMembersUsage::get_usercount($rw->id, 12);
+                        $result = PlgMembersUsage::getUsercount($rw->id, 12);
                         $usercount12 = (is_numeric($result)) ? number_format($result) : $result;
 
-                        $result = plgMembersUsage::get_usercount($rw->id, 14);
+                        $result = PlgMembersUsage::getUsercount($rw->id, 14);
                         $usercount14 = (is_numeric($result)) ? number_format($result) : $result;
 
-                        $cites = plgMembersUsage::get_citationcount($rw->id, 0);
+                        $cites = PlgMembersUsage::getCitationcount($rw->id, 0);
 
                         $total['citations']   += (int)$cites;
                         ?>

@@ -12,6 +12,9 @@ use Hubzero\Facades\Route;
 
 /**
  * Abstract search result
+ *
+ * Fields are set from query rows and highlighted copies of them, so the
+ * set of properties is data-driven.
  */
 // Results carry per-plugin fields (link, sql, *_highlighted, ...) set as
 // dynamic properties by the plugins and the highlighter

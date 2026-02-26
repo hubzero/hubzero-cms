@@ -956,7 +956,7 @@ class Curation extends SiteController
     /**
      * Query the department of author
      *
-     * @return  array  department names
+     * @return  void  department names
      */
     public function getDepartmentTask()
     {

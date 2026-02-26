@@ -42,6 +42,59 @@ class Discussions extends Plugin
     protected $_autoloadLanguage = true;
 
     /**
+     * @var object
+     */
+    protected $course = null;
+
+    /**
+     * @var object
+     */
+    protected $offering = null;
+
+    /**
+     * @var object
+     */
+    protected $forum = null;
+
+    /**
+     * @var string
+     */
+    protected $base = null;
+
+    /**
+     * @var string
+     */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_active = null;
+
+    /**
+     * @var string
+     */
+    protected $unit = null;
+
+    /**
+     * @var string
+     */
+    protected $lecture = null;
+
+    /**
+     * @var array
+     */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_instructors = null;
+
+    /**
+     * @var object
+     */
+    protected $database = null;
+
+    /**
+     * Return the alias and name for this category of content
+     *
+     * @return  array
+     */
+
+    /**
      * Return the alias and name for this category of content
      *
      * @return  array
@@ -764,7 +817,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _thread($post, $filters = array())
     {
@@ -834,7 +887,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _threadsSearch($post, $filters = array())
     {
@@ -897,7 +950,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _threads($post, $filters = array())
     {
@@ -970,7 +1023,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object|array
      */
     protected function _posts($post, $filters = array())
     {
@@ -1605,7 +1658,7 @@ class Discussions extends Plugin
     /**
      * Deletes a section and redirects to main page afterwards
      *
-     * @return  void
+     * @return  string
      */
     public function deletesection()
     {
@@ -1839,7 +1892,7 @@ class Discussions extends Plugin
     /**
      * Save a category
      *
-     * @return  void
+     * @return  string
      */
     public function savecategory()
     {
@@ -1964,7 +2017,7 @@ class Discussions extends Plugin
     /**
      * Delete a category
      *
-     * @return  void
+     * @return  string
      */
     public function deletecategory()
     {
@@ -2718,7 +2771,7 @@ class Discussions extends Plugin
      * Reorder a section
      *
      * @param   integer  $dir  Direction
-     * @return  void
+     * @return  string
      */
     public function reorder($dir = 1)
     {
