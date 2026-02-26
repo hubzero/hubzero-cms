@@ -10,12 +10,12 @@ namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Models\License;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Manage resource types

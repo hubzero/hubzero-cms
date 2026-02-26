@@ -8,10 +8,13 @@
 
 namespace Components\Languages\Admin;
 
-use Submenu;
-use Lang;
-use App;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -26,12 +29,12 @@ class Languages extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_languages')) {
+        if (!User::authorise('core.manage', 'com_languages')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'installed');
+        $controllerName = Request::getCmd('controller', 'installed');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             App::abort(404, Lang::txt('Controller not found.'));
         }

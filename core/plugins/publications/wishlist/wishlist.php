@@ -3,6 +3,11 @@
 namespace Plugins\Publications\Wishlist;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms

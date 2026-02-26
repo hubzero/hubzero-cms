@@ -12,6 +12,7 @@ use Hubzero\Error\RendererInterface;
 use Hubzero\Http\Response;
 use Exception;
 use Closure;
+use Hubzero\Facades\Lang;
 
 /**
  * Displays the custom error page when an uncaught exception occurs.
@@ -77,7 +78,7 @@ class Page implements RendererInterface
                 ob_end_clean();
             }
 
-            $this->document->setTitle(\Lang::txt('Error') . ': ' . $error->getCode());
+            $this->document->setTitle(Lang::txt('Error') . ': ' . $error->getCode());
 
             $template = $this->template->load();
 

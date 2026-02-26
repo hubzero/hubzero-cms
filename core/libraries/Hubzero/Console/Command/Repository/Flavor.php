@@ -13,7 +13,7 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Content\Migration\Base as Migration;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Repository flavor class

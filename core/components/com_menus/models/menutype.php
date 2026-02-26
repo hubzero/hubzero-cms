@@ -10,10 +10,10 @@ namespace Components\Menus\Models;
 
 use Components\Menus\Helpers\Menus as MenusHelper;
 use Hubzero\Base\Obj;
-use Filesystem;
-use Component;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Menu type model

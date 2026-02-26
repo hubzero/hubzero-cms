@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Behavior;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports a URL text field

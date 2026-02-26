@@ -11,10 +11,10 @@ namespace Components\Cache\Admin\Controllers;
 use Components\Cache\Helpers\Helper;
 use Components\Cache\Models\Manager;
 use Hubzero\Component\AdminController;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Cache Controller

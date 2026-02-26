@@ -9,6 +9,10 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * A wiki macro for embedding images
@@ -152,7 +156,7 @@ Examples:
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = \Component::params('com_wiki');
+        $this->config = Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -186,7 +190,7 @@ Examples:
 
         // Does the file exist?
         if ($ret) {
-            if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+            if (!in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
                 return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File provided is not an allowed image type)';
             }
 
@@ -412,7 +416,7 @@ Examples:
 
         $file = trim($file, DS);
 
-        if (\Request::getString('format') == 'pdf') {
+        if (Request::getString('format') == 'pdf') {
             return $this->path($file);
         }
         $link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
@@ -423,7 +427,7 @@ Examples:
         }
         $link .= $this->pagename . DS . 'Image:' . $file;
 
-        return \Route::url($link);
+        return Route::url($link);
     }
 
     /**

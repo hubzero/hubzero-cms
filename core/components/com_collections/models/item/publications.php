@@ -10,9 +10,10 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Publications\Models\Publication;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Collections model for an item

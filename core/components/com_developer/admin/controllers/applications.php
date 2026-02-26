@@ -11,12 +11,12 @@ namespace Components\Developer\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Developer\Models\Application\Member;
 use Components\Developer\Models\Application;
-use Request;
-use Notify;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Developer controller for applications

@@ -9,6 +9,10 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Wiki macro class for displaying hello world
@@ -114,7 +118,7 @@ class Courses extends Macro
                     }, $instructors);
 
                     // get the profile from the instructor param
-                    $profile = \User::getInstance($this->getArg('instructor'));
+                    $profile = User::getInstance($this->getArg('instructor'));
                     if ($profile->get('id')) {
                         if (!in_array($profile->get('id'), $instructorIds)) {
                             continue;
@@ -144,8 +148,8 @@ class Courses extends Macro
                         // if we have section
                         if ($section->get('id')) {
                             $html .= '<span class="entry-time">';
-                            $html .= \Date::of($section->get('start_date'))->toLocal('F d') . ' - ';
-                            $html .= \Date::of($section->get('end_date'))->toLocal('F d, Y');
+                            $html .= Date::of($section->get('start_date'))->toLocal('F d') . ' - ';
+                            $html .= Date::of($section->get('end_date'))->toLocal('F d, Y');
                             $html .= '</span><br />';
                         }
                     }
@@ -159,9 +163,9 @@ class Courses extends Macro
                 if (count($instructors) > 0 && !(bool) $this->getArg('hideinstructors')) {
                     $instr = array();
                     foreach ($instructors as $instructor) {
-                        $profile = \User::getInstance($instructor->get('user_id'));
+                        $profile = User::getInstance($instructor->get('user_id'));
                         if ($profile->get('id')) {
-                            $instr[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
+                            $instr[] = '<a href="' . Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
                         }
                     }
                     $html .= '<span class="entry-details">Instructors: ' . implode(', ', $instr) . '</span>';
@@ -173,7 +177,7 @@ class Courses extends Macro
                 }
             }
         } else {
-            $html .= '<em>' . \Lang::txt('Sorry, there were no courses matching your search.') . '</em>';
+            $html .= '<em>' . Lang::txt('Sorry, there were no courses matching your search.') . '</em>';
         }
 
         $html .= '</div>';

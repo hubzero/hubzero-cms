@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 /**
  * Wiki macro class for dipslaying a twitter feed
@@ -92,7 +94,7 @@ class Twitter extends WikiMacro
             $atts[] = 'data-tweet-limit="' . $args[1] . '"';
         }
 
-        \Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/twitter/twitter.js?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js'));
+        Document::addScript(Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/twitter/twitter.js?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js'));
 
         // output embeded timeline
         return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>';

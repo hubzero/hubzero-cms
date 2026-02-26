@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -126,7 +131,7 @@ foreach ($profiles as $profile) {
                     <div class="grid">
                         <div class="col span8">
                             <?php
-                            if ($field->get('name') == 'organization' && $field->get('type') == 'text' && \Component::params('com_members')->get('rorApi')) {
+                            if ($field->get('name') == 'organization' && $field->get('type') == 'text' && Component::params('com_members')->get('rorApi')) {
                                 echo "<span class='hidden rorApiAvailable'></span>";
                             }
                             echo $formfield->label;

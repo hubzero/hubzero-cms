@@ -9,6 +9,7 @@
 namespace Modules\LatestUsage;
 
 use Hubzero\Module\Module;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying latest usage
@@ -28,7 +29,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $udb = \Components\Usage\Helpers\Helper::getUDBO();
 

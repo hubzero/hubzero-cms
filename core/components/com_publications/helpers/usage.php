@@ -8,8 +8,8 @@
 
 namespace Components\Publications\Helpers;
 
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Base class for publication usage

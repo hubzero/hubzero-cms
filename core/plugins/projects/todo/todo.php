@@ -12,7 +12,16 @@ namespace Plugins\Projects\Todo;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Utility\Str;
-
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 use Hubzero\Utility\Arr;
 
 /**
@@ -620,9 +629,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -717,9 +726,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect back to todo list
@@ -827,9 +836,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -909,9 +918,9 @@ class Todo extends Plugin
 
         // Pass error or success message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         } elseif (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect

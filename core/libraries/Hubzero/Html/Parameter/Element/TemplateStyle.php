@@ -10,8 +10,8 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
-use App;
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Renders a list of template styles.

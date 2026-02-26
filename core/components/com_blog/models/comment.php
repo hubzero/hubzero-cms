@@ -9,10 +9,12 @@
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
-use Lang;
-use Date;
-use User;
-use Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
 
 /**
  * Blog model for a comment
@@ -164,7 +166,7 @@ class Comment extends Relational
 
         if (!isset($this->$property)) {
             $params = array(
-                'option'   => $this->get('option', \Request::getCmd('option')),
+                'option'   => $this->get('option', Request::getCmd('option')),
                 'scope'    => $this->get('scope', 'blog'),
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
@@ -336,7 +338,7 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', array(
                 'com_blog.comment.content',
                 &$this,
                 $this->isNew()

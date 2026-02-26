@@ -9,6 +9,7 @@
 namespace Hubzero\Auth;
 
 use Hubzero\Container\Container;
+use Hubzero\Facades\User;
 
 /**
  * Authentication manager
@@ -157,7 +158,7 @@ class Manager
     public function logout($userid = null, $options = array())
     {
         // Get a user object
-        $user = ($userid ? \User::getInstance($userid) : \User::getInstance());
+        $user = ($userid ? User::getInstance($userid) : User::getInstance());
 
         // Build the credentials array.
         $parameters['username'] = $user->get('username');

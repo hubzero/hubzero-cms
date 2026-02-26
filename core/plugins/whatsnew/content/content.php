@@ -9,6 +9,11 @@
 namespace Plugins\Whatsnew\Content;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * What's New Plugin class for com_content articles

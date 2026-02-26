@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
 use Exception;
-use Request;
-use Route;
-use Date;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Manage publication batch

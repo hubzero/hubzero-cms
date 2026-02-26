@@ -9,6 +9,7 @@
 namespace Components\Cart\Admin\Helpers;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\User;
 
 class Permissions
 {
@@ -34,7 +35,7 @@ class Permissions
             $assetName .= '.' . (int) $assetId;
         }
 
-        $user = \User::getInstance();
+        $user = User::getInstance();
         $result = new Obj();
 
         $actions = array(

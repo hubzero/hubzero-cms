@@ -4,6 +4,8 @@ namespace Plugins\Courses\Store;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * @package    hubzero-cms

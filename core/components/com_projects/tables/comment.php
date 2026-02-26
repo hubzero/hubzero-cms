@@ -9,6 +9,7 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for project comments
@@ -191,7 +192,7 @@ class Comment extends Table
         $this->parent_activity = $parent_activity;
         $this->comment         = $comment;
         $this->admin           = $admin;
-        $this->created         = \Date::of('now')->toSql();
+        $this->created         = Date::of('now')->toSql();
         $this->created_by      = $by;
 
         if (!$this->store()) {

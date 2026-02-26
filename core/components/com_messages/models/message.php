@@ -9,9 +9,9 @@
 namespace Components\Messages\Models;
 
 use Hubzero\Database\Relational;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for a message

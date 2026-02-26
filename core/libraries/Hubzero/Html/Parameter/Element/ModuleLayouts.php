@@ -11,7 +11,7 @@ namespace Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
 use Hubzero\Filesystem\Util;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Parameter to display a list of the layouts for a module from the module or default template overrides.

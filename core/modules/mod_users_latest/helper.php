@@ -9,8 +9,8 @@
 namespace Modules\UsersLatest;
 
 use Hubzero\Module\Module;
-use User;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying latest registered users

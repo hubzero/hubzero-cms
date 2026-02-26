@@ -12,6 +12,9 @@
 namespace Plugins\Tags\Collections;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Collections extends Plugin
 {
@@ -47,7 +50,7 @@ class Collections extends Plugin
             return $response;
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $ids = array();
         foreach ($tags as $tag) {

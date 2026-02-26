@@ -10,6 +10,7 @@ namespace Bootstrap\Site\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Language\Translator;
+use Hubzero\Facades\User;
 
 /**
  * Language translation service provider
@@ -65,7 +66,7 @@ class TranslationServiceProvider extends ServiceProvider
 
         // Detect user specified language
         if (!$language && $this->app->has('user')) {
-            $lang = \User::getParam($this->app['client']->alias . '_language');
+            $lang = User::getParam($this->app['client']->alias . '_language');
 
             if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;

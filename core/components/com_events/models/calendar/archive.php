@@ -17,8 +17,9 @@ use Hubzero\Base\Model;
 use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use DateTimezone;
 use DateTime;
-use Date;
-use Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Calendar archive model
@@ -41,7 +42,7 @@ class Archive extends Model
     public function __construct()
     {
         // create needed objects
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
     }
 
     /**

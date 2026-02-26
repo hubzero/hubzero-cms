@@ -12,6 +12,10 @@
 namespace Plugins\Editors\Ckeditor;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die;
 

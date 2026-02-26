@@ -8,8 +8,8 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * AJAX actions controller class (TODO, not yet implemented)

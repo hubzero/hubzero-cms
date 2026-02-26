@@ -12,6 +12,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a list of pages

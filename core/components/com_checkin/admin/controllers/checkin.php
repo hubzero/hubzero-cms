@@ -11,11 +11,11 @@ namespace Components\Checkin\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Checkin\Models\Inspector;
 use Exception;
-use Submenu;
-use Request;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Checkin Controller

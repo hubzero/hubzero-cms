@@ -12,6 +12,9 @@
 namespace Plugins\Courses\Outline;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Outline extends Plugin
 {

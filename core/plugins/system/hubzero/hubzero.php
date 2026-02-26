@@ -12,6 +12,10 @@
 namespace Plugins\System\Hubzero;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Hubzero extends Plugin
 {

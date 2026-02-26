@@ -9,6 +9,7 @@
 namespace Hubzero\Html\Parameter;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 /**
  * Parameter base class
@@ -99,14 +100,14 @@ class Element extends Obj
         $output = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
         if ($description) {
             $output .= ' class="hasTip" title="' .
-                \App::get('language')->txt($label) .
+                App::get('language')->txt($label) .
                 '::' .
-                \App::get('language')->txt($description) .
+                App::get('language')->txt($description) .
                 '">';
         } else {
             $output .= '>';
         }
-        $output .= \App::get('language')->txt($label) . '</label>';
+        $output .= App::get('language')->txt($label) . '</label>';
 
         return $output;
     }

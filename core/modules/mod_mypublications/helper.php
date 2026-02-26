@@ -14,7 +14,7 @@ use Components\Publications\Models\Orm\Version;
 use Components\Publications\Models\Orm\Author;
 use Components\Publications\Models\Orm\Category;
 use Component;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's projects

@@ -12,6 +12,7 @@
 namespace Plugins\Resources\Findthistext;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 class Findthistext extends Plugin
 {

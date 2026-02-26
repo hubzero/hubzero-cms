@@ -9,6 +9,7 @@
 namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a link button
@@ -34,7 +35,7 @@ class Link extends Button
      */
     public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null, $target = null)
     {
-        $text   = \Lang::txt($text);
+        $text   = Lang::txt($text);
         $class  = $this->fetchIconClass($name);
         $doTask = $this->_getCommand($url);
 

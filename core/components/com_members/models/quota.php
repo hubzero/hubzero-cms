@@ -12,8 +12,9 @@ use Hubzero\Database\Relational;
 use Components\Members\Models\Quota\Category;
 use Components\Members\Models\Quota\Log;
 use Components\Tools\Helpers\Utils;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 /**
  * User quota model
  */

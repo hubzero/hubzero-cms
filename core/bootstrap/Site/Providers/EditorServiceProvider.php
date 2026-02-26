@@ -10,6 +10,7 @@ namespace Bootstrap\Site\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Html\Editor;
+use Hubzero\Facades\User;
 
 /**
  * Editor service provider
@@ -26,7 +27,7 @@ class EditorServiceProvider extends ServiceProvider
         $this->app['editor'] = function ($app) {
             $global = $app['config']->get('editor');
 
-            $editor = \User::getParam('editor', $global);
+            $editor = User::getParam('editor', $global);
 
             if (!$app['plugin']->isEnabled('editors', $editor)) {
                 $editor = $global;

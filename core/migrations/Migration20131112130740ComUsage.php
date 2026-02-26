@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\App;
 
 /**
  * Migration script for usage setup
@@ -24,7 +25,7 @@ class Migration20131112130740ComUsage extends Base
 
         // Get stats DB object
         $config     = $this->getParams('com_usage');
-        $siteConfig = \App::get('config');
+        $siteConfig = App::get('config');
 
         $options['driver']   = $config->get('statsDBDriver');
         $options['host']     = $config->get('statsDBHost');

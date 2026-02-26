@@ -10,6 +10,8 @@ namespace Plugins\Cart\Offline;
 
 use Hubzero\Plugin\Plugin;
 use Components\Cart\Models\Cart;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Cart plugin for Payment: Offline

@@ -9,13 +9,13 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Document;
+use Hubzero\Facades\Document;
 use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for contributing a tool

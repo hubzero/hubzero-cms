@@ -9,6 +9,7 @@
 namespace Hubzero\Html;
 
 use Hubzero\Config\Registry;
+use Hubzero\Facades\App;
 
 /**
  * Parameter handler
@@ -129,7 +130,7 @@ class Parameter extends Registry
 
         if ($description = $this->_xml[$group]['description']) {
             // Add the params description to the display
-            $html[] = '<p class="paramrow_desc">' . \App::get('language')->txt((string) $description) . '</p>';
+            $html[] = '<p class="paramrow_desc">' . App::get('language')->txt((string) $description) . '</p>';
         }
 
         foreach ($params as $param) {
@@ -145,7 +146,7 @@ class Parameter extends Registry
 
         if (count($params) < 1) {
             $html[] = '<p class="noparams">' .
-                \App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') .
+                App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') .
                 '</p>';
         }
 
@@ -250,7 +251,7 @@ class Parameter extends Registry
         if ($element === false) {
             $result = array();
             $result[0] = (string) $node['name'];
-            $result[1] = \App::get('language')->txt('Element not defined for type') . ' = ' . $type;
+            $result[1] = App::get('language')->txt('Element not defined for type') . ' = ' . $type;
             $result[5] = $result[0];
             return $result;
         }
@@ -330,7 +331,7 @@ class Parameter extends Registry
                 '.php', $matches);
             $file = @ (string) $matches[0];
 
-            if ($elementFile = \App::get('filesystem')->find($dirs, $file)) {
+            if ($elementFile = App::get('filesystem')->find($dirs, $file)) {
                 include_once $elementFile;
             } else {
                 $false = false;

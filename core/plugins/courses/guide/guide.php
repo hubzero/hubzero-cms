@@ -10,6 +10,9 @@ namespace Plugins\Courses\Guide;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Courses Plugin class for intro guide

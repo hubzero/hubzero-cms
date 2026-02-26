@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a message with links to articles
@@ -85,9 +86,9 @@ class Main extends WikiMacro
 
             // Build and return the link
             if (!$g->get('id')) {
-                $l[] = '<a href="' . \Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
+                $l[] = '<a href="' . Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
             } else {
-                $l[] = '<a class="int-link" href="' . \Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
+                $l[] = '<a class="int-link" href="' . Route::url($g->link()) . '">' . stripslashes($g->title) . '</a>';
             }
         }
 

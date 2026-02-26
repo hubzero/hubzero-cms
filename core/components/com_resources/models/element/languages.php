@@ -9,8 +9,8 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
-use Lang;
-use Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
 
 /**
  * Renders a languages element

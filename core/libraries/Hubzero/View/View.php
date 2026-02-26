@@ -12,6 +12,7 @@ use Hubzero\Template\Overrides;
 use Hubzero\Base\Obj;
 use Hubzero\View\Exception\InvalidLayoutException;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * Base class for a View
@@ -186,7 +187,7 @@ class View extends Obj
         $this->setLayout($config['layout']);
 
         // Set the site's base URL
-        $this->baseurl = \App::get('request')->base(true);
+        $this->baseurl = App::get('request')->base(true);
     }
 
     /**
@@ -345,7 +346,7 @@ class View extends Obj
     public function getName()
     {
         if (empty($this->_name)) {
-            $this->_name = \App::get('request')->getCmd('controller');
+            $this->_name = App::get('request')->getCmd('controller');
 
             if (!$this->_name) {
                 $r = null;
@@ -546,7 +547,7 @@ class View extends Obj
         if ($type == 'template' && $this->_overrideRoot) {
             // Set the alternative template search dir
             if (empty($this->_overridePath)) {
-                $component = strtolower(\App::get('request')->getCmd('option'));
+                $component = strtolower(App::get('request')->getCmd('option'));
                 $component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
             } else {
                 $component = ltrim($this->_overridePath, DIRECTORY_SEPARATOR);

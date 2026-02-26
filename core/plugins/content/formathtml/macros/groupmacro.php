@@ -10,6 +10,7 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 use Hubzero\User\Group;
+use Hubzero\Facades\Request;
 
 /**
  * Group Macro Base Class
@@ -28,7 +29,7 @@ class GroupMacro extends Macro
      */
     public function __construct()
     {
-        $cname = \Request::getString('cn', \Request::getString('gid', ''));
+        $cname = Request::getString('cn', Request::getString('gid', ''));
         $this->group = Group::getInstance($cname);
     }
 
@@ -59,6 +60,6 @@ class GroupMacro extends Macro
      */
     protected function canRender()
     {
-        return \Request::getCmd('option', '') == 'com_groups';
+        return Request::getCmd('option', '') == 'com_groups';
     }
 }

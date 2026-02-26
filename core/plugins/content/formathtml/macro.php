@@ -10,6 +10,8 @@ namespace Plugins\Content\Formathtml;
 
 use ReflectionClass;
 use RuntimeException;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Base class for wiki macros
@@ -88,7 +90,7 @@ class Macro
      */
     public function __construct($config = array())
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         // Set the controller name
         if (empty($this->_name)) {
@@ -188,7 +190,7 @@ class Macro
      */
     public function description()
     {
-        return \Lang::txt('Not implemented.');
+        return Lang::txt('Not implemented.');
     }
 
     /**

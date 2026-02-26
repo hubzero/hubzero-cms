@@ -8,10 +8,10 @@
 
 namespace Components\Members\Helpers;
 
-use Component;
-use Html;
-use Lang;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Users component debugging helper.

@@ -8,7 +8,12 @@
 
 namespace Hubzero\Base;
 
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Request;
 
 /**
  * Abstract model class
@@ -93,9 +98,9 @@ abstract class Model extends Obj
 
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of Table.')
+                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Table.')
                 );
-                throw new \LogicException(\Lang::txt('Table class must be an instance of Table.'));
+                throw new \LogicException(Lang::txt('Table class must be an instance of Table.'));
             }
 
             if (is_numeric($oid) || is_string($oid)) {
@@ -160,7 +165,7 @@ abstract class Model extends Obj
                 return \Hubzero\User\Group\Helper::getDbo();
             }
         }
-        return \App::get('db');
+        return App::get('db');
     }
 
     /**
@@ -291,10 +296,10 @@ abstract class Model extends Obj
                     '::' .
                     __FUNCTION__ .
                     '(); ' .
-                    \Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
+                    Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
             );
             throw new \InvalidArgumentException(
-                \Lang::txt(
+                Lang::txt(
                     'Data must be of type object or array. Type given was %s',
                     gettype($data)
                 )
@@ -341,7 +346,7 @@ abstract class Model extends Obj
             return;
         }
 
-        if (\App::get('config')->get('debug')) {
+        if (App::get('config')->get('debug')) {
             $message = '[' . Request::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
         }
 
@@ -350,7 +355,7 @@ abstract class Model extends Obj
             return;
         }
 
-        $logger = \Log::getRoot();
+        $logger = Log::getRoot();
         $logger->$type($message);
     }
 
@@ -385,14 +390,14 @@ abstract class Model extends Obj
             }
 
             if ($this->_context) {
-                $results = \Event::trigger('content.onContentBeforeSave', array(
+                $results = Event::trigger('content.onContentBeforeSave', array(
                     $this->_context,
                     &$this,
                     $this->exists()
                 ));
                 foreach ($results as $result) {
                     if ($result === false) {
-                        $this->setError(\App::get('language')->txt('Content failed validation.'));
+                        $this->setError(App::get('language')->txt('Content failed validation.'));
                         return false;
                     }
                 }
@@ -437,7 +442,7 @@ abstract class Model extends Obj
      */
     public function importPlugin($type = '')
     {
-        \Plugin::import($type);
+        Plugin::import($type);
 
         return $this;
     }
@@ -449,7 +454,7 @@ abstract class Model extends Obj
      */
     public function trigger($event = '', $params = array())
     {
-        return \Event::trigger($event, $params);
+        return Event::trigger($event, $params);
     }
 
     /**

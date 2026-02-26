@@ -12,12 +12,12 @@ use Hubzero\Component\SiteController;
 use Components\Saml\Models\IdP as IdPModel;
 use Components\Saml\Models\ServiceProvider;
 use Components\Saml\Models\SamlSession;
-use Request;
-use Session;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller for the hub's SAML IdP endpoints
@@ -397,7 +397,7 @@ class Idp extends SiteController
                 $status = \LightSaml\SamlConstants::STATUS_SUCCESS;
 
                 $this->log('logout: session ' . $samlSession->get('session_index') . ' was already ended');
-            } elseif ($samlSession->get('hub_session_id') == \App::get('session')->getId()) {
+            } elseif ($samlSession->get('hub_session_id') == App::get('session')->getId()) {
                 // Front-channel SLO: the browser carries the hub session being
                 // logged out, so it is ours to destroy. A plugin can veto
                 // that, in which case the session is still live and saying

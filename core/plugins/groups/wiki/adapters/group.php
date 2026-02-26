@@ -8,8 +8,8 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-use User;
-use Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Adapter class for a group wiki

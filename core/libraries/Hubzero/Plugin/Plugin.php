@@ -10,6 +10,7 @@ namespace Hubzero\Plugin;
 
 use Hubzero\Document\Assets;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\App;
 
 /**
  * Base class for plugins to extend
@@ -128,7 +129,7 @@ class Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $lang = \App::get('language');
+        $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP .
                 DS .
@@ -155,7 +156,7 @@ class Plugin
      */
     public static function getParams($name, $folder)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // load the params from databse
         $sql = "SELECT params FROM `#__extensions` WHERE folder=" .

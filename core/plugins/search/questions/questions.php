@@ -3,6 +3,7 @@
 namespace Plugins\Search\Questions;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 /**
  * @package    hubzero-cms

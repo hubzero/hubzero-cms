@@ -8,16 +8,16 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
-use App;
-use Config;
-use Lang;
-use Pathway;
-use Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Route;
 
 /**
  * Cart controller class

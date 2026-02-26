@@ -11,7 +11,7 @@ namespace Hubzero\Http;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Hubzero\Spam\Honeypot;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Request handler replaces the default PHP global variables

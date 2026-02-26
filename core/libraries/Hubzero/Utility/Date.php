@@ -10,6 +10,10 @@ namespace Hubzero\Utility;
 
 use DateTimeZone;
 use DateTime;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Date is a class that stores a date and provides logic to manipulate
@@ -213,19 +217,19 @@ class Date extends DateTime
     {
         switch ($day) {
             case 0:
-                return $abbr ? \Lang::txt('SUN') : \Lang::txt('SUNDAY');
+                return $abbr ? Lang::txt('SUN') : Lang::txt('SUNDAY');
             case 1:
-                return $abbr ? \Lang::txt('MON') : \Lang::txt('MONDAY');
+                return $abbr ? Lang::txt('MON') : Lang::txt('MONDAY');
             case 2:
-                return $abbr ? \Lang::txt('TUE') : \Lang::txt('TUESDAY');
+                return $abbr ? Lang::txt('TUE') : Lang::txt('TUESDAY');
             case 3:
-                return $abbr ? \Lang::txt('WED') : \Lang::txt('WEDNESDAY');
+                return $abbr ? Lang::txt('WED') : Lang::txt('WEDNESDAY');
             case 4:
-                return $abbr ? \Lang::txt('THU') : \Lang::txt('THURSDAY');
+                return $abbr ? Lang::txt('THU') : Lang::txt('THURSDAY');
             case 5:
-                return $abbr ? \Lang::txt('FRI') : \Lang::txt('FRIDAY');
+                return $abbr ? Lang::txt('FRI') : Lang::txt('FRIDAY');
             case 6:
-                return $abbr ? \Lang::txt('SAT') : \Lang::txt('SATURDAY');
+                return $abbr ? Lang::txt('SAT') : Lang::txt('SATURDAY');
         }
 
         return '';
@@ -324,29 +328,29 @@ class Date extends DateTime
     {
         switch ($month) {
             case 1:
-                return $abbr ? \Lang::txt('JANUARY_SHORT') : \Lang::txt('JANUARY');
+                return $abbr ? Lang::txt('JANUARY_SHORT') : Lang::txt('JANUARY');
             case 2:
-                return $abbr ? \Lang::txt('FEBRUARY_SHORT') : \Lang::txt('FEBRUARY');
+                return $abbr ? Lang::txt('FEBRUARY_SHORT') : Lang::txt('FEBRUARY');
             case 3:
-                return $abbr ? \Lang::txt('MARCH_SHORT') : \Lang::txt('MARCH');
+                return $abbr ? Lang::txt('MARCH_SHORT') : Lang::txt('MARCH');
             case 4:
-                return $abbr ? \Lang::txt('APRIL_SHORT') : \Lang::txt('APRIL');
+                return $abbr ? Lang::txt('APRIL_SHORT') : Lang::txt('APRIL');
             case 5:
-                return $abbr ? \Lang::txt('MAY_SHORT') : \Lang::txt('MAY');
+                return $abbr ? Lang::txt('MAY_SHORT') : Lang::txt('MAY');
             case 6:
-                return $abbr ? \Lang::txt('JUNE_SHORT') : \Lang::txt('JUNE');
+                return $abbr ? Lang::txt('JUNE_SHORT') : Lang::txt('JUNE');
             case 7:
-                return $abbr ? \Lang::txt('JULY_SHORT') : \Lang::txt('JULY');
+                return $abbr ? Lang::txt('JULY_SHORT') : Lang::txt('JULY');
             case 8:
-                return $abbr ? \Lang::txt('AUGUST_SHORT') : \Lang::txt('AUGUST');
+                return $abbr ? Lang::txt('AUGUST_SHORT') : Lang::txt('AUGUST');
             case 9:
-                return $abbr ? \Lang::txt('SEPTEMBER_SHORT') : \Lang::txt('SEPTEMBER');
+                return $abbr ? Lang::txt('SEPTEMBER_SHORT') : Lang::txt('SEPTEMBER');
             case 10:
-                return $abbr ? \Lang::txt('OCTOBER_SHORT') : \Lang::txt('OCTOBER');
+                return $abbr ? Lang::txt('OCTOBER_SHORT') : Lang::txt('OCTOBER');
             case 11:
-                return $abbr ? \Lang::txt('NOVEMBER_SHORT') : \Lang::txt('NOVEMBER');
+                return $abbr ? Lang::txt('NOVEMBER_SHORT') : Lang::txt('NOVEMBER');
             case 12:
-                return $abbr ? \Lang::txt('DECEMBER_SHORT') : \Lang::txt('DECEMBER');
+                return $abbr ? Lang::txt('DECEMBER_SHORT') : Lang::txt('DECEMBER');
         }
 
         return '';
@@ -425,7 +429,7 @@ class Date extends DateTime
     public function toSql($local = false, $dbo = null)
     {
         if ($dbo === null) {
-            $dbo = \App::get('db');
+            $dbo = App::get('db');
         }
         return $this->format($dbo->getDateFormat(), $local, false);
     }
@@ -463,7 +467,7 @@ class Date extends DateTime
         $format = $format ?: self::$format;
 
         // get timezone idenfier from user setting otherwise user system
-        $tz = \User::getParam('timezone', \Config::get('offset'));
+        $tz = User::getParam('timezone', Config::get('offset'));
 
         // format date
         return $this->toTimeZone($tz, $format, $ignoreDst);
@@ -505,7 +509,7 @@ class Date extends DateTime
 
         // Less than a minute
         if ($diff < 60) {
-            return \Lang::txt('JLIB_HTML_DATE_RELATIVE_LESSTHANAMINUTE');
+            return Lang::txt('JLIB_HTML_DATE_RELATIVE_LESSTHANAMINUTE');
         }
 
         // Round to minutes
@@ -513,7 +517,7 @@ class Date extends DateTime
 
         // 1 to 59 minutes
         if ($diff < 60 || $unit == 'minute') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_MINUTES', $diff);
+            return Lang::txts('JLIB_HTML_DATE_RELATIVE_MINUTES', $diff);
         }
 
         // Round to hours
@@ -521,7 +525,7 @@ class Date extends DateTime
 
         // 1 to 23 hours
         if ($diff < 24 || $unit == 'hour') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_HOURS', $diff);
+            return Lang::txts('JLIB_HTML_DATE_RELATIVE_HOURS', $diff);
         }
 
         // Round to days
@@ -529,7 +533,7 @@ class Date extends DateTime
 
         // 1 to 6 days
         if ($diff < 7 || $unit == 'day') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_DAYS', $diff);
+            return Lang::txts('JLIB_HTML_DATE_RELATIVE_DAYS', $diff);
         }
 
         // Round to weeks
@@ -537,7 +541,7 @@ class Date extends DateTime
 
         // 1 to 4 weeks
         if ($diff <= 4 || $unit == 'week') {
-            return \Lang::txts('JLIB_HTML_DATE_RELATIVE_WEEKS', $diff);
+            return Lang::txts('JLIB_HTML_DATE_RELATIVE_WEEKS', $diff);
         }
 
         // [!] HUBZERO - Added months

@@ -9,8 +9,8 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Wiki model for page URIs

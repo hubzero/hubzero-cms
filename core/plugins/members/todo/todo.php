@@ -3,6 +3,13 @@
 namespace Plugins\Members\Todo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package   hubzero-cms

@@ -6,6 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
+// @phpcs:disable PSR1.Files.SideEffects
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -14,7 +21,7 @@ $row     = $this->data->row;
 $title   = $row->title ? $row->title : $row->path;
 $viewer  = $this->data->viewer;
 
-$db = \App::get('db');
+$db = App::get('db');
 $version = new \Components\Publications\Tables\Version($db);
 $version->load($row->object_id);
 

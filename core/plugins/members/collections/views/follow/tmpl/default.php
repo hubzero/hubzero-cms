@@ -6,6 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
+// @phpcs:disable PSR1.Files.SideEffects
+
 // No direct access
 defined('_HZEXEC_') or die();
 

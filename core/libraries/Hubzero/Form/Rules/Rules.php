@@ -10,6 +10,7 @@ namespace Hubzero\Form\Rules;
 
 use Hubzero\Access\Access;
 use Hubzero\Form\Rule;
+use Hubzero\Facades\App;
 
 /**
  * Form Rule class for rules.
@@ -82,7 +83,7 @@ class Rules extends Rule
         $component = $element['component'] ? (string) $element['component'] : '';
 
         // Get the asset actions for the element.
-        $component = $component ? \App::get('component')->path($component) . '/config/access.xml' : '';
+        $component = $component ? App::get('component')->path($component) . '/config/access.xml' : '';
         $section   = $section ? "/access/section[@name='" . $section . "']/" : '';
 
         $elActions = Access::getActionsFromFile($component, $section);

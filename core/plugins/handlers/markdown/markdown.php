@@ -3,6 +3,7 @@
 namespace Plugins\Handlers\Markdown;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * @package    hubzero-cms

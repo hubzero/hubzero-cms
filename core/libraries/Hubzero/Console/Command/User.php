@@ -8,7 +8,7 @@
 
 namespace Hubzero\Console\Command;
 
-use App;
+use Hubzero\Facades\App;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\System\PrivilegeManager;

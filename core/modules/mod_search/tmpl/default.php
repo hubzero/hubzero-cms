@@ -7,6 +7,7 @@
  */
 
 use Modules\Search\Helper;
+use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die;

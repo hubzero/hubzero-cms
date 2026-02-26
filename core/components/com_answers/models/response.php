@@ -9,10 +9,11 @@
 namespace Components\Answers\Models;
 
 use Hubzero\Database\Relational;
-use Request;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
 
 /**
  * Response model for Q&A
@@ -428,7 +429,7 @@ class Response extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', array(
                 'com_answers.response.answer',
                 &$this,
                 $this->isNew()

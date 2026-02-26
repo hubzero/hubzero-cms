@@ -19,6 +19,7 @@ use OAuth2\Storage\AuthorizationCodeInterface;
 use OAuth2\Storage\RefreshTokenInterface;
 use Hubzero\Oauth\Storage\SessionTokenInterface;
 use Hubzero\Oauth\Storage\ToolSessionTokenInterface;
+use Hubzero\Facades\App;
 
 /**
  * Custom Hubzero OAuth2 Storage Class
@@ -126,7 +127,7 @@ class Mysql implements
      */
     public function getClientDetailsById($id)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $sql = "SELECT * FROM `#__developer_applications`
 				WHERE `id`=" . $database->quote($id);
@@ -449,7 +450,7 @@ class Mysql implements
                 }
             }
         }
-        $sessionName = md5(\App::hash($client));
+        $sessionName = md5(App::hash($client));
 
         // return session id stored in cookie
         return (!empty($_COOKIE[$sessionName])) ? $_COOKIE[$sessionName] : null;
@@ -463,11 +464,11 @@ class Mysql implements
      */
     public function getUserIdFromSessionId($sessionId)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // Session lifetime in seconds, the same figure the session providers
         // garbage-collect on (config lifetime is in minutes, default 15).
-        $lifetime = (int) \App::get('config')->get('lifetime');
+        $lifetime = (int) App::get('config')->get('lifetime');
         $timeout  = $lifetime ? $lifetime * 60 : 900;
 
         // load user from session table

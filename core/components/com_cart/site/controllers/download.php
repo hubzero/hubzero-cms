@@ -8,10 +8,14 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
+use Hubzero\Facades\Request;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 //use Hubzero\User\Group;
 use Hubzero\Access\Group as Accessgroup;
 use App;
@@ -103,7 +107,7 @@ class Download extends ComponentController
             return;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Check if there is a limit on how many times the product can be downloaded
 

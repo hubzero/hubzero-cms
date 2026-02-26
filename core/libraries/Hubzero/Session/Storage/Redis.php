@@ -11,6 +11,9 @@ namespace Hubzero\Session\Storage;
 use Hubzero\Session\Store;
 use Hubzero\Redis\Database as RedisDatabase;
 use Exception;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Redis Session Storage class
@@ -40,7 +43,7 @@ class Redis extends Store
     public function __construct($options = array())
     {
         if (!self::isAvailable()) {
-            throw new Exception(\Lang::txt('JLIB_SESSION_REDIS_EXTENSION_NOT_AVAILABLE'));
+            throw new Exception(Lang::txt('JLIB_SESSION_REDIS_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (!array_key_exists('redis_key_prefix', $options)) {
@@ -111,12 +114,12 @@ class Redis extends Store
     {
         $data = array(
             'session_id' => $id,
-            'client_id'  => \App::get('client')->id,
-            'guest'      => \User::isGuest(),
+            'client_id'  => App::get('client')->id,
+            'guest'      => User::isGuest(),
             'time'       => time(),
             'data'       => $data,
-            'userid'     => \User::get('id'),
-            'username'   => \User::get('username'),
+            'userid'     => User::get('id'),
+            'username'   => User::get('username'),
             'usertype'   => null,
             'ip'         => $_SERVER['REMOTE_ADDR']
         );

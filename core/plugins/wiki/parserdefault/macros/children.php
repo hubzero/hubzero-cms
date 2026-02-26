@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for listing children of a page
@@ -106,7 +107,7 @@ class Children extends WikiMacro
                 // rows() already yields Page models; re-wrapping one in the
                 // constructor binds nothing and printed an empty link
 
-                $html .= '<li><a href="' . \Route::url($row->link()) . '">';
+                $html .= '<li><a href="' . Route::url($row->link()) . '">';
                 $html .= stripslashes($row->get('title', $row->get('pagename')));
                 $html .= '</a>';
                 $html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('id'));

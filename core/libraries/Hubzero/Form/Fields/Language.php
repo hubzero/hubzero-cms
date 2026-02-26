@@ -8,7 +8,7 @@
 
 namespace Hubzero\Form\Fields;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports a list of installed application languages

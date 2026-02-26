@@ -9,7 +9,7 @@
 namespace Components\Resources\Helpers;
 
 use Wamania\Snowball\Stemmer\English as EnglishStemmer;
-use App;
+use Hubzero\Facades\App;
 
 class RecommendedTags
 {

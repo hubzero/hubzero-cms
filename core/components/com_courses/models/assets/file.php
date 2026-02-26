@@ -9,12 +9,12 @@
 namespace Components\Courses\Models\Assets;
 
 use Components\Courses\Tables;
-use Component;
-use Request;
-use App;
-use Date;
-use Filesystem;
-use Route;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Route;
 
 /**
  * Default file asset handler class

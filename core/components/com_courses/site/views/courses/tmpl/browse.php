@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -141,7 +146,7 @@ $this->css('browse.css');
                 <ol class="courses entries">
                 <?php
                 if ($this->courses->total() > 0) {
-                    require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+                    require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
                     foreach ($this->courses as $course) {
                         //get status

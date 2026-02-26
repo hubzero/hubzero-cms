@@ -12,6 +12,11 @@
 namespace Plugins\Resources\Googlescholar;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 class Googlescholar extends Plugin
 {

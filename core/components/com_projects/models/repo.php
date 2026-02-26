@@ -12,12 +12,13 @@ use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Plugin;
-use Lang;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Project Repository model
@@ -65,7 +66,7 @@ class Repo extends Obj
      */
     public function __construct($project = null, $name = 'local')
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->set('project', $project);
         $this->set('name', $name);
@@ -1174,7 +1175,7 @@ class Repo extends Obj
         // cases distinct user-facing messages and log loudly (previously
         // any non-zero was reported as "a virus," which hid real scan
         // failures and confused users whose files were actually clean).
-        $scanner = trim(\App::get('config')->get(
+        $scanner = trim(App::get('config')->get(
             'virus_scanner',
             'clamscan -i --no-summary --block-encrypted'
         ));

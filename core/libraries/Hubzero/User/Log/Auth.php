@@ -9,6 +9,7 @@
 namespace Hubzero\User\Log;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Date;
 
 /**
  * User authentication log database model
@@ -42,7 +43,7 @@ class Auth extends Relational
      **/
     public function automaticLogged($data)
     {
-        return \Date::of()->toSql();
+        return Date::of()->toSql();
     }
 
     /**

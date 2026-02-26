@@ -12,6 +12,7 @@ use SeekableIterator;
 use Countable;
 use ArrayAccess;
 use Closure;
+use Hubzero\Facades\Lang;
 
 /**
  * Iterator class
@@ -142,7 +143,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
         }
 
         if (!$this->valid()) {
-            throw new \OutOfBoundsException(\Lang::txt('Invalid seek position'));
+            throw new \OutOfBoundsException(Lang::txt('Invalid seek position'));
         }
     }
 

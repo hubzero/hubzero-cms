@@ -11,12 +11,13 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use App;
-use Config;
-use Lang;
-use Notify;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
 
 /**
  * Courses controller class for managing membership and course info
@@ -219,7 +220,7 @@ class Assetgroups extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            Notify::error($error);
         }
 
         // Output the HTML
@@ -577,7 +578,7 @@ class Assetgroups extends AdminController
      */
     public function duplicateassetsTask()
     {
-        \Log::debug(var_export("---- duplicateassetsTask -----", true));
+        Log::debug(var_export("---- duplicateassetsTask -----", true));
         Notify::success("duplicate asset now");
     }
 

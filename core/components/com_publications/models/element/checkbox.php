@@ -9,7 +9,7 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a checkbox element

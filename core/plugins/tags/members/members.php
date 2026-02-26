@@ -12,6 +12,11 @@
 namespace Plugins\Tags\Members;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Members extends Plugin
 {

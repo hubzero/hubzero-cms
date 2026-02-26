@@ -9,6 +9,12 @@
 namespace Components\Oaipmh\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,28 +28,28 @@ class Oaipmh extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_oaipmh')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_oaipmh')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
+        $task = Request::getCmd('task');
 
-        $task = \Request::getCmd('task');
-
-        \Submenu::addEntry(
-            \Lang::txt('COM_OAIPMH_ABOUT'),
-            \Route::url('index.php?option=com_oaipmh'),
+        Submenu::addEntry(
+            Lang::txt('COM_OAIPMH_ABOUT'),
+            Route::url('index.php?option=com_oaipmh'),
             (!$task || $task == 'display')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_OAIPMH_SCHEMAS'),
-            \Route::url('index.php?option=com_oaipmh&task=schemas'),
+        Submenu::addEntry(
+            Lang::txt('COM_OAIPMH_SCHEMAS'),
+            Route::url('index.php?option=com_oaipmh&task=schemas'),
             ($task == 'schemas')
         );
+
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_OAIPMH_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+            Submenu::addEntry(
+                Lang::txt('COM_OAIPMH_PLUGINS'),
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
             );
         }
 

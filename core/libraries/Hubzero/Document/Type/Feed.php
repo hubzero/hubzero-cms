@@ -11,6 +11,9 @@ namespace Hubzero\Document\Type;
 use Hubzero\Document\Type\Feed\Item;
 use Hubzero\Document\Renderer;
 use Hubzero\Document\Base;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Feed document class for parsing and displaying an XML feed
@@ -230,13 +233,13 @@ class Feed extends Base
     public function render($cache = false, $params = array())
     {
         // Get the feed type
-        $type = \Request::getCmd('type', 'Rss');
+        $type = Request::getCmd('type', 'Rss');
 
         // Instantiate feed renderer and set the mime encoding
         $renderer = $this->loadRenderer(($type) ? $type : 'rss');
 
         if (!($renderer instanceof Renderer)) {
-            \App::abort(404, \Lang::txt('Resource Not Found'));
+            App::abort(404, Lang::txt('Resource Not Found'));
         }
 
         $this->setMimeEncoding($renderer->getContentType());

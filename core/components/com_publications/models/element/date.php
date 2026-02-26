@@ -10,7 +10,8 @@ namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a category element
@@ -126,15 +127,15 @@ class Date extends Base
             $options = array();
             $y++;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = Html::select('option', $i, $i);
             }
 
             $options = array_reverse($options);
-            array_unshift($options, \Html::select('option', '0', Lang::txt('Year...')));
+            array_unshift($options, Html::select('option', '0', Lang::txt('Year...')));
 
             $fieldName = $control_name . '[' . $name . '][year]';
             $fieldId = $control_name . '-' . $name . '-year';
-            $html[] = \Html::select(
+            $html[] = Html::select(
                 'genericlist',
                 $options,
                 $fieldName,
@@ -151,17 +152,17 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Month...'))
+                Html::select('option', '0', Lang::txt('Month...'))
             );
             $i = 1;
             $y = 13;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $this->_getMonth($i));
+                $options[] = Html::select('option', $i, $this->_getMonth($i));
             }
 
             $fieldName = $control_name . '[' . $name . '][month]';
             $fieldId = $control_name . '-' . $name . '-month';
-            $html[] = \Html::select(
+            $html[] = Html::select(
                 'genericlist',
                 $options,
                 $fieldName,
@@ -178,17 +179,17 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Day...'))
+                Html::select('option', '0', Lang::txt('Day...'))
             );
             $i = 1;
             $y = 32;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = Html::select('option', $i, $i);
             }
 
             $fieldName = $control_name . '[' . $name . '][day]';
             $fieldId = $control_name . '-' . $name . '-day';
-            $html[] = \Html::select(
+            $html[] = Html::select(
                 'genericlist',
                 $options,
                 $fieldName,

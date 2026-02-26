@@ -9,8 +9,9 @@
 namespace Modules\Announcements;
 
 use Hubzero\Module\Module;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying announcements
@@ -28,7 +29,7 @@ class Helper extends Module
      */
     private function getList()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $catid   = (int) $this->params->get('catid', 0);
         $limit   = (int) $this->params->get('numitems', 0);

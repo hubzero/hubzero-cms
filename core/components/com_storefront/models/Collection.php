@@ -9,9 +9,10 @@
 namespace Components\Storefront\Models;
 
 use Exception;
-use Component;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  *
@@ -32,7 +33,7 @@ class Collection
     public function __construct($cId = false)
     {
         // Load language file
-        \App::get('language')->load('com_storefront');
+        App::get('language')->load('com_storefront');
 
         $this->data = new \stdClass();
 
@@ -44,7 +45,7 @@ class Collection
 
     public function load()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $sql = "SELECT * FROM `#__storefront_collections` c
  				WHERE c.`cId` = " . $db->quote($this->getId());
@@ -292,7 +293,7 @@ class Collection
             $this->verify();
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $action = 'update';
         if (!$this->getId()) {
@@ -359,7 +360,7 @@ class Collection
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Delete the collection record
         $sql = 'DELETE FROM `#__storefront_collections` WHERE `cId` = ' . $db->quote($this->getId());
@@ -387,7 +388,7 @@ class Collection
         if (!isset($this->data->image) || $forceReload) {
             if ($this->getId()) {
                 // Get collection image
-                $db = \App::get('db');
+                $db = App::get('db');
                 $sql = "SELECT imgId, imgName FROM `#__storefront_images`
 				WHERE `imgObject` = 'collection'
 				AND `imgObjectId` = " . $db->quote($this->getId());
@@ -464,7 +465,7 @@ class Collection
      */
     public static function findActiveCollectionByAlias($cAlias)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $sql = 'SELECT `cId` FROM `#__storefront_collections` c
 				WHERE c.`cAlias` = ' . $db->quote($cAlias) . "

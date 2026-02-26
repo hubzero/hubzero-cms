@@ -10,14 +10,14 @@ namespace Components\Tools\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Resources\Models\Entry;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for Windows tools

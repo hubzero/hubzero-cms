@@ -9,7 +9,7 @@
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Member Tags import handler

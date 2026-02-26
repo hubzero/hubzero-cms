@@ -16,13 +16,13 @@ use Google_Service_Drive_Permission;
 use Google_Service_Oauth2;
 use Google_Http_Request;
 use Hubzero\Base\Obj;
-use Request;
-use Plugin;
-use Route;
-use Lang;
-use User;
-use App;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Projects Connect helper class
@@ -113,7 +113,7 @@ class Connect extends Obj
      */
     public function __construct($model = null, $userid = 0, $zone = 'UTC')
     {
-        $this->_db   = \App::get('db');
+        $this->_db   = App::get('db');
         $this->model = $model;
         $this->_uid  = $userid ? $userid : User::get('id');
 

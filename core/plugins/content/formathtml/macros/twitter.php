@@ -9,6 +9,8 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 /**
  * macro class for dipslaying a twitter feed
@@ -99,8 +101,8 @@ class Twitter extends Macro
         }
 
         $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/twitter/twitter.js';
-        \Document::addScript(
-            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js')
+        Document::addScript(
+            Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js')
         );
 
         // output embeded timeline

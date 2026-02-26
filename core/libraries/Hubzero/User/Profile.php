@@ -13,7 +13,8 @@ use Hubzero\User\Profile\Helper as ProfileHelper;
 use Hubzero\User\Password;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
-use Event;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\App;
 
 /**
  * Extended user profile
@@ -412,7 +413,7 @@ class Profile extends Obj
      */
     private function sql_load($user)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($user)) {
             $this->setError('No user specified');
@@ -482,7 +483,7 @@ class Profile extends Obj
             'vip'          => 'principal_investigator'
         );
 
-        $db =  \App::get('db');
+        $db =  App::get('db');
 
         $query = "SELECT * FROM `#__author` WHERE id=" . $db->quote($authorid);
 
@@ -696,7 +697,7 @@ class Profile extends Obj
      */
     public function create()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $modifiedDate = gmdate('Y-m-d H:i:s');
 
@@ -795,7 +796,7 @@ class Profile extends Obj
             return false;
         }
 
-        $db =  \App::get('db');
+        $db =  App::get('db');
 
         $modifiedDate = gmdate('Y-m-d H:i:s');
 
@@ -925,7 +926,7 @@ class Profile extends Obj
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (!is_numeric($this->get('uidNumber'))) {
             $this->setError("missing required field 'uidNumber'");
@@ -1001,7 +1002,7 @@ class Profile extends Obj
         }
 
         if ($this->$property === false) {
-            $db = \App::get('db');
+            $db = App::get('db');
 
             $property_name = substr($property, 6);
 
@@ -1292,7 +1293,7 @@ class Profile extends Obj
      */
     public static function getGroupMemberRoles($uid, $gid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
         $db->setQuery($sql);
 

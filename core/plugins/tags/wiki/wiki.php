@@ -3,6 +3,10 @@
 namespace Plugins\Tags\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 

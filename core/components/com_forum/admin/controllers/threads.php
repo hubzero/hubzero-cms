@@ -17,12 +17,14 @@ use Components\Forum\Models\Attachment;
 use Components\Forum\Models\Tags;
 use Filesystem;
 use Exception;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for forum threads
@@ -36,7 +38,7 @@ class Threads extends AdminController
      */
     public function execute()
     {
-        $this->banking = \Component::params('com_members')->get('bankAccounts');
+        $this->banking = Component::params('com_members')->get('bankAccounts');
 
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
@@ -447,7 +449,7 @@ class Threads extends AdminController
         $fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
         if ($fields['id']) {
-            $fields['modified'] = \Date::toSql();
+            $fields['modified'] = Date::toSql();
             $fields['modified_by'] = User::get('id');
         }
 

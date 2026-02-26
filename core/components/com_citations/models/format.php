@@ -9,7 +9,7 @@
 namespace Components\Citations\Models;
 
 use Hubzero\Database\Relational;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Citation format model

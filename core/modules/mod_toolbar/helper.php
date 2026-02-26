@@ -9,6 +9,8 @@
 namespace Modules\Toolbar;
 
 use Hubzero\Module\Module;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Toolbar;
 
 /**
  * Module class for displaying component toolbar
@@ -22,12 +24,12 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!App::isAdmin()) {
             return;
         }
 
         // Get the toolbar.
-        $toolbar = \Toolbar::render('toolbar');
+        $toolbar = Toolbar::render('toolbar');
 
         // Get the view
         require $this->getLayoutPath($this->params->get('layout', 'default'));

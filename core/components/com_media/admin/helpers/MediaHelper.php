@@ -8,11 +8,11 @@
 
 namespace Components\Media\Admin\Helpers;
 
-use Filesystem;
-use Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
 use Notify;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Media helper

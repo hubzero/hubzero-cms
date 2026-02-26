@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Wiki macro class for linking contributor
@@ -76,7 +78,7 @@ class Contributor extends WikiMacro
             if (!strpos($n, ' ')) {
                 // No, then we must have a username
                 // Get user's name
-                $cuser = \User::getInstance($n);
+                $cuser = User::getInstance($n);
                 if (is_object($cuser)) {
                     $name = $cuser->get('name');
                     $id   = $cuser->get('id');
@@ -109,8 +111,8 @@ class Contributor extends WikiMacro
 
         // Did we get a result from the database?
         if ($name && $id) {
-            return '<a href="' . \Route::url('index.php?option=com_members&id=' . (int) $id) . '">' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '</a>';
-            //return '['.\Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
+            return '<a href="' . Route::url('index.php?option=com_members&id=' . (int) $id) . '">' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '</a>';
+            //return '['.Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
         } else {
             // Return error message
             return '(contributor:' . htmlspecialchars($et, ENT_QUOTES, 'UTF-8') . ' not found)';

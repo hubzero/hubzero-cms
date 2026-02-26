@@ -9,6 +9,12 @@
 namespace Components\Events\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,28 +28,28 @@ class Events extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_events')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_events')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'events');
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        $controllerName = Request::getCmd('controller', 'events');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'events';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS'),
-            \Route::url('index.php?option=com_events&controller=events'),
+        Submenu::addEntry(
+            Lang::txt('COM_EVENTS'),
+            Route::url('index.php?option=com_events&controller=events'),
             $controllerName == 'events'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS_CATEGORIES'),
-            \Route::url('index.php?option=com_categories&extension=com_events'),
+        Submenu::addEntry(
+            Lang::txt('COM_EVENTS_CATEGORIES'),
+            Route::url('index.php?option=com_categories&extension=com_events'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_EVENTS_CONFIGURATION'),
-            \Route::url('index.php?option=com_events&controller=configure'),
+        Submenu::addEntry(
+            Lang::txt('COM_EVENTS_CONFIGURATION'),
+            Route::url('index.php?option=com_events&controller=configure'),
             $controllerName == 'configure'
         );
 

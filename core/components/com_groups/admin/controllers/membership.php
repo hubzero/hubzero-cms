@@ -12,13 +12,13 @@ use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Groups controller class for managing membership and group info

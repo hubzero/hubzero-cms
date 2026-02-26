@@ -11,6 +11,7 @@ namespace Modules\GroupPages;
 use Hubzero\Module\Module;
 use Components\Groups\Models;
 use Component;
+use Hubzero\Facades\App;
 
 /**
  * Module class for showing group pages
@@ -27,7 +28,7 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!App::isAdmin()) {
             return;
         }
 

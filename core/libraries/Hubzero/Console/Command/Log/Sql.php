@@ -8,6 +8,8 @@
 
 namespace Hubzero\Console\Command\Log;
 
+use Hubzero\Facades\Config;
+
 /**
  * Sql log class
  **/
@@ -41,7 +43,7 @@ class Sql extends Base
      **/
     public static function path()
     {
-        $dir = \Config::get('log_path');
+        $dir = Config::get('log_path');
 
         if (is_dir('/var/log/hubzero-cms')) {
             $dir = '/var/log/hubzero-cms';

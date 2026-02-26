@@ -9,9 +9,9 @@
 namespace Components\Content\Site\Helpers;
 
 use Components\Categories\Helpers\Node;
-use Component;
-use Lang;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Content Component Route Helper

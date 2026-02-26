@@ -12,9 +12,9 @@ use Components\Help\Helpers\Finder;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
-use Request;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Help controller class

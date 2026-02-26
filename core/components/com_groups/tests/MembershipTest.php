@@ -10,6 +10,7 @@ namespace Components\Groups\Tests;
 
 use Hubzero\Test\Basic;
 use Hubzero\User\Group\Membership;
+use Hubzero\Facades\Date;
 
 /**
  * Time-limited membership tests
@@ -122,7 +123,7 @@ class MembershipTest extends Basic
      */
     public function testNormalizeAcceptsDateObjects()
     {
-        $date = \Date::of('2030-06-15 12:00:00');
+        $date = Date::of('2030-06-15 12:00:00');
 
         $this->assertEquals('2030-06-15 12:00:00', Membership::normalize($date));
     }

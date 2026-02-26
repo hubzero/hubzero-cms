@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class that will insert a linked title to a resource
@@ -110,7 +112,7 @@ class Resources extends WikiMacro
             if ($nolink) {
                 return htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8');
             } else {
-                return '<a href="' . \Route::url($link) . '">' . htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8') . '</a>';
+                return '<a href="' . Route::url($link) . '">' . htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8') . '</a>';
             }
         }
 
@@ -127,7 +129,7 @@ class Resources extends WikiMacro
      */
     public function screenshots($alias, $num = 1)
     {
-        $config = \Component::params('com_resources');
+        $config = Component::params('com_resources');
         $path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
         $alias = strtolower($alias);

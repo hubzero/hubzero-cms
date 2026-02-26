@@ -15,15 +15,15 @@ use Components\Jobs\Tables\Type;
 use Components\Jobs\Tables\Employer;
 use Hubzero\Component\AdminController;
 use Exception;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
 
 /**
  * Controller class for job postings

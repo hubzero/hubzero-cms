@@ -10,6 +10,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Facades\Component;
 
 /**
  * Migration class
@@ -62,7 +63,7 @@ class Migration extends Base implements CommandInterface
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
                 // Get group config
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = Component::params('com_groups');
 
                 // Path to group folder
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -570,7 +571,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 
@@ -730,7 +731,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 
@@ -889,7 +890,7 @@ class Migration extends Base implements CommandInterface
             $cname = $this->arguments->getOpt('group');
             $group = \Hubzero\User\Group::getInstance($cname);
             if ($group && $group->isSuperGroup()) {
-                $groupsConfig = \Component::params('com_groups');
+                $groupsConfig = Component::params('com_groups');
                 $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
                 $directory .= DS . $group->get('gidNumber');
 

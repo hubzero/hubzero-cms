@@ -8,14 +8,17 @@
 
 namespace Components\Resources\Helpers;
 
-use Document;
-use Pathway;
-use Lang;
-use User;
-use Date;
-use Component;
-use Request;
-use Route;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Resources helper class for misc. HTML and display
@@ -329,7 +332,7 @@ class Html
 
                 $params = new \Hubzero\Config\Registry($child->params);
 
-                $ftype    = \Filesystem::extension($child->path);
+                $ftype    = Filesystem::extension($child->path);
                 //$class    = $params->get('class', $ftype);
                 $doctitle = $params->get('title', $title);
 
@@ -405,7 +408,7 @@ class Html
      */
     public static function thumbnail($pic)
     {
-        return \Filesystem::name($pic) . '-tn.gif';
+        return Filesystem::name($pic) . '-tn.gif';
     }
 
     /**
@@ -530,7 +533,7 @@ class Html
      */
     public static function citationCOins($cite, $model)
     {
-        \Log::debug(__CLASS__ . '::' . __METHOD__ . '() called');
+        Log::debug(__CLASS__ . '::' . __METHOD__ . '() called');
 
         return '';
     }
@@ -680,7 +683,7 @@ class Html
      */
     public static function primary_child($option, $resource, $firstChild, $xact = '')
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $html = '';
 
@@ -707,7 +710,7 @@ class Html
 
                 // Generate the URL that launches a tool session
                 $lurl = '';
-                $database = \App::get('db');
+                $database = App::get('db');
                 $tables = $database->getTableList();
                 $table = $database->getPrefix() . 'tool_version';
 
@@ -933,7 +936,7 @@ class Html
                         if (!in_array($resource->get('group_owner'), $usersgroups) || count($common) <= 0) {
                             $html .= '<p class="warning">';
                             if (User::isGuest()) {
-                                $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(\Request::path()));
+                                $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path()));
                             } else {
                                 $ghtml = array();
                                 foreach ($allowedgroups as $allowedgroup) {
@@ -1060,7 +1063,7 @@ class Html
                 return null;
             }
 
-            $toolsTables = \Component::path('com_tools') . DS . 'tables';
+            $toolsTables = Component::path('com_tools') . DS . 'tables';
             require_once $toolsTables . DS . 'viewperm.php';
             require_once $toolsTables . DS . 'session.php';
 
@@ -1164,7 +1167,7 @@ class Html
 
             $path = PATH_APP . $path;
 
-            $type = strtoupper(\Filesystem::extension($path));
+            $type = strtoupper(Filesystem::extension($path));
 
             //check to see if we have a json file (HUBpresenter)
             if ($type == 'JSON') {

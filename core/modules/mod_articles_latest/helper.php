@@ -11,11 +11,11 @@ namespace Modules\ArticlesLatest;
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
 use Components\Content\Models\Article;
-use Component;
-use Route;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying latest articles

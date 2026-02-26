@@ -11,13 +11,14 @@ namespace Components\Tools\Admin\Controllers;
 use Components\Tools\Models\Tool;
 use Components\Resources\Models\Entry;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Tools controller class
@@ -178,7 +179,7 @@ class Pipeline extends AdminController
         $row->update();
 
         // If the tool state was changed...
-        if ($oldstate != $row->state && file_exists(\Component::path('com_resources') . '/models/entry.php')) {
+        if ($oldstate != $row->state && file_exists(Component::path('com_resources') . '/models/entry.php')) {
             // Trash the associated resource page
 
             $resource = Entry::oneByAlias($row->toolname);
@@ -234,7 +235,7 @@ class Pipeline extends AdminController
         $sitename = Config::get('sitename');
 
         // Get config
-        $config = \Component::params($this->_option);
+        $config = Component::params($this->_option);
 
         // Get all tool publications without new DOI
         $database->setQuery("SELECT * FROM `#__doi_mapping` WHERE `doi`='' OR `doi` IS NULL");

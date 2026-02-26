@@ -3,6 +3,11 @@
 namespace Plugins\Citation\Doi;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
 
 /**
  * @package    hubzero-cms

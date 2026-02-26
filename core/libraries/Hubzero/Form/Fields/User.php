@@ -11,7 +11,7 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Field;
 use Hubzero\User\User as UserModel;
 use Hubzero\Html\Builder\Behavior;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Field to select a user id from a modal list.

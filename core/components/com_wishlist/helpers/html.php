@@ -8,7 +8,7 @@
 
 namespace Components\Wishlist\Helpers;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Wishlist helper class for misc. HTML

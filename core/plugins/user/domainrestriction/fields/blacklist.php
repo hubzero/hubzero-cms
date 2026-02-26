@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders input for a Blacklist notification

@@ -12,6 +12,10 @@
 namespace Plugins\System\Languagecode;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Languagecode extends Plugin
 {

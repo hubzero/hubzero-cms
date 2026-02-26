@@ -12,14 +12,14 @@ use Components\Config\Models\Extension;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Hubzero\Base\Obj;
-use Filesystem;
-use Config;
-use Notify;
-use Event;
-use Cache;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Model class for Application config

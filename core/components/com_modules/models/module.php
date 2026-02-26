@@ -11,9 +11,9 @@ namespace Components\Modules\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Module extension model

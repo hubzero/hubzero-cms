@@ -9,10 +9,10 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Document;
-use Request;
-use Html;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders input for TLDs

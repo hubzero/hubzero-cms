@@ -15,15 +15,16 @@ use Components\Kb\Models\Comment;
 use Components\Kb\Models\Vote;
 use Hubzero\Component\SiteController;
 use Exception;
-use Document;
+use Hubzero\Facades\Document;
 use Pathway;
-use Request;
-use Config;
-use Event;
-use Lang;
-use User;
-use App;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
 
 /**
  * Knowledge Base controller
@@ -359,7 +360,7 @@ class Articles extends SiteController
         $row->set($comment);
 
         if ($isNew) {
-            $row->set('created', \Date::toSql());
+            $row->set('created', Date::toSql());
             $row->set('created_by', User::get('id'));
             $row->set('state', Comment::STATE_PUBLISHED);
 

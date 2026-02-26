@@ -6,6 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 defined('_HZEXEC_') or die();
 
 // If the user is already logged in, redirect to the return or profile page.

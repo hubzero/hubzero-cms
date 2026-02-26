@@ -1,5 +1,8 @@
 <?php
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.

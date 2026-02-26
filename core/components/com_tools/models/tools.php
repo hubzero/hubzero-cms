@@ -9,6 +9,7 @@
 namespace Components\Tools\Models;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 include_once __DIR__ . DS . 'orm' . DS . 'tool.php';
 
@@ -65,7 +66,7 @@ class Tools extends Obj
             return array();
         }
 
-        $database = \App::get('db');
+                $database = App::get('db');
 
         $names = array_map(array($database, 'quote'), $dirs);
 

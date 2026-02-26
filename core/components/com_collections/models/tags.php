@@ -12,6 +12,7 @@ use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Objct;
+use Hubzero\Facades\App;
 
 /**
  * Collections Tagging class
@@ -59,7 +60,7 @@ class Tags extends Cloud
                 break;
         }
         $sql .= "ORDER BY raw_tag ASC";
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($sql);
 
         $tags = array();

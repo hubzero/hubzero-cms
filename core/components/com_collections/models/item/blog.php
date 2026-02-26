@@ -10,9 +10,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Blog\Models\Entry;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a blog post

@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * Group events Macro
@@ -50,7 +52,7 @@ class Resources extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // get args
@@ -67,8 +69,8 @@ class Resources extends GroupMacro
         $html = '<div class="resources ' . $class . '">';
 
         foreach ($groupResources as $resource) {
-            $resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
-            $resourceTypeLink = \Route::url('index
+            $resourceLink     = Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
+            $resourceTypeLink = Route::url('index
                 . php?option=com_groups&cn='
                 . $this->group->get('cn')
                 . '&active=resources&area='

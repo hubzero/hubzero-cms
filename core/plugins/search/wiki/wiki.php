@@ -3,6 +3,9 @@
 namespace Plugins\Search\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms

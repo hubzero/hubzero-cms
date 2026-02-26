@@ -9,6 +9,7 @@
 namespace Components\Groups\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for logging group actions
@@ -34,7 +35,7 @@ class Log extends Table
     public function check()
     {
         if (trim($this->gidNumber) == '') {
-            $this->setError(\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
+            $this->setError(Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
             return false;
         }
 

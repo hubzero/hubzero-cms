@@ -9,12 +9,12 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Behavior;
-use Document;
+use Hubzero\Facades\Document;
 use Route;
-use Lang;
-use User;
-use Component;
-use Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 
 /**
  * Supports a URL text field

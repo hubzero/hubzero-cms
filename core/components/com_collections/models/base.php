@@ -10,10 +10,10 @@ namespace Components\Collections\Models;
 
 use Components\Members\Models\Member;
 use Hubzero\Base\Model;
-use Component;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 use User;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Abstract model for collections

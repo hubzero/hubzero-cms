@@ -7,6 +7,10 @@
  * when admin switches group from type HUB to type Special.
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+
 // define base path (without doc root)
 $base = rtrim(str_replace(PATH_ROOT, '', __DIR__), DS);
 

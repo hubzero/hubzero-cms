@@ -10,8 +10,8 @@ namespace Modules\Slideshow;
 
 use Hubzero\Document\Assets;
 use Hubzero\Module\Module;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a slideshow

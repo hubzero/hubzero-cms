@@ -10,8 +10,8 @@ namespace Modules\RandomImage;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Request;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a random image

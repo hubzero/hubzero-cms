@@ -9,12 +9,12 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 use User;
-use Notify;
-use Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
 
 /**
  * Controller class for system config
@@ -185,7 +185,7 @@ class Ldap extends AdminController
         $response->success   = array();
         $response->errors    = array();
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $query = $db->getQuery()
             ->select('COUNT(id)')
             ->from('#__users');

@@ -9,7 +9,7 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Course asset associations table class

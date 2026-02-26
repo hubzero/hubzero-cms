@@ -16,6 +16,7 @@ use Hubzero\Access\Map;
 use Hubzero\Base\Application;
 use Hubzero\Database\ConnectionInterface;
 use PDOException;
+use Hubzero\Facades\App;
 
 class Admin implements StepInterface
 {
@@ -327,7 +328,7 @@ class Admin implements StepInterface
             error_reporting($oldErrorReporting & ~E_DEPRECATED);
 
             // Check if an App is already running with database (when accessed via framework)
-            if (class_exists('\App') && \App::has('db')) {
+            if (class_exists('\App') && App::has('db')) {
                 $booted = true;
                 error_reporting($oldErrorReporting);
                 return true;

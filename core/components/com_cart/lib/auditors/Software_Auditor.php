@@ -11,7 +11,7 @@ namespace Components\Cart\Lib\Auditors;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\Download;
-use User;
+use Hubzero\Facades\User;
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Software_Auditor extends BaseAuditor

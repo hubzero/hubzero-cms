@@ -10,6 +10,8 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 use Components\Resources\Models\Entry;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class that will insert a linked title to a resource
@@ -104,7 +106,7 @@ class Resources extends Macro
             } else {
                 // The resource title is user-written and the macro argument is raw
                 // wiki source; the parser hands args through unescaped.
-                return '<a href="' . \Route::url($link) . '">' . htmlspecialchars(stripslashes((string) $r->get('title')), ENT_QUOTES, 'UTF-8') . '</a>';
+                return '<a href="' . Route::url($link) . '">' . htmlspecialchars(stripslashes((string) $r->get('title')), ENT_QUOTES, 'UTF-8') . '</a>';
             }
         } else {
             // Return error message
@@ -121,7 +123,7 @@ class Resources extends Macro
      */
     public function screenshots($alias, $num = 1)
     {
-        $config = \Component::params('com_resources');
+        $config = Component::params('com_resources');
         $path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
         $alias = strtolower($alias);

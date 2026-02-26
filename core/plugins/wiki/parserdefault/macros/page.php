@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -76,6 +77,6 @@ class Page extends WikiMacro
         }
 
         // Build and return the link
-        return '<a href="' . \Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
+        return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
     }
 }

@@ -9,8 +9,8 @@
 namespace Components\Resources\Models\Stat;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource stats clusters model

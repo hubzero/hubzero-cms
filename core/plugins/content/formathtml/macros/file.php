@@ -9,6 +9,14 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * A wiki macro for embedding or linking to files
@@ -104,7 +112,7 @@ class File extends Macro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = \Component::params('com_wiki');
+        $this->config = Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -409,15 +417,15 @@ class File extends Macro
             $link .= $scope . DS;
         }
         $type = 'File';
-        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
-            if (\Request::getString('format') == 'pdf') {
+        if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
+            if (Request::getString('format') == 'pdf') {
                 return $this->path($file);
             }
             $type = 'Image';
         }
         $link .= $this->pagename . DS . $type . ':' . $file;
 
-        return \Route::url($link);
+        return Route::url($link);
     }
 
     /**
@@ -429,7 +437,7 @@ class File extends Macro
      */
     private function embed($file, $attr = array())
     {
-        $ext = strtolower(\Filesystem::extension($file));
+        $ext = strtolower(Filesystem::extension($file));
 
         switch ($ext) {
             case 'unity3d':
@@ -467,13 +475,13 @@ class File extends Macro
                 $html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+									<img alt="Unity Web Player. Install now!" src="' . (Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
 
-                \Document::addScript(\Request::scheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js');
-                \Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
+                Document::addScript(Request::scheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js');
+                Document::addScript(Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
                 break;
 
             case 'cdf':
@@ -502,12 +510,12 @@ class File extends Macro
                     $attr['alt'] .= '</a>';
                 } else {
                     $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
-                    $attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="' . \Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
+                    $attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="' . Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
                     $attr['alt'] .= '</a>';
                 }
 
-                \Document::addScript(\Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
-                \Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
+                Document::addScript(Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
+                Document::addScript(Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
 
                 $html = '<noscript>';
                 $html .= '<div class="embedded-plugin" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
@@ -573,11 +581,11 @@ class File extends Macro
                     if ($size !== null && $attr['details']) {
                         $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
                         if (isset($attr['created_by'])) {
-                            $user = \User::getInstance($attr['created_by']);
-                            $html .= ', ' . \Lang::txt('uploaded by %s ', stripslashes($user->get('name')));
+                            $user = User::getInstance($attr['created_by']);
+                            $html .= ', ' . Lang::txt('uploaded by %s ', stripslashes($user->get('name')));
                         }
                         if (isset($attr['created'])) {
-                            $html .= ' ' . \Date::of($attr['created'])->relative();
+                            $html .= ' ' . Date::of($attr['created'])->relative();
                         }
                         $html .= '</span>)';
                     }

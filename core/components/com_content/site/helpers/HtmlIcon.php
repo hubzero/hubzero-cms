@@ -10,10 +10,14 @@ namespace Components\Content\Site\Helpers;
 
 use Hubzero\Utility\Arr;
 use Hubzero\Utility\Uri;
-use Route;
-use Request;
-use Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 use Component;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
 
 /**
  * Content Component HTML Helper
@@ -52,7 +56,6 @@ class HtmlIcon
         $output = '';
 
         if (class_exists('\Components\Mailto\Site\Helpers\Mailto')) {
-
             $base     = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
             $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(

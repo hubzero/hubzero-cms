@@ -8,9 +8,9 @@
 
 namespace Components\Courses\Models;
 
-use Date;
-use App;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 class PdfFormDeployment
 {
@@ -138,7 +138,7 @@ class PdfFormDeployment
             $rv[] = $dep;
         }
 
-        $uid = \User::get('id');
+        $uid = User::get('id');
         usort($rv, function ($a, $b) use ($uid) {
             $au = $a->getUserId();
             $bu = $b->getUserId();
@@ -586,7 +586,7 @@ class PdfFormDeployment
         static $dbh;
 
         if (!$dbh) {
-            $dbh = \App::get('db');
+            $dbh = App::get('db');
         }
 
         return $dbh;

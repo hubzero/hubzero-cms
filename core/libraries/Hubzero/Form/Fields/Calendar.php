@@ -12,7 +12,7 @@ use Hubzero\Html\Builder\Input;
 use Hubzero\Utility\Date;
 use Hubzero\Form\Field;
 use DateTimeZone;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a pop up date picker linked to a button.

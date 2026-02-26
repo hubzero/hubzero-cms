@@ -12,6 +12,11 @@
 namespace Plugins\Tags\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 class Citations extends Plugin
 {
@@ -138,7 +143,7 @@ class Citations extends Plugin
         $row->pages     = isset($row->data2)  ? $row->data2  : '';
         $row->publisher = isset($row->data3)  ? $row->data3  : '';
 
-        $config = \Component::params('com_citations');
+        $config = Component::params('com_citations');
 
         switch ($config->get('citation_label', 'number')) {
             case 'none':
@@ -167,9 +172,9 @@ class Citations extends Plugin
         //are we trying wanting to direct to single citaiton view
         $citationSingleView = $config->get('citation_single_view', 1);
         if ($citationSingleView) {
-            $html .= '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
+            $html .= '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
         } else {
-            $html .= '<a href="' . \Route::url('index.php?option=com_citations&task=browse&type=' . $row->type
+            $html .= '<a href="' . Route::url('index.php?option=com_citations&task=browse&type=' . $row->type
                 . '&year=' . $row->year . '&search=' . \Hubzero\Utility\Str::truncate(
                     \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)),
                     50
@@ -177,7 +182,7 @@ class Citations extends Plugin
         }
         $html .= \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
         $html .= '</a></p>' . "\n";
-        $html .= '<p class="details ' . $citations_label_class . '">' . \Lang::txt('PLG_TAGS_CITATION');
+        $html .= '<p class="details ' . $citations_label_class . '">' . Lang::txt('PLG_TAGS_CITATION');
         if ($config->get('citation_label', 'number') != 'none') {
             $types = self::getTypes();
 

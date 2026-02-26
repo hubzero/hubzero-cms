@@ -9,6 +9,8 @@
 namespace Plugins\Captcha\Recaptcha;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Recaptcha Plugin.
@@ -90,7 +92,7 @@ class Recaptcha extends Plugin
         $html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
 					<script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
         // [a11y] Remove role="presentation" from reCAPTCHA iframe (injected by Google JS)
-        $html .= '<script type="text/javascript" src="' . rtrim(\Request::base(true), '/') . '/core/plugins/captcha/recaptcha/assets/js/recaptcha-a11y.js" defer></script>';
+        $html .= '<script type="text/javascript" src="' . rtrim(Request::base(true), '/') . '/core/plugins/captcha/recaptcha/assets/js/recaptcha-a11y.js" defer></script>';
         $html .= '</div>';
         $html .= '</div>';
 

@@ -13,11 +13,11 @@ use Components\Tools\Tables\Host;
 use Components\Tools\Tables\Hosttype;
 use Components\Tools\Tables\Zones;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
 use App;
 
 /**

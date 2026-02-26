@@ -8,6 +8,9 @@
 
 namespace Hubzero\Content;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+
 /**
  * HUBzero Database migrations class
  *
@@ -249,7 +252,7 @@ class Migration
      **/
     public function getDBO()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Test the connection
         if (!$db->connected()) {
@@ -879,7 +882,7 @@ class Migration
                 'hash'      => $hash,
                 'direction' => $direction,
                 'date'      => $date->toSql(),
-                'action_by' => (php_sapi_name() == 'cli') ? (function_exists('posix_geteuid') ? (posix_getpwuid(posix_geteuid())['name'] ?? get_current_user()) : get_current_user()) : \User::get('id')
+                'action_by' => (php_sapi_name() == 'cli') ? (function_exists('posix_geteuid') ? (posix_getpwuid(posix_geteuid())['name'] ?? get_current_user()) : get_current_user()) : User::get('id')
             );
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {

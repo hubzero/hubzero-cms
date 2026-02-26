@@ -1,5 +1,12 @@
 <?php
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Module;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // No Direct Access
 defined('_HZEXEC_') or die();
 
@@ -28,7 +35,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
         <link rel="stylesheet" type="text/css" media="screen"
               href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/less/main.css" />
         <script type="text/javascript"
-                src="<?php echo \Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
+                src="<?php echo Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
         <?php
         $jsBase = str_replace('/core', '', $this->baseurl) . '/templates/' . $this->template;
         ?>

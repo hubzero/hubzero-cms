@@ -9,6 +9,14 @@
 namespace Plugins\Projects\Databases;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Projects - Databases plugin
@@ -220,7 +228,7 @@ class Databases extends Plugin
         $repoName = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
         $this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
-        $this->_database = \App::get('db');
+        $this->_database = App::get('db');
         $this->_uid = User::get('id');
         $this->subdir = trim(urldecode(Request::getString('subdir', '')), DS);
 
@@ -1106,7 +1114,7 @@ class Databases extends Plugin
 
         // Success message
         if (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         return;
@@ -1286,7 +1294,7 @@ class Databases extends Plugin
 
         // Pass success message
         if (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -1339,7 +1347,7 @@ class Databases extends Plugin
 
         // Pass success message
         if (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect

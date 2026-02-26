@@ -9,8 +9,8 @@
 namespace Hubzero\User;
 
 use Hubzero\Database\Relational;
-use Session;
-use Plugin;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Plugin;
 
 /**
  * Reputation database model

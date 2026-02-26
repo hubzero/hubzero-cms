@@ -10,13 +10,14 @@ namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
 use Components\Dataviewer\Site\DvConfig as SiteDvConfig;
+use Hubzero\Facades\Request;
 
 class ConfigCurrent
 {
     public static function execute()
     {
         $base = DvConfig::$conf['dir_base'];
-        $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(\Request::getString('db', false), 'db');
+        $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('db', false), 'db');
 
         \Components\Dataviewer\Site\DvConfig::init();
 

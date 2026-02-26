@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 defined('_HZEXEC_') or die();
 
 $status = '';

@@ -10,6 +10,7 @@ namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\Lang;
 
 /**
  * Template style model
@@ -177,7 +178,7 @@ class Style extends Relational
                 ->rows();
 
             if ($styles->count() == 1 && $styles->current()->get('id') == $this->get('id')) {
-                $this->addError(\Lang::txt('COM_TEMPLATES_ERROR_CANNOT_DELETE_LAST_STYLE'));
+                $this->addError(Lang::txt('COM_TEMPLATES_ERROR_CANNOT_DELETE_LAST_STYLE'));
                 return false;
             }
         }

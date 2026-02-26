@@ -8,8 +8,8 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
-use Pathway;
-use Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
 
 /**
  * Adapter class for a forum post link for the site-wide forum

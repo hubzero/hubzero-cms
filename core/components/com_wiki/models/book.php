@@ -11,11 +11,11 @@ namespace Components\Wiki\Models;
 use Hubzero\Base\Obj;
 use Hubzero\Config\Registry;
 use Components\Wiki\Helpers\Parser;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Component;
-use Request;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Wiki model for a book

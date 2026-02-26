@@ -9,7 +9,8 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
 
 /**
  * Renders a list element
@@ -39,17 +40,17 @@ class Select extends Base
 
         $options = array();
         if (!$element->required) {
-            $options[] = \Html::select('option', '', Lang::txt('COM_RESOURCES_SELECT'));
+            $options[] = Html::select('option', '', Lang::txt('COM_RESOURCES_SELECT'));
         }
         foreach ($element->options as $option) {
             $val  = $option->value;
             $text = $option->label;
-            $options[] = \Html::select('option', $val, $text);
+            $options[] = Html::select('option', $val, $text);
         }
 
         $selectName = $control_name . '[' . $name . ']';
         $selectId = $control_name . '-' . $name;
-        $select = \Html::select(
+        $select = Html::select(
             'genericlist',
             $options,
             $selectName,

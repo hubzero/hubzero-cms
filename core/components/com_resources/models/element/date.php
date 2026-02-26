@@ -10,8 +10,9 @@ namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
 use stdClass;
-use Lang;
-use Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Component;
 
 /**
  * Renders a category element
@@ -123,13 +124,24 @@ class Date extends Base
             $options = array();
             $y++;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = Html::select('option', $i, $i);
             }
 
             $options = array_reverse($options);
-            array_unshift($options, \Html::select('option', '0', Lang::txt('Year...')));
+            array_unshift($options, Html::select('option', '0', Lang::txt('Year...')));
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
+            $selectName = $control_name . '[' . $name . '][year]';
+            $selectId = $control_name . '-' . $name . '-year';
+            $html[] = Html::select(
+                'genericlist',
+                $options,
+                $selectName,
+                'class="option"',
+                'value',
+                'text',
+                $year,
+                $selectId
+            );
         }
 
         if (isset($element->month) && $element->month) {
@@ -137,15 +149,26 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Month...'))
+                Html::select('option', '0', Lang::txt('Month...'))
             );
             $i = 1;
             $y = 13;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $this->_getMonth($i));
+                $options[] = Html::select('option', $i, $this->getMonth($i));
             }
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
+            $selectName = $control_name . '[' . $name . '][month]';
+            $selectId = $control_name . '-' . $name . '-month';
+            $html[] = Html::select(
+                'genericlist',
+                $options,
+                $selectName,
+                'class="option"',
+                'value',
+                'text',
+                $month,
+                $selectId
+            );
         }
 
         if (isset($element->day) && $element->day) {
@@ -153,15 +176,26 @@ class Date extends Base
 
             // Build the list of years
             $options = array(
-                \Html::select('option', '0', Lang::txt('Day...'))
+                Html::select('option', '0', Lang::txt('Day...'))
             );
             $i = 1;
             $y = 32;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = \Html::select('option', $i, $i);
+                $options[] = Html::select('option', $i, $i);
             }
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
+            $selectName = $control_name . '[' . $name . '][day]';
+            $selectId = $control_name . '-' . $name . '-day';
+            $html[] = Html::select(
+                'genericlist',
+                $options,
+                $selectName,
+                'class="option"',
+                'value',
+                'text',
+                $day,
+                $selectId
+            );
         }
 
         if ($c > 1) {

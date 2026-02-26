@@ -12,9 +12,10 @@ use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
 use Hubzero\Session;
 use Exception;
-use Notify;
-use App;
-use Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Request;
 
 /**
  * Handles hub callbacks from external applications
@@ -32,7 +33,7 @@ class Callback extends SiteController
      **/
     public function dropboxAuthorizeTask()
     {
-        $config = \Plugin::params('filesystem', 'dropbox');
+        $config = Plugin::params('filesystem', 'dropbox');
         $connectionId = Session::get('dropbox.connection_to_set_up', false);
         $authorizationCode = Request::getString('code');
         $localOriginUrl = Session::get('dropbox.local_origin_url');
@@ -67,7 +68,7 @@ class Callback extends SiteController
      **/
     public function githubAuthorizeTask()
     {
-        $pparams = \Plugin::params('filesystem', 'github');
+        $pparams = Plugin::params('filesystem', 'github');
         $new_connection = Session::get('github.connection_to_set_up', false);
 
         if (!$code = Request::getString('code')) {
@@ -126,7 +127,7 @@ class Callback extends SiteController
      **/
     public function globusAuthorizeTask()
     {
-        $params = \Plugin::params('authentication', 'globus');
+        $params = Plugin::params('authentication', 'globus');
 
         if (!$code = Request::getString('code')) {
             throw new \Exception("No code found", 400);
@@ -164,7 +165,7 @@ class Callback extends SiteController
      **/
     public function googledriveAuthorizeTask()
     {
-        $pparams = \Plugin::params('filesystem', 'googledrive');
+        $pparams = Plugin::params('filesystem', 'googledrive');
 
         $new_connection = Session::get('googledrive.connection_to_set_up', false);
 

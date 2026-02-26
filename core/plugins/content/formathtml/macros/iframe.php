@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Request;
 
 /**
  * Macro class for displaying an Iframe
@@ -23,7 +24,7 @@ class Iframe extends Macro
     public function description()
     {
         // use host for example, that way  its not block
-        $host = 'https://' . \Request::getString('HTTP_HOST', '', 'server');
+        $host = 'https://' . Request::getString('HTTP_HOST', '', 'server');
 
         $txt = array();
         $txt['wiki'] = 'Embeds an Iframe into the Page';

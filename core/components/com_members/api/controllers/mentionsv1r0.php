@@ -13,10 +13,10 @@ use Components\Members\Models\Member;
 use Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
 use Lang;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Mentions API controller class

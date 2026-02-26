@@ -10,10 +10,11 @@ namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
-use Route;
-use User;
-use Lang;
-use Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
 
 /**
  * Support ticket comment model
@@ -200,7 +201,7 @@ class Comment extends Relational
             $this->set('comment', $comment);
 
             // Prepare comment
-            $results = \Event::trigger('support.onCommentPrepare', array('com_support.comment', &$this));
+            $results = Event::trigger('support.onCommentPrepare', array('com_support.comment', &$this));
             $results = implode('', $results);
 
             $comment = $this->get('comment');

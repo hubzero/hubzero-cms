@@ -12,6 +12,12 @@
 namespace Plugins\Resources\Coins;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 class Coins extends Plugin
 {

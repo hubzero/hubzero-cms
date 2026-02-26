@@ -10,14 +10,16 @@ namespace Components\Courses\Admin\Controllers;
 
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Route;
-use Lang;
-use Html;
-use App;
-use Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 
 /**
  * Courses controller class for managing course pages
@@ -151,7 +153,7 @@ class Pages extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            Notify::error($error);
         }
 
         // Output the HTML
@@ -313,7 +315,7 @@ class Pages extends AdminController
         $path = $this->buildUploadPath($listdir, $subdir);
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -477,7 +479,7 @@ class Pages extends AdminController
             }
 
             // Get media config
-            $mediaConfig = \Component::params('com_media');
+            $mediaConfig = Component::params('com_media');
 
             // Size limit is in MB, so we need to turn it into just B
             $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

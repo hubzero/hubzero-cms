@@ -10,8 +10,8 @@ namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\User;
 use Hubzero\Utility\Str;
-use Plugin;
-use Date;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Date;
 
 /**
  * Adapter class for an entry link for member blog

@@ -10,6 +10,7 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 /**
  * Courses model class for a course
@@ -56,7 +57,7 @@ class Courses extends Obj
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\Course($this->_db);
     }

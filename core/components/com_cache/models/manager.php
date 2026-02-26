@@ -10,8 +10,8 @@ namespace Components\Cache\Models;
 
 use Hubzero\Base\ClientManager;
 use Hubzero\Base\Obj;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Cache Model
@@ -214,7 +214,7 @@ class Manager extends Obj
             'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->state('clientId') == 1 ? 'admin' : 'site')
         ));
 
-        $cache = new \Hubzero\Cache\Manager(\App::getRoot());
+        $cache = new \Hubzero\Cache\Manager(App::getRoot());
         $cache->storage($handler);
 
         return $cache;

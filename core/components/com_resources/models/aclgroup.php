@@ -10,7 +10,7 @@ namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 use Components\Members\Models\Member;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Resource license model

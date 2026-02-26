@@ -9,6 +9,7 @@
 namespace Components\Jobs\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for job employer
@@ -39,7 +40,7 @@ class Employer extends Table
             return false;
         }
 
-        $now = \Date::toSql();
+        $now = Date::toSql();
         $query  = "SELECT e.id FROM `$this->_tbl` AS e  ";
         if (!$admin) {
             $query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";

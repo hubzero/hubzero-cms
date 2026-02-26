@@ -12,6 +12,8 @@
 namespace Plugins\Courses\Overview;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Overview extends Plugin
 {

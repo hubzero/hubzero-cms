@@ -10,9 +10,9 @@ namespace Components\Cache\Helpers;
 
 use Hubzero\Base\ClientManager;
 use stdClass;
-use Submenu;
-use Route;
-use Lang;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Cache component helper.

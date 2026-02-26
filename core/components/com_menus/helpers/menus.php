@@ -13,9 +13,10 @@ use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
 use Submenu;
 use Route;
-use User;
+use Hubzero\Facades\User;
 use Lang;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Menus component helper.
@@ -46,7 +47,7 @@ class Menus
             $assetName = 'com_menus.item.' . (int) $parentId;
         }
 
-        $actions = Access::getActionsFromFile(\Component::path('com_menus') . '/config/access.xml');
+        $actions = Access::getActionsFromFile(Component::path('com_menus') . '/config/access.xml');
 
         foreach ($actions as $action) {
             $result->set($action->name, User::authorise($action->name, $assetName));

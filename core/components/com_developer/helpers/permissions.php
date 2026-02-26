@@ -9,7 +9,7 @@
 namespace Components\Developer\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Developer helper for permissions

@@ -12,11 +12,11 @@ use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Hubzero\Base\Obj;
 use Exception;
-use Filesystem;
-use Request;
-use Event;
-use Cache;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for Component config

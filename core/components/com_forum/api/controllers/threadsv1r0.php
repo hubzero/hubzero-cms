@@ -17,12 +17,12 @@ use Components\Forum\Models\Post;
 use Component;
 use Exception;
 use stdClass;
-use Request;
-use Config;
-use Event;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for forum posts

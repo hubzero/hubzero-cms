@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for dipslaying a tag
@@ -53,7 +54,7 @@ class Tag extends WikiMacro
             if ($a) {
                 // Build and return the link
                 return '<a href="'
-                    . \Route::url('index
+                    . Route::url('index
                     . php?option=com_tags&tag='
                     . $tag)
                     . '">'

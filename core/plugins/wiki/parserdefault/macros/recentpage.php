@@ -12,6 +12,9 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a link to a recently created or updated page page.

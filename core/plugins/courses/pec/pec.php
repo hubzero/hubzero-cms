@@ -12,6 +12,7 @@
 namespace Plugins\Courses\Pec;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 class Pec extends Plugin
 {

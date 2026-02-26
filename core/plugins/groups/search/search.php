@@ -3,6 +3,7 @@
 namespace Plugins\Groups\Search;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Event;
 
 /**
  * @package    hubzero-cms

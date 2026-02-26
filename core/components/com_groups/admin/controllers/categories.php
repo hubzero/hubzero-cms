@@ -12,12 +12,12 @@ use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Components\Groups\Models\Orm\Page\Category;
 use Components\Groups\Models\Log;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use App;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Groups controller class for page categories

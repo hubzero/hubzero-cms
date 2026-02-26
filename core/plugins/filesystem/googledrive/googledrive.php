@@ -11,6 +11,10 @@ namespace Plugins\Filesystem\Googledrive;
 use Hubzero\Plugin\Plugin;
 use Masbug\Flysystem\GoogleDriveAdapter;
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
 
 /**
  * Plugin class for Google Drive filesystem connectivity
@@ -49,10 +53,10 @@ class Googledrive extends Plugin
             $connectionId = Request::getInt('connection', 0);
             $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
             $project = $connection->project;
-            $projectsFilesUrl = \Route::url($project->link('files') . '/browse?connection=' . $connectionId);
-            \Session::set('googledrive.app_id', $app_id);
-            \Session::set('googledrive.app_secret', $app_secret);
-            \Session::set('googledrive.connection_to_set_up', $connectionId);
+            $projectsFilesUrl = Route::url($project->link('files') . '/browse?connection=' . $connectionId);
+            Session::set('googledrive.app_id', $app_id);
+            Session::set('googledrive.app_secret', $app_secret);
+            Session::set('googledrive.connection_to_set_up', $connectionId);
 
             // Set upp a return and redirect to Google for auth
             $return = (Request::getString('return')) ? Request::getString('return') : $projectsFilesUrl;

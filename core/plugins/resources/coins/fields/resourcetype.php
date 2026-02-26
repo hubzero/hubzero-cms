@@ -9,9 +9,10 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
-use Html;
-use App;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Renders a list of resource types
@@ -186,9 +187,9 @@ class Resourcetype extends Select
 
         Html::behavior('framework', true);
 
-        App::get('document')->addScript(\Request::root() . 'core/assets/js/handlebars.js');
+        App::get('document')->addScript(Request::root() . 'core/assets/js/handlebars.js');
         App::get('document')
-            ->addScript(\Request::root() . 'core/plugins/resources/coins/assets/js/params.js?v='
+            ->addScript(Request::root() . 'core/plugins/resources/coins/assets/js/params.js?v='
                 . filemtime(dirname(__DIR__) . '/assets/js/params.js'));
 
         return implode($html);

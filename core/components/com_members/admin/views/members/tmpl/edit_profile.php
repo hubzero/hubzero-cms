@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -76,7 +81,7 @@ $fields = $form->getFieldset('basic');
                             }
 
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
-                            $rorApiBoolean = \Component::params('com_members')->get('rorApi');
+                            $rorApiBoolean = Component::params('com_members')->get('rorApi');
                             if (
                                 strtolower($field->fieldname) == "organization"
                                 && strtolower($field->type) == "text"

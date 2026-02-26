@@ -10,8 +10,8 @@ namespace Hubzero\Form\Fields;
 
 use Components\Installer\Admin\Models\Extension;
 use Hubzero\Form\Field;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Form Field Place class.

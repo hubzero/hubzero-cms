@@ -10,9 +10,9 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-use Request;
-use Route;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 /**
  * Adapter class for a project note

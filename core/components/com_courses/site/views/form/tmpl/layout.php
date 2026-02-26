@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -56,7 +60,7 @@ $this->css('jquery.ui.css', 'system')
                     if (isset($layout[$idx - 1])) {
                         $qidx = 0;
                         foreach ($layout[$idx - 1] as $group) {
-                            \Document::addStyleDeclaration('
+                            Document::addStyleDeclaration('
 								#group-marker-' . $qidx . '-' . $idx . ' {
 									width: ' . $group['width'] . 'px;
 									height: ' . $group['height'] . 'px;
@@ -69,7 +73,7 @@ $this->css('jquery.ui.css', 'system')
                             echo '<button class="remove">x</button>';
                             foreach ($group['answers'] as $aidx => $ans) {
                                 $answerId = 'question-saved-' . $idx . '-' . $qidx . '-' . $aidx;
-                                \Document::addStyleDeclaration(
+                                Document::addStyleDeclaration(
                                     '#' . $answerId . '{
 										top: ' . ($ans['top'] - $group['top'] - 5) . 'px;
 										left: ' . ($ans['left'] - $group['left'] - 26) . 'px;

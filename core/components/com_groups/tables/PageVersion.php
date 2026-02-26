@@ -9,6 +9,7 @@
 namespace Components\Groups\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for group page
@@ -51,7 +52,7 @@ class PageVersion extends Table
 
         // need page content
         if ($this->get('content') == null || $this->get('content') == '') {
-            $this->setError(\Lang::txt('Page version must contain content.'));
+            $this->setError(Lang::txt('Page version must contain content.'));
             return false;
         }
 

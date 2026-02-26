@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die();
 
 $content = \Hubzero\Utility\Str::truncate(strip_tags($this->post->get('comment')), 200);

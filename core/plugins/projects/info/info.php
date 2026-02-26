@@ -3,6 +3,7 @@
 namespace Plugins\Projects\Info;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore

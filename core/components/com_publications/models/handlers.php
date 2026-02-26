@@ -10,7 +10,7 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use Filesystem;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Publications handlers class

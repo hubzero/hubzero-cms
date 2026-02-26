@@ -8,6 +8,8 @@
 
 namespace Components\Events\Helpers;
 
+use Hubzero\Facades\App;
+
 /**
  * Events helper for working with CSV files
  */
@@ -99,7 +101,7 @@ class Csv
      */
     public static function downloadlist($respondents, $option)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $ee = new \Components\Events\Tables\Event($database);
         $fields = array(
             'name', 'registered', 'affiliation', 'email', 'telephone',

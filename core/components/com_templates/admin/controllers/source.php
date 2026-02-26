@@ -10,12 +10,12 @@ namespace Components\Templates\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Templates\Models\File;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Source controller for templates

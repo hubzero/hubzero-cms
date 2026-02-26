@@ -11,6 +11,9 @@ defined('_HZEXEC_') or die();
 
 
 use Components\Tools\Models\Orm\Handler;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 $handlerBase = DS . trim($this->fileparams->get('handler_base_path', 'srv/projects/{project}/files/{file}'), DS);
 if (!strstr($handlerBase, '{')) {

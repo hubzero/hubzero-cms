@@ -12,15 +12,15 @@ use Hubzero\User\Group;
 use Hubzero\Config\Registry;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables\Reason;
-use Request;
+use Hubzero\Facades\Request;
 use Session;
-use Config;
-use Event;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Groups controller class

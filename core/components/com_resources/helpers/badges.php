@@ -11,10 +11,10 @@ namespace Components\Resources\Helpers;
 use Components\Tags\Models\Objct;
 use Components\Tags\Models\Tag;
 use Hubzero\Utility\Arr;
-use App;
-use Date;
-use Component;
-use User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Resources badges class

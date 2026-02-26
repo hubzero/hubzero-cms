@@ -9,7 +9,7 @@
 namespace Components\System\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * System helper for calculating user permissions

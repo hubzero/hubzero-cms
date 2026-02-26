@@ -10,7 +10,7 @@ namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Date;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Model class for a refresh token

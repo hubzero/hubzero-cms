@@ -10,13 +10,13 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
-use Filesystem;
-use Component;
-use Request;
-use Route;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Handles a tool attachment

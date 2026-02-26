@@ -9,8 +9,8 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Table class for project public links

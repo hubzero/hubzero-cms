@@ -8,7 +8,7 @@
 
 namespace Hubzero\Content;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Content negotiator for files application

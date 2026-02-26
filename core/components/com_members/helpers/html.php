@@ -8,7 +8,7 @@
 
 namespace Components\Members\Helpers;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Members helper class for various HTML output

@@ -12,6 +12,9 @@
 namespace Plugins\Tags\Courses;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Courses extends Plugin
 {

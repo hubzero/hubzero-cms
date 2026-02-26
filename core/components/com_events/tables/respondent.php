@@ -10,6 +10,7 @@ namespace Components\Events\Tables;
 
 use Hubzero\Database\Table;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * Event respondent
@@ -66,7 +67,7 @@ class Respondent extends Table
      */
     public static function getRacialIdentification($resp_id)
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
         if (is_array($resp_id)) {
             $dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
             return $dbh->loadAssocList('respondent_id');
@@ -115,7 +116,7 @@ class Respondent extends Table
      */
     public function __construct($filters)
     {
-        parent::__construct('#__events_respondents', 'id', \App::get('db'));
+        parent::__construct('#__events_respondents', 'id', App::get('db'));
 
         if (array_key_exists('sortby', $filters)) {
             if (preg_match('/^(registered|name|special|id)(?:\ (ASC|DESC))?$/', $filters['sortby'], $match)) {
@@ -229,7 +230,7 @@ class Respondent extends Table
      */
     public static function checkUniqueEmailForEvent($email, $eventId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $sql = "SELECT COUNT(*) FROM `#__events_respondents` WHERE `event_id`=" . $db->quote($eventId) . " AND `email`=" . $db->quote($email);
         $db->setQuery($sql);
         return $db->loadResult();

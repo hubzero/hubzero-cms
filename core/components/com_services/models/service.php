@@ -10,8 +10,9 @@ namespace Components\Services\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use App;
-use Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Service model
@@ -120,7 +121,7 @@ class Service extends Relational
 
         if ($specialgroup) {
             $joinCondition = $grm . '.gidNumber=' . $grp . '.gidNumber AND '
-                . $grm . '.uidNumber=' . \User::get('id');
+                . $grm . '.uidNumber=' . User::get('id');
             $query->joinRaw($grp, $grp . '.cn = ' . App::get('db')->quote($specialgroup), 'inner')
                 ->joinRaw($grm, $joinCondition, 'left');
                 //->whereEquals($grm . '.uidNumber', \User::get('id'));

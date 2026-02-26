@@ -9,7 +9,7 @@
 namespace Modules\GoogleAnalytics;
 
 use Hubzero\Module\Module;
-use Config;
+use Hubzero\Facades\Config;
 
 /**
  * Module class for adding Google Analytics script to a page

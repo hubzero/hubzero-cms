@@ -11,10 +11,10 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Collection;
-use Component;
-use Filesystem;
-use Request;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Manage logo for a course

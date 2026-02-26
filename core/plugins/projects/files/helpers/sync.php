@@ -8,6 +8,13 @@
 
 namespace Plugins\Projects\Files\Helpers;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\User;
+
 /**
  * Sync helper
  */
@@ -37,7 +44,7 @@ class Sync extends \Hubzero\Base\Obj
         if (empty($connect)) {
             return false;
         }
-        $this->_db      = \App::get('db');
+        $this->_db      = App::get('db');
         $this->_connect = $connect;
         $this->model    = $connect->model;
         $this->_uid     = User::get('id');

@@ -9,6 +9,7 @@
 namespace Components\Developer\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -23,7 +24,7 @@ class Developer extends AbstractComponent
     protected function execute(): void
     {
 
-        $controllerName = \Request::getCmd('controller', 'developer');
+        $controllerName = Request::getCmd('controller', 'developer');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'developer';
         }

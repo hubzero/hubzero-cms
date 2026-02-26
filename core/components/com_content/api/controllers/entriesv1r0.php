@@ -12,10 +12,10 @@ use Hubzero\Component\ApiController;
 use Component;
 use Exception;
 use stdClass;
-use Request;
-use App;
-use Config;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for resources

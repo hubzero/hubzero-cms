@@ -11,11 +11,11 @@ namespace Components\Tools\Admin\Controllers;
 use Components\Tools\Helpers\Utils;
 use Components\Tools\Tables\Hosttype;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
 use App;
 
 /**

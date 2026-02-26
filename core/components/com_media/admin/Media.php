@@ -9,6 +9,11 @@
 namespace Components\Media\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,21 +27,21 @@ class Media extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_media')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_media')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $params = \Component::params('com_media');
+        $params = Component::params('com_media');
         $path = trim($params->get('file_path', 'site/media'), '/');
         $path = $path ? $path . '/' : '';
 
         define('COM_MEDIA_BASE', PATH_APP . '/' . $path);
 
-        $baseurl = rtrim(\Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
+        $baseurl = rtrim(Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
         define('COM_MEDIA_BASEURL', $baseurl);
 
-        $controllerName = \Request::getCmd('controller', 'media_test');
+        $controllerName = Request::getCmd('controller', 'media_test');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'media';
         }

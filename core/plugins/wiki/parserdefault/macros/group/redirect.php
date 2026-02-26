@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Group events Macro
@@ -46,7 +48,7 @@ class Redirect extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get the arguments
@@ -80,7 +82,7 @@ class Redirect extends GroupMacro
 
         // No delay time? Redirect now.
         if (!$delay) {
-            \App::redirect($url);
+            App::redirect($url);
             return;
         }
 
@@ -88,6 +90,6 @@ class Redirect extends GroupMacro
         // literal; the quote replacement it replaces left the value inside a
         // double-quoted string where a backslash or newline still broke out.
         return '<script type="text/javascript">setTimeout(function () { window.location.href = ' . json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; }, ' . ($delay * 1000) . ');</script>
-				<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+                <p class="warning">' . Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
     }
 }

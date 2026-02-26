@@ -10,6 +10,7 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 use stdClass;
+use Hubzero\Facades\Component;
 
 /**
  * Model class for publication
@@ -182,7 +183,7 @@ class Publication extends Relational
     public function config($key = null, $default = null)
     {
         if (!isset($this->config)) {
-            $this->config = \Component::params('com_publications');
+            $this->config = Component::params('com_publications');
         }
         if ($key) {
             return $this->config->get($key, $default);

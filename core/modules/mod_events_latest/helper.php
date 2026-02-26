@@ -9,8 +9,9 @@
 namespace Modules\EventsLatest;
 
 use Hubzero\Module\Module;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Parameters:
@@ -69,9 +70,7 @@ class Helper extends Module
     public function run()
     {
         // Check the events component
-        if (file_exists(\Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
-            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
-            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'EventsDate.php';
+        if (file_exists(Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
         } else {
             $this->error = Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
             return;

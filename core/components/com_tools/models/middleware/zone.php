@@ -9,6 +9,9 @@
 namespace Components\Tools\Models\Middleware;
 
 use Hubzero\Base\ItemList;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * Middleware zone mdel
@@ -125,7 +128,7 @@ class Zone extends Base
             // Return the web path to the image
             $path .= '/' . $file;
             if (file_exists($path)) {
-                $path = \Route::url(
+                $path = Route::url(
                     'index.php?option=com_tools&app=zones&task=assets&version=' .
                     $this->get('id') . '&file=' . $file
                 );
@@ -161,8 +164,8 @@ class Zone extends Base
             // Make sure the picture exists
             if (file_exists($this->logo('path') . DS . $file)) {
                 // Remove picture
-                if (!\Filesystem::delete($this->logo('path') . DS . $file)) {
-                    $this->setError(\Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
+                if (!Filesystem::delete($this->logo('path') . DS . $file)) {
+                    $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
                 }
             }
         }
