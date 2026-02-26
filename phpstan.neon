@@ -1,23 +1,17 @@
 parameters:
     level: 0
-    bootstrapFiles:
-        - phpstan-bootstrap.php
-    scanDirectories:
-        - core/libraries/Hubzero
-    paths:
-        - core/components
-        - core/libraries
-        - core/plugins
-        - core/modules
-    excludePaths:
-        analyseAndScan:
-            - core/vendor
-        analyse:
-            - '*/tmpl/*'
-            - '*/views/*'
-            - '*/Tests/*'
-            - '*/tests/*'
-            - core/libraries/Hubzero/Spam/Tests
-            - core/libraries/Hubzero/Geocode
     parallel:
-        maximumNumberOfProcesses: 4
+        maximumNumberOfProcesses: 16
+
+    paths:
+        - core/libraries/
+        - core/components/
+        - core/plugins/
+        - core/modules/
+        - core/bootstrap/
+
+    excludePaths:
+        # Vendor directory
+        - core/vendor/
+
+
