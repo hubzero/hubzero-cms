@@ -464,7 +464,6 @@ class Forum extends Plugin
             'scope_id'   => $this->forum->get('scope_id'),
             'search'     => Request::getString('q', ''),
             'state'      => Section::STATE_PUBLISHED,
-            'access'     => array(1),
             'sort'       => 'ordering',
             'sort_Dir'   => 'ASC',
             'access'     => User::getAuthorisedViewLevels()

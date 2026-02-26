@@ -22,6 +22,7 @@ class Resources extends Module
     protected $published;
     protected $removed;
     protected $unpublished;
+    protected $draft;
 
     /**
      * Display module contents

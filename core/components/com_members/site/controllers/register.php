@@ -305,7 +305,7 @@ class Register extends SiteController
         // one, so we can fire the admin new-account notification that was
         // deferred by plg_user_hubzero at auto-create time.
         Plugin::import('user', 'hubzero');
-        $wasPlaceholder = \plgUserHubzero::isThirdPartyPlaceholder(array(
+        $wasPlaceholder = \Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder(array(
             'username' => (string) User::get('username'),
         ));
 
@@ -608,11 +608,11 @@ class Register extends SiteController
             // create time plg_user_hubzero deferred it so the email would
             // carry the user's real chosen values rather than the placeholder.
             if (
-                $wasPlaceholder && !\plgUserHubzero::isThirdPartyPlaceholder(array(
+                $wasPlaceholder && !\Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder(array(
                 'username' => (string) $xprofile->get('username'),
                 ))
             ) {
-                \plgUserHubzero::sendAdminNewUserNotification(array(
+                \Plugins\User\Hubzero\Hubzero::sendAdminNewUserNotification(array(
                     'id'       => $xprofile->get('id'),
                     'name'     => $xprofile->get('name'),
                     'email'    => $xprofile->get('email'),

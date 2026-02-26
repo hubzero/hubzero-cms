@@ -22,6 +22,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\User;
+use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Plugin;
 
 /**
@@ -798,7 +799,7 @@ class Filefsv1r0 extends ApiController
                 $matches = array();
                 preg_match('/^(\\/tmp.*?\\.zip)/is', $downloadPath, $matches);
                 if (!empty($matches)) {
-                    \Hubzero\Filesystem::delete($downloadPath);
+                    Filesystem::delete($downloadPath);
                 }
 
                 exit;

@@ -10,7 +10,7 @@ namespace Hubzero\Html\Builder;
 
 use Lang;
 use App;
-use Document;
+use Hubzero\Facades\Document;
 
 /**
  * Utility class for javascript behaviors

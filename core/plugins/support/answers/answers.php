@@ -328,7 +328,7 @@ class Answers extends Plugin
                                 $validEmail = \Components\Support\Helpers\Utilities::checkValidEmail(
                                     $zuser->get('email')
                                 );
-                                if ($validEmail && $email) {
+                                if ($validEmail) {
                                     $admin_email = Config::get('mailfrom');
                                     $sub = Lang::txt(
                                         'PLG_SUPPORT_ANSWERS_SUBJECT',

@@ -814,6 +814,11 @@ class Pages extends Base
             $recipients[] = ['user', $recipient];
         }
 
+        $restoreUrl = Route::url(
+            'index.php?option=' . $this->_option
+            . '&cn=' . $this->group->get('cn') . '&controller=pages'
+        );
+
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => 'updated',
@@ -823,11 +828,11 @@ class Pages extends Base
                     'COM_GROUPS_ACTIVITY_PAGE_RESTORED',
                     $page->get('title'),
                     $version,
-                    '<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+                    '<a href="' . $restoreUrl . '">' . $this->group->get('description') . '</a>'
                 ),
                 'details'     => array(
                     'title'     => $page->get('title'),
-                    'url'       => $url,
+                    'url'       => $restoreUrl,
                     'gidNumber' => $this->group->get('gidNumber')
                 )
             ],

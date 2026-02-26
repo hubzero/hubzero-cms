@@ -12,7 +12,11 @@ use Hubzero\Facades\Route;
 
 /**
  * Abstract search result
+ *
+ * Fields are set from query rows and highlighted copies of them, so the
+ * set of properties is data-driven.
  */
+#[\AllowDynamicProperties]
 abstract class Result
 {
     /**
@@ -517,7 +521,7 @@ abstract class Result
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function set_plugin($plg, $skip_cleanup = false)
     {
-        $this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', $plg));
+        $this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', (string) $plg));
         foreach ($this->children as $child) {
             $child->set_plugin($this->plugin, true);
         }

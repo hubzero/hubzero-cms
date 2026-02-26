@@ -17,9 +17,6 @@ use Hubzero\Facades\User;
 /**
  * Tags plugin class for blog articles
  */
-namespace Plugins\Tags\Blogs;
-
-use Hubzero\Plugin\Plugin;
 
 class Blogs extends Plugin
 {

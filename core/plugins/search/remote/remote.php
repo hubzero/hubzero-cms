@@ -56,7 +56,7 @@ class Remote extends Plugin
      * @param   Components\Plugins\Models\Plugin    $model  the model of the plugin being deactivated
      * @return  void
      */
-    public function onExtensionAfterDelete($extension, Components\Plugins\Models\Plugin $model)
+    public function onExtensionAfterDelete($extension, \Components\Plugins\Models\Plugin $model)
     {
         $className = strtolower(preg_replace('/([A-Z])/', '_$1', get_class($this)));
         if ($model->name === $className) {

@@ -9,6 +9,7 @@
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Plugins\Members\Messages\Messages as plgMembersMessages;
 
 // @phpcs:disable PSR1.Files.SideEffects
 

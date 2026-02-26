@@ -13,8 +13,6 @@ parameters:
         analyseAndScan:
             - core/vendor
         analyse:
-            - '*/tmpl/*'
-            - '*/views/*'
             - '*/Tests/*'
             - '*/tests/*'
             - core/libraries/Hubzero/Spam/Tests
