@@ -39,12 +39,15 @@ $listDirn  = $this->escape($this->filters['direction']);
 					</div><!-- / .container -->
 				<?php endif; ?>
 
-				<?php if ($this->params->get('show_pagination_limit')) : ?>
+				<!-- Found here /www/plantingscience/core/components/com_content/config/config.xml-->
+				<?php if ($this->params->get('show_pagination') == '1') { ?>
 					<div class="display-limit">
 						<?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-						<?php echo $this->pagination->getLimitBox(); ?>
+						<?php 
+							echo $this->pagination->getLimitBox();
+						 ?>
 					</div>
-				<?php endif; ?>
+				<?php } ?>
 
 				<!-- @TODO add hidden inputs -->
 				<input type="hidden" name="filter_order" value="" />
@@ -98,7 +101,7 @@ $listDirn  = $this->escape($this->filters['direction']);
 					<?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
 
 						<td class="list-title">
-							<a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
+							<a href="<?php echo Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language); ?>">
 								<?php echo $this->escape($article->title); ?></a>
 
 							<?php if ($article->params->get('access-edit')) : ?>
@@ -160,10 +163,10 @@ $listDirn  = $this->escape($this->filters['direction']);
 		</table>
 	<?php endif; ?>
 
-	<?php // Code to add a link to submit an article. ?>
+	<!-- <?php // REMOVE BECAUSE it is currently not working ?>
 	<?php if ($this->category->getParams()->get('access-create')) : ?>
 		<?php echo Html::icon('create', $this->category, $this->category->params); ?>
-	<?php endif; ?>
+	<?php endif; ?> -->
 
 	<?php // Add pagination links ?>
 	<?php if (!empty($this->items)) : ?>
