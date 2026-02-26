@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Search\Models;
+namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
 use Hubzero\Facades\App;
