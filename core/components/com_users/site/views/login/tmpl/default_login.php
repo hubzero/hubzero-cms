@@ -128,19 +128,19 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 						<?php else : ?>
 							<div class="label-input-pair username">
 								<label for="username"><?php echo Lang::txt('COM_USERS_LOGIN_USERNAME'); ?>:</label>
-								<input type="text" name="username" id="username" class="username" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')); ?>" />
+								<input type="text" name="username" id="username" class="username" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')); ?>" required aria-required="true" />
 							</div>
 						<?php endif; ?>
 						<div class="label-input-pair">
 							<label for="password"><?php echo Lang::txt('COM_USERS_LOGIN_PASSWORD'); ?>:</label>
-							<input type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" />
+							<input type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" required aria-required="true" />
 							<div class="spinner">
 								<div class="bounce1"></div>
 								<div class="bounce2"></div>
 								<div class="bounce3"></div>
 							</div>
 						</div>
-						<div class="input-error"></div>
+						<div class="input-error" role="alert"></div>
 					</div>
 					<div class="submission">
 						<input type="submit" value="<?php echo Lang::txt('COM_USERS_LOGIN'); ?>" class="login-submit btn btn-primary" />
