@@ -1114,6 +1114,24 @@ class Translator extends Obj
     }
 
     /**
+     * Get published content languages from the database.
+     *
+     * @param   string  $key  Column to index the result array by (e.g. 'lang_code')
+     * @return  array   Array of language objects, optionally indexed by $key
+     */
+    public static function getLanguages($key = null)
+    {
+        $db = \Hubzero\Facades\App::get('db');
+        $query = $db->getQuery()
+            ->select('*')
+            ->from('#__languages')
+            ->where('published', '=', 1);
+        $db->setQuery($query->toString());
+
+        return $db->loadObjectList($key);
+    }
+
+    /**
      * Get the path to a language
      *
      * @param   string  $basePath  The basepath to use.
