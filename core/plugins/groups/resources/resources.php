@@ -5,6 +5,13 @@ namespace Plugins\Groups\Resources;
 use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms
@@ -65,7 +72,8 @@ class Resources extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+        $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)

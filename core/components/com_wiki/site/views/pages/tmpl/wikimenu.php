@@ -10,6 +10,10 @@
 defined('_HZEXEC_') or die();
 
 use Components\Wiki\Helpers\Parser;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 // Build the sidebar table of contents for the current page (display view only).
 // Only one TOC renders per page: an explicit [[TableOfContents]] macro decides
@@ -51,7 +55,7 @@ if ($showtoc) {
 
         $parser = Parser::getInstance();
         $toc = $parser->toc($this->page->version->get('pagehtml'), array(
-            'option'    => ($this->option ?: \Request::getCmd('option')),
+            'option'    => ($this->option ?: Request::getCmd('option')),
             'scope'     => $this->page->get('path'),
             'domain'    => $this->page->get('scope'),
             'domain_id' => $this->page->get('scope_id'),

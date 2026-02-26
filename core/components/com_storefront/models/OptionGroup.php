@@ -8,7 +8,8 @@
 
 namespace Components\Storefront\Models;
 
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  *
@@ -30,7 +31,7 @@ class OptionGroup
     public function __construct($ogId = false)
     {
         $this->data = new \stdClass();
-        $this->db = \App::get('db');
+        $this->db = App::get('db');
 
         if (isset($ogId) && is_numeric($ogId) && $ogId) {
             $this->load($ogId);

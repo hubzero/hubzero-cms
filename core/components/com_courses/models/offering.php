@@ -10,9 +10,11 @@ namespace Components\Courses\Models;
 
 use Hubzero\Config\Registry;
 use Components\Courses\Tables;
-use Filesystem;
-use Lang;
-use User;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Courses model class for a course
@@ -194,7 +196,7 @@ class Offering extends Base
     {
         $section = '!!default!!';
 
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\Offering($this->_db);
 
@@ -324,7 +326,7 @@ class Offering extends Base
         if (!isset($filters['offering_id'])) {
             $filters['offering_id'] = (int) $this->get('id');
         }
-        if (!isset($filters['available']) && !\App::isAdmin()) {
+        if (!isset($filters['available']) && !App::isAdmin()) {
             $filters['available'] = true;
         }
 
@@ -1383,7 +1385,7 @@ class Offering extends Base
             // Return the web path to the image
             $path .= '/' . $file;
             if (file_exists(PATH_APP . $path)) {
-                $path = str_replace('/administrator', '', \Request::base(true)) . $path;
+                $path = str_replace('/administrator', '', Request::base(true)) . $path;
             }
             if ($rtrn == 'url') {
                 return $this->link() . '&active=logo';

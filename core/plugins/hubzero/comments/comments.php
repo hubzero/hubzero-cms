@@ -12,6 +12,15 @@
 namespace Plugins\Hubzero\Comments;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Comments extends Plugin
 {
@@ -359,7 +368,7 @@ class Comments extends Plugin
 
         if (!empty($upload) && $upload['name']) {
             if ($upload['error']) {
-                $this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
+                $this->setError(Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
             }
 
             $file = new \Plugins\Hubzero\Comments\Models\File();

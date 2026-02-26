@@ -9,6 +9,9 @@
 namespace Components\Feedback\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,8 +25,8 @@ class Feedback extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_feedback')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_feedback')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 

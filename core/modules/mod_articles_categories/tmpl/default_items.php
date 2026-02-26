@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die;
 
 foreach ($list as $item) : ?>

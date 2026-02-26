@@ -10,8 +10,8 @@ namespace Components\Resources\Models\Author;
 
 use Hubzero\Database\Relational;
 use Components\Resources\Models\Author\Role\Type;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource author role model

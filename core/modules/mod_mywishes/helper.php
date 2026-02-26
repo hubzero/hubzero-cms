@@ -9,7 +9,8 @@
 namespace Modules\MyWishes;
 
 use Hubzero\Module\Module;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a user's wishes
@@ -27,7 +28,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $limit = intval($this->params->get('limit', 10));
 

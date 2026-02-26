@@ -15,21 +15,21 @@ use Components\Publications\Tables;
 use Components\Publications\Models\Bundle;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
-use Document;
-use Pathway;
-use Request;
-use Plugin;
-use Notify;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
-use Config;
-use Date;
-use Filesystem;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Primary component controller
@@ -818,7 +818,7 @@ class Publications extends SiteController
         }
 
         $this->model->attachments();
-        $dbo = \App::get('db');
+        $dbo = App::get('db');
         $attachmentTable = new \Components\Publications\Tables\Attachment($dbo);
 
         $type = '';
@@ -906,13 +906,13 @@ class Publications extends SiteController
 
         $active = false;
 
-        if ((int) \Component::params('com_publications')->get('bundle_async', 0)) {
+        if ((int) Component::params('com_publications')->get('bundle_async', 0)) {
             $active = true;
         } else {
             // Per-version canary: a queue row activates the path even with the
             // flag off (so a version queued before the flag flips is served async).
             try {
-                $db = \App::get('db');
+                $db = App::get('db');
                 $db->setQuery("SELECT 1 FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $versionId . " LIMIT 1");
                 $active = (bool) $db->loadResult();
             } catch (\Throwable $e) {

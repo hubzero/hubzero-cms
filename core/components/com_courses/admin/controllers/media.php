@@ -9,10 +9,11 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Filesystem;
-use Request;
-use Html;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Methods for listing and managing files and folders
@@ -57,7 +58,7 @@ class Media extends AdminController
         $path = $this->_buildUploadPath($listdir, $subdir);
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -220,7 +221,7 @@ class Media extends AdminController
             }
 
             // Get media config
-            $mediaConfig = \Component::params('com_media');
+            $mediaConfig = Component::params('com_media');
 
             // Size limit is in MB, so we need to turn it into just B
             $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

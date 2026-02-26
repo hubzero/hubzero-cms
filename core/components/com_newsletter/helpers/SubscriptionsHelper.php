@@ -9,7 +9,7 @@
 namespace Components\Newsletter\Helpers;
 
 use Exception;
-use App;
+use Hubzero\Facades\App;
 
 class SubscriptionsHelper
 {

@@ -12,6 +12,11 @@
 namespace Plugins\System\Remember;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Remember extends Plugin
 {

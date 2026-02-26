@@ -11,7 +11,7 @@ namespace Modules\PopularFaq;
 use Hubzero\Module\Module;
 use Components\Kb\Models\Archive;
 use Component;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying popular KB articles

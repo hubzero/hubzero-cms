@@ -17,6 +17,7 @@ use FilesystemIterator;
 use DirectoryIterator;
 use SplFileInfo;
 use Finfo;
+use Hubzero\Facades\Lang;
 
 /**
  * Hubzero class for manipulating and reading the filesystem.
@@ -58,7 +59,7 @@ class Local implements AdapterInterface
             return file_get_contents($path);
         }
 
-        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(\Lang::txt('File does not exist at path %s', $path));
+        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(Lang::txt('File does not exist at path %s', $path));
     }
 
     /**

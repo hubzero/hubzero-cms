@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\App;
 
 /**
  * Migration script for changing time to track start and end times of entries
@@ -47,7 +48,7 @@ class Migration20141120161609ComTime extends Base
 
                 foreach ($results as $result) {
                     $date = with(
-                        new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset'))
+                        new \Hubzero\Utility\Date($result->date, App::get('config')->get('offset'))
                     )->toSql();
 
                     $this->db->getQuery(true)

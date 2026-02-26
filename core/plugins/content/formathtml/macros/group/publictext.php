@@ -9,6 +9,8 @@
 namespace Plugins\Content\Formathtml\Macros\Group;
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Group public Macro
@@ -57,7 +59,7 @@ class Publictext extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // get args
@@ -86,7 +88,7 @@ class Publictext extends GroupMacro
      */
     public function postProcess($text)
     {
-        if (!\User::isGuest() && in_array(\User::get('id'), $this->group->get('members'))) {
+        if (!User::isGuest() && in_array(User::get('id'), $this->group->get('members'))) {
             $text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
         }
 

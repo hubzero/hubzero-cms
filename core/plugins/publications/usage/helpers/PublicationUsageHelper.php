@@ -8,6 +8,8 @@
 
 namespace Plugins\Publications\Usage\Helpers;
 
+use Hubzero\Facades\App;
+
 class PublicationUsageHelper
 {
     /**
@@ -58,7 +60,7 @@ class PublicationUsageHelper
      */
     public function __construct($args = [])
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
         $this->_publication = $args['publication'];
     }
 

@@ -11,14 +11,15 @@ namespace Components\Tools\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
-use Component;
+use Hubzero\Facades\Component;
 use stdClass;
-use Request;
-use Lang;
-use User;
-use App;
-use Event;
-use Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Plugin;
 
 /**
  * API controller class for tool sessions
@@ -38,7 +39,7 @@ class Sessionsv1r0 extends ApiController
     public function listAllTask()
     {
         //instantiate database object
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //get list of tools
         $tools = \Components\Tools\Models\Tool::getAllTools();
@@ -103,7 +104,7 @@ class Sessionsv1r0 extends ApiController
         //if ($result === false) return $this->not_found();
 
         //instantiate database object
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //get list of tools
         $tools = \Components\Tools\Models\Tool::getMyTools();
@@ -162,7 +163,7 @@ class Sessionsv1r0 extends ApiController
      */
     public function infoTask()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $tool    = Request::getString('tool', '');
         $version = Request::getString('tool_version', 'current');
@@ -299,7 +300,7 @@ class Sessionsv1r0 extends ApiController
         // Check for valid string
         $username = $result->get('username');
         if (isset($username) && $username != '') {
-            $dbname = \App::get('config')->get('database.db');
+            $dbname = App::get('config')->get('database.db');
             // take new screenshots for user
             //$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " dbname=$dbname 2>&1 </dev/null";
             $cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . escapeshellarg($username) . " 2>&1 </dev/null";
@@ -566,7 +567,7 @@ class Sessionsv1r0 extends ApiController
         //include needed tool libraries
 
         //create database object
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //load the tool version
         $tv = new \Components\Tools\Tables\Version($database);
@@ -680,7 +681,7 @@ class Sessionsv1r0 extends ApiController
         // Do we have more than one session of this tool?
         if ($appcount > 1) {
             // We do, so let's append a timestamp
-            $app->caption .= ' (' . Date::of('now')->format("g:i a") . ')';
+            $app->caption .= ' (' . \Hubzero\Facades\Date::of('now')->format("g:i a") . ')';
         }
 
         // Save the changed caption
@@ -763,7 +764,7 @@ class Sessionsv1r0 extends ApiController
         // Include needed tool libraries
 
         // Create database object
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // Load the tool version
         $tv = new \Components\Tools\Tables\Version($database);
@@ -857,12 +858,12 @@ class Sessionsv1r0 extends ApiController
             $homeDir = $profile->get('homeDirectory');
 
             // First, make sure webdav is there and that the necessary folders are there
-            if (!\Filesystem::exists($base)) {
+            if (!Filesystem::exists($base)) {
                 throw new Exception(Lang::txt('Home directories are unavailable'), 500);
             }
 
             // Now see if the user has a home directory yet
-            if (!\Filesystem::exists($homeDir)) {
+            if (!Filesystem::exists($homeDir)) {
                 // Try to create their home directory
 
                 if (!\Components\Tools\Helpers\Utils::createHomeDirectory($profile->get('username'))) {
@@ -946,8 +947,6 @@ class Sessionsv1r0 extends ApiController
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         // Make sure it's a valid sesssion number and the user is/was the owner of it
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
 
         // This next part is probably redundant since we can only access the session directories that
         // are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
@@ -1039,8 +1038,7 @@ class Sessionsv1r0 extends ApiController
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         // Make sure it's a valid sesssion number and the user is/was the owner of it
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
+
         // This next part is probably redundant since we can only access the session directories that
         // are in the user's webdav filesystem, anyway.  Also, it seems that the entry in the session
         // table exists only as long as the session is alive.  As soon as the session ends, the entry
@@ -1100,7 +1098,7 @@ class Sessionsv1r0 extends ApiController
         //include needed tool libs
 
         //instantiate db objects
-        $database = \App::get('db');
+        $database = App::get('db');
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
         //get request vars

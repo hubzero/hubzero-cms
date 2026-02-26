@@ -13,8 +13,9 @@ use Hubzero\Base\Traits\Escapable;
 use Hubzero\Base\Obj;
 use Hubzero\Database\Driver;
 use Exception;
-use Event;
-use Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * OAIPMH Provider for building responses
@@ -103,7 +104,7 @@ class Service extends Obj
         $this->loadProviders();
 
         if (!$db) {
-            $db = \App::get('db');
+            $db = App::get('db');
         }
 
         $this->setDbo($db);

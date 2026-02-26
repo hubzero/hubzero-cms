@@ -11,10 +11,11 @@ namespace Components\Wiki\Models;
 use Components\Wiki\Helpers\Parser;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Str;
-use Request;
-use Lang;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 use User;
+use Hubzero\Facades\Event;
 
 /**
  * Wiki model for a comment
@@ -310,7 +311,7 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', array(
                 'com_wiki.comment.ctext',
                 &$this,
                 $this->isNew()

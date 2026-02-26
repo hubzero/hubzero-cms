@@ -9,6 +9,7 @@
 namespace Components\Publications\Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Component;
 
 /**
  * Migration script for creating links in the SFTP directory

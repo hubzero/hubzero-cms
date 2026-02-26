@@ -12,10 +12,10 @@ use Components\Events\Tables\Configs;
 use Components\Events\Tables\Config as EventsConfig;
 use Hubzero\Component\AdminController;
 use Exception;
-use App;
-use Lang;
-use Request;
-use Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Events controller for configuration

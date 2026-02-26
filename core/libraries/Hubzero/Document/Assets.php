@@ -11,7 +11,8 @@ namespace Hubzero\Document;
 use Hubzero\Document\Asset\Javascript;
 use Hubzero\Document\Asset\Stylesheet;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Class for adding stylesheets from components, modules, and plugins to the document
@@ -26,8 +27,8 @@ class Assets
      */
     protected static function app($key)
     {
-        if (\App::has($key)) {
-            return \App::get($key);
+        if (App::has($key)) {
+            return App::get($key);
         }
         return null;
     }
@@ -518,7 +519,7 @@ class Assets
     public static function getSystemStylesheet($elements = null)
     {
         // Path to system cache
-        $client   = (isset(\App::get('client')->alias) ? \App::get('client')->alias : \App::get('client')->name);
+        $client   = (isset(App::get('client')->alias) ? App::get('client')->alias : App::get('client')->name);
 
         $cachedir = PATH_APP . DS . 'cache' . DS . $client;
         if (!self::app('filesystem')->exists(PATH_APP . DS . 'cache' . DS . $client)) {

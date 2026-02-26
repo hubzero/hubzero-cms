@@ -9,10 +9,10 @@
 namespace Modules\Menu;
 
 use Hubzero\Module\Module;
-use Cache;
-use Route;
-use User;
-use App;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a menu

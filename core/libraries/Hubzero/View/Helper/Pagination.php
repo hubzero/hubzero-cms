@@ -9,7 +9,7 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Pagination\Paginator;
-use Config;
+use Hubzero\Facades\Config;
 
 /**
  * Create a pagination object and return it

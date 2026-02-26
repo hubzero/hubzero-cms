@@ -9,6 +9,10 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for listing files
@@ -40,7 +44,7 @@ class FileIndex extends WikiMacro
     public function render()
     {
         $et = $this->args;
-        $live_site = rtrim(\Request::base(), '/');
+        $live_site = rtrim(Request::base(), '/');
 
         // Get resource by ID
         $attach = \Components\Wiki\Models\Attachment::all()
@@ -56,7 +60,7 @@ class FileIndex extends WikiMacro
 
         // Did we get a result from the database?
         if ($rows) {
-            $config = \Component::params('com_wiki');
+            $config = Component::params('com_wiki');
             if ($this->filepath != '') {
                 $config->set('filepath', $this->filepath);
             }
@@ -77,7 +81,7 @@ class FileIndex extends WikiMacro
                 $link  = $page->link();
                 $fpath = $row->filespace() . DS . $this->pageid . DS . $row->get('filename');
 
-                $html .= '<li><a href="' . \Route::url($link) . '">' . $row->get('filename') . '</a> ('
+                $html .= '<li><a href="' . Route::url($link) . '">' . $row->get('filename') . '</a> ('
                     . (file_exists($fpath)
                         ? \Hubzero\Utility\Number::formatBytes(filesize($fpath))
                         : '-- file not found --')
@@ -85,13 +89,13 @@ class FileIndex extends WikiMacro
                 $huser = $row->creator();
                 if ($huser->get('id')) {
                     $html .= '- added by <a href="'
-                        . \Route::url('index.php?option=com_members&id=' . $huser->get('id'))
+                        . Route::url('index.php?option=com_members&id=' . $huser->get('id'))
                         . '">'
                         . stripslashes($huser->get('name'))
                         . '</a> ';
                 }
                 if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') {
-                    $html .= \Date::of($row->get('created'))->relative() . '. ';
+                    $html .= Date::of($row->get('created'))->relative() . '. ';
                 }
                 $html
                     .= $row->get('description') ? '<span>"'

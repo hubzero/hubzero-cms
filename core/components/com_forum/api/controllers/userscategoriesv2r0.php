@@ -10,8 +10,8 @@ namespace Components\Forum\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Forum\Models\UsersCategory;
-use Request;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class UsersCategoriesv2r0 extends ApiController
 {

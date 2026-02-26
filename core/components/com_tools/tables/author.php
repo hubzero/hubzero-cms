@@ -10,8 +10,8 @@ namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
 use Components\Tools\Helpers\Utils;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for tool authors

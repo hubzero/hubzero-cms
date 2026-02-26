@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -29,7 +35,6 @@ $sitename = Config::get('sitename');
 // Build our citation object
 $citation = '';
 if ($this->pub->doi) {
-
     $cite           = new stdClass();
     $cite->title    = $this->pub->get('title');
     $date           = ($this->pub->published()) ? $this->pub->published() : $this->pub->submitted();

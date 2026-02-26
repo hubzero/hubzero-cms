@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die();
 
 if (Request::getInt('getstarted', 0) && ($tpl = $this->params->get('template', ''))) {

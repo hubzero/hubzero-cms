@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Group events Macro
@@ -47,7 +49,7 @@ class Redirect extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get the arguments
@@ -65,7 +67,7 @@ class Redirect extends GroupMacro
 
         // No delay time? Redirect now.
         if (!$delay) {
-            \App::redirect($url);
+            App::redirect($url);
             return;
         }
 
@@ -77,6 +79,6 @@ class Redirect extends GroupMacro
             . '"; }, '
             . ($delay * 1000)
             . ');</script>
-                <p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+                <p class="warning">' . Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
     }
 }

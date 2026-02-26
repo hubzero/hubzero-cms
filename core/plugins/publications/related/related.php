@@ -12,6 +12,9 @@
 namespace Plugins\Publications\Related;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Related extends Plugin
 {

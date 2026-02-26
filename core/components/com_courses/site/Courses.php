@@ -9,6 +9,7 @@
 namespace Components\Courses\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -23,7 +24,7 @@ class Courses extends AbstractComponent
     protected function execute(): void
     {
         // Build controller path and name
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'courses'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'courses'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'courses';
         }

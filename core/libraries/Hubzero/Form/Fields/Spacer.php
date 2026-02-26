@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides spacer markup to be used in form layouts.

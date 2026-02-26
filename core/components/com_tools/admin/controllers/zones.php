@@ -12,13 +12,13 @@ use Components\Tools\Models\Middleware;
 use Components\Tools\Helpers\Utils;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
-use Filesystem;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Administrative tools controller for zones

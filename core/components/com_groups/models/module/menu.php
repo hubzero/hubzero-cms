@@ -10,7 +10,8 @@ namespace Components\Groups\Models\Module;
 
 use Components\Groups\Tables;
 use Hubzero\Base\Model;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Group module menu model class
@@ -34,7 +35,7 @@ class Menu extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\ModuleMenu($this->_db);
 

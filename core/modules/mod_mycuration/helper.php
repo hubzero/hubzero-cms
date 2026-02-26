@@ -10,7 +10,8 @@ namespace Modules\MyCuration;
 
 use Hubzero\Module\Module;
 use Publication;
-use Component;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a user's publication curation tasks
@@ -27,7 +28,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $config   = Component::params('com_publications');
 
         // Get some classes we need

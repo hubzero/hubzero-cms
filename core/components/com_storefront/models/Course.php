@@ -8,7 +8,7 @@
 
 namespace Components\Storefront\Models;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  *

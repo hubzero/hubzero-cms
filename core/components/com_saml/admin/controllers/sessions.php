@@ -11,11 +11,11 @@ namespace Components\Saml\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Saml\Models\SamlSession;
 use Components\Saml\Models\ServiceProvider;
-use Request;
-use Notify;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for the SSO session audit trail

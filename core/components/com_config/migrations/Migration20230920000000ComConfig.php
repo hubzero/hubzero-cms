@@ -9,6 +9,7 @@
 namespace Components\Config\Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Date;
 
 /**
  * Migration script for managing hub secret via com_config

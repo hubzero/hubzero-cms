@@ -10,14 +10,15 @@ namespace Components\Support\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for support tickets
@@ -36,7 +37,7 @@ class Ticketsv1r0 extends ApiController
     public function execute()
     {
         $this->config = Component::params('com_support');
-        $this->database = \App::get('db');
+        $this->database = App::get('db');
 
         $this->acl = \Components\Support\Helpers\ACL::getACL();
         $this->acl->setUser(User::get('id'));

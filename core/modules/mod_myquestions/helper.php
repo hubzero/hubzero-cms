@@ -9,10 +9,11 @@
 namespace Modules\MyQuestions;
 
 use Hubzero\Module\Module;
-use Component;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a user's questions
@@ -136,7 +137,7 @@ class Helper extends Module
 
         if ($kind == 'assigned') {
 
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $TA = new \Components\Tools\Tables\Author($database);
             $tools = $TA->getToolContributions(User::get('id'));
@@ -172,7 +173,7 @@ class Helper extends Module
         }
 
         if ($this->banking && $results) {
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $AE = new \Components\Answers\Helpers\Economy($database);
 

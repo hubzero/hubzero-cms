@@ -12,6 +12,7 @@ use Hubzero\Html\Builder\Input;
 use Hubzero\Encryption\Encrypter;
 use Hubzero\Encryption\Cipher\Simple;
 use Hubzero\Encryption\Key;
+use Hubzero\Facades\App;
 
 /**
  * This technique is based on creating an input field that should be left
@@ -85,7 +86,7 @@ class Honeypot
      */
     public static function getName()
     {
-        return 'hypt' . substr(\App::get('session')->getFormToken(), 0, 7);
+        return 'hypt' . substr(App::get('session')->getFormToken(), 0, 7);
     }
 
     /**
@@ -98,7 +99,7 @@ class Honeypot
         static $crypt;
 
         if (!$crypt) {
-            $key = \App::get('session')->getFormToken();
+            $key = App::get('session')->getFormToken();
 
             $crypt = new Encrypter(
                 new Simple(),

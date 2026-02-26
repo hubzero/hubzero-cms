@@ -14,6 +14,8 @@ use Srmklive\Dropbox\Adapter\DropboxAdapter;
 use Srmklive\Dropbox\Client\DropboxClient;
 use Hubzero\Utility\Arr;
 use Hubzero\Session;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Plugin class for dropbox filesystem connectivity
@@ -73,7 +75,7 @@ class Dropbox extends Plugin
         $connectionId = Request::getInt('connection', 0);
         $connection = \Components\Projects\Models\Orm\Connection::one($connectionId);
         $project = $connection->project;
-        $projectsFilesUrl = \Route::url($project->link('files') . '/browse?connection=' . $connectionId);
+        $projectsFilesUrl = Route::url($project->link('files') . '/browse?connection=' . $connectionId);
 
         Session::set('dropbox.connection_to_set_up', $connectionId);
         Session::set('dropbox.local_origin_url', $projectsFilesUrl);

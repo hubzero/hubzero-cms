@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -53,7 +59,7 @@ $this->css('storage.css')
                     <?php
                     foreach ($this->folders as $fullpath => $name) {
                         $dir = DS . $name;
-                        $numFiles = count(\Filesystem::files($fullpath, '.', false, true, array()));
+                        $numFiles = count(Filesystem::files($fullpath, '.', false, true, array()));
 
                         if ($this->listdir == DS) {
                             $this->listdir = '';

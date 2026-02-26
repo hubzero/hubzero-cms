@@ -9,7 +9,8 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Base\Model;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Collections model class for following something/one
@@ -49,7 +50,7 @@ class Following extends Model
      */
     public function __construct($oid = null, $following_type = null, $follower_id = 0, $follower_type = 'member')
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $tbl = $this->_tbl_name;
         $this->_tbl = new $tbl($this->_db);

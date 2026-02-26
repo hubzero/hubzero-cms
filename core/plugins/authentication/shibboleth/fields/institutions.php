@@ -9,7 +9,11 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Document;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
 
 class Institutions extends Field
 {
@@ -31,7 +35,7 @@ class Institutions extends Field
             }
         }
         try {
-            \Log::debug('[shib-field] ' . $msg);
+            Log::debug('[shib-field] ' . $msg);
         } catch (\Exception $e) {
         }
     }
@@ -53,7 +57,7 @@ class Institutions extends Field
         // Log what's actually stored in the DB row right now, so we can compare
         // against what just got POSTed (if anything).
         try {
-            $db = \App::get('db');
+            $db = App::get('db');
             $db->setQuery("SELECT params FROM `#__extensions` WHERE folder='authentication' AND element='shibboleth' LIMIT 1");
             $dbParams = $db->loadResult();
             self::shibLog('DB row params=' . $dbParams);
@@ -63,7 +67,7 @@ class Institutions extends Field
 
         // Log what was actually POSTed for this field, if anything (only present
         // when getInput runs after an "apply" task in the same request).
-        $posted = \Request::getVar('fields', null, 'post', 'array', 2);
+        $posted = Request::getVar('fields', null, 'post', 'array', 2);
         if (is_array($posted) && isset($posted['params']['institutions'])) {
             self::shibLog('POSTed fields[params][institutions]=' . (is_string($posted['params']['institutions']) ? $posted['params']['institutions'] : json_encode($posted['params']['institutions'])));
         } else {
@@ -132,7 +136,7 @@ class Institutions extends Field
             return 'Federation metadata XML not found: ' . $xmlPath;
         }
 
-        $tmpDir    = \Config::get('tmp_path', PATH_APP . DS . 'tmp');
+        $tmpDir    = Config::get('tmp_path', PATH_APP . DS . 'tmp');
         $cacheFile = $tmpDir . DS . 'shib_entities_' . md5($xmlPath) . '.json';
 
         if (file_exists($cacheFile) && filemtime($cacheFile) >= filemtime($xmlPath)) {

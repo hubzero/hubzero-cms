@@ -10,13 +10,14 @@ namespace Components\Tools\Admin\Controllers;
 
 use Components\Tools\Tables;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use Html;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Manage member quotas
@@ -198,7 +199,7 @@ class Preferences extends AdminController
             }
         }
 
-        $user = \User::getInstance($fields['user_id']);
+        $user = User::getInstance($fields['user_id']);
 
         if (!is_object($user) || !$user->get('id')) {
             Notify::error(Lang::txt('COM_TOOLS_USER_PREFS_USER_NOT_FOUND'));

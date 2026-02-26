@@ -10,6 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
+use Hubzero\Facades\App;
 
 /**
  * Renders a list element
@@ -37,7 +38,7 @@ class Select extends Element
         foreach ($node->children() as $option) {
             $val  = $option['value'];
             $text = (string) $option;
-            $options[] = Builder\Select::option($val, \App::get('language')->txt($text));
+            $options[] = Builder\Select::option($val, App::get('language')->txt($text));
         }
         return $options;
     }

@@ -10,7 +10,7 @@ namespace Components\Menus\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Menus\Models\Menutype;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * The Menu types Controller

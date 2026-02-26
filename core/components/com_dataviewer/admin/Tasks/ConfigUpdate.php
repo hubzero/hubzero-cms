@@ -9,6 +9,7 @@
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Hubzero\Facades\Request;
 
 class ConfigUpdate
 {
@@ -17,8 +18,8 @@ class ConfigUpdate
         \Components\Dataviewer\Admin\Libs\Security::checkRid();
         $base = DvConfig::$conf['dir_base'];
 
-        $db_id = \Request::getString('db', false);
-        $dv_conf_text = \Request::getString('conf_text', false);
+        $db_id = Request::getString('db', false);
+        $dv_conf_text = Request::getString('conf_text', false);
 
         $dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
         file_put_contents($dv_conf_file, $dv_conf_text);

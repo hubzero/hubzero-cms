@@ -9,9 +9,9 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Fields\Select;
-use Plugin;
-use Html;
-use Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a list of support ticket statuses

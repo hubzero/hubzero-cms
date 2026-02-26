@@ -9,7 +9,7 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Group log model

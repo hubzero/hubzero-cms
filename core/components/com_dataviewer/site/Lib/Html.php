@@ -8,11 +8,13 @@
 
 namespace Components\Dataviewer\Site\Lib;
 
+use Hubzero\Facades\App;
+
 class Html
 {
     public static function dvAddScript($script, $local = true)
     {
-        $document = \App::get('document');
+        $document = App::get('document');
 
         if (!$local) {
             $document->addScript($script);
@@ -40,7 +42,7 @@ class Html
 
     public static function dvAddCss($css, $local = true)
     {
-        $document = \App::get('document');
+        $document = App::get('document');
 
         if (!$local) {
             $document->addStyleSheet($css);

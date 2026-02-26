@@ -9,7 +9,7 @@
 namespace Components\Messages\Models;
 
 use Hubzero\Database\Relational;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Model class for a message

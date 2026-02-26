@@ -9,8 +9,8 @@
 namespace Modules\Courses;
 
 use Hubzero\Module\Module;
-use Date;
-use App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Module class for com_courses data

@@ -8,7 +8,7 @@
 
 namespace Components\Collections\Models\Adapters;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Adapter class for an entry link for the group blog

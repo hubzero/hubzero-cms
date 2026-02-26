@@ -14,10 +14,14 @@ use Hubzero\Database\Asset;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use stdClass;
-use Component;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Model class for an article
@@ -487,7 +491,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     public function getForm($client = '')
     {
         $file = __DIR__ . '/forms/article' . ($client ? '_' . $client : '') . '.xml';
-        $file = \Filesystem::cleanPath($file);
+        $file = Filesystem::cleanPath($file);
 
         $form = new Form('content', array('control' => 'fields'));
 
@@ -686,7 +690,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             $access_level = 'private';
         }
 
-        $page->url = \Request::root() . \Route::urlForClient('site', $url);
+        $page->url = Request::root() . Route::urlForClient('site', $url);
         $page->access_level = $access_level;
         $page->owner_type = 'user';
         $page->owner = $this->created_by;
@@ -942,7 +946,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     $levels = (int) $filters['max_category_levels'];
 
                     // Create a subquery for the subcategory list
-                    $subQuery = \App::get('db')->getQuery();
+                    $subQuery = App::get('db')->getQuery();
                     $subQuery->select('sub.id');
                     $subQuery->from('#__categories', 'sub');
                     $subQuery->joinRaw('#__categories as this', 'sub.lft > this.lft AND sub.rgt < this.rgt', 'inner');
@@ -1015,7 +1019,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     \Hubzero\Utility\Arr::toString($authorAlias);
 
                     foreach ($authorAlias as $key => $alias) {
-                        $authorAlias[$key] = \App::get('db')->Quote($alias);
+                        $authorAlias[$key] = App::get('db')->Quote($alias);
                     }
 
                     $authorAlias = implode(',', $authorAlias);
@@ -1104,7 +1108,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
                 switch ($params->get('filter_field')) {
                     case 'author':
-                        $db = \App::get('db');
+                        $db = App::get('db');
                         $filterLike = $db->quote('%' . $db->escape($filter, true) . '%', false);
                         $query->whereRaw(
                             'LOWER( CASE WHEN a.created_by_alias > ' . $db->quote(' ')

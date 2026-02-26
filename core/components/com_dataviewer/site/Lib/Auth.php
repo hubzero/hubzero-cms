@@ -9,6 +9,7 @@
 namespace Components\Dataviewer\Site\Lib;
 
 use Components\Dataviewer\Site\DvConfig;
+use Hubzero\Facades\User;
 
 class Auth
 {
@@ -32,7 +33,7 @@ class Auth
 
         if ($usersAllowed === false && $groupsAllowed === false) {
             return true;
-        } elseif (\User::isGuest()) {
+        } elseif (User::isGuest()) {
             $redir_url = '?return=' . base64_encode($_SERVER['REQUEST_URI']);
             $login_url = '/login';
             $url = $login_url . $redir_url;
@@ -40,16 +41,16 @@ class Auth
             return;
         }
 
-        if ($usersAllowed !== false && $usersAllowed == 'registered' && !\User::isGuest()) {
+        if ($usersAllowed !== false && $usersAllowed == 'registered' && !User::isGuest()) {
             return true;
-        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !\User::isGuest()) {
-            if (in_array(\User::get('username'), $usersAllowed)) {
+        } elseif (isset($usersAllowed) && is_array($usersAllowed) && !User::isGuest()) {
+            if (in_array(User::get('username'), $usersAllowed)) {
                 return true;
             }
         }
 
-        if ($groupsAllowed !== false && is_array($groupsAllowed) && !\User::isGuest()) {
-            $groups = \Hubzero\User\Helper::getGroups(\User::get('id'));
+        if ($groupsAllowed !== false && is_array($groupsAllowed) && !User::isGuest()) {
+            $groups = \Hubzero\User\Helper::getGroups(User::get('id'));
             if ($groups && count($groups)) {
                 foreach ($groups as $g) {
                     if (in_array($g->cn, DvConfig::$dv_conf['acl']['allowed_groups'])) {

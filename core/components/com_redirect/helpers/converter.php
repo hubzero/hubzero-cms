@@ -8,8 +8,8 @@
 
 namespace Components\Redirect\Helpers;
 
-use Component;
-use Route;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
 
 /**
  * Instantiate and return a form field for autocompleting some value

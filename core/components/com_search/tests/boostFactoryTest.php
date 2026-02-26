@@ -11,13 +11,13 @@ namespace Components\Search\Tests;
 use Components\Search\Helpers\BoostFactory;
 use Components\Search\Tests\Traits\canMock;
 use Hubzero\Test\Basic;
-use Component;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 class BoostFactoryTest extends Basic
 {
     use canMock;
+    use Hubzero\Facades\Component;
 
     public function testOneSetsNonDocumentSpecificData()
     {

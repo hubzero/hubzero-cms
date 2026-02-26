@@ -12,15 +12,18 @@ use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
-use Pathway;
-use Request;
-use Config;
-use Route;
-use Event;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
@@ -35,7 +38,7 @@ class Base extends SiteController
     public function execute()
     {
         // Publishing enabled?
-        $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+        $this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
         // Setup complete?
         $this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -91,7 +94,7 @@ class Base extends SiteController
     {
         // If message is set push to notifications
         if ($message) {
-            \Notify::message($message, $type);//, 'projects');
+            Notify::message($message, $type);//, 'projects');
         }
     }
 
@@ -106,7 +109,7 @@ class Base extends SiteController
     {
         // Get messages in queue
         if (!isset($this->_messages)) {
-            $this->_messages = \Notify::messages('projects');
+            $this->_messages = Notify::messages('projects');
         }
 
         // Return first message of type
@@ -223,7 +226,7 @@ class Base extends SiteController
                 break;
         }
 
-        \Document::setTitle($this->title);
+        Document::setTitle($this->title);
 
         return $this->title;
     }

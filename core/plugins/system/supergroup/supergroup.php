@@ -12,6 +12,9 @@
 namespace Plugins\System\Supergroup;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 
 class Supergroup extends Plugin
 {

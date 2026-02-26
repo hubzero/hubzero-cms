@@ -11,10 +11,10 @@ namespace Components\Members\Admin\Controllers;
 use Components\Members\Models\Note;
 use Components\Members\Models\Member;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
 use App;
 
 /**

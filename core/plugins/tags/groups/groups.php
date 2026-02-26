@@ -12,6 +12,10 @@
 namespace Plugins\Tags\Groups;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Groups extends Plugin
 {

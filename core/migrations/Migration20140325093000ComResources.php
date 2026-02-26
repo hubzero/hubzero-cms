@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\App;
 
 /**
  * Migration script for adding levenshtein function to mysql
@@ -40,7 +41,7 @@ class Migration20140325093000ComResources extends Base
         $found = $this->db->getQuery(true)
             ->select('ROUTINE_NAME')
             ->from('information_schema.ROUTINES')
-            ->where('ROUTINE_SCHEMA', '=', \App::get('config')->get('db'))
+            ->where('ROUTINE_SCHEMA', '=', App::get('config')->get('db'))
             ->where('ROUTINE_NAME', '=', 'LEVENSHTEIN')
             ->where('ROUTINE_TYPE', '=', 'FUNCTION')
             ->exists();

@@ -10,8 +10,8 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
-use Route;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * Publication administrative support

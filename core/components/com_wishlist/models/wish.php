@@ -9,11 +9,12 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Database\Relational;
-use User;
-use Lang;
-use Date;
-use Html;
-use Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
 
 /**
  * Model class for a wishlist item
@@ -795,7 +796,7 @@ class Wish extends Relational
     public function config($key = null, $default = null)
     {
         if (!isset($this->config)) {
-            $this->config = \Component::params('com_wishlist');
+            $this->config = Component::params('com_wishlist');
         }
         if ($key) {
             return $this->config->get($key, $default);

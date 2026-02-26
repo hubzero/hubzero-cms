@@ -9,6 +9,7 @@
 namespace Components\Groups\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Lang;
 
 /**
  * Groups table
@@ -95,7 +96,7 @@ class Group extends Table
     public function check()
     {
         if (trim($this->cn) == '') {
-            $this->setError(\Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
+            $this->setError(Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
             return false;
         }
         return true;

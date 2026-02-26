@@ -16,6 +16,15 @@ use Hubzero\Filesystem\Collection;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Manager;
 use Hubzero\View\View;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Projects Files plugin (connections extension)
@@ -292,7 +301,7 @@ class Connections
 
         if ($this->connection->get('id')) {
             if (!$this->connection->destroy()) {
-                \Notify::error($this->connection->getError());
+                Notify::error($this->connection->getError());
             }
         }
 
@@ -316,7 +325,7 @@ class Connections
             App::redirect(Route::url($this->model->link('files')));
         }
 
-        \Plugin::import('filesystem');
+        Plugin::import('filesystem');
 
         $alias  = $this->connection->provider ? $this->connection->provider->alias : '';
         $plugin = 'plgFilesystem' . ucfirst($alias);
@@ -1199,10 +1208,10 @@ class Connections
 
         // Output message
         if ($moved > 0) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' '
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' '
                 . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
         } else {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'error', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1274,9 +1283,9 @@ class Connections
             // Trigger the move event
             Event::trigger('metadata.onFileMove', [$oldName, $entity->getAbsolutePath()]);
 
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
         } else {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_FAILED'), 'error', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_FAILED'), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1336,9 +1345,9 @@ class Connections
         $entity = Entity::fromPath(trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')), $this->connection->adapter());
 
         if (!$entity->create()) {
-            \Notify::message('', 'error', 'projects');
+            Notify::message('', 'error', 'projects');
         } else {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY'), 'success', 'projects');
         }
 
         // Redirect to file list
@@ -1431,7 +1440,7 @@ class Connections
         $plugins = Plugin::byType('metadata');
 
         if (count($plugins) == 0) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ANNOTATION_PLUGINS'), 'error', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ANNOTATION_PLUGINS'), 'error', 'projects');
         } else {
             // Send the data off to the plugins
             $response = Event::trigger('metadata.onMetadataSave', [
@@ -1440,9 +1449,9 @@ class Connections
             ]);
 
             if (empty($response)) {
-                \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ANNOTATED_SUCCESS'), 'success', 'projects');
+                Notify::message(Lang::txt('PLG_PROJECTS_FILES_ANNOTATED_SUCCESS'), 'success', 'projects');
             } else {
-                \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_ANNOTATE_FAILED'), 'error', 'projects');
+                Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_ANNOTATE_FAILED'), 'error', 'projects');
             }
         }
 

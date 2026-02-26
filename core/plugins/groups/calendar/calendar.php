@@ -9,6 +9,14 @@
 namespace Plugins\Groups\Calendar;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Groups Plugin class for calendar
@@ -58,7 +66,7 @@ class Calendar extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
             || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
@@ -445,7 +453,7 @@ class Calendar extends Plugin
             // Event times are stored in UTC. Show each event in its own zone:
             // emit the local wall-clock as a floating time (no offset) so it lands
             // on the day/time it occurs in that zone, and label it with the abbr.
-            $eventTz     = $rawEvent->get('time_zone') ? $rawEvent->get('time_zone') : \Config::get('offset');
+            $eventTz     = $rawEvent->get('time_zone') ? $rawEvent->get('time_zone') : Config::get('offset');
             $timeFormat  = 'Y-m-d\TH:i:sO';
             $localFormat = 'Y-m-d\TH:i:s';
             $abbr        = Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, 'T');
@@ -579,7 +587,7 @@ class Calendar extends Plugin
             $timezone = 'UTC';
         }
 
-        $view->timezone = $timezone ? $timezone : \Config::get('offset');
+        $view->timezone = $timezone ? $timezone : Config::get('offset');
 
         //push some vars to the view
         $view->month      = $this->month;

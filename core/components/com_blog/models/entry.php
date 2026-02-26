@@ -11,14 +11,16 @@ namespace Components\Blog\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Component;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 use stdClass;
-use Request;
-use Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Model class for a blog entry
@@ -167,7 +169,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $publish_up = $data['publish_up'];
 
         if (!$publish_up || $publish_up == '0000-00-00 00:00:00') {
-            $publish_up = ($data['id'] ? $this->created : \Date::toSql());
+            $publish_up = ($data['id'] ? $this->created : Date::toSql());
         }
 
         return $publish_up;
@@ -404,7 +406,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         if ($as == 'text') {
             if (!isset($access)) {
-                $access = \Html::access('assetgroups');
+                $access = Html::access('assetgroups');
             }
             foreach ($access as $a) {
                 if ($this->get('access') == $a->value) {
@@ -574,7 +576,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 'domain'   => ''
             );
 
-            $this->$property = \Html::content('prepare', $this->get($field, ''), $params);
+            $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }
 
         return $this->$property;
@@ -689,7 +691,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $valid = parent::validate();
 
         if ($valid) {
-            $results = \Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', array(
                 'com_blog.entry.content',
                 &$this,
                 $this->isNew()

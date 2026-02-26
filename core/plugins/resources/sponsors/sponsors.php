@@ -3,6 +3,12 @@
 namespace Plugins\Resources\Sponsors;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * @package    hubzero-cms

@@ -8,7 +8,7 @@
 
 namespace Components\Content\Site\Helpers;
 
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Content Component Query Helper

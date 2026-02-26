@@ -11,13 +11,13 @@ namespace Components\Collections\Admin\Controllers;
 use Components\Collections\Models\Orm\Item;
 use Components\Collections\Models\Orm\Asset;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for collection items

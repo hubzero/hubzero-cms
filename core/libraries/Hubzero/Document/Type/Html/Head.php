@@ -10,6 +10,8 @@ namespace Hubzero\Document\Type\Html;
 
 use Hubzero\Document\Renderer;
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
 
 /**
  * Head renderer
@@ -45,7 +47,7 @@ class Head extends Renderer
     public function fetchHead(&$document)
     {
         // Trigger the onBeforeCompileHead event (skip for installation, since it causes an error)
-        \Event::trigger('onBeforeCompileHead');
+        Event::trigger('onBeforeCompileHead');
 
         // Get line endings
         $lnEnd  = $document->_getLineEnd();
@@ -177,10 +179,10 @@ class Head extends Renderer
         }
 
         // Generate script language declarations.
-        if (count(\Lang::script())) {
+        if (count(Lang::script())) {
             $buffer[] = $tab . '<script type="text/javascript">';
             $buffer[] = $tab . $tab . '(function() {';
-            $buffer[] = $tab . $tab . $tab . 'var strings = ' . json_encode(\Lang::script()) . ';';
+            $buffer[] = $tab . $tab . $tab . 'var strings = ' . json_encode(Lang::script()) . ';';
             $buffer[] = $tab . $tab . $tab . 'if (typeof Hubzero == \'undefined\') {';
             $buffer[] = $tab . $tab . $tab . $tab . 'Hubzero = {};';
             $buffer[] = $tab . $tab . $tab . $tab . 'Hubzero.Lang = strings;';

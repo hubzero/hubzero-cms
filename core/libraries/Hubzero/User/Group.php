@@ -12,6 +12,11 @@ use Hubzero\Base\Obj;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Str;
 use Hubzero\User\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Group model
@@ -267,7 +272,7 @@ class Group extends Obj
      */
     public function create()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -321,7 +326,7 @@ class Group extends Obj
         }
 
         //trigger the onAfterStoreGroup event
-        \Event::trigger('user.onAfterStoreGroup', array($this));
+        Event::trigger('user.onAfterStoreGroup', array($this));
 
         return $this->gidNumber;
     }
@@ -336,7 +341,7 @@ class Group extends Obj
     {
         $this->clear();
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -398,7 +403,7 @@ class Group extends Obj
      */
     public function update()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -589,11 +594,11 @@ class Group extends Obj
         // After SQL is done and has no errors, fire off onGroupUserEnrolledEvents
         // for every user added to this group
         foreach ($aNewUserGroupEnrollments as $userid) {
-            \Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
+            Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
         }
 
         if ($affected > 0) {
-            \Event::trigger('user.onAfterStoreGroup', array($this));
+            Event::trigger('user.onAfterStoreGroup', array($this));
         }
 
         return true;
@@ -606,7 +611,7 @@ class Group extends Obj
      */
     public function delete()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -646,7 +651,7 @@ class Group extends Obj
         $db->query();
 
         //trigger the onAfterStoreGroup event
-        \Event::trigger('user.onAfterStoreGroup', array($this));
+        Event::trigger('user.onAfterStoreGroup', array($this));
 
         return true;
     }
@@ -670,7 +675,7 @@ class Group extends Obj
 
         if (in_array($property, self::$_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db = \App::get('db');
+                $db = App::get('db');
 
                 if (is_object($db)) {
                     $groups = array('applicants' => array(), 'invitees' => array(), 'members' => array(), 'managers' => array());
@@ -854,7 +859,7 @@ class Group extends Obj
      */
     private function _userids($users)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -932,7 +937,7 @@ class Group extends Obj
      */
     public static function iterate($func)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT cn FROM `#__xgroups`;";
 
@@ -961,7 +966,7 @@ class Group extends Obj
      */
     public static function exists($group, $check_system = false)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($group)) {
             return false;
@@ -1009,7 +1014,7 @@ class Group extends Obj
      */
     public static function find($filters = array())
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Type 0 - System Group
         // Type 1 - HUB Group
@@ -1226,7 +1231,7 @@ class Group extends Obj
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -1261,7 +1266,7 @@ class Group extends Obj
         $table = '#__xgroups_' . $tbl;
         $user_table = '#__users';
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u
 					WHERE t.gidNumber={$db->quote($this->gidNumber)}
@@ -1297,7 +1302,7 @@ class Group extends Obj
         }
 
         //logo link - links to group overview page
-        $link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
+        $link = Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 
         //path to group uploaded logo
         $path = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
@@ -1323,7 +1328,7 @@ class Group extends Obj
             return $src;
         }
 
-        return \Request::base(true) . $src;
+        return Request::base(true) . $src;
     }
 
     /**
@@ -1333,7 +1338,7 @@ class Group extends Obj
      */
     public function getBasePath()
     {
-        $groupParams = \Component::params('com_groups');
+        $groupParams = Component::params('com_groups');
         $uploadPath  = $groupParams->get('uploadpath', '/site/groups');
         return $uploadPath . DS . $this->get('gidNumber');
     }
@@ -1359,7 +1364,7 @@ class Group extends Obj
         }
 
         // build link
-        $link  = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
+        $link  = Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
         $link .= '/' . ucfirst($type) . ':' . implode('/', $segments);
 
         // return link
@@ -1388,12 +1393,12 @@ class Group extends Obj
                     'scope'    => '', //$this->get('cn') . DS . 'wiki',
                     'pagename' => $this->get('cn'),
                     'pageid'   => 0, //$this->get('gidNumber'),
-                    'filepath' => \Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
+                    'filepath' => Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
                     'domain'   => $this->get('cn'),
                     'camelcase' => 0
                 );
 
-                \Event::trigger('content.onContentPrepare', array(
+                Event::trigger('content.onContentPrepare', array(
                     'com_groups.group.' . $type . '_desc',
                     &$this,
                     &$config

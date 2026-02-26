@@ -10,10 +10,10 @@ namespace Components\Cron\Site\Controllers;
 
 use Components\Cron\Models\Job;
 use Hubzero\Component\SiteController;
-use Request;
-use User;
-use Date;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
 use stdClass;
 
 /**

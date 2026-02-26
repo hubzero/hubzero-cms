@@ -8,7 +8,7 @@
 
 namespace Components\Resources\Import;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Import Importer class

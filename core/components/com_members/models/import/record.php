@@ -12,12 +12,13 @@ use Components\Members\Models\Member;
 use Hubzero\Utility\Validate;
 use Exception;
 use stdClass;
-use Component;
-use Request;
-use Config;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 use User;
-use Date;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Member Record importer
@@ -447,7 +448,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 if (is_numeric($this->raw->usertype)) {
                     $newUsertype = (int)$this->raw->usertype;
                 } else {
-                    $db = \App::get('db');
+                    $db = App::get('db');
                     $query = $db->getQuery()
                         ->select('id')
                         ->from('#__usergroups')
@@ -461,7 +462,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 $usersConfig = Component::params('com_members');
                 $newUsertype = $usersConfig->get('new_usertype');
                 if (!$newUsertype) {
-                    $db = \App::get('db');
+                    $db = App::get('db');
                     $query = $db->getQuery()
                         ->select('id')
                         ->from('#__usergroups')

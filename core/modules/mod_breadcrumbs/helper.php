@@ -9,10 +9,12 @@
 namespace Modules\BreadCrumbs;
 
 use Hubzero\Module\Module;
-use Route;
-use Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 use Html;
 use stdClass;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Pathway;
 
 /**
  * Module class for displaying breadcrumbs
@@ -48,7 +50,7 @@ class Helper extends Module
      */
     public function getList()
     {
-        $items = \Pathway::items();
+        $items = Pathway::items();
 
         $count = count($items);
 
@@ -63,7 +65,7 @@ class Helper extends Module
         if ($this->params->get('showHome', 1)) {
             $item = new stdClass();
             $item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
-            $item->link = Route::url('index.php?Itemid=' . \App::get('menu')->getDefault()->id);
+            $item->link = Route::url('index.php?Itemid=' . App::get('menu')->getDefault()->id);
 
             array_unshift($crumbs, $item);
         }

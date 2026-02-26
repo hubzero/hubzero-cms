@@ -9,7 +9,7 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Projects activity model

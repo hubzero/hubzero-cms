@@ -3,6 +3,11 @@
 namespace Plugins\Content\Antispam;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms

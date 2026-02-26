@@ -12,7 +12,7 @@ use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\ApiController;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
 use Lang;
 

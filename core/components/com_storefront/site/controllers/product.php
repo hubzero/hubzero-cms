@@ -13,14 +13,13 @@ use Components\Storefront\Models\Product as P;
 use Components\Cart\Models\CurrentCart;
 use Components\Cart\Helpers\Audit;
 use Exception;
-use Request;
-use Pathway;
-use Lang;
-use User;
-use App;
-use Document;
-use Route;
-
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Route;
 
 /**
  * Product viewing controller class

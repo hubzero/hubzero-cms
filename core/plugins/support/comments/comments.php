@@ -12,6 +12,9 @@
 namespace Plugins\Support\Comments;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 class Comments extends Plugin
 {

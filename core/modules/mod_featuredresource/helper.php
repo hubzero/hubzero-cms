@@ -10,8 +10,9 @@ namespace Modules\Featuredresource;
 
 use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
-use Component;
+use Hubzero\Facades\Component;
 use User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a random featured resource
@@ -38,7 +39,7 @@ class Helper extends Module
     public function run()
     {
 
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //Get the admin configured settings
         $filters = array(

@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Component;
 
 /**
  * Migration script for adding tables and data for profile schema
@@ -45,7 +46,7 @@ class Migration20160510121901ComMembers extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $params = \Component::params('com_members');
+            $params = Component::params('com_members');
 
             // Build field value arrays for cleaner INSERT query
             $orgCreate = self::state($params->get('registrationOrganization'), 'HHHH', 'create');

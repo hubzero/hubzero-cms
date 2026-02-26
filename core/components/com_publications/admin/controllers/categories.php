@@ -13,13 +13,13 @@ use Components\Publications\Models\Orm\Category;
 use Components\Publications\Models\Elements;
 use Components\Publications\Tables\MasterType;
 use stdClass;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
-use Config;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 
 /**
  * Manage publication categories

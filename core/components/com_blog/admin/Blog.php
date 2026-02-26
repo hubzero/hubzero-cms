@@ -9,6 +9,12 @@
 namespace Components\Blog\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,22 +28,22 @@ class Blog extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_blog')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_blog')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $scope = \Request::getCmd('scope', 'site');
-        $controllerName = \Request::getCmd('controller', 'entries');
+        $scope = Request::getCmd('scope', 'site');
+        $controllerName = Request::getCmd('controller', 'entries');
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_BLOG_MENU_ENTRIES'),
-            \Route::url('index.php?option=com_blog&controller=entries'),
+        Submenu::addEntry(
+            Lang::txt('COM_BLOG_MENU_ENTRIES'),
+            Route::url('index.php?option=com_blog&controller=entries'),
             ($controllerName == 'entries')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_BLOG_MENU_COMMENTS'),
-            \Route::url('index.php?option=com_blog&controller=comments'),
+        Submenu::addEntry(
+            Lang::txt('COM_BLOG_MENU_COMMENTS'),
+            Route::url('index.php?option=com_blog&controller=comments'),
             ($controllerName == 'comments')
         );
 

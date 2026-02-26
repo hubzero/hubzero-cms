@@ -13,6 +13,12 @@ namespace Plugins\Cron\Groups;
 
 use Hubzero\Plugin\Plugin;
 use Plugins\Groups\Announcements\Announcements as plgGroupsAnnouncements;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Groups extends Plugin
 {

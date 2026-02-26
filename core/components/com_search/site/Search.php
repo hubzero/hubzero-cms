@@ -9,6 +9,9 @@
 namespace Components\Search\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,23 +25,23 @@ class Search extends AbstractComponent
      */
     protected function execute(): void
     {
-        $config = \Component::params('com_search');
+        $config = Component::params('com_search');
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', $config->get('engine', 'basic')));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', $config->get('engine', 'basic')));
 
         if ($controllerName != 'basic') {
             $controllerName = 'solr';
         }
 
         // Are we falling back to the default engine?
-        $fallback = \App::get('session')->get('searchfallback');
+        $fallback = App::get('session')->get('searchfallback');
         if ($fallback && intval($fallback) <= time()) {
             // Don't fallback if the time limit has expired
             $fallback = null;
         }
 
         // Are we explicitly forcing the engine?
-        if ($force = \Request::getCmd('engine')) {
+        if ($force = Request::getCmd('engine')) {
             $fallback = null;
             $controllerName = $force;
         }

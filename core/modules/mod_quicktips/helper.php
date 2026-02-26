@@ -11,7 +11,8 @@ namespace Modules\QuickTips;
 use Hubzero\Module\Module;
 use Hubzero\Database\Expression;
 use Cache;
-use Date;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying tips
@@ -42,7 +43,7 @@ class Helper extends Module
      */
     public function run()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $catid  = trim($this->params->get('catid', ''));
         $secid  = trim($this->params->get('secid', ''));

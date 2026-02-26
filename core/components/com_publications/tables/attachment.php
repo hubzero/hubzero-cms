@@ -9,6 +9,7 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for publication attachments
@@ -515,7 +516,7 @@ class Attachment extends Table
         $pAttach->ordering               = $att->ordering;
         $pAttach->publication_version_id = $vid;
         $pAttach->created_by             = $uid;
-        $pAttach->created                = \Date::toSql();
+        $pAttach->created                = Date::toSql();
         if ($pAttach->store()) {
             return $this->bind($pAttach);
         }

@@ -11,6 +11,7 @@ namespace Plugins\Antispam\SpamAssassin\Service;
 use Plugins\Antispam\SpamAssassin\Service\Client;
 use Hubzero\Spam\Detector\Service as AbstractService;
 use Exception;
+use Hubzero\Facades\Lang;
 
 /**
  * SpamAssassin anti-comment spam service
@@ -51,7 +52,7 @@ class Provider extends AbstractService
         $params = array();
 
         if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php')) {
-            throw new Exception(\Lang::txt('Client type of "%s" not found.', $this->get('client')));
+            throw new Exception(Lang::txt('Client type of "%s" not found.', $this->get('client')));
         }
 
         if ($this->get('client') == 'remote') {
@@ -69,7 +70,7 @@ class Provider extends AbstractService
             }
             $client = new Client\Local($params);
         } else {
-            throw new Exception(\Lang::txt('Client type of "%s" not supported.', $this->get('client')));
+            throw new Exception(Lang::txt('Client type of "%s" not supported.', $this->get('client')));
         }
 
         return $client->isSpam($this->getValue());

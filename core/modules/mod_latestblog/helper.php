@@ -11,9 +11,9 @@ namespace Modules\LatestBlog;
 use Hubzero\Module\Module;
 use Hubzero\User\Group\Helper as GroupHelper;
 use Components\Blog\Models\Archive;
-use User;
-use Lang;
-use Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Module class for displaying the latest blog posts

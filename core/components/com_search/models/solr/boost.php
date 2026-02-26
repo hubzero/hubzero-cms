@@ -13,8 +13,7 @@ use Components\Search\Helpers\MockProxy;
 use Components\Search\Traits\isUnique;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Arr;
-use Component;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Database model for Solr Boost
@@ -24,6 +23,7 @@ use Lang;
 class Boost extends Relational
 {
     use isUnique;
+    use Hubzero\Facades\Component;
 
     protected static $uniqueKeys = [['field', 'field_value']];
 

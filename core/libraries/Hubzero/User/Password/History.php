@@ -8,6 +8,8 @@
 
 namespace Hubzero\User\Password;
 
+use Hubzero\Facades\App;
+
 class History
 {
     /**
@@ -25,7 +27,7 @@ class History
      */
     private function logDebug($msg)
     {
-        $xlog = \App::get('log')->logger('debug');
+        $xlog = App::get('log')->logger('debug');
         $xlog->debug($msg);
     }
 
@@ -37,7 +39,7 @@ class History
      */
     public static function getInstance($instance)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -72,7 +74,7 @@ class History
      */
     public function add($passhash = null, $invalidated = null)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -118,7 +120,7 @@ class History
      */
     public function exists($password = null, $since = null)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -159,7 +161,7 @@ class History
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;

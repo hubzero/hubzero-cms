@@ -14,9 +14,9 @@ use Hubzero\Events\LoaderInterface;
 use Hubzero\Config\Registry;
 use Exception;
 use stdClass;
-use User;
+use Hubzero\Facades\User;
 use Lang;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Plugin loader

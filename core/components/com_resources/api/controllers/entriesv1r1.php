@@ -13,15 +13,16 @@ use Components\Resources\Models\Type;
 use Components\Tags\Models\Cloud;
 use Hubzero\Component\ApiController;
 use Component;
-use Config;
-use User;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
 
 /**
  * API controller class for resources
@@ -447,7 +448,7 @@ class Entriesv1r1 extends ApiController
 
         // if cache doesn't exist, create it
         if (!is_dir($dir)) {
-            \Filesystem::makeDirectory($dir);
+            Filesystem::makeDirectory($dir);
         }
 
         if (file_put_contents($dir . DS . $filename . '.tex', $doc) === false) {

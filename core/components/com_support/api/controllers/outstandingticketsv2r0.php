@@ -11,6 +11,7 @@ namespace Components\Support\Api\Controllers;
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
 use Component;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for outstanding support tickets
@@ -27,7 +28,7 @@ class OutstandingTicketsv2r0 extends ApiController
     public function execute()
     {
         $this->acl = \Components\Support\Helpers\ACL::getACL();
-        $this->acl->setUser(\User::get('id'));
+        $this->acl->setUser(User::get('id'));
 
         parent::execute();
     }

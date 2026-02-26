@@ -8,6 +8,9 @@
 
 namespace Hubzero\View\Helper;
 
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+
 /**
  * Instantiate and return a form field for autocompleting some value
  */
@@ -42,7 +45,7 @@ class Autocompleter extends AbstractHelper
         if (!in_array($what, array('tags', 'members', 'groups'))) {
             throw new \InvalidArgumentException(__METHOD__ .
                 '(); ' .
-                \Lang::txt('Autocompleter for "%s" not supported.', $what));
+                Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
         $id = ($id ?: str_replace(array('[', ']'), '', $name));
@@ -60,11 +63,11 @@ class Autocompleter extends AbstractHelper
             default:
                 throw new \InvalidArgumentException(__METHOD__ .
                     '(); ' .
-                    \Lang::txt('Autocompleter type "%s" not supported.', $type));
+                    Lang::txt('Autocompleter type "%s" not supported.', $type));
             break;
         }
 
-        $results = \Event::trigger(
+        $results = Event::trigger(
             'hubzero.' . $event,
             array(
                 array($what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl)

@@ -9,6 +9,9 @@
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Toolbar;
 
 class DataDefinition
 {
@@ -16,17 +19,17 @@ class DataDefinition
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = App::get('document');
         $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-        $db_id = \Request::getString('db', false);
+        $db_id = Request::getString('db', false);
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
         $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-        $dd_name = \Request::getString('dd', false);
+        $dd_name = Request::getString('dd', false);
 
 
-        $full_screen = \Request::getString('tmpl', false);
+        $full_screen = Request::getString('tmpl', false);
 
 
         $dd_file = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . "/datadefinitions/$dd_name.json";
@@ -34,8 +37,8 @@ class DataDefinition
         $dd = json_decode($dd_json, true);
 
 
-        \Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
-        \Toolbar::custom('back', 'back', 'back', 'Go back', false);
+        Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
+        Toolbar::custom('back', 'back', 'back', 'Go back', false);
 
 
         $dd_file_php = $base . '/' . $db_id . '/applications/'

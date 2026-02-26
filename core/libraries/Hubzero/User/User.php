@@ -13,10 +13,12 @@ use Hubzero\Utility\Date;
 use Hubzero\Access\Access;
 use Hubzero\Access\Map;
 use Exception;
-use Event;
-use App;
-use Component;
-use Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Users database model
@@ -210,7 +212,7 @@ class User extends \Hubzero\Database\Relational
                 || mb_strlen($username, 'UTF-8') < 2
                 || trim($username) != $username
             ) {
-                return \Lang::txt('JLIB_DATABASE_ERROR_VALID_AZ09', 2);
+                return Lang::txt('JLIB_DATABASE_ERROR_VALID_AZ09', 2);
             }
 
             return false;
@@ -221,7 +223,7 @@ class User extends \Hubzero\Database\Relational
             $user = self::oneByUsername($data['username']);
 
             if ($user->get('id') && $user->get('id') != $data['id']) {
-                return \Lang::txt('JLIB_DATABASE_ERROR_USERNAME_INUSE');
+                return Lang::txt('JLIB_DATABASE_ERROR_USERNAME_INUSE');
             }
 
             return false;
@@ -264,7 +266,7 @@ class User extends \Hubzero\Database\Relational
     public function automaticRegisterIP($data)
     {
         if (!isset($data['registerIP'])) {
-            $data['registerIP'] = \Request::ip();
+            $data['registerIP'] = Request::ip();
         }
         return $data['registerIP'];
     }
@@ -519,7 +521,7 @@ class User extends \Hubzero\Database\Relational
                     $this->guest = false;
 
                     $data = App::get('user')->getInstance()->toArray();
-                    \Event::trigger('user.onUserLogin', array($data));
+                    Event::trigger('user.onUserLogin', array($data));
                 }
             } catch (Exception $e) {
                 // something likely went wrong with the jwt
@@ -757,7 +759,7 @@ class User extends \Hubzero\Database\Relational
             $this->isRoot = false;
 
             // Check for the configuration file failsafe.
-            $rootUser = \App::get('config')->get('root_user');
+            $rootUser = App::get('config')->get('root_user');
 
             // The root_user variable can be a numeric user ID or a username.
             if (is_numeric($rootUser) && $this->get('id') > 0 && $this->get('id') == $rootUser) {
@@ -792,7 +794,7 @@ class User extends \Hubzero\Database\Relational
     {
         // Brute force method: get all published category rows for the component and check each one
         // TODO: Move to ORM-based models
-        $db = \App::get('db');
+        $db = App::get('db');
         $query = $db->getQuery()
             ->select('c.id', 'id')
             ->select('a.name', 'asset_name')

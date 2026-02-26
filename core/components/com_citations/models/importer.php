@@ -10,7 +10,7 @@ namespace Components\Citations\Models;
 
 use Hubzero\Utility\Date;
 use Hubzero\Base\Obj;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Citation importer

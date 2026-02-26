@@ -9,6 +9,11 @@
 namespace Components\Cron\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,24 +27,23 @@ class Cron extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_cron')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_cron')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_CRON_JOBS'),
-            \Route::url('index.php?option=com_cron'),
+        Submenu::addEntry(
+            Lang::txt('COM_CRON_JOBS'),
+            Route::url('index.php?option=com_cron'),
             true
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_CRON_PLUGINS'),
-                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
+            Submenu::addEntry(
+                Lang::txt('COM_CRON_PLUGINS'),
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
             );
         }
-
 
         $controller = new Controllers\Jobs();
         $controller->execute();

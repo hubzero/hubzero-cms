@@ -10,11 +10,11 @@ namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Obj;
 use stdClass;
-use Component;
-use Request;
-use Config;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Resources doi service class

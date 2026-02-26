@@ -9,6 +9,7 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\App;
 
 /**
  * Publication license model
@@ -245,7 +246,7 @@ class License extends Relational
             return true;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $query = $db->getQuery()
             ->update($this->getTableName())
             ->set(array('main' => 1))

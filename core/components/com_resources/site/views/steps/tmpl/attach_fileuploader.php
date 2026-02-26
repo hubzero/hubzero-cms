@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Request;
+
 defined('_HZEXEC_') or die();
 
 $base = rtrim(Request::base(true), '/');

@@ -8,6 +8,8 @@
 
 namespace Components\Search\Models\Basic;
 
+use Hubzero\Facades\Route;
+
 /**
  * Abstract search result
  */
@@ -244,7 +246,7 @@ abstract class Result
                 $this->canonicalized_link = $this->link;
             } else {
                 $base = rtrim(\Request::base(), '/');
-                $route = ltrim(\Route::url($this->link), '/');
+                $route = ltrim(Route::url($this->link), '/');
                 $this->canonicalized_link = $base . '/' . substr($route, strlen(\Request::base(true)));
             }
         }

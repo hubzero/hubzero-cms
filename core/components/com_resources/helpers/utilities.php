@@ -9,8 +9,9 @@
 namespace Components\Resources\Helpers;
 
 use Exception;
-use Component;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Utility methods
@@ -61,7 +62,7 @@ class Utilities
      */
     public static function normalizePath($path)
     {
-        $path = \Filesystem::cleanPath($path);
+        $path = Filesystem::cleanPath($path);
 
         // Make sure the path doesn't end with a slash
         $path = rtrim($path, DS);

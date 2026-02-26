@@ -17,13 +17,13 @@ use Components\Events\Models\Tags;
 use Components\Events\Helpers\Html;
 use Hubzero\Component\AdminController;
 use Exception;
-use App;
-use Config;
-use Date;
-use Lang;
-use Request;
-use Route;
-use User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Events controller for entries
@@ -233,7 +233,7 @@ class Events extends AdminController
             }
         } else {
             $this->view->row->state = 0;
-            $this->view->row->time_zone = \Config::get('offset');
+            $this->view->row->time_zone = Config::get('offset');
             $this->view->row->content = '';
             $this->view->row->title = '';
             $this->view->row->adresse_info = '';
@@ -460,7 +460,7 @@ class Events extends AdminController
 
         // make sure we have a start date
         if (!$row->publish_up) {
-            $row->publish_up = \Date::toSql();
+            $row->publish_up = Date::toSql();
         }
 
         // If this is a new event, publish it, otherwise retain its state

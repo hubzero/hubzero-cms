@@ -9,6 +9,9 @@
 namespace Plugins\Whatsnew\Resources;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * What's New Plugin class for com_resources entries
@@ -152,7 +155,7 @@ class Resources extends Plugin
         }
 
         $access = array(0, 3);
-        if (!\User::isGuest()) {
+        if (!User::isGuest()) {
             $access[] = 1;
         }
 

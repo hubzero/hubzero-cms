@@ -9,6 +9,18 @@
 namespace Plugins\Groups\Forum;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
@@ -63,7 +75,7 @@ class Forum extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
@@ -1199,7 +1211,7 @@ class Forum extends Plugin
         $this->_authorize('post');
 
         // Get all the likes of this thread
-        $db = \App::get('db');
+        $db = App::get('db');
         $queryLikes = "SELECT LIKES.threadId as 'threadId', LIKES.postId as 'postId', 
 		  LIKES.userId as 'userId', USERS.name as 'userName', USERS.email as 'userEmail' 
 		  FROM #__forum_posts_like as LIKES, #__users AS USERS
@@ -1368,7 +1380,7 @@ class Forum extends Plugin
                 $moving = true;
             }
 
-            $fields['modified'] = \Date::toSql();
+            $fields['modified'] = Date::toSql();
             $fields['modified_by'] = User::get('id');
         }
 
@@ -1941,7 +1953,7 @@ class Forum extends Plugin
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

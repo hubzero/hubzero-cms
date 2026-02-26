@@ -9,6 +9,7 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Models\Member;
+use Hubzero\Facades\App;
 
 /**
  * Courses model class for a student
@@ -34,7 +35,7 @@ class Student extends Member
      */
     public function __construct($uid, $cid = null, $oid = null, $sid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;

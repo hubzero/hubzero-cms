@@ -9,11 +9,11 @@
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 use stdClass;
-use Request;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Collection post model

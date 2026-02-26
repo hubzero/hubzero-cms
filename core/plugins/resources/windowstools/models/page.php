@@ -9,8 +9,8 @@
 namespace Plugins\Resources\Windowstools\Models;
 
 use Hubzero\Database\Relational;
-use User;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Resource page model

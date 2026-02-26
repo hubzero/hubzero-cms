@@ -12,6 +12,11 @@
 namespace Plugins\Support\Captcha;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Captcha extends Plugin
 {

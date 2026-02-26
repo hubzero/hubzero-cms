@@ -10,6 +10,10 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 use Hubzero\User\Group;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 /**
  * macro class for displaying an image slider
@@ -57,14 +61,14 @@ class Slider extends Macro
         $base_url = '';
 
         // needed objects
-        $db     = \App::get('db');
-        $option = \Request::getCmd('option');
-        $config = \Component::params($option);
+        $db     = App::get('db');
+        $option = Request::getCmd('option');
+        $config = Component::params($option);
 
         // define a base url
         switch ($option) {
             case 'com_groups':
-                $cn = \Request::getString('cn');
+                $cn = Request::getString('cn');
                 $group = Group::getInstance($cn);
 
                 $base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;
@@ -115,11 +119,11 @@ class Slider extends Macro
 
         $cssPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css';
         $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js';
-        \Document::addStyleSheet(
-            \Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
+        Document::addStyleSheet(
+            Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
         );
-        \Document::addScript(
-            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
+        Document::addScript(
+            Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
         );
 
         return $html;

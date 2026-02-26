@@ -11,8 +11,8 @@ namespace Components\Citations\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Citations\Models\Citation;
 use stdClass;
-use Request;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * API controller class for Citations

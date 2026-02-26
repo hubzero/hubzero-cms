@@ -24,17 +24,20 @@ use Components\Services\Models\Service;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
-use Request;
-use Pathway;
-use Event;
-use Route;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 use ZipArchive;
-use App;
-use Component;
-use Config;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Notify;
 
 /**
  * Jobs controller class for postings
@@ -118,7 +121,7 @@ class Jobs extends SiteController
         } else if ($this->_task && $this->_task != 'all' && $this->_task != 'view') {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
-        \Document::setTitle($this->_title);
+        Document::setTitle($this->_title);
     }
 
     /**
@@ -398,7 +401,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -495,7 +498,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -586,7 +589,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         $this->view->setName('subscribe')
@@ -603,7 +606,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -782,7 +785,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -826,7 +829,7 @@ class Jobs extends SiteController
 
         // cancel previous subscription & issue a refund if applicable
         if ($subscription->cancel($refund, $unitsleft)) {
-            \Notify::success(Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED'));
+            Notify::success(Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_CANCELLED'));
         }
 
         App::redirect(
@@ -843,7 +846,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -942,7 +945,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         $this->view->setName('dashboard')
@@ -1046,7 +1049,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         $view->display();
@@ -1119,15 +1122,21 @@ class Jobs extends SiteController
                 throw new \Exception($ja->getError(), 500);
                 return;
             } else {
-                $this->_msg = $this->_task == 'withdraw' ? Lang::txt('COM_JOBS_MSG_APPLICATION_WITHDRAWN') : Lang::txt('COM_JOBS_MSG_APPLICATION_ACCEPTED');
-                $this->_msg = $appid ? Lang::txt('COM_JOBS_MSG_APPLICATION_EDITS_ACCEPTED') : $this->_msg_passed;
-                \Notify::success($this->_msg);
+                if ($this->_task == 'withdraw') {
+                    $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_WITHDRAWN');
+                } else {
+                    $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_ACCEPTED');
+                }
+                if ($appid) {
+                    $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_EDITS_ACCEPTED');
+                }
+                Notify::success($this->_msg);
             }
         }
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         // return to the job posting
@@ -1253,7 +1262,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         $this->view->setName('job')
@@ -1278,7 +1287,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1370,14 +1379,20 @@ class Jobs extends SiteController
                 $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_CANT_PUBLISH_OVER_LIMIT'));
             } else {
                 // confirm
-                $job->status   = !$autoapprove && !$this->_masterAdmin ? 0 : 1;
-                $job->opendate = !$autoapprove && !$this->_masterAdmin ? '' : Date::toSql(); // set open date as of now, if confirming new ad publication
-                $this->_msg    = !$autoapprove && !$this->_masterAdmin ? Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
-                \Notify::success($this->_msg);
+                $needsApproval = !$autoapprove && !$this->_masterAdmin;
+                $job->status   = $needsApproval ? 0 : 1;
+                // set open date as of now, if confirming new ad publication
+                $job->opendate = $needsApproval ? '' : Date::toSql();
+                if ($needsApproval) {
+                    $this->_msg = Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL');
+                } else {
+                    $this->_msg = Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
+                }
+                Notify::success($this->_msg);
             }
         } elseif ($job->status == 1 && $this->_task == 'unpublish') {
             $job->status = 3;
-            \Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
+            Notify::warning(Lang::txt('COM_JOBS_MSG_JOB_UNPUBLISHED'));
         } elseif ($job->status == 3 && $this->_task == 'reopen') {
             // make sure we aren't over quota
             $allowedAds = $this->_masterAdmin && $employerid == 1 ? 1 : $this->_checkQuota($job);
@@ -1386,7 +1401,7 @@ class Jobs extends SiteController
                 $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_CANT_REOPEN_OVER_LIMIT'));
             } else {
                 $job->status = 1;
-                \Notify::success(Lang::txt('COM_JOBS_MSG_JOB_REOPENED'));
+                Notify::success(Lang::txt('COM_JOBS_MSG_JOB_REOPENED'));
             }
         } elseif ($this->_task == 'remove') {
             $job->status = 2;
@@ -1424,7 +1439,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         App::redirect(
@@ -1448,7 +1463,7 @@ class Jobs extends SiteController
 
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1568,7 +1583,7 @@ class Jobs extends SiteController
 
         // Set any errors
         if ($this->getError()) {
-            \Notify::error($this->getError());
+            Notify::error($this->getError());
         }
 
         $this->view->setName('editjob')
@@ -1797,7 +1812,7 @@ class Jobs extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            \Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
+            Notify::warning(Lang::txt('COM_JOBS_PLEASE_LOGIN_ACCESS_EMPLOYER'));
             $this->login();
             return;
         }
@@ -1826,7 +1841,7 @@ class Jobs extends SiteController
             $result = $xserver->serve_attachment($archive['path'], $archive['name'], false);
 
             // Delete downloaded zip
-            \Filesystem::delete($archive['path']);
+            Filesystem::delete($archive['path']);
 
             if (!$result) {
                 throw new Exception(Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'), 500);

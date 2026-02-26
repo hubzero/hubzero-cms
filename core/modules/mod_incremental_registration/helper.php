@@ -13,11 +13,11 @@ use Components\Members\Models\Incremental\Options;
 use Components\Members\Models\Incremental\Groups;
 use Components\Members\Models\Incremental\Awards;
 use Component;
-use Request;
-use User;
-use App;
-use Document;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
 
 /**
  * Incremental Registration Module controller class

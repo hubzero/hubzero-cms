@@ -9,6 +9,14 @@
 namespace Plugins\Projects\Links;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
 use voku\helper\HtmlDomParser;
@@ -295,12 +303,12 @@ class Links extends Plugin
                 }
             }
 
-            \Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
         }
 
         // Pass success or error message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         }
 
         // Build pub url

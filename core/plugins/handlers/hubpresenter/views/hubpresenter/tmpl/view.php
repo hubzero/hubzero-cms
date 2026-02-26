@@ -11,6 +11,11 @@
 defined('_HZEXEC_') or die();
 
 use Hubzero\Content\Moderator;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 $this->oWidth   = '780';
 $this->oHeight  = '460';

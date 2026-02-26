@@ -9,10 +9,10 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
-use Date;
-use User;
-use Component;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for publications

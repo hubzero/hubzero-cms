@@ -9,9 +9,9 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Course announcement table class
@@ -120,7 +120,7 @@ class Announcement extends Table
         }
 
         if (isset($filters['published'])) {
-            $now = \Date::toSql();
+            $now = Date::toSql();
             $where[] = "(a.`publish_up` IS NULL OR a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= "
                 . $this->_db->quote($now) . ")";
             $where[] = "(a.`publish_down` IS NULL OR a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= "

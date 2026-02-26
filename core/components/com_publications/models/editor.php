@@ -9,6 +9,7 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 /**
  * Model for a handler editor
@@ -49,7 +50,7 @@ class Editor extends Obj
      */
     public function __construct($handler, $configs)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->handler  = $handler;
         $this->configs  = $configs;

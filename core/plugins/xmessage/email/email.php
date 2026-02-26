@@ -3,6 +3,7 @@
 namespace Plugins\Xmessage\Email;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Config;
 
 /**
  * @package    hubzero-cms

@@ -10,7 +10,7 @@ namespace Components\Citations\Helpers;
 
 use Components\Citations\Download\Downloadable;
 use Exception;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Citations class for downloading a citation of a specific file type

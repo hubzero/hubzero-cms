@@ -8,6 +8,8 @@
 
 namespace Components\Dataviewer\Site;
 
+use Hubzero\Facades\Component;
+
 class DvConfig
 {
     public static $dv_conf = [];
@@ -29,7 +31,7 @@ class DvConfig
         define('DV_COM_HTML', DV_COM_PATH . DS . 'html');
         define('DV_PATH_HTML', __DIR__ . DS . 'html');
 
-        $params = \Component::params('com_dataviewer');
+        $params = Component::params('com_dataviewer');
 
         $rowOptions = array(5, 10, 25, 50, 100);
         static::$dv_conf['settings']['num_rows'] = array(

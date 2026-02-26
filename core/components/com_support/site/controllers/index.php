@@ -9,9 +9,9 @@
 namespace Components\Support\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
 
 /**
  * Displays support pages

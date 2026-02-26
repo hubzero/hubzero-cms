@@ -10,10 +10,11 @@ namespace Components\Developer\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\Api\Doc\Generator;
-use Request;
-use Pathway;
-use Config;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API Controller
@@ -145,12 +146,12 @@ class Api extends SiteController
     {
         $tokens = array();
 
-        if (!\User::isGuest()) {
+        if (!User::isGuest()) {
             // Ensure model is loaded
 
             // Get all active tokens
             $tokens = \Components\Developer\Models\Accesstoken::all()
-                ->whereEquals('uidNumber', \User::get('id'))
+                ->whereEquals('uidNumber', User::get('id'))
                 ->where('expires', '>', \Hubzero\Utility\Date::of('now')->toSql())
                 ->whereEquals('state', 1)
                 ->order('created', 'desc')

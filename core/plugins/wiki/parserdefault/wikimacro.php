@@ -12,6 +12,9 @@
  */
 namespace Plugins\Wiki\Parserdefault;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+
 class WikiMacro
 {
     /**

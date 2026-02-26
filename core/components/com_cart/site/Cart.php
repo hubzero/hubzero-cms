@@ -8,9 +8,10 @@
 
 namespace Components\Cart\Site;
 
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Lang;
 
 /**
  * Component entry point
@@ -24,13 +25,14 @@ class Cart extends AbstractComponent
      */
     protected function execute(): void
     {
+        // require base component controller
 
         $controllerName = Request::getCmd('controller', '');
         if (empty($controllerName)) {
             App::redirect(Request::base() . 'cart/cart');
         }
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-            App::abort(404, \Lang::txt('Page Not Found'));
+            App::abort(404, Lang::txt('Page Not Found'));
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

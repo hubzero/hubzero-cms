@@ -47,7 +47,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
 
             if (!\Hubzero\Access\Map::addUserToGroup($userId, $userGId)) {
                 $errorMsg = 'Failed to add user to group. Cart #' . $this->crtId;
-                mail(Config::get('mailfrom'), 'Error adding to the group', $errorMsg);
+                mail(\Hubzero\Facades\Config::get('mailfrom'), 'Error adding to the group', $errorMsg);
             }
 
             $table = \Hubzero\Facades\User::getInstance($userId);

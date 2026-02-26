@@ -10,6 +10,7 @@ namespace Components\Search\Models\Basic;
 
 use Components\Search\Helpers\Basic;
 use Hubzero\Base\Obj;
+use Hubzero\Facades\Event;
 
 /**
  * Search terms
@@ -191,7 +192,7 @@ class Terms extends Obj
             }
         }
         $chunks = array_unique(array_merge(array_map([Basic::class, 'stem'], $chunks), $chunks));
-        \Event::trigger('onSearchExpandTerms', array(&$chunks));
+        Event::trigger('onSearchExpandTerms', array(&$chunks));
 
         return array_unique($chunks);
     }

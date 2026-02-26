@@ -9,7 +9,7 @@
 namespace Components\Courses\Models;
 
 use Hubzero\Base\Model;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for form reporting/data

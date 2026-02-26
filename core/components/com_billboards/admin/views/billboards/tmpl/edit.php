@@ -8,6 +8,10 @@
 
 use Components\Billboards\Models\Collection;
 use Components\Billboards\Models\Billboard;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
 
 // No direct access
 defined('_HZEXEC_') or die();

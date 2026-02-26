@@ -9,7 +9,7 @@
 namespace Components\Resources\Models;
 
 use Exception;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Abstract Format for resources elements

@@ -11,9 +11,9 @@ namespace Components\Courses\Site\Controllers;
 use Components\Courses\Models\Course;
 use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
-use Lang;
-use Request;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Manage a course's manager entries

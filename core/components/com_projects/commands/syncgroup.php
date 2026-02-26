@@ -12,6 +12,8 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Components\Projects\Tables\Owner;
 use Hubzero\Utility\Ldap;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Re-sync project login groups (pr-<alias>) to LDAP.
@@ -45,8 +47,8 @@ class Syncgroup extends Base implements CommandInterface
      **/
     public function deleted()
     {
-        $db     = \App::get('db');
-        $prefix = \Component::params('com_projects')->get('group_prefix', 'pr-');
+        $db     = App::get('db');
+        $prefix = Component::params('com_projects')->get('group_prefix', 'pr-');
         $alias  = $this->arguments->getOpt('alias');
         $all    = (bool) $this->arguments->getOpt('all');
         $dry    = (bool) $this->arguments->getOpt('dry-run');

@@ -9,6 +9,16 @@
 namespace Plugins\Authentication\Facebook;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\User;
 
 class Facebook extends \Hubzero\Plugin\OauthClient
 {

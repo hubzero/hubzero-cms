@@ -11,6 +11,7 @@ namespace Bootstrap\Site\Providers;
 use Hubzero\Document\Manager;
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
+use Hubzero\Facades\User;
 
 /**
  * Toolbar service provider
@@ -134,7 +135,7 @@ class DocumentServiceProvider extends Middleware
         $document->parse($params);
 
         $caching = false;
-        if ($this->app['config']->get('caching', 2) == 2 && !\User::get('id')) {
+        if ($this->app['config']->get('caching', 2) == 2 && !User::get('id')) {
             $caching = true;
         }
         $this->app['dispatcher']->trigger('system.onBeforeRender');

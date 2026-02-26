@@ -10,6 +10,7 @@ namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Hubzero\Content\Migration\SkipMigrationException;
+use Hubzero\Facades\Config;
 
 /**
  * Migration script for usage setup
@@ -32,19 +33,19 @@ class Migration20150904235936ComUsage extends Base
         $options['database'] = $config->get('statsDBDatabase');
 
         if (empty($options['driver'])) {
-            $options['driver'] = \Config::get('dbtype');
+            $options['driver'] = Config::get('dbtype');
         }
         if (empty($options['host'])) {
-            $options['host'] = \Config::get('host');
+            $options['host'] = Config::get('host');
         }
         if (empty($options['user'])) {
-            $options['user'] = \Config::get('user');
+            $options['user'] = Config::get('user');
         }
         if (empty($options['password'])) {
-            $options['password'] = \Config::get('password');
+            $options['password'] = Config::get('password');
         }
         if (empty($options['database'])) {
-            $options['database'] = \Config::get('db') . '_metrics';
+            $options['database'] = Config::get('db') . '_metrics';
         }
 
         $originalDriver    = $options['driver'];

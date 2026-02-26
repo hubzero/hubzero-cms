@@ -11,13 +11,13 @@ namespace Components\Cart\Models;
 use Components\Cart\Models\Cart;
 use Components\Cart\Helpers\Helper;
 use Hubzero\Base\Model;
-use User;
+use Hubzero\Facades\User;
 use Components\Storefront\Models\Product;
-use App;
-use Component;
-use Lang;
-use Request;
-use Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Current user shopping cart
@@ -1537,7 +1537,7 @@ class CurrentCart extends Cart
             echo "<br>Lifting session cart";
         }
 
-        $session = \App::get('session');
+        $session = App::get('session');
         $cart = $session->get('cart');
 
         if ($cart && !empty($cart->crtId)) {
@@ -1599,7 +1599,7 @@ class CurrentCart extends Cart
      */
     private function updateSession()
     {
-        $session = \App::get('session');
+        $session = App::get('session');
         $session->set('cart', $this->cart);
     }
 
@@ -1611,7 +1611,7 @@ class CurrentCart extends Cart
      */
     private function clearSessionCart()
     {
-        $session = \App::get('session');
+        $session = App::get('session');
         $session->clear('cart');
     }
 
@@ -1704,7 +1704,7 @@ class CurrentCart extends Cart
         $this->db->query();
         $crtId = $this->db->insertid();
 
-        $session = \App::get('session');
+        $session = App::get('session');
         $cart->crtId = $crtId;
         $this->crtId = $cart->crtId;
         $session->set('cart', $cart);

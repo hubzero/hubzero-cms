@@ -10,6 +10,7 @@ namespace Components\Search\Models\Basic\Result;
 
 use Components\Search\Models\Basic\Result as SearchResult;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * Search result SQL
@@ -49,7 +50,7 @@ class Sql extends SearchResult
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function to_associative()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($this->sql);
 
         if (!($rows = $db->loadAssocList())) {

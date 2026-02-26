@@ -13,17 +13,17 @@ use Components\Content\Models\Article;
 use Components\Content\Site\Helpers\Query as HelperQuery;
 use Components\Content\Site\Helpers\Route as HelperRoute;
 use stdClass;
-use Document;
-use Pathway;
-use Request;
-use Config;
-use Event;
-use User;
-use Lang;
-use Html;
-use App;
-use Notify;
-use Route;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
 
 /**
  * Content articles controller

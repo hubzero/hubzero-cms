@@ -11,13 +11,13 @@ namespace Components\Feedback\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Feedback\Models\Quote;
 use Components\Members\Models\Member;
-use Filesystem;
-use Request;
-use Notify;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Feedback controller class for quotes

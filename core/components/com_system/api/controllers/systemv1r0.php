@@ -11,13 +11,13 @@ namespace Components\System\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\Installer\Admin\Helpers\Cli;
 use stdClass;
-use Component;
-use Request;
-use Config;
-use Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
 use Lang;
 use Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for system tasks

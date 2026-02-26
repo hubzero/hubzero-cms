@@ -8,6 +8,8 @@
 
 namespace Components\Cart\Lib\Payment\Dummy;
 
+use Hubzero\Facades\Request;
+
 /**
  * UPay payment provider
  */

@@ -13,12 +13,13 @@ use Hubzero\Utility\Date;
 use Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Event;
 use Route;
 use Lang;
 use User;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for forum posts
@@ -31,7 +32,7 @@ class Likesv1r0 extends ApiController
     // https://woo.aws.hubzero.org/api/forum/likes/list
     public function listTask()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__forum_posts_like`";
         $database->setQuery($query);
         $rows = $database->loadObjectList();
@@ -57,7 +58,7 @@ class Likesv1r0 extends ApiController
             throw new Exception("Please sign into post a Like", 404);
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $insertQuery = "INSERT INTO `#__forum_posts_like` (`threadId`, `postId`, `userId`, `created`)
 		  VALUES (?,?,?,?)";
 
@@ -77,7 +78,7 @@ class Likesv1r0 extends ApiController
         $userId = Request::getString('userId');
 
         // Open up the database tables
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $deleteQuery = "DELETE FROM `#__forum_posts_like` WHERE threadId = ? AND postId = ? AND userId = ?";
         $deleteVars = array($threadId, $postId, $userId);

@@ -10,12 +10,12 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
-use Filesystem;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Projects media controller class

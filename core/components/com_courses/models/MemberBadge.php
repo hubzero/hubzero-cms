@@ -8,6 +8,8 @@
 
 namespace Components\Courses\Models;
 
+use Hubzero\Facades\App;
+
 /**
  * Courses model class for badges
  */
@@ -37,7 +39,7 @@ class MemberBadge extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new $this->_tbl_name($this->_db);
 

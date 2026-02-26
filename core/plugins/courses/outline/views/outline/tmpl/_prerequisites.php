@@ -1,5 +1,7 @@
 <?php
 
+use Hubzero\Facades\App;
+
 // @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms

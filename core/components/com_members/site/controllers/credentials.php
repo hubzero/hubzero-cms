@@ -10,14 +10,18 @@ namespace Components\Members\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Exception;
-use Request;
-use Session;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
-use Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Pathway;
 
 /**
  * Members controller class for profiles
@@ -600,11 +604,11 @@ class Credentials extends SiteController
      */
     private function setTitle()
     {
-        \Document::setTitle(
+        Document::setTitle(
             Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task))
         );
 
-        \Pathway::append(
+        Pathway::append(
             Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
             'index.php?option=' . $this->_option . '&task=' . $this->_task
         );
@@ -620,13 +624,13 @@ class Credentials extends SiteController
      */
     private function hasExceededResetLimit($user)
     {
-        $params     = \Component::params('com_members');
+        $params     = Component::params('com_members');
         $resetCount = (int)$params->get('reset_count', 10);
         $resetHours = (int)$params->get('reset_time', 1);
         $result     = true;
 
         // Get the user's tokens
-        $threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$resetHours} hours ago"));
+        $threshold = date("Y-m-d H:i:s", strtotime(Date::toSql() . " {$resetHours} hours ago"));
         $tokens    = $user->tokens()->where('created', '>=', $threshold)->rows();
 
         if ($tokens->count() < $resetCount) {

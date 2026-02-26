@@ -13,6 +13,8 @@
 namespace Plugins\Support\Blog;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 class Blog extends Plugin
 {

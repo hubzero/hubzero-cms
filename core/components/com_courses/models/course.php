@@ -10,8 +10,9 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for a course
@@ -919,7 +920,7 @@ class Course extends Base
 
             // Copy tags
             $tagger = new Tags($c_id);
-            $this->tag($tagger->render('string', array('admin' => 1)), \User::get('id'), 1);
+            $this->tag($tagger->render('string', array('admin' => 1)), User::get('id'), 1);
         }
 
         return true;

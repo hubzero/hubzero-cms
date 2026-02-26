@@ -12,6 +12,7 @@
 namespace Plugins\Resources\Collections;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
 
 class Collections extends Plugin
 {

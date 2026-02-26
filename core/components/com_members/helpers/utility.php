@@ -8,10 +8,11 @@
 
 namespace Components\Members\Helpers;
 
-use Component;
-use Config;
-use Lang;
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Helper class for registration.
@@ -269,7 +270,7 @@ class Utility
      */
     public static function isActiveCode($code)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT `id` FROM `#__users` WHERE `activation` = " . $db->quote('-' . $code) . " LIMIT 1";
         $db->setQuery($query);

@@ -10,7 +10,8 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Courses model class for a course
@@ -49,7 +50,7 @@ class Code extends Base
      */
     public function __construct($oid = null, $section_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;

@@ -11,10 +11,10 @@ namespace Components\System\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Components\System\Models\Mediatracking;
 use Components\System\Models\Mediatrackingdetailed;
-use App;
-use Request;
-use User;
-use Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * API controller class for system tasks

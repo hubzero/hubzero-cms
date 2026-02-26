@@ -10,6 +10,7 @@ namespace Hubzero\Session\Storage;
 
 use Hubzero\Session\Store;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * Database session storage handler
@@ -48,7 +49,7 @@ class Database extends Store
     public function __construct($options = array())
     {
         if (!isset($options['database']) || !($options['database'] instanceof Database)) {
-            $options['database'] = \App::get('db');
+            $options['database'] = App::get('db');
         }
 
         $this->connection = $options['database'];

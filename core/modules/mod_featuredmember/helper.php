@@ -11,8 +11,9 @@ namespace Modules\Featuredmember;
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
 use Hubzero\Database\Expression;
-use Component;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying featured members
@@ -31,7 +32,7 @@ class Helper extends Module
     public function run()
     {
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $this->row = null;
 
         // Randomly choose one

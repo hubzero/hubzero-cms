@@ -13,15 +13,15 @@ use Hubzero\Item\Comment;
 use Components\Wishlist\Models\Wishlist;
 use Components\Wishlist\Models\Wish;
 use Exception;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Event;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Cotnroller class for comments

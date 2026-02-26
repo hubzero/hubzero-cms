@@ -9,6 +9,7 @@
 namespace Components\Groups\Api;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
 
 /**
  * Routing class for the component
@@ -54,7 +55,7 @@ class Router extends Base
             // /groups/{id|cn}
             if (is_numeric($segments[0]) || !in_array($segments[0], array('list', 'create'))) {
                 $vars['id'] = $segments[0];
-                if (\App::get('request')->method() == 'GET') {
+                if (App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
             } else {
@@ -86,7 +87,7 @@ class Router extends Base
                         // /groups/{id|cn}/{plugin}/{record}
                         if (is_numeric($segments[2])) {
                             $vars['record_id'] = $segments[2];
-                            if (\App::get('request')->method() == 'GET') {
+                            if (App::get('request')->method() == 'GET') {
                                 $vars['task'] = 'read';
                             }
                             if (isset($segments[3])) {

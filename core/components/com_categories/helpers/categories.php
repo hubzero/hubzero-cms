@@ -8,9 +8,10 @@
 
 namespace Components\Categories\Helpers;
 
-use Component;
-use Lang;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Categories Class.
@@ -212,7 +213,7 @@ class Categories
             ->resetDepth();
 
         if ($this->_options['access']) {
-            $query->whereIn('c.access', \User::getAuthorisedViewLevels());
+            $query->whereIn('c.access', User::getAuthorisedViewLevels());
         }
 
         if ($this->_options['published'] == 1) {

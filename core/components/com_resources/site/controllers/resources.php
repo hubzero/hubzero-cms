@@ -21,17 +21,18 @@ use Components\Resources\Helpers\Hubpresenter;
 use Components\Resources\Helpers\Helper;
 use Hubzero\Component\SiteController;
 use stdClass;
-use Document;
-use Pathway;
-use Request;
-use Route;
-use Event;
-use Lang;
-use User;
-use App;
-use Component;
-use Config;
-use Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Resources controller class
@@ -750,7 +751,7 @@ class Resources extends SiteController
         $path = $base . $path;
 
         // we must have a folder
-        if (!\Filesystem::exists(PATH_APP . DS . $path)) {
+        if (!Filesystem::exists(PATH_APP . DS . $path)) {
             $this->setError(Lang::txt('Folder containing assets does not exist.'));
 
             $return = array();
@@ -763,7 +764,7 @@ class Resources extends SiteController
 
         //check to make sure we have a presentation document defining cuepoints, slides, and media
         //$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
-        $manifests = \Filesystem::files(PATH_APP . DS . $path, '.json');
+        $manifests = Filesystem::files(PATH_APP . DS . $path, '.json');
         $manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
         $manifest_path_xml  = PATH_APP . DS . $path . DS . 'presentation.xml';
 
@@ -788,7 +789,7 @@ class Resources extends SiteController
             $this->setError(Lang::txt('Path to media does not exist.'));
         } else {
             //get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-            $media = \Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
+            $media = Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
             $ext = array();
             foreach ($media as $m) {
                 $parts = explode('.', $m);
@@ -802,7 +803,7 @@ class Resources extends SiteController
 
             //make sure if any slides are video we have three formats of video and backup image for mobile
             $slide_path = $media_path . DS . 'slides';
-            $slides = \Filesystem::files($slide_path, '', false, false);
+            $slides = Filesystem::files($slide_path, '', false, false);
 
             //array to hold slides with video clips
             $slide_video = array();
@@ -1006,7 +1007,7 @@ class Resources extends SiteController
             // unwritable filespace should not cost the user the player. An empty
             // manifest is never cached, or it would mask files landing later.
             if (count($manifest->presentation->media) > 0) {
-                \Filesystem::write($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT));
+                Filesystem::write($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT));
             }
         }
 
@@ -1144,7 +1145,7 @@ class Resources extends SiteController
         $manifest->presentation->subtitles = array();
 
         //get the videos
-        $videos = \Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+        $videos = Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
         //add each video to manifest
         foreach ($videos as $k => $video) {
@@ -1161,7 +1162,7 @@ class Resources extends SiteController
         }
 
         //get the subs (SRT and VTT caption formats)
-        $subtitles = \Filesystem::files($path, '.srt|.SRT|.vtt|.VTT');
+        $subtitles = Filesystem::files($path, '.srt|.SRT|.vtt|.VTT');
 
         // Map of ISO 639-1 language codes to display names
         $langNames = array(
@@ -1338,7 +1339,7 @@ class Resources extends SiteController
         // Let's get down to business...
 
         // Get contribtool params
-        $tconfig = \Component::params('com_tools');
+        $tconfig = Component::params('com_tools');
 
         // Trigger the functions that return the areas we'll be using
         $cats = Event::trigger('resources.onResourcesAreas', array(
@@ -1619,7 +1620,7 @@ class Resources extends SiteController
 
         $doc->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle), 250));
         $doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
-        $doc->copyright = \Lang::txt('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
+        $doc->copyright = Lang::txt('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category = Lang::txt('COM_RESOURCES_RSS_CATEGORY');
         $doc->link = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id);
 
@@ -1820,7 +1821,7 @@ class Resources extends SiteController
 
                             $enclosure = new \Hubzero\Document\Type\Feed\Enclosure();
                             $enclosure->url = $podcast;
-                            switch (\Filesystem::extension($podcast)) {
+                            switch (Filesystem::extension($podcast)) {
                                 case 'm4v':
                                     $enclosure->type = 'video/x-m4v';
                                     break;
@@ -2196,7 +2197,7 @@ class Resources extends SiteController
             App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
         }
 
-        $ext = strtolower(\Filesystem::extension($path));
+        $ext = strtolower(Filesystem::extension($path));
 
         // Set disposition to attachment unless we think the browser can inline the file
 
@@ -2381,7 +2382,7 @@ class Resources extends SiteController
         $path .= $row->relativePath();
 
         if (!is_dir($path)) {
-            if (!\Filesystem::makeDirectory($path)) {
+            if (!Filesystem::makeDirectory($path)) {
                 $this->setError('Error. Unable to create path.');
             }
         }

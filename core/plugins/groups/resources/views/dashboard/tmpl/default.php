@@ -8,6 +8,9 @@
 
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Review;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();

@@ -9,8 +9,8 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Projects ToDo model

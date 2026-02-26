@@ -13,13 +13,13 @@ use Hubzero\Utility\Validate;
 use Hubzero\Mail\Message;
 use Components\Mailto\Site\Helpers\Mailto as MailtoHelper;
 use stdClass;
-use Request;
-use Session;
-use Config;
-use Notify;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Mailings controller

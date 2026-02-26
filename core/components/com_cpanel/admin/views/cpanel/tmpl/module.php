@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Module;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+
 // no direct access
 defined('_HZEXEC_') or die();
 

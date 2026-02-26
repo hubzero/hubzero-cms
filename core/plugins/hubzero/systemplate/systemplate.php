@@ -12,6 +12,7 @@
 namespace Plugins\Hubzero\Systemplate;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Systemplate extends Plugin
 {

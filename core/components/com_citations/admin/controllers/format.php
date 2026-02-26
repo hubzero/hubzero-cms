@@ -10,9 +10,9 @@ namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Format as CitationFormat;
-use Request;
-use Notify;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
 use App;
 
 /**

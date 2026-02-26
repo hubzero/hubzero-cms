@@ -9,7 +9,7 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a hidden element

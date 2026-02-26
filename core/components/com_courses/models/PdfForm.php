@@ -9,10 +9,12 @@
 namespace Components\Courses\Models;
 
 use ImagickException;
-use Component;
+use Hubzero\Facades\Component;
 use imagick;
-use App;
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 class PdfForm
 {
@@ -117,7 +119,7 @@ class PdfForm
 
         // If we don't already have one, create it
         if (!$dbh) {
-            $dbh = \App::get('db');
+            $dbh = App::get('db');
         }
 
         return $dbh;
@@ -205,7 +207,7 @@ class PdfForm
     public function eachPage($fun, $version = null)
     {
         if (!$this->id) {
-            \App::abort(422, 'No pages exist for equally nonexistent form');
+            App::abort(422, 'No pages exist for equally nonexistent form');
             return;
         }
 
@@ -258,8 +260,8 @@ class PdfForm
 
         $idx = 0;
         foreach ($images as $img) {
-            $session_id = \App::get('session')->getId();
-            $secret     = \Config::get('secret');
+            $session_id = App::get('session')->getId();
+            $secret     = Config::get('secret');
             $token      = hash('sha256', $session_id . ':' . $secret);
             $path       = '/api/courses/form/image?id=' . $this->getId() . '&file=' . $img . '&token=' . $token;
             $path      .= (isset($version_dir)) ? '&form_version=' . $version_dir : '';
@@ -702,7 +704,7 @@ class PdfForm
                 $base .= DS . max($versions);
             }
 
-            \Filesystem::copyDirectory($base, $this->base . $id);
+            Filesystem::copyDirectory($base, $this->base . $id);
         }
 
         // Copy questions

@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+
 defined('_HZEXEC_') or die();
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');
@@ -125,7 +131,7 @@ $sort = @$this->filters['sort'];
 <?php
 $k = 0;
 $i = 0;
-$db = \App::get('db');
+$db = App::get('db');
 
 foreach ($this->rows as $row) {
     switch ($row->pActive) {

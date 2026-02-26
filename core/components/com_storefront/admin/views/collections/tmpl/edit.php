@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Toolbar;
+
 defined('_HZEXEC_') or die();
 
 $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product');

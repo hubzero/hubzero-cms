@@ -8,11 +8,12 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
-use App;
-use Event;
-use Route;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Cart controller class
@@ -189,7 +190,7 @@ class Test extends ComponentController
         //$user->delete();
         //die;
 
-        \Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+        Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
         $this->view->display();
     }
@@ -246,7 +247,7 @@ class Test extends ComponentController
         //print_r($curl_result);
         die('+');
 
-        \Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+        Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
         $this->view->display();
     }

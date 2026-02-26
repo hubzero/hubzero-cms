@@ -16,18 +16,18 @@ use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers\Gitlab;
 use Components\Groups\Models\Orm\Field;
-use Filesystem;
-use Request;
-use Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
 use Nofity;
-use Event;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
-use Component;
-use Notify;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Notify;
 
 /**
  * Groups controller class for managing membership and group info
@@ -458,7 +458,7 @@ class Manage extends AdminController
         // get the source path
         $srcTplPath = null;
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $query = $db->getQuery();
         $query->select('s.id, s.home, s.template, s.params, e.protected');
         $query->from('#__template_styles', 's');

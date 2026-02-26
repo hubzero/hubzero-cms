@@ -3,6 +3,9 @@
 namespace Plugins\EditorsXtd\Pagebreak;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * @package    hubzero-cms

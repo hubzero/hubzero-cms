@@ -9,6 +9,7 @@
 namespace Components\Dataviewer\Site\Lib;
 
 use Components\Dataviewer\Site\DvConfig;
+use Hubzero\Facades\Request;
 
 class Db
 {
@@ -257,9 +258,9 @@ class Db
         for ($i = 0; $i < count($cols_vis); $i++) {
             $col_id = $cols_vis[$i];
             $col = $cols[$col_id];
-            $searchable = \Request::getString('bSearchable_' . $i, 'false');
-            $fieldtype = \Request::getString('fieldtype_' . $i, 'string');
-            $search_str = \Request::getString('sSearch_' . $i, '');
+            $searchable = Request::getString('bSearchable_' . $i, 'false');
+            $fieldtype = Request::getString('fieldtype_' . $i, 'string');
+            $search_str = Request::getString('sSearch_' . $i, '');
 
             if ($searchable === 'true' && $search_str !== '') {
                 $colExpr = '`' . $col_id . '`';
@@ -286,7 +287,7 @@ class Db
         }
 
         // Filtered views
-        $filters = \Request::getVar('filter', false);
+        $filters = Request::getVar('filter', false);
         if ($filters !== false) {
             $filters = explode('||', $filters);
             foreach ($filters as $filter) {
@@ -537,7 +538,7 @@ class Db
         $where_search = array();
         $having_search = array();
 
-        $search_str = \Request::getString('sSearch', '');
+        $search_str = Request::getString('sSearch', '');
         if ($search_str != '') {
             for ($i = 0; $i < count($cols_vis); $i++) {
                 $col_id = $cols_vis[$i];
@@ -640,15 +641,15 @@ class Db
 
         $order = array();
 
-        $sorting = \Request::getVar('iSortCol_0', false);
+        $sorting = Request::getVar('iSortCol_0', false);
         if ($sorting !== false && count($cols_vis) > 0) {
-            $sort_col_count = \Request::getInt('iSortingCols', 0);
+            $sort_col_count = Request::getInt('iSortingCols', 0);
             for ($i = 0; $i < $sort_col_count; $i++) {
-                $idx = \Request::getInt('iSortCol_' . $i, null);
-                $sortable = \Request::getString('bSortable_' . $idx, 'false');
+                $idx = Request::getInt('iSortCol_' . $i, null);
+                $sortable = Request::getString('bSortable_' . $idx, 'false');
                 if ($sortable === 'true') {
                     $col_id = $cols_vis[$idx];
-                    $sort_dir = \Request::getString('sSortDir_' . $i, 'asc');
+                    $sort_dir = Request::getString('sSortDir_' . $i, 'asc');
                     if ($cols[$col_id]['aggr']) {
                         $order[] = '`' . $col_id . '` ' . $sort_dir;
                     } elseif ($cols[$col_id]['raw']) {
@@ -672,9 +673,9 @@ class Db
 
         // Limit
         $limit = '';
-        $no_limit = \Request::getVar('nolimit', false);
-        $limit_start = \Request::getVar('iDisplayStart', false);
-        $limit_length = \Request::getVar('iDisplayLength', DvConfig::$dv_conf['settings']['limit']);
+        $no_limit = Request::getVar('nolimit', false);
+        $limit_start = Request::getVar('iDisplayStart', false);
+        $limit_length = Request::getVar('iDisplayLength', DvConfig::$dv_conf['settings']['limit']);
         if ($no_limit === false && $limit_start !== false && $limit_length != '-1') {
             $limit = " LIMIT $limit_start, $limit_length";
         } elseif ($no_limit === false && isset($dd['serverside']) && $dd['serverside']) {

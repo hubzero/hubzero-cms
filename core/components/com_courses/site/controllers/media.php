@@ -13,13 +13,14 @@ use Components\Courses\Models\Course;
 use Components\Resources\Models\MediaTracking\Detailed;
 use Components\Resources\Models\MediaTracking;
 use stdClass;
-use Filesystem;
-use Request;
-use Notify;
-use Date;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Courses controller class for media
@@ -33,15 +34,15 @@ class Media extends SiteController
      */
     public function trackingTask()
     {
-        if (!file_exists(\Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php')) {
+        if (!file_exists(Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php')) {
             return;
         }
 
         // Include need media tracking library
 
         // Instantiate objects
-        $database = \App::get('db');
-        $session  = \App::get('session');
+        $database = App::get('db');
+        $session  = App::get('session');
 
         // Get request vars
         $time       = Request::getInt('time', 0);
@@ -200,7 +201,7 @@ class Media extends SiteController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -291,7 +292,7 @@ class Media extends SiteController
         $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

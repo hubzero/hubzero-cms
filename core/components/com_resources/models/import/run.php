@@ -9,9 +9,9 @@
 namespace Components\Resources\Models\Import;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource import run model

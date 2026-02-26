@@ -9,14 +9,14 @@
 namespace Components\Courses\Models\Assets;
 
 use Components\Courses\Tables;
-use Request;
-use Filesystem;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
 use User;
-use Date;
+use Hubzero\Facades\Date;
 use stdClass;
-use App;
-use Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Subtitle Asset handler class

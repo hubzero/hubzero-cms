@@ -12,14 +12,15 @@ use Components\Config\Models;
 use Hubzero\Component\AdminController;
 use Hubzero\Error;
 use Exception;
-use Component;
-use Notify;
-use Route;
-use User;
-use App;
-use Date;
-use Lang;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Controller class for the Application config
@@ -220,7 +221,7 @@ class Application extends AdminController
             $updated = Date::of('now')->toSql();
 
             // Reset the Hub secret:
-            $query = \App::get('db')->getQuery();
+            $query = App::get('db')->getQuery();
             $result = $query->update($tableName)
                 ->set(['value' => $secret,
                        'updated' => $updated])
@@ -239,9 +240,9 @@ class Application extends AdminController
     public function refreshHelp()
     {
         if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false) {
-            App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
-        } elseif (!\Filesystem::write(PATH_APP . '/help/helpsites.xml', $data)) {
-            App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
+            App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
+        } elseif (!Filesystem::write(PATH_APP . '/help/helpsites.xml', $data)) {
+            App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
         } else {
             App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
         }

@@ -9,7 +9,7 @@
 namespace Components\Groups\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Groups Module table

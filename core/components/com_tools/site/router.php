@@ -9,6 +9,9 @@
 namespace Components\Tools\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Routing class for the component
@@ -129,7 +132,7 @@ class Router extends Base
                 case 'remove':
                 case 'save':
                     $vars['option'] = 'com_tools';
-                    $vars['controller'] = \Request::getCmd('controller', 'authors');
+                    $vars['controller'] = Request::getCmd('controller', 'authors');
                     $vars['task'] = $segments[0];
                     break;
 
@@ -230,7 +233,7 @@ class Router extends Base
                 case 'report':
                     $url = 'index.php?option=com_support&task=tickets&find=group:app-'
                         . $segments[0];
-                    \App::redirect(\Route::url($url));
+                    App::redirect(Route::url($url));
                     exit();
                 break;
 

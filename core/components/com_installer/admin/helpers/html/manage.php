@@ -8,6 +8,8 @@
 
 namespace Components\Installer\Admin\Helpers\Html;
 
+use Hubzero\Facades\Html;
+
 /**
  * HTML Helper
  */

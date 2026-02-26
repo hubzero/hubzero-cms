@@ -10,7 +10,7 @@ namespace Components\Menus\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module extension model

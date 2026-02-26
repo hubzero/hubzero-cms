@@ -10,19 +10,19 @@ namespace Components\Tools\Site\Controllers;
 
 use Components\Tools\Helpers\Utils;
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
 use stdClass;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
-use Date;
-use Event;
-use Log;
-use Plugin;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Plugin;
 
 /**
  * Tools controller class for simulation sessions

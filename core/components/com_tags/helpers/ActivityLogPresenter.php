@@ -9,7 +9,7 @@
 namespace Components\Tags\Helpers;
 
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 class ActivityLogPresenter
 {

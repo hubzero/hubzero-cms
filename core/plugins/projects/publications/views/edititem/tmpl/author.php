@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -113,7 +118,7 @@ $scriptSrc = $scriptBase
                         <span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT')); ?>*:</span>
                         <input type="text" name="department" value="<?php echo $department; ?>" maxlength="255" />
                         <?php
-                        if (\Component::params('com_publications')->get('department')) {
+                        if (Component::params('com_publications')->get('department')) {
                             echo "<div id='autocomplete-department' class='departmentAvailable'></div>";
                         }
                         ?>
@@ -142,7 +147,7 @@ $scriptSrc = $scriptBase
                             maxlength="255" />
                         <?php
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
-                        if (\Component::params('com_members')->get('rorApi')) {
+                        if (Component::params('com_members')->get('rorApi')) {
                             echo "<div id='autocomplete-organization' class='rorApiAvailable'></div>";
                         }
                         ?>

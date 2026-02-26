@@ -9,10 +9,10 @@
 namespace Hubzero\Form\Fields;
 
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Html;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * CategoryParent form field

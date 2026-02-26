@@ -9,6 +9,8 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 class PdfFormRespondent
 {
@@ -65,7 +67,7 @@ class PdfFormRespondent
             throw new \Exception('This area requires authentication', 403);
         }
 
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
         $query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
         $query .= ' WHERE deployment_id = ' . (int)$depId
             . ' AND member_id = ' . (int)$member_id
@@ -115,7 +117,7 @@ class PdfFormRespondent
      **/
     public function saveAnswers($answers)
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
 
         $questions = $this->getQuestions();
 
@@ -142,7 +144,7 @@ class PdfFormRespondent
      **/
     public function saveToGradebook()
     {
-        $database  = \App::get('db');
+        $database  = App::get('db');
 
         // Get the asset id
         $query  = "SELECT `asset_id`";
@@ -168,7 +170,7 @@ class PdfFormRespondent
                 'score'          => $score,
                 'scope'          => 'asset',
                 'scope_id'       => $asset_id,
-                'score_recorded' => \Date::toSql()
+                'score_recorded' => Date::toSql()
             );
 
             $gradebook->save($grade);
@@ -176,7 +178,7 @@ class PdfFormRespondent
             $gradebook->save(
                 array(
                     'score'          => $score,
-                    'score_recorded' => \Date::toSql()
+                    'score_recorded' => Date::toSql()
                 )
             );
         }
@@ -189,7 +191,7 @@ class PdfFormRespondent
      **/
     public function getQuestions()
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
 
         $version = $this->getVersionNumber();
 
@@ -214,7 +216,7 @@ class PdfFormRespondent
      **/
     public function getAnswers()
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
         $dbh->setQuery(
             'SELECT pfr.question_id, answer_id, pfa.id AS correct_answer_id, version '
             . 'FROM #__courses_form_latest_responses_view pfr '
@@ -274,7 +276,7 @@ class PdfFormRespondent
      **/
     public function saveProgress($qid, $aid)
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
         $dbh->setQuery(
             'DELETE FROM #__courses_form_respondent_progress '
             . 'WHERE respondent_id = ' . (int)$this->id . ' AND question_id = ' . (int)$qid
@@ -285,7 +287,7 @@ class PdfFormRespondent
             (int)$this->id,
             (int)$qid,
             (int)$aid,
-            $dbh->Quote(\Date::toSql())
+            $dbh->Quote(Date::toSql())
         );
         $dbh->setQuery(
             'INSERT INTO #__courses_form_respondent_progress'
@@ -303,7 +305,7 @@ class PdfFormRespondent
      **/
     public function getProgress()
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
         $dbh->setQuery(
             'SELECT question_id, answer_id FROM #__courses_form_respondent_progress '
             . 'WHERE respondent_id = ' . (int)$this->id
@@ -348,7 +350,7 @@ class PdfFormRespondent
      **/
     public function getCompletedAttempts()
     {
-        $dbh   = \App::get('db');
+        $dbh   = App::get('db');
         $query  = 'SELECT `attempt` FROM `#__courses_form_respondents` '
             . 'WHERE `deployment_id` = ' . $dbh->quote($this->depId);
         $query .= ' AND `member_id` = ' . $dbh->quote($this->member_id)
@@ -364,7 +366,7 @@ class PdfFormRespondent
      **/
     public function getVersionNumber()
     {
-        $dbh = \App::get('db');
+        $dbh = App::get('db');
 
         $query  = "SELECT max(version) AS version";
         $query .= " FROM `#__courses_form_questions` cfq";
@@ -384,8 +386,8 @@ class PdfFormRespondent
      **/
     public function markStart()
     {
-        $this->started = \Date::toSql();
-        $dbh = \App::get('db');
+        $this->started = Date::toSql();
+        $dbh = App::get('db');
         $dbh->setQuery(
             'UPDATE #__courses_form_respondents SET started = \'' . $this->started . '\' '
             . 'WHERE started IS NULL AND id = ' . (int)$this->id
@@ -402,8 +404,8 @@ class PdfFormRespondent
      **/
     public function markEnd()
     {
-        $this->started = \Date::toSql();
-        $dbh = \App::get('db');
+        $this->started = Date::toSql();
+        $dbh = App::get('db');
         $dbh->setQuery(
             'UPDATE #__courses_form_respondents SET finished = \'' . $this->started . '\' '
             . 'WHERE id = ' . (int)$this->id

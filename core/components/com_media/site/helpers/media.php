@@ -8,9 +8,9 @@
 
 namespace Components\Media\Site\Helpers;
 
-use Component;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Media helper

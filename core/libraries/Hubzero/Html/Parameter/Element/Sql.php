@@ -11,6 +11,7 @@ namespace Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * Renders a SQL element
@@ -36,7 +37,7 @@ class Sql extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery((string) $node['query']);
 
         $key = (string) $node['key_field'];

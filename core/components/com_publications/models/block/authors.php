@@ -10,12 +10,12 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
-use Request;
-use Event;
-use Lang;
-use User;
-use Date;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Component;
 
 /**
  * Authors block
@@ -429,7 +429,7 @@ class Authors extends Base
 
         // Get organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = Component::params('com_members')->get('rorApi');
         if ($useRorApi) {
             $orgid = $this->getOrganizationId($org);
             $pAuthor->orgid = $orgid;
@@ -449,7 +449,7 @@ class Authors extends Base
             $project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
             // Load component language file
-            Lang::load('com_projects') || Lang::load('com_projects', \Component::path('com_projects') . DS . 'site');
+            Lang::load('com_projects') || Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
             // Plugin params
             $plugin_params = array(
@@ -530,7 +530,7 @@ class Authors extends Base
 
         // Get organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = Component::params('com_members')->get('rorApi');
         if ($useRorApi) {
             $orgid = $this->getOrganizationId($org);
             $row->orgid = $orgid;
@@ -792,7 +792,7 @@ class Authors extends Base
         $org = trim($organization);
         $orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
+        $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');

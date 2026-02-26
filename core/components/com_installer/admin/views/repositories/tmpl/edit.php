@@ -10,6 +10,10 @@
 defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
 
 $repoName = Arr::getValue($this->config, 'name', '');
 Toolbar::title(

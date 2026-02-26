@@ -10,14 +10,15 @@ namespace Components\Support\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for support tickets
@@ -36,7 +37,7 @@ class Commentsv2r0 extends ApiController
     public function execute()
     {
         $this->config   = Component::params('com_support');
-        $this->database = \App::get('db');
+        $this->database = App::get('db');
 
         $this->acl = \Components\Support\Helpers\ACL::getACL();
         $this->acl->setUser(User::get('id'));
@@ -242,7 +243,7 @@ class Commentsv2r0 extends ApiController
                             $ticket->set('closed', null);
                         }
                         if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open') {
-                            $ticket->set('closed', Date::of('now')->toSql());
+                            $ticket->set('closed', \Hubzero\Facades\Date::of('now')->toSql());
                         }
                     }
                     if ($index == 'owner') {

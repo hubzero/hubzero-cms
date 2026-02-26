@@ -10,15 +10,17 @@ namespace Components\Support\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
-use Component;
+use Hubzero\Facades\Component;
 use Exception;
 use stdClass;
-use Request;
-use Config;
-use Route;
-use Event;
-use Lang;
-use Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for support tickets
@@ -37,7 +39,7 @@ class Commentsv1r0 extends ApiController
     public function execute()
     {
         $this->config   = Component::params('com_support');
-        $this->database = \App::get('db');
+        $this->database = App::get('db');
 
         $this->acl = \Components\Support\Helpers\ACL::getACL();
         $this->acl->setUser(User::get('id'));

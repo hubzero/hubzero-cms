@@ -10,7 +10,8 @@ namespace Components\Support\Api;
 
 use Exception;
 use Hubzero\Component\Router\Base;
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Routing class for the component
@@ -58,7 +59,7 @@ class Router extends Base
                 if (is_numeric($segments[1])) {
                     $vars['id'] = $segments[1];
                     // Read needs to be set explicttly because read, list, and the api docblock all use GETs
-                    if (\App::get('request')->method() == 'GET') {
+                    if (App::get('request')->method() == 'GET') {
                         $vars['task'] = 'read';
                     }
                 } elseif ($segments[1] == 'list') {
@@ -67,7 +68,7 @@ class Router extends Base
                     throw new Exception(Lang::txt("COM_SUPPORT_TASK_NOT_FOUND"), 404);
                 }
             } else {
-                if (\App::get('request')->method() == 'GET') {
+                if (App::get('request')->method() == 'GET') {
                     $vars['task'] = 'list';
                 }
             }

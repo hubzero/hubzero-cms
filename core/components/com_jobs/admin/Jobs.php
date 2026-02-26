@@ -9,42 +9,48 @@
 namespace Components\Jobs\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
  */
 class Jobs extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_jobs')) {
-			\App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-			return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!User::authorise('core.manage', 'com_jobs')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-        $controllerName = \Request::getCmd('controller', 'jobs');
+        $controllerName = Request::getCmd('controller', 'jobs');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'jobs';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_JOBS'),
-            \Route::url('index.php?option=com_jobs&controller=jobs'),
+        Submenu::addEntry(
+            Lang::txt('COM_JOBS_JOBS'),
+            Route::url('index.php?option=com_jobs&controller=jobs'),
             $controllerName == 'jobs'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_CATEGORIES'),
-            \Route::url('index.php?option=com_jobs&controller=categories'),
+        Submenu::addEntry(
+            Lang::txt('COM_JOBS_CATEGORIES'),
+            Route::url('index.php?option=com_jobs&controller=categories'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_JOBS_TYPES'),
-            \Route::url('index.php?option=com_jobs&controller=types'),
+        Submenu::addEntry(
+            Lang::txt('COM_JOBS_TYPES'),
+            Route::url('index.php?option=com_jobs&controller=types'),
             $controllerName == 'types'
         );
 

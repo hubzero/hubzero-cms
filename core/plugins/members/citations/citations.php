@@ -10,6 +10,17 @@
 namespace Plugins\Members\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
@@ -472,7 +483,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Set scope & scope id in save so no one can access hidden form inputs
@@ -616,7 +627,7 @@ class Citations extends Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Incoming

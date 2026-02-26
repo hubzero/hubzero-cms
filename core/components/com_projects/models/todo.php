@@ -9,6 +9,8 @@
 namespace Components\Projects\Models;
 
 use Hubzero\Base\Model;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Project Todo model
@@ -51,11 +53,11 @@ class Todo extends Model
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
-        $this->config = \Component::params('com_projects');
+        $this->config = Component::params('com_projects');
     }
 
     /**

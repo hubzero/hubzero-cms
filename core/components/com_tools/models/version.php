@@ -8,7 +8,8 @@
 
 namespace Components\Tools\Models;
 
-use Log;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\App;
 
 /**
  * Tool version instance
@@ -351,7 +352,7 @@ class Version
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function getTool_VersionNames($tool = null)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (!isset($this)) { // static method call
             if (is_numeric($tool)) {
@@ -462,7 +463,7 @@ class Version
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function _sql_create()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -539,7 +540,7 @@ class Version
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function _sql_read()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $lazyloading = false;
 
         if (empty($db)) {
@@ -645,7 +646,7 @@ class Version
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function _sql_update($all = false)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "UPDATE #__tool_version SET ";
 
@@ -860,7 +861,7 @@ class Version
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -953,7 +954,7 @@ class Version
         }
         if (in_array($property, $this->_list_keys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
-                $db = \App::get('db');
+                $db = App::get('db');
 
                 if (is_object($db)) {
                     if (in_array($property, array('alias', 'middleware', 'hostreq'))) {
@@ -1177,7 +1178,7 @@ class Version
      */
     public function getDevelopmentGroup($byid = false)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if ($byid == false) {
             $query = "SELECT cn FROM #__tool_groups AS tg " .
@@ -1205,7 +1206,7 @@ class Version
      */
     public static function getVersionInfo($id, $version = null, $toolname = null, $instance = null)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         // data comes from db
         $query  = "SELECT v.*, d.doi_label as doi ";
         $query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d " .

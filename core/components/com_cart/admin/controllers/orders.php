@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Components\Cart\Helpers\Orders as OrdersHelper;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for knowledge base categories

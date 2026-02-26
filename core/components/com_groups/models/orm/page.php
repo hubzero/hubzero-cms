@@ -9,6 +9,8 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Group page model
@@ -160,8 +162,8 @@ class Page extends Relational
             ->set(array(
                 'gidNumber' => $this->get('gidNumber'),
                 'pageid' => $this->get('id'),
-                'userid' => \User::get('id'),
-                'ip' => \Request::ip()
+                'userid' => User::get('id'),
+                'ip' => Request::ip()
             ));
 
         return $hit->save();

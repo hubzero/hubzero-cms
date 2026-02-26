@@ -9,6 +9,15 @@
 namespace Plugins\Authentication\Globus;
 
 use Plugins\Authentication\Globus\Provider\Globus as GlobusProvider;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\User;
 
 class Globus extends \Hubzero\Plugin\OauthClient
 {

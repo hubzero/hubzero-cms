@@ -12,6 +12,7 @@
 namespace Plugins\System\Referrerpolicy;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Referrerpolicy extends Plugin
 {

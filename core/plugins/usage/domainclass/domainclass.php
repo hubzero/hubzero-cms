@@ -12,6 +12,9 @@
 namespace Plugins\Usage\Domainclass;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
 
 class Domainclass extends Plugin
 {
@@ -46,12 +49,12 @@ class Domainclass extends Plugin
     private function classlist(&$db, $class, $t = 0, $enddate = 0)
     {
         if (!$db->tableExists('classes')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classes');
+            Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classes');
             return '';
         }
 
         if (!$db->tableExists('classvals')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classvals');
+            Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'classvals');
             return '';
         }
 

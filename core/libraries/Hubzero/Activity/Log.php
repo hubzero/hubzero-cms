@@ -11,7 +11,7 @@ namespace Hubzero\Activity;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Exception;
-use Event;
+use Hubzero\Facades\Event;
 
 /**
  * Activity log

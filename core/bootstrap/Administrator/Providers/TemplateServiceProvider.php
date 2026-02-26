@@ -10,6 +10,7 @@ namespace Bootstrap\Administrator\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Template\Loader;
+use Hubzero\Facades\User;
 
 /**
  * Template loader service provider
@@ -31,7 +32,7 @@ class TemplateServiceProvider extends ServiceProvider
                 'lang'      => ''
             ];
 
-            $options['style'] = \User::getParam('admin_style', $options['style']);
+            $options['style'] = User::getParam('admin_style', $options['style']);
 
             return new Loader($app, $options);
         };

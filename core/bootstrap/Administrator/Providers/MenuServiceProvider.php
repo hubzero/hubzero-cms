@@ -11,6 +11,7 @@ namespace Bootstrap\Administrator\Providers;
 use Hubzero\Menu\Manager;
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\User;
 
 /**
  * Menu service provider
@@ -32,7 +33,7 @@ class MenuServiceProvider extends ServiceProvider
             $options = [
                 'language_filter' => null,
                 'language'        => null,
-                'access'          => \User::getAuthorisedViewLevels()
+                'access'          => User::getAuthorisedViewLevels()
             ];
 
             return $app['menu.manager']->menu($app['client']->name, $options);

@@ -9,6 +9,7 @@
 namespace Components\Members\Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\User;
 
 /**
  * Migration script for fixing members names that are malformed
@@ -47,7 +48,7 @@ class Migration20241218103500ComMembers extends Base
         $results = $this->db->loadColumn();
 
         foreach ($results as $result) {
-            $user = \User::getInstance($result);
+            $user = User::getInstance($result);
             $user->set('surname', $user->get('surname'));
             $user->set('givenName', $user->get('givenName'));
             $user->set('middleName', $user->get('middleName'));

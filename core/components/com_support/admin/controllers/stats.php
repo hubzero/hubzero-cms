@@ -9,9 +9,9 @@
 namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Request;
-use Date;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Support controller class for ticket stats

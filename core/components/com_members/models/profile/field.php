@@ -9,7 +9,7 @@
 namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * User profile field model

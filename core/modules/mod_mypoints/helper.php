@@ -10,8 +10,9 @@ namespace Modules\MyPoints;
 
 use Hubzero\Module\Module;
 use Hubzero\Bank\Teller;
-use Config;
-use User;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying point total and recent transactions
@@ -31,7 +32,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $this->moduleclass = $this->params->get('moduleclass');
         $this->limit = intval($this->params->get('limit', 10));

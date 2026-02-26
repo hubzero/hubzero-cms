@@ -9,6 +9,8 @@
 namespace Components\Projects\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Routing class for the component
@@ -225,8 +227,8 @@ class Router extends Base
                         $vars['pid'] = $segments[2];
                         $blocks = array();
 
-                        if (is_file(\Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
-                            $database = \App::get('db');
+                        if (is_file(Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
+                            $database = App::get('db');
 
                             $b = new \Components\Publications\Tables\Block($database);
                             $blocks = $b->getBlocks('block');

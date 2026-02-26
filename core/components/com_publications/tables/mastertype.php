@@ -9,7 +9,7 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for publication master type

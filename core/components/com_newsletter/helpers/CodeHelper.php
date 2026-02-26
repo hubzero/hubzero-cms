@@ -11,7 +11,8 @@ namespace Components\Newsletter\Helpers;
 use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;
 use Components\Newsletter\Secrets\PageCode;
-use Component;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 class CodeHelper
 {
@@ -30,7 +31,7 @@ class CodeHelper
         $pageExists = (1 == Page::all()->whereEquals('id', $pageId)->total());
 
         // Calculate and compare hash of hub, user, and campaign secrets to passed code:
-        $database = \App::get('db');
+        $database = App::get('db');
         $vars = array(
                     $campaignId,
                     $username

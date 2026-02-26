@@ -9,6 +9,7 @@
 namespace Hubzero\Document\Type\Html;
 
 use Hubzero\Document\Renderer;
+use Hubzero\Facades\App;
 
 /**
  * Modules renderer
@@ -30,7 +31,7 @@ class Modules extends Renderer
         $renderer = $this->doc->loadRenderer('module');
 
         $buffer = '';
-        foreach (\App::get('module')->byPosition($position) as $mod) {
+        foreach (App::get('module')->byPosition($position) as $mod) {
             $buffer .= $renderer->render($mod, $params, $content);
         }
 

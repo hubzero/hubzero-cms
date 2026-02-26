@@ -7,6 +7,7 @@
  */
 
 use Modules\Adminmenu\Node;
+use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die;
 

@@ -9,6 +9,7 @@
 namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
+use Hubzero\Facades\App;
 
 /**
  * Renders a spacer element
@@ -50,7 +51,7 @@ class Spacer extends Element
     public function fetchElement($name, $value, &$node, $control_name)
     {
         if ($value) {
-            return \App::get('language')->txt($value);
+            return App::get('language')->txt($value);
         }
 
         return ' ';

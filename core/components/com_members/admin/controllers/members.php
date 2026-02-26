@@ -19,15 +19,16 @@ use Hubzero\Component\AdminController;
 use Hubzero\User\Profile\Helper as ProfileHelper;
 use Hubzero\Utility\Validate;
 use Filesystem;
-use Request;
-use Notify;
-use Config;
-use Route;
-use Event;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Manage site members
@@ -477,7 +478,7 @@ class Members extends AdminController
 
         // Querying the organization id on ror.org.
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
-        $useRorApi = \Component::params('com_members')->get('rorApi');
+        $useRorApi = Component::params('com_members')->get('rorApi');
         if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
             $profile['orgid'] = $this->getOrganizationId($profile['organization']);
         }
@@ -903,7 +904,7 @@ class Members extends AdminController
      */
     public function runSelectQuery($query)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 
@@ -914,7 +915,7 @@ class Members extends AdminController
 
     public function runInsertQuery($query, $vars)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->prepare($query);
         $db->bind($vars);
         return $db->execute();
@@ -922,7 +923,7 @@ class Members extends AdminController
 
     public function runUpdateOrDeleteQuery($query)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($query);
         return $db->query();
     }
@@ -933,7 +934,7 @@ class Members extends AdminController
      */
     public function deidentifyTask()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
@@ -1576,7 +1577,7 @@ class Members extends AdminController
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
+        $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
             $words = preg_split('/\s+/', $term);
@@ -1639,7 +1640,7 @@ class Members extends AdminController
         $org = trim($organization);
         $orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
+        $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');

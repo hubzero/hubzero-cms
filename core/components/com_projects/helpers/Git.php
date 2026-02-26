@@ -9,10 +9,10 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
-use Filesystem;
-use Component;
-use User;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Projects Git helper class
@@ -212,7 +212,7 @@ class Git extends Obj
             }
 
             // Get author profile
-            $profile = \User::getInstance($this->uid);
+            $profile = User::getInstance($this->uid);
 
             $name  = $profile->get('name');
             $email = $profile->get('email');
@@ -1074,7 +1074,7 @@ class Git extends Obj
 
                 // SFTP?
                 if (strpos($message, '[SFTP]') !== false) {
-                    $profile = \User::getInstance(trim($author));
+                    $profile = User::getInstance(trim($author));
                     if ($profile->get('id')) {
                         $author = $profile->get('name');
                         $email  = $profile->get('email');

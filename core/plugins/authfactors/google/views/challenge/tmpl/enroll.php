@@ -8,6 +8,8 @@ $this->css('enroll')
 use Hubzero\Auth\Factor;
 use Hubzero\Utility\Validate;
 use phpseclib\Crypt\Hash;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 ?>
 

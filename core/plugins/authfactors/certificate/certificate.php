@@ -11,6 +11,9 @@ namespace Plugins\Authfactors\Certificate;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Cookie;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Factor Auth plugin for certificate based identity verification

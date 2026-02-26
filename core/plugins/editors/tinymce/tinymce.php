@@ -12,6 +12,12 @@
 namespace Plugins\Editors\Tinymce;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
 
 class Tinymce extends Plugin
 {

@@ -11,12 +11,13 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models\Import\Hook;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
-use User;
-use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Resource importer hooks
@@ -152,7 +153,7 @@ class ImportHooks extends AdminController
 
             // if we dont have a filespace, create it
             if (!is_dir($uploadPath)) {
-                \Filesystem::makeDirectory($uploadPath, 0775);
+                Filesystem::makeDirectory($uploadPath, 0775);
             }
         }
 

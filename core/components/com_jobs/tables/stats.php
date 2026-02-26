@@ -9,8 +9,8 @@
 namespace Components\Jobs\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for job stats

@@ -12,6 +12,9 @@
 namespace Plugins\System\Spamjail;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Spamjail extends Plugin
 {

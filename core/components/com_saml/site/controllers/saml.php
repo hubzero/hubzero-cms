@@ -8,7 +8,7 @@
 
 namespace Components\Saml\Site\Controllers;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * There is nothing to serve at the bare /saml route — every endpoint lives

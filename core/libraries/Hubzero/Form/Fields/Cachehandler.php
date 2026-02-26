@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Cache\Manager;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a list of available cache handlers

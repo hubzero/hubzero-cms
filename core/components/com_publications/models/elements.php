@@ -9,8 +9,8 @@
 namespace Components\Publications\Models;
 
 use stdClass;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Publications elements class

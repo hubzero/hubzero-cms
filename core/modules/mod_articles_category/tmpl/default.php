@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 defined('_HZEXEC_') or die;
 ?>
 <ul class="category-module<?php echo $moduleclass_sfx; ?>">

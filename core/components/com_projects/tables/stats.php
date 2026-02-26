@@ -9,8 +9,8 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Request;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for project log history

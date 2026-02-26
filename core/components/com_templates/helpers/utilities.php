@@ -10,14 +10,15 @@ namespace Components\Templates\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
-use Request;
-use Submenu;
-use Route;
-use Html;
-use Lang;
-use User;
-use App;
-use Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Templates component helper.
@@ -53,7 +54,7 @@ class Utilities
     {
         $result = new Obj();
 
-        $actions = Access::getActionsFromFile(\Component::path('com_templates') . '/config/access.xml');
+        $actions = Access::getActionsFromFile(Component::path('com_templates') . '/config/access.xml');
 
         foreach ($actions as $action) {
             $result->set($action->name, User::authorise($action->name, 'com_templates'));

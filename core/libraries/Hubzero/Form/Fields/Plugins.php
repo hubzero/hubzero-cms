@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Form Field class for listing plugins

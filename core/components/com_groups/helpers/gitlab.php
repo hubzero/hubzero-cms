@@ -8,8 +8,9 @@
 
 namespace Components\Groups\Helpers;
 
-use Lang;
-use Notify;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
 
 class Gitlab
 {
@@ -55,7 +56,7 @@ class Gitlab
      */
     public function __construct()
     {
-        $config = \Component::params('com_groups');
+        $config = Component::params('com_groups');
 
         $this->active = $config->get('super_gitlab', 0);
         $this->url    = rtrim($config->get('super_gitlab_url', ''), DS);

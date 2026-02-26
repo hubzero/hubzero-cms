@@ -10,6 +10,7 @@ namespace Hubzero\Language;
 
 use Hubzero\Language\Transliterate\Latin;
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 /**
  * Allows for quoting in language .ini files.
@@ -177,7 +178,7 @@ class Translator extends Obj
 
         // Template overrides (early, from config) — highest priority
         // Uses the standard tpl_ file as the global override for all strings
-        $templateName = \App::get('config')->get(strtolower($client) . '_template');
+        $templateName = App::get('config')->get(strtolower($client) . '_template');
         if ($templateName) {
             $tplFile = PATH_APP
                 . "/templates/$templateName/language/$lang/$lang.tpl_$templateName.ini";
@@ -608,7 +609,7 @@ class Translator extends Obj
     {
         // Load the default language first if we're not debugging and a non-default language is requested to be loaded
         // with $default set to true
-        if (!\App::get('config')->get('debug_lang') && ($lang != $this->default) && $default) {
+        if (!App::get('config')->get('debug_lang') && ($lang != $this->default) && $default) {
             $this->load($extension, $basePath, $this->default, false, true);
         }
 
@@ -1064,7 +1065,7 @@ class Translator extends Obj
      */
     public static function getMetadata($lang)
     {
-        $path = PATH_APP . DS . 'language' . DS . strtolower(\App::get('client')->name) . DS . $lang;
+        $path = PATH_APP . DS . 'language' . DS . strtolower(App::get('client')->name) . DS . $lang;
         $file = $lang . '.xml';
 
         $result = null;
@@ -1074,7 +1075,7 @@ class Translator extends Obj
                 DS .
                 'bootstrap' .
                 DS .
-                ucfirst(\App::get('client')->name), $lang);
+                ucfirst(App::get('client')->name), $lang);
         }
 
         if (is_file("$path/$file")) {
@@ -1204,7 +1205,7 @@ class Translator extends Obj
 
             $this->loadOverride("$appLangPath/$lang.override.ini");
 
-            $templateName = \App::get('config')->get($client . '_template');
+            $templateName = App::get('config')->get($client . '_template');
             if ($templateName) {
                 $tplFile = PATH_APP
                     . "/templates/$templateName/language/$lang/$lang.tpl_$templateName.ini";
@@ -1371,7 +1372,7 @@ class Translator extends Obj
 
         if (empty($languages)) {
             // Installation uses available languages
-            if (\App::get('client')->id == 2) {
+            if (App::get('client')->id == 2) {
                 $languages[$key] = array();
                 $knownLangs = self::getKnownLanguages(PATH_APP . DS . 'language' . DS . strtolower($this->client));
                 foreach ($knownLangs as $metadata) {
@@ -1380,9 +1381,9 @@ class Translator extends Obj
                     $languages[$key][] = new \Hubzero\Base\Obj(array('lang_code' => $metadata['tag']));
                 }
             } else {
-                $cache = \App::get('cache.store');
+                $cache = App::get('cache.store');
                 if (!$languages = $cache->get('com_languages.languages')) {
-                    $db = \App::get('db');
+                    $db = App::get('db');
                     $query = $db->getQuery()
                         ->select('*')
                         ->from('#__languages')
@@ -1401,7 +1402,7 @@ class Translator extends Obj
                         }
                     }
 
-                    $cache->put('com_languages.languages', $languages, \App::get('config')->get('cachetime', 15));
+                    $cache->put('com_languages.languages', $languages, App::get('config')->get('cachetime', 15));
                 }
             }
         }
@@ -1431,14 +1432,14 @@ class Translator extends Obj
         $langs = self::getKnownLanguages($basePath);
 
         if ($installed) {
-            $db = \App::get('db');
+            $db = App::get('db');
             $query = $db->getQuery()
                 ->select('element')
                 ->from('#__extensions')
                 ->whereEquals('type', 'language')
                 ->whereEquals('state', 0)
                 ->whereEquals('enabled', 1)
-                ->whereEquals('client_id', (is_null($client) ? \App::get('client')->id : (int)$client));
+                ->whereEquals('client_id', (is_null($client) ? App::get('client')->id : (int)$client));
             $db->setQuery($query->toString());
             $installed_languages = $db->loadObjectList('element');
         }
@@ -1587,14 +1588,14 @@ class Translator extends Obj
         static $enabled = false;
 
         // If being called from the front-end, we can avoid the database query.
-        if (\App::isSite()) {
-            return \App::get('language.filter');
+        if (App::isSite()) {
+            return App::get('language.filter');
         }
 
         // If already tested, don't test again.
         if (!$tested) {
             // Determine status of language filter plug-in.
-            $db = \App::get('db');
+            $db = App::get('db');
             $query = $db->getQuery()
                 ->select('enabled')
                 ->from('#__extensions')

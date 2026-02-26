@@ -11,8 +11,8 @@ namespace Components\Jobs\Models;
 use Components\Members\Models\Member;
 use Hubzero\Base\Model;
 use Hubzero\Utility\Str;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Courses model class for a forum

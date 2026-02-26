@@ -11,8 +11,8 @@ namespace Components\Tools\Models\Middleware;
 use Components\Tools\Helpers\Utils;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Middleware model for a tool session

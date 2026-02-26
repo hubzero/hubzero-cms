@@ -9,6 +9,10 @@
 namespace Components\Redirect\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,15 +27,15 @@ class Redirect extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_redirect')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_redirect')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // Include controller
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'links'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'links'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-            \App::abort(404, \Lang::txt('Controller "%s" not found.', $controllerName));
+            App::abort(404, Lang::txt('Controller "%s" not found.', $controllerName));
             return;
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

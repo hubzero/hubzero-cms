@@ -14,12 +14,12 @@ use Components\Projects\Models\Repo;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 use stdClass;
-use Route;
-use Lang;
-use Event;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
 
 /**
  * API controller for the projects component

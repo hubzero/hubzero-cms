@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Activity;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Activity extends Plugin
 {

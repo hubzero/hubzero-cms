@@ -14,18 +14,18 @@ use Components\Projects\Models;
 use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description\Option;
 use Components\Projects\Helpers;
-use Component;
-use Request;
-use Notify;
-use Plugin;
-use Route;
-use Lang;
-use User;
-use App;
-use Config;
-use Date;
-use Event;
-use Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Manage projects
@@ -1289,7 +1289,7 @@ class Projects extends AdminController
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
+        $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query=" . urlencode($term);
@@ -1342,7 +1342,7 @@ class Projects extends AdminController
         $agency = trim($grantAgency);
         $agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
+        $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query=" . urlencode($agencyQry);

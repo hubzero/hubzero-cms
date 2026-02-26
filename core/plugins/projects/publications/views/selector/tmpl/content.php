@@ -1,12 +1,17 @@
 <?php
 
-
-// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -45,7 +50,7 @@ $pageNav->setAdditionalUrlParam('action', 'select');
 $pageNav->setAdditionalUrlParam('pid', $this->publication->id);
 $pageNav->setAdditionalUrlParam('vid', $this->publication->version_id);
 
-$database = \App::get('db');
+$database = App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
 <label for="pub-search"><?php echo Lang::txt('Search'); ?></label>

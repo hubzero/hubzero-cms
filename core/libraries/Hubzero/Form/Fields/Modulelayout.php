@@ -13,7 +13,7 @@ use Hubzero\Form\Form;
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Base\ClientManager;
 use Hubzero\Filesystem\Util;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Form Field to display a list of the layouts for module display from the module or template overrides.

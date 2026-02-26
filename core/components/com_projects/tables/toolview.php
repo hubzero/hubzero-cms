@@ -9,7 +9,7 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Project Tool View class

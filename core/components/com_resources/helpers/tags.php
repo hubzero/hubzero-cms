@@ -9,7 +9,9 @@
 namespace Components\Resources\Helpers;
 
 use Components\Tags\Models\Cloud;
-use Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Resources Tagging class
@@ -45,7 +47,7 @@ class Tags extends Cloud
      */
     public function get_tags_with_objects($id = 0, $type = 0, $tag = '')
     {
-        $now = \Date::toSql();
+        $now = Date::toSql();
 
         $this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag=" . $this->_db->quote($tag) . " AND o.tbl=" . $this->_db->quote($this->_scope));
         $objs = $this->_db->loadObjectList();
@@ -73,8 +75,8 @@ class Tags extends Cloud
             $sql .= "AND r.type=" . $this->_db->quote($type) . " ";
         }
 
-        if (!\User::isGuest()) {
-            $xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
+        if (!User::isGuest()) {
+            $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             if ($xgroups != '') {
                 $usersgroups = self::getUsersGroups($xgroups);
                 if (count($usersgroups) > 1) {
@@ -153,7 +155,7 @@ class Tags extends Cloud
      */
     public function get_objects_on_tag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = array())
     {
-        $now  = \Date::toSql();
+        $now  = Date::toSql();
 
         if ($tag || $tag2) {
             $query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
@@ -232,8 +234,8 @@ class Tags extends Cloud
         $query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
         $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 
-        if (!\User::isGuest()) {
-            $xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
+        if (!User::isGuest()) {
+            $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             if ($xgroups != '') {
                 $usersgroups = self::getUsersGroups($xgroups);
                 if (count($usersgroups) > 1) {

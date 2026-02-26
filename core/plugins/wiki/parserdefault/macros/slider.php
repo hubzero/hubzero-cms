@@ -9,6 +9,8 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 /**
  * Wiki macro class for displaying an image slider
@@ -53,7 +55,7 @@ class Slider extends WikiMacro
         $id = uniqid();
 
         //get the group
-        $gid = \Request::getString('cn');
+        $gid = Request::getString('cn');
 
         //get the group object based on gid
         $group = \Hubzero\User\Group::getInstance($gid);
@@ -99,13 +101,13 @@ class Slider extends WikiMacro
         $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
         $html .= '</div>';
 
-        \Document::addStyleSheet(\Request::root()
+        Document::addStyleSheet(Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
             . css?t='
             . filemtime(__DIR__
             . '/macro-assets/slider/slider
             . css'));
-        \Document::addScript(\Request::root()
+        Document::addScript(Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
             . js?t='
             . filemtime(__DIR__

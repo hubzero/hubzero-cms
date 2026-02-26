@@ -9,6 +9,10 @@
 namespace Plugins\Content\Formathtml\Macros\Group;
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
 
 /**
  * Group Announcements Macro
@@ -50,7 +54,7 @@ class Announcements extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get args
@@ -65,10 +69,10 @@ class Announcements extends GroupMacro
             ->whereEquals('scope_id', $this->group->get('gidNumber'))
             ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
             ->where('publish_up', 'IS', null, 'and', 1)
-                ->orWhere('publish_up', '<=', \Date::toSql(), 1)
+                ->orWhere('publish_up', '<=', Date::toSql(), 1)
                 ->resetDepth()
             ->where('publish_down', 'IS', null, 'and', 1)
-                ->orWhere('publish_down', '>=', \Date::toSql(), 1)
+                ->orWhere('publish_down', '>=', Date::toSql(), 1)
             ->order('created', 'desc')
             ->start(0);
 
@@ -83,7 +87,7 @@ class Announcements extends GroupMacro
 
         if ($rows->count() > 0) {
             foreach ($rows as $row) {
-                if (file_exists(\Plugin::path('groups', 'announcements') . '/views/browse/tmpl/item.php')) {
+                if (file_exists(Plugin::path('groups', 'announcements') . '/views/browse/tmpl/item.php')) {
                     $view = new \Hubzero\Plugin\View(array(
                         'folder'  => 'groups',
                         'element' => 'announcements',
@@ -98,7 +102,7 @@ class Announcements extends GroupMacro
                     $html .= $view->loadTemplate();
                 } else {
                     // Build link
-                    $link = \Route::url(
+                    $link = Route::url(
                         'index.php?option=com_groups&cn=' . $this->group->get('cn') .
                         '&active=announcements&id=' . $row->id
                     );
@@ -114,7 +118,7 @@ class Announcements extends GroupMacro
                 }
             }
         } else {
-            $archiveUrl = \Route::url(
+            $archiveUrl = Route::url(
                 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'
             );
             $html .= '<p>Currently there are no announcements. View the <a href="' .
