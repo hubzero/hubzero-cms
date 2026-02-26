@@ -196,7 +196,7 @@ if ($this->rows->total() > 0) {
                     ? ''
                     : '/' . $this->collection->get('alias');
                 $collectionUrl = Route::url($base . $collectionSuffix);
-                $rowCreatedTime = JDate::of($row->get('created'))
+                $rowCreatedTime = Date::of($row->get('created'))
                     ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 $rowCreatedDate = Date::of($row->get('created'))
                     ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));

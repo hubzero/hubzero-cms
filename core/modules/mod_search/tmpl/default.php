@@ -6,14 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Modules\Search\Helper;
+
 // no direct access
 defined('_HZEXEC_') or die;
 
-$inputId = 'searchword' . (self::$instances > 1 ? $this->module->id : '');
-$formId  = 'searchform' . (self::$instances > 1 ? $this->module->id : '');
+$inputId = 'searchword' . (Helper::$instances > 1 ? $this->module->id : '');
+$formId  = 'searchform' . (Helper::$instances > 1 ? $this->module->id : '');
 ?>
 <?php
-$formSuffix = (self::$instances > 1) ? $this->module->id : '';
+$formSuffix = (Helper::$instances > 1) ? $this->module->id : '';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>"
     method="get"
@@ -24,7 +26,7 @@ $formSuffix = (self::$instances > 1) ? $this->module->id : '';
         <legend><?php echo ($text ?: $label); ?></legend>
 
         <?php
-            $sfx = self::$instances > 1 ? $this->module->id : '';
+            $sfx = Helper::$instances > 1 ? $this->module->id : '';
             $output = '<label for="searchword' . $sfx . '"'
                 . ' class="' . $moduleclass_sfx . 'searchword-label"'
                 . ' id="searchword-label' . $sfx . '">'

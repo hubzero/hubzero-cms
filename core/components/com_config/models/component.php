@@ -99,12 +99,7 @@ class Component extends Obj
 
             // Check for errors encountered while preparing the form.
             if (count($results) && in_array(false, $results, true)) {
-                // Get the last error.
-                $error = Event::getError();
-
-                if (!($error instanceof Exception)) {
-                    throw new Exception($error);
-                }
+                throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
             }
         } catch (Exception $e) {
             $this->setError($e->getMessage());

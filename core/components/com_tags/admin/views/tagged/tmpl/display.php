@@ -24,10 +24,12 @@ Toolbar::help('tagged');
 
 <?php
 $formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
-$editUrl = function ($id) {
+$option = $this->option;
+$controller = $this->controller;
+$editUrl = function ($id) use ($option, $controller) {
     return Route::url(
-        'index.php?option=' . $this->option . '&controller='
-        . $this->controller . '&task=edit&id=' . $id
+        'index.php?option=' . $option . '&controller='
+        . $controller . '&task=edit&id=' . $id
     );
 };
 ?>

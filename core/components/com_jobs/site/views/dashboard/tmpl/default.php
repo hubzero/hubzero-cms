@@ -326,7 +326,7 @@ if ($hasPending) {
                         </a>
                     </p>
                     <?php
-                    echo \Components\Jobs\Helpers\Html::confirmscreen(
+                    \Components\Jobs\Helpers\Html::confirmscreen(
                         $dashUrl,
                         $cancelUrl
                     );

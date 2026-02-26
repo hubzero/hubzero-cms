@@ -342,7 +342,7 @@ $noEntries = !$rows->count();
                                                     : '';
                                                 $monthUrl = Route::url(
                                                     $base . '&task=' . $i
-                                                    . '/' . sprintf("%02d", ($k + 1), 1)
+                                                    . '/' . sprintf("%02d", ($k + 1))
                                                 );
                                                 ?>
                                                 <li>
