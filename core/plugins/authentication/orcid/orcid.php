@@ -365,7 +365,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
+        Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
 
         $html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
         $html .= '<div class="signin">';

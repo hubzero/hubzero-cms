@@ -256,7 +256,7 @@ class Certificate extends Plugin
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(
+        Document::addStyleSheet(
             Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css'
         );
 

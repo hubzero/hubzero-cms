@@ -56,7 +56,7 @@ $this->css('jquery.ui.css', 'system')
                     if (isset($layout[$idx - 1])) {
                         $qidx = 0;
                         foreach ($layout[$idx - 1] as $group) {
-                            \Document::addstyleDeclaration('
+                            \Document::addStyleDeclaration('
 								#group-marker-' . $qidx . '-' . $idx . ' {
 									width: ' . $group['width'] . 'px;
 									height: ' . $group['height'] . 'px;
@@ -69,7 +69,7 @@ $this->css('jquery.ui.css', 'system')
                             echo '<button class="remove">x</button>';
                             foreach ($group['answers'] as $aidx => $ans) {
                                 $answerId = 'question-saved-' . $idx . '-' . $qidx . '-' . $aidx;
-                                \Document::addstyleDeclaration(
+                                \Document::addStyleDeclaration(
                                     '#' . $answerId . '{
 										top: ' . ($ans['top'] - $group['top'] - 5) . 'px;
 										left: ' . ($ans['left'] - $group['left'] - 26) . 'px;
