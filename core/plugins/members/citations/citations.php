@@ -21,7 +21,6 @@ use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
-
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
@@ -204,7 +203,7 @@ class Citations extends Plugin
         } elseif ((int) $count == 0 && $isAdmin && isset($display) && $total <= 0) {
             $view = $this->view('intro', 'browse');
             $view->group = $this->member;
-            $view->isManager = ($this->authorized == 'manager') ? true : false;
+            $view->isManager = $isAdmin;
         } else {
             // Initialize the view
             $view = $this->view('browse');
@@ -473,7 +472,7 @@ class Citations extends Plugin
     /**
      * Save an entry
      *
-     * @return  void
+     * @return  string
      */
     private function saveAction()
     {
@@ -571,8 +570,7 @@ class Citations extends Plugin
         // Store new content
         if (!$citation->save() && !$citation->validate()) {
             $this->setError($citation->getError());
-            $this->editAction($citation);
-            return;
+            return $this->editAction($citation);
         }
 
         $authorCount = $citation->relatedAuthors()->count();
@@ -627,7 +625,7 @@ class Citations extends Plugin
     /**
      * Save an entry
      *
-     * @return  void
+     * @return  never
      */
     private function deleteAction()
     {
@@ -728,7 +726,7 @@ class Citations extends Plugin
     /**
      * Settings for group citations
      *
-     * @return  void
+     * @return  string
      */
     private function settingsAction()
     {
@@ -853,7 +851,7 @@ class Citations extends Plugin
     /**
      * Publish method for group citations
      *
-     * @return  void
+     * @return  never
      */
     private function publishAction()
     {
@@ -971,7 +969,7 @@ class Citations extends Plugin
     /**
      * Redirect to login form
      *
-     * @return  void
+     * @return  never
      */
     private function loginAction()
     {
@@ -989,7 +987,7 @@ class Citations extends Plugin
     /**
      * Display a form for importing citations
      *
-     * @return  void
+     * @return  string
      */
     private function importAction()
     {
@@ -1025,7 +1023,7 @@ class Citations extends Plugin
     /**
      * Upload a file
      *
-     * @return  void
+     * @return  never
      */
     private function uploadAction()
     {
@@ -1106,7 +1104,7 @@ class Citations extends Plugin
     /**
      * Review import items
      *
-     * @return  void
+     * @return  string
      */
     private function reviewAction()
     {
@@ -1159,7 +1157,7 @@ class Citations extends Plugin
     /**
      * Process import selections
      *
-     * @return  void
+     * @return  never
      */
     private function processAction()
     {
@@ -1250,7 +1248,7 @@ class Citations extends Plugin
     /**
      * Show the results of the import
      *
-     * @return  void
+     * @return  string
      */
     private function savedAction()
     {

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Storefront\Models\Warehouse as StorefrontModelWarehouse;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 

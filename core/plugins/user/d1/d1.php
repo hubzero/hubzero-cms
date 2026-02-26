@@ -43,7 +43,7 @@ class D1 extends Plugin
                 $nation->update();
             }
 
-            return;
+            return true;
         }
 
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -52,7 +52,7 @@ class D1 extends Plugin
 
         if (!$gdb) {
             Log::debug('plgUserD1: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-            return;
+            return true;
         }
 
         $gdb->setQuery(
@@ -64,7 +64,7 @@ class D1 extends Plugin
         $countrygroup = $gdb->loadResult();
 
         if (!$countrygroup) {
-            return;
+            return true;
         }
 
         if ($countrygroup == 'D1') {
@@ -81,6 +81,8 @@ class D1 extends Plugin
         } else {
             Log::debug($ip . ' has countrygroup [' . $countrygroup . '], leaving [' . User::get('username') . '] membership to group [d1_nation] unchanged.');
         }
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

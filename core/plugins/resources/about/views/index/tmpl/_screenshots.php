@@ -15,8 +15,8 @@ defined('_HZEXEC_') or die();
 $upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
-$path = \Components\Resources\Helpers\html::build_path($this->created, $this->id, '');
-$url = \Components\Resources\Helpers\html::build_url($this->id, '');
+$path = \Components\Resources\Helpers\Html::build_path($this->created, $this->id, '');
+$url = \Components\Resources\Helpers\Html::build_url($this->id, '');
 
 // Get contribtool parameters
 $tconfig = Component::params('com_tools');

@@ -11,6 +11,7 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+use Plugins\Resources\Usage\Usage as plgResourcesUsage;
 
 // No direct access
 defined('_HZEXEC_') or die();

@@ -10,7 +10,7 @@ namespace Components\Developer\Site\Controllers;
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
-use Hubzero\Session;
+use Hubzero\Facades\Session;
 use Exception;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\App;
@@ -141,7 +141,7 @@ class Callback extends SiteController
             throw new \Exception("State mismatch", 500);
         }
 
-        $provider = new \Globus\OAuth2\Client\Provider\Globus([
+        $provider = new \Plugins\Authentication\Globus\Provider\Globus([
             'clientId'     => $params->get('app_id'),
             'clientSecret' => $params->get('app_secret'),
             'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'

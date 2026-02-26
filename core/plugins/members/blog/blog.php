@@ -482,7 +482,7 @@ class Blog extends Plugin
     /**
      * Display a warning message
      *
-     * @return  string
+     * @return  never
      */
     private function _login()
     {
@@ -553,7 +553,7 @@ class Blog extends Plugin
     /**
      * Save an entry
      *
-     * @return  void
+     * @return  string
      */
     private function _save()
     {
@@ -930,7 +930,7 @@ class Blog extends Plugin
     /**
      * Save blog settings
      *
-     * @return  void
+     * @return  string
      */
     private function _savesettings()
     {

@@ -21,6 +21,7 @@ use Hubzero\Facades\Log;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use phpCAS;
 
 class Pucas extends Plugin
 {

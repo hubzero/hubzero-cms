@@ -329,7 +329,7 @@ class Account extends Plugin
     /**
      * Confirm the password set token
      *
-     * @return  void  redirect to set local password view
+     * @return  string  redirect to set local password view
      */
     private function confirmtoken()
     {
@@ -441,7 +441,7 @@ class Account extends Plugin
     /**
      * Set local password
      *
-     * @return  void  redirect to members account page
+     * @return  string  redirect to members account page
      */
     private function setlocalpass()
     {

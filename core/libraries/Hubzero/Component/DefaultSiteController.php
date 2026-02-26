@@ -8,7 +8,7 @@
 
 namespace Hubzero\Component;
 
-use Request;
+use Hubzero\Facades\Request;
 
 class DefaultSiteController extends SiteController
 {
