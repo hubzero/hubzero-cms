@@ -167,11 +167,11 @@ class Php extends Base
         $i = 0;
         foreach ($a as $k => $v) {
             $s .= ($i) ? ', ' : '';
-            $s .= '"' . $k . '" => ';
+            $s .= var_export($k, true) . ' => ';
             if (is_array($v) || is_object($v)) {
                 $s .= $this->getArrayString((array) $v);
             } else {
-                $s .= '"' . addslashes($v) . '"';
+                $s .= var_export((string) $v, true);
             }
             $i++;
         }
