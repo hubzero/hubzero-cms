@@ -317,7 +317,7 @@ class MathRenderer
             $outmd5_sql = $this->hash; //pack('H32', $this->hash);
             $md5_sql    = $this->md5; //pack('H32', $this->md5); // Binary packed, not hex
 
-            $wm = \Components\Wiki\Models\Formula::oneByInputhash($md5_sql);
+            $wm = \Plugins\Wiki\Parserdefault\Formula::oneByInputhash($md5_sql);
             if (!$wm->get('id')) {
                 $wm->set('inputhash', $this->encodeBlob($md5_sql));
                 $wm->set('outputhash', $this->encodeBlob($outmd5_sql));
@@ -358,7 +358,7 @@ class MathRenderer
     {
         $this->md5 = md5($this->tex);
 
-        $wm = \Components\Wiki\Models\Formula::oneByInputhash($this->encodeBlob($this->md5));
+        $wm = \Plugins\Wiki\Parserdefault\Formula::oneByInputhash($this->encodeBlob($this->md5));
 
         if ($wm->get('id')) {
             // Tailing 0x20s can get dropped by the database, add it back on if necessary:
