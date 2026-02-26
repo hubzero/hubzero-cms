@@ -87,9 +87,7 @@ $this->css()
 						<label for="field-access">
 							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
 							<select name="fields[access]" id="field-access" class="form-control">
-								<option value="1"<?php if ($this->post->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-								<option value="2"<?php if ($this->post->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-								<option value="5"<?php if ($this->post->get('access') == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+								<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')); ?>
 							</select>
 						</label>
 					</div>
