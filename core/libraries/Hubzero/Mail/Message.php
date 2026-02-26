@@ -534,8 +534,17 @@ class Message extends \Symfony\Component\Mime\Email
 
 		foreach($addresses as $key => $value)
 		{
-			if (is_numeric($key))
+			if ($key === null || $key === '')
 			{
+				continue;
+			}
+			else if (is_numeric($key))
+			{
+				if ($value === null)
+				{
+					continue;
+				}
+
 				$address = new \Symfony\Component\Mime\Address($value);
 			}
 			else
