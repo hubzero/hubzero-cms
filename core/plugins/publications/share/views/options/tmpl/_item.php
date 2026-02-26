@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 $shareUrl = Route::url(
     'index.php?option=' . $this->option
     . '&id=' . $this->publication->id

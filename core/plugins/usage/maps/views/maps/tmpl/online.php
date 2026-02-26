@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 $this->lat = 20;
 $this->long = 0;
 $this->zoom = 2;

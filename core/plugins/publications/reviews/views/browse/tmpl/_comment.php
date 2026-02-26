@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
     $cls = isset($this->cls) ? $this->cls : 'odd';
 
     $name = Lang::txt('JANONYMOUS');

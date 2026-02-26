@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 $review = new \Plugins\Publications\Reviews\Models\Review($this->review);
 
 if ($review->exists()) {

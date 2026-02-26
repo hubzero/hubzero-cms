@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Toolbar;
+
 // No direct access.
 defined('_HZEXEC_') or die();
 

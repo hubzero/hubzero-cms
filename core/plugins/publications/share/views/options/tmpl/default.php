@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+
 $this->css()
      ->js();
 

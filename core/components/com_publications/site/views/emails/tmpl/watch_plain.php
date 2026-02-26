@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Request;
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 echo $this->subject; ?>

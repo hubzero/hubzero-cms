@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+
 $base = $this->base;
 
 if (Component::params('com_groups')->get('email_forum_comments') && $this->config->get('access-view-section')) : ?>

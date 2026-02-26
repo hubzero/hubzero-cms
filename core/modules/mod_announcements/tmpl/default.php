@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die;
 
 $morelink = count($this->content) > 0 ? $this->content[0]->catpath : 'announcements';

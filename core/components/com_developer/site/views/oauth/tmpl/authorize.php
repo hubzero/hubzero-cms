@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die();
 
 $formAction = Route::url('index.php?option=' . $this->option);

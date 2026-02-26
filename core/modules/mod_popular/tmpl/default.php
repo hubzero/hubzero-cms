@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+
 ?>
 <table class="adminlist">
     <thead>

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
 use Components\Billboards\Models\Collection;
 use Components\Billboards\Models\Billboard;
 

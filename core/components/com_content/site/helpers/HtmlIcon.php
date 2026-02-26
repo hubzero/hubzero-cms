@@ -56,7 +56,6 @@ class HtmlIcon
         $output = '';
 
         if (class_exists('\Components\Mailto\Site\Helpers\Mailto')) {
-
             $base     = Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
             $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(

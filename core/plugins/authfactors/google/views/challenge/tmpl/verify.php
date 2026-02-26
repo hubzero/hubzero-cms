@@ -1,5 +1,7 @@
 <?php
 
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 $this->css('enroll');
 ?>

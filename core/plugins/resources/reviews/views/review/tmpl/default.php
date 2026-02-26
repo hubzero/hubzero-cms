@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 if ($this->review->get('id')) {
     $title = Lang::txt('PLG_RESOURCES_REVIEWS_EDIT_YOUR_REVIEW');
 } else {

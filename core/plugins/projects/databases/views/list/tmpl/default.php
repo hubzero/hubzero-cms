@@ -1,7 +1,5 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package     HUBzero CMS
  * @author      Sudheera R. Fernando <sudheera@xconsole.org>
@@ -24,6 +22,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 // no direct access
 defined('_HZEXEC_') or die();

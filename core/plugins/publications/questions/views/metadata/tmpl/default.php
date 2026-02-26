@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 ?>
 <p class="answer">
     <?php if ($this->publication->alias) : ?>

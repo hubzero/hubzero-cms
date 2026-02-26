@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Event;
+
 $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>

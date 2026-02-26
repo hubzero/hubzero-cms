@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // Add stylesheet
 $this->css('assets/css/related.css');
 

@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 // no direct access
 defined('_HZEXEC_') or die;
 ?>

@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+
 $id = Request::getString('id', '');
 
 $this->lat = 20;

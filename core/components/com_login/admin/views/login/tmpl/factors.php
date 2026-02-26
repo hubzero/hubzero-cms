@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Toolbar;
+
 Request::setVar('hidemainmenu', 1);
 Toolbar::title(Lang::txt('COM_LOGIN_FACTORS_VERIFICATION'));
 

@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 ?>
 <?php $addLabel = Lang::txt('PLG_RESOURCES_COLLECTIONS_ADD', $this->type->type); ?>
 <p><a class="btn primary"

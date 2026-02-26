@@ -1,12 +1,14 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+// @phpcs:disable PSR1.Files.SideEffects
 
 use Components\Projects\Helpers\Html;
 

@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // @codeCoverageIgnoreStart
 if (!class_exists('ConfigGetter', false)) {
     class ConfigGetter

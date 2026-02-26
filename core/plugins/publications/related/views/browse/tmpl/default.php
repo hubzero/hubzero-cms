@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // Add stylesheet
 $this->css('related.css');
 
@@ -68,7 +74,7 @@ $authorlist = '';
                                 <a href="<?php echo $sef; ?>"
                                     class="fixedResourceTip"
                                     title="DOM:rsrce<?php echo $line->id; ?>"
-                                    ><?php echo $this > escape(stripslashes($line->title)); ?></a>
+                                    ><?php echo $this->escape(stripslashes($line->title)); ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo stripslashes($line->title); ?></h4>
                                     <div>

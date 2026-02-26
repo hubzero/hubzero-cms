@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+
 // No direct access
 defined('_HZEXEC_') or die();
 

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Plugins\Usage\Overview\Overview as plgUsageOverview;
+
 //Html::behavior('chart');
 //Html::behavior('chart', 'resize');
 

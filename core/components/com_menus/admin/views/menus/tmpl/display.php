@@ -6,6 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+use Hubzero\Facades\User;
+
 defined('_HZEXEC_') or die();
 
 $canDo = \Components\Menus\Helpers\Menus::getActions($this->filters['parent_id']);

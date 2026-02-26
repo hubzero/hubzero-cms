@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -34,8 +39,9 @@ $formAction = Route::url(
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
 // Pre-compute escaped field values
-$esc = function ($val) {
-    return $this->escape(stripslashes($val == null ? '' : $val));
+$view = $this;
+$esc = function ($val) use ($view) {
+    return $view->escape(stripslashes($val == null ? '' : $val));
 };
 $fields = [
     'category'    => $esc($this->row->category),

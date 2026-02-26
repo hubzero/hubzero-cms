@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Route;
+
 $baseUrl = '/resources/draft?controller=attachments&no_html=1';
 $actionUrl = $baseUrl . '&task=create';
 ?>

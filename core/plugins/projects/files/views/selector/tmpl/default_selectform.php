@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+
 ?>
     <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="">
         <fieldset>

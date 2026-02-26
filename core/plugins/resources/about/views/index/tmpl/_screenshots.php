@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+
 $upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);

@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -16,7 +19,7 @@ $this->css('import.css')
 $label    = $this->config->get('citation_label', 'number');
 $rollover = $this->config->get('citation_rollover', 'no');
 
-$citationsFormat = new \Components\Citations\Helpers\Format($this->database);
+$citationsFormat = new \Components\Citations\Helpers\Format();
 $template = $citationsFormat->getDefaultFormat();
 
 //batch downloads

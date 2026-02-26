@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 $this->css();
 
 $url = Route::url($this->publication->link() . '&v=' . $this->publication->versionAlias . '&active=forks&action=fork');

@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -23,10 +29,12 @@ switch ($this->action) {
             if (isset($file[0])) {
                 $img_location .= $file[0];
             } else {
-                return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+                App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+                return;
             }
         } else {
-            return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+            App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+            return;
         }
 
         // Initiate a new content server and serve up the file

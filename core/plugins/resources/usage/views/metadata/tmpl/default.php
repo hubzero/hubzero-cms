@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 ?>
 <p class="usage">
     <?php if ($this->resource->type == 7) : ?>

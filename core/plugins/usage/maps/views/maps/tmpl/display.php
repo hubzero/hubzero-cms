@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 $period = Request::getString('period', '1999-12');
 $xres   = Request::getString('xres', '2050');
 $yres   = Request::getString('yres', '1050');

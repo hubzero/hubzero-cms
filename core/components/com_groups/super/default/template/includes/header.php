@@ -8,6 +8,7 @@
  */
 
 use Hubzero\Facades\Route;
+
 ?>
 
 <div class="super-group-header-wrap">

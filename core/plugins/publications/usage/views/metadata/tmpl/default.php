@@ -6,5 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 ?>
 <p class="usage"><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $this->views, $this->downloads); ?></p>

@@ -6,6 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -24,10 +29,12 @@ Toolbar::help('tagged');
 
 <?php
 $formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
-$editUrl = function ($id) {
+$option = $this->option;
+$controller = $this->controller;
+$editUrl = function ($id) use ($option, $controller) {
     return Route::url(
-        'index.php?option=' . $this->option . '&controller='
-        . $this->controller . '&task=edit&id=' . $id
+        'index.php?option=' . $option . '&controller='
+        . $controller . '&task=edit&id=' . $id
     );
 };
 ?>

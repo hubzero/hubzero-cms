@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews');
 
 $message  = Lang::txt('PLG_PUBLICATIONS_REVIEWS_SOMEONE_POSTED_REVIEW') . "\n\n";

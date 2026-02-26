@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+
 Submenu::addEntry(
     Lang::txt('COM_GROUPS_PAGES'),
     Route::url('index.php?option=com_groups&controller=pages&gid=' . $this->group->get('cn')),

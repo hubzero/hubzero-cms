@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');

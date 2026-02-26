@@ -6,6 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Plugins\Resources\Usage\Usage as plgResourcesUsage;
+
 $base = rtrim(Request::base(true), '/');
 
 // Push scripts to document

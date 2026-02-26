@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -482,11 +488,12 @@ $devTeam    = \Components\Tools\Helpers\Html::getDevTeam($this->status['develope
                             <div id="ctSuccess"></div>
 
                             <?php
-                            $selState = function ($v) {
-                                echo ($this->status['state'] == $v) ? ' selected="selected"' : '';
+                            $status = $this->status;
+                            $selState = function ($v) use ($status) {
+                                echo ($status['state'] == $v) ? ' selected="selected"' : '';
                             };
-                            $selPri = function ($v) {
-                                echo ($this->status['priority'] == $v) ? ' selected="selected"' : '';
+                            $selPri = function ($v) use ($status) {
+                                echo ($status['priority'] == $v) ? ' selected="selected"' : '';
                             };
     ?>
                             <div class="grid">

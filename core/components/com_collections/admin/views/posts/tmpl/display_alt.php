@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -45,7 +51,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                 <tr>
                     <th colspan="6">
                         <?php
-                        $collection = \Components\Collections\Models\Collection::oneOrFail(
+                        $collection = \Components\Collections\Models\Orm\Collection::oneOrFail(
                             $this->filters['collection_id']
                         );
                         ?>

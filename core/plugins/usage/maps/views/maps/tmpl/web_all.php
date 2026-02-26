@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 $dataurl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&type=' . $this->type .
 '&no_html=1&data=locations');
 $dataurl = str_replace('&amp;', '&', $dataurl);

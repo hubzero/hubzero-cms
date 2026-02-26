@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+
 $authors = $this->row->relatedAuthors;
 if (count($authors)) { ?>
     <?php foreach ($authors as $author) { ?>

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+
 $base = $this->base;
 $preexistingSubscriptionIds = array();
 $currentUserId = User::get('id');

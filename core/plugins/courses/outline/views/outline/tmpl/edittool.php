@@ -1,5 +1,10 @@
 <?php
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+
 // @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms

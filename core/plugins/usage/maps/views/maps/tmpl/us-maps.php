@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 $period = Request::getString('period', '1999-12');
 
 $date = $period;

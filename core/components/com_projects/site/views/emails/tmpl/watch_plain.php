@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 $sef  = Route::url($this->project->link());
 $link = rtrim($base, '/') . '/' . trim($sef, '/');

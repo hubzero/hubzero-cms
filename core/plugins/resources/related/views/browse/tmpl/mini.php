@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 ?>
 <div class="container" id="whatsrelated">
     <h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>

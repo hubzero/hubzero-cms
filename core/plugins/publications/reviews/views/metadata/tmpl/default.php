@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+
 ?>
 <p class="review">
     <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_NUM_REVIEWS', $this->reviews); ?>

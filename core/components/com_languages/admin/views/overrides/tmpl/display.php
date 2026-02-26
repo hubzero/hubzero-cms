@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+use Hubzero\Facades\User;
+
 // Get the results for each action
 $canDo = \Components\Languages\Helpers\Utilities::getActions();
 

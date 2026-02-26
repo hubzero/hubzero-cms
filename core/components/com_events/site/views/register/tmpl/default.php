@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -49,9 +52,10 @@ $registerTxt = Lang::txt('EVENTS_REGISTER');
 $reqTxt = Lang::txt('COM_EVENTS_REQUIRED');
 
 // Helper to get register field values
-$regVal = function ($key) {
-    return (isset($this->register[$key]))
-        ? $this->register[$key] : '';
+$register = $this->register;
+$regVal = function ($key) use ($register) {
+    return (isset($register[$key]))
+        ? $register[$key] : '';
 };
 ?>
 <header id="content-header">

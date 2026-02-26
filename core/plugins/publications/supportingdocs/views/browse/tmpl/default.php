@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+
 $this->css();
 ?>
 <div class="supportingdocs" id="supportingdocs">
