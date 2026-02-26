@@ -1355,13 +1355,23 @@ abstract class Driver implements LoggerAwareInterface
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
         $bits  = array();
 
+        // A quote character inside an identifier can only be an attempt to
+        // break out of the quoting, so it is dropped rather than wrapped
+        $unwrapped = sprintf($this->wrapper, '');
+        $quotes = strlen($unwrapped) >= 2 ? array($unwrapped[0], $unwrapped[strlen($unwrapped) - 1]) : array();
+
         foreach ($parts as $part) {
+            if ($quotes) {
+                $part = str_replace($quotes, '', (string) $part);
+            }
             $bits[] = sprintf($this->wrapper, $part);
         }
 
         // Put back together and add 'AS' clause
         $string  = implode('.', $bits);
-        $string .= (isset($as)) ? ' AS ' . sprintf($this->wrapper, $as) : '';
+        if (isset($as)) {
+            $string .= ' AS ' . sprintf($this->wrapper, $quotes ? str_replace($quotes, '', (string) $as) : $as);
+        }
 
         return $string;
     }
