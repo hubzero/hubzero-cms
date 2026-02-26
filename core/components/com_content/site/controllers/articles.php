@@ -265,13 +265,13 @@ class Articles extends SiteController
         }
 
         if ($item->metakey) {
-            Document::setMetadata('keywords', $item->metakey);
+            Document::setMetaData('keywords', $item->metakey);
         } elseif (!$item->metakey && $params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         if (Config::get('MetaAuthor') == '1') {
@@ -281,7 +281,7 @@ class Articles extends SiteController
         $mdata = $item->metadata->toArray();
         foreach ($mdata as $k => $v) {
             if ($v) {
-                Document::setMetadata($k, $v);
+                Document::setMetaData($k, $v);
             }
         }
 
@@ -608,11 +608,11 @@ class Articles extends SiteController
         }
 
         if ($params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         $this->view
@@ -805,11 +805,11 @@ class Articles extends SiteController
         }
 
         if ($params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         // Add feed links
@@ -909,11 +909,11 @@ class Articles extends SiteController
         }
 
         if ($params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         $this->view
@@ -1270,13 +1270,13 @@ class Articles extends SiteController
         }
 
         if ($category->metakey) {
-            Document::setMetadata('keywords', $category->metakey);
+            Document::setMetaData('keywords', $category->metakey);
         } elseif (!$category->metakey && $params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         if (Config::get('MetaAuthor') == '1') {
@@ -1287,7 +1287,7 @@ class Articles extends SiteController
 
         foreach ($mdata as $k => $v) {
             if ($v) {
-                Document::setMetadata($k, $v);
+                Document::setMetaData($k, $v);
             }
         }
 
@@ -1429,11 +1429,11 @@ class Articles extends SiteController
         }
 
         if ($params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         // Escape strings for HTML output

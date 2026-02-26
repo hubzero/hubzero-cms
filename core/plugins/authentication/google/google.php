@@ -343,7 +343,7 @@ class Google extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(
+        Document::addStyleSheet(
             Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css'
         );
 

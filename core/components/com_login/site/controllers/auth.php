@@ -116,11 +116,11 @@ class Auth extends SiteController
         }
 
         if ($params->get('menu-meta_keywords')) {
-            Document::setMetadata('keywords', $params->get('menu-meta_keywords'));
+            Document::setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            Document::setMetadata('robots', $params->get('robots'));
+            Document::setMetaData('robots', $params->get('robots'));
         }
 
         // Get the default return value
