@@ -9,6 +9,9 @@
 namespace Hubzero\User;
 
 use Hubzero\User\Password\History;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
 
 /**
  * Password handling class for users
@@ -157,7 +160,7 @@ class Password
      */
     public function create()
     {
-        $db =  \App::get('db');
+        $db =  App::get('db');
 
         if (empty($db)) {
             return false;
@@ -202,7 +205,7 @@ class Password
 
         $this->clear();
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -252,7 +255,7 @@ class Password
      */
     public function update()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (!$this->__get('user_id')) {
             return false;
@@ -306,7 +309,7 @@ class Password
         }
 
         if ($affected > 0) {
-            \Event::trigger('user.onAfterStorePassword', array($this));
+            Event::trigger('user.onAfterStorePassword', array($this));
         }
 
         return true;
@@ -323,7 +326,7 @@ class Password
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -348,7 +351,7 @@ class Password
         }
 
         if ($affected > 0) {
-            \Event::trigger('user.onAfterDeletePassword', array($this));
+            Event::trigger('user.onAfterDeletePassword', array($this));
         }
 
         return true;
@@ -596,7 +599,7 @@ class Password
     public static function getPasshash($password)
     {
         // Get the password encryption/hashing mechanism
-        $config = \Component::params('com_members');
+        $config = Component::params('com_members');
         $type   = $config->get('passhash_mechanism', 'CRYPT_SHA512');
 
         switch ($type) {
@@ -665,7 +668,7 @@ class Password
     public static function changePasshash($user, $passhash)
     {
         // Get config values for min, max, and warning
-        $config        = \Component::params('com_members');
+        $config        = Component::params('com_members');
         $shadowMin     = $config->get('shadowMin', '0');
         $shadowMax     = $config->get('shadowMax', null);
         $shadowWarning = $config->get('shadowWarning', '7');
@@ -716,7 +719,7 @@ class Password
     {
         $hzup->update();
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->quote($passhash) . " WHERE uidNumber=" . $db->quote($hzup->get('user_id')));
         $db->query();

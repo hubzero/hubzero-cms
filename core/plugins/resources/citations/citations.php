@@ -12,6 +12,8 @@
 namespace Plugins\Resources\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 class Citations extends Plugin
 {

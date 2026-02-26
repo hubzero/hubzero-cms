@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Geocode\Geocode;
 use Hubzero\Html\Builder\Select as Dropdown;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports a list of country options.

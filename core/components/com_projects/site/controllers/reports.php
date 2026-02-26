@@ -10,13 +10,13 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Exception;
-use Request;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Projects Reports controller class

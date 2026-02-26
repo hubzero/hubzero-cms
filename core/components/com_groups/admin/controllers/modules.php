@@ -14,14 +14,14 @@ use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Models\Module;
 use Components\Groups\Helpers;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use Date;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Groups controller class

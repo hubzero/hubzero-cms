@@ -8,6 +8,8 @@
 
 namespace Hubzero\Mail;
 
+use Hubzero\Facades\Config;
+
 /**
  * Class for creating and sending email
  */
@@ -92,17 +94,17 @@ class Message extends \Symfony\Component\Mime\Email
             // Use the registered custom HUBzero transport
             $transport = self::getTransporter($transport);
         } else {
-            $dsn = \Config::get('mailer_dsn', '');
+            $dsn = Config::get('mailer_dsn', '');
 
             if (!$dsn) {
-                $scheme = strtolower(trim(\Config::get('mailer', 'sendmail')));
-                $host = strtolower(trim(\Config::get('smtphost', 'localhost')));
-                $port = strtolower(trim(\Config::get('smtpport', '0')));
+                $scheme = strtolower(trim(Config::get('mailer', 'sendmail')));
+                $host = strtolower(trim(Config::get('smtphost', 'localhost')));
+                $port = strtolower(trim(Config::get('smtpport', '0')));
                 // Credentials are case-sensitive (lowercasing them broke every
                 // mixed-case password), and go into the DSN URL-encoded so an @, :
                 // or / in them doesn't break it; the DSN parser decodes them
-                $username = trim(\Config::get('smtpuser', ''));
-                $password = trim(\Config::get('smtppass', ''));
+                $username = trim(Config::get('smtpuser', ''));
+                $password = trim(Config::get('smtppass', ''));
                 switch ($scheme) {
                     case 'smtp':
                         $dsn = "smtp://";

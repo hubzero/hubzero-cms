@@ -9,8 +9,8 @@
 namespace Components\Groups\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Permissions helper

@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Component;
 
 /**
  * Migration script for defaulting the option to Basic search

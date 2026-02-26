@@ -9,8 +9,8 @@
 namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Event model for a category

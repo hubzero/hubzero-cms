@@ -12,9 +12,11 @@ use Components\Collections\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
 use Hubzero\Utility\Str;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Collections model class for a collection
@@ -92,7 +94,7 @@ class Collection extends Base
      */
     public function __construct($oid = null, $object_id = 0, $object_type = 'member')
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $tbl = $this->_tbl_name;
         $this->_tbl = new $tbl($this->_db);
@@ -149,7 +151,7 @@ class Collection extends Base
     public function setup($object_id, $object_type)
     {
         Lang::load('com_collections', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
-        Lang::load('com_collections', \Component::path('com_collections') . DS . 'site');
+        Lang::load('com_collections', Component::path('com_collections') . DS . 'site');
 
         $result = array(
             'id'          => 0,

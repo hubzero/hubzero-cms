@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros\Group;
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
+use Hubzero\Facades\Lang;
 
 /**
  * Group events Macro
@@ -48,7 +49,7 @@ class DefaultHomePage extends GroupMacro
     {
         // check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // add required helper lib

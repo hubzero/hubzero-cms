@@ -10,11 +10,11 @@ namespace Components\Newsletter\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Newsletter\Helpers\CodeHelper;
-use App;
-use Component;
-use Lang;
-use Notify;
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
 
 class Pages extends SiteController
 {

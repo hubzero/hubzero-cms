@@ -9,6 +9,8 @@
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class DataDefinitionRemove
 {
@@ -17,8 +19,8 @@ class DataDefinitionRemove
         \Components\Dataviewer\Admin\Libs\Security::checkRid();
         $base = DvConfig::$conf['dir_base'];
 
-        $db_id = \Request::getString('db', false);
-        $dd_name = \Request::getString('dd_name', false);
+        $db_id = Request::getString('db', false);
+        $dd_name = Request::getString('dd_name', false);
 
         // Validate the caller-supplied identifiers before they reach the shell,
         // a filesystem path or the generated PHP: they name a database directory and
@@ -29,7 +31,7 @@ class DataDefinitionRemove
             }
         }
 
-        $author = \User::get('name') . ' <' . \User::get('email') . '>';
+        $author = User::get('name') . ' <' . User::get('email') . '>';
 
 
         $dd_file_php = $base . '/' . $db_id . '/applications/'

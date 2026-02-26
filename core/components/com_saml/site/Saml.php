@@ -9,6 +9,7 @@
 namespace Components\saml\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,7 +23,7 @@ class Saml extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', 'saml');
+        $controllerName = Request::getCmd('controller', 'saml');
 
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             throw new \Exception('Specified controller does not exist.', 404);

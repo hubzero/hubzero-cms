@@ -10,9 +10,9 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Base\Obj;
-use Component;
-use Request;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for course permissions

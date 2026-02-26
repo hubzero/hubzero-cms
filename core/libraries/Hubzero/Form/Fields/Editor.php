@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
 use Hubzero\Html\Editor as Wysiwyg;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * An editarea field for content creation

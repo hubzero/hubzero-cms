@@ -10,14 +10,14 @@ namespace Components\Events\Admin\Controllers;
 
 use Components\Events\Models\Orm\Page;
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
-use Route;
-use Event;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Events controller for pages

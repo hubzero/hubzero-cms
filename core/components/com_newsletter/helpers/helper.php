@@ -8,6 +8,10 @@
 
 namespace Components\Newsletter\Helpers;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+
 /**
  * Helper functions
  */
@@ -20,7 +24,7 @@ class Helper
      */
     protected static function getEncrypter()
     {
-        $key = \App::hash('newletter');
+        $key = App::hash('newletter');
 
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
@@ -119,7 +123,7 @@ class Helper
         }
 
         //instantiate database
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //try to load mailing recipient object to validate
         $sql = "SELECT * FROM `#__newsletter_mailing_recipients`
@@ -172,7 +176,7 @@ class Helper
         }
 
         //instantiate database
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //attempt to load mailing list email object
         $sql = "SELECT * FROM `#__newsletter_mailinglist_emails` AS mle
@@ -213,7 +217,7 @@ class Helper
     {
         // create from details
         $from = array(
-            'name'  => \Config::get('sitename') . ' Mailing Lists',
+            'name'  => Config::get('sitename') . ' Mailing Lists',
             'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
         );
 
@@ -224,7 +228,7 @@ class Helper
         );
 
         //build subject
-        $subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . \Config::get('sitename');
+        $subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . Config::get('sitename');
 
         //get token
         $token = self::generateConfirmationToken($emailAddress, $mailinglistObject);
@@ -298,7 +302,7 @@ class Helper
     public static function getNewsletterTrackingProtocol()
     {
         //get params for com newsletter
-        $params = \Component::params('com_newsletter');
+        $params = Component::params('com_newsletter');
 
         //return protocol
         return $params->get('email_tracking_protocol', 'http');

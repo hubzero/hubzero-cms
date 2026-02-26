@@ -10,6 +10,7 @@ namespace Plugins\Antispam\Akismet\Service;
 
 use Hubzero\Spam\Detector\Service as AbstractService;
 use Exception;
+use Hubzero\Facades\Request;
 
 /**
  * Akismet anti-comment spam service
@@ -289,7 +290,7 @@ class Provider extends AbstractService
         }
 
         $response = $this->sendRequest(
-            'blog=' . \Request::base() . '&' . $this->getQueryString(),
+            'blog=' . Request::base() . '&' . $this->getQueryString(),
             $this->apiKey . '.rest.akismet.com',
             '/' . $this->akismetVersion . '/comment-check'
         );

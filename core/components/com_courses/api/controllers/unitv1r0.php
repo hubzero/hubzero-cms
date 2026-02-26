@@ -10,11 +10,11 @@ namespace Components\Courses\Api\Controllers;
 
 use Components\Courses\Models\Assetgroup;
 use Components\Courses\Models\Unit;
-use App;
-use Config;
-use Request;
-use Date;
-use Component;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Component;
 use stdClass;
 
 /**

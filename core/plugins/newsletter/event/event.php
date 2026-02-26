@@ -10,6 +10,7 @@ namespace Plugins\Newsletter\Event;
 
 use Hubzero\Plugin\Plugin;
 use Components\Events\Models\Orm\Event as CalEvent;
+use Hubzero\Facades\Date;
 
 /**
  * Plugin class for Newsletter event

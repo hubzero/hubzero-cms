@@ -9,15 +9,16 @@
 namespace Components\Tools\Helpers;
 
 use Exception;
-use Component;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 use Hubzero\Utility\Validate;
-use Config;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 use stdClass;
-use Date;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 /**
  * Contains functions used by multiple Session/Tool modules
@@ -54,12 +55,12 @@ class Utils
                 && (!isset($options['user']) || $options['user'] == '')
                 && (!isset($options['database']) || $options['database'] == '')
             ) {
-                $instance = \App::get('db');
+                $instance = App::get('db');
             } else {
                 $options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
                 $instance = \Hubzero\Database\Driver::getInstance($options);
                 if ($instance instanceof Exception) {
-                    $instance = \App::get('db');
+                    $instance = App::get('db');
                 }
             }
         }
@@ -115,7 +116,7 @@ class Utils
      */
     public static function createHomeDirectory($username)
     {
-        $dbname = \App::get('config')->get('database.db');
+        $dbname = App::get('config')->get('database.db');
         $command = "create_userhome " . escapeshellarg($username);
         //$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} dbname={$dbname} 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} 2>&1 </dev/null";
@@ -292,13 +293,13 @@ class Utils
         //instantiate objects
         $access = new stdClass();
         $access->error = new stdClass();
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // Ensure we have a tool
         if (!$tool) {
             $access->valid = 0;
             $access->error->message = Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
-            \Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
+            Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
             return $access;
         }
 
@@ -308,7 +309,7 @@ class Utils
             if ($login == '') {
                 $access->valid = 0;
                 $access->error->message = 'Unable to grant tool access to user, no user was found.';
-                \Log::debug("mw::_getToolAccess($tool,$login) FAILED null user check");
+                Log::debug("mw::_getToolAccess($tool,$login) FAILED null user check");
                 return $access;
             }
         }
@@ -320,7 +321,7 @@ class Utils
         if (!$toolVersion->toolid) {
             $access->valid = 0;
             $access->error->message = Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
-            \Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+            Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
             return $access;
         }
 
@@ -371,7 +372,7 @@ class Utils
             if (!$indevgroup && !$admin) {
                 $access->valid = 0;
                 $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP');
-                \Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+                Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
             } else {
                 $access->valid = 1;
             }
@@ -388,12 +389,12 @@ class Utils
                 if (!$ingroup && !$admin) {
                     $access->valid = 0;
                     $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP');
-                    \Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+                    Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
                 } else {
                     if (!$exportAllowed->valid) {
                         $access->valid = 0;
                         $access->error->message = $exportAllowed->error->message;
-                        \Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+                        Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
                     } else {
                         $access->valid = 1;
                     }
@@ -402,7 +403,7 @@ class Utils
                 if (!$exportAllowed->valid) {
                     $access->valid = 0;
                     $access->error->message = $exportAllowed->error->message;
-                    \Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+                    Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
                 } else {
                     $access->valid = 1;
                 }
@@ -412,7 +413,7 @@ class Utils
         else {
             $access->valid = 0;
             $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED');
-            \Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
+            Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
         }
 
         //return access
@@ -444,7 +445,7 @@ class Utils
         if (empty($country) && in_array($export_control, array('us', 'd1', 'pu'))) {
             $export_access->valid = 0;
             $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
-            \Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");
+            Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");
             return $export_access;
         }
 
@@ -452,7 +453,7 @@ class Utils
         if (\Hubzero\Geocode\Geocode::is_e1nation($country)) {
             $export_access->valid = 0;
             $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
-            \Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
+            Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
             return $export_access;
         }
 
@@ -462,7 +463,7 @@ class Utils
                 if ($country != 'us' && !\Hubzero\Geocode\Geocode::is_iplocation($ip, 'pu')) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
-                    \Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
+                    Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
                     return $export_access;
                 }
                 break;
@@ -471,7 +472,7 @@ class Utils
                 if (\Hubzero\Geocode\Geocode::is_d1nation($country)) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
-                    \Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
+                    Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
                     return $export_access;
                 }
                 break;
@@ -480,7 +481,7 @@ class Utils
                 if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $export_control)) {
                     $export_access->valid = 0;
                     $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
-                    \Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
+                    Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
                     return $export_access;
                 }
                 break;
@@ -504,7 +505,7 @@ class Utils
         //include needed files
 
         //instantiate needed objects
-        $database = \App::get('db');
+        $database = App::get('db');
 
         //load tool version
         $toolVersion = new \Components\Tools\Tables\Version($database);
@@ -579,7 +580,7 @@ class Utils
         // Note: callers are responsible for escaping individual argument values
         // with escapeshellarg() before building $comm. Do not apply escapeshellcmd()
         // here — it would corrupt the quoting produced by escapeshellarg().
-        $dbname = \App::get('config')->get('database.db');
+        $dbname = App::get('config')->get('database.db');
 
         //$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
         $cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw $comm 2>&1 </dev/null";
@@ -653,7 +654,7 @@ class Utils
         }
 
         if (isset($output->exit_code) && (bool)$output->exit_code !== $execFailed) {
-            \Log::warning('maxwell shell exit code and JSON exit_code disagree.'
+            Log::warning('maxwell shell exit code and JSON exit_code disagree.'
                 . ' shell_exit_code=' . $status
                 . ' json_exit_code=' . $output->exit_code
                 . ' command=' . $comm

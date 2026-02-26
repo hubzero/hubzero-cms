@@ -9,7 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Select as Dropdown;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports an custom SQL select list

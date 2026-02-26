@@ -9,6 +9,9 @@
 namespace Components\Saml\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
 
 /**
  * Model for a SAML SSO session issued to a Service Provider
@@ -105,11 +108,11 @@ class SamlSession extends Relational
         // NULL rather than '' so the unique (sp_id, request_id) index does
         // not collide across rows that answer no particular request
         $row->set('request_id', $requestId ? (string) $requestId : null);
-        $row->set('hub_session_id', (string) \App::get('session')->getId());
+        $row->set('hub_session_id', (string) App::get('session')->getId());
         $row->set('user_id', (int) $user->get('id'));
         $row->set('sp_id', (int) $sp->get('id'));
         $row->set('state', self::STATE_ACTIVE);
-        $row->set('created', \Date::toSql());
+        $row->set('created', Date::toSql());
 
         // The unique index is the real guard: two requests racing the
         // wasRequestAnswered() check cannot both land a row.
@@ -173,7 +176,7 @@ class SamlSession extends Relational
     public function end()
     {
         $this->set('state', self::STATE_ENDED);
-        $this->set('ended', \Date::toSql());
+        $this->set('ended', Date::toSql());
 
         return $this->save();
     }
@@ -208,7 +211,7 @@ class SamlSession extends Relational
      */
     public static function sessionTableIsAuthoritative()
     {
-        return \Config::get('session_handler') == 'database';
+        return Config::get('session_handler') == 'database';
     }
 
     /**

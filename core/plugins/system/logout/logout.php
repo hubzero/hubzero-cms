@@ -12,6 +12,10 @@
 namespace Plugins\System\Logout;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Logout extends Plugin
 {

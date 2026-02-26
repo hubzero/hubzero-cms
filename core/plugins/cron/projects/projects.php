@@ -12,6 +12,11 @@
 namespace Plugins\Cron\Projects;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Projects extends Plugin
 {

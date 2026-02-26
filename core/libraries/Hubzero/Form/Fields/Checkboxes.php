@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
 use Hubzero\Html\Builder\Select as Dropdown;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Form Field class.
@@ -45,7 +45,7 @@ class Checkboxes extends Field
         }
 
         $text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-        $text = $this->translateLabel ? \App::get('language')->txt($text) : $text;
+        $text = $this->translateLabel ? App::get('language')->txt($text) : $text;
 
         $class = !empty($this->description) ? 'hasTip' : '';
         $class = $this->required == true ? $class . ' required-field' : $class;
@@ -56,14 +56,14 @@ class Checkboxes extends Field
         if (!empty($this->description)) {
             $label .= ' title="'
                 . htmlspecialchars(
-                    trim($text, ':') . '::' . ($this->translateDescription ? \App::get('language')->txt($this->description) : $this->description),
+                    trim($text, ':') . '::' . ($this->translateDescription ? App::get('language')->txt($this->description) : $this->description),
                     ENT_COMPAT,
                     'UTF-8'
                 ) . '"';
         }
 
         if ($this->required) {
-            $label .= '>' . $text . ' <span class="required star">' . \App::get('language')->txt('JOPTION_REQUIRED') . '</span></span>';
+            $label .= '>' . $text . ' <span class="required star">' . App::get('language')->txt('JOPTION_REQUIRED') . '</span></span>';
         } else {
             $label .= '>' . $text . '</span>';
         }

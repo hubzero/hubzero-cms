@@ -9,13 +9,14 @@
 namespace Components\Dataviewer\Site\View;
 
 use Components\Dataviewer\Site\DvConfig;
+use Hubzero\Facades\Request;
 
 class File
 {
     public static function render()
     {
-        $hash = \Request::getString('hash');
-        $hash_list = \Request::getString('hash_list');
+        $hash = Request::getString('hash');
+        $hash_list = Request::getString('hash_list');
 
         if ($hash != '') {
             $file = $_SESSION['dv']['file_download']['list'][$hash];
@@ -25,7 +26,7 @@ class File
             \Components\Dataviewer\Site\Lib\Dl::zipFiles($hash_list);
         } else {
             $base_path = DvConfig::$dv_conf['base_path'];
-            $file = \Request::getString('f', false);
+            $file = Request::getString('f', false);
             $pi = pathinfo($file);
             $file_name = $pi['basename'];
             $full_path = $base_path . $file;

@@ -7,6 +7,8 @@
  */
 
 use Components\Projects\Helpers\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 

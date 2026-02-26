@@ -9,9 +9,9 @@
 namespace Modules\Footer;
 
 use Hubzero\Module\Module;
-use Config;
-use Lang;
-use Date;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Module class for diplaying site footer

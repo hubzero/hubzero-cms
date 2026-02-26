@@ -10,6 +10,9 @@ namespace Components\Publications\Models;
 
 use Hubzero\Utility\Str;
 use ZipArchive;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Off-request publication bundle build engine (core; replaces the PURR-only
@@ -85,7 +88,7 @@ class BundleBuilder
         // it before any post-build query (the FTP link refresh below, and the
         // caller's markReady()/markFailed()) so "server has gone away" can't fatal
         // the run — which would also leave the queue row wedged in 'building'.
-        $db = \App::get('db');
+        $db = App::get('db');
         if (
             is_object($db) && is_callable(array($db, 'connected')) && !$db->connected()
             && is_callable(array($db, 'reconnect'))
@@ -139,7 +142,7 @@ class BundleBuilder
         $pubId  = (int) $version['publication_id'];
         $secret = (string) $version['secret'];
 
-        $webpath = trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/');
+        $webpath = trim(Component::params('com_publications')->get('webpath', '/site/publications'), '/');
         $base    = PATH_APP . DS . $webpath . DS . Str::pad($pubId) . DS . Str::pad($versionId);
         $content = $base . DS . $secret;
 
@@ -307,7 +310,7 @@ class BundleBuilder
             return false;
         }
 
-        $params = \Component::params('com_publications');
+        $params = Component::params('com_publications');
         $sftp   = trim((string) $params->get('sftppath', ''));
         if ($sftp === '') {
             // FTP delivery not configured for this hub — nothing to maintain.
@@ -461,7 +464,7 @@ class BundleBuilder
             return '';
         }
 
-        $webpath = trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/');
+        $webpath = trim(Component::params('com_publications')->get('webpath', '/site/publications'), '/');
         $content = PATH_APP . DS . $webpath . DS . Str::pad((int) $version['publication_id'])
             . DS . Str::pad((int) $versionId) . DS . $version['secret'];
 
@@ -529,7 +532,7 @@ class BundleBuilder
         $r['publication_id'] = (int) $version['publication_id'];
         $r['doi']            = $version['doi'];
 
-        $webpath = trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/');
+        $webpath = trim(Component::params('com_publications')->get('webpath', '/site/publications'), '/');
         $base    = PATH_APP . DS . $webpath . DS . Str::pad((int) $version['publication_id']) . DS . Str::pad($versionId);
         $content = $base . DS . $version['secret'];
         $name    = $this->bundleName($version);
@@ -627,7 +630,7 @@ class BundleBuilder
             // No role-1 files: verify the Databases (data element) or
             // metadata-only (Series) payload instead of treating it as nothing.
             $this->auditNonFile($versionId, $version, $base, $content, $name, $outer, $r, $deep);
-        } elseif (!$r['outer_exists']) {
+        } else if (!$r['outer_exists']) {
             $r['issues'][] = 'missing_bundle';
         } else {
             $carrier   = ($innerMap !== null) ? $innerMap : $outerData;
@@ -711,7 +714,7 @@ class BundleBuilder
                         // present, the rest missing. A rebuild restores them.
                         $r['issues'][] = 'incomplete:' . $present . '/' . $r['primary_count'];
                     }
-                } elseif ($usedInner && $r['outer_has_bundle'] === false) {
+                } else if ($usedInner && $r['outer_has_bundle'] === false) {
                     // Inner holds the data, but the served outer doesn't carry
                     // it — the download would be metadata-only.
                     $r['issues'][] = 'outer_missing_data';
@@ -886,7 +889,7 @@ class BundleBuilder
             return $this->incExcludedCache[$versionId];
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT mt.`curation`
 			 FROM `#__publication_versions` v
@@ -944,7 +947,7 @@ class BundleBuilder
      */
     protected function hasNonFileAttachments($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` != 'file'"
@@ -961,7 +964,7 @@ class BundleBuilder
      */
     protected function versionRow($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `publication_id`, `secret`, `version_number`, `doi`,
 			        `title`, `version_label`, `license_type`, `license_text`
@@ -991,7 +994,7 @@ class BundleBuilder
         // otherwise clobber the pending attachments query before loadObjectList()).
         $excluded = $this->includeInPackageExcludedIds($versionId);
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `path`, `element_id` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
@@ -1055,7 +1058,7 @@ class BundleBuilder
         // path/element_id columns, so nothing resolves).
         $excluded = $this->includeInPackageExcludedIds($versionId);
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `path`, `id`, `params`, `element_id` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
@@ -1442,7 +1445,7 @@ class BundleBuilder
                 @unlink($tmp);
                 return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
             }
-        } elseif ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
             return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
         }
@@ -1528,7 +1531,7 @@ class BundleBuilder
                 @unlink($tmp);
                 return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
             }
-        } elseif ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
             return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
         }
@@ -1830,7 +1833,7 @@ class BundleBuilder
             return array();
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `path`, `id`, `params` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
@@ -1866,7 +1869,7 @@ class BundleBuilder
      */
     protected function generateReadme($versionId, $version)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $title   = isset($version['title']) ? (string) $version['title'] : '';
         $vlabel  = isset($version['version_label']) ? (string) $version['version_label'] : '';
@@ -1907,7 +1910,7 @@ class BundleBuilder
                 if (trim($licText) !== '') {
                     $readme .= $licText . "\n ";
                     $hasLicFile = true;
-                } elseif (trim((string) $L['text']) !== '') {
+                } else if (trim((string) $L['text']) !== '') {
                     $readme .= $L['text'] . "\n ";
                 }
             }
@@ -1932,7 +1935,7 @@ class BundleBuilder
         $readme .= '--------------------------------------------' . "\n ";
 
         try {
-            $when = \Date::toSql();
+            $when = Date::toSql();
         } catch (\Exception $e) {
             $when = gmdate('Y-m-d H:i:s');
         }
@@ -1956,7 +1959,7 @@ class BundleBuilder
     {
         $elemByRole = $this->fileElementsByRole($versionId);
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `path`, `role`, `attribs` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` = 'file'
@@ -2005,7 +2008,7 @@ class BundleBuilder
      */
     protected function fileElementsByRole($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT mt.`curation`
 			 FROM `#__publication_versions` v
@@ -2064,7 +2067,7 @@ class BundleBuilder
      */
     protected function versionAuthors($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         // Resolve each author's organization the way the website (getAuthors() /
         // the Member model) does: an author's affiliation lives in the profile
         // field store #__user_profiles, NOT the legacy #__xprofiles.organization
@@ -2114,7 +2117,7 @@ class BundleBuilder
      */
     protected function dataAttachments($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT `object_name`, `object_revision`, `title` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
@@ -2135,7 +2138,7 @@ class BundleBuilder
      */
     protected function hasContentFileAttachments($versionId)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
@@ -2511,7 +2514,7 @@ class BundleBuilder
 
                 if (is_link($path)) {
                     @unlink($path);
-                } elseif (is_dir($path)) {
+                } else if (is_dir($path)) {
                     $this->removeStage($path);
                 } else {
                     @unlink($path);

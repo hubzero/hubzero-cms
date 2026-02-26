@@ -9,7 +9,7 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Renders a textarea element

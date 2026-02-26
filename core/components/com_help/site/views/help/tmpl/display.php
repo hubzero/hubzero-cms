@@ -6,10 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-Document::setTitle(\Lang::txt('COM_HELP'));
+Document::setTitle(Lang::txt('COM_HELP'));
 
 $this->js();
 ?>

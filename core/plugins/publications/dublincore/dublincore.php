@@ -12,6 +12,10 @@
 namespace Plugins\Publications\Dublincore;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 class Dublincore extends Plugin
 {

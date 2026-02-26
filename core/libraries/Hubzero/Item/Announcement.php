@@ -9,8 +9,8 @@
 namespace Hubzero\Item;
 
 use Hubzero\Database\Relational;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Item Announcement

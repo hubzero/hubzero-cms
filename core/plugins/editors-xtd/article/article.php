@@ -3,6 +3,10 @@
 namespace Plugins\EditorsXtd\Article;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Session;
 
 /**
  * @package    hubzero-cms

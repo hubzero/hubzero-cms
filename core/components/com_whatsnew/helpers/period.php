@@ -8,7 +8,7 @@
 
 namespace Components\Whatsnew\Helpers;
 
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Whats New helper class for time periods

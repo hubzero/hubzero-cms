@@ -8,6 +8,8 @@
 
 namespace Components\Citations\Download;
 
+use Hubzero\Facades\Component;
+
 /**
  * Citations download class for BibText format
  */
@@ -38,7 +40,7 @@ class Bibtex extends Downloadable
     public function format($row)
     {
         // get fields to not include for all citations
-        $config = \Component::params('com_citations');
+        $config = Component::params('com_citations');
         $exclude = $config->get('citation_download_exclude', '');
         if (strpos($exclude, ',') !== false) {
             $exclude = str_replace(',', "\n", $exclude);

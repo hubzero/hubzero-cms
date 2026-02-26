@@ -9,8 +9,8 @@
 namespace Components\Courses\Api\Controllers;
 
 use Components\Courses\Tables\Prerequisites;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * API controller for the time component

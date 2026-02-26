@@ -11,9 +11,9 @@ namespace Hubzero\Search\Adapters;
 use Hubzero\Search\QueryInterface;
 use Solarium;
 use GuzzleHttp\Client;
-use Event;
-use Request;
-use User;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * SolrQueryAdapter - Adapter for Solr Querying

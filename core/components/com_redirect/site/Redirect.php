@@ -9,6 +9,8 @@
 namespace Components\Redirect\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -44,6 +46,7 @@ class Redirect extends AbstractComponent
             $controllerName = 'redirect';
             Request::setVar('task', $task);
         }
+
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
         //print($controllerName); exit();
         // Instantiate controller

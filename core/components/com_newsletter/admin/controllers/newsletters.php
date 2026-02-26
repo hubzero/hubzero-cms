@@ -19,14 +19,15 @@ use Components\Members\Models\Member;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use stdClass;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Newsletters controller
@@ -56,7 +57,7 @@ class Newsletters extends AdminController
     private function dependencyCheck()
     {
         // Is the CRON component enabled?
-        if (!\Component::isEnabled('com_cron')) {
+        if (!Component::isEnabled('com_cron')) {
             return false;
         }
 

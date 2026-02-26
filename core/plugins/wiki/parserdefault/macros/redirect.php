@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -94,7 +95,7 @@ class Redirect extends WikiMacro
 						}, 1000);
 					};
 				</script>
-				<p class="warning">' . \Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay) . '</p>';
+				<p class="warning">' . Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay) . '</p>';
     }
 
     /**

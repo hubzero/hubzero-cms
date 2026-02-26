@@ -9,6 +9,12 @@
 namespace Components\System\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,28 +28,28 @@ class System extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_system')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_system')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'info'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'info';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_LDAP'),
-            \Route::url('index.php?option=com_system&controller=ldap'),
+        Submenu::addEntry(
+            Lang::txt('COM_SYSTEM_LDAP'),
+            Route::url('index.php?option=com_system&controller=ldap'),
             $controllerName == 'ldap'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_GEO'),
-            \Route::url('index.php?option=com_system&controller=geodb'),
+        Submenu::addEntry(
+            Lang::txt('COM_SYSTEM_GEO'),
+            Route::url('index.php?option=com_system&controller=geodb'),
             $controllerName == 'geodb'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SYSTEM_APC'),
-            \Route::url('index.php?option=com_system&controller=apc'),
+        Submenu::addEntry(
+            Lang::txt('COM_SYSTEM_APC'),
+            Route::url('index.php?option=com_system&controller=apc'),
             $controllerName == 'apc'
         );
 

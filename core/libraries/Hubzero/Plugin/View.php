@@ -12,6 +12,8 @@ use Hubzero\View\View as AbstractView;
 use Hubzero\Document\Assets;
 use ReflectionClass;
 use Exception;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Base class for a plugin View
@@ -52,8 +54,8 @@ class View extends AbstractView
         if (!array_key_exists('override_path', $config)) {
             $config['override_path'] = '';
 
-            if (\App::has('template')) {
-                $config['override_path'] = \App::get('template')->path;
+            if (App::has('template')) {
+                $config['override_path'] = App::get('template')->path;
             }
         } elseif (!array_key_exists('override_root', $config)) {
             $config['override_root'] = $config['override_path'] ? array($config['override_path'] . '/html') : array();
@@ -130,7 +132,7 @@ class View extends AbstractView
         $this->setLayout($config['layout']);
 
         // Set the site's base URL
-        $this->baseurl = \Request::base(true);
+        $this->baseurl = Request::base(true);
     }
 
     /**

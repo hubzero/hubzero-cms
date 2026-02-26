@@ -16,12 +16,12 @@ use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Collection;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use App;
-use Event;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
 
 /**
  * API controller for the projects files
@@ -477,7 +477,6 @@ class Filefsv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-
         $params = array(
             'subdir'  => Request::getString('subdir', ''),
             'from'    => Request::getString('from', ''),
@@ -539,7 +538,7 @@ class Filefsv1r0 extends ApiController
         $hash   = Request::getString('hash', '');
         $this->repo = new \Components\Projects\Models\Repo($this->model, "local");
 
-        $this->_database   = \App::get('db');
+        $this->_database   = App::get('db');
         $this->_uid        = User::get('id');
         $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
         if ($this->subdir === false) {
@@ -609,13 +608,12 @@ class Filefsv1r0 extends ApiController
         // Combine file and folder data
         $items = $this->_sortIncoming();
 
-        $this->_database   = \App::get('db');
+        $this->_database   = App::get('db');
         $this->_uid        = User::get('id');
         $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
         if ($this->subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
         }
-
 
         // Params for repo call
         $params = array(
@@ -717,7 +715,6 @@ class Filefsv1r0 extends ApiController
             }
             $serveas = $file->get('name');
 
-
             // Download local revision
             if ($hash) {
                 $tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0) . $serveas;
@@ -773,7 +770,6 @@ class Filefsv1r0 extends ApiController
                 exit;
             }
         }
-
 
         // Redirect to file list
         $url  = $this->model->link('files') . '&action=browse';

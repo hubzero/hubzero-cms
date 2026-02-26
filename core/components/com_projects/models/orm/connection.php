@@ -10,7 +10,7 @@ namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Filesystem\Manager;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Connections model

@@ -11,6 +11,7 @@ namespace Plugins\User\D1;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Log;
 use Hubzero\Facades\User;
+use Request;
 
 /**
  * Plugin for automatically adding users to the d1_nation group based on IP country group lookup
@@ -65,8 +66,6 @@ class D1 extends Plugin
         } else {
             Log::debug($ip . ' is in [' . $country . '], not a D1 nation, leaving [' . $username . '] membership to group [d1_nation] unchanged.');
         }
-
-        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

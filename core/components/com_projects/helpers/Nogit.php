@@ -10,9 +10,9 @@ namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Filesystem\Manager;
-use Component;
-use User;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Projects Git helper class

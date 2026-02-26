@@ -9,6 +9,9 @@
 namespace Components\Modules\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,11 +26,10 @@ class Modules extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_modules')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_modules')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
-
 
         // initiate controller
         $controller = new Controllers\Modules();

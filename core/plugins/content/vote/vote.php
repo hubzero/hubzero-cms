@@ -3,6 +3,9 @@
 namespace Plugins\Content\Vote;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * @package    hubzero-cms

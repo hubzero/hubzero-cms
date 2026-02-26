@@ -9,6 +9,12 @@
 namespace Components\Groups\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,31 +28,31 @@ class Groups extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_groups')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_groups')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
         // build controller path
-        $controllerName = \Request::getCmd('controller', 'manage');
+        $controllerName = Request::getCmd('controller', 'manage');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'manage';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_GROUPS_MENU_GROUPS'),
-            \Route::url('index.php?option=com_groups'),
+        Submenu::addEntry(
+            Lang::txt('COM_GROUPS_MENU_GROUPS'),
+            Route::url('index.php?option=com_groups'),
             ($controllerName != 'imports' && $controllerName != 'importhooks' && $controllerName != 'customfields')
         );
-        if (\User::authorise('core.admin', 'com_groups')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_GROUPS_MENU_IMPORT'),
-                \Route::url('index.php?option=com_groups&controller=imports'),
+        if (User::authorise('core.admin', 'com_groups')) {
+            Submenu::addEntry(
+                Lang::txt('COM_GROUPS_MENU_IMPORT'),
+                Route::url('index.php?option=com_groups&controller=imports'),
                 ($controllerName == 'imports' || $controllerName == 'importhooks')
             );
-            \Submenu::addEntry(
-                \Lang::txt('COM_GROUPS_MENU_CUSTOMFIELDS'),
-                \Route::url('index.php?option=com_groups&controller=customfields'),
+            Submenu::addEntry(
+                Lang::txt('COM_GROUPS_MENU_CUSTOMFIELDS'),
+                Route::url('index.php?option=com_groups&controller=customfields'),
                 ($controllerName == 'customfields')
             );
         }

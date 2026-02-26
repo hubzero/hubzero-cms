@@ -9,6 +9,10 @@
 namespace Plugins\Publications\Usage;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Publications Plugin class for usage

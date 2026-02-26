@@ -8,7 +8,7 @@
 
 namespace Components\Collections\Models\Adapters;
 
-use Component;
+use Hubzero\Facades\Component;
 
 /**
  * Adapter class for an entry link for the site-wide collections

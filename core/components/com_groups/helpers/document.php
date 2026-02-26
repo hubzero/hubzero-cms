@@ -10,7 +10,7 @@ namespace Components\Groups\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Utility\Str;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore

@@ -10,6 +10,15 @@
 namespace Plugins\Projects\Files;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 use Plugins\Projects\Files\Helpers\Sync;
 use Components\Projects\Models\Orm\Connection;
@@ -190,7 +199,7 @@ class Files extends Plugin
             $default = $this->params->get('default_action', 'browse');
 
             $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
-            $this->_database   = \App::get('db');
+            $this->_database   = App::get('db');
             $this->_uid        = User::get('id');
             $this->_task       = $action ? $action : Request::getString('action', $default);
             $this->subdir      = $subdir; // already confined above
@@ -912,7 +921,7 @@ class Files extends Plugin
                     'error' => $this->repo->getError()
                 ));
             } else {
-                \Notify::message($this->repo->getError(), 'error', 'projects');
+                Notify::message($this->repo->getError(), 'error', 'projects');
                 App::redirect($url);
                 return;
             }
@@ -930,7 +939,7 @@ class Files extends Plugin
         }
 
         if (!empty($this->_msg)) {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
         }
 
         // Redirect
@@ -998,9 +1007,9 @@ class Files extends Plugin
         $success = $this->repo->makeDirectory($params);
 
         if ($this->repo->getError()) {
-            \Notify::message($this->repo->getError(), 'error', 'projects');
+            Notify::message($this->repo->getError(), 'error', 'projects');
         } else {
-            \Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->_msg, 'success', 'projects');
 
             // Force sync
             if ($this->repo->isLocal()) {
@@ -1047,14 +1056,14 @@ class Files extends Plugin
         // Create
         $success = $this->repo->deleteDirectory($params);
         if ($success) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_DELETED_DIRECTORY'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_DELETED_DIRECTORY'), 'success', 'projects');
 
             // Force sync
             if ($this->repo->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } elseif ($this->repo->getError()) {
-            \Notify::message($this->repo->getError(), 'error', 'projects');
+            Notify::message($this->repo->getError(), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1261,13 +1270,13 @@ class Files extends Plugin
         // Rename
         $success = $this->repo->rename($params);
         if ($success) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_RENAMED_SUCCESS'), 'success', 'projects');
             // Force sync
             if ($this->repo->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } elseif ($this->repo->getError()) {
-            \Notify::message($this->repo->getError(), 'error', 'projects');
+            Notify::message($this->repo->getError(), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1393,14 +1402,14 @@ class Files extends Plugin
 
         // Output message
         if ($moved > 0) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' ' . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' ' . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
 
             // Force sync
             if ($this->repo->isLocal()) {
                 $this->model->saveParam('google_sync_queue', 1);
             }
         } else {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'error', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1737,7 +1746,7 @@ class Files extends Plugin
             $error = $this->repo->getError()
                 ? $this->repo->getError()
                 : $this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
-            \Notify::message($error, 'error', 'projects');
+            Notify::message($error, 'error', 'projects');
         }
 
         // Redirect to file list
@@ -1874,7 +1883,7 @@ class Files extends Plugin
 
                 if (!$connected) {
                     // Redirect to connect screen
-                    \Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
+                    Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
 
                     // Redirect
                     App::redirect(Route::url($this->model->link('files') . '&action=connect'));
@@ -1989,7 +1998,7 @@ class Files extends Plugin
 
         // Pass success or error message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         }
 
         // Redirect to file list
@@ -2225,7 +2234,7 @@ class Files extends Plugin
                         $this->model->saveParam('google_sync_queue', 1);
                     }
 
-                    \Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_COMPILED'), 'success', 'projects');
+                    Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_COMPILED'), 'success', 'projects');
 
                     // Redirect to file list
                     App::redirect(Route::url($url));
@@ -2331,7 +2340,7 @@ class Files extends Plugin
             $connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
             if (!$connected) {
                 // Redirect to connect screen
-                \Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
+                Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
 
                 App::redirect(Route::url($this->model->link('files') . '&action=connect'));
             }
@@ -2470,7 +2479,7 @@ class Files extends Plugin
                     }
 
                     // Output message
-                    \Notify::message(Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title, 'success', 'projects');
+                    Notify::message(Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title, 'success', 'projects');
 
                     // Force sync
                     $sync = true;
@@ -2542,7 +2551,7 @@ class Files extends Plugin
                             );
 
                             // Output message
-                            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS'), 'success', 'projects');
+                            Notify::message(Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS'), 'success', 'projects');
 
                             // Force sync
                             $sync = true;
@@ -2561,7 +2570,7 @@ class Files extends Plugin
 
         // Pass success or error message
         if ($this->getError()) {
-            \Notify::message($this->getError(), 'error', 'projects');
+            Notify::message($this->getError(), 'error', 'projects');
         }
 
         // Force sync
@@ -2648,7 +2657,7 @@ class Files extends Plugin
             $filters['ignore_access'] = 1;
             $filters['dev']           = 1;
 
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $objP = new \Components\Publications\Tables\Publication($database);
             $pubs = $objP->getRecords($filters);
@@ -3175,7 +3184,7 @@ class Files extends Plugin
 
         // Pass success or error message
         if (!empty($failed) && !$uploaded && !$uploaded) {
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_TO_UPLOAD') . $failed, 'error', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_TO_UPLOAD') . $failed, 'error', 'projects');
         } elseif ($uploaded || $updated || $expanded) {
             $uploadParts = explode(',', $uploaded ?: '');
             $updateParts = explode(',', $updated ?: '');
@@ -3216,7 +3225,7 @@ class Files extends Plugin
             $message = 'Successfully ' . $message;
             $message .= $failed ? ' There was a problem uploading ' . $failed : '';
 
-            \Notify::message($message, 'success', 'projects');
+            Notify::message($message, 'success', 'projects');
         } elseif ($deleted) {
             // Save referenced files
             $ref = $deleted;
@@ -3227,7 +3236,7 @@ class Files extends Plugin
             $what = count($delParts) == 1 ? $deleted : count($delParts) . ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
 
             // Output message
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED') . ' ' . $what, 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED') . ' ' . $what, 'success', 'projects');
         } elseif ($restored) {
             // Save referenced files
             $ref = $restored;
@@ -3238,7 +3247,7 @@ class Files extends Plugin
             $activity = 'restored deleted file ' . basename($resParts[0]);
 
             // Output message
-            \Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED') . ' ' . basename($resParts[0]), 'success', 'projects');
+            Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED') . ' ' . basename($resParts[0]), 'success', 'projects');
         }
 
         // Add activity to feed

@@ -9,13 +9,16 @@
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Toolbar;
 
 class TaskList
 {
     public static function execute()
     {
-        \Toolbar::title(\Lang::txt('Database List'), 'databases');
-        \Toolbar::preferences(\Request::getcmd('option'), '500');
+        Toolbar::title(Lang::txt('Database List'), 'databases');
+        Toolbar::preferences(Request::getcmd('option'), '500');
 
 
         $base = DvConfig::$conf['dir_base'];

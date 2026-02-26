@@ -9,8 +9,8 @@
 namespace Modules\Youtube;
 
 use Hubzero\Module\Module;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a YouTube feed

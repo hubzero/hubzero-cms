@@ -9,9 +9,10 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Model class for publication attachment
@@ -153,8 +154,8 @@ class Attachment extends Relational
             $path = $this->filespace() . '/' . $this->get('path');
 
             // Remove the file
-            if (\Filesystem::exists($path)) {
-                if (!\Filesystem::delete($path)) {
+            if (Filesystem::exists($path)) {
+                if (!Filesystem::delete($path)) {
                     $this->addError(Lang::txt('Failed to remove file from filesystem.'));
                     return false;
                 }

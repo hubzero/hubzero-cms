@@ -10,20 +10,20 @@ namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Filesystem;
-use Document;
-use Pathway;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 use Hubzero\User\Group;
-use Config;
-use Date;
-use Event;
-use Log;
-use Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Notify;
 
 /**
  * Controller class for contributing a tool

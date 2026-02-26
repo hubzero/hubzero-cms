@@ -11,9 +11,9 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Form;
 use Hubzero\Form\Fields\Text;
 use Hubzero\Base\ClientManager;
-use Document;
-use Lang;
-use Html;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
 
 /**
  * Supports a modal article picker.

@@ -10,7 +10,7 @@ namespace Hubzero\Document\Type\Feed;
 
 use Hubzero\Document\Renderer;
 use Hubzero\Utility\Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * A feed that implements the atom specification

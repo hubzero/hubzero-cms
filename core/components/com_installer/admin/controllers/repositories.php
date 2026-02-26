@@ -10,15 +10,15 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Composer as ComposerHelper;
-use Request;
-use Config;
-use Notify;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
 use StdClass;
 use Route;
-use App;
-use Lang;
-use User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Repositories Controller

@@ -10,12 +10,12 @@ namespace Components\BillBoards\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Collection;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Primary controller for the Billboards component

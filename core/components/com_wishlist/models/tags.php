@@ -9,6 +9,7 @@
 namespace Components\Wishlist\Models;
 
 use Components\Tags\Models\Cloud;
+use Hubzero\Facades\Component;
 
 /**
  * Wishlist Tagging class
@@ -91,7 +92,7 @@ class Tags extends Cloud
                         $view->base    = $filters['base'];
                         $view->filters = $filters['filters'];
                     }
-                    $view->config = \Component::params('com_tags');
+                    $view->config = Component::params('com_tags');
                     $view->tags   = $this->tags('list', $filters, $clear);
 
                     $this->_cache['tags_cloud'] = $view->loadTemplate();

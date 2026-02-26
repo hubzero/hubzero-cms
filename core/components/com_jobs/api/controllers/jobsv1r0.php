@@ -11,8 +11,8 @@ namespace Components\Jobs\Api\Controllers;
 use Hubzero\Component\ApiController;
 use stdClass;
 use Date;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * API controller for the time component

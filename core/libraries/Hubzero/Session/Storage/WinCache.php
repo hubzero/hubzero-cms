@@ -10,6 +10,7 @@ namespace Hubzero\Session\Storage;
 
 use Hubzero\Session\Store;
 use Exception;
+use Hubzero\Facades\Lang;
 
 /**
  * WinCache session storage handler
@@ -34,7 +35,7 @@ class WinCache extends Store
     public function __construct($options = array())
     {
         if (!self::isAvailable()) {
-            throw new Exception(\Lang::txt('JLIB_SESSION_WINCACHE_EXTENSION_NOT_AVAILABLE'));
+            throw new Exception(Lang::txt('JLIB_SESSION_WINCACHE_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (isset($options['prefix'])) {

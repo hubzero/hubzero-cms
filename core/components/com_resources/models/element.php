@@ -10,7 +10,7 @@ namespace Components\Resources\Models;
 
 use Hubzero\Base\Obj;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Resource element base class

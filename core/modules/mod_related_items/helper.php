@@ -10,10 +10,12 @@ namespace Modules\RelatedItems;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Request;
-use Route;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Module class for displaying related articles
@@ -53,11 +55,11 @@ class Helper extends Module
      */
     public static function getList($params)
     {
-        $db     = \App::get('db');
+        $db     = App::get('db');
         $userId = (int) User::get('id');
         $count  = intval($params->get('count', 5));
         $groups = implode(',', User::getAuthorisedViewLevels());
-        $date   = \Date::toSql();
+        $date   = Date::toSql();
 
         $option = Request::getCmd('option');
         $view   = Request::getCmd('view');
@@ -146,7 +148,7 @@ class Helper extends Module
                     );
 
                     // Filter by language
-                    if (\App::get('language.filter')) {
+                    if (App::get('language.filter')) {
                         $query->where(
                             'a.language in (' . $db->quote(Lang::getTag()) . ',' .
                             $db->quote('*') . ')'

@@ -6,10 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \App::get('db');
+$database = App::get('db');
 
 switch ($this->filters['sortby']) :
     case 'date_created':

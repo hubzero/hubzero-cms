@@ -15,18 +15,18 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\Str;
 use Hubzero\Utility\Sanitize;
 use Exception;
-use Document;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 use Pathway;
-use Event;
-use Notify;
-use Session;
-use Config;
-use Lang;
-use Route;
-use App;
-use User;
-use Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Session;
 
 /**
  * Blog controller class for entries

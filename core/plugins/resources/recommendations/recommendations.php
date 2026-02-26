@@ -12,6 +12,7 @@
 namespace Plugins\Resources\Recommendations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 class Recommendations extends Plugin
 {

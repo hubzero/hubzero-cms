@@ -7,6 +7,11 @@
  */
 
 use Hubzero\Html\Builder\Behavior;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
 
 defined('_HZEXEC_') or die();
 

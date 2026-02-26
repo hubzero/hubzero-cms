@@ -12,6 +12,9 @@
 namespace Plugins\Publications\Versions;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 class Versions extends Plugin
 {

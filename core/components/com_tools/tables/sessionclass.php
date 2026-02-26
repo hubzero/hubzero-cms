@@ -9,7 +9,7 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Members quota classes db table class

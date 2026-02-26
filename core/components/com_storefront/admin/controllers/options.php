@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\OptionGroup;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
-use Request;
-use Route;
-use Lang;
-use App;
-use Config;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
 
 /**
  * Controller class for knowledge base categories
@@ -181,7 +181,7 @@ class Options extends AdminController
         try {
             $option = $obj->updateOption($fields['oId'], $fields);
         } catch (\Exception $e) {
-            \Notify::error($e->getMessage());
+            Notify::error($e->getMessage());
             // Get the sku
             $option = $obj->option($fields['oId']);
 
@@ -308,7 +308,7 @@ class Options extends AdminController
 
                 if (!empty($warnings)) {
                     foreach ($warnings as $warning) {
-                        \Notify::warning($warning);
+                        Notify::warning($warning);
                     }
                 }
                 break;
@@ -369,7 +369,7 @@ class Options extends AdminController
             try {
                 $obj->updateOption($oId, array('state' => $state));
             } catch (\Exception $e) {
-                \Notify::error($e->getMessage());
+                Notify::error($e->getMessage());
                 return;
             }
         }

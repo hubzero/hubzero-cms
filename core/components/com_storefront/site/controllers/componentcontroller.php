@@ -8,9 +8,9 @@
 
 namespace Components\Storefront\Site\Controllers;
 
-use App;
-use Lang;
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  *  Base component controller class

@@ -3,6 +3,7 @@
 namespace Plugins\Members\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
 
 /**
  * @package   hubzero-cms

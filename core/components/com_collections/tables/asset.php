@@ -9,11 +9,11 @@
 namespace Components\Collections\Tables;
 
 use Hubzero\Database\Table;
-use Component;
-use Filesystem;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for collection item asset

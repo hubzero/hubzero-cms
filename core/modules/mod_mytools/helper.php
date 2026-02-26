@@ -9,11 +9,11 @@
 namespace Modules\Mytools;
 
 use Hubzero\Module\Module;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a user's recently used/favorite tools

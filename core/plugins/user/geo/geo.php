@@ -9,6 +9,8 @@
 namespace Plugins\User\Geo;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\User;
+use Request;
 
 // No direct access
 
@@ -38,7 +40,7 @@ class Geo extends Plugin
         // Check user location
         if (\Hubzero\Geocode\Geocode::is_iplocation(Request::ip(), $location)) {
             // Opens and saves the group only if the user is not in it yet
-            \Hubzero\User\Group::setMember($groupAlias, \User::getInstance($user['username'])->get('id'), true);
+            \Hubzero\User\Group::setMember($groupAlias, User::getInstance($user['username'])->get('id'), true);
         }
     }
 

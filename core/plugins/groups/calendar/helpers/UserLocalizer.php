@@ -9,6 +9,9 @@
 namespace Plugins\Groups\Calendar\Helpers;
 
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 
 /**
  * User Localizer helper class
@@ -36,8 +39,8 @@ class UserLocalizer
      */
     public function __construct()
     {
-        $this->db = \App::get('db');
-        $this->systemTimezone = \Config::get('offset');
+        $this->db = App::get('db');
+        $this->systemTimezone = Config::get('offset');
     }
 
     /**
@@ -47,7 +50,7 @@ class UserLocalizer
      */
     public function getTimezone()
     {
-        if (!\User::isGuest()) {
+        if (!User::isGuest()) {
             $timezone = $this->_getUserTimezone();
         } else {
             $timezone = $this->systemTimezone;
@@ -64,7 +67,7 @@ class UserLocalizer
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getUserTimezone()
     {
-        $userParams = json_decode(\User::get('params', '[]'), 1);
+        $userParams = json_decode(User::get('params', '[]'), 1);
 
         return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
     }

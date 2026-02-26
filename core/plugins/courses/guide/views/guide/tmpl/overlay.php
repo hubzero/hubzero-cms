@@ -1,5 +1,9 @@
 <?php
 
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms

@@ -8,6 +8,9 @@
 
 namespace Hubzero\Geocode;
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+
 /**
  * Helper class for getting geolocation information
  */
@@ -41,7 +44,7 @@ class Geocode
         // Each provider has an associated plugin. If the provider supports
         // the desired data look-up, it (the provider) will be returned by
         // the plugin. Otherwise, the plugin returns nothing.
-        if ($providers = \Event::trigger('geocode.onGeocodeProvider', array('geocode.countries', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.countries', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -93,7 +96,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Event::trigger('geocode.onGeocodeProvider', array('geocode.country', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.country', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -134,7 +137,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Event::trigger('geocode.onGeocodeProvider', array('geocode.continent', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.continent', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -180,7 +183,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Event::trigger('geocode.onGeocodeProvider', array('geocode.locate', $adapter, $ip))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.locate', $adapter, $ip))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -217,7 +220,7 @@ class Geocode
         $p = array();
 
         // Get a list of providers
-        if ($providers = \Event::trigger('geocode.onGeocodeProvider', array('geocode.address', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.address', $adapter))) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -255,7 +258,7 @@ class Geocode
         static $instance;
 
         if (!is_object($instance)) {
-            $geodb_params = \Component::params('com_system');
+            $geodb_params = Component::params('com_system');
 
             $options = array();
             $options['driver']   = $geodb_params->get('geodb_driver', 'pdo');

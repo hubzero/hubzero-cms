@@ -8,6 +8,9 @@
 
 namespace Plugins\Wiki\Parsermarkdown;
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Route;
+
 include_once __DIR__ . '/markdown/block/CodeTrait.php';
 include_once __DIR__ . '/markdown/block/FencedCodeTrait.php';
 include_once __DIR__ . '/markdown/block/HeadlineTrait.php';

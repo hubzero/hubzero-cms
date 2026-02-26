@@ -9,11 +9,11 @@
 namespace Components\Storefront\Site\Controllers;
 
 use Components\Storefront\Models\Warehouse;
-use Pathway;
-use Request;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Product browsing controller class

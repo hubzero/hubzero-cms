@@ -10,7 +10,7 @@ namespace Components\Tools\Tables;
 
 use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 require_once dirname(__DIR__) . '/helpers/iprange.php';
 

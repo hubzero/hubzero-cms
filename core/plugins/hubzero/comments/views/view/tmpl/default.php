@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -159,7 +165,7 @@ $this->css()
 
                 <?php
                 if ($this->comments->count() > 1) :
-                    $currentOrderDir = \User::getState('Plugins.Hubzero.Comments.Models.Comment.orderdir', \Plugins\Hubzero\Comments\Models\Comment::blank()->orderDir); // State or default
+                    $currentOrderDir = User::getState('Plugins.Hubzero.Comments.Models.Comment.orderdir', \Plugins\Hubzero\Comments\Models\Comment::blank()->orderDir); // State or default
                     ?>
                 <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                     <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">

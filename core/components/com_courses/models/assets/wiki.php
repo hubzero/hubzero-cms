@@ -8,8 +8,9 @@
 
 namespace Components\Courses\Models\Assets;
 
-use Component;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Wiki page asset handler class
@@ -97,7 +98,7 @@ class Wiki extends Content
 
                 // Make sure upload directory exists and is writable
                 if (!is_dir($uploadDirectory)) {
-                    if (!\Filesystem::makeDirectory($uploadDirectory)) {
+                    if (!Filesystem::makeDirectory($uploadDirectory)) {
                         return array('error' => 'Server error. Unable to create upload directory');
                     }
                 }
@@ -112,7 +113,7 @@ class Wiki extends Content
                 set_time_limit(60);
 
                 // Scan for viruses
-                if (!\Filesystem::isSafe($_FILES['files']['tmp_name'][$i])) {
+                if (!Filesystem::isSafe($_FILES['files']['tmp_name'][$i])) {
                     // Scan failed, return an error
                     return array('error' => 'File rejected because the anti-virus scan failed.');
                 }

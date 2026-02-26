@@ -12,9 +12,9 @@ use Components\Citations\Models\Citation;
 use Components\Citations\Models\Author;
 use Hubzero\Component\SiteController;
 use Exception;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Manage a citation's author entries

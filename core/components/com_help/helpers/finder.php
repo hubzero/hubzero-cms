@@ -8,6 +8,11 @@
 
 namespace Components\Help\Helpers;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+
 /**
  * Help controller class
  */
@@ -36,8 +41,8 @@ class Finder
     public static function page($component, $extension, $page)
     {
         $name = str_replace('com_', '', $component);
-        $tmpl = \App::get('template')->path;
-        $lang = \Lang::getTag();
+        $tmpl = App::get('template')->path;
+        $lang = Lang::getTag();
 
         // A plugin's help page is <extension>/help/<lang>/<page>.phtml when the
         // plugin is named by $extension, else <page>/help/<lang>/index.phtml
@@ -46,8 +51,8 @@ class Finder
 
         $componentPage = self::path($component) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
 
-        // \Plugin::path() is '' when no such plugin exists in app/ or core/
-        $pluginPath = \Plugin::path($name, $plugin);
+        // Plugin::path() is '' when no such plugin exists in app/ or core/
+        $pluginPath = Plugin::path($name, $plugin);
         $pluginPage = $pluginPath ? $pluginPath . DS . 'help' . DS . $lang . DS . $file : '';
 
         $paths = array(
@@ -76,9 +81,9 @@ class Finder
      */
     private static function path($component)
     {
-        $client = \App::isAdmin() ? 'admin' : 'site';
+        $client = App::isAdmin() ? 'admin' : 'site';
 
-        return \App::get('component')->path($component) . DS . $client;
+        return App::get('component')->path($component) . DS . $client;
     }
 
     /**
@@ -89,7 +94,7 @@ class Finder
      */
     public static function pages($component)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // Get component name from database
         $database->setQuery(
@@ -113,13 +118,13 @@ class Finder
         }
 
         // Path to help pages
-        $helpPagesPath = self::path($component) . DS . 'help' . DS . \Lang::getTag();
+        $helpPagesPath = self::path($component) . DS . 'help' . DS . Lang::getTag();
 
         // Make sure directory exists
         $pages = array();
         if (is_dir($helpPagesPath)) {
             // Get help pages for this component
-            $pages = \Filesystem::files($helpPagesPath, '.' . self::$ext);
+            $pages = Filesystem::files($helpPagesPath, '.' . self::$ext);
         }
 
         $pages = array_map(function ($file) {

@@ -9,9 +9,9 @@
 namespace Components\Oauth\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Request;
-use App;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 use OAuthProvider;
 
 /**

@@ -10,7 +10,8 @@ namespace Components\Support\Api;
 
 use Exception;
 use Hubzero\Component\Router\Base;
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * Routing class for the component
@@ -54,7 +55,7 @@ class Router extends Base
             return $vars;
         }
 
-        $method = \App::get('request')->method();
+        $method = App::get('request')->method();
 
         // /support/{ticket}[/comments[/{comment}]] -- the documented comment
         // path and the shape the default router serves; a bare id is a ticket

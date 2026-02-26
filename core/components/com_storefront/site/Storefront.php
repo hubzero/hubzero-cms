@@ -9,6 +9,11 @@
 namespace Components\Storefront\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,15 +27,14 @@ class Storefront extends AbstractComponent
      */
     protected function execute(): void
     {
-
         //build controller path and name
-        $controllerName = \Request::getCmd('controller', '');
+        $controllerName = Request::getCmd('controller', '');
 
         if (empty($controllerName)) {
             // Load default controller if no controller provided
             $controllerName = 'storefront';
         } elseif (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-            \App::abort(404, \Lang::txt('Page Not Found'));
+            App::abort(404, Lang::txt('Page Not Found'));
         }
 
         $controllerRequested = $controllerName;
@@ -45,17 +49,17 @@ class Storefront extends AbstractComponent
 
         if ($loginRequired && $controllerRequested != 'overview') {
             // Check if they're logged in
-            if (\User::isGuest()) {
+            if (User::isGuest()) {
                 $return = base64_encode($_SERVER['REQUEST_URI']);
                 // Redirect to the landing page
                 if ($controllerRequested == 'storefront') {
-                    \App::redirect(
-                        \Route::url('index.php?option=com_storefront') . 'overview'
+                    App::redirect(
+                        Route::url('index.php?option=com_storefront') . 'overview'
                     );
                 }
                 // Require login
-                \App::redirect(
-                    \Route::url('index.php?option=com_users&view=login&return=' . $return),
+                App::redirect(
+                    Route::url('index.php?option=com_users&view=login&return=' . $return),
                     'Please login to continue',
                     'warning'
                 );
@@ -64,10 +68,10 @@ class Storefront extends AbstractComponent
 
         // Update any restrictions that were entered before the account existed
         // @TODO: Move to a plugin that responds after login?
-        if (!\User::isGuest()) {
+        if (!User::isGuest()) {
             \Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(
-                \User::get('id'),
-                \User::get('username')
+                User::get('id'),
+                User::get('username')
             );
         }
 

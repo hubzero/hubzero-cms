@@ -9,10 +9,10 @@
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Request;
-use Notify;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for registration configuration
@@ -93,7 +93,7 @@ class Registration extends AdminController
                 'cachebase' => PATH_APP . '/cache/site'
             ));
 
-            $cache = new \Hubzero\Cache\Manager(\App::getRoot());
+            $cache = new \Hubzero\Cache\Manager(App::getRoot());
             $cache->storage($handler);
             $cache->clean('_system');
         }

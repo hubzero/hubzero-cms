@@ -9,8 +9,8 @@
 namespace Components\Checkin\Models;
 
 use Hubzero\Base\Obj;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * Checkin Inspector Model

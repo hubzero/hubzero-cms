@@ -14,7 +14,7 @@ use Hubzero\Base\ClientManager;
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Filesystem\Util;
 use Exception;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Form Field to display a list of the layouts for a component view from

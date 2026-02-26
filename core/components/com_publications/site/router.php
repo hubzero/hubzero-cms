@@ -9,8 +9,8 @@
 namespace Components\Publications\Site;
 
 use Hubzero\Component\Router\Base;
-use Request;
-use App;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 use Lang;
 
 /**
@@ -129,7 +129,7 @@ class Router extends Base
                 }
             }
         } else {
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $t = new \Components\Publications\Tables\Category($database);
             $cats = $t->getCategories();

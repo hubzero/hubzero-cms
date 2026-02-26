@@ -8,9 +8,8 @@
 
 namespace Components\Storefront\Models;
 
-use Lang;
-
-defined('_HZEXEC_') or die();
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  *
@@ -30,10 +29,10 @@ class Coupons
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         // Load language file
-        \App::get('language')->load('com_storefront', PATH_CORE . '/components/com_storefront/site/');
+        App::get('language')->load('com_storefront', PATH_CORE . '/components/com_storefront/site/');
     }
 
     /**

@@ -14,16 +14,16 @@ use Components\Citations\Models\Importer;
 use Hubzero\Component\SiteController;
 use Exception;
 use Filesystem;
-use Pathway;
-use Request;
-use Notify;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Config;
-use Route;
-use Event;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
 use Date;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Citations controller class for importing citation entries

@@ -8,6 +8,9 @@
 
 namespace Components\Search\Models\Basic;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
+
 /**
  * Authorization checker
  */
@@ -29,14 +32,14 @@ class Authorization
      */
     public function __construct()
     {
-        if (\User::isGuest()) {
+        if (User::isGuest()) {
             $this->groups = array();
             return;
         }
 
-        $this->uid = \User::get('id');
+        $this->uid = User::get('id');
 
-        if (\User::get('usertype') == 'Super Administrator') {
+        if (User::get('usertype') == 'Super Administrator') {
             $this->super_admin = true;
         }
     }
@@ -72,7 +75,7 @@ class Authorization
     public function get_groups()
     {
         if (is_null($this->groups)) {
-            $dbh = \App::get('db');
+            $dbh = App::get('db');
             $dbh->setQuery(
                 'SELECT DISTINCT xm.gidNumber, g.cn
 				FROM `#__xgroups_members` AS xm

@@ -9,6 +9,7 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
+use Hubzero\Facades\App;
 
 /**
  * Renders an editor element
@@ -50,7 +51,7 @@ class Editor extends Base
 
         $fieldName = $control_name . '[' . $name . ']';
         $fieldId = $control_name . '-' . $name;
-        $editorHtml = \App::get('editor')->display(
+        $editorHtml = App::get('editor')->display(
             $fieldName,
             $value,
             '',

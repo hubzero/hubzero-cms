@@ -9,7 +9,8 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
 
 /**
  * Renders a languages element
@@ -236,14 +237,14 @@ class Languages extends Base
 
         $languages = array();
         foreach ($this->_codes as $code => $lang) {
-            $languages[] = \Html::select('option', $code, $lang);
+            $languages[] = Html::select('option', $code, $lang);
         }
 
-        array_unshift($languages, \Html::select('option', '', '- ' . Lang::txt('Select Language') . ' -'));
+        array_unshift($languages, Html::select('option', '', '- ' . Lang::txt('Select Language') . ' -'));
 
         $fieldName = $control_name . '[' . $name . ']';
         $fieldId = $control_name . '-' . $name;
-        $selectHtml = \Html::select(
+        $selectHtml = Html::select(
             'genericlist',
             $languages,
             $fieldName,

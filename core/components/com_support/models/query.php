@@ -9,8 +9,8 @@
 namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
-use User;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Support query model

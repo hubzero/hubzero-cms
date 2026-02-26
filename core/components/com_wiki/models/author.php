@@ -9,7 +9,7 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Wiki author model

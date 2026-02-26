@@ -10,11 +10,13 @@ namespace Components\Oaipmh\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
-use Document;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 use Session;
-use Lang;
-use Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Route;
 
 /**
  * OAIPMH controller for XML output
@@ -35,7 +37,7 @@ class Xml extends SiteController
         $from       = Request::getString('from');
         if ($from) {
             try {
-                $from = \Date::of($from)->toSql();
+            $from = Date::of($from)->toSql();
             } catch (\Exception $e) {
                 $from    = '';
                 $badDate = 'from';
@@ -44,7 +46,7 @@ class Xml extends SiteController
         $until      = Request::getString('until');
         if ($until) {
             try {
-                $until = \Date::of($until)->toSql();
+            $until = Date::of($until)->toSql();
             } catch (\Exception $e) {
                 $until   = '';
                 $badDate = $badDate ?: 'until';
@@ -69,10 +71,10 @@ class Xml extends SiteController
         $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->_option . '&task=stylesheet&metadataPrefix=' . $metadata));
 
         $service->set('metadataPrefix', $metadata)
-                ->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
+                ->set('repositoryName', $this->config->get('repository_name', Config::get('sitename')))
                 ->set('baseURL', $hubname)
                 ->set('protocolVersion', '2.0')
-                ->set('adminEmail', $this->config->get('email', \Config::get('mailfrom')))
+                ->set('adminEmail', $this->config->get('email', Config::get('mailfrom')))
                 ->set('earliestDatestamp', gmdate('Y-m-d\Th:i:s\Z', $edate))
                 ->set('deletedRecord', $this->config->get('del'))
                 ->set('granularity', $igran)

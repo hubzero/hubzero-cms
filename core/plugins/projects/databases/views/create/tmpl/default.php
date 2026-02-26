@@ -23,6 +23,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
+// @phpcs:disable PSR1.Files.SideEffects
+
 // no direct access
 defined('_HZEXEC_') or die();
 

@@ -10,9 +10,10 @@ namespace Modules\Stats;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Config;
-use Date;
-use Lang;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Module helper class for displaying stats
@@ -46,7 +47,7 @@ class Helper extends Module
      */
     public static function &getList(&$params)
     {
-        $db    = \App::get('db');
+        $db    = App::get('db');
         $rows  = array();
 
         $serverinfo = $params->get('serverinfo');

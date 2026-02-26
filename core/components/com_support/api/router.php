@@ -9,6 +9,7 @@
 namespace Components\Support\Api;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
 
 /**
  * Routing class for the component
@@ -62,7 +63,7 @@ class Router extends Base
             if (is_numeric($segments[0])) {
                 $vars['id']     = $segments[0];
                 $vars['ticket'] = $segments[0]; // the v1 tickets controller reads 'ticket'
-                $method = \App::get('request')->method();
+                $method = App::get('request')->method();
                 switch ($method) {
                     case 'GET':
                         $vars['task'] = 'read';
@@ -88,13 +89,13 @@ class Router extends Base
                     unset($vars['task']);
                     if (isset($segments[2]) && is_numeric($segments[2])) {
                         $vars['comment'] = $segments[2];
-                        $method = \App::get('request')->method();
+                        $method = App::get('request')->method();
                         if ($method == 'GET') {
                             $vars['task'] = 'read';
                         }
                     } else if (isset($segments[2])) {
                         $vars['task'] = $segments[2];
-                    } else if (\App::get('request')->method() == 'GET') {
+                    } else if (App::get('request')->method() == 'GET') {
                         $vars['task'] = 'list';
                     }
                 } else {

@@ -12,6 +12,8 @@
 namespace Plugins\System\Mobile;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 class Mobile extends Plugin
 {

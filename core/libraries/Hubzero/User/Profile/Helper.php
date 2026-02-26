@@ -11,6 +11,8 @@ namespace Hubzero\User\Profile;
 use Hubzero\User\User;
 use Hubzero\User\Profile;
 use Hubzero\Image\Identicon;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Profile helper class
@@ -26,7 +28,7 @@ class Helper
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function iterate_profiles($func)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("SELECT uidNumber FROM `#__xprofiles`;");
 
         $result = $db->loadColumn();
@@ -56,7 +58,7 @@ class Helper
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("SELECT username FROM `#__xprofiles` WHERE `email`=" . $db->quote($email));
 
         $result = $db->loadColumn();
@@ -81,7 +83,7 @@ class Helper
         static $dfthumb;
         static $dffull;
 
-        $config = \Component::params('com_members');
+        $config = Component::params('com_members');
 
         // Get the default picture
         // We need to do this here as it may be needed by the Gravatar service
@@ -120,7 +122,7 @@ class Helper
                             self::niceidformat($member->get('uidNumber'));
 
                         if (!is_dir($path)) {
-                            \App::get('filesystem')->makeDirectory($path);
+                            App::get('filesystem')->makeDirectory($path);
                         }
 
                         if (is_dir($path)) {
@@ -143,7 +145,7 @@ class Helper
                             // Save image to profile
                             $member->set('picture', 'identicon.png');
                             // Update directly. Using update() method can cause unexpected data loss in some cases.
-                            $database = \App::get('db');
+                            $database = App::get('db');
                             $database->setQuery("UPDATE `#__xprofiles` SET picture=" .
                                 $database->quote($member->get('picture')) .
                                 " WHERE uidNumber=" .
@@ -175,7 +177,7 @@ class Helper
                     // If use of gravatars is enabled
                     if ($config->get('gravatar')) {
                         $hash = md5(strtolower(trim($member->get('email'))));
-                        $protocol = \App::get('request')->isSecure() ? 'https' : 'http';
+                        $protocol = App::get('request')->isSecure() ? 'https' : 'http';
 
                         return $protocol
                                 . '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
@@ -185,7 +187,7 @@ class Helper
                                     urlencode(str_replace(
                                         '/administrator',
                                         '',
-                                        rtrim(\App::get('request')->base(), '/')
+                                        rtrim(App::get('request')->base(), '/')
                                     ) .
                                     '/' .
                                     $dfthumb);
@@ -215,7 +217,7 @@ class Helper
                     }
                 }
 
-                return str_replace('/administrator', '', rtrim(\App::get('request')->base(true), '/')) . $path;
+                return str_replace('/administrator', '', rtrim(App::get('request')->base(true), '/')) . $path;
             }
         }
 

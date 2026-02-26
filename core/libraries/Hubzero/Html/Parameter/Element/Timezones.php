@@ -10,7 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder\Select;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Renders a timezones element

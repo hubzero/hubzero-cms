@@ -9,7 +9,7 @@
 namespace Plugins\Antispam\Bayesian\Models;
 
 use Hubzero\Database\Relational;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Antispam Token Probabilities

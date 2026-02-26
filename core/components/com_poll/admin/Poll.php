@@ -9,6 +9,9 @@
 namespace Components\Poll\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,10 +26,9 @@ class Poll extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_poll')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_poll')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
-
 
         // Create the controller
         $controller = new Controllers\Polls();

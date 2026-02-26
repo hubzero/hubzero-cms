@@ -10,7 +10,7 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Courses model class for an asset group

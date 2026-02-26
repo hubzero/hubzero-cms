@@ -9,6 +9,7 @@
 namespace Components\Cpanel\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Facades\Request;
 
 /**
  * Cpanel Controller
@@ -24,7 +25,7 @@ class Cpanel extends AdminController
     {
         // Set the template - this will display cpanel.php
         // from the selected admin template.
-        \Request::setVar('tmpl', 'cpanel');
+        Request::setVar('tmpl', 'cpanel');
 
         $this->view
             ->setLayout('default')  // Preserve potential view overrides

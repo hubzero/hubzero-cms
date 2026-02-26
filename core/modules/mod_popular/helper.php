@@ -13,9 +13,10 @@ use Components\Content\Models\Article;
 use Components\Categories\Models\Category;
 use Component;
 use Exception;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying popular articles
@@ -29,7 +30,7 @@ class Helper extends Module
      */
     public function display()
     {
-        if (!\App::isAdmin()) {
+        if (!App::isAdmin()) {
             return;
         }
 

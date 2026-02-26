@@ -9,14 +9,14 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use User;
-use App;
-use Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Controller class for tools (default)
@@ -165,7 +165,7 @@ class Tools extends SiteController
         $file = 'forge.png';
 
         $paths = array(
-            \App::get('template')->path . DS . 'images' . DS . $file,
+            App::get('template')->path . DS . 'images' . DS . $file,
             dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . $file,
             dirname(__DIR__) . DS . 'images' . DS . $file
         );
@@ -205,7 +205,7 @@ class Tools extends SiteController
         $css = basename($css);
 
         $paths = array(
-            \App::get('template')->path . DS . 'css' . DS . $css,
+            App::get('template')->path . DS . 'css' . DS . $css,
             dirname(__DIR__) . DS . 'assets' . DS . 'css' . DS . $css,
             dirname(__DIR__) . DS . 'css' . DS . $css
         );

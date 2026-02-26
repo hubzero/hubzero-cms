@@ -10,7 +10,9 @@ namespace Components\Projects\Models\Tool;
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Project Tool Log model
@@ -44,7 +46,7 @@ class Log extends Model
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\ToolLog($this->_db);
     }
@@ -190,7 +192,7 @@ class Log extends Model
     public function actor($property = null)
     {
         if (!isset($this->_actor) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_actor = \User::getInstance($this->get('actor'));
+            $this->_actor = User::getInstance($this->get('actor'));
         }
         if ($property) {
             return $this->_actor->get($property);

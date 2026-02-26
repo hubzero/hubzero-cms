@@ -9,9 +9,9 @@
 namespace Components\Collections\Tables;
 
 use Hubzero\Database\Table;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for collection posts

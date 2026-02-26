@@ -3,6 +3,8 @@
 namespace Plugins\Members\Points;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  * @package   hubzero-cms

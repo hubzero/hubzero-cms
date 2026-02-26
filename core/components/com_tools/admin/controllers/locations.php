@@ -11,12 +11,12 @@ namespace Components\Tools\Admin\Controllers;
 use Components\Tools\Helpers\Utils;
 use Components\Tools\Models\Middleware;
 use Hubzero\Component\AdminController;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Administrative tools controller for zone locations

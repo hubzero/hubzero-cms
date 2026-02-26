@@ -9,6 +9,7 @@
 namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Component;
 
 /**
  * Resource DOI model
@@ -76,7 +77,7 @@ class Doi extends Relational
     public function automaticDoiShoulder($data)
     {
         if (!isset($data['doi_shoulder']) || !$data['doi_shoulder']) {
-            $data['doi_shoulder'] = \Component::params('com_tools')->get('doi_shoulder');
+            $data['doi_shoulder'] = Component::params('com_tools')->get('doi_shoulder');
         }
         return $data['doi_shoulder'];
     }

@@ -6,12 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 $item = $this->row->item();
 
-include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+include_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 $resource = new \Components\Publications\Models\Publication(null, null, $item->get('object_id'));
 $imgPath = $resource->hasImage('master');
 

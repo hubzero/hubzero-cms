@@ -14,7 +14,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Category as Cat;
 use Hubzero\Html\Builder\Select as Dropdown;
-use App;
+use Hubzero\Facades\App;
 
 /**
 

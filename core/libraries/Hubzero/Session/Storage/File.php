@@ -12,6 +12,7 @@ use Hubzero\Filesystem\Filesystem;
 use Hubzero\Filesystem\Adapter\Local;
 use Hubzero\Session\Store;
 use Exception;
+use Hubzero\Facades\App;
 
 /**
  * File session storage handler
@@ -47,7 +48,7 @@ class File extends Store
         }
 
         if (!isset($options['filesystem']) || !($options['filesystem'] instanceof Filesystem)) {
-            $adapter = new Local(\App::get('config')->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+            $adapter = new Local(App::get('config')->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
             $options['filesystem'] = new Filesystem($adapter);
         }
 

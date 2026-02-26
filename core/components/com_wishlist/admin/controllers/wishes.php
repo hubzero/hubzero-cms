@@ -17,14 +17,14 @@ use Components\Wishlist\Models\Ownergroup;
 use Components\Wishlist\Models\Tags;
 use Exception;
 use stdClass;
-use Request;
-use Notify;
-use Config;
-use Event;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Cotnroller class for wishes

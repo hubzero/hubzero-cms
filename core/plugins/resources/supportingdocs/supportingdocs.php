@@ -12,6 +12,8 @@
 namespace Plugins\Resources\Supportingdocs;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Supportingdocs extends Plugin
 {

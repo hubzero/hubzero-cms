@@ -9,8 +9,8 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for project tools

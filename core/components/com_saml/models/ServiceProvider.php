@@ -9,6 +9,8 @@
 namespace Components\Saml\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Model for a trusted SAML Service Provider
@@ -88,7 +90,7 @@ class ServiceProvider extends Relational
      */
     public function automaticModified($data)
     {
-        return \Date::toSql();
+        return Date::toSql();
     }
 
     /**
@@ -99,7 +101,7 @@ class ServiceProvider extends Relational
      */
     public function automaticModifiedBy($data)
     {
-        return (int) \User::get('id');
+        return (int) User::get('id');
     }
 
     /**

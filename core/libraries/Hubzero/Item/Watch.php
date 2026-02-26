@@ -9,7 +9,7 @@
 namespace Hubzero\Item;
 
 use Hubzero\Database\Relational;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Item Announcement

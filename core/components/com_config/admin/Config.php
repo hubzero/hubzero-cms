@@ -9,6 +9,9 @@
 namespace Components\Config\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -25,17 +28,17 @@ class Config extends AbstractComponent
         // Access checks are done internally because of different requirements for the two controllers.
 
         // Tell the browser not to cache this page.
-        \App::get('response')->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT', true);
+        App::get('response')->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT', true);
 
-        if (strstr(\Request::getCmd('task'), '.')) {
-            @list($ctrl, $task) = explode('.', \Request::getCmd('task'));
-            \Request::setVar('controller', $ctrl);
-            \Request::setVar('task', $task);
+        if (strstr(Request::getCmd('task'), '.')) {
+            @list($ctrl, $task) = explode('.', Request::getCmd('task'));
+            Request::setVar('controller', $ctrl);
+            Request::setVar('task', $task);
         }
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'application'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'application'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

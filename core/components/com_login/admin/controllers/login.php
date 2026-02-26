@@ -13,13 +13,13 @@ use Hubzero\Component\AdminController;
 use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Cookie;
 use Exception;
-use Request;
-use Plugin;
-use Notify;
-use App;
-use Event;
-use Session;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\User;
 
 /**
  * Login Controller

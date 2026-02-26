@@ -12,6 +12,7 @@ use Components\Groups\Models\Page;
 use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
+use Hubzero\Facades\App;
 
 /**
  * Group page category model class
@@ -57,7 +58,7 @@ class Category extends Model
     public function __construct($oid = null)
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         // create page cateogry table object
         $this->_tbl = new $this->_tbl_name($this->_db);

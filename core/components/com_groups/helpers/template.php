@@ -9,8 +9,8 @@
 namespace Components\Groups\Helpers;
 
 use Hubzero\Base\Traits\Escapable;
-use Component;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 class Template extends Document
 {

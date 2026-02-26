@@ -9,7 +9,7 @@
 namespace Components\Forum\Models\Adapters;
 
 use Hubzero\Utility\Str;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Adapter class for a forum post link for course forum

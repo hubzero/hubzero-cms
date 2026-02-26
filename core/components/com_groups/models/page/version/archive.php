@@ -14,6 +14,7 @@ use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use Request;
+use Hubzero\Facades\App;
 
 /**
  * Group page version archive model class
@@ -44,7 +45,7 @@ class Archive extends Model
     public function __construct()
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
     }
 
     /**

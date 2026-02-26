@@ -10,13 +10,13 @@ namespace Modules\ArticlesNews;
 
 use Hubzero\Module\Module;
 use Components\Content\Models\Article;
-use Component;
-use Route;
-use Event;
-use Lang;
-use Html;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying news articles

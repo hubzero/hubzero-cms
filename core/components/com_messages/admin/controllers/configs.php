@@ -11,11 +11,11 @@ namespace Components\Messages\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Messages\Models\Cfg;
 use Hubzero\Base\Obj;
-use Request;
-use Notify;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Messages config controller class.

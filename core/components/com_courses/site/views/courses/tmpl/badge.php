@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -58,7 +64,7 @@ switch ($this->action) {
             App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $memberBadge = new \Components\Courses\Tables\MemberBadge($db);
         $memberBadge->load(array('validation_token' => $this->token));

@@ -12,6 +12,7 @@
 namespace Plugins\System\Content;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Event;
 
 class Content extends Plugin
 {

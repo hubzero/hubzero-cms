@@ -12,6 +12,7 @@
 namespace Plugins\Hubzero\Systickets;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Systickets extends Plugin
 {

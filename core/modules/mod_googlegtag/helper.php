@@ -9,7 +9,7 @@
 namespace Modules\GoogleGtag;
 
 use Hubzero\Module\Module;
-use Config;
+use Hubzero\Facades\Config;
 
 /**
  * Module class for adding Google Gtag script to a page

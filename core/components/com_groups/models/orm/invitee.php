@@ -9,6 +9,7 @@
 namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Event;
 
 /**
  * Group invitee model
@@ -116,10 +117,10 @@ class Invitee extends Relational
 
         // If creating, result is our new id, so set that back on the model
         if ($this->isNew()) {
-            \Event::trigger($this->getTableName() . '_new', ['model' => $this]);
+            Event::trigger($this->getTableName() . '_new', ['model' => $this]);
         }
 
-        \Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        Event::trigger('system.onContentSave', array($this->getTableName(), $this));
 
         return $result;
     }

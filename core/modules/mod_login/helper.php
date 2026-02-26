@@ -11,10 +11,10 @@ namespace Modules\Login;
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Uri;
-use Request;
-use Plugin;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a login form

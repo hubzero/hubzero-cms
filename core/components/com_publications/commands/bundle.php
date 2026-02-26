@@ -12,6 +12,7 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Components\Publications\Models\BundleBuilder;
 use Components\Publications\Models\BundleQueue;
+use Hubzero\Facades\App;
 
 /**
  * Build publication download bundles (core; replaces the PURR-only
@@ -185,7 +186,7 @@ class Bundle extends Base implements CommandInterface
      **/
     public function audit()
     {
-        $db      = \App::get('db');
+        $db      = App::get('db');
         $version = (int) $this->arguments->getOpt('version');
         $pub     = (int) $this->arguments->getOpt('pub');
         $showAll = $this->arguments->getOpt('a') || $this->arguments->getOpt('all');
@@ -210,7 +211,7 @@ class Bundle extends Base implements CommandInterface
             // then drop the connection and the next query fatals with "server
             // has gone away". Raise this session's idle timeout so it survives.
             try {
-                $db = \App::get('db');
+                $db = App::get('db');
                 $db->setQuery('SET SESSION wait_timeout = 86400, interactive_timeout = 86400');
                 $db->execute();
             } catch (\Exception $e) {
@@ -220,7 +221,7 @@ class Bundle extends Base implements CommandInterface
 
         if ($version) {
             $ids = array($version);
-        } elseif ($pub) {
+        } else if ($pub) {
             $db->setQuery("SELECT `id` FROM `#__publication_versions` WHERE `publication_id` = " . $pub . " ORDER BY `id`");
             $ids = $db->loadColumn();
         } else {

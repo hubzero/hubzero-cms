@@ -9,8 +9,10 @@
 namespace Components\Usage\Helpers;
 
 use Exception;
-use App;
-use Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
 
 /**
  * Usage helper class
@@ -27,7 +29,7 @@ class Helper
         static $instance;
 
         if (!is_object($instance)) {
-            $config = \Component::params('com_usage');
+            $config = Component::params('com_usage');
 
             $options['driver']   = $config->get('statsDBDriver');
             $options['host']     = $config->get('statsDBHost');
@@ -75,12 +77,12 @@ class Helper
     public static function toplist($db, $top, $t = 0, $enddate = 0, $raw = 0)
     {
         if (!$db->tableExists('tops')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
             return false;
         }
 
         if (!$db->tableExists('topvals')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
             return false;
         }
 
@@ -283,7 +285,7 @@ class Helper
     public static function check_for_data($db, $yearmonth, $period)
     {
         if (!$db->tableExists('totalvals')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
             return false;
         }
 
@@ -310,7 +312,7 @@ class Helper
     public static function check_for_classdata($db, $yearmonth)
     {
         if (!$db->tableExists('classvals')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
             return false;
         }
 
@@ -336,7 +338,7 @@ class Helper
     public static function check_for_regiondata($db, $yearmonth)
     {
         if (!$db->tableExists('regionvals')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
             return false;
         }
 

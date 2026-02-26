@@ -12,6 +12,8 @@ use Components\Groups\Models\Page;
 use Components\Groups\Tables;
 use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Group page archive model class
@@ -55,8 +57,8 @@ class Archive extends Obj
      */
     public function __construct()
     {
-        $this->_db    = \App::get('db');
-        $this->_group = \Hubzero\User\Group::getInstance(\Request::getString('cn', ''));
+        $this->_db    = App::get('db');
+        $this->_group = \Hubzero\User\Group::getInstance(Request::getString('cn', ''));
     }
 
     /**

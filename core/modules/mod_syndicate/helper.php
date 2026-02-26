@@ -10,7 +10,7 @@ namespace Modules\Syndicate;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
-use Document;
+use Hubzero\Facades\Document;
 
 /**
  * Module helper class for syndicating a feed

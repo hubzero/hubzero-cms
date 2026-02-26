@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(

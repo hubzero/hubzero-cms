@@ -10,7 +10,7 @@ namespace Hubzero\Content\Import\Model;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Date;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Class for an import run

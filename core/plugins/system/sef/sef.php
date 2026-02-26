@@ -9,6 +9,10 @@
 namespace Plugins\System\Sef;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 // no direct access
 /**

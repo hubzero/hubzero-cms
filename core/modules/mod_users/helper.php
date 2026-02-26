@@ -9,7 +9,7 @@
 namespace Modules\Users;
 
 use Hubzero\Module\Module;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for users data

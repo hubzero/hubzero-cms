@@ -10,6 +10,7 @@ namespace Components\Storefront\Models;
 
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Sku;
+use Hubzero\Facades\App;
 
 /**
  * Archive model. Interface between admin and Warehouse
@@ -42,7 +43,7 @@ class Archive extends \Hubzero\Base\Obj
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
     }
 
     /**

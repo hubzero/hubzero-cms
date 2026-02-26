@@ -9,9 +9,10 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Course Instances table class
@@ -51,7 +52,7 @@ class Offering extends Table
         }
 
         if (!isset($instances[$alias])) {
-            $db = \App::get('db');
+            $db = App::get('db');
 
             $inst = new self($db);
 

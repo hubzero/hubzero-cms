@@ -10,9 +10,9 @@ namespace Components\Courses\Models;
 
 use Hubzero\Base\Model;
 use Components\Courses\Tables;
-use Component;
-use Date;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Abstract class for course models

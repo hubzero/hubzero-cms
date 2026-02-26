@@ -9,10 +9,10 @@
 namespace Components\Blog\Models;
 
 use Hubzero\Base\Obj;
-use Component;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Blog archive model class

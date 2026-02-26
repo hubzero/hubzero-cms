@@ -11,11 +11,11 @@ namespace Components\Usage\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Usage\Helpers\Helper;
 use Exception;
-use Document;
-use Pathway;
-use Request;
-use Event;
-use Lang;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
 
 /**
  * Usage controller class for results

@@ -11,7 +11,7 @@ namespace Components\Members\Models\Import\Handler;
 use Hubzero\Base\Obj;
 use Hubzero\User\Group;
 use User;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Member Groups import handler

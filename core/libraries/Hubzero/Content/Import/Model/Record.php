@@ -11,6 +11,8 @@ namespace Hubzero\Content\Import\Model;
 use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 /**
  * Import Record Model
@@ -87,8 +89,8 @@ class Record extends Obj
         $this->_mode    = strtoupper($mode);
 
         // Create core objects
-        $this->_database = \App::get('db');
-        $this->_user     = \User::getInstance();
+        $this->_database = App::get('db');
+        $this->_user     = User::getInstance();
 
         // Create objects
         $this->record = new stdClass();

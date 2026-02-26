@@ -10,6 +10,7 @@ namespace Plugins\Newsletter\Resource;
 
 use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
+use Hubzero\Facades\Date;
 
 /**
  * Plugin class for Newsletter resources

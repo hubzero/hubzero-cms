@@ -12,6 +12,7 @@ use Components\Groups\Tables;
 use Components\Groups\Models\Log;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
+use Hubzero\Facades\App;
 
 /**
  * Group log archive model class
@@ -35,7 +36,7 @@ class Archive extends Model
     public function __construct()
     {
         // create database object
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
     }
 
     /**

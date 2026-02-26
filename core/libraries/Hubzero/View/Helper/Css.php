@@ -10,8 +10,8 @@ namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Stylesheet;
 use Hubzero\Plugin\View as PluginView;
-use Document;
-use Request;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 /**
  * Helper for pushing styles to the document.

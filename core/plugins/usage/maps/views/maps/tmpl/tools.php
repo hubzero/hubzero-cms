@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+
 defined('_HZEXEC_') or die();
 
 $id = Request::getString('id', '');

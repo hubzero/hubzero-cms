@@ -10,8 +10,9 @@ namespace Modules\MyProjects;
 
 use Hubzero\Module\Module;
 use Components\Projects\Tables\Project;
-use Component;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a user's projects
@@ -32,7 +33,7 @@ class Helper extends Module
      */
     public function display()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Get the module parameters
         $params = $this->params;

@@ -10,6 +10,7 @@ namespace Components\Projects\Models\Tool;
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
+use Hubzero\Facades\App;
 
 /**
  * Project Tool View model
@@ -39,7 +40,7 @@ class View extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\ToolView($this->_db);
 

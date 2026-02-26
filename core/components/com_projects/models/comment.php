@@ -9,8 +9,8 @@
 namespace Components\Projects\Models;
 
 use Hubzero\Base\Model;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Comments model class for a project

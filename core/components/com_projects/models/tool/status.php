@@ -10,6 +10,7 @@ namespace Components\Projects\Models\Tool;
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
+use Hubzero\Facades\App;
 
 /**
  * Project Tool Status model
@@ -42,7 +43,7 @@ class Status extends Model
      */
     public function __construct($oid = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if (!isset($this->_tbl)) {
             $this->_tbl = new Tables\ToolStatus($this->_db);

@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Date;
 
 /**
  * macro class for displaying a timestamp
@@ -42,6 +43,6 @@ class Timestamp extends Macro
      */
     public function render()
     {
-        return \Date::toSql();
+        return Date::toSql();
     }
 }

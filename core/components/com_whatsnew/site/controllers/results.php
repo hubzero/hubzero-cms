@@ -10,14 +10,15 @@ namespace Components\Whatsnew\Site\Controllers;
 
 use Components\Whatsnew\Helpers\Period;
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Request;
-use Config;
-use Event;
-use Lang;
-use Html;
-use Route;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 /**
  * Controller class for dipslaying what's new
@@ -44,7 +45,7 @@ class Results extends SiteController
      */
     public function displayTask()
     {
-        $menu = \App::get('menu')->getActive();
+        $menu = App::get('menu')->getActive();
         if (!$menu) {
             $menu = new \stdClass();
             $menu->params = '';

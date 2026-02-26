@@ -12,6 +12,8 @@
 namespace Plugins\System\Xfeed;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 class Xfeed extends Plugin
 {

@@ -12,6 +12,9 @@
 namespace Plugins\Editors\None;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
 
 class None extends Plugin
 {

@@ -9,8 +9,8 @@
 namespace Modules\Answers;
 
 use Hubzero\Module\Module;
-use User;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for com_answers data

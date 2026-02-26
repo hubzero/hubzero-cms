@@ -11,6 +11,7 @@ namespace Hubzero\Console\Command\Install;
 use Hubzero\Database\Connection\PdoConnection;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\SqlParser;
+use Hubzero\Facades\Config;
 
 /**
  * Schema loader helper class
@@ -60,9 +61,8 @@ class Schema
         self::output("\e[33mLoading Database Schema\e[39m\n", $ansi);
         self::output("-----------------------\n", $ansi);
 
-        // Prefer what the database step wrote over the configuration the
-        // console read at startup, which a fresh install predates.
-        $dbConfig = Database::readConfig($appPath) ?? \Config::get('database');
+        // Load database configuration from Config facade
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -127,9 +127,8 @@ class Schema
         self::output("\e[33mLoading Base Data\e[39m\n", $ansi);
         self::output("-----------------\n", $ansi);
 
-        // Prefer what the database step wrote over the configuration the
-        // console read at startup, which a fresh install predates.
-        $dbConfig = Database::readConfig($appPath) ?? \Config::get('database');
+        // Load database configuration from Config facade
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -192,9 +191,8 @@ class Schema
         self::output("\e[33mLoading Sample Data\e[39m\n", $ansi);
         self::output("-------------------\n", $ansi);
 
-        // Prefer what the database step wrote over the configuration the
-        // console read at startup, which a fresh install predates.
-        $dbConfig = Database::readConfig($appPath) ?? \Config::get('database');
+        // Load database configuration from Config facade
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);

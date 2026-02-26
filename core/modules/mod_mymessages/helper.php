@@ -10,9 +10,9 @@ namespace Modules\MyMessages;
 
 use Hubzero\Module\Module;
 use Hubzero\Message\Recipient;
-use Plugin;
-use User;
-use Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying the latest messages

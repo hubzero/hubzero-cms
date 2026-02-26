@@ -14,12 +14,13 @@ use Components\Forum\Models\Post;
 use Component;
 use Exception;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Event;
 use Route;
 use Lang;
 use User;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for forum posts
@@ -41,7 +42,7 @@ class Likesv1r0 extends ApiController
             throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $query = "SELECT * FROM `#__forum_posts_like`";
         $database->setQuery($query);
         $rows = $database->loadObjectList();
@@ -62,7 +63,7 @@ class Likesv1r0 extends ApiController
 
         $threadId = Request::getString('threadId');
         $postId  = Request::getString('postId');
-        $userId = \App::get('authn')['user_id'];
+        $userId = App::get('authn')['user_id'];
         $created = Date::of('now')->toSql();
 
         if (!$userId) {
@@ -90,7 +91,7 @@ class Likesv1r0 extends ApiController
             throw new Exception(Lang::txt('COM_FORUM_POST_NOT_FOUND'), 404);
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $db->prepare("SELECT COUNT(*) FROM `#__forum_posts_like` WHERE postId = ? AND userId = ?");
         $db->bind(array($postId, $userId));
@@ -117,10 +118,10 @@ class Likesv1r0 extends ApiController
 
         $threadId = Request::getString('threadId');
         $postId  = Request::getString('postId');
-        $userId = \App::get('authn')['user_id'];
+        $userId = App::get('authn')['user_id'];
 
         // Open up the database tables
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $deleteQuery = "DELETE FROM `#__forum_posts_like` WHERE threadId = ? AND postId = ? AND userId = ?";
         $deleteVars = array($threadId, $postId, $userId);

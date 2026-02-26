@@ -13,9 +13,9 @@ use Components\Wishlist\Models\Wish;
 use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
-use Component;
-use User;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Wishlist Economy class:

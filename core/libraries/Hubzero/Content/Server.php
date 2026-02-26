@@ -9,6 +9,7 @@
 namespace Hubzero\Content;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\Config;
 
 /**
  * Serve up a file
@@ -111,7 +112,7 @@ class Server extends Obj
             // is mod_xsendfile loaded & we have allowed xsendfile in config
             if (
                 in_array('mod_xsendfile', apache_get_modules())
-                && \Config::get('allow_xsendfile', 0) == 1
+                && Config::get('allow_xsendfile', 0) == 1
             ) {
                 self::$_allowxsendfle = true;
             }

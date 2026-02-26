@@ -10,6 +10,7 @@ namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
 use Hubzero\Html\Builder\Behavior;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a standard button
@@ -36,7 +37,7 @@ class Standard extends Button
      */
     public function fetchButton($type = 'Standard', $name = '', $text = '', $task = '', $list = true)
     {
-        $i18n_text = \Lang::txt($text);
+        $i18n_text = Lang::txt($text);
         $class = $this->fetchIconClass($name);
         $message = $this->_getCommand($text, $task, $list);
 
@@ -90,7 +91,7 @@ class Standard extends Button
     {
         Behavior::framework();
 
-        $message = \Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+        $message = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
         $message = addslashes($message);
 
         return $message;

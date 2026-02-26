@@ -15,6 +15,7 @@ use Hubzero\Database\Schema\MigrationSquasher;
 use Hubzero\Database\Schema\SchemaSnapshot;
 use Hubzero\Database\Schema\DatabaseInfo;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Config;
 
 /**
  * Schema management command
@@ -228,7 +229,7 @@ class Schema extends Base implements CommandInterface
         $showAll = $this->arguments->getOpt('all');
         $filter = $this->arguments->getOpt('filter');
 
-        $this->output->addLine("Tables in database '" . \Config::get('db') . "':");
+        $this->output->addLine("Tables in database '" . Config::get('db') . "':");
         $this->output->addSpacer();
 
         // Apply prefix filter (unless --all)

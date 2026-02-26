@@ -9,6 +9,9 @@
 namespace Plugins\System\Redirect;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 // no direct access
 

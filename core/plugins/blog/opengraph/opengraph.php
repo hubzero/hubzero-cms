@@ -3,6 +3,10 @@
 namespace Plugins\Blog\Opengraph;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * @package    hubzero-cms

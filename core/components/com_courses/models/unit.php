@@ -9,8 +9,9 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Courses model class for a unit
@@ -85,7 +86,7 @@ class Unit extends Base
      */
     public function __construct($oid = null, $offering_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;

@@ -9,6 +9,7 @@
 namespace Components\Support\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point

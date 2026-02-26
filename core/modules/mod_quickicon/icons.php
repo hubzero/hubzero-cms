@@ -8,6 +8,9 @@
 
 namespace Modules\QuickIcon;
 
+use Hubzero\Facades\Html;
+use Hubzero\Facades\User;
+
 /**
  * Utility class for icons.
  */
@@ -44,7 +47,7 @@ class Icons
             } else {
                 // Take each pair of permission, context values.
                 for ($i = 0, $n = count($button['access']); $i < $n; $i += 2) {
-                    if (!\User::authorise($button['access'][$i], $button['access'][$i + 1])) {
+                    if (!User::authorise($button['access'][$i], $button['access'][$i + 1])) {
                         return '';
                     }
                 }
@@ -59,7 +62,7 @@ class Icons
         $html[] = (empty($button['title']) ? '' : (' title="' . htmlspecialchars($button['title']) . '"'));
         $html[] = '>';
         if (isset($button['image']) && $button['image']) {
-            $html[] = \Html::asset('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : $button['alt'], null, true);
+            $html[] = Html::asset('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : $button['alt'], null, true);
         }
         $html[] = (empty($button['text'])) ? '' : ('<span>' . $button['text'] . '</span>');
         $html[] = '</a>';

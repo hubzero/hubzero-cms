@@ -10,12 +10,12 @@ namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Type;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use App;
-use Notify;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
 
 /**
  * Controller class for citation types

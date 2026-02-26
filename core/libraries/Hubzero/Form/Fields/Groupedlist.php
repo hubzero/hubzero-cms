@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
 use Hubzero\Html\Builder\Select as Dropdown;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a grouped list select field.

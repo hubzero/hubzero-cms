@@ -8,12 +8,11 @@
 
 namespace Components\Cart\Site\Controllers;
 
-use Request;
-use App;
-use Lang;
-// Unimported, Request resolved to this namespace's Request controller
-// (request.php) and getParams() died with "undefined method getString()"
-use Request;
+// Imported: unqualified, Request resolves to this namespace's own Request
+// controller (request.php) and getParams() dies on "undefined method getString()"
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 /**
  *  Base component controller class

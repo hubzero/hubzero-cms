@@ -9,7 +9,8 @@
 namespace Components\Resources\Models;
 
 use stdClass;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
 
 /**
  * Resources elements class
@@ -251,7 +252,7 @@ class Elements
     public function loadFile($file, $format = 'JSON', $options = array())
     {
         // Get the contents of the file
-        $data = \Filesystem::read($file);
+        $data = Filesystem::read($file);
 
         return $this->loadString($data, $format, $options);
     }
@@ -749,7 +750,7 @@ class Elements
             preg_match($pattern, (string) $source, $matches);
             $file = @ (string) $matches[0];
 
-            if ($elementFile = \Filesystem::find($dirs, $file)) {
+            if ($elementFile = Filesystem::find($dirs, $file)) {
                 include_once $elementFile;
             } else {
                 return false;

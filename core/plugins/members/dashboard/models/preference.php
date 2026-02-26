@@ -10,7 +10,7 @@ namespace Plugins\Members\Dashboard\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-use Date;
+use Hubzero\Facades\Date;
 
 /**
  * Model class for dashboard preferences

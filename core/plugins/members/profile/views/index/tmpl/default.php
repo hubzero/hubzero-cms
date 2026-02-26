@@ -47,6 +47,14 @@ if (isset($this->registration_update)) {
 // incremental registration
 
 use Components\Members\Models\Profile\Field;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 
 $uid = (int)$this->profile->get('id');
@@ -522,7 +530,7 @@ $legacy = array(
 
         foreach ($this->fields as $field) :
             // Add in class for JS selector to conditionally retrieve data from RoR Api
-            $rorApiBoolean = \Component::params('com_members')->get('rorApi');
+            $rorApiBoolean = Component::params('com_members')->get('rorApi');
             if (strtolower($field->get('name')) == "organization" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
                 echo "<span class='hidden rorApiAvailable'></span>";
             }

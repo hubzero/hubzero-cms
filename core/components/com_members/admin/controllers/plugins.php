@@ -11,17 +11,16 @@ namespace Components\Members\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Arr;
 use Components\Plugins\Models\Plugin;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
 use Route;
-use Event;
+use Hubzero\Facades\Event;
 use User;
 use Html;
-use Cache;
-use Lang;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
 use App;
-use Cache;
-use Notify;
+use Hubzero\Facades\Notify;
 
 /**
  * Manage resource types

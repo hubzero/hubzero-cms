@@ -12,11 +12,11 @@ use Hubzero\Component\ApiController;
 use Hubzero\Utility\Inflector;
 use Hubzero\Utility\Str;
 use Hubzero\Search\Query;
-use Component;
+use Hubzero\Facades\Component;
 use stdClass;
-use Request;
-use Event;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for search

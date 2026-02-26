@@ -8,6 +8,8 @@
 
 namespace Hubzero\User;
 
+use Hubzero\Facades\App;
+
 /**
  * Helper class for users
  */
@@ -57,7 +59,7 @@ class Helper
      */
     public static function getXDomainId($domain)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($domain) || ($domain == 'hubzero')) {
             return false;
@@ -84,7 +86,7 @@ class Helper
      */
     public static function getXDomainUserId($domain_username, $domain)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($domain) || ($domain == 'hubzero')) {
             return $domain_username;
@@ -113,7 +115,7 @@ class Helper
      */
     public static function deleteXDomainUserId($id)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($id)) {
             return false;
@@ -142,7 +144,7 @@ class Helper
      */
     public static function isXDomainUser($uid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = 'SELECT uidNumber FROM `#__xdomain_users` WHERE #__xdomain_users.uidNumber=' . $db->quote($uid);
 
@@ -165,7 +167,7 @@ class Helper
      */
     public static function createXDomain($domain)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($domain) || ($domain == 'hubzero')) {
             return false;
@@ -216,7 +218,7 @@ class Helper
      */
     public static function mapXDomainUser($domain_username, $domain, $uidNumber)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($domain)) {
             return 0;
@@ -271,7 +273,7 @@ class Helper
 
         $uid = (int) $uid;
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $g = '';
         if ($cat == 1) {
@@ -323,7 +325,7 @@ class Helper
      */
     public static function removeUserFromGroups($uid)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
 
         // Record the memberships, and any terms on them, before they go
@@ -350,7 +352,7 @@ class Helper
     {
         $uid = (int) $uid;
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $g = '';
         if ($cat == 1) {

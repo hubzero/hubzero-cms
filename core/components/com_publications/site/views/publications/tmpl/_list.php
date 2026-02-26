@@ -6,10 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \App::get('db');
+$database = App::get('db');
 
 // Get version authors
 $pa = new \Components\Publications\Tables\Author($database);

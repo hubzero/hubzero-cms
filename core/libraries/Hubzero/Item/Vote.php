@@ -10,7 +10,7 @@ namespace Hubzero\Item;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Model for votes

@@ -8,6 +8,8 @@
 
 namespace Hubzero\Utility;
 
+use Hubzero\Facades\Config;
+
 /**
  * IP address class
  */
@@ -21,7 +23,7 @@ class Dns
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getConfig()
     {
-        return \Config::get('app.fqdn', '');
+        return Config::get('app.fqdn', '');
     }
 
     /**

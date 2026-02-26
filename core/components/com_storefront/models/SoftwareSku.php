@@ -9,8 +9,8 @@
 namespace Components\Storefront\Models;
 
 use Components\Storefront\Helpers\Serials;
-use Component;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 /**
  *

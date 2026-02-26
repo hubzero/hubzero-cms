@@ -9,6 +9,12 @@
 namespace Hubzero\User\Group;
 
 use Hubzero\User\Group;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Time-limited group membership
@@ -41,7 +47,7 @@ class Membership
      */
     protected static function db()
     {
-        return \App::get('db');
+        return App::get('db');
     }
 
     /**
@@ -54,7 +60,7 @@ class Membership
     protected static function param($key, $default = null)
     {
         try {
-            return \Component::params('com_groups')->get($key, $default);
+            return Component::params('com_groups')->get($key, $default);
         } catch (\Exception $e) {
             return $default;
         }
@@ -77,8 +83,8 @@ class Membership
             return;
         }
 
-        \Lang::load('com_groups')
-            || \Lang::load('com_groups', PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'site');
+        Lang::load('com_groups')
+            || Lang::load('com_groups', PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'site');
 
         $loaded = true;
     }
@@ -94,7 +100,7 @@ class Membership
     {
         self::loadLanguage();
 
-        return is_null($arg) ? \Lang::txt($key) : \Lang::txt($key, $arg);
+        return is_null($arg) ? Lang::txt($key) : Lang::txt($key, $arg);
     }
 
     /**
@@ -143,7 +149,7 @@ class Membership
         }
 
         if (is_numeric($date)) {
-            return \Date::of((int) $date)->toSql();
+            return Date::of((int) $date)->toSql();
         }
 
         $stamp = strtotime($date);
@@ -152,7 +158,7 @@ class Membership
             return null;
         }
 
-        return \Date::of($stamp)->toSql();
+        return Date::of($stamp)->toSql();
     }
 
     /**
@@ -287,7 +293,7 @@ class Membership
         }
 
         if (is_null($actor)) {
-            $actor = (int) \User::get('id');
+            $actor = (int) User::get('id');
         }
 
         // expires_notified is cleared so that extending a term restarts the
@@ -406,7 +412,7 @@ class Membership
             throw new \InvalidArgumentException(self::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_BAD_INTERVAL'));
         }
 
-        return self::setExpiration($gidNumber, $uidNumber, \Date::of($next)->toSql(), $actor);
+        return self::setExpiration($gidNumber, $uidNumber, Date::of($next)->toSql(), $actor);
     }
 
     /**
@@ -594,7 +600,7 @@ class Membership
         );
 
         try {
-            \Event::trigger('system.logActivity', array(
+            Event::trigger('system.logActivity', array(
                 'activity' => array(
                     'action'      => 'removed',
                     'scope'       => 'group.membership',
@@ -614,7 +620,7 @@ class Membership
 
         // 7. symmetric to groups.onGroupUserEnrollment, so listeners that set
         // something up on join get a chance to tear it down
-        \Event::trigger('groups.onGroupUserRevocation', array($gid, $uid, $reason));
+        Event::trigger('groups.onGroupUserRevocation', array($gid, $uid, $reason));
 
         return true;
     }
@@ -679,7 +685,7 @@ class Membership
                 . $db->quote($reason) . ",
 				(SELECT COUNT(*) FROM `#__xgroups_managers` AS g
 				  WHERE g.`gidNumber`=m.`gidNumber` AND g.`uidNumber`=m.`uidNumber`),
-				" . ((int) \User::get('id') ?: 'NULL') . "
+				" . ((int) User::get('id') ?: 'NULL') . "
 			   FROM `#__xgroups_members` AS m
 			  WHERE m.`gidNumber`=" . $db->quote((int) $gidNumber)
         );
@@ -1074,7 +1080,7 @@ class Membership
                 $group = new Group();
 
                 if ($group->read($gid)) {
-                    \Event::trigger('user.onAfterStoreGroup', array($group));
+                    Event::trigger('user.onAfterStoreGroup', array($group));
                 }
             }
         }

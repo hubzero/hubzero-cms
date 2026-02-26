@@ -9,8 +9,8 @@
 namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\Group as UserGroup;
-use Component;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
 
 /**
  * Adapter class for an entry link for the group blog

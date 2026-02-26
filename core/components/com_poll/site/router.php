@@ -9,6 +9,8 @@
 namespace Components\Poll\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Routing class for the component
@@ -35,8 +37,8 @@ class Router extends Base
 
         // Get the menu items for this component.
         if (!$items) {
-            $menu      = \App::get('menu');
-            $component = \Component::load('com_poll');
+            $menu      = App::get('menu');
+            $component = Component::load('com_poll');
             $items     = $menu->getItems('component_id', $component->id);
         }
 
@@ -125,7 +127,7 @@ class Router extends Base
         }
 
         //Get the active menu item
-        $menu  = \App::get('menu');
+        $menu  = App::get('menu');
         $item  = $menu->getActive();
 
         $count = count($segments);

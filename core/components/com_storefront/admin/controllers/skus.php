@@ -14,13 +14,13 @@ use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Warehouse;
 use Components\Cart\Helpers\Download;
-use Request;
-use Config;
-use Route;
-use Lang;
-use App;
-use Date;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Notify;
 
 /**
  * Controller class for knowledge base categories

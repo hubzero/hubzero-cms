@@ -11,7 +11,8 @@ namespace Modules\MyGroups;
 use Hubzero\Module\Module;
 use Components\Groups\Models\Recent;
 use Hubzero\User\Group;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a list of groups for a user
@@ -32,7 +33,7 @@ class Helper extends Module
      */
     private function getGroups($uid, $type = 'all', $groups = array())
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $where = '';
         if (!$this->params->get('include_archived', 1)) {

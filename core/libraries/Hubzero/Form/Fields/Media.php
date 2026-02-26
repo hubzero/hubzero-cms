@@ -11,7 +11,7 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Field;
 use Hubzero\Html\Builder\Behavior;
 use Hubzero\Html\Builder\Asset;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a modal media selector including upload mechanism

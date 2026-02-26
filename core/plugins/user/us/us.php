@@ -11,6 +11,7 @@ namespace Plugins\User\Us;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Log;
 use Hubzero\Facades\User;
+use Request;
 
 /**
  * Plugin for automatically adding users to the location_us group based on IP country lookup

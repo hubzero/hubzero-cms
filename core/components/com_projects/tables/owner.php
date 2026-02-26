@@ -10,8 +10,8 @@ namespace Components\Projects\Tables;
 
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\Database\Table;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Table class for project owners (team members)

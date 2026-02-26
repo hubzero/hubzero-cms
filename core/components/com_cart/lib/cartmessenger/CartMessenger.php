@@ -8,6 +8,15 @@
 
 namespace Components\Cart\Lib\Cartmessenger;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
@@ -109,7 +118,7 @@ class CartMessenger
 
             $hzl = new \Hubzero\Log\Writer(
                 new \Monolog\Logger(Config::get('application_env')),
-                \App::get('dispatcher')
+                App::get('dispatcher')
             );
             $hzl->useFiles($this->logFile);
 

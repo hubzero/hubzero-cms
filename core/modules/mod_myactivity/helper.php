@@ -10,7 +10,7 @@ namespace Modules\MyActivity;
 
 use Hubzero\Module\Module;
 use Hubzero\Activity\Recipient;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Module class for displaying a list of user activity

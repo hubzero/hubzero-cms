@@ -9,6 +9,7 @@
 namespace Components\Wiki\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\Request;
 
 /**
  * Routing class for the component
@@ -56,7 +57,7 @@ class Router extends Base
         $vars['pagename'] = end($segments);
 
         if (!isset($vars['task']) || !$vars['task']) {
-            $vars['task'] = \Request::getWord('task', '');
+            $vars['task'] = Request::getWord('task', '');
         }
 
         switch ($vars['task']) {

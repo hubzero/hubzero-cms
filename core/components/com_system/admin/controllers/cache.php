@@ -9,10 +9,10 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Route;
-use Lang;
-use App;
-use Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Controller for OPcache and APCu cache information

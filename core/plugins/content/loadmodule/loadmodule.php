@@ -10,6 +10,8 @@
 namespace Plugins\Content\Loadmodule;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Module;
 
 defined('_HZEXEC_') or die;
 
