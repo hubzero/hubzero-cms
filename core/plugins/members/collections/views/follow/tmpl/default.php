@@ -144,7 +144,7 @@ if ($this->rows->total() > 0) {
                         </a>
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?php echo JDate::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+                            <span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
                             <span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
                         </span>
                     </p>

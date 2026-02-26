@@ -248,6 +248,15 @@ $this->css('pipeline.css')
                             <div id="ctSending"></div>
                             <div id="ctSuccess"></div>
 
+                            <?php
+                            $status = $this->status;
+                            $selState = function ($v) use ($status) {
+                                echo ($status['state'] == $v) ? ' selected="selected"' : '';
+                            };
+                            $selPri = function ($v) use ($status) {
+                                echo ($status['priority'] == $v) ? ' selected="selected"' : '';
+                            };
+    ?>
                             <div class="grid">
                                 <div class="col span6">
                                     <div class="form-group">
