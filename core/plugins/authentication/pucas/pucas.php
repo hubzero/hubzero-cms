@@ -160,6 +160,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_EXPIRED_TICKET'), 400);
 		}
 
+
 		$return = (isset($options['return'])) ? $options['return'] : '';
 		if ($authenticated)
 		{
@@ -230,13 +231,26 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+
+			$characteristics = phpCAS::getAttribute('i2a2characteristics');
+
+			$chars = explode(',',$characteristics);
+			error_log($response->username . '(' . $response->email . ')' . ' i2a2= ' . var_export($characteristics,true));
+
+			if (count($chars) <= 3)
+			{
+				error_log($response->username . '(' . $response->email . ')' . ' login REJECTED due to insufficient I2A2 data');
+				$response->status = \Hubzero\Auth\Status::FAILURE;
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_PUCAS_AUTHENTICATION_FAILED');
+				return;
+			}
+
 			$hzal->update();
 
 			// Save extra data
 			if ($this->params->get('profile_i2a2'))
 			{
 				$val = phpCAS::getAttribute('i2a2characteristics');
-
 				$datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
 				$datum->set(array(
 					'link_id'      => $hzal->id,

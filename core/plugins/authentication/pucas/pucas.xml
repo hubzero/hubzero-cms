@@ -36,7 +36,7 @@
 				</field>
 			</fieldset>
 			<fieldset name="profile">
-				<field name="profile_age_range" type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_I2A2_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_PROFILE_DESC">
+				<field name="profile_i2a2" type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_I2A2_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_PROFILE_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
