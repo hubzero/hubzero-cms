@@ -344,7 +344,7 @@ $isEmpty = $noFilters && !$rows->count();
                                                     $activeClass = ' class="active"';
                                                 }
                                                 $monthUrl = Route::url(
-                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum, 1)
+                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum)
                                                 );
                                                 ?>
                                                 <li>

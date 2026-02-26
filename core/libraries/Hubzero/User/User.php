@@ -476,7 +476,7 @@ class User extends \Hubzero\Database\Relational
                     $jwtname = $jwt->name;
 
                     // check if we have a user by this email address
-                    $user = \User::oneByEmail($jwtemail);
+                    $user = self::oneByEmail($jwtemail);
 
                     // this user does not exist
                     // we should create this in the hub database

@@ -49,9 +49,10 @@ $registerTxt = Lang::txt('EVENTS_REGISTER');
 $reqTxt = Lang::txt('COM_EVENTS_REQUIRED');
 
 // Helper to get register field values
-$regVal = function ($key) {
-    return (isset($this->register[$key]))
-        ? $this->register[$key] : '';
+$register = $this->register;
+$regVal = function ($key) use ($register) {
+    return (isset($register[$key]))
+        ? $register[$key] : '';
 };
 ?>
 <header id="content-header">

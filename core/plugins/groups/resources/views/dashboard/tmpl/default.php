@@ -6,14 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Resources\Models\Entry;
+use Components\Resources\Models\Review;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 if ($this->results) {
-
-    plgGroupsResources::documents();
-
-    $database = App::get('db');
     ?>
     <table class="related-resources">
         <tbody>
@@ -56,13 +55,13 @@ if ($this->results) {
                     break;
             }
 
-            $helper = new \Components\Resources\Helpers\Helper($line->id, $database);
-            $helper->getContributors();
+            $entry = Entry::oneOrFail($line->id);
+            $contributors = $entry->contributors();
 
             // If the user is logged in, get their rating for this resource
             if (!User::isGuest()) {
-                $mr = new \Components\Resources\Tables\Review($database);
-                $myrating = $mr->loadUserRating($line->id, User::get('id'));
+                $myrating = Review::oneByUser($line->id, User::get('id'))
+                    ->get('rating', 0);
             } else {
                 $myrating = 0;
             }
@@ -177,10 +176,16 @@ if ($this->results) {
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_TYPE'); ?></th>
                                         <td><?php echo $line->section; ?></td>
                                     </tr>
-                            <?php if ($helper->contributors) { ?>
+                            <?php if ($contributors && count($contributors)) { ?>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS'); ?></th>
-                                        <td><?php echo $helper->contributors; ?></td>
+                                        <td><?php
+                                            $names = [];
+                                        foreach ($contributors as $c) {
+                                            $names[] = $this->escape($c->name);
+                                        }
+                                            echo implode(', ', $names);
+                                        ?></td>
                                     </tr>
                             <?php } ?>
                                     <tr>
