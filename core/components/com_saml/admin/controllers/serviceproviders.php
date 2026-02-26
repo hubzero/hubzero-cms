@@ -203,7 +203,8 @@ class Serviceproviders extends AdminController
 
             if ($url && !preg_match('/^https:\/\//i', $url)) {
                 Notify::error(Lang::txt('COM_SAML_ERROR_INSECURE_URL', $field));
-                return $this->editTask($row);
+                $this->editTask($row);
+                return;
             }
         }
 
@@ -214,12 +215,14 @@ class Serviceproviders extends AdminController
         // Only a build that can parse certificates may judge one invalid
         if ($cert && ServiceProvider::canInspectCertificates() && !$row->certificateInfo()) {
             Notify::error(Lang::txt('COM_SAML_ERROR_INVALID_CERT'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         if (!$cert && $row->get('want_requests_signed')) {
             Notify::error(Lang::txt('COM_SAML_ERROR_CERT_REQUIRED'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         // Attribute map must be valid JSON: a list of {name, source} objects
@@ -231,20 +234,23 @@ class Serviceproviders extends AdminController
 
             if (!is_array($decoded)) {
                 Notify::error(Lang::txt('COM_SAML_ERROR_INVALID_ATTRIBUTE_MAP'));
-                return $this->editTask($row);
+                $this->editTask($row);
+                return;
             }
 
             foreach ($decoded as $entry) {
                 if (!is_array($entry) || empty($entry['name']) || empty($entry['source'])) {
                     Notify::error(Lang::txt('COM_SAML_ERROR_INVALID_ATTRIBUTE_MAP'));
-                    return $this->editTask($row);
+                    $this->editTask($row);
+                    return;
                 }
 
                 // A source the resolver does not know would silently release
                 // nothing, so reject it here rather than at SSO time
                 if (!IdP::isKnownAttributeSource($entry['source'])) {
                     Notify::error(Lang::txt('COM_SAML_ERROR_UNKNOWN_ATTRIBUTE_SOURCE', $entry['source']));
-                    return $this->editTask($row);
+                    $this->editTask($row);
+                    return;
                 }
             }
         }
@@ -252,7 +258,8 @@ class Serviceproviders extends AdminController
         foreach ($groups as $cn) {
             if (!\Hubzero\User\Group::getInstance($cn)) {
                 Notify::error(Lang::txt('COM_SAML_ERROR_UNKNOWN_GROUP', $cn));
-                return $this->editTask($row);
+                $this->editTask($row);
+                return;
             }
         }
 
@@ -262,25 +269,29 @@ class Serviceproviders extends AdminController
 
         if ($existing && $existing->get('id') && $existing->get('id') != $row->get('id')) {
             Notify::error(Lang::txt('COM_SAML_ERROR_DUPLICATE_ENTITY_ID'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         try {
             $saved = $row->save();
         } catch (\Exception $e) {
             Notify::error(Lang::txt('COM_SAML_ERROR_SAVE_FAILED'));
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         if (!$saved) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         Notify::success(Lang::txt('COM_SAML_SP_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+            return;
         }
 
         $this->cancelTask();
@@ -420,20 +431,23 @@ class Serviceproviders extends AdminController
 
             if ($xml === false) {
                 Notify::error(Lang::txt('COM_SAML_ERROR_METADATA_FETCH'));
-                return $this->importTask();
+                $this->importTask();
+                return;
             }
         }
 
         if (!$xml) {
             Notify::warning(Lang::txt('COM_SAML_ERROR_METADATA_EMPTY'));
-            return $this->importTask();
+            $this->importTask();
+            return;
         }
 
         $fields = Metadata::parse($xml);
 
         if ($fields === false) {
             Notify::error(Lang::txt('COM_SAML_ERROR_METADATA_PARSE'));
-            return $this->importTask();
+            $this->importTask();
+            return;
         }
 
         // Prefill an unsaved row for review — nothing is stored yet
@@ -453,6 +467,7 @@ class Serviceproviders extends AdminController
 
         Notify::success(Lang::txt('COM_SAML_METADATA_PARSED'));
 
-        return $this->editTask($row);
+        $this->editTask($row);
+        return;
     }
 }

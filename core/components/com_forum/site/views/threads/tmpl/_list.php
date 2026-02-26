@@ -66,4 +66,3 @@ if ($hasComments) :
     <?php endforeach; ?>
 </ol>
 <?php endif; ?>
-

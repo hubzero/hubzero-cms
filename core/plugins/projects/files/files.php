@@ -19,7 +19,6 @@ use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
-
 use Plugins\Projects\Files\Helpers\Sync;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;
@@ -1895,7 +1894,7 @@ class Files extends Plugin
                     $matches = array();
                     preg_match('/^(\\/tmp.*?\\.zip)/is', $downloadPath, $matches);
                     if (!empty($matches)) {
-                        \Hubzero\Filesystem::delete($downloadPath);
+                        Filesystem::delete($downloadPath);
                     }
 
                     exit;

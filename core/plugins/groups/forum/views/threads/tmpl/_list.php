@@ -61,4 +61,3 @@ if (isset($this->likes)) {
     ?>
 </ol>
 <?php endif; ?>
-

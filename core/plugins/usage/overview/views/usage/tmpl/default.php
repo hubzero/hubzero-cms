@@ -8,6 +8,7 @@
 
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Plugins\Usage\Overview\Overview as plgUsageOverview;
 
 // No direct access
 defined('_HZEXEC_') or die();

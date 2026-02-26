@@ -45,14 +45,14 @@ class Us extends Plugin
                 $group->update();
             }
 
-            return;
+            return true;
         }
 
         $gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
 
         if (!$gdb) {
             Log::debug('plgUserUs: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-            return;
+            return true;
         }
 
         $gdb->setQuery(
@@ -83,6 +83,8 @@ class Us extends Plugin
                 $group->update();
             }
         }
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

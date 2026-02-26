@@ -281,7 +281,7 @@ class Application extends Container
      *
      * @param   integer  $code     Error code
      * @param   string   $message  Error message
-     * @return  void
+     * @return  never
      */
     public function abort($code, $message = '')
     {
@@ -310,7 +310,7 @@ class Application extends Container
      * @param   string  $url      Url to redirect to
      * @param   string  $message  Message to display on redirect.
      * @param   array   $type     Message type.
-     * @return  void
+     * @return  never
      */
     public function redirect($url, $message = null, $type = 'success')
     {
@@ -329,7 +329,7 @@ class Application extends Container
     /**
      * Terminate the application
      *
-     * @return  void
+     * @return  never
      */
     public function close()
     {

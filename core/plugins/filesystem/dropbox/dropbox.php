@@ -13,7 +13,7 @@ use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Srmklive\Dropbox\Adapter\DropboxAdapter;
 use Srmklive\Dropbox\Client\DropboxClient;
 use Hubzero\Utility\Arr;
-use Hubzero\Session;
+use Hubzero\Facades\Session;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 

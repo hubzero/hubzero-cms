@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Constantcontact\Helpers;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 

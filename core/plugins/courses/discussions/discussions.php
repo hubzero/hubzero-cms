@@ -42,6 +42,59 @@ class Discussions extends Plugin
     protected $_autoloadLanguage = true;
 
     /**
+     * @var object
+     */
+    protected $course = null;
+
+    /**
+     * @var object
+     */
+    protected $offering = null;
+
+    /**
+     * @var object
+     */
+    protected $forum = null;
+
+    /**
+     * @var string
+     */
+    protected $base = null;
+
+    /**
+     * @var string
+     */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_active = null;
+
+    /**
+     * @var string
+     */
+    protected $unit = null;
+
+    /**
+     * @var string
+     */
+    protected $lecture = null;
+
+    /**
+     * @var array
+     */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_instructors = null;
+
+    /**
+     * @var object
+     */
+    protected $database = null;
+
+    /**
+     * Return the alias and name for this category of content
+     *
+     * @return  array
+     */
+
+    /**
      * Return the alias and name for this category of content
      *
      * @return  array
@@ -744,7 +797,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _thread($post, $filters = array())
     {
@@ -814,7 +867,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _threadsSearch($post, $filters = array())
     {
@@ -877,7 +930,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object
      */
     protected function _threads($post, $filters = array())
     {
@@ -950,7 +1003,7 @@ class Discussions extends Plugin
      *
      * @param   object  $post     \Components\Forum\Models\Post
      * @param   array   $filters  Filters to apply
-     * @return  void
+     * @return  object|array
      */
     protected function _posts($post, $filters = array())
     {
@@ -1539,7 +1592,7 @@ class Discussions extends Plugin
     /**
      * Deletes a section and redirects to main page afterwards
      *
-     * @return  void
+     * @return  string
      */
     public function deletesection()
     {
@@ -1565,7 +1618,7 @@ class Discussions extends Plugin
         }
 
         // Check if user is authorized to delete entries
-        $this->_authorize('section', $model->id);
+        $this->_authorize('section', $section->get('id'));
 
         if (!$this->params->get('access-delete-section')) {
             App::redirect(
@@ -1767,7 +1820,7 @@ class Discussions extends Plugin
     /**
      * Save a category
      *
-     * @return  void
+     * @return  string
      */
     public function savecategory()
     {
@@ -1847,7 +1900,7 @@ class Discussions extends Plugin
     /**
      * Delete a category
      *
-     * @return  void
+     * @return  string
      */
     public function deletecategory()
     {
@@ -2305,7 +2358,7 @@ class Discussions extends Plugin
         if (!$post->save()) {
             App::redirect(
                 Route::url($this->base),
-                $forum->getError(),
+                $post->getError(),
                 'error'
             );
             return;
@@ -2402,10 +2455,10 @@ class Discussions extends Plugin
         }
 
         // Instantiate an attachment object
-        if (!$post_id) {
-            $attach = Attachment::oneByThread($thread_id, $file);
+        if (!$post) {
+            $attach = Attachment::oneByThread($thread, $file);
         } else {
-            $attach = Attachment::oneByPost($post_id);
+            $attach = Attachment::oneByPost($post);
         }
 
         if (!$attach->get('filename')) {
@@ -2469,7 +2522,7 @@ class Discussions extends Plugin
      * Reorder a section
      *
      * @param   integer  $dir  Direction
-     * @return  void
+     * @return  string
      */
     public function reorder($dir = 1)
     {
@@ -2567,7 +2620,7 @@ class Discussions extends Plugin
                 $section->set('state', $section::STATE_DELETED);
 
                 if (!$section->save()) {
-                    $this->setError($sModel->getError());
+                    $this->setError($section->getError());
                     return '';
                 }
             }

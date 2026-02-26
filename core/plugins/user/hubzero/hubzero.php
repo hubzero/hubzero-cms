@@ -70,7 +70,7 @@ class Hubzero extends Plugin
 
         $emailAddress = $config->get('mailfrom');
 
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path'     => __DIR__,
             'name'          => 'emails',
             'layout'        => 'admincreate_plain',
@@ -88,7 +88,7 @@ class Hubzero extends Plugin
         $html = $eview->loadTemplate();
         $html = str_replace("\n", "\r\n", $html);
 
-        $mail = new Hubzero\Mail\Message();
+        $mail = new \Hubzero\Mail\Message();
         $mail
             ->addFrom(
                 $emailAddress,
@@ -176,7 +176,7 @@ class Hubzero extends Plugin
                 // Look for user language. Priority:
                 //  1. User frontend language
                 //  2. User backend language
-                $userParams = new Hubzero\Config\Registry($user['params']);
+                $userParams = new \Hubzero\Config\Registry($user['params']);
                 $userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
 
                 if ($userLocale != $defaultLocale) {
@@ -186,6 +186,8 @@ class Hubzero extends Plugin
                 $lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site') ||
                 $lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
                 $lang->load('plg_user_' . $this->_name, __DIR__);
+
+                $config = App::get('config');
 
                 // Compute the mail subject.
                 $emailSubject = Lang::txt(
@@ -205,7 +207,7 @@ class Hubzero extends Plugin
                 );
 
                 // Assemble the email data...the sexy way!
-                $mail = new Hubzero\Mail\Message();
+                $mail = new \Hubzero\Mail\Message();
                 $mail
                     ->addFrom(
                         $config->get('mailfrom'),
@@ -329,7 +331,7 @@ class Hubzero extends Plugin
 
             // Session doesn't exist yet, so create session variables
             if ($session->isNew()) {
-                $session->set('registry', new Hubzero\Config\Registry('session'));
+                $session->set('registry', new \Hubzero\Config\Registry('session'));
                 $session->set('user', $instance);
             }
         }
@@ -408,7 +410,7 @@ class Hubzero extends Plugin
      */
     protected function _getUser($user, $options = array())
     {
-        $instance = Hubzero\User\User::oneByUsername($user['username']);
+        $instance = \Hubzero\User\User::oneByUsername($user['username']);
 
         if ($id = intval($instance->get('id'))) {
             return $instance;
@@ -448,7 +450,7 @@ class Hubzero extends Plugin
 
         // Now, also check to see if user came in via an auth plugin, as that may affect their approval status
         if (isset($user['auth_link'])) {
-            $domain = Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
+            $domain = \Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
 
             if ($domain && is_object($domain)) {
                 $params = \Plugin::params('authentication', $domain->authenticator);

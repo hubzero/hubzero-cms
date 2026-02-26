@@ -249,8 +249,7 @@ class Versions extends AdminController
             if ($dois['doi']) {
                 if (!$dois['rid']) {
                     if (file_exists(Component::path('com_resources') . '/models/entry.php')) {
-
-                        $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
+                        $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($row->toolname)->get('id');
                     }
                 }
 

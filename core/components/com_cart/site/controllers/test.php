@@ -61,7 +61,7 @@ class Test extends ComponentController
 
             try {
                 // Constructor take the coupon code
-                $coupon = new Coupon('hui');
+                $coupon = new \Components\Storefront\Models\Coupon('hui');
                 // Coupon description (shows up in the cart)
                 $coupon->setDescription('Test coupon, 10% off product with ID 3');
                 // Expiration date
@@ -88,7 +88,7 @@ class Test extends ComponentController
         if (0) {
             // DELETE COUPON
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             try {
                 $warehouse->deleteCoupon('couponcode3');
             } catch (\Exception $e) {
@@ -100,7 +100,7 @@ class Test extends ComponentController
         if (0) {
             // CREATE NEW COURSE
 
-            $course = new Course();
+            $course = new \Components\Storefront\Models\Course();
             $course->setName('Name of the course');
             $course->setDescription('Short description');
             $course->setPrice(12.00);
@@ -122,7 +122,7 @@ class Test extends ComponentController
         if (0) {
             // GET EXISTING COURSE, modify it and save
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             try {
                 // Get course by pID returned with $course->add() above
                 $course = $warehouse->getCourse(1);
@@ -162,7 +162,7 @@ class Test extends ComponentController
         if (0) {
             // DELETE COURSE
 
-            $warehouse = new Warehouse();
+            $warehouse = new \Components\Storefront\Models\Warehouse();
             // Delete by existing course ID (pID returned with $course->add() when the course was created)
             $warehouse->deleteProduct(1023);
             return;

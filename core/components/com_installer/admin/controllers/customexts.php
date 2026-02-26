@@ -338,7 +338,7 @@ class Customexts extends AdminController
         Notify::success(Lang::txt('COM_INSTALLER_CUSTOMEXTS_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            return $this->editTask($model);
         }
 
         $this->cancelTask();

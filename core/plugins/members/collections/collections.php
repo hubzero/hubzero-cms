@@ -298,7 +298,7 @@ class Collections extends Plugin
     /**
      * Redirect to the login form
      *
-     * @return     void
+     * @return     never
      */
     private function _login()
     {
@@ -923,7 +923,7 @@ class Collections extends Plugin
     /**
      * Save an entry
      *
-     * @return  void
+     * @return  string
      */
     private function _save()
     {
@@ -1260,7 +1260,7 @@ class Collections extends Plugin
     /**
      * Move a post to another collection
      *
-     * @return  void
+     * @return  string
      */
     private function _move()
     {
@@ -1498,7 +1498,7 @@ class Collections extends Plugin
     /**
      * Vote for an item
      *
-     * @return  void
+     * @return  never
      */
     private function _vote()
     {
