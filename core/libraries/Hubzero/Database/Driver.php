@@ -1381,6 +1381,8 @@ abstract class Driver implements LoggerAwareInterface
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
         $bits  = array();
 
+        // A quote character inside an identifier can only be an attempt to
+        // break out of the quoting, so escapeName() doubles it
         foreach ($parts as $part) {
             $bits[] = sprintf($this->wrapper, $this->escapeName($part));
         }
