@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\QuickIcon;
+namespace Modules\Quickicon;
 
 use Hubzero\Facades\Html;
 use Hubzero\Facades\User;
