@@ -9,6 +9,11 @@
 namespace Components\Forum\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,7 +27,7 @@ class Forum extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'sections'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'sections';
         }

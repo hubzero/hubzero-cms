@@ -9,6 +9,7 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
+use Hubzero\Facades\App;
 
 /**
  * Courses model class for prerequisites
@@ -74,7 +75,7 @@ class Prerequisite extends Base
      */
     public function __construct($section_id, $gradebook, $member_id)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new $this->_tbl_name($this->_db);
 

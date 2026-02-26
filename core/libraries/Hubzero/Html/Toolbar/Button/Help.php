@@ -9,6 +9,13 @@
 namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Renders a help popup window button
@@ -34,22 +41,22 @@ class Help extends Button
      */
     public function fetchButton($type = 'Help', $url = '#', $width = 700, $height = 500)
     {
-        $text  = \Lang::txt('JTOOLBAR_HELP');
+        $text  = Lang::txt('JTOOLBAR_HELP');
         $class = $this->fetchIconClass('help');
-        $msg   = \Lang::txt('JHELP', true);
+        $msg   = Lang::txt('JHELP', true);
 
         if (
             !strstr('?', $url)
             && !strstr('&', $url)
             && substr($url, 0, 4) != 'http'
         ) {
-            $url = \Route::url('index.php?option=com_help&component=' . \Request::getCmd('option') . '&page=' . $url);
+            $url = Route::url('index.php?option=com_help&component=' . Request::getCmd('option') . '&page=' . $url);
         } else {
             $url = $this->_getCommand(
                 $ref = $type,
                 $com = false,
                 $override = false,
-                $component = \Request::getCmd('option')
+                $component = Request::getCmd('option')
             );
         }
 
@@ -123,18 +130,18 @@ class Help extends Button
             $url = $override;
         } else {
             // Get the user help URL.
-            $user = \User::getInstance();
+            $user = User::getInstance();
             $url = $user->getParam('helpsite');
 
             // If user hasn't specified a help URL, then get the global one.
             if ($url == '') {
-                $url = \App::get('config')->get('helpurl');
+                $url = App::get('config')->get('helpurl');
             }
 
             // Component help URL overrides user and global.
             if ($useComponent) {
                 // Look for help URL in component parameters.
-                $params = \Component::params($component);
+                $params = Component::params($component);
                 $url = $params->get('helpURL');
 
                 if ($url == '') {
@@ -158,7 +165,7 @@ class Help extends Button
         }
 
         //  Replace substitution codes in the URL.
-        $lang    = \App::get('language');
+        $lang    = App::get('language');
         $version = HVERSION;
         $hver    = explode('.', $version);
         $hlang   = explode('-', $lang->getTag());
@@ -181,7 +188,7 @@ class Help extends Button
         );
 
         $replace = array(
-            \App::get('client')->name, // {app}
+            App::get('client')->name, // {app}
             $component, // {component}
             $keyref, // {keyref}
             $lang->getTag(), // {language}
@@ -197,7 +204,7 @@ class Help extends Button
         if ($local) {
             $try = str_replace($search, $replace, $url);
 
-            if (!\Filesystem::exists(PATH_ROOT . '/' . $try)) {
+            if (!Filesystem::exists(PATH_ROOT . '/' . $try)) {
                 $replace[3] = 'en-GB';
                 $replace[4] = 'en';
                 $replace[5] = 'GB';

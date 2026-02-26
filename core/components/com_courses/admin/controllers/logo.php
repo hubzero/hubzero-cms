@@ -9,10 +9,11 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Filesystem;
-use Request;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 use App;
+use Hubzero\Facades\Component;
 
 /**
  * Manage logo for a course
@@ -47,7 +48,7 @@ class Logo extends AdminController
         $allowedExtensions = array('png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx');
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -238,7 +239,7 @@ class Logo extends AdminController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

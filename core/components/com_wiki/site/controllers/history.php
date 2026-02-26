@@ -12,14 +12,14 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Version;
 use Hubzero\Component\SiteController;
-use Document;
-use Pathway;
-use Request;
-use User;
-use Lang;
-use App;
-use Route;
-use Event;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki controller class for page history

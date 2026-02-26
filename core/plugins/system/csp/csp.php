@@ -12,6 +12,8 @@
 namespace Plugins\System\Csp;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 class Csp extends Plugin
 {

@@ -12,7 +12,7 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Utility\Inflector;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Scaffolding class for generating template extensions

@@ -8,6 +8,10 @@
 
 namespace Hubzero\Utility;
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Log;
+
 class Ldap
 {
     /**
@@ -68,7 +72,7 @@ class Ldap
             return $conn;
         }
 
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
 
         $acctman   = $ldap_params->get('ldap_managerdn', 'cn=admin');
         $acctmanPW = $ldap_params->get('ldap_managerpw', '');
@@ -99,19 +103,19 @@ class Ldap
 
         if ($conn === false) {
             if ($debug) {
-                \Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] ");
+                Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] ");
             }
 
             return false;
         }
 
         if ($debug) {
-            \Log::debug("getLDO(): ldap_connect($pldap,$port) success. ");
+            Log::debug("getLDO(): ldap_connect($pldap,$port) success. ");
         }
 
         if (ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false) {
             if ($debug) {
-                \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
+                Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
             }
 
             $conn = false;
@@ -119,12 +123,12 @@ class Ldap
         }
 
         if ($debug) {
-            \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+            Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
         }
 
         if (ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false) {
             if ($debug) {
-                \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
+                Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
             }
 
             $conn = false;
@@ -132,12 +136,12 @@ class Ldap
         }
 
         if ($debug) {
-            \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
+            Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
         }
 
         if (!ldap_set_option($conn, LDAP_OPT_REFERRALS, false)) {
             if ($debug) {
-                \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
+                Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
             }
 
             $conn = false;
@@ -145,13 +149,13 @@ class Ldap
         }
 
         if ($debug) {
-            \Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
+            Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
         }
 
         if ($negotiate_tls) {
             if (!ldap_start_tls($conn)) {
                 if ($debug) {
-                    \Log::debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
+                    Log::debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
                 }
 
                 $conn = false;
@@ -159,7 +163,7 @@ class Ldap
             }
 
             if ($debug) {
-                \Log::debug("getLDO(): ldap_start_tls() success.");
+                Log::debug("getLDO(): ldap_start_tls() success.");
             }
         }
 
@@ -169,7 +173,7 @@ class Ldap
             $errstr2 = ldap_err2str($err);
 
             if ($debug) {
-                \Log::debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
+                Log::debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
             }
 
             $conn = false;
@@ -177,7 +181,7 @@ class Ldap
         }
 
         if ($debug) {
-            \Log::debug("getLDO(): ldap_bind() success.");
+            Log::debug("getLDO(): ldap_bind() success.");
         }
 
         return $conn;
@@ -191,7 +195,7 @@ class Ldap
      */
     public static function syncUser($user_id)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             self::$errors['fatal'][] = 'Error connecting to the database';
@@ -247,7 +251,7 @@ class Ldap
             }
         }
 
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
         $hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
         $dn = 'ou=users,' . $hubLDAPBaseDN;
@@ -425,7 +429,7 @@ class Ldap
      */
     public static function syncGroup($group)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             self::$errors['fatal'][] = 'Error connecting to the database';
@@ -459,7 +463,7 @@ class Ldap
             $dbinfo['memberUid'] = $db->loadColumn();
         }
 
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
         $hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
         if (isset($dbinfo['gidNumber']) || (is_numeric($group) && $group >= 0)) {
@@ -641,7 +645,7 @@ class Ldap
      */
     public static function changeGroupMemberships($group, $add, $delete)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         if (empty($db)) {
             return false;
@@ -653,7 +657,7 @@ class Ldap
             return false;
         }
 
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
         $hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
         if (is_numeric($group) && $group >= 0) {
@@ -756,7 +760,7 @@ class Ldap
     {
         // @TODO: chunk this to 1000 groups at a time
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT gidNumber FROM `#__xgroups`;";
 
@@ -793,7 +797,7 @@ class Ldap
     {
         // @TODO: chunk this to 1000 users at a time
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT id FROM `#__users`;";
 
@@ -836,7 +840,7 @@ class Ldap
         }
 
         // delete all old hubGroup schema based group entries
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
         $hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
         $dn = "ou=groups," . $hubLDAPBaseDN;
@@ -877,7 +881,7 @@ class Ldap
         // delete all entries that have mysql counterparts
         // @TODO: chunk this to 1000 groups at a time
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT cn FROM `#__xgroups`;";
 
@@ -963,7 +967,7 @@ class Ldap
         }
 
         // delete all old hubAccount schema based user entries
-        $ldap_params = \Component::params('com_system');
+        $ldap_params = Component::params('com_system');
         $hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
         $dn = "ou=users," . $hubLDAPBaseDN;
@@ -1000,7 +1004,7 @@ class Ldap
 
         // delete all entries that have mysql counterparts
         // @TODO: chunk this to 1000 groups at a time
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Negative numbers exist as usernames for placeholders, these aren't in ldap
         // In fact we can't even search for them without causing an error

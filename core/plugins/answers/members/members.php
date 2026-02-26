@@ -13,6 +13,8 @@
 namespace Plugins\Answers\Members;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Members extends Plugin
 {

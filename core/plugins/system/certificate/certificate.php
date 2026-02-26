@@ -12,6 +12,9 @@
 namespace Plugins\System\Certificate;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class Certificate extends Plugin
 {

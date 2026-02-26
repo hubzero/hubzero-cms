@@ -9,6 +9,12 @@
 namespace Components\Wishlist\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,29 +29,29 @@ class Wishlist extends AbstractComponent
     protected function execute(): void
     {
         // Authorization check
-        if (!\User::authorise('core.manage', 'com_wishlist')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_wishlist')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'lists');
+        $controllerName = Request::getCmd('controller', 'lists');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'lists';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_WISHLIST_LISTS'),
-            \Route::url('index.php?option=com_wishlist&controller=lists'),
+        Submenu::addEntry(
+            Lang::txt('COM_WISHLIST_LISTS'),
+            Route::url('index.php?option=com_wishlist&controller=lists'),
             ($controllerName == 'lists')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_WISHLIST_WISHES'),
-            \Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=0'),
+        Submenu::addEntry(
+            Lang::txt('COM_WISHLIST_WISHES'),
+            Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=0'),
             ($controllerName == 'wishes')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_WISHLIST_COMMENTS'),
-            \Route::url('index.php?option=com_wishlist&controller=comments&wish=0'),
+        Submenu::addEntry(
+            Lang::txt('COM_WISHLIST_COMMENTS'),
+            Route::url('index.php?option=com_wishlist&controller=comments&wish=0'),
             ($controllerName == 'comments')
         );
 

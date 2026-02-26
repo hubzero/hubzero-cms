@@ -9,9 +9,9 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
-use Date;
-use Log;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Log;
 
 /**
  * Table class for a tool version

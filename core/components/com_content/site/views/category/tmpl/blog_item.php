@@ -6,6 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // no direct access
 defined('_HZEXEC_') or die();
 
@@ -198,7 +204,7 @@ Html::behavior('framework');
             )
         );
     else :
-        $menu = \App::get('menu');
+        $menu = App::get('menu');
         $active = $menu->getActive();
         $itemId = $active->id;
         $link1 = Route::url(

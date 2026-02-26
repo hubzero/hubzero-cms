@@ -12,10 +12,11 @@ use Hubzero\Module\Module;
 use Components\Collections\Models\Archive;
 use Components\Collections\Models\Collection;
 use Components\Collections\Tables\Post;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 use stdClass;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a list of activity logs
@@ -153,7 +154,7 @@ class Helper extends Module
         if (!$this->getError()) {
             // Try loading the current post to see if this has
             // already been posted to this collection (i.e., no duplicates)
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $post = new Post($database);
             $post->loadByBoard($collectible['collection_id'], $this->item->get('id'));

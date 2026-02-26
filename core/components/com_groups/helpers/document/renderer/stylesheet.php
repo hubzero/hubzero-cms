@@ -9,6 +9,7 @@
 namespace Components\Groups\Helpers\Document\Renderer;
 
 use Components\Groups\Helpers\Document\Renderer;
+use Hubzero\Facades\Document;
 
 class Stylesheet extends Renderer
 {
@@ -37,7 +38,7 @@ class Stylesheet extends Renderer
         // get download path for source (serve up file)
         if ($path = $this->group->downloadLinkForPath($base, $source)) {
             // add stylsheet to document
-            \Document::addStyleSheet($path);
+            Document::addStyleSheet($path);
         }
     }
 }

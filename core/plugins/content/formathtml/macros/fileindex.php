@@ -9,7 +9,11 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
-use Component;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Wiki macro class for listing files
@@ -43,7 +47,7 @@ class FileIndex extends Macro
     public function render()
     {
         $et = $this->args;
-        $live_site = rtrim(\Request::base(), '/');
+        $live_site = rtrim(Request::base(), '/');
 
         // What pages are we getting?
         if ($et) {
@@ -79,16 +83,16 @@ class FileIndex extends Macro
                 $fileSize = file_exists($fpath)
                     ? \Hubzero\Utility\Number::formatBytes(filesize($fpath))
                     : '-- file not found --';
-                $html .= '<li><a href="' . \Route::url($link) . '">' . $row->filename .
+                $html .= '<li><a href="' . Route::url($link) . '">' . $row->filename .
                     '</a> (' . $fileSize . ') ';
-                $huser = \User::getInstance($row->created_by);
+                $huser = User::getInstance($row->created_by);
                 if ($huser->get('id')) {
-                    $memberUrl = \Route::url('index.php?option=com_members&id=' . $huser->get('id'));
+                    $memberUrl = Route::url('index.php?option=com_members&id=' . $huser->get('id'));
                     $html .= '- added by <a href="' . $memberUrl . '">' .
                         stripslashes($huser->get('name')) . '</a> ';
                 }
                 if ($row->created && $row->created != '0000-00-00 00:00:00') {
-                    $html .= \Date::of($row->created)->relative() . '. ';
+                    $html .= Date::of($row->created)->relative() . '. ';
                 }
                 $html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
                 $html .= '</li>' . "\n";

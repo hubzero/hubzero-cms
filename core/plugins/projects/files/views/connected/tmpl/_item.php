@@ -1,7 +1,7 @@
 <?php
 
-
 // @phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,6 +9,10 @@
  */
 
 use Components\Projects\Helpers\Html;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 

@@ -11,8 +11,8 @@ namespace Components\Support\Models;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Base\ItemList;
-use Route;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\App;
 
 /**
  * Support Tagging class

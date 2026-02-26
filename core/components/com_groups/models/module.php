@@ -11,7 +11,9 @@ namespace Components\Groups\Models;
 use Components\Groups\Tables;
 use Hubzero\Base\Model;
 use Hubzero\Base\Model\ItemList;
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Group module model class
@@ -49,7 +51,7 @@ class Module extends Model
      */
     public function __construct($oid)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\Module($this->_db);
 
@@ -253,7 +255,7 @@ class Module extends Model
                     $group = \Hubzero\User\Group::getInstance(Request::getString('cn', Request::getString('gid', '')));
 
                     // get base path
-                    $basePath = \Component::params('com_groups')->get('uploadpath');
+                    $basePath = Component::params('com_groups')->get('uploadpath');
 
                     // build config
                     $config = array(

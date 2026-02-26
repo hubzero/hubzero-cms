@@ -17,9 +17,9 @@ use stdClass;
 use Component;
 use Request;
 use Config;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Member Record importer

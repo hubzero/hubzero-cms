@@ -3,6 +3,15 @@
 namespace Plugins\Authentication\Cilogon;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms

@@ -13,17 +13,17 @@ use Components\Publications\Tables;
 use Components\Publications\Helpers;
 use Components\Publications\Models;
 use Exception;
-use Request;
-use Config;
-use Route;
-use Lang;
-use User;
-use App;
-use Component;
-use Date;
-use Event;
-use Filesystem;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Notify;
 
 /**
  * Manage publications
@@ -710,7 +710,7 @@ class Items extends AdminController
             }
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("select params
 		               from #__extensions
 		               where folder = 'projects' and element = 'publications'");
@@ -1754,7 +1754,7 @@ class Items extends AdminController
         // building inline, and drop the existing link so a stale bundle isn't
         // served while it rebuilds (gated; off = the legacy synchronous rebuild
         // below).
-        if ((int) \Component::params('com_publications')->get('bundle_async', 0)) {
+        if ((int) Component::params('com_publications')->get('bundle_async', 0)) {
             \Components\Publications\Models\BundleQueue::enqueueVersion($pub->get('version_id'));
             $pub->_curationModel->removeLink();
             $pub->publication->checkin();

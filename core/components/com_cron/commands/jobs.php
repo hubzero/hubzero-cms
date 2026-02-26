@@ -13,8 +13,9 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Utility\Date;
 use Hubzero\Utility\Str;
 use Components\Cron\Models\Job;
-use Event;
-use Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Config;
 
 /**
  * CRON jobs
@@ -156,7 +157,7 @@ class Jobs extends Base implements CommandInterface
 
         // The hub URL must come from the CMS config; a CLI tick has no request to
         // derive it from, so refuse rather than guess (broken URLs / wrong host).
-        $base = rtrim((string) \Config::get('live_site'), '/');
+        $base = rtrim((string) Config::get('live_site'), '/');
 
         if ($base === '') {
             $this->output->error('live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows which URL to request.');
@@ -167,7 +168,7 @@ class Jobs extends Base implements CommandInterface
 
         // Single-flight: don't let ticks pile up. flock auto-releases on process
         // exit, so there is no stale-lockfile problem.
-        $tmp = (string) \Config::get('tmp_path');
+        $tmp = (string) Config::get('tmp_path');
         $tmp = $tmp !== '' ? rtrim($tmp, '/') : sys_get_temp_dir();
         $lock = @fopen($tmp . '/.cron-tick.lock', 'c');
 

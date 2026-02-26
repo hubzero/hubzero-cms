@@ -8,6 +8,10 @@
 
 namespace Components\Saml\Models;
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+
 /**
  * SAML 2.0 Identity Provider protocol engine
  *
@@ -33,7 +37,7 @@ class IdP
      */
     public function __construct($params = null)
     {
-        $this->params = $params ?: \Component::params('com_saml');
+        $this->params = $params ?: Component::params('com_saml');
     }
 
     /**
@@ -49,9 +53,9 @@ class IdP
      */
     public function getBaseUrl()
     {
-        $base = trim((string) \Config::get('live_site', ''));
+        $base = trim((string) Config::get('live_site', ''));
 
-        return rtrim($base ?: \Request::root(), '/');
+        return rtrim($base ?: Request::root(), '/');
     }
 
     /**
@@ -65,7 +69,7 @@ class IdP
     public function isIdentityRequestDerived()
     {
         return !trim((string) $this->params->get('IdP_entityID', ''))
-            && !trim((string) \Config::get('live_site', ''));
+            && !trim((string) Config::get('live_site', ''));
     }
 
     /**

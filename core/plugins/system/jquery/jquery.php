@@ -9,6 +9,10 @@
 namespace Plugins\System\Jquery;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
 
 // no direct access
 

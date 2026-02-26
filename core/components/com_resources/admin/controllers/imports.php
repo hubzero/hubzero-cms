@@ -14,14 +14,14 @@ use Components\Resources\Models\Import\Run;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
-use Filesystem;
-use Session;
-use Request;
-use Notify;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Resource importer

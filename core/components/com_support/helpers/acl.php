@@ -10,7 +10,8 @@ namespace Components\Support\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\User\Helper as UserHelper;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Helper class for support ACL
@@ -55,7 +56,7 @@ class ACL extends Obj
     public function __construct()
     {
         $this->_user = User::getInstance();
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
 				FROM `#__support_acl_aros_acos` AS m

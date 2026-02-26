@@ -9,6 +9,10 @@
 namespace Components\Templates\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,12 +27,12 @@ class Templates extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_templates')) {
-            \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_templates')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
         // Include controller
-        $controllerName = \Request::getCmd('controller', 'styles');
+        $controllerName = Request::getCmd('controller', 'styles');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'styles';
         }

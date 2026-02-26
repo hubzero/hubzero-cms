@@ -8,7 +8,7 @@
 
 namespace Components\Whatsnew\Helpers;
 
-use Event;
+use Hubzero\Facades\Event;
 
 /**
  * Helper class for returning "what's new" results

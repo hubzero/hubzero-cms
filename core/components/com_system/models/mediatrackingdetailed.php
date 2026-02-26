@@ -9,6 +9,7 @@
 namespace Components\System\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\App;
 
 /**
  * media tracking detailed model
@@ -55,7 +56,7 @@ class Mediatrackingdetailed extends Relational
             ->whereEquals('object_type', $object_type);
 
         if (!$user_id) {
-            $session_id = \App::get('session')->getId();
+            $session_id = App::get('session')->getId();
 
             $query->whereEquals('session_id', $session_id);
         } else {

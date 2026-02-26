@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+
 /*
 |--------------------------------------------------------------------------
 | SEF Build
@@ -15,12 +19,12 @@
 |
 */
 $router->rules('build')->append('content', function ($uri) {
-    if (!\App::has('menu.manager')) {
+    if (!App::has('menu.manager')) {
         return $uri;
     }
 
     // Set URI defaults
-    $menu = \App::get('menu.manager')->menu('site');
+    $menu = App::get('menu.manager')->menu('site');
 
     // Get the itemid form the URI
     $itemid = $uri->getUriVar('Itemid');
@@ -32,11 +36,11 @@ $router->rules('build')->append('content', function ($uri) {
                 $uri->setUriVar('Itemid', $item->id);
             }
         } else {
-            if ($option = \App::get('router')->get('option')) {
+            if ($option = App::get('router')->get('option')) {
                 $uri->setUriVar('option', $option);
             }
 
-            if ($itemid = \App::get('router')->get('Itemid')) {
+            if ($itemid = App::get('router')->get('Itemid')) {
                 $uri->setUriVar('Itemid', $itemid);
             }
         }
@@ -68,7 +72,7 @@ $router->rules('build')->append('content', function ($uri) {
 
         // Don't parse calls to other com_content views
         if (isset($query['view']) && $query['view'] == 'article' && !empty($query['id'])) {
-            $db = \App::get('db');
+            $db = App::get('db');
             $db->setQuery("SELECT `path` FROM `#__menu` "
                 . "WHERE link='index.php?option=com_content&view=article&id={$query['id']}' AND published=1");
             if ($menuitem = $db->loadResult()) {
@@ -132,9 +136,9 @@ $router->rules('build')->append('component', function ($uri) {
         $query['option'] = 'com_content';
     }
 
-    $query['option'] = \App::get('component')->canonical($query['option']);
+    $query['option'] = App::get('component')->canonical($query['option']);
 
-    if ($router = \App::get('component')->router($query['option'], 'site')) {
+    if ($router = App::get('component')->router($query['option'], 'site')) {
         $query = $router->preprocess($query);
         $parts = $router->build($query);
         $parts = array_filter($parts, function ($v) {
@@ -145,8 +149,8 @@ $router->rules('build')->append('component', function ($uri) {
 
     $built = false;
 
-    if (isset($query['Itemid']) && !empty($query['Itemid']) && \App::has('menu.manager')) {
-        $menu = \App::get('menu.manager')->menu('site');
+    if (isset($query['Itemid']) && !empty($query['Itemid']) && App::has('menu.manager')) {
+        $menu = App::get('menu.manager')->menu('site');
         $item = $menu->getItem($query['Itemid']);
         if (is_object($item) && $query['option'] == $item->component) {
             if (!$item->home || $item->language != '*') {
@@ -184,7 +188,7 @@ $router->rules('build')->append('rewrite', function ($uri) {
     // Get the path data
     $route = $uri->getPath();
 
-    if (\App::get('config')->get('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/')) {
+    if (App::get('config')->get('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/')) {
         if ($format = $uri->getUriVar('format', 'html')) {
             $route .= '.' . $format;
 
@@ -192,7 +196,7 @@ $router->rules('build')->append('rewrite', function ($uri) {
         }
     }
 
-    if (\App::get('config')->get('sef_rewrite')) {
+    if (App::get('config')->get('sef_rewrite')) {
         if ($route == 'index.php') {
             $route = '';
         } else {
@@ -201,9 +205,9 @@ $router->rules('build')->append('rewrite', function ($uri) {
     }
 
     // Add basepath to the uri
-    $base = \App::get('request')->base(true);
-    if (!\App::isSite()) {
-        $base = '/' . ltrim(substr(ltrim($base, '/'), strlen(\App::get('client')->name)), '/');
+    $base = App::get('request')->base(true);
+    if (!App::isSite()) {
+        $base = '/' . ltrim(substr(ltrim($base, '/'), strlen(App::get('client')->name)), '/');
     }
     $uri->setPath($base . '/' . $route);
 
@@ -260,7 +264,7 @@ $router->rules('parse')->append('prep', function ($uri) {
     $path = $uri->getPath();
 
     // Remove the base URI path.
-    $path = substr_replace($path == null ? '' : $path, '', 0, strlen(\App::get('request')->base(true)));
+    $path = substr_replace($path == null ? '' : $path, '', 0, strlen(App::get('request')->base(true)));
 
     // Remove prefix
     $path = str_replace('index.php', '', $path);
@@ -279,17 +283,17 @@ $router->rules('parse')->append('limit', function ($uri) {
     if (!is_null($limitstart)) {
         $uri->setUriVar('limitstart', $limitstart);
         $uri->delUriVar('start');
-        \App::get('router')->forget('start');
+        App::get('router')->forget('start');
     }
     // Make sure the values are sane
     if (
         intval($uri->getUriVar('limitstart')) > 9223372036854775807
         || intval($uri->getUriVar('limit')) > 9223372036854775807
     ) {
-        \App::abort(404, \Lang::txt('Pagination value beyond the bounds of supported integer values.'));
+        App::abort(404, Lang::txt('Pagination value beyond the bounds of supported integer values.'));
     }
     if (intval($uri->getUriVar('limitstart')) < 0 || intval($uri->getUriVar('limit')) < 0) {
-        \App::abort(404, \Lang::txt('Invalid pagination value.'));
+        App::abort(404, Lang::txt('Invalid pagination value.'));
     }
 });
 
@@ -305,7 +309,7 @@ $router->rules('parse')->append('menu', function ($uri) {
     $route = $uri->getPath();
 
     // Remove the suffix
-    if (\App::get('config')->get('sef_suffix')) {
+    if (App::get('config')->get('sef_suffix')) {
         if ($suffix = pathinfo($route, PATHINFO_EXTENSION)) {
             $route = str_replace('.' . $suffix, '', $route);
         }
@@ -315,13 +319,13 @@ $router->rules('parse')->append('menu', function ($uri) {
     $query = $uri->getQuery(true);
 
     // Handle an empty URL (special case)
-    if (empty($route) && \Request::getCmd('option', '', 'post') == '') {
+    if (empty($route) && Request::getCmd('option', '', 'post') == '') {
         // If route is empty AND option is set in the query, assume it's non-sef url, and parse appropriately
         if (isset($query['option'])) { // || isset($query['Itemid']))
             return true;
         }
 
-        $item = $menu->getDefault(\App::get('language')->getTag());
+        $item = $menu->getDefault(App::get('language')->getTag());
 
         // if user not allowed to see default menu item then avoid notices
         if (is_object($item)) {
@@ -347,7 +351,7 @@ $router->rules('parse')->append('menu', function ($uri) {
 
     $found           = false;
     $route_lowercase = strtolower($route);
-    $lang_tag        = \App::get('language')->getTag();
+    $lang_tag        = App::get('language')->getTag();
 
     foreach ($items as $item) {
         //sqlsrv  change
@@ -364,7 +368,7 @@ $router->rules('parse')->append('menu', function ($uri) {
         if (
             $length > 0 && strpos($route_lowercase . '/', $item->route . '/') === 0
             && $item->type != 'alias'
-            && (!\App::get('language.filter') || $item->language == '*' || $item->language == $lang_tag)
+            && (!App::get('language.filter') || $item->language == '*' || $item->language == $lang_tag)
         ) {
             // Handle external url menu items differently
             if ($item->type == 'url') {
@@ -373,16 +377,16 @@ $router->rules('parse')->append('menu', function ($uri) {
                     if (
                         trim($item->route, '/') != trim($item->link, '/')
                         && trim(
-                            \App::get('request')->base(true) . '/' . $item->route,
+                            App::get('request')->base(true) . '/' . $item->route,
                             '/'
                         ) != trim($item->link, '/')
                         // Added because it would cause redirect loop for installs not in top-level webroot
                         && trim(
-                            \App::get('request')->base(true) . '/index.php/' . $item->route,
+                            App::get('request')->base(true) . '/index.php/' . $item->route,
                             '/'
                         ) != trim($item->link, '/')
                     ) { // Added because it would cause redirect loop for installs not in top-level webroot
-                        \App::redirect($item->link);
+                        App::redirect($item->link);
                     }
                 }
 
@@ -449,9 +453,9 @@ $router->rules('parse')->append('content', function ($uri) {
     $vars  = array();
 
     //$view  = 'article';
-    $menu  = \App::get('menu.manager')->menu('site');
+    $menu  = App::get('menu.manager')->menu('site');
     $item  = $menu->getActive();
-    $db    = \App::get('db');
+    $db    = App::get('db');
     $segments = explode('/', $uri->getPath());
     $count = count($segments);
 
@@ -583,7 +587,7 @@ $router->rules('parse')->append('component', function ($uri) {
     }
 
     // First segment is potentially a component name.
-    $uri->setUriVar('option', \App::get('component')->canonical($component));
+    $uri->setUriVar('option', App::get('component')->canonical($component));
 
     if (!count($segments)) {
         // No other segments found so no need
@@ -591,7 +595,7 @@ $router->rules('parse')->append('component', function ($uri) {
         return;
     }
 
-    if ($router = \App::get('component')->router($component, 'site')) {
+    if ($router = App::get('component')->router($component, 'site')) {
         if ($vars = $router->parse($segments)) {
             foreach ($vars as $key => $var) {
                 $uri->setUriVar($key, $var);
@@ -616,7 +620,7 @@ $router->rules('parse')->append('redirect', function ($uri) {
 
     $menu  = App::get('menu');
 
-    $db = \App::get('db');
+    $db = App::get('db');
     $db->setQuery(
         "SELECT *
 		FROM `#__redirect_links`
@@ -650,8 +654,8 @@ $router->rules('parse')->append('redirect', function ($uri) {
 | Look for the option var in POST data
 */
 $router->rules('parse')->append('post', function ($uri) {
-    if (\App::get('request')->method() == 'POST') {
-        $component = \App::get('request')->getCmd('option', '', 'post');
+    if (App::get('request')->method() == 'POST') {
+        $component = App::get('request')->getCmd('option', '', 'post');
         $uri->setUriVar('option', $component);
 
         return true;

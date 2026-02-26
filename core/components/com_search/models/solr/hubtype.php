@@ -9,7 +9,7 @@
 namespace Components\Search\Models;
 
 use Hubzero\Database\Relational;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Database model for search hub types

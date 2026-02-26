@@ -10,7 +10,8 @@ namespace Modules\Feed;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying items from a feed
@@ -37,7 +38,7 @@ class Helper extends Module
             $cache_time = $this->params->get('cache_time', 15) / 60;
         }
 
-        $rssDoc = \App::get('feed.parser');
+        $rssDoc = App::get('feed.parser');
         $rssDoc->set_feed_url($rssurl);
         $rssDoc->set_cache_duration($cache_time);
         $rssDoc->init();

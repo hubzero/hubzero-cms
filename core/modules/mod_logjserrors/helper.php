@@ -9,8 +9,8 @@
 namespace Modules\Logjserrors;
 
 use Hubzero\Module\Module;
-use Request;
-use Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
 
 /**
  * Module class for logging JS errors

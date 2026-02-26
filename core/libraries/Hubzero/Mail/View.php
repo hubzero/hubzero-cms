@@ -9,6 +9,7 @@
 namespace Hubzero\Mail;
 
 use Hubzero\View\View as AbstractView;
+use Hubzero\Facades\App;
 
 /**
  * Class for a mail View
@@ -146,10 +147,10 @@ class View extends AbstractView
         try {
             $tpl = null;
 
-            if (\App::has('template') && ($active = \App::get('template')) && !empty($active->template)) {
+            if (App::has('template') && ($active = App::get('template')) && !empty($active->template)) {
                 $tpl = $active->template;
             } else {
-                $db = \App::get('db');
+                $db = App::get('db');
                 $db->setQuery("SELECT s.`template` FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1");
                 $tpl = $db->loadResult();
             }

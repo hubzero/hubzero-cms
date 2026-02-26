@@ -9,7 +9,7 @@
 namespace Components\Courses\Models\Assets;
 
 use Components\Courses\Models\PdfForm;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Form (exam) Asset handler class

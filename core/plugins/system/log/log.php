@@ -12,6 +12,7 @@
 namespace Plugins\System\Log;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
 
 class Log extends Plugin
 {

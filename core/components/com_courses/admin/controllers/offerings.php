@@ -10,11 +10,13 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
-use App;
-use Config;
-use Lang;
-use Request;
-use Route;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Courses controller class for managing membership and course info
@@ -146,7 +148,7 @@ class Offerings extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            Notify::error($error);
         }
 
         // Output the HTML
@@ -325,7 +327,7 @@ class Offerings extends AdminController
                 if ($state == 1) {
                     $pub = $model->get('publish_up');
                     if (!$pub || $pub == '0000-00-00 00:00:00') {
-                        $model->set('publish_up', \Date::toSql());
+                        $model->set('publish_up', Date::toSql());
                     }
                 }
 

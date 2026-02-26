@@ -10,9 +10,9 @@ namespace Modules\ReportProblems;
 
 use Hubzero\Module\Module;
 use Hubzero\Browser\Detector;
-use Component;
-use User;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Request;
 
 /**
  * Module class for displaying a report problems form

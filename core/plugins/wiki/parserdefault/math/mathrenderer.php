@@ -8,6 +8,8 @@
 
 namespace Plugins\Wiki\Parserdefault\Math;
 
+use Hubzero\Facades\Component;
+
 /**
  * Math Renderer
  * Renders TeX using standard tools
@@ -102,7 +104,7 @@ class MathRenderer
     {
         $this->tex    = $tex;
         $this->params = $params;
-        $this->config = \Component::params('com_wiki');
+        $this->config = Component::params('com_wiki');
     }
 
     /**

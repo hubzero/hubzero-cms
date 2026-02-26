@@ -9,7 +9,7 @@
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Projects Access helper class

@@ -9,7 +9,8 @@
 namespace Components\Publications\Site;
 
 use Hubzero\Component\Router\Base;
-use Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Routing class for the component
@@ -127,7 +128,7 @@ class Router extends Base
                 }
             }
         } else {
-            $database = \App::get('db');
+            $database = App::get('db');
 
             $t = new \Components\Publications\Tables\Category($database);
             $cats = $t->getCategories();

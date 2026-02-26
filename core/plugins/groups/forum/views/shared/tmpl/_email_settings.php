@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+
 defined('_HZEXEC_') or die();
 
 $base = $this->base;

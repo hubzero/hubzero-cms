@@ -10,6 +10,7 @@ namespace Hubzero\Api\RateLimit;
 
 use Hubzero\Api\RateLimit\Storage\StorageInterface;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\Request;
 
 /**
  * Rate Limiter
@@ -108,7 +109,7 @@ class RateLimiter
     private function createRateLimitData($applicationId, $userId)
     {
         // data needed to create record
-        $ipAddress    = \Request::ip();
+        $ipAddress    = Request::ip();
         $countShort   = 0;
         $countLong    = 0;
         $limitShort   = $this->config['short']['limit'];

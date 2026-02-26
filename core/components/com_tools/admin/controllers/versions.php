@@ -12,12 +12,13 @@ use Hubzero\Component\AdminController;
 use Components\Tools\Models\Version\Zone;
 use Components\Tools\Models\Version;
 use Components\Tools\Models\Tool;
-use Request;
-use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Tools controller class for tool versions
@@ -97,9 +98,8 @@ class Versions extends AdminController
 
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(Component::path('com_resources') . '/models/doi.php')
         ) {
-
             $dois = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $tool->toolname)
                 ->rows()
@@ -162,9 +162,8 @@ class Versions extends AdminController
         // and the tool version is not a dev version
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(Component::path('com_resources') . '/models/doi.php')
         ) {
-
             $doi = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $row->toolname)
                 ->whereEquals('local_revision', $row->revision)
@@ -241,16 +240,15 @@ class Versions extends AdminController
         // and the tool version is not a dev version
         if (
             $this->config->get('new_doi')
-            && file_exists(\Component::path('com_resources') . '/models/doi.php')
+            && file_exists(Component::path('com_resources') . '/models/doi.php')
             && substr($row->instance, -4) != '_dev'
         ) {
-
             // Save DOI data
             $dois = Request::getArray('doi', array(), 'post');
 
             if ($dois['doi']) {
                 if (!$dois['rid']) {
-                    if (file_exists(\Component::path('com_resources') . '/models/entry.php')) {
+                    if (file_exists(Component::path('com_resources') . '/models/entry.php')) {
 
                         $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
                     }

@@ -9,6 +9,7 @@
 namespace Components\Login\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -23,12 +24,11 @@ class Login extends AbstractComponent
     protected function execute(): void
     {
         // Maintian backwards compatibility
-        if ($view = \Request::getCmd('view')) {
-            if ($view != 'login' && !\Request::getCmd('task')) {
-                \Request::setVar('task', $view);
+        if ($view = Request::getCmd('view')) {
+            if ($view != 'login' && !Request::getCmd('task')) {
+                Request::setVar('task', $view);
             }
         }
-
 
         $controller = new Controllers\Auth();
         $controller->execute();

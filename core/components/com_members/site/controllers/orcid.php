@@ -13,10 +13,11 @@ use Components\Members\Models\Member;
 use Components\Members\Models\Profile;
 use Components\Members\Models\Collaborator;
 use Exception;
-use Request;
-use Lang;
-use User;
-use Session;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Session;
 
 /**
  * Members controller class for ORCIDs
@@ -697,7 +698,7 @@ class Orcid extends SiteController
         $row->set('profile_key', $key);
         $row->set('profile_value', $value);
         if (!$row->save()) {
-            \Notify::error($row->getError());
+            Notify::error($row->getError());
         }
     }
 
@@ -720,7 +721,7 @@ class Orcid extends SiteController
         $row->set('acquisition_date', date('Y-m-d H:i:s'));
 
         if (!$row->save()) {
-            \Notify::error($row->getError());
+            Notify::error($row->getError());
         }
     }
 

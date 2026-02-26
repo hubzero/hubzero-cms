@@ -10,6 +10,14 @@
 defined('_HZEXEC_') or die();
 
 use Components\Members\Models\Profile\Field;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 $this->css('register')
      ->js('register');
@@ -402,7 +410,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                     <?php
 
                     // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option 'rorApi'
-                    $rorApiBoolean = \Component::params('com_members')->get('rorApi');
+                    $rorApiBoolean = Component::params('com_members')->get('rorApi');
                     if (strtolower($field->get('name')) == "profile[organization]" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
                         echo "<span class='hidden rorApiAvailable'></span>";
                     }

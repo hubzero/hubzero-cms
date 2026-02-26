@@ -10,9 +10,10 @@ namespace Components\Projects\Models\Adapters;
 
 use Components\Projects\Models;
 use Components\Projects\Helpers;
-use Component;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * Projects Git adapter class
@@ -693,7 +694,7 @@ class Git extends Models\Adapter
                 $file->set('author', $profile->get('name'));
                 $file->set('email', $profile->get('email'));
             } else {
-                $profile = \User::getInstance(trim($file->get('author')));
+                $profile = User::getInstance(trim($file->get('author')));
                 if ($profile->get('id')) {
                     $this->_profileAssoc[trim($file->get('author'))] = $profile;
                     $file->set('author', $profile->get('name'));

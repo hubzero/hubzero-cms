@@ -9,6 +9,8 @@
 namespace Plugins\Whatsnew\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * What's New Plugin class for com_wiki articles

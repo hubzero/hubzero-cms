@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Lang;
 
 /**
  * Redirect Macro
@@ -81,7 +82,7 @@ class Redirect extends WikiMacro
             . '};'
             . '</script>'
             . '<p class="warning">'
-            . \Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
+            . Lang::txt('This page will redirect in <span id="redirectTimer">%s</span> seconds', $delay)
             . '</p>';
     }
 

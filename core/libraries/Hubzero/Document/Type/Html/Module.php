@@ -11,6 +11,7 @@ namespace Hubzero\Document\Type\Html;
 use Hubzero\Document\Renderer;
 use Hubzero\Config\Registry;
 use stdClass;
+use Hubzero\Facades\App;
 
 /**
  * Module renderer
@@ -32,7 +33,7 @@ class Module extends Renderer
         if (!is_object($module)) {
             $title = isset($attribs['title']) ? $attribs['title'] : null;
 
-            $module = \App::get('module')->byName($module, $title);
+            $module = App::get('module')->byName($module, $title);
 
             if (!is_object($module)) {
                 if (is_null($content)) {
@@ -69,6 +70,6 @@ class Module extends Renderer
             $module->params = (string) $params;
         }
 
-        return \App::get('module')->render($module, $attribs);
+        return App::get('module')->render($module, $attribs);
     }
 }

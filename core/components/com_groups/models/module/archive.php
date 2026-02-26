@@ -12,6 +12,7 @@ use Components\Groups\Tables;
 use Components\Groups\Models\Module;
 use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
+use Hubzero\Facades\App;
 
 /**
  * Group module archive model class
@@ -55,7 +56,7 @@ class Archive extends Obj
      */
     public function __construct()
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
     }
 
     /**

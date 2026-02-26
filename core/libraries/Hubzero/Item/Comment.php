@@ -9,10 +9,10 @@
 namespace Hubzero\Item;
 
 use Hubzero\Database\Relational;
-use Request;
-use Lang;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Comment model

@@ -11,13 +11,13 @@ namespace Components\Wiki\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Author;
-use Request;
-use Notify;
-use User;
-use Lang;
-use App;
-use Route;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
 
 /**
  * Controller class for wiki pages

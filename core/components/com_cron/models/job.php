@@ -12,8 +12,9 @@ use Hubzero\Database\Relational;
 use Hubzero\Debug\Profiler;
 use Hubzero\Config\Registry;
 use Components\Cron\Helpers\CronExpression;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Cron model for a job
@@ -116,7 +117,7 @@ class Job extends Relational
         }
 
         if (!$data['publish_up'] || $data['publish_up'] == '0000-00-00 00:00:00') {
-            $data['publish_up'] = ($data['id'] ? $this->get('created') : \Date::toSql());
+            $data['publish_up'] = ($data['id'] ? $this->get('created') : Date::toSql());
         }
 
         return $data['publish_up'];
@@ -518,7 +519,7 @@ class Job extends Relational
         $host    = self::thisHost();
         $nowSql  = Date::toSql();
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $startedSql = ($started === false) ? 'NULL' : $db->quote($started);
 
@@ -606,7 +607,7 @@ class Job extends Relational
     {
         $id = (int) $this->get('id');
 
-        $db   = \App::get('db');
+        $db   = App::get('db');
         $sets = "`active` = 0, `pid` = NULL, `pid_started` = NULL, `pid_host` = NULL, `active_since` = NULL";
 
         if ($lastRun !== null) {

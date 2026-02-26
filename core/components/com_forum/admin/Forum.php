@@ -9,6 +9,12 @@
 namespace Components\Forum\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,29 +28,29 @@ class Forum extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_forum')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_forum')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'sections');
+        $controllerName = Request::getCmd('controller', 'sections');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'sections';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_SECTIONS'),
-            \Route::url('index.php?option=com_forum&controller=sections'),
+        Submenu::addEntry(
+            Lang::txt('COM_FORUM_SECTIONS'),
+            Route::url('index.php?option=com_forum&controller=sections'),
             ($controllerName == 'sections')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_CATEGORIES'),
-            \Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
+        Submenu::addEntry(
+            Lang::txt('COM_FORUM_CATEGORIES'),
+            Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
             ($controllerName == 'categories')
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_FORUM_THREADS'),
-            \Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
+        Submenu::addEntry(
+            Lang::txt('COM_FORUM_THREADS'),
+            Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
             ($controllerName == 'threads')
         );
 

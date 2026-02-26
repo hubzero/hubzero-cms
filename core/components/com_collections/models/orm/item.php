@@ -10,8 +10,8 @@ namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Item\Comment;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Collection item model

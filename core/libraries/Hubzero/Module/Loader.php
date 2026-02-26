@@ -12,6 +12,7 @@ use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\Request;
 
 /**
  * Module loader class
@@ -538,7 +539,7 @@ class Loader
             case 'safeuri':
                 $secureid = null;
                 if (is_array($cacheparams->modeparams)) {
-                    $uri = \Request::get();
+                    $uri = Request::get();
                     $safeuri = new \stdClass();
                     foreach ($cacheparams->modeparams as $key => $value) {
                         // Use int filter for id/catid to clean out spamy slugs
@@ -582,7 +583,7 @@ class Loader
                 $ret = $cache->get(
                     array($cacheparams->class, $cacheparams->method),
                     $cacheparams->methodparams,
-                    $module->id . $view_levels . \Request::getInt('Itemid', 0),
+                    $module->id . $view_levels . Request::getInt('Itemid', 0),
                     $wrkarounds,
                     $wrkaroundoptions
                 );

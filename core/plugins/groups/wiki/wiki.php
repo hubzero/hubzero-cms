@@ -12,6 +12,12 @@
 namespace Plugins\Groups\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Wiki extends Plugin
 {
@@ -40,7 +46,7 @@ class Wiki extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $lang = \App::get('language');
+        $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
@@ -202,7 +208,7 @@ class Wiki extends Plugin
                     ->set('option', $option)
                     ->set('group', $group)
                     ->set('params', $params)
-                    ->set('defaults', \Component::params('com_wiki'));
+                    ->set('defaults', Component::params('com_wiki'));
                 $this->css()->js();
                 $arr['html'] = $view->loadTemplate();
                 return $arr;

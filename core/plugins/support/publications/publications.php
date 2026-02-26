@@ -12,6 +12,9 @@
 namespace Plugins\Support\Publications;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 class Publications extends Plugin
 {

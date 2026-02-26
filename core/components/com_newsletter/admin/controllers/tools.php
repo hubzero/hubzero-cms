@@ -10,10 +10,11 @@ namespace Components\Newsletter\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Image\Mozify;
-use Request;
-use Config;
-use Notify;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Newsletter tools Controller
@@ -75,7 +76,7 @@ class Tools extends AdminController
 
             //create path if doesnt exist
             if (!is_dir($uploadPath)) {
-                \Filesystem::makeDirectory($uploadPath);
+                Filesystem::makeDirectory($uploadPath);
             }
 
             //define image

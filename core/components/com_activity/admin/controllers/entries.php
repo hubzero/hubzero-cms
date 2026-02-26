@@ -16,7 +16,7 @@ use Notify;
 use Route;
 use User;
 use Lang;
-use Date;
+use Hubzero\Facades\Date;
 use App;
 
 /**

@@ -12,6 +12,12 @@
 namespace Plugins\Cron\Publications;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 class Publications extends Plugin
 {
@@ -208,7 +214,7 @@ class Publications extends Plugin
      */
     public function rollUserStats(\Components\Cron\Models\Job $job)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $pconfig  = Component::params('com_publications');
 
         $numMonths = 1;
@@ -244,7 +250,7 @@ class Publications extends Plugin
      */
     public function runMkAip(\Components\Cron\Models\Job $job)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $config = Component::params('com_publications');
 
         // Check that mkAIP script exists
@@ -365,7 +371,7 @@ class Publications extends Plugin
      */
     public function issueMasterDoi(\Components\Cron\Models\Job $job)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
         $config   = Component::params('com_publications');
 
         // Is config to issue master DOI turned ON?

@@ -10,6 +10,8 @@ namespace Components\Publications\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Process;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Queue/state for asynchronous publication-bundle building — one row per
@@ -115,7 +117,7 @@ class BundleQueue extends Relational
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery(
             "SELECT mt.`curation`
 			 FROM `#__publication_versions` v
@@ -151,8 +153,8 @@ class BundleQueue extends Relational
             return false;
         }
 
-        $db   = \App::get('db');
-        $now  = $db->quote(\Date::toSql());
+        $db   = App::get('db');
+        $now  = $db->quote(Date::toSql());
         $done = "`status` IN ('" . self::STATUS_READY . "','" . self::STATUS_FAILED . "')";
 
         $query = "INSERT INTO `#__publication_bundle_queue`
@@ -186,7 +188,7 @@ class BundleQueue extends Relational
         $started = Process::startTime($pid);
         $host    = Process::host();
 
-        $db         = \App::get('db');
+        $db         = App::get('db');
         $startedSql = ($started === false) ? 'NULL' : $db->quote($started);
 
         $query = "UPDATE `#__publication_bundle_queue`
@@ -195,7 +197,7 @@ class BundleQueue extends Relational
 				`worker_pid` = " . $db->quote($pid) . ",
 				`worker_started` = " . $startedSql . ",
 				`worker_host` = " . $db->quote($host) . ",
-				`last_attempt_at` = " . $db->quote(\Date::toSql()) . "
+				`last_attempt_at` = " . $db->quote(Date::toSql()) . "
 			WHERE `id` = " . $id . " AND `status` = '" . self::STATUS_QUEUED . "'";
 
         $db->setQuery($query);
@@ -230,14 +232,14 @@ class BundleQueue extends Relational
             return false;
         }
 
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "UPDATE `#__publication_bundle_queue`
 			SET `status` = '" . self::STATUS_READY . "',
 				`bundle_file` = " . $db->quote($file) . ",
 				`bundle_size` = " . $db->quote((int) $size) . ",
 				`source_hash` = " . $db->quote($sourceHash) . ",
-				`built_at` = " . $db->quote(\Date::toSql()) . ",
+				`built_at` = " . $db->quote(Date::toSql()) . ",
 				`last_error` = NULL,
 				`worker_pid` = NULL, `worker_started` = NULL, `worker_host` = NULL
 			WHERE `id` = " . $id;
@@ -262,7 +264,7 @@ class BundleQueue extends Relational
             return false;
         }
 
-        $db   = \App::get('db');
+        $db   = App::get('db');
         $dead = ((int) $this->get('attempts') >= (int) $this->get('max_attempts'));
         $next = $dead ? self::STATUS_FAILED : self::STATUS_QUEUED;
 
@@ -286,7 +288,7 @@ class BundleQueue extends Relational
      */
     public static function nextEligible()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         $query = "SELECT `id` FROM `#__publication_bundle_queue`
 			WHERE `status` = '" . self::STATUS_QUEUED . "'
@@ -310,7 +312,7 @@ class BundleQueue extends Relational
      */
     public static function buildingCount()
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("SELECT COUNT(*) FROM `#__publication_bundle_queue` WHERE `status` = '" . self::STATUS_BUILDING . "'");
 
         return (int) $db->loadResult();

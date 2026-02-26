@@ -9,8 +9,8 @@
 namespace Components\Wishlist\Models\Adapters;
 
 use Hubzero\Base\Obj;
-use Pathway;
-use Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
 
 /**
  * Abstract adapter class for a wishlist

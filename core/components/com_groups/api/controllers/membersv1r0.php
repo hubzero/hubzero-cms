@@ -11,8 +11,8 @@ namespace Components\Groups\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Exception;
 use stdClass;
-use Request;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * API controller class for group members

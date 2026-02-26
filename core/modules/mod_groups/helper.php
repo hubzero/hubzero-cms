@@ -10,7 +10,7 @@ namespace Modules\Groups;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Date;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for com_groups data

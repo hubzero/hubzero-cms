@@ -9,6 +9,7 @@
 namespace Components\Search\Models\Basic;
 
 use Components\Search\Models\Basic\Result\Sql;
+use Hubzero\Facades\App;
 
 /**
  * Search request model
@@ -155,7 +156,7 @@ class Request
         }
 
         if ($tag_ids) {
-            $dbh = \App::get('db');
+            $dbh = App::get('db');
             $dbh->setQuery(
                 'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')'
             );

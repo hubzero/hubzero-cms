@@ -9,6 +9,7 @@
 namespace Components\Activity\Api;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
 
 /**
  * Routing class for the component
@@ -58,7 +59,7 @@ class Router extends Base
             //  /blog/##/comments/##
             if (is_numeric($segments[0])) {
                 $vars['id'] = $segments[0];
-                if (\App::get('request')->method() == 'GET') {
+                if (App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
             } else {

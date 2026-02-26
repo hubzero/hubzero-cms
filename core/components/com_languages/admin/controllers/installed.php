@@ -10,10 +10,10 @@ namespace Components\Languages\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Languages\Models\Extension;
-use Request;
-use Notify;
-use Cache;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Lang;
 
 /**
  * Languages Controller for installed languages

@@ -13,6 +13,7 @@ use Hubzero\Content\Migration\Helpers\QueryDropColumnStatement;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Schema\Builder as SchemaBuilder;
 use Hubzero\System\PrivilegeManager;
+use Hubzero\Facades\Config;
 
 /**
  * Base migration class
@@ -289,7 +290,7 @@ class Base
         }
 
         // Socket authentication only works for local databases
-        $host = \Config::get('host', 'localhost');
+        $host = Config::get('host', 'localhost');
         if (!$this->isLocalHost($host)) {
             return false;
         }
@@ -331,7 +332,7 @@ class Base
 
         // Try to connect as MySQL root using socket authentication
         try {
-            $database = \Config::get('db');
+            $database = Config::get('db');
             $dsn = "mysql:unix_socket={$socket};charset=utf8";
             if ($database) {
                 $dsn .= ";dbname={$database}";
@@ -343,7 +344,7 @@ class Base
                 'user'     => 'root',
                 'password' => '',
                 'database' => $database,
-                'prefix'   => \Config::get('dbprefix')
+                'prefix'   => Config::get('dbprefix')
             ));
 
             if ($db->connected()) {

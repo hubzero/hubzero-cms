@@ -9,6 +9,12 @@
 namespace Components\Menus\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,8 +29,8 @@ class Menus extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_menus')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_menus')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
@@ -35,19 +41,19 @@ class Menus extends AbstractComponent
             Request::setVar('task', $splitTask[1]);
         }
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'menus'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'menus'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'menus';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_MENUS_SUBMENU_MENUS'),
-            \Route::url('index.php?option=com_menus&controller=menus', false),
+        Submenu::addEntry(
+            Lang::txt('COM_MENUS_SUBMENU_MENUS'),
+            Route::url('index.php?option=com_menus&controller=menus', false),
             $controllerName == 'menus'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
-            \Route::url('index.php?option=com_menus&controller=items', false),
+        Submenu::addEntry(
+            Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
+            Route::url('index.php?option=com_menus&controller=items', false),
             $controllerName == 'items'
         );
 

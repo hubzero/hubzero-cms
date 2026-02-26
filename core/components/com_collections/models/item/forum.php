@@ -10,8 +10,8 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Forum\Models\Post;
-use Request;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for an item

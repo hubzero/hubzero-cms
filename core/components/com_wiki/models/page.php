@@ -12,12 +12,13 @@ use Components\Wiki\Models\Adapters\Base as BaseAdapter;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Lang;
-use Component;
-use Date;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Cache;
+use Hubzero\Facades\Component;
 
 /**
  * Wiki model for a page
@@ -677,7 +678,7 @@ class Page extends Relational
         $this->log('page_deleted');
 
         // Clear cached data
-        \Cache::clean('wiki');
+        Cache::clean('wiki');
 
         // Attempt to delete the record
         return parent::destroy();

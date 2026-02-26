@@ -9,8 +9,8 @@
 namespace Components\Redirect\Models;
 
 use Hubzero\Database\Relational;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Model class for a redirect entry

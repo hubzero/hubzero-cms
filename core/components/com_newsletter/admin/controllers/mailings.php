@@ -14,11 +14,11 @@ use Components\Newsletter\Models\Mailing\Recipient\Action;
 use Components\Newsletter\Models\Newsletter;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Newsletter Mailings Controller

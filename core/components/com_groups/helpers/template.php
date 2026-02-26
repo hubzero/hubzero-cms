@@ -8,8 +8,8 @@
 
 namespace Components\Groups\Helpers;
 
-use Component;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\App;
 
 class Template extends Document
 {

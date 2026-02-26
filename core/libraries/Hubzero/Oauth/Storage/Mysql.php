@@ -19,6 +19,7 @@ use OAuth2\Storage\AuthorizationCodeInterface;
 use OAuth2\Storage\RefreshTokenInterface;
 use Hubzero\Oauth\Storage\SessionTokenInterface;
 use Hubzero\Oauth\Storage\ToolSessionTokenInterface;
+use Hubzero\Facades\App;
 
 /**
  * Custom Hubzero OAuth2 Storage Class
@@ -126,7 +127,7 @@ class Mysql implements
      */
     public function getClientDetailsById($id)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $sql = "SELECT * FROM `#__developer_applications`
 				WHERE `id`=" . $database->quote($id);
@@ -449,7 +450,7 @@ class Mysql implements
                 }
             }
         }
-        $sessionName = md5(\App::hash($client));
+        $sessionName = md5(App::hash($client));
 
         // return session id stored in cookie
         return (!empty($_COOKIE[$sessionName])) ? $_COOKIE[$sessionName] : null;
@@ -463,10 +464,10 @@ class Mysql implements
      */
     public function getUserIdFromSessionId($sessionId)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         // get session timeout period
-        $timeout = \App::get('config')->get('timeout');
+        $timeout = App::get('config')->get('timeout');
 
         // load user from session table
         $sql = "SELECT userid

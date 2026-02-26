@@ -9,10 +9,10 @@
 namespace Components\Courses\Tables;
 
 use Hubzero\Database\Table;
-use Request;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Table class for course page

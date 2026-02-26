@@ -9,7 +9,7 @@
 namespace Components\Members\Models\Incremental;
 
 use Hubzero\Bank\Teller;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Class for incremental registration awards

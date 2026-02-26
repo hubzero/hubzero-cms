@@ -9,6 +9,9 @@
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 class DataDefinitionNew
 {
@@ -16,12 +19,12 @@ class DataDefinitionNew
     {
         $base = DvConfig::$conf['dir_base'];
 
-        $document = \App::get('document');
+        $document = App::get('document');
 
-        $db_id = \Request::getString('db', false);
-        $table = \Request::getString('table', false);
-        $name = \Request::getString('name', false);
-        $title = \Request::getString('title', false);
+        $db_id = Request::getString('db', false);
+        $table = Request::getString('table', false);
+        $name = Request::getString('name', false);
+        $title = Request::getString('title', false);
 
         $name = strtolower(preg_replace('/\W/', '_', $name));
 
@@ -80,7 +83,7 @@ class DataDefinitionNew
 
         $dd_name = $name;
 
-        $author = \User::get('name') . ' <' . \User::get('email') . '>';
+        $author = User::get('name') . ' <' . User::get('email') . '>';
 
         $dd_file_php = $base . '/' . $db_id . '/applications/'
             . DvConfig::$com_name . "/datadefinitions-php/$dd_name.php";

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Toolbar;
+
 defined('_HZEXEC_') or die();
 
 Request::setVar('hidemainmenu', 1);

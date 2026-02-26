@@ -9,11 +9,11 @@
 namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
-use Filesystem;
-use Component;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Support ticket attachment model

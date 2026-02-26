@@ -12,12 +12,12 @@ use Components\Resources\Models\Entry;
 use Components\Resources\Helpers\Tags as TagCloud;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
-use Route;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Manage resource entry tags

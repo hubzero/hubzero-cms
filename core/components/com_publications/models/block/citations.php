@@ -10,10 +10,10 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
-use Date;
-use Event;
-use Lang;
-use Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Citations block

@@ -12,12 +12,13 @@ use Hubzero\Base\Obj;
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Plugin;
-use Lang;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Project Repository model
@@ -65,7 +66,7 @@ class Repo extends Obj
      */
     public function __construct($project = null, $name = 'local')
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->set('project', $project);
         $this->set('name', $name);
@@ -1155,7 +1156,7 @@ class Repo extends Obj
         // the scanner errored out (e.g., clamd unreachable), other
         // values mean the command didn't run; in none of those cases
         // can we assert the files are clean.
-        $scanner = trim(\App::get('config')->get(
+        $scanner = trim(App::get('config')->get(
             'virus_scanner',
             'clamscan -i --no-summary --block-encrypted'
         ));

@@ -10,6 +10,7 @@ namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
 use Hubzero\Html\Builder\Behavior;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a standard button with a confirm dialog
@@ -45,8 +46,8 @@ class Confirm extends Button
         $list = true,
         $hideMenu = false
     ) {
-        $text   = \Lang::txt($text);
-        $msg    = \Lang::txt($msg, true);
+        $text   = Lang::txt($text);
+        $msg    = Lang::txt($msg, true);
         $class  = $this->fetchIconClass($name);
         $message = $this->_getCommand($msg, $name, $task, $list);
 
@@ -102,7 +103,7 @@ class Confirm extends Button
     {
         Behavior::framework();
 
-        $message = \Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+        $message = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
         $message = str_replace('"', '&quot;', $message);
 
         return $message;

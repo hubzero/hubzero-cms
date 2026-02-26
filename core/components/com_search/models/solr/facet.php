@@ -9,7 +9,7 @@
 namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
-use Route;
+use Hubzero\Facades\Route;
 
 /**
  * Database model for search blacklist

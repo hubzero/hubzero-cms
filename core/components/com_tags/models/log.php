@@ -9,8 +9,8 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Tag log

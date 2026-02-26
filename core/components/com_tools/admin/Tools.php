@@ -9,6 +9,13 @@
 namespace Components\Tools\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,58 +29,58 @@ class Tools extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_tools')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_tools')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'pipeline');
+        $controllerName = Request::getCmd('controller', 'pipeline');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'pipeline';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_PIPELINE'),
-            \Route::url('index.php?option=com_tools&controller=pipeline'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_PIPELINE'),
+            Route::url('index.php?option=com_tools&controller=pipeline'),
             $controllerName == 'pipeline'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HOSTS'),
-            \Route::url('index.php?option=com_tools&controller=hosts'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_HOSTS'),
+            Route::url('index.php?option=com_tools&controller=hosts'),
             $controllerName == 'hosts'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HOST_TYPES'),
-            \Route::url('index.php?option=com_tools&controller=hosttypes'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_HOST_TYPES'),
+            Route::url('index.php?option=com_tools&controller=hosttypes'),
             $controllerName == 'hosttypes'
         );
-        if (\Component::params('com_tools')->get('zones')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_TOOLS_ZONES'),
-                \Route::url('index.php?option=com_tools&controller=zones'),
+        if (Component::params('com_tools')->get('zones')) {
+            Submenu::addEntry(
+                Lang::txt('COM_TOOLS_ZONES'),
+                Route::url('index.php?option=com_tools&controller=zones'),
                 $controllerName == 'zones'
             );
         }
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_SESSIONS'),
-            \Route::url('index.php?option=com_tools&controller=sessions'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_SESSIONS'),
+            Route::url('index.php?option=com_tools&controller=sessions'),
             $controllerName == 'sessions'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_USER_PREFS'),
-            \Route::url('index.php?option=com_tools&controller=preferences'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_USER_PREFS'),
+            Route::url('index.php?option=com_tools&controller=preferences'),
             $controllerName == 'preferences'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_TOOLS_HANDLERS'),
-            \Route::url('index.php?option=com_tools&controller=handlers'),
+        Submenu::addEntry(
+            Lang::txt('COM_TOOLS_HANDLERS'),
+            Route::url('index.php?option=com_tools&controller=handlers'),
             $controllerName == 'handlers'
         );
 
-        if (\Component::params('com_tools')->get('windows_key_id')) {
-            \Submenu::addEntry(
-                \Lang::txt('COM_TOOLS_WINDOWS'),
-                \Route::url('index.php?option=com_tools&controller=windows'),
+        if (Component::params('com_tools')->get('windows_key_id')) {
+            Submenu::addEntry(
+                Lang::txt('COM_TOOLS_WINDOWS'),
+                Route::url('index.php?option=com_tools&controller=windows'),
                 $controllerName == 'windows'
             );
         }

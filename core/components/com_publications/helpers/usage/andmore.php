@@ -9,8 +9,8 @@
 namespace Components\Publications\Helpers\Usage;
 
 use Components\Publications\Helpers\Usage as Base;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Extended resource stats class (And More)

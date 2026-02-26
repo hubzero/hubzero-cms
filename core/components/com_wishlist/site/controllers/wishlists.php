@@ -19,17 +19,19 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\Str;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
-use Filesystem;
-use Component;
-use Request;
-use Pathway;
-use Config;
-use Event;
-use Lang;
-use User;
-use Date;
-use App;
-use Route;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Route;
 
 /**
  * Wishlist controller class
@@ -70,7 +72,7 @@ class Wishlists extends SiteController
         if ($this->_task && in_array($this->_task, array('settings', 'add'))) {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
-        \Document::setTitle($this->_title);
+        Document::setTitle($this->_title);
     }
 
     /**
@@ -1036,7 +1038,7 @@ class Wishlists extends SiteController
 
             // Get URL to page explaining virtual economy
             $aconfig = Component::params('com_answers');
-            $infolink = $aconfig->get('infolink', \Request::base(true) . '/kb/points/');
+            $infolink = $aconfig->get('infolink', Request::base(true) . '/kb/points/');
 
             $this->view
                 ->set('title', Lang::txt(strtoupper($this->_option)))
@@ -2201,13 +2203,13 @@ class Wishlists extends SiteController
 
         $database->setQuery($query->toString());
         if ($nouser) {
-            $users[] = \Html::select('option', '', 'No User', 'value', 'text');
+            $users[] = Html::select('option', '', 'No User', 'value', 'text');
             $users = array_merge($users, $database->loadObjectList());
         } else {
             $users = $database->loadObjectList();
         }
 
-        $users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
         return $users;
     }
@@ -2244,7 +2246,7 @@ class Wishlists extends SiteController
         ));
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);

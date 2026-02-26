@@ -6,6 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Toolbar;
+use Hubzero\Facades\User;
+
 defined('_HZEXEC_') or die();
 
 $isNew      = ($this->item->id == 0);

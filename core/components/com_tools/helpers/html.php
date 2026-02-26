@@ -8,11 +8,11 @@
 
 namespace Components\Tools\Helpers;
 
-use Filesystem;
-use Config;
-use User;
-use Date;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
 
 /**
  * Tools helper class for misc. HTML

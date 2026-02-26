@@ -9,7 +9,7 @@
 namespace Components\Users\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use User;
+use Hubzero\Facades\User;
 
 class CurrentUserv1r0 extends ApiController
 {

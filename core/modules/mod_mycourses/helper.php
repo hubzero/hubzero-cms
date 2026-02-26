@@ -9,8 +9,9 @@
 namespace Modules\MyCourses;
 
 use Hubzero\Module\Module;
-use User;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a list of courses for a user
@@ -30,7 +31,7 @@ class Helper extends Module
      */
     private function getCourses($uid, $type = 'all')
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // Get all courses the user is a member of
         $query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, m.student,

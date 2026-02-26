@@ -8,8 +8,10 @@
 
 namespace Components\Events\Helpers;
 
-use Lang;
-use User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\User;
 
 /**
  * Events helper class for misc. HTML
@@ -270,7 +272,7 @@ class Html
      */
     public static function buildCategorySelect($catid, $args, $gid, $option)
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $catsql = "SELECT id AS value, title AS text FROM #__categories "
                 . "WHERE extension='$option' AND published='1' ORDER BY lft";
@@ -314,7 +316,7 @@ class Html
             $tzselected = $offsets[(string) $tzselected];
         }
         if (!$tzselected) {
-            $hub = (string) \Config::get('offset');
+            $hub = (string) Config::get('offset');
             $tzselected = isset($offsets[$hub]) ? $offsets[$hub] : ($hub ? $hub : 'US/Eastern');
         }
 
@@ -493,7 +495,7 @@ class Html
                 }
             }
         } else {
-            $database = \App::get('db');
+            $database = App::get('db');
             $database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
             $userdet = $database->loadResult();
             if ($userdet) {

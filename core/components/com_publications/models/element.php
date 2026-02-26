@@ -10,7 +10,7 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use stdClass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Publication element base class

@@ -9,6 +9,7 @@
 namespace Components\Tools\Models;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\App;
 
 /**
  * Tools Model
@@ -45,7 +46,7 @@ class Tools extends Obj
             sort($result);
 
             if (count($result) > 0) {
-                $database = \App::get('db');
+                $database = App::get('db');
 
                 foreach ($result as $key => $val) {
                     $result[$key] = $database->quote($val);

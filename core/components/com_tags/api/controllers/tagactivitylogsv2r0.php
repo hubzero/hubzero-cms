@@ -11,8 +11,8 @@ namespace Components\Tags\Api\Controllers;
 use Components\Tags\Helpers\ActivityLogPresenter;
 use Components\Tags\Models\Log;
 use Hubzero\Component\ApiController;
-use Component;
-use Request;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Component;
 
 class TagActivityLogsv2r0 extends ApiController
 {

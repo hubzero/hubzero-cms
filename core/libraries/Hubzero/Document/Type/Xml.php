@@ -9,6 +9,7 @@
 namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Base;
+use Hubzero\Facades\App;
 
 /**
  * XML document class for parsing and displaying an XML page
@@ -54,7 +55,7 @@ class Xml extends Base
 
         parent::render();
 
-        \App::get('response')->headers->set('Content-disposition', 'inline; filename="' .
+        App::get('response')->headers->set('Content-disposition', 'inline; filename="' .
             $this->getName() .
             '.xml"', true);
 

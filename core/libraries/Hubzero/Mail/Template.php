@@ -9,7 +9,7 @@
 namespace Hubzero\Mail;
 
 use Hubzero\Document\Type\Html;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Mail template class.

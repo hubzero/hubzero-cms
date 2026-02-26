@@ -8,7 +8,7 @@
 
 namespace Components\Courses\Models\Assets;
 
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Video Asset handler class

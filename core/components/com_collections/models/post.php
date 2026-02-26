@@ -9,8 +9,8 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Utility\Str;
-use Request;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a post

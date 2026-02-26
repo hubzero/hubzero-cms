@@ -9,6 +9,8 @@
 namespace Hubzero\Session;
 
 use Hubzero\Session\Storage;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * Session helper
@@ -23,7 +25,7 @@ class Helper
     public static function storage()
     {
         // get storage handler (from config)
-        $storageHandler = \Config::get('session_handler');
+        $storageHandler = Config::get('session_handler');
 
         // create storage class
         $storageClass = __NAMESPACE__ . '\\Storage\\' . ucfirst($storageHandler);
@@ -40,7 +42,7 @@ class Helper
      */
     public static function getSession($id)
     {
-        return \App::get('session')->getStore()->session($id);
+        return App::get('session')->getStore()->session($id);
     }
 
     /**
@@ -52,7 +54,7 @@ class Helper
     public static function getSessionWithUserId($userid)
     {
         // get list of all sessions
-        $sessions = \App::get('session')->getStore()->all(array(
+        $sessions = App::get('session')->getStore()->all(array(
             'guest'    => 0,
             'distinct' => 1
         ));
@@ -76,6 +78,6 @@ class Helper
      */
     public static function getAllSessions($filters = array())
     {
-        return \App::get('session')->getStore()->all($filters);
+        return App::get('session')->getStore()->all($filters);
     }
 }

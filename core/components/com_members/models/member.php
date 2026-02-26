@@ -11,9 +11,9 @@ namespace Components\Members\Models;
 use Hubzero\User\User;
 use Hubzero\Config\Registry;
 use stdClass;
-use Request;
-use Event;
-use Route;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
 
 /**
  * User model

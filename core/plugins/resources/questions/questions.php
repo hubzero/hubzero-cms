@@ -12,6 +12,14 @@
 namespace Plugins\Resources\Questions;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Questions extends Plugin
 {
@@ -253,9 +261,9 @@ class Questions extends Plugin
             return;
         }
 
-        $r_u = \Component::params('com_answers')->get('restrict_users');
+        $r_u = Component::params('com_answers')->get('restrict_users');
         if ($r_u == "active") {
-                $r_d = \Component::params('com_answers')->get('restrict_days');
+                $r_d = Component::params('com_answers')->get('restrict_days');
                 $r_t = new \DateTime();
                 $r_c = new \DateTime(User::get("registerDate"));
             if ($r_t->diff($r_c)->days < $r_d) {

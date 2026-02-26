@@ -9,6 +9,12 @@
 namespace Components\Support\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,54 +28,54 @@ class Support extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_support')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_support')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
-        $controllerName = \Request::getCmd('controller', 'tickets');
+        $controllerName = Request::getCmd('controller', 'tickets');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'tickets';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_TICKETS'),
-            \Route::url('index.php?option=com_support&controller=tickets'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_TICKETS'),
+            Route::url('index.php?option=com_support&controller=tickets'),
             $controllerName == 'tickets'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_CATEGORIES'),
-            \Route::url('index.php?option=com_support&controller=categories'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_CATEGORIES'),
+            Route::url('index.php?option=com_support&controller=categories'),
             $controllerName == 'categories'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_QUERIES'),
-            \Route::url('index.php?option=com_support&controller=queries'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_QUERIES'),
+            Route::url('index.php?option=com_support&controller=queries'),
             $controllerName == 'queries'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_MESSAGES'),
-            \Route::url('index.php?option=com_support&controller=messages'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_MESSAGES'),
+            Route::url('index.php?option=com_support&controller=messages'),
             $controllerName == 'messages'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_STATUSES'),
-            \Route::url('index.php?option=com_support&controller=statuses'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_STATUSES'),
+            Route::url('index.php?option=com_support&controller=statuses'),
             $controllerName == 'statuses'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_ABUSE'),
-            \Route::url('index.php?option=com_support&controller=abusereports'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_ABUSE'),
+            Route::url('index.php?option=com_support&controller=abusereports'),
             $controllerName == 'abusereports'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_STATS'),
-            \Route::url('index.php?option=com_support&controller=stats'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_STATS'),
+            Route::url('index.php?option=com_support&controller=stats'),
             $controllerName == 'stats'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_SUPPORT_ACL'),
-            \Route::url('index.php?option=com_support&controller=acl'),
+        Submenu::addEntry(
+            Lang::txt('COM_SUPPORT_ACL'),
+            Route::url('index.php?option=com_support&controller=acl'),
             $controllerName == 'acl'
         );
 

@@ -8,7 +8,7 @@
 
 namespace Components\Languages\Helpers;
 
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Multilang status helper.

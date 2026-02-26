@@ -9,9 +9,9 @@
 namespace Components\Members\Helpers;
 
 use Components\Members\Models\Profile\Field;
-use Request;
-use User;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Filters helper class for time component

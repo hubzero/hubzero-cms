@@ -12,6 +12,8 @@
 namespace Plugins\Resources\Hipaacompliant;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 class Hipaacompliant extends Plugin
 {

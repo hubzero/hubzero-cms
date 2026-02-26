@@ -9,15 +9,15 @@
 namespace Components\Tools\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Filesystem;
-use Component;
-use Request;
-use Route;
-use Lang;
-use User;
-use Log;
-use App;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * Controller class for contributing a tool
@@ -485,7 +485,6 @@ class Admin extends SiteController
 
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
-
             // Collect metadata
             $url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
 
@@ -653,7 +652,6 @@ class Admin extends SiteController
 
                 // transfer screenshots
                 if ($devid && $currentid) {
-
                     $screenshots = new Screenshots();
                     if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) {
                         $this->setMessage(Lang::txt('COM_TOOLS_SCREENSHOTS_TRANSFERRED'));

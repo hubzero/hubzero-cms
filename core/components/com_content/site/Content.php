@@ -9,6 +9,7 @@
 namespace Components\Content\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,15 +23,15 @@ class Content extends AbstractComponent
      */
     protected function execute(): void
     {
-        $task = \Request::getCmd('task');
+        $task = Request::getCmd('task');
         if ($task) {
             if (strstr($task, '.')) {
                 $task = explode('.', $task);
                 $task = end($task);
-                \Request::setVar('task', $task);
+                Request::setVar('task', $task);
             }
         } else {
-            \Request::setVar('task', \Request::getCmd('view', 'article'));
+            Request::setVar('task', Request::getCmd('view', 'article'));
         }
 
         $controller = new Controllers\Articles();

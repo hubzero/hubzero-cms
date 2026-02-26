@@ -11,7 +11,7 @@ namespace Modules\FeedYoutube;
 use Hubzero\Module\Module;
 use SimplePie;
 use stdclass;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a YouTube feed

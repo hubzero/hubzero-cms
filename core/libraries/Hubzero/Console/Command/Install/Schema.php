@@ -11,6 +11,7 @@ namespace Hubzero\Console\Command\Install;
 use Hubzero\Database\Connection\PdoConnection;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\SqlParser;
+use Hubzero\Facades\Config;
 
 /**
  * Schema loader helper class
@@ -61,7 +62,7 @@ class Schema
         self::output("-----------------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -127,7 +128,7 @@ class Schema
         self::output("-----------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -191,7 +192,7 @@ class Schema
         self::output("-------------------\n", $ansi);
 
         // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        $dbConfig = Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);

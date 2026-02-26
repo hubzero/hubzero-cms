@@ -11,9 +11,9 @@ namespace Modules\RapidContact;
 use Hubzero\Module\Module;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Mail\Message;
-use Request;
-use Config;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
 
 /**
  * Module class for displaying a quick contact form

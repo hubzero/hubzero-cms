@@ -8,7 +8,7 @@
 
 namespace Components\Resources\Helpers;
 
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Base class for resource usage

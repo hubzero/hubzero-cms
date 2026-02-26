@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+
 defined('_HZEXEC_') or die();
 
 $authors = $this->row->relatedAuthors;

@@ -10,6 +10,11 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for grade book
@@ -189,7 +194,7 @@ class GradeBook extends Base
             'member_id'  => $member_id
         );
 
-        $dbo = \App::get('db');
+        $dbo = App::get('db');
 
         switch ($progress_calculation) {
             // Support legacy label of 'forms', as well as new, more accurate label of 'graded'
@@ -307,7 +312,7 @@ class GradeBook extends Base
         );
 
         // Get the asset views
-        $database   = \App::get('db');
+        $database   = App::get('db');
         $assetViews = new Tables\AssetViews($database);
         $results    = $assetViews->find($filters);
 
@@ -342,7 +347,7 @@ class GradeBook extends Base
             $course = $this->course;
             $course_id = $this->course->get('id');
         } elseif (!is_null($asset_id) && is_numeric($asset_id)) {
-            $asset = new Tables\Asset(\App::get('db'));
+            $asset = new Tables\Asset(App::get('db'));
             $asset->load($asset_id);
             $course_id = $asset->course_id;
 
@@ -691,7 +696,7 @@ class GradeBook extends Base
 
         if (!isset($assets)) {
             // Get the graded assets
-            $asset  = new Tables\Asset(\App::get('db'));
+            $asset  = new Tables\Asset(App::get('db'));
             $assets = $asset->find(
                 array(
                     'w' => array(
@@ -814,12 +819,12 @@ class GradeBook extends Base
                         $badge->set('member_id', $m);
                         $badge->set('section_badge_id', $sb->get('id'));
                         $badge->set('earned', 1);
-                        $badge->set('earned_on', \Date::toSql());
+                        $badge->set('earned_on', Date::toSql());
                         $badge->set('criteria_id', $sb->get('criteria_id'));
                         $badge->store();
 
                         // Get courses config
-                        $cconfig = \Component::params('com_courses');
+                        $cconfig = Component::params('com_courses');
 
                         // Tell the badge provider that they've earned the badge
                         $request_type = $cconfig->get('badges_request_type', 'oauth');
@@ -834,19 +839,19 @@ class GradeBook extends Base
                         $credentials->clientId = $this->config()->get($providerName . '_client_id');
                         $badgesProvider->setCredentials($credentials);
 
-                        $dbo = \App::get('db');
+                        $dbo = App::get('db');
                         $memberTbl = new Tables\Member($dbo);
                         $memberTbl->loadByMemberId($m);
                         $user_id = $memberTbl->get('user_id');
 
                         $data = new \stdClass();
                         $data->id = $sb->get('provider_badge_id');
-                        $evidenceUrl = rtrim(\Request::root(), '/')
+                        $evidenceUrl = rtrim(Request::root(), '/')
                             . '/courses/badge/' . $sb->get('id')
                             . '/validation/' . $badge->get('validation_token');
                         $data->evidenceUrl = $evidenceUrl;
                         $users              = array();
-                        $users[]            = \User::getInstance($user_id)->get('email');
+                        $users[]            = User::getInstance($user_id)->get('email');
 
                         // Publish assertion
                         $badgesProvider->grantBadge($data, $users);

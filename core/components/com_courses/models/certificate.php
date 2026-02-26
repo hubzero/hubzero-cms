@@ -11,7 +11,13 @@ namespace Components\Courses\Models;
 use Hubzero\Database\Table;
 use ImagickException;
 use Imagick;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for a certificate
@@ -58,7 +64,7 @@ class Certificate extends Base
      */
     public function __construct($oid = null, $course_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if ($this->_tbl_name) {
             $cls = $this->_tbl_name;
@@ -150,7 +156,7 @@ class Certificate extends Base
             $base = $this->path('system');
 
             if (!file_exists($base)) {
-                if (!\Filesystem::makeDirectory($base)) {
+                if (!Filesystem::makeDirectory($base)) {
                     $this->setError(Lang::txt('Unable to create directory.'));
                     return false;
                 }
@@ -190,7 +196,7 @@ class Certificate extends Base
     public function eachPage($fun)
     {
         if (!$this->exists()) {
-            \App::abort(422, 'No pages exist for nonexistent certificate.');
+            App::abort(422, 'No pages exist for nonexistent certificate.');
             return;
         }
 
@@ -208,8 +214,8 @@ class Certificate extends Base
         natsort($images);
 
         $base  = $this->path('web');
-        $sessionId = \App::get('session')->getId();
-        $secret = \Config::get('secret');
+        $sessionId = App::get('session')->getId();
+        $secret = Config::get('secret');
         $token = hash('sha256', $sessionId . ':' . $secret);
 
         $idx = 0;
@@ -243,7 +249,7 @@ class Certificate extends Base
             break;
 
             case 'web':
-                $reqBase = trim(\Request::base(true), '/');
+                $reqBase = trim(Request::base(true), '/');
                 $base = str_replace('administrator', '', $reqBase);
                 $appPath = substr(PATH_APP, strlen(PATH_ROOT));
                 return rtrim($base, '/') . $appPath . $this->_base;
@@ -290,7 +296,7 @@ class Certificate extends Base
     public function render($user = null, $path = null)
     {
         if (!$user) {
-            $user = \User::getInstance();
+            $user = User::getInstance();
         }
 
         if (!class_exists('\Components\Courses\Models\Course')) {
@@ -354,7 +360,7 @@ class Certificate extends Base
                     break;
 
                 case 'date':
-                    $val = \Date::of('now')->format(Lang::txt('d M Y'));
+                    $val = Date::of('now')->format(Lang::txt('d M Y'));
                     break;
             }
 
@@ -404,7 +410,7 @@ class Certificate extends Base
         $path = $this->path('system');
         if (is_dir($path)) {
             // Attempt to delete the file
-            if (!\Filesystem::deleteDirectory($path)) {
+            if (!Filesystem::deleteDirectory($path)) {
                 $msg = Lang::txt(
                     'Unable to remove upload directory and files for certificate.'
                 );

@@ -9,9 +9,9 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
-use Html;
-use Lang;
-use App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Supports an HTML select list of plugins

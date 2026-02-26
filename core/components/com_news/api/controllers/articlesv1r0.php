@@ -11,10 +11,10 @@ namespace Components\News\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Exception;
 use stdClass;
-use Request;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for news

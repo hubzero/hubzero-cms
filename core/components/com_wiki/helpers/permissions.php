@@ -9,7 +9,7 @@
 namespace Components\Wiki\Helpers;
 
 use Hubzero\Base\Obj;
-use User;
+use Hubzero\Facades\User;
 
 /**
  * Permissions helper

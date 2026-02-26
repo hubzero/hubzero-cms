@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\App;
 
 /**
  * Macro class for displaying a Youtube video
@@ -59,7 +60,7 @@ class Feed extends Macro
         $class = $this->getFeedClass($args);
 
         // Get feed
-        $feed = \App::get('feed.parser');
+        $feed = App::get('feed.parser');
         $feed->set_feed_url($url);
         $feed->init();
 

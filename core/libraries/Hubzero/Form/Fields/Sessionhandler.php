@@ -10,7 +10,7 @@ namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Select as Dropdown;
 use Hubzero\Session\Manager;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Provides a select list of session handler options.

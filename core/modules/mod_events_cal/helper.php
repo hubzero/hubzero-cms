@@ -10,9 +10,10 @@ namespace Modules\EventsCalendar;
 
 use Hubzero\Module\Module;
 use Components\Events\Helpers\Html;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Class for events calendar module
@@ -46,9 +47,7 @@ class Helper extends Module
     public function run()
     {
         // Check the events component
-        if (file_exists(\Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
-            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
-            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'EventsDate.php';
+        if (file_exists(Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
         } else {
             $this->setError(Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
             return;

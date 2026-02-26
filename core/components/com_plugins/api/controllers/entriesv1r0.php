@@ -12,11 +12,11 @@ use Hubzero\Component\ApiController;
 use Components\Plugins\Models\Plugin;
 use Exception;
 use stdClass;
-use Request;
-use Event;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * API controller class for resources

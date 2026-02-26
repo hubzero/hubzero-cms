@@ -9,9 +9,9 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
-use Request;
-use Date;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Table class for publication access logs

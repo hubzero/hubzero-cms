@@ -8,7 +8,7 @@
 
 namespace Components\Courses\Models\Assets;
 
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Object Asset handler class

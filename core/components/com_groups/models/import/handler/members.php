@@ -9,8 +9,8 @@
 namespace Components\Groups\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
-use User;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Member Groups import handler

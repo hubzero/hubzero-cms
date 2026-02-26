@@ -9,6 +9,7 @@
 namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Base;
+use Hubzero\Facades\App;
 
 /**
  * JSON document class for parsing and displaying JSON data
@@ -50,9 +51,9 @@ class Json extends Base
      */
     public function render($cache = false, $params = array())
     {
-        \App::get('response')->headers->set('Cache-Control', 'no-cache', false);
-        \App::get('response')->headers->set('Pragma', 'no-cache');
-        \App::get('response')->headers->set('Content-disposition', 'attachment; filename="' .
+        App::get('response')->headers->set('Cache-Control', 'no-cache', false);
+        App::get('response')->headers->set('Pragma', 'no-cache');
+        App::get('response')->headers->set('Content-disposition', 'attachment; filename="' .
             $this->getName() .
             '.json"', true);
 

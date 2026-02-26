@@ -9,8 +9,10 @@
 namespace Components\System\Models;
 
 use Hubzero\Base\Obj;
-use Filesystem;
-use Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Model class for getting system information
@@ -124,7 +126,7 @@ class Info extends Obj
     public function getInfo()
     {
         if (is_null($this->info)) {
-            $db = \App::get('db');
+            $db = App::get('db');
 
             if (isset($_SERVER['SERVER_SOFTWARE'])) {
                 $sf = $_SERVER['SERVER_SOFTWARE'];
@@ -186,7 +188,7 @@ class Info extends Obj
         if (is_null($this->directories)) {
             $this->directories = array();
 
-            $cparams = \Component::params('com_media');
+            $cparams = Component::params('com_media');
 
             $app = '/' . basename(PATH_APP) . '/';
 

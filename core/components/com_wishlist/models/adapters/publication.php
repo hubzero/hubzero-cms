@@ -8,8 +8,9 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
-use Pathway;
-use Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Adapter class for a forum post link for group forum
@@ -46,7 +47,7 @@ class Publication extends Base
              ->set('category', 'publication')
              ->set('option', $this->_segments['option']);
 
-        $database = \App::get('db');
+        $database = App::get('db');
         $objP = new \Components\Publications\Tables\Publication($database);
         $this->_item = $objP->getPublication($referenceid, 'default');
 

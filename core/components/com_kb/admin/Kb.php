@@ -9,6 +9,12 @@
 namespace Components\Kb\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -22,23 +28,23 @@ class Kb extends AbstractComponent
      */
     protected function execute(): void
     {
-        if (!\User::authorise('core.manage', 'com_kb')) {
-            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_kb')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $controllerName = \Request::getCmd('controller', 'articles');
+        $controllerName = Request::getCmd('controller', 'articles');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'articles';
         }
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_KB_ARTICLES'),
-            \Route::url('index.php?option=com_kb&controller=articles', false),
+        Submenu::addEntry(
+            Lang::txt('COM_KB_ARTICLES'),
+            Route::url('index.php?option=com_kb&controller=articles', false),
             $controllerName == 'articles'
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_KB_CATEGORIES'),
-            \Route::url('index.php?option=com_categories&extension=com_kb', false)
+        Submenu::addEntry(
+            Lang::txt('COM_KB_CATEGORIES'),
+            Route::url('index.php?option=com_categories&extension=com_kb', false)
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

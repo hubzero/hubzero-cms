@@ -13,6 +13,7 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Database\Exception\QueryFailedException;
+use Hubzero\Facades\App;
 
 /**
  * Developer authorization codes command class
@@ -41,7 +42,7 @@ class Authorizationcodes extends Base implements CommandInterface
     {
         // Attempt to delete tokens
         try {
-            \App::get('db')->getQuery()->delete('#__developer_authorization_codes')->execute();
+            App::get('db')->getQuery()->delete('#__developer_authorization_codes')->execute();
         } catch (QueryFailedException $e) {
             $this->output->error('Error:' . $e->getMessage());
         }

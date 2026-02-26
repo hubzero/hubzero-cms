@@ -12,6 +12,8 @@
 namespace Plugins\Support\Forum;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
 
 class Forum extends Plugin
 {

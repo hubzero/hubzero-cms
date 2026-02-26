@@ -25,16 +25,17 @@ use Components\Resources\Helpers\Helper;
 use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Str;
-use Request;
-use Config;
-use Route;
-use Event;
-use Lang;
-use App;
-use Component;
-use Date;
-use Notify;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
 
 /**
  * Manage resource entries
@@ -896,8 +897,8 @@ class Items extends AdminController
             $newpath = Utilities::buildUploadPath($path . DS . $dir_id);
 
             // Attempt to rename the temp directory
-            if (\Filesystem::exists($tmppath)) {
-                $result = \Filesystem::move($tmppath, $newpath);
+            if (Filesystem::exists($tmppath)) {
+                $result = Filesystem::move($tmppath, $newpath);
                 if ($result !== true) {
                     $this->setError($result);
                 }
@@ -1569,7 +1570,7 @@ class Items extends AdminController
      */
     private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $group_id = 'g.id';
         $aro_id = 'aro.id';

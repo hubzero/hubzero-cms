@@ -9,6 +9,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Html\Builder\Select as Dropdown;
+use Hubzero\Facades\App;
 
 /**
  * Form Field class for selecting timezone
@@ -55,7 +56,7 @@ class Timezone extends Groupedlist
 
         // If the timezone is not set use the server setting.
         if (strlen($this->value) == 0 && empty($keyValue)) {
-            $this->value = \App::get('config')->get('offset');
+            $this->value = App::get('config')->get('offset');
         }
 
         // Get the list of time zones from the server.

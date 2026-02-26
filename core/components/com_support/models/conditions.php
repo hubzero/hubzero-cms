@@ -13,9 +13,10 @@ use Hubzero\Base\Traits\Escapable;
 use Hubzero\Base\Obj;
 use InvalidArgumentException;
 use stdClass;
-use Component;
-use User;
-use Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /*
  * Support model class for query conditions
@@ -56,7 +57,7 @@ class Conditions extends Obj
         {
             $this->setRecord($record);
         }*/
-        $this->database = \App::get('db');
+        $this->database = App::get('db');
         $this->config = Component::params('com_support');
     }
 

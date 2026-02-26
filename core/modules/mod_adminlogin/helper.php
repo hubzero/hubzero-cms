@@ -10,11 +10,13 @@ namespace Modules\AdminLogin;
 
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
-use Request;
-use Route;
-use Lang;
-use Html;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Plugin;
 
 /**
  * Module class for displaying a login form
@@ -37,7 +39,7 @@ class Helper extends Module
 
         $returnQueryString = (!empty($return)) ? "&return={$return}" : '';
         $authenticators    = [];
-        $plugins           = \Plugin::byType('authentication');
+        $plugins           = Plugin::byType('authentication');
 
         foreach ($plugins as $p) {
             $pparams = new Registry($p->params);
@@ -49,7 +51,7 @@ class Helper extends Module
 
             // If it's the default hubzero plugin, don't include it in the list (we'll include it separately)
             if ($p->name == 'hubzero') {
-                $site_display = $pparams->get('display_name', \Config::get('sitename'));
+                $site_display = $pparams->get('display_name', Config::get('sitename'));
                 $basic = true;
             } else {
                 $display = $pparams->get('display_name', ucfirst($p->name));

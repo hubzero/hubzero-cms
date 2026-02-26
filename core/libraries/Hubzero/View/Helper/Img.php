@@ -10,7 +10,7 @@ namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Image;
 use Hubzero\Plugin\View;
-use Request;
+use Hubzero\Facades\Request;
 
 /**
  * Helper for generating paths to image assets.

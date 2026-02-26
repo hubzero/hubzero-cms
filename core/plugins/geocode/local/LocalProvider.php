@@ -8,6 +8,8 @@
 
 namespace Plugins\Geocode\Local;
 
+use Hubzero\Facades\Lang;
+
 class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider implements \Geocoder\Provider\Provider
 {
     public static $countries = array(
@@ -280,7 +282,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     public function getGeocodedData($address)
     {
         if (!in_array($this->type, array('countries', 'country', 'continent'))) {
-            throw new \Geocoder\Exception\UnsupportedOperation(\Lang::txt('The LocalProvider does not support "%s".', $this->type));
+            throw new \Geocoder\Exception\UnsupportedOperation(Lang::txt('The LocalProvider does not support "%s".', $this->type));
         }
 
         $retriever = '_get' . ucfirst($this->type);

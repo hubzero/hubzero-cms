@@ -10,7 +10,8 @@ namespace Modules\LatestGroups;
 
 use Hubzero\Module\Module;
 use Hubzero\User\Group;
-use User;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying the latest groups
@@ -31,7 +32,7 @@ class Helper extends Module
      */
     public function run()
     {
-        $database = \App::get('db');
+        $database = App::get('db');
 
         $uid = User::get('id');
 

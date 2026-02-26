@@ -13,11 +13,13 @@ namespace Components\Members\Models;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Tables;
 use Components\Members\Helpers;
-use Request;
-use User;
-use App;
-use Config;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Log;
 
 /**
  * Model class for a registration
@@ -319,7 +321,7 @@ class Registration
                 break;
         }
 
-        $hconfig = \Component::params('com_members');
+        $hconfig = Component::params('com_members');
 
         $default    = str_pad($default, 4, '-');
         $configured = $hconfig->get($name);
@@ -454,7 +456,7 @@ class Registration
             $puser = posix_getpwnam($login);
             if (!empty($puser) && $uid && $uid != $puser['uid']) {
                 // log error and display error to user
-                \Log::error('System username/userid does not match DB username/password for user: ' . $uid);
+                Log::error('System username/userid does not match DB username/password for user: ' . $uid);
                 $this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
             }
         }
@@ -563,7 +565,7 @@ class Registration
             } elseif (!Helpers\Utility::validemail($email)) {
                 $this->_invalid['email'] = 'Invalid email address. Please correct and try again.';
             } else {
-                $usersConfig = \Component::params('com_members');
+                $usersConfig = Component::params('com_members');
                 $allow_duplicate_emails = $usersConfig->get('allow_duplicate_emails');
 
                 // Check if the email is already in use

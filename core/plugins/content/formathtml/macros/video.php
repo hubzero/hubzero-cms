@@ -9,6 +9,11 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a youtube video
@@ -82,7 +87,7 @@ class Video extends Macro
         $default_width  = 640;
         $default_height = 380;
 
-        $this->config = \Component::params('com_wiki');
+        $this->config = Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -197,12 +202,12 @@ class Video extends Macro
 
         // Local
         if ($type == 'local') {
-            $ext = strtolower(\Filesystem::extension($video_url));
+            $ext = strtolower(Filesystem::extension($video_url));
 
             // Shared HUBzero player: native <video> + accessible control bar
             // (no external dependency, multi-instance safe)
-            \Document::addStyleSheet('/core/assets/css/hz-video-player.css');
-            \Document::addScript('/core/assets/js/hz-video-player.js');
+            Document::addStyleSheet('/core/assets/css/hz-video-player.css');
+            Document::addScript('/core/assets/js/hz-video-player.js');
 
             $transcript = (isset($this->attr['transcript']) && $this->attr['transcript']) ? ' data-transcript="1"' : '';
 
@@ -451,14 +456,14 @@ class Video extends Macro
         }
         $type = 'File';
         $this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
-        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
-            if (\Request::getString('format') == 'pdf') {
+        if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
+            if (Request::getString('format') == 'pdf') {
                 return $this->_path($file);
             }
             $type = 'Image';
         }
         $link .= $this->pagename . DS . $type . ':' . $file;
 
-        return \Route::url($link);
+        return Route::url($link);
     }
 }

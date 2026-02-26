@@ -10,8 +10,8 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
-use Lang;
-use Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 /**
  * Manage a course section's manager entries

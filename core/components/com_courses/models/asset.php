@@ -10,13 +10,14 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Components\Courses\Models\Assets;
-use Component;
-use Request;
-use Date;
-use User;
-use Lang;
-use App;
-use Filesystem;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Log;
 
 /**
  * Asset model class for a course
@@ -516,20 +517,20 @@ class Asset extends Base
             $uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $assetId . DS;
 
             // Figuring out ERROR handling
-            \Log::debug(var_export($originalDirectory, true));
-            \Log::debug(var_export($uploadDirectory, true));
-            \Log::debug(var_export(is_dir($uploadDirectory), true));
+            Log::debug(var_export($originalDirectory, true));
+            Log::debug(var_export($uploadDirectory, true));
+            Log::debug(var_export(is_dir($uploadDirectory), true));
 
             // Make sure upload directory exists and is writable
             if (!is_dir($uploadDirectory)) {
                 if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)) {
-                    \Log::debug(var_export('Server error. Unable to create upload directory', true));
+                    Log::debug(var_export('Server error. Unable to create upload directory', true));
                     return array('error' => 'Server error. Unable to create upload directory');
                 }
             }
 
             if (!is_writable($uploadDirectory)) {
-                \Log::debug(var_export('Server error. Upload directory is not writable', true));
+                Log::debug(var_export('Server error. Upload directory is not writable', true));
                 return array('error' => 'Server error. Upload directory isn\'t writable');
             }
 

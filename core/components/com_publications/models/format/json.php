@@ -10,6 +10,7 @@ namespace Components\Publications\Models\Format;
 
 use Components\Publications\Models\Format as Base;
 use stdClass;
+use Hubzero\Facades\Log;
 
 /**
  * JSON format handler
@@ -46,7 +47,7 @@ class JSON extends Base
             // Deprecation warning.
             $msg = '\Components\Publications\Models\Format\JSON::stringToObject() '
                 . 'second argument should not be a boolean.';
-            \Log::warning($msg);
+            Log::warning($msg);
         }
 
         $data = trim($data);

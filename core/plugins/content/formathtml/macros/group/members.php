@@ -9,8 +9,10 @@
 namespace Plugins\Content\Formathtml\Macros\Group;
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
-use Route;
-use User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * Group events Macro
@@ -51,7 +53,7 @@ class Members extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get args
@@ -66,7 +68,7 @@ class Members extends GroupMacro
         $members = $this->getGroupMembers($this->group, $filters);
 
         // Are we a group member
-        $isMember = (in_array(\User::get('id'), $this->group->get('members'))) ? true : false;
+        $isMember = (in_array(User::get('id'), $this->group->get('members'))) ? true : false;
 
         // Get the members plugin access for this group
         $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
@@ -99,7 +101,7 @@ class Members extends GroupMacro
         $members = $group->get('members');
 
         // Get group params
-        $params = \Component::params("com_groups");
+        $params = Component::params("com_groups");
         $displaySystemUsers = $params->get('display_system_users', 'no');
 
         // Get this groups params

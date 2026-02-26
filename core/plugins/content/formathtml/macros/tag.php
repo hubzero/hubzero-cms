@@ -9,6 +9,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for dipslaying a tag
@@ -53,7 +54,7 @@ class Tag extends Macro
             // Did we get a result from the database?
             if ($a) {
                 // Build and return the link
-                $tagUrl = \Route::url('index.php?option=com_tags&tag=' . $tag);
+                $tagUrl = Route::url('index.php?option=com_tags&tag=' . $tag);
                 return '<a href="' . $tagUrl . '">' . stripslashes($a) . '</a>';
             } else {
                 // Return error message

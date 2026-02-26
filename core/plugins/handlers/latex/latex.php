@@ -5,6 +5,7 @@ namespace Plugins\Handlers\Latex;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Filesystem\Manager;
 use Hubzero\Filesystem\File;
+use Hubzero\Facades\Lang;
 
 /**
  * @package    hubzero-cms

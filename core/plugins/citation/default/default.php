@@ -3,6 +3,7 @@
 namespace Plugins\Citation\DefaultHandler;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Event;
 
 /**
  * @package    hubzero-cms

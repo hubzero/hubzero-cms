@@ -12,11 +12,11 @@ use Hubzero\Component\AdminController;
 use Components\Saml\Models\ServiceProvider;
 use Components\Saml\Models\IdP;
 use Components\Saml\Helpers\Metadata;
-use Request;
-use Notify;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for trusted Service Providers

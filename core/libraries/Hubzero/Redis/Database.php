@@ -9,6 +9,7 @@
 namespace Hubzero\Redis;
 
 use Predis\Client;
+use Hubzero\Facades\Config;
 
 /**
  * Redis Database helper
@@ -43,8 +44,8 @@ class Database
      */
     public function __construct()
     {
-        $this->servers = (array) \Config::get('redis_server', array());
-        $this->options = (array) \Config::get('redis_server_options', array());
+        $this->servers = (array) Config::get('redis_server', array());
+        $this->options = (array) Config::get('redis_server_options', array());
 
         if (isset($this->options['cluster']) && $this->options['cluster']) {
             $this->clients = $this->createAggregateClient();

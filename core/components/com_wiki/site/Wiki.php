@@ -9,6 +9,7 @@
 namespace Components\Wiki\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,7 +23,7 @@ class Wiki extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'pages'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'pages'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'pages';
         }

@@ -6,10 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-$database = \App::get('db');
+$database = App::get('db');
 
 if ($this->contributors) {
     $html     = '';

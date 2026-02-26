@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a tree of page parents
@@ -106,7 +107,7 @@ class Parents extends WikiMacro
 
             // Build the HTML
             $html .= '<ul>';
-            $html .= '<li><a href="' . \Route::url($row->link()) . '">';
+            $html .= '<li><a href="' . Route::url($row->link()) . '">';
             $html .= stripslashes($row->title);
             $html .= '</a>';
             $html .= $this->buildTree($rows);

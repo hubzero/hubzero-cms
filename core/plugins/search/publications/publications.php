@@ -4,6 +4,9 @@ namespace Plugins\Search\Publications;
 
 use Components\Publications\Models\Orm\Publication;
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms

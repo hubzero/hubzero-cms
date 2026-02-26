@@ -9,10 +9,11 @@
 namespace Components\Templates\Models;
 
 use Hubzero\Base\Obj;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use stdClass;
-use Event;
-use Lang;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Source model
@@ -65,7 +66,7 @@ class File extends Obj
         // Initialise variables.
         if (is_null($this->template)) {
             $pk = $this->get('extension_id');
-            $db = \App::get('db');
+            $db = App::get('db');
             $result = false;
 
             // Get the template information.

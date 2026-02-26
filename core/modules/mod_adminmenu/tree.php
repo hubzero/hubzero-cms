@@ -8,6 +8,8 @@
 
 namespace Modules\Adminmenu;
 
+use Hubzero\Facades\Document;
+
 /**
  * Extended class for rendering nested menus
  */
@@ -122,7 +124,7 @@ class Tree extends \Hubzero\Base\Obj
 
         if ($this->css) {
             // Add style to document head
-            \Document::addStyleDeclaration($this->css);
+            Document::addStyleDeclaration($this->css);
         }
     }
 

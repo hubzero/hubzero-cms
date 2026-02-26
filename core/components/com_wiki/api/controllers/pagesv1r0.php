@@ -14,12 +14,12 @@ use Components\Wiki\Models\Version;
 use Components\Wiki\Models\Author;
 use Hubzero\Component\ApiController;
 use stdClass;
-use Request;
+use Hubzero\Facades\Request;
 use Event;
-use Route;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * API controller class for Wiki Pages

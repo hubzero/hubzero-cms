@@ -9,6 +9,7 @@
 namespace Components\Events\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,9 +23,7 @@ class Events extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'EventsDate.php';
-
-        $controllerName = \Request::getCmd('controller', 'events');
+        $controllerName = Request::getCmd('controller', 'events');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'events';
         }

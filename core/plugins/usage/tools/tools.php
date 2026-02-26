@@ -12,6 +12,10 @@
 namespace Plugins\Usage\Tools;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 class Tools extends Plugin
 {

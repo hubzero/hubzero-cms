@@ -11,14 +11,14 @@ namespace Components\Cron\Admin\Controllers;
 use Components\Cron\Models\Job;
 use Hubzero\Component\AdminController;
 use stdClass;
-use Request;
-use Notify;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Event;
 use Route;
-use Lang;
-use User;
-use Date;
-use App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for cron jobs

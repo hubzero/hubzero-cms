@@ -10,7 +10,7 @@ namespace Hubzero\Api\Doc;
 
 use ReflectionClass;
 use phpDocumentor\Reflection\DocBlock;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Documentation Generator Class

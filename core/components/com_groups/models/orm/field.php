@@ -10,9 +10,9 @@ namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Components\Groups\Models\Orm\Answer;
-use Date;
-use User;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
 
 /**
  * Group description field model

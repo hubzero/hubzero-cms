@@ -9,8 +9,8 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
-use Html;
-use Lang;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Renders a select list element

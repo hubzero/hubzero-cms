@@ -10,8 +10,8 @@ namespace Components\Search\Helpers;
 
 use Components\Resources\Models\Type;
 use Hubzero\Utility\Arr;
-use Component;
-use Lang;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 class TypeOptionsHelper
 {

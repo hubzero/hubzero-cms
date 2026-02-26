@@ -10,6 +10,7 @@ namespace Hubzero\Document\Type\Feed;
 
 use Hubzero\Document\Renderer;
 use Hubzero\Utility\Date;
+use Hubzero\Facades\App;
 
 /**
  * RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
@@ -40,12 +41,12 @@ class Rss extends Renderer
         $now  = new Date('now');
         $data = $this->doc;
 
-        $url = rtrim(\App::get('request')->root(), '/') . '/';
+        $url = rtrim(App::get('request')->root(), '/') . '/';
 
-        if (\App::get('config')->get('sitename_pagetitles', 0) == 1) {
-            $data->title = \App::get('language')->txt('JPAGETITLE', \App::get('config')->get('sitename'), $data->title);
-        } elseif (\App::get('config')->get('sitename_pagetitles', 0) == 2) {
-            $data->title = \App::get('language')->txt('JPAGETITLE', $data->title, \App::get('config')->get('sitename'));
+        if (App::get('config')->get('sitename_pagetitles', 0) == 1) {
+            $data->title = App::get('language')->txt('JPAGETITLE', App::get('config')->get('sitename'), $data->title);
+        } elseif (App::get('config')->get('sitename_pagetitles', 0) == 2) {
+            $data->title = App::get('language')->txt('JPAGETITLE', $data->title, App::get('config')->get('sitename'));
         }
 
         $feed  = '<rss version="2.0" xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">' . "\n";
@@ -275,7 +276,7 @@ class Rss extends Renderer
      */
     private function relToAbs($text)
     {
-        $base = \App::get('request')->base();
+        $base = App::get('request')->base();
         $text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
         return $text;

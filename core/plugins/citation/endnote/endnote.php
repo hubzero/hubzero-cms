@@ -4,6 +4,7 @@ namespace Plugins\Citation\Endnote;
 
 use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
+use Hubzero\Facades\Lang;
 
 /**
  * @package    hubzero-cms

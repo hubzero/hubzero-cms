@@ -9,6 +9,8 @@
 namespace Components\System\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,11 +24,11 @@ class System extends AbstractComponent
      */
     protected function execute(): void
     {
-        \App::abort(404);
+        App::abort(404);
 
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'info'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-            \App::abort(404);
+            App::abort(404);
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

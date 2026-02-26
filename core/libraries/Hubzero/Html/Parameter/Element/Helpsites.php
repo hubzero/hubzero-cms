@@ -10,6 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
+use Hubzero\Facades\App;
 
 /**
  * Renders a helpsites element
@@ -36,7 +37,7 @@ class Helpsites extends Element
     public function fetchElement($name, $value, &$node, $control_name)
     {
         $helpsites = self::createSiteList(PATH_CORE . '/help/helpsites.xml', $value);
-        array_unshift($helpsites, Builder\Select::option('', \App::get('language')->txt('local')));
+        array_unshift($helpsites, Builder\Select::option('', App::get('language')->txt('local')));
 
         return Builder\Select::genericlist(
             $helpsites,

@@ -9,8 +9,8 @@
 namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 
 /**
  * Support ticket category model

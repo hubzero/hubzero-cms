@@ -3,6 +3,14 @@
 namespace Plugins\Groups\Activity;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms
@@ -347,7 +355,7 @@ class Activity extends Plugin
 
         if (!empty($upload) && $upload['name']) {
             if ($upload['error']) {
-                $this->setError(\Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
+                $this->setError(Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
             }
 
             $file = new \Plugins\Groups\Activity\Models\Attachment();

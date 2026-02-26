@@ -12,12 +12,12 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\OptionGroup;
-use Request;
-use Config;
-use Route;
-use Lang;
-use App;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Notify;
 
 /**
  * Controller class for knowledge base collections
@@ -178,7 +178,7 @@ class Optiongroups extends AdminController
         try {
             $optionGroup = $obj->updateOptionGroup($fields['ogId'], $fields);
         } catch (\Exception $e) {
-            \Notify::error($e->getMessage());
+            Notify::error($e->getMessage());
             // Get the product
             $optionGroup = $obj->optionGroup($fields['ogId']);
             $this->editTask($optionGroup);
@@ -299,7 +299,7 @@ class Optiongroups extends AdminController
                 );
                 if ($warnings) {
                     foreach ($warnings as $warning) {
-                        \Notify::warning($warning);
+                        Notify::warning($warning);
                     }
                 }
                 break;
@@ -358,7 +358,7 @@ class Optiongroups extends AdminController
             try {
                 $obj->updateOptionGroup($ogId, array('state' => $state));
             } catch (\Exception $e) {
-                \Notify::error($e->getMessage());
+                Notify::error($e->getMessage());
                 return;
             }
         }

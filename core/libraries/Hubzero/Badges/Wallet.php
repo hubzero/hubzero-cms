@@ -11,6 +11,7 @@ namespace Hubzero\Badges;
 use Hubzero\Badges\Provider\ProviderInterface;
 use Hubzero\Badges\Exception\InvalidProviderException;
 use Hubzero\Badges\Exception\ProviderNotFoundException;
+use Hubzero\Facades\Lang;
 
 /**
  * Hubzero badges class
@@ -36,14 +37,14 @@ class Wallet
         $cls = __NAMESPACE__ . '\\Provider\\' . ucfirst(strtolower($provider));
 
         if (!class_exists($cls)) {
-            throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
+            throw new ProviderNotFoundException(Lang::txt('Invalid badges provider of "%s".', $provider));
         }
 
         $this->provider = new $cls($requestType);
 
         if (!($this->provider instanceof ProviderInterface)) {
             throw new InvalidProviderException(
-                \Lang::txt(
+                Lang::txt(
                     'Invalid badges provider of "%s". Provider must implement ProviderInterface',
                     $provider
                 )

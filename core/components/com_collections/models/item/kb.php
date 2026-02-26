@@ -11,9 +11,9 @@ namespace Components\Collections\Models\Item;
 use Components\Collections\Models\Item as GenericItem;
 use Components\Kb\Models\Article;
 use Components\Kb\Models\Category;
-use Request;
-use Route;
-use Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
 
 /**
  * Collections model for a Knowledge base article

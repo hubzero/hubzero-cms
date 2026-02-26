@@ -12,6 +12,9 @@
 namespace Plugins\Usage\Region;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
 
 class Region extends Plugin
 {
@@ -46,12 +49,12 @@ class Region extends Plugin
     private function regionlist(&$db, $region, $t = 0, $enddate = 0)
     {
         if (!$db->tableExists('regions')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regions');
+            Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regions');
             return '';
         }
 
         if (!$db->tableExists('regionvals')) {
-            \Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals');
+            Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals');
             return '';
         }
 

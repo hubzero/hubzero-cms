@@ -11,7 +11,7 @@ namespace Modules\MySubmissions;
 use Components\Resources\Models\Entry;
 use Hubzero\Module\Module;
 use Component;
-use User;
+use Hubzero\Facades\User;
 use App;
 
 /**

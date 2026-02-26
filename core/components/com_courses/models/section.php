@@ -10,8 +10,11 @@ namespace Components\Courses\Models;
 
 use Hubzero\Config\Registry;
 use Components\Courses\Tables;
-use Lang;
-use Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Courses model class for a course
@@ -113,7 +116,7 @@ class Section extends Base
      */
     public function __construct($oid = null, $offering_id = null)
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         $this->_tbl = new Tables\Section($this->_db);
 
@@ -265,7 +268,7 @@ class Section extends Base
     public function isMember($id = null)
     {
         if (!$id) {
-            $id = \User::get('id');
+            $id = User::get('id');
         }
         return $this->member($id)->exists();
     }
@@ -764,7 +767,7 @@ class Section extends Base
             // Return the web path to the image
             $path .= '/' . $file;
             if (file_exists(PATH_APP . $path)) {
-                $path = str_replace('/administrator', '', \Request::base(true)) . $path;
+                $path = str_replace('/administrator', '', Request::base(true)) . $path;
             }
 
             if ($rtrn == 'url') {

@@ -11,11 +11,11 @@ namespace Components\Languages\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
-use Filesystem;
-use Notify;
-use Lang;
-use User;
-use Date;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
 
 /**
  * Extension model

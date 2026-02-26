@@ -10,7 +10,7 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use Filesystem;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Publications attachments class

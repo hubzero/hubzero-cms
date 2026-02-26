@@ -14,14 +14,16 @@ use Hubzero\Filesystem\Entity;
 use Components\Projects\Models\Orm\Connection;
 use stdClass;
 use ZipArchive;
-use Component;
-use Filesystem;
-use Route;
-use Lang;
-use User;
-use Date;
-use Event;
-use Request;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Request;
 
 /**
  * Handles a file attachment
@@ -450,7 +452,7 @@ class File extends Base
      */
     private function bundleDisplayState($pub)
     {
-        $flag = (int) \Component::params('com_publications')->get('bundle_async', 0);
+        $flag = (int) Component::params('com_publications')->get('bundle_async', 0);
         $vid  = (int) $pub->get('version_id');
 
         if (!$flag && !$vid) {
@@ -460,7 +462,7 @@ class File extends Base
         $status = null;
 
         try {
-            $db = \App::get('db');
+            $db = App::get('db');
             $db->setQuery("SELECT `status` FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $vid . " LIMIT 1");
             $status = $db->loadResult();
         } catch (\Throwable $e) {
@@ -620,7 +622,7 @@ class File extends Base
                         // download so the "preparing" button becomes live without
                         // a manual refresh.
                         $statusUrl = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=bundlestatus&v=' . $pub->version_number);
-                        \Document::addScriptDeclaration(
+                        Document::addScriptDeclaration(
                             "(function(){var u=" . json_encode($statusUrl) . ";function p(){"
                             . "fetch(u,{headers:{'X-Requested-With':'XMLHttpRequest'},credentials:'same-origin'})"
                             . ".then(function(r){return r.json();}).then(function(d){"

@@ -10,10 +10,10 @@ namespace Components\Courses\Api\Controllers;
 
 use Components\Courses\Models\Course;
 use Components\Courses\Models\Member;
-use Request;
-use User;
-use App;
-use Date;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Date;
 
 /**
  * API controller for the time component

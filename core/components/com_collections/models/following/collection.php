@@ -9,6 +9,7 @@
 namespace Components\Collections\Models\Following;
 
 use Components\Collections\Models;
+use Hubzero\Facades\User;
 
 /**
  * Model class for following a collection
@@ -105,7 +106,7 @@ class Collection extends Base
             case 'member':
             default:
                 if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = \User::getInstance($this->obj->get('created_by'));
+                    $this->_creator = User::getInstance($this->obj->get('created_by'));
                 }
                 if ($property) {
                     switch ($property) {

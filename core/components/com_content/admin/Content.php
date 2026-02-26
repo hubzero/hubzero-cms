@@ -9,6 +9,12 @@
 namespace Components\Content\Admin;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
 
 /**
  * Component entry point
@@ -23,8 +29,8 @@ class Content extends AbstractComponent
     protected function execute(): void
     {
         // Access check.
-        if (!\User::authorise('core.manage', 'com_content')) {
-            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        if (!User::authorise('core.manage', 'com_content')) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
             return;
         }
 
@@ -36,14 +42,14 @@ class Content extends AbstractComponent
         $defaultController = 'articles';
         $controllerName = Request::getCmd('controller', $defaultController);
 
-        \Submenu::addEntry(
-            \Lang::txt('COM_CONTENT_ARTICLES'),
-            \Route::url('index.php?option=com_content&controller=' . $defaultController),
+        Submenu::addEntry(
+            Lang::txt('COM_CONTENT_ARTICLES'),
+            Route::url('index.php?option=com_content&controller=' . $defaultController),
             ($controllerName == $defaultController)
         );
-        \Submenu::addEntry(
-            \Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
-            \Route::url('index.php?option=com_categories&extension=com_content')
+        Submenu::addEntry(
+            Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
+            Route::url('index.php?option=com_categories&extension=com_content')
         );
 
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {

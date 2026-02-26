@@ -9,6 +9,7 @@
 namespace Components\Search\Tests\Traits;
 
 use Hubzero\Utility\Arr;
+use Hubzero\Facades\Component;
 
 trait canMock
 {
@@ -77,7 +78,7 @@ trait canMock
         list($class, $file) = static::$mockClassMap[$name];
 
         if ($file && !class_exists($class, false)) {
-            require_once \Component::path('com_search') . '/' . $file;
+            require_once Component::path('com_search') . '/' . $file;
         }
 
         return $class;

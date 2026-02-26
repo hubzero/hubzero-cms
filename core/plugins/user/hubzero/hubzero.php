@@ -9,6 +9,13 @@
 namespace Plugins\User\Hubzero;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die;
 
@@ -475,7 +482,7 @@ class Hubzero extends Plugin
      */
     public function runSelectQuery($query)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 
@@ -486,7 +493,7 @@ class Hubzero extends Plugin
 
     public function runInsertQuery($query, $vars)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->prepare($query);
         $db->bind($vars);
         return $db->execute();
@@ -494,7 +501,7 @@ class Hubzero extends Plugin
 
     public function runUpdateOrDeleteQuery($query)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($query);
         return $db->query();
     }
@@ -502,7 +509,7 @@ class Hubzero extends Plugin
     // Main function to deidentify users
     public function onUserDeidentify($user_id)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
 
         // PURPOSE: Find username, id, email from jos_users table
         $select_UsersById_Query = "SELECT id, username, email, password FROM `#__users` WHERE id='" . $user_id . "';";
@@ -712,7 +719,7 @@ class Hubzero extends Plugin
      */
     protected function checkForUserSecret($userId)
     {
-        $query = \App::get('db')->getQuery();
+        $query = App::get('db')->getQuery();
 
         // Determine whether user's secret is different from null
         $foundSecret = $query->select('*')
@@ -754,7 +761,7 @@ class Hubzero extends Plugin
      */
     protected function saveUserSecret($userId, $secret)
     {
-        $query = \App::get('db')->getQuery();
+        $query = App::get('db')->getQuery();
 
         // Set the secret generated for this user:
         $query->update('#__users')
@@ -773,7 +780,7 @@ class Hubzero extends Plugin
      */
     protected function nullifyUserSecret($userId)
     {
-        $query = \App::get('db')->getQuery();
+        $query = App::get('db')->getQuery();
 
         // If user exists:
         $user = User::oneOrFail($userId);

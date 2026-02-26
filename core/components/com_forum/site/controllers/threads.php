@@ -15,17 +15,20 @@ use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
-use Document;
-use Pathway;
-use Request;
-use Notify;
-use Config;
-use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 use DOMDocument;
-use Event;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Forum controller class for threads
@@ -188,7 +191,7 @@ class Threads extends SiteController
         $this->buildPathway($section, $category, $thread);
 
         // Get all the likes of this thread
-        $db = \App::get('db');
+        $db = App::get('db');
         $queryLikes = "SELECT LIKES.threadId as 'threadId', LIKES.postId as 'postId', 
 		  LIKES.userId as 'userId', USERS.name as 'userName', USERS.email as 'userEmail' 
 		  FROM #__forum_posts_like as LIKES, #__users AS USERS
@@ -343,7 +346,7 @@ class Threads extends SiteController
             if ($post->get('created_by') == User::get('id')) {
                 $this->config->set('access-edit-' . $assetType, true);
             }
-            $fields['modified'] = \Date::toSql();
+            $fields['modified'] = Date::toSql();
             $fields['modified_by'] = User::get('id');
         }
 
@@ -760,7 +763,7 @@ class Threads extends SiteController
         }
 
         // Get media config
-        $mediaConfig = \Component::params('com_media');
+        $mediaConfig = Component::params('com_media');
 
         // Size limit is in MB, so we need to turn it into just B
         $sizeLimit = $mediaConfig->get('upload_maxsize', 10);
@@ -778,7 +781,7 @@ class Threads extends SiteController
         }
 
         // Ensure file names fit.
-        $ext = \Filesystem::extension($file['name']);
+        $ext = Filesystem::extension($file['name']);
 
         // Check that the file type is allowed
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));

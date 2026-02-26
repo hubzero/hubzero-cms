@@ -6,6 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -632,7 +643,7 @@ $this->css('course.css')
 
         $instructors = $this->course->instructors();
         if (count($instructors) > 0) {
-            require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
+            require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
             ?>
             <div class="course-instructors" data-bio-length="200">
                 <h3>

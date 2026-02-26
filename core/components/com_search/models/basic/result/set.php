@@ -13,8 +13,8 @@ use Components\Search\Models\Basic\Request;
 use Hubzero\Base\Obj;
 use ReflectionClass;
 use Iterator;
-use Plugin;
-use App;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\App;
 
 /**
  * Search result set

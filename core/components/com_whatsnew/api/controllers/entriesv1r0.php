@@ -11,8 +11,8 @@ namespace Components\Whatsnew\Api\Controllers;
 use Components\Whatsnew\Helpers\Period;
 use Hubzero\Component\ApiController;
 use stdClass;
-use Request;
-use Event;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Event;
 use Lang;
 
 /**

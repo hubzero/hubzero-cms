@@ -6,6 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -328,7 +336,7 @@ $option = 'com_groups';
                                     $html .= '<span class="roles">';
                                     $all_roles = '';
 
-                                    $db = \App::get('db');
+                                    $db = App::get('db');
                                     $db->setQuery(
                                         "SELECT r.id, r.name, r.permissions
 										FROM `#__xgroups_roles` as r

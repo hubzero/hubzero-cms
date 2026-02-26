@@ -10,7 +10,10 @@ namespace Plugins\Content\Formathtml\Macros\Group;
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 use Components\Events\Models\Calendar;
-use Date;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
 
 /**
  * Group events Macro
@@ -63,7 +66,7 @@ class Events extends GroupMacro
     {
         // Check if we can render
         if (!parent::canRender()) {
-            return \Lang::txt('[This macro is designed for Groups only]');
+            return Lang::txt('[This macro is designed for Groups only]');
         }
 
         // Get args
@@ -245,7 +248,7 @@ class Events extends GroupMacro
      */
     private function renderEvents($group, $events)
     {
-        \Document::addStyleSheet(rtrim(str_replace(PATH_ROOT, '', __DIR__)) . DS . '../macro-assets' . DS . 'events' . DS . 'events.css');
+        Document::addStyleSheet(rtrim(str_replace(PATH_ROOT, '', __DIR__)) . DS . '../macro-assets' . DS . 'events' . DS . 'events.css');
 
         $content = '';
         $curr_year = '';
@@ -301,7 +304,7 @@ class Events extends GroupMacro
             $content .= '</div>';
             $content .= '</ul>';
         } else {
-            $content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
+            $content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
         }
 
         return $content;

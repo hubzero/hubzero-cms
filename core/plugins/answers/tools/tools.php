@@ -13,6 +13,8 @@
 namespace Plugins\Answers\Tools;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\User;
 
 class Tools extends Plugin
 {

@@ -10,7 +10,7 @@ namespace Modules\ResourceMenu;
 
 use Hubzero\Module\Module;
 use stdClass;
-use Event;
+use Hubzero\Facades\Event;
 
 /**
  * Module class for displaying a megamenu

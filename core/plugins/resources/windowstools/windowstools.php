@@ -9,6 +9,12 @@
 namespace Plugins\Resources\Windowstools;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Resources Plugin class for Windows tools

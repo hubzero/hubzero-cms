@@ -11,9 +11,9 @@ namespace Components\Messages\Helpers;
 use Hubzero\Access\Access;
 use Hubzero\Base\Obj;
 use Hubzero\Utility\Arr;
-use User;
-use Html;
-use Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /**
  * Helpers

@@ -12,12 +12,12 @@ use Components\Tools\Models\Orm\Handler;
 use Components\Tools\Models\Orm\Rule;
 use Components\Tools\Models\Orm\Tool;
 use Hubzero\Component\AdminController;
-use Request;
+use Hubzero\Facades\Request;
 use Config;
-use Notify;
-use Route;
-use Lang;
-use App;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Administrative tools controller for file handlers

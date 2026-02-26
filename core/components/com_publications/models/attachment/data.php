@@ -10,13 +10,14 @@ namespace Components\Publications\Models\Attachment;
 
 use Components\Publications\Models\Attachment as Base;
 use stdClass;
-use Filesystem;
-use Route;
-use Event;
-use Lang;
-use Date;
-use User;
-use Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Request;
 
 /**
  * Handles a Datastore Lite attachment

@@ -9,8 +9,10 @@
 namespace Components\Wiki\Models;
 
 use Hubzero\Database\Relational;
-use Date;
-use Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
 
 /**
  * Wiki model for page attachments
@@ -143,7 +145,7 @@ class Attachment extends Relational
         static $path;
 
         if (!$path) {
-            $path = PATH_APP . DS . trim(\Component::params('com_wiki')->get('filepath', '/site/wiki'), DS);
+            $path = PATH_APP . DS . trim(Component::params('com_wiki')->get('filepath', '/site/wiki'), DS);
         }
 
         return $path;
@@ -160,7 +162,7 @@ class Attachment extends Relational
         $path = $this->filespace() . DS . $this->get('page_id') . DS . $this->get('filename');
 
         if (file_exists($path)) {
-            if (!\Filesystem::delete($path)) {
+            if (!Filesystem::delete($path)) {
                 $this->addError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $this->get('filename')));
                 return false;
             }

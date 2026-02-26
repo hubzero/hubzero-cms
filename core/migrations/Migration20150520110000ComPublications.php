@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Facades\Date;
 
 /**
  * Migration script for adding curation version table and fill with available data

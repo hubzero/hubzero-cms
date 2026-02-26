@@ -4,6 +4,12 @@ namespace Plugins\Authentication\Shibboleth;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Utility\Cookie;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 /**
  * @package    hubzero-cms
@@ -32,12 +38,12 @@ class Shibboleth extends Plugin
         }
 
         if ($params->get('debug_enabled', true)) {
-            if (!\Log::has('shib')) {
+            if (!Log::has('shib')) {
                 $location = $params->get('debug_location', '/var/log/apache2/php/shibboleth.log');
                 $location = explode(DS, $location);
                 $file     = array_pop($location);
 
-                \Log::register('shib', [
+                Log::register('shib', [
                     'path'   => implode(DS, $location),
                     'file'   => $file,
                     'level'  => 'info',
@@ -59,7 +65,7 @@ class Shibboleth extends Plugin
                 $toBeLogged .= ":\t" . (is_string($data) ? $data : json_encode($data));
             }
 
-            \Log::logger('shib')->info("$toBeLogged");
+            Log::logger('shib')->info("$toBeLogged");
         }
     }
 
@@ -573,7 +579,7 @@ class Shibboleth extends Plugin
         // anything without it
         if (isset($options['shibboleth']['eppn'])) {
             self::log('auth with', $options['shibboleth']);
-            $method = (\Component::params('com_members')->get('allowUserRegistration', false))
+            $method = (Component::params('com_members')->get('allowUserRegistration', false))
                 ? 'find_or_create'
                 : 'find';
             $hzal = \Hubzero\Auth\Link::$method(

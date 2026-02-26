@@ -9,8 +9,10 @@
 namespace Components\Tags\Models;
 
 use Hubzero\Component\View;
-use User;
-use Date;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * Cloud model for Tags
@@ -64,7 +66,7 @@ class Cloud extends \Hubzero\Base\Obj
      */
     public function __construct($scope_id = 0, $scope = '')
     {
-        $this->_db = \App::get('db');
+        $this->_db = App::get('db');
 
         if ($scope) {
             $this->_scope    = (string)$scope;
@@ -467,7 +469,7 @@ class Cloud extends \Hubzero\Base\Obj
                         'name'      => 'tags',
                         'layout'    => '_cloud'
                     ));
-                    $view->set('config', \Component::params('com_tags'))
+                    $view->set('config', Component::params('com_tags'))
                          ->set('tags', $this->tags('list', $filters, $clear));
 
                     $this->_cache['tags.cloud'] = $view->loadTemplate();

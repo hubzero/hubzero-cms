@@ -11,12 +11,12 @@ namespace Components\Forum\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
-use Request;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Notify;
 use Route;
-use User;
-use Lang;
-use App;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Controller class for forum sections

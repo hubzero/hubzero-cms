@@ -9,6 +9,9 @@
 namespace Plugins\User\Middleware;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\User;
 
 // No direct access
 
@@ -218,7 +221,7 @@ class Middleware extends Plugin
 
     public function runSelectQuery($query)
     {
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 

@@ -10,6 +10,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Facades\Component;
 
 /**
  * Group command class
@@ -45,7 +46,7 @@ class Group extends Base implements CommandInterface
             $currentDirectory = str_replace(PATH_APP, '', $currentDirectory);
 
             // Get group upload directory
-            $groupsConfig     = \Component::params('com_groups');
+            $groupsConfig     = Component::params('com_groups');
             $groupsDirectory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
             // Are we within the groups upload path
@@ -87,7 +88,7 @@ class Group extends Base implements CommandInterface
     public function scaffolding()
     {
         // Get group config
-        $groupsConfig = \Component::params('com_groups');
+        $groupsConfig = Component::params('com_groups');
 
         // Path to group folder
         $directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -122,7 +123,7 @@ class Group extends Base implements CommandInterface
     public function update()
     {
         // Get group config
-        $groupsConfig = \Component::params('com_groups');
+        $groupsConfig = Component::params('com_groups');
 
         // Path to group folder
         $directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);

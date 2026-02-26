@@ -14,9 +14,9 @@ use Hubzero\Form\Fields\Radio;
 //use stdClass;
 //use Route;
 use Components\Groups\Models\Orm\Field;
-use Lang;
+use Hubzero\Facades\Lang;
 use Hubzero\Html\Builder\Behavior;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Supports a scaled selection field

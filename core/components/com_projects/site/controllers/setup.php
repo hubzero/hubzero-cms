@@ -14,15 +14,15 @@ use Components\Projects\Models\Orm\Description\Field;
 use Components\Projects\Models\Orm\Description;
 use Components\Projects\Models\Orm\Project as ProjectORM;
 use Exception;
-use Request;
-use Route;
-use User;
-use Date;
-use Lang;
-use App;
-use Component;
-use Event;
-use Session;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Session;
 
 /**
  * Projects setup controller class
@@ -1091,7 +1091,7 @@ class Setup extends Base
         $term = trim(Request::getString('term', ''));
         $term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($term);
@@ -1144,7 +1144,7 @@ class Setup extends Base
         $agency = trim($grantAgency);
         $agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 
-        $verNum = \Component::params('com_members')->get('rorApiVersion');
+        $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
             $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($agencyQry);

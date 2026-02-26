@@ -10,14 +10,15 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
 use Hubzero\Utility;
-use Filesystem;
-use Request;
-use Route;
-use Event;
-use User;
-use Lang;
-use App;
-use Config;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Component;
 
 /**
  * Groups controller class
@@ -446,7 +447,7 @@ class Media extends Base
         $returnObj->file    = null;
 
         // get config
-        $mediaConfig       = \Component::params('com_media');
+        $mediaConfig       = Component::params('com_media');
         $allowedExtensions = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
         $sizeLimit         = $mediaConfig->get('upload_maxsize');
         $sizeLimit         = $sizeLimit * 1024 * 1024;
@@ -567,7 +568,7 @@ class Media extends Base
         }
 
         //get config
-        $config = \Component::params('com_media');
+        $config = Component::params('com_media');
 
         //allowed extensions for uplaod
         $allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
@@ -699,7 +700,7 @@ class Media extends Base
         // Notify the configured reviewers when a file is uploaded to a group whose
         // file section is open to anyone (opt-in: only when reviewers are set)
         if ($this->pluginAccess['files'] == 'anyone') {
-            $reviewers = \Component::params('com_groups')->get('group_reviewer', '');
+            $reviewers = Component::params('com_groups')->get('group_reviewer', '');
             $reviewers = array_unique(array_filter(array_map('trim', explode(',', $reviewers))));
 
             if (!empty($reviewers)) {

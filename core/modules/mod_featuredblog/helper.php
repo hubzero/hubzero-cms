@@ -10,7 +10,7 @@ namespace Modules\Featuredblog;
 
 use Hubzero\Module\Module;
 use Components\Blog\Models\Entry;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Module class for displaying a random, featured blog entry

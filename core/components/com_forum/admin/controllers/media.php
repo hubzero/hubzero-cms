@@ -11,10 +11,10 @@ namespace Components\Forum\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
-use Filesystem;
-use Request;
-use Lang;
-use App;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
 
 /**
  * Manage files for a group

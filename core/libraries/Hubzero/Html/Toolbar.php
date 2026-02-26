@@ -9,6 +9,7 @@
 namespace Hubzero\Html;
 
 use Hubzero\Base\Obj;
+use Hubzero\Facades\Lang;
 
 /**
  * ToolBar handler
@@ -165,7 +166,7 @@ class Toolbar extends Obj
 
         // Check for error.
         if ($button === false) {
-            return \Lang::txt('JLIB_HTML_BUTTON_NOT_DEFINED', $type);
+            return Lang::txt('JLIB_HTML_BUTTON_NOT_DEFINED', $type);
         }
         return $button->render($node);
     }
@@ -194,7 +195,7 @@ class Toolbar extends Obj
                 include_once $buttonFile;
             } else {
                 throw new \InvalidArgumentException(
-                    \Lang::txt(
+                    Lang::txt(
                         'JLIB_HTML_BUTTON_NO_LOAD',
                         $buttonClass,
                         $buttonFile
@@ -206,7 +207,7 @@ class Toolbar extends Obj
 
         if (!class_exists($buttonClass)) {
             throw new \InvalidArgumentException(
-                \Lang::txt(
+                Lang::txt(
                     'JLIB_HTML_BUTTON_NO_LOAD',
                     $buttonClass,
                     ''

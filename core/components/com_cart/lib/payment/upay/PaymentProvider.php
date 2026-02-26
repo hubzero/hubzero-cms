@@ -8,6 +8,11 @@
 
 namespace Components\Cart\Lib\Payment\Upay;
 
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+
 /**
  * UPay payment provider
  *

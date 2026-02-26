@@ -10,8 +10,8 @@ namespace Components\Courses\Api\Controllers;
 
 use Hubzero\Component\ApiController;
 use Components\Courses\Models\Course;
-use Request;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
 
 /**
  * API controller for the courses component

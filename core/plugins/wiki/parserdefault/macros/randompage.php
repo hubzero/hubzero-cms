@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a random page
@@ -43,6 +44,6 @@ class RandomPage extends WikiMacro
             ->row();
 
         // Build and return the link
-        return '<a href="' . \Route::url($row->link()) . '">' . $row->title . '</a>';
+        return '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>';
     }
 }

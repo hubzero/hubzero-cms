@@ -11,11 +11,11 @@ namespace Components\Groups\Api\Controllers;
 use Hubzero\Component\ApiController;
 use Hubzero\User\Group;
 use Exception;
-use Request;
+use Hubzero\Facades\Request;
 use Route;
-use Event;
-use Lang;
-use User;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 
 /**
  * API controller class for Group Plugins

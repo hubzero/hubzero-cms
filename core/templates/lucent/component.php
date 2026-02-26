@@ -1,5 +1,7 @@
 <?php
 
+use Hubzero\Facades\Html;
+
 defined('_HZEXEC_') or die();
 
 $browser = new \Hubzero\Browser\Detector();

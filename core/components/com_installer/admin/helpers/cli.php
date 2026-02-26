@@ -8,6 +8,8 @@
 
 namespace Components\Installer\Admin\Helpers;
 
+use Hubzero\Facades\Component;
+
 /**
  * CLI helper class
  */
@@ -193,7 +195,7 @@ class Cli
         static $processUser = null;
 
         if (!isset($user)) {
-            $user = \Component::params('com_installer')->get('system_user', 'hubadmin');
+            $user = Component::params('com_installer')->get('system_user', 'hubadmin');
             // Check this user exists on host, if not set user to apache
             if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0) {
                 $user = 'apache';

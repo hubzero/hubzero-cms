@@ -9,7 +9,7 @@
 namespace Components\Tools\Tables;
 
 use Hubzero\Database\Table;
-use Lang;
+use Hubzero\Facades\Lang;
 
 /**
  * Middleware zone locations table class

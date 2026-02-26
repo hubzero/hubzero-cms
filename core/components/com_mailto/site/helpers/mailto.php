@@ -9,7 +9,7 @@
 namespace Components\Mailto\Site\Helpers;
 
 use stdClass;
-use App;
+use Hubzero\Facades\App;
 
 /**
  * Mailto helper

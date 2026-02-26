@@ -3,6 +3,8 @@
 namespace Plugins\Search\Citations;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 
 /**
  * @package    hubzero-cms

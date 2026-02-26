@@ -12,14 +12,16 @@ use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Hubzero\Component\ApiController;
 use Component;
-use User;
+use Hubzero\Facades\User;
 use Exception;
 use stdClass;
-use Request;
-use Route;
-use Lang;
-use Date;
-use App;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Filesystem;
 
 /**
  * API controller class for resources
@@ -76,7 +78,7 @@ class Entriesv1r0 extends ApiController
         $filters = array(
             'type'   => Request::getString('type', ''),
             'sortby' => Request::getCmd('sortby', 'date'),
-            'limit'  => Request::getInt('limit', \Config::get('list_limit')),
+            'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
             'search' => Request::getString('search', '')
         );
@@ -298,7 +300,7 @@ class Entriesv1r0 extends ApiController
 
         // if cache doesn't exist, create it
         if (!is_dir($dir)) {
-            \Filesystem::makeDirectory($dir);
+            Filesystem::makeDirectory($dir);
         }
 
         if (file_put_contents($dir . DS . $filename . '.tex', $doc) === false) {

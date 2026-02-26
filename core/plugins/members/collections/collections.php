@@ -12,6 +12,14 @@
 namespace Plugins\Members\Collections;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 class Collections extends Plugin
 {
@@ -836,9 +844,9 @@ class Collections extends Plugin
         if (User::isGuest()) {
             return $this->_login();
         }
-        $restrictUsers = \Component::params('com_answers')->get('restrict_users');
+        $restrictUsers = Component::params('com_answers')->get('restrict_users');
         if ($restrictUsers == 'active') {
-            $restrictDays = \Component::params('com_answers')->get('restrict_days');
+            $restrictDays = Component::params('com_answers')->get('restrict_days');
             $now = new \DateTime();
             $registered = new \DateTime(User::get('registerDate'));
             if ($now->diff($registered)->days < $restrictDays) {
@@ -1572,9 +1580,9 @@ class Collections extends Plugin
             );
             return;
         }
-        $restrictUsers = \Component::params('com_answers')->get('restrict_users');
+        $restrictUsers = Component::params('com_answers')->get('restrict_users');
         if ($restrictUsers == 'active') {
-            $restrictDays = \Component::params('com_answers')->get('restrict_days');
+            $restrictDays = Component::params('com_answers')->get('restrict_days');
             $now = new \DateTime();
             $registered = new \DateTime(User::get('registerDate'));
             if ($now->diff($registered)->days < $restrictDays) {

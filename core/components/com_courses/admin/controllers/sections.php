@@ -11,13 +11,15 @@ namespace Components\Courses\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Exception;
 use stdClass;
-use Request;
-use Config;
-use Route;
-use Date;
-use Lang;
-use App;
-use Component;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Notify;
 
 /**
  * Courses controller class for managing sections
@@ -151,7 +153,7 @@ class Sections extends AdminController
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
-            \Notify::error($error);
+            Notify::error($error);
         }
 
         // Output the HTML
@@ -409,7 +411,7 @@ class Sections extends AdminController
 
                     // Make sure upload directory exists and is writable
                     if (!is_dir($uploadDirectory)) {
-                        if (!\Filesystem::makeDirectory($uploadDirectory)) {
+                        if (!Filesystem::makeDirectory($uploadDirectory)) {
                             $this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
                         }
                     }

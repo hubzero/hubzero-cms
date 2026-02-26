@@ -9,10 +9,10 @@
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
-use Component;
-use Filesystem;
-use Lang;
-use Date;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Date;
 
 /**
  * Collection item asset model

@@ -10,6 +10,7 @@ namespace Hubzero\Content;
 
 use Hubzero\Content\Import\Adapter;
 use Hubzero\Content\Import\Model\Import;
+use Hubzero\Facades\Lang;
 
 /**
  * Content Importer class
@@ -139,7 +140,7 @@ class Importer
 
         // do we still not have adapter
         if (!$this->adapter) {
-            throw new \Exception(\Lang::txt('Content Import: No adapter found to count import data.'));
+            throw new \Exception(Lang::txt('Content Import: No adapter found to count import data.'));
         }
     }
 

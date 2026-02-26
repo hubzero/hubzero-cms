@@ -12,6 +12,9 @@
 namespace Plugins\Usage\Domains;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Route;
 
 class Domains extends Plugin
 {
@@ -88,12 +91,12 @@ class Domains extends Plugin
     private function toplist(&$db, $top, $t = 0, $enddate = 0, $raw = 0)
     {
         if (!$db->tableExists('tops')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
             return false;
         }
 
         if (!$db->tableExists('topvals')) {
-            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
+            Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
             return false;
         }
 

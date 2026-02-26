@@ -12,15 +12,16 @@ use Components\Resources\Helpers\Tags;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\Utility\Str;
-use Component;
-use Date;
-use Lang;
-use User;
-use App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
 use stdClass;
-use Filesystem;
-use Request;
-use Route;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
 
 /**
  * Resource entry model
@@ -807,14 +808,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         // Load fulltxt directly from DB rather than via $this->get('fulltxt').
         // The ORM attribute layer strips certain HTML attributes (e.g. alt)
         // during model hydration, which breaks authored content with <img alt="...">.
-        $db = \App::get('db');
+        $db = App::get('db');
         $db->setQuery("SELECT fulltxt FROM #__resources WHERE id=" . (int)$this->get('id'));
         $raw = $db->loadResult();
         $content = stripslashes($raw ?: $this->get('fulltxt'));
         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
         $content = str_replace(array('="/site/', '="site/'), '="/app/site/', $content);
 
-        $content = \Html::content('prepare', $content);
+        $content = Html::content('prepare', $content);
 
         $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 

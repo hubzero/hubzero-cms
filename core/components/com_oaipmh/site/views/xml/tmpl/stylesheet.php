@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+
 defined('_HZEXEC_') or die();
 
 $mprefix = Request::getString('metadataPrefix', 'oai_dc');

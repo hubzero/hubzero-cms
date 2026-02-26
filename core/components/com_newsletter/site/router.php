@@ -9,6 +9,7 @@
 namespace Components\Newsletter\Site;
 
 use Hubzero\Component\Router\Base;
+use Hubzero\Facades\App;
 
 /**
  * Routing class for the component
@@ -61,7 +62,7 @@ class Router extends Base
         // straight com_newsletter logic:
         // here we need to fetch the alias from the database, using the query id:
         if (!empty($query['id'])) {
-            $database = \App::get('db');
+            $database = App::get('db');
             $sql = "SELECT `alias` FROM `#__newsletters` WHERE `id`=" . $database->quote($query['id']);
             $database->setQuery($sql);
             $campaign = $database->loadResult();
@@ -118,7 +119,7 @@ class Router extends Base
             } else {
                 // handle as com_newsletter
                 // Determine the alias from passed id, if possible:
-                $database = \App::get('db');
+                $database = App::get('db');
                 $sql = "SELECT `id` FROM `#__newsletters` WHERE `alias`=" . $database->quote($segments[0]);
                 $database->setQuery($sql);
                 $campaignId = $database->loadResult();

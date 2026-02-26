@@ -8,6 +8,8 @@
 
 namespace Hubzero\Document\Asset;
 
+use Hubzero\Facades\App;
+
 /**
  * Image asset class
  */
@@ -46,7 +48,7 @@ class Image extends File
         parent::__construct($extension, $name);
 
         // Preserve the original file extension
-        $this->ext = strtolower(\App::get('filesystem')->extension($name));
+        $this->ext = strtolower(App::get('filesystem')->extension($name));
     }
 
     /**

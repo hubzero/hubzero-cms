@@ -9,8 +9,9 @@
 namespace Components\Installer\Admin\Models;
 
 use Hubzero\Database\Relational;
-use Filesystem;
-use Lang;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Extension model
@@ -163,8 +164,7 @@ class Extension extends Relational
     public function unpublish()
     {
         if ($this->get('type') == 'template') {
-            if (is_file(\Component::path('com_templates') . '/models/style.php')) {
-
+            if (is_file(Component::path('com_templates') . '/models/style.php')) {
                 $style = \Components\Templates\Models\Style::all()
                     ->whereEquals('template', $this->get('element'))
                     ->whereEquals('client_id', $this->get('client_id'))

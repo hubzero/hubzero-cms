@@ -25,19 +25,20 @@ use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\Arr;
 use Hubzero\Utility\Number;
-use Filesystem;
+use Hubzero\Facades\Filesystem;
 use Exception;
-use Request;
-use Pathway;
-use Config;
-use Event;
-use Route;
-use Lang;
-use User;
-use Date;
-use App;
-use Component;
-use Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Notify;
 
 /**
  * Manage support tickets
@@ -1433,8 +1434,8 @@ class Tickets extends SiteController
         // Set the page title
         $this->_buildTitle($row);
 
-        if (\Notify::any('support')) {
-            foreach (\Notify::messages('support') as $error) {
+        if (Notify::any('support')) {
+            foreach (Notify::messages('support') as $error) {
                 if ($error['type'] == 'error') {
                     $this->setError($error['message']);
                 }
@@ -2385,7 +2386,7 @@ class Tickets extends SiteController
 
         $this->database->setQuery($query);
         if ($nouser) {
-            $users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text');
+            $users[] = Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text');
             $users = array_merge($users, $this->database->loadObjectList());
         } else {
             $users = $this->database->loadObjectList();
@@ -2407,15 +2408,15 @@ class Tickets extends SiteController
                 $groups[$result->alias][] = $result;
             }
             foreach ($groups as $gname => $gusers) {
-                $users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
+                $users[] = Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
                 $users = array_merge($users, $gusers);
-                $users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
+                $users[] = Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
             }
         }
 
         ksort($users);
 
-        $users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
         return $users;
     }
@@ -2443,7 +2444,7 @@ class Tickets extends SiteController
                     if ($hzg->get('gidNumber')) {
                         $members = $hzg->get('members');
 
-                        $users[] = \Html::select('optgroup', stripslashes($hzg->description));
+                        $users[] = Html::select('optgroup', stripslashes($hzg->description));
                         foreach ($members as $member) {
                             $u = User::getInstance($member);
                             if (!(is_object($u) && $u->get('block') == '0')) {
@@ -2457,7 +2458,7 @@ class Tickets extends SiteController
 
                             $users[] = $m;
                         }
-                        $users[] = \Html::select('option', '</OPTGROUP>');
+                        $users[] = Html::select('option', '</OPTGROUP>');
                     }
                 }
             }
@@ -2511,10 +2512,10 @@ class Tickets extends SiteController
         }
 
         if ($nouser) {
-            array_unshift($users, \Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
+            array_unshift($users, Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
         }
 
-        $users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+        $users = Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
         return $users;
     }

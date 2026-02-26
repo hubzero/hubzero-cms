@@ -8,16 +8,16 @@
 
 namespace Components\Installer\Admin\Helpers;
 
-use Submenu;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 use Hubzero\Base\Obj;
 use Hubzero\Access\Access;
 use Hubzero\Form\Field;
 use Filesystem;
-use Html;
-use App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\App;
 use Components\Installer\Admin\Models\Extension;
 
 /**

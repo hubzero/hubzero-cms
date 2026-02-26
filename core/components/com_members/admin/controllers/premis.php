@@ -10,11 +10,11 @@ namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Members\Helpers\Premis as PremisHelper;
-use Filesystem;
-use Request;
+use Hubzero\Facades\Filesystem;
+use Hubzero\Facades\Request;
 use Config;
 use Route;
-use Lang;
+use Hubzero\Facades\Lang;
 use App;
 
 /**

@@ -9,6 +9,7 @@
 namespace Components\Tags\Site;
 
 use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
 
 /**
  * Component entry point
@@ -22,7 +23,7 @@ class Tags extends AbstractComponent
      */
     protected function execute(): void
     {
-        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'tags'));
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'tags'));
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'tags';
         }

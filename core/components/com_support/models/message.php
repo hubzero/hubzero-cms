@@ -9,7 +9,7 @@
 namespace Components\Support\Models;
 
 use Hubzero\Database\Relational;
-use Config;
+use Hubzero\Facades\Config;
 
 /**
  * Support ticket message model

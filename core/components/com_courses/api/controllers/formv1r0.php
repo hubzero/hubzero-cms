@@ -9,14 +9,14 @@
 namespace Components\Courses\Api\Controllers;
 
 use Hubzero\Content\Server;
-use Request;
-use App;
-use Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 
 /**
  * API controller for the time component
  */
-class formv1r0 extends base
+class Formv1r0 extends base
 {
     /**
      * Gets form images

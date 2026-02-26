@@ -12,6 +12,8 @@
 namespace Plugins\Editors\Pagedown;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
+use Hubzero\Facades\Request;
 
 class Pagedown extends Plugin
 {
