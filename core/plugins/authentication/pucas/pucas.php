@@ -376,7 +376,7 @@ class Pucas extends Plugin
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
+        Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
 
         $html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
             $html .= '<div class="signin">';
