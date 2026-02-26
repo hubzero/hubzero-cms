@@ -33,13 +33,23 @@
 	}
 	#hubForm ul#passrules li.error {
 		font-weight: bold;
+		background-color: #b91c1c;
+		border-color: #991616;
 	}
 	#hubForm ul#passrules li.passed {
 		text-decoration: line-through;
 	}
 
 	#hubForm label#botcheck-label {
-		display: none;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	#hubForm .radio {
@@ -63,7 +73,7 @@
 
 /* Username checker */
 	#hubForm p.hint.ok {
-		color: #090;
+		color: #0e6b0e;
 	}
 	#hubForm p.hint.notok {
 		color: #900;
@@ -105,7 +115,7 @@
 	.success-message {
 		font-size: 3.5em;
 		text-align: center;
-		color: #ccc;
+		color: #595959;
 		margin: 0;
 		padding: 0;
 		line-height: 1;
@@ -131,7 +141,7 @@
 		background-color: #f0f0f0;
 	}
 	.account-activation .account-email {
-		color: #eca95a;
+		color: #8a5d00;
 		font-weight: bold;
 	}
 	.account-activation ol {
@@ -172,8 +182,60 @@
 	.ui-autocomplete .ui-menu-item {
 		padding: 10px 5px;
 	}
-	
+
 	.ui-autocomplete .ui-menu-item:hover {
 		background: #f1f1f1;
 		cursor: pointer;
+	}
+
+/* WCAG AA 2.1 Contrast overrides
+   ============================== */
+
+	/* Form labels: #777 (4.48:1) → #545454 (7.5:1) */
+	#hubForm label {
+		color: #545454;
+	}
+
+	/* Required marker: #ff0000 (4.0:1) → #cc0000 (5.9:1); 0.75em → 0.8125rem */
+	#hubForm label .required {
+		color: #cc0000;
+		font-size: 0.8125rem;
+	}
+
+	/* Optional marker: #999 (2.85:1) → #767676 (4.54:1); 0.75em → 0.8125rem */
+	#hubForm label .optional {
+		color: #767676;
+		font-size: 0.8125rem;
+	}
+
+	/* Hint text: #999 (2.85:1) → #767676 (4.54:1) */
+	#hubForm .hint {
+		color: #767676;
+	}
+
+	/* Warning banner: #fff on #fbaf41 (1.9:1) → #452900 on #fbaf41 (7.25:1) */
+	#hubForm p.warning {
+		color: #452900 !important;
+	}
+	#hubForm p.warning a {
+		color: #452900 !important;
+		border-bottom-color: #452900 !important;
+	}
+
+	/* Error notification block: #fff on #dd5555 (3.8:1) → #fff on #b91c1c (5.35:1) */
+	#hubForm > .error {
+		background-color: #b91c1c !important;
+		border-color: #991616 !important;
+	}
+
+	/* Inline field error spans: match darker error background */
+	#hubForm span.error {
+		background-color: #b91c1c !important;
+		border-color: #991616 !important;
+	}
+
+	/* Submit button: #fff on #62c462 (2.18:1) → #fff on #2e7d32 (5.17:1) */
+	#hubForm .btn-success {
+		background-color: #2e7d32;
+		border-color: #256b29;
 	}
