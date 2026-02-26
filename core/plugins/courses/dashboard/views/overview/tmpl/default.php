@@ -101,7 +101,7 @@ $base = $this->offering->link();
                                     $url = $base . '&active=outline';
                                     break;
                                 case 'asset_group':
-                                    $obj = new \Components\Courses\Models\AssetGroup($row->scope_id);
+                                    $obj = new \Components\Courses\Models\Assetgroup($row->scope_id);
                                     $unit = \Components\Courses\Models\Unit::getInstance($obj->get('unit_id'));
                                     $url = $base
                                         . '&active=outline&unit='

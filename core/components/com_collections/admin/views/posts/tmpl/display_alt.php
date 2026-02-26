@@ -45,7 +45,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                 <tr>
                     <th colspan="6">
                         <?php
-                        $collection = \Components\Collections\Models\Collection::oneOrFail(
+                        $collection = \Components\Collections\Models\Orm\Collection::oneOrFail(
                             $this->filters['collection_id']
                         );
                         ?>

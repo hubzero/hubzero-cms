@@ -16,7 +16,7 @@ $this->css()
 $label    = $this->config->get('citation_label', 'type');
 $rollover = $this->config->get('citation_rollover', 'no');
 
-$citationsFormat = new \Components\Citations\Helpers\Format($this->database);
+$citationsFormat = new \Components\Citations\Helpers\Format();
 $template = $citationsFormat->getDefaultFormat();
 
 //batch downloads

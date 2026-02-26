@@ -152,7 +152,7 @@ if ($this->masterAdmin) {
                     <p>
                         <?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe') . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL') . ' ]</a>'; ?>
                     </p>
-                    <?php echo \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid)); ?>
+                    <?php \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid)); ?>
                     <div class="spacer"></div>
 
                     <h3><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login; ?></span></h3>
