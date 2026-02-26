@@ -10,6 +10,7 @@ namespace Hubzero\Module;
 
 use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
+use Hubzero\Utility\Sanitize;
 use Hubzero\Config\Registry;
 
 /**
@@ -571,7 +572,7 @@ class Loader
                     foreach ($cacheparams->modeparams as $key => $value) {
                         // Use int filter for id/catid to clean out spamy slugs
                         if (isset($uri[$key])) {
-                            $safeuri->$key = \Hubzero\Facades\Request::_cleanVar($uri[$key], 0, $value);
+                            $safeuri->$key = Sanitize::filter($uri[$key], $value);
                         }
                     }
                 }
