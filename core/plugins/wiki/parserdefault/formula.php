@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Wiki\Models;
+namespace Plugins\Wiki\Parserdefault;
 
 use Hubzero\Database\Relational;
 

@@ -14,7 +14,7 @@ use Hubzero\Content\Migration\Base;
  * Migration script for installing mywishes module
  *
 */
-class Migration20190109000000ModMywishes extends Base
+class Migration20190109000000ModMyWishes extends Base
 {
     /**
      * Up
