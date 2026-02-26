@@ -326,7 +326,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(
+        Document::addStyleSheet(
             Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css'
         );
 

@@ -97,15 +97,15 @@ class Opengraph extends Plugin
 
         // Title
         if ($title = $this->params->get('title' . $suffix, $thisTitle)) {
-            Document::setMetadata('og:title', htmlspecialchars($title));
+            Document::setMetaData('og:title', htmlspecialchars($title));
         }
 
         // Type
-        Document::setMetadata('og:type', $this->params->get('type' . $suffix, 'article'));
+        Document::setMetaData('og:type', $this->params->get('type' . $suffix, 'article'));
 
         // Image
         if ($img = $this->params->get('image' . $suffix, '')) {
-            Document::setMetadata('og:image', Request::base(false) . htmlspecialchars($img));
+            Document::setMetaData('og:image', Request::base(false) . htmlspecialchars($img));
         } else {
             // Try to find image in article
             $img = 0;
@@ -121,7 +121,7 @@ class Opengraph extends Plugin
 
             preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $src);
             if (isset($src[1]) && $src[1] != '') {
-                Document::setMetadata('og:image', Request::base(false) . htmlspecialchars($src[1]));
+                Document::setMetaData('og:image', Request::base(false) . htmlspecialchars($src[1]));
                 $img = 1;
             }
 
@@ -139,7 +139,7 @@ class Opengraph extends Plugin
                     }
 
                     if ($imgPath != '') {
-                        Document::setMetadata('og:image', $imgPath);
+                        Document::setMetaData('og:image', $imgPath);
                     }
                 }
             }
@@ -147,24 +147,24 @@ class Opengraph extends Plugin
 
         // URL
         if ($url = $this->params->get('url' . $suffix, Request::current())) {
-            Document::setMetadata('og:url', htmlspecialchars($url));
+            Document::setMetaData('og:url', htmlspecialchars($url));
         }
 
         // Site Name
         if ($sitename = $this->params->get('site_name' . $suffix, Config::get('sitename'))) {
-            Document::setMetadata('og:site_name', htmlspecialchars($sitename));
+            Document::setMetaData('og:site_name', htmlspecialchars($sitename));
         }
 
         // Description
         if ($desc = $this->params->get('description' . $suffix, $thisDesc)) {
-            Document::setMetadata('og:description', htmlspecialchars($desc));
+            Document::setMetaData('og:description', htmlspecialchars($desc));
         } elseif ($desc = Config::get('MetaDesc')) {
-            Document::setMetadata('og:description', htmlspecialchars($desc));
+            Document::setMetaData('og:description', htmlspecialchars($desc));
         }
 
         // FB App ID - COMMON
         if ($app_id = $this->params->get('app_id', '')) {
-            Document::setMetadata('fb:app_id', htmlspecialchars($app_id));
+            Document::setMetaData('fb:app_id', htmlspecialchars($app_id));
         }
 
         // Other
@@ -178,7 +178,7 @@ class Opengraph extends Plugin
                             if (isset($vother[0]) && isset($vother[1])) {
                                 $metaName = htmlspecialchars(strip_tags($vother[0]));
                                 $metaValue = htmlspecialchars($vother[1]);
-                                Document::setMetadata($metaName, $metaValue);
+                                Document::setMetaData($metaName, $metaValue);
                             }
                         }
                     }

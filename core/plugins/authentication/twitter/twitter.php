@@ -389,7 +389,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/twitter/assets/css/twitter.css');
+        Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/twitter/assets/css/twitter.css');
 
         $html = '<a class="twitter account" href="'
             . Route::url('index.php?option=com_users&view=login&authenticator=twitter'

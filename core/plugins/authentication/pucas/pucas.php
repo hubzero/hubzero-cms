@@ -359,7 +359,7 @@ class Pucas extends Plugin
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(
+        Document::addStyleSheet(
             Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css'
         );
 

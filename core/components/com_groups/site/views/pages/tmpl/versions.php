@@ -24,7 +24,7 @@ $editPageUrl = 'index.php?option=com_groups&cn=' .
 $stylesheets = \Components\Groups\Helpers\View::getPageCss($this->group);
 
 foreach ($stylesheets as $stylesheet) {
-    Document::addStylesheet($stylesheet);
+    Document::addStyleSheet($stylesheet);
 }
 
 // add styles & scripts

@@ -416,7 +416,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/facebook/assets/css/facebook.css');
+        Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/facebook/assets/css/facebook.css');
 
         $html = '<a class=\"facebook account\" href=\"'
             . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return) . '\">';

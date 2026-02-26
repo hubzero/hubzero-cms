@@ -64,7 +64,7 @@ class Pagedown extends Plugin
         $stylesheetPaths = $this->_getStylesheetPaths();
 
         foreach ($stylesheetPaths as $stylesheetPath) {
-            Document::addStylesheet($stylesheetPath);
+            Document::addStyleSheet($stylesheetPath);
         }
     }
 

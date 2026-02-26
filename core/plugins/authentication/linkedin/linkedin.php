@@ -387,7 +387,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
+        Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
 
         $html = '<a class=\"linkedin account\" href=\"'
             . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '\">';
