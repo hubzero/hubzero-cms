@@ -72,7 +72,7 @@ class Ini extends Base
 			return false;
 		}
 
-		if (substr($data, 0, 1) == '{')
+		if (substr($data, 0, 1) == '{' || substr($data, 0, 2) == '[{')
 		{
 			return false;
 		}
