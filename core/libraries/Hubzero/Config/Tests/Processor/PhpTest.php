@@ -100,25 +100,25 @@ class PhpTest extends TestCase
 
         // Build expected string (array format)
         $this->str = "<?php\nreturn array(\n\t'foo' => '1',\n\t'bar' => '',\n\t'app' => array("
-            . "\"application_env\" => \"development\", \"editor\" => \"ckeditor\", "
-            . "\"list_limit\" => \"25\", \"helpurl\" => \"English (GB) - HUBzero help\", "
-            . "\"debug\" => \"1\", \"debug_lang\" => \"0\", \"sef\" => \"1\", "
-            . "\"sef_rewrite\" => \"1\", \"sef_suffix\" => \"0\", \"sef_groups\" => \"0\", "
-            . "\"feed_limit\" => \"10\", \"feed_email\" => \"author\"),\n\t'seo' => array("
-            . "\"sef\" => \"1\", \"sef_groups\" => \"0\", \"sef_rewrite\" => \"1\", "
-            . "\"sef_suffix\" => \"0\", \"unicodeslugs\" => \"0\", "
-            . "\"sitename_pagetitles\" => \"0\"),\n);";
+            . "'application_env' => 'development', 'editor' => 'ckeditor', "
+            . "'list_limit' => '25', 'helpurl' => 'English (GB) - HUBzero help', "
+            . "'debug' => '1', 'debug_lang' => '0', 'sef' => '1', "
+            . "'sef_rewrite' => '1', 'sef_suffix' => '0', 'sef_groups' => '0', "
+            . "'feed_limit' => '10', 'feed_email' => 'author'),\n\t'seo' => array("
+            . "'sef' => '1', 'sef_groups' => '0', 'sef_rewrite' => '1', "
+            . "'sef_suffix' => '0', 'unicodeslugs' => '0', "
+            . "'sitename_pagetitles' => '0'),\n);";
 
         // Build expected string (object format)
         $this->strObject = "<?php\nclass Config\n{\n\tvar \$foo = '1';\n\tvar \$bar = '';"
-            . "\n\tvar \$app = array(\"application_env\" => \"development\", "
-            . "\"editor\" => \"ckeditor\", \"list_limit\" => \"25\", "
-            . "\"helpurl\" => \"English (GB) - HUBzero help\", \"debug\" => \"1\", "
-            . "\"debug_lang\" => \"0\", \"sef\" => \"1\", \"sef_rewrite\" => \"1\", "
-            . "\"sef_suffix\" => \"0\", \"sef_groups\" => \"0\", \"feed_limit\" => \"10\", "
-            . "\"feed_email\" => \"author\");\n\tvar \$seo = array(\"sef\" => \"1\", "
-            . "\"sef_groups\" => \"0\", \"sef_rewrite\" => \"1\", \"sef_suffix\" => \"0\", "
-            . "\"unicodeslugs\" => \"0\", \"sitename_pagetitles\" => \"0\");\n}";
+            . "\n\tvar \$app = array('application_env' => 'development', "
+            . "'editor' => 'ckeditor', 'list_limit' => '25', "
+            . "'helpurl' => 'English (GB) - HUBzero help', 'debug' => '1', "
+            . "'debug_lang' => '0', 'sef' => '1', 'sef_rewrite' => '1', "
+            . "'sef_suffix' => '0', 'sef_groups' => '0', 'feed_limit' => '10', "
+            . "'feed_email' => 'author');\n\tvar \$seo = array('sef' => '1', "
+            . "'sef_groups' => '0', 'sef_rewrite' => '1', 'sef_suffix' => '0', "
+            . "'unicodeslugs' => '0', 'sitename_pagetitles' => '0');\n}";
 
         parent::setUp();
     }
