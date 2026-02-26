@@ -174,12 +174,12 @@ $groupDefs = $groups->getAllGroups();
 
 		<div class="input-wrap">
 			<label for="field-award-per">Award per field completed</label>
-			<input type="text" name="award-per" id="field-award-per" value="<?php echo str_replace('"', '&quot;', $awardPer); ?>" />
+			<input type="text" name="award-per" id="field-award-per" value="<?php echo str_replace('"', '&quot;', $awardPer ?? ''); ?>" />
 		</div>
 
 		<div class="input-wrap">
 			<label for="field-test-group">Test group (name or id number)</label>
-			<input type="text" name="test-group" id="field-test-group" value="<?php echo str_replace('"', '&quot;', $testGroup); ?>" />
+			<input type="text" name="test-group" id="field-test-group" value="<?php echo str_replace('"', '&quot;', $testGroup ?? ''); ?>" />
 		</div>
 
 		<fieldset>
