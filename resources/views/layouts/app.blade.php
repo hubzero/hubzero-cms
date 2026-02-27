@@ -11,6 +11,7 @@
         <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
             <a href="/" class="text-xl font-semibold text-gray-900">Hubzero</a>
             <nav class="flex gap-4 text-sm text-gray-600">
+                <a href="/blog" class="hover:text-gray-900">Blog</a>
                 <a href="/status" class="hover:text-gray-900">Status</a>
             </nav>
         </div>

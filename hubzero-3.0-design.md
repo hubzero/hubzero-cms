@@ -4618,11 +4618,13 @@ existing templates render without touching `core/`. Module positions are stubbed
 instance. On real hub deployments, templates get a mechanical facade-rename
 cleanup pass — structure and HTML output stay identical.
 
-**MVP 2 — First component (weeks)**
-`com_blog` (or another simple component) fully packaged under `packages/`. Eloquent
-models reading from existing blog tables, Blade views rendering entries. The legacy
-catch-all still handles everything else. This is where the Eloquent shim for
-`Relational`, the view bridge, and the package structure get built and proven.
+**MVP 2 — First component (done)**
+Blog read-only viewer using Eloquent models on existing `blog_entries`,
+`blog_comments`, and `users` tables. Blade views with shared Tailwind components
+(`<x-page-header>`, `<x-card>`, `<x-comment>`). Dual rendering via `?tmpl=legacy`
+query string reuses the legacy template engine from MVP 1. Not yet in a
+`packages/` layout — models in `app/Models/`, controller in `app/Http/Controllers/`.
+BlogSeeder provides sample data for development.
 
 **MVP 3 — Admin panel (days after MVP 2)**
 Filament installed with a blog resource. CRUD for blog entries in the new admin
