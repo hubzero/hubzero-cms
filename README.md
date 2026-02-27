@@ -1,34 +1,9 @@
-# The HUBzero® Platform for Scientific Collaboration
-[![Build Status](https://travis-ci.org/hubzero/hubzero-cms.svg?branch=master)](https://travis-ci.org/hubzero/hubzero-cms)
+# Hubzero&reg; CMS — 3.0 Development Branch
 
-## What is HUBzero?
+**WARNING: This is a highly speculative development branch.**
 
-HUBzero is an open source software platform for building powerful Web sites that support scientific discovery, learning, and collaboration. Some refer to such web sites as "collaboratories" supporting "team science." We call them "hubs" because each site becomes a focal point for its user community. The HUBzero platform now supports dozens of hubs across a variety of disciplines, including cancer research, pharmaceuticals, biofuels, microelectromechanical systems, climate modeling, water quality, volcanology, and more.
+This branch is experimental, unstable, and subject to continuous rebasing. It should not be used by anyone for any purpose.
 
-For more information about HUBzero, visit https://hubzero.org.
+The contents of this branch do not represent, imply, or guarantee any future direction of the Hubzero&reg; platform. Features, architecture, and code present here may be abandoned, redesigned, or removed without notice.
 
-## Installation
-
-### Packages
-
-Instructions for installing the HUBzero platform from packages can be found at https://help.hubzero.org/documentation/current/installation.
-
-## Documentation
-
-Both user and developer documentation for the CMS can be found at https://help.hubzero.org/documentation/current.
-
-## Contributing
-
-HUBzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
-
-## Issues
-
-Please report any bugs or issues at https://help.hubzero.org/support.
-
-## Roadmap
-
-Checkout what is on our development roadmap at https://help.hubzero.org/documentation/roadmap.
-
-## Testing
-
-This project is tested with BrowserStack.
+For the current stable release, see the `2.4-main` branch.
