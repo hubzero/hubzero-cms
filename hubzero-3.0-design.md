@@ -1,5 +1,7 @@
 # Hubzero&reg; 3.0: Laravel Migration Architecture
 
+Copyright &copy; 2026 Purdue University. All Rights Reserved.
+
 A strangler-fig migration plan to replace `core/libraries/Hubzero/` with Laravel
 while preserving the CMS extension architecture (components, plugins, modules)
 as Composer packages.
@@ -68,7 +70,7 @@ as Composer packages.
 ### Proposed Architecture
 
 ```
-index.php (unchanged entry point)
+public/index.php (Laravel entry point, separate document root)
     └── Laravel Application (Illuminate\Foundation\Application)
             ├── Kernel::handle($request)
             │     ├── Tenant resolution middleware
@@ -81,7 +83,8 @@ index.php (unchanged entry point)
 **Key decisions:**
 - Replace `Hubzero\Base\Application` with `Illuminate\Foundation\Application`
 - Replace `Hubzero\Container\Container` (Pimple) with Laravel's IoC container (auto-wiring)
-- `index.php` entry point at repo root (existing document root preserved — see MVP roadmap)
+- `public/index.php` entry point with `public/` as Laravel's document root
+- Legacy `index.php` at repo root stays untouched (see MVP roadmap)
 - Single root `composer.json`
 - FrankenPHP worker mode via Laravel Octane from the start
 - All extensions (components, plugins, modules, templates, language packs) are
@@ -203,9 +206,9 @@ hubzero-cms/
 │               ├── composer.json         # acme/component-widget
 │               └── src/
 │
-├── index.php                     ← Laravel entry point (replaces legacy)
-├── index.legacy.php              ← Original HubZero entry point (preserved)
-├── public/                       ← Laravel public assets (CSS, JS, images)
+├── index.php                     ← Original HubZero entry point (unchanged)
+├── public/                       ← Laravel document root
+│   └── index.php                 ← Laravel entry point
 │
 ├── routes/                       ← Laravel route files (top-level)
 │   ├── web.php
@@ -284,9 +287,9 @@ extension package can be installed in either location without modification:
 
 The override chain is: **group packages → tenant packages → shared packages → Laravel core** (see §21 for groups).
 
-**Entry point:** `index.php` stays at the repo root — the existing document root
-is preserved. The original entry point is renamed to `index.legacy.php` and
-FrankenPHP can switch between them via Caddyfile config (see MVP roadmap appendix).
+**Entry points:** Legacy `index.php` stays at the repo root untouched — the
+existing document root is preserved. Laravel uses the conventional
+`public/index.php` with `public/` as its own document root.
 
 ---
 
@@ -4573,9 +4576,10 @@ root alongside `core/`, which remains untouched and runnable throughout the proc
 ### Repository Layout
 
 ```
-hubzero-cms/                       ← existing repo root (current document root)
-├── index.php                      ← Laravel entry point (replaces legacy)
-├── index.legacy.php               ← original HubZero entry point (preserved)
+hubzero-cms/                       ← existing repo root (legacy document root)
+├── index.php                      ← original HubZero entry point (unchanged)
+├── public/                        ← Laravel document root
+│   └── index.php                  ← Laravel entry point
 ├── core/                          ← existing HubZero codebase (unchanged)
 │   ├── vendor/                    ← existing Composer dependencies
 │   └── ...
@@ -4584,28 +4588,25 @@ hubzero-cms/                       ← existing repo root (current document root
 ├── routes/                        ← Laravel route definitions
 ├── packages/                      ← migrated components as Laravel packages
 ├── resources/                     ← Blade views, Vite assets
-├── public/                        ← Laravel public assets
 ├── vendor/                        ← Laravel Composer dependencies
 ├── composer.json                  ← new root-level Composer
 └── artisan
 ```
 
-The existing `index.php` is renamed to `index.legacy.php`. Laravel's bootstrap
-takes its place. FrankenPHP's Caddyfile controls which entry point is active — swap
-with a config change and restart, no code changes required. Both can run
-simultaneously on different ports during development for side-by-side comparison.
+The existing `index.php` is left untouched. Laravel uses the conventional
+`public/index.php` with `public/` as its document root. Both stacks run
+simultaneously during development for side-by-side comparison.
 
 The `core/` directory keeps its own `vendor/` and `composer.json` — the two
-dependency trees are independent. Old HubZero remains fully runnable by pointing
-FrankenPHP (or Apache) at `index.legacy.php`.
+dependency trees are independent. Old HubZero remains fully runnable on
+its existing port.
 
 ### MVP Milestones
 
-**MVP 0 — Laravel boots (afternoon)**
-Replace `index.php` with Laravel's bootstrap. A catch-all route invokes the legacy
-bridge — includes the old autoloader, helper script, and application container, then
-returns the response. Every existing page works. The site is "running on Laravel"
-even though Laravel is just proxying.
+**MVP 0 — Laravel boots (done)**
+Add `public/index.php` as Laravel 12's entry point with `public/` as its own
+document root. A `/hello` route proves Laravel is running. No legacy code is
+touched.
 
 **MVP 1 — First real route (day)**
 A static content page served by a Laravel route with a Blade layout. Database

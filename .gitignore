@@ -1,20 +1,43 @@
-app/**
-core/vendor/**
-administrator/cache/**
-logs/**
-js_apps/**
-google*.html
-bans
-robots.txt
-auto-deployments.log
-deployments.log
-freeze-auto-deployments
-config/
-favicon.ico
-.phan/**
-psalm.xml
-.phpunit.result.cache
-phpunit.xml
-*.sqlite3
-.claude/
-.vscode/
+# Laravel
+/vendor/
+/.env
+/.env.backup
+/bootstrap/cache/
+/storage/framework/
+/storage/logs/
+
+# Legacy HubZero deployment artifacts (site-specific, under app/)
+/app/bootstrap/
+/app/cache/
+/app/components/
+/app/config/
+/app/language/
+/app/logs/
+/app/migrations/
+/app/modules/
+/app/plugins/
+/app/site/
+/app/templates/
+/app/tmp/
+
+# Legacy HubZero
+/core/vendor/
+/administrator/cache/
+/js_apps/
+/bans
+/auto-deployments.log
+/deployments.log
+/freeze-auto-deployments
+/favicon.ico
+
+# Google verification
+/google*.html
+/robots.txt
+
+# IDE and tools
+/.claude/
+/.vscode/
+/.phan/
+/phpunit.xml
+/.phpunit.result.cache
+/core/.phpunit.result.cache

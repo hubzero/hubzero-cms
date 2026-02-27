@@ -1,3 +1,7 @@
+# Hubzero&reg; 2.4: Architecture &amp; Design
+
+Copyright &copy; 2026 Purdue University. All Rights Reserved.
+
 ## Project Overview
 
 Hubzero is an open source PHP platform for building scientific collaboration websites ("hubs"). It's a component-based CMS, using modern patterns like dependency injection and an Eloquent-style ORM.
