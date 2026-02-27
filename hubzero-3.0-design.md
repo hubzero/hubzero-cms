@@ -4608,10 +4608,11 @@ Add `public/index.php` as Laravel 12's entry point with `public/` as its own
 document root. A `/hello` route proves Laravel is running. No legacy code is
 touched.
 
-**MVP 1 — First real route (day)**
-A static content page served by a Laravel route with a Blade layout. Database
-connection reads from existing HubZero tables. A real page with header and footer
-rendered by Blade, proving the two stacks coexist.
+**MVP 1 — First real route (done)**
+A `/status` health-check page served by a Blade layout with Tailwind CSS (CDN).
+Database connection reads from the existing HubZero MariaDB instance. The page
+shows Laravel version, PHP version, database connection status and version, and
+table count. Proves Blade rendering and database connectivity coexist with legacy.
 
 **MVP 2 — First component (weeks)**
 `com_blog` (or another simple component) fully packaged under `packages/`. Eloquent

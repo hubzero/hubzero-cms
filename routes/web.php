@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/hello', function () {
@@ -15,3 +16,5 @@ Route::get('/hello', function () {
 Route::get('/', function () {
     return 'Hubzero 3.0 — Laravel is running.';
 });
+
+Route::get('/status', StatusController::class);
