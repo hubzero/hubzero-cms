@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use App\Http\Controllers\LegacyStatusController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/status', StatusController::class);
+Route::get('/status/legacy', LegacyStatusController::class);

@@ -4608,11 +4608,15 @@ Add `public/index.php` as Laravel 12's entry point with `public/` as its own
 document root. A `/hello` route proves Laravel is running. No legacy code is
 touched.
 
-**MVP 1 — First real route (done)**
-A `/status` health-check page served by a Blade layout with Tailwind CSS (CDN).
-Database connection reads from the existing HubZero MariaDB instance. The page
-shows Laravel version, PHP version, database connection status and version, and
-table count. Proves Blade rendering and database connectivity coexist with legacy.
+**MVP 1 — First real route + dual-view engine (done)**
+A `/status` health-check page rendered two ways: Blade layout with Tailwind CSS
+(`/status`) and the existing HubZero PHP template (`/status/legacy`).
+`LegacyTemplateRenderer` processes jdoc:include tags and provides stub facades
+(`Html`, `Lang`, `Config`, `User`, `Request`, `App`, `Component`, `Route`) so
+existing templates render without touching `core/`. Module positions are stubbed
+(return empty). Database connection reads from the existing HubZero MariaDB
+instance. On real hub deployments, templates get a mechanical facade-rename
+cleanup pass — structure and HTML output stay identical.
 
 **MVP 2 — First component (weeks)**
 `com_blog` (or another simple component) fully packaged under `packages/`. Eloquent
