@@ -4626,26 +4626,60 @@ query string reuses the legacy template engine from MVP 1. Not yet in a
 `packages/` layout — models in `app/Models/`, controller in `app/Http/Controllers/`.
 BlogSeeder provides sample data for development.
 
-**MVP 3 — Admin panel (days after MVP 2)**
-Filament installed with a blog resource. CRUD for blog entries in the new admin
-panel, managing real data alongside the old admin.
+**MVP 3 — Core: User model + authentication**
+Laravel User model on existing `jos_users` with HubZero's group-based permission
+system. Auth middleware so controllers can use `auth()->user()` and
+`$user->can('core.edit', 'com_blog')`. Session login against existing password
+hashes. Unblocks every component that checks permissions.
 
-**MVP 4 — Two rendering paths coexist (week)**
-Blog served by Blade, everything else by the legacy Document pipeline. Both share
-the same template chrome. A visitor cannot tell which engine served a given page.
-Design tokens and Blade component library (§10) in use for the new views.
-Bot protection middleware (§27) active on all routes.
+**MVP 4 — Core: Language system**
+Translation layer that loads HubZero's INI language files
+(`en-GB.com_blog.ini`) and exposes them via Laravel's `__()` / `@lang()`.
+Components keep existing language files — no string migration. A `Lang::txt()`
+compatibility helper maps to Laravel's translator.
 
-**MVP 5 — Multi-tenancy (week)**
-TenantManager resolving tenants from hostname. Two tenants hitting the same codebase,
-each seeing their own data.
+**MVP 5 — First real migration: com_blog**
+Migrate `core/components/com_blog/` to Laravel. Convert Relational models to
+Eloquent, views to Blade, task controller to Laravel controller, component router
+to Laravel routes. Read views first (browse, entry, comments), then write (new,
+edit, delete, comment). Uses User model (MVP 3) and language system (MVP 4).
 
-**MVP 6 — Patterns solidify (ongoing)**
-A second, more complex component migrated (e.g., `com_publications`). The migration
-template and checklist get battle-tested. After this milestone, remaining components
-follow an established pattern.
+**MVP 6 — Second migration: com_poll**
+Migrate com_poll (3 models, simplest component). Validates the migration pattern
+generalizes. Identifies shared infrastructure gaps. At this point we have a
+repeatable playbook for component migration.
 
-All time estimates assume LLM-assisted development with human review and steering.
-Multiply by roughly 5–10× for people-only time. The real bottleneck is not code
-generation — it is the per-component decisions about schema preservation, undocumented
-side effects, and legacy behavior that require human judgement.
+**MVP 7 — Admin panel (Filament)**
+Filament with admin resources for blog and poll. CRUD in a modern admin UI
+managing real data alongside the old admin.
+
+**MVP 8 — Legacy catch-all route**
+Fallback route passes unhandled requests to legacy HubZero router. Migrated
+components served by Laravel, everything else falls through to `core/`. Visitors
+can't tell which engine served a given page. Both share the same template chrome.
+
+**MVP 9 — Event/plugin bridge**
+Laravel events wired to HubZero plugin handlers. `Event::trigger()` routes to
+Laravel events, existing plugin `onEventName` methods fire as listeners. Enables
+cross-cutting concerns (search indexing, activity logging, notifications) to work
+during migration.
+
+**MVP 10+ — Component migrations (ongoing)**
+Migrate in rough complexity order:
+- Simple: com_answers, com_kb, com_wishlist, com_feedback
+- Medium: com_citations, com_support, com_wiki, com_storefront
+- Complex: com_members, com_groups, com_resources, com_tools
+- Heaviest: com_projects, com_publications, com_courses
+Build shared infrastructure as needed (tagging, search, file handling).
+Cross-dependent components (publications↔projects, members↔courses) migrate
+together.
+
+**MVP 11 — Multi-tenancy**
+TenantManager resolving tenants from hostname. Two tenants, same codebase, own
+data. Can be done earlier if deployment needs require it.
+
+Strategy is **migrate first, rewrite later** — get existing component code
+running on Laravel with Eloquent and Blade, then clean up and modernize once
+it's working and tested. The real bottleneck is not code generation — it is the
+per-component decisions about schema preservation, undocumented side effects,
+and legacy behavior that require human judgement.
