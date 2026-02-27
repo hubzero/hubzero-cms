@@ -13,3 +13,6 @@ config/
 favicon.ico
 .phan/**
 psalm.xml
+.claude
+.vscode
+phpunit.xml
