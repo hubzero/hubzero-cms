@@ -180,6 +180,10 @@
 	width: auto;
 	border-bottom: none;
 	padding: 0px;
+	color: #005f82;
+}
+.auth .forgots a:hover {
+	color: #003d54;
 }
 .auth .remember-me-label {
 	vertical-align: middle;

@@ -7,6 +7,9 @@
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+$inputId = 'searchword' . (self::$instances > 1 ? $this->module->id : '');
+$formId  = 'searchform' . (self::$instances > 1 ? $this->module->id : '');
 ?>
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform<?php echo (self::$instances) > 1 ? $this->module->id : ''; ?>" class="<?php echo $moduleclass_sfx; ?>searchform" role="search" aria-label="<?php echo $text; ?>">
 	<fieldset>

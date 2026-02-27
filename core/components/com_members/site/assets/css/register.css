@@ -33,11 +33,46 @@
 	}
 	#hubForm ul#passrules li.error {
 		font-weight: bold;
-		background-color: #b91c1c;
-		border-color: #991616;
+		background-color: #8b3a3a;
+		border-color: #6e2e2e;
+		color: #fff;
 	}
 	#hubForm ul#passrules li.passed {
 		text-decoration: line-through;
+	}
+
+	/* Select boxes and ORCID input: align with labels inside fieldset padding */
+	#hubForm .form-group select,
+	#hubForm .orcid-field {
+		width: calc(100% - 4em);
+		margin-left: 2em;
+	}
+
+	/* CAPTCHA fieldset: ensure enough room for reCAPTCHA widget */
+	#hubForm .form-group {
+		padding-bottom: 1.5em;
+	}
+
+	/* Sidebar explaination boxes */
+	#hubForm .explaination {
+		background: #f0f0f0;
+		padding: 10px 15px;
+		border-radius: 0.27em;
+		border-top: none;
+	}
+	#hubForm .explaination:first-of-type {
+		background: #2b6cb0;
+		border-left: 3px solid #1e4f82;
+		color: #fff;
+	}
+	#hubForm .explaination:first-of-type a {
+		color: #fff;
+		text-decoration: underline;
+	}
+
+	/* Submit button: reduce gap above */
+	#hubForm p.submit {
+		margin-top: -1em;
 	}
 
 	#hubForm label#botcheck-label {
@@ -213,13 +248,26 @@
 		color: #767676;
 	}
 
-	/* Warning banner: #fff on #fbaf41 (1.9:1) → #452900 on #fbaf41 (7.25:1) */
+	/* Password rules: inherit (too light on #dde0e3 bg) → #545454 (4.86:1 on #dde0e3) */
+	#hubForm ul#passrules li {
+		color: #545454;
+	}
+
+	/* ORCID about text: ensure contrast on light background */
+	.orcid-about {
+		color: #545454;
+	}
+
+	/* Warning banner: solid muted background with white text */
 	#hubForm p.warning {
-		color: #452900 !important;
+		background-color: #8a6d3b !important;
+		background-image: none !important;
+		border-color: #6e5730 !important;
+		color: #fff !important;
 	}
 	#hubForm p.warning a {
-		color: #452900 !important;
-		border-bottom-color: #452900 !important;
+		color: #fff !important;
+		border-bottom-color: #fff !important;
 	}
 
 	/* Error notification block: #fff on #dd5555 (3.8:1) → #fff on #b91c1c (5.35:1) */

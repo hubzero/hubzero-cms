@@ -91,8 +91,8 @@ class Orcid extends Text
 				$html[] = 'sandbox.';
 			}
 			$html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
-			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt=""/>'
-			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
+			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+			. ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
 		}
 
 		// Grant permission to manage ORCID record
@@ -109,13 +109,13 @@ class Orcid extends Text
 				$html[] = 'sandbox.';
 			}
 			$html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/read-limited%20/activities/update%20/person/update' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($permissionURI)
-			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt=""/>'
-			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
+			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+			. ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
 		}
 		$html[] = '	</div>';
 
 		$html[] = '</div>';
-		$html[] = '<p><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
+		$html[] = '<p class="orcid-about"><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" role="presentation" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
 
 		Behavior::framework(true);
 		Behavior::modal();
