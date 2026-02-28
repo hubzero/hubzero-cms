@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9595950788010115690816a71c66850b",
+    "content-hash": "275542926183572b4197077344a2e030",
     "packages": [
         {
             "name": "brick/math",
@@ -1051,6 +1051,39 @@
                 }
             ],
             "time": "2025-08-22T14:27:06+00:00"
+        },
+        {
+            "name": "hubzero/framework",
+            "version": "dev-3.0-dev",
+            "dist": {
+                "type": "path",
+                "url": "packages/hubzero/framework",
+                "reference": "a156c44529eec8bdcc4395b23a33f3f2a4396bbc"
+            },
+            "require": {
+                "laravel/framework": "^12.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Hubzero\\Framework\\FrameworkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hubzero\\Framework\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Hubzero framework — shared infrastructure for all extensions",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "laravel/framework",
@@ -8151,7 +8184,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,

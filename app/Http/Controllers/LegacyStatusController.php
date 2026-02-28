@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers;
 
-use App\View\LegacyTemplateRenderer;
+use Hubzero\Framework\View\LegacyTemplateRenderer;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;

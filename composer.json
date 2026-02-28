@@ -4,8 +4,19 @@
     "description": "Hubzero CMS — Laravel foundation",
     "keywords": ["cms", "hubzero", "laravel"],
     "license": "GPL-2.0-or-later",
+    "repositories": [
+        { "type": "path", "url": "packages/*/framework" },
+        { "type": "path", "url": "packages/*/components/com_*" },
+        { "packagist.org": false },
+        {
+            "type": "composer",
+            "url": "https://packagist.org",
+            "exclude": ["hubzero/*"]
+        }
+    ],
     "require": {
         "php": "^8.2",
+        "hubzero/framework": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10"
     },
@@ -20,7 +31,8 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Hubzero\\": "core/libraries/Hubzero/"
         }
     },
     "autoload-dev": {
@@ -47,6 +59,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

@@ -10,9 +10,20 @@
     <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
             <a href="/" class="text-xl font-semibold text-gray-900">Hubzero</a>
-            <nav class="flex gap-4 text-sm text-gray-600">
+            <nav class="flex items-center gap-4 text-sm text-gray-600">
                 <a href="/blog" class="hover:text-gray-900">Blog</a>
                 <a href="/status" class="hover:text-gray-900">Status</a>
+                @auth
+                    <span class="text-gray-400">|</span>
+                    <span class="text-gray-700">{{ auth()->user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="hover:text-gray-900">Sign Out</button>
+                    </form>
+                @else
+                    <span class="text-gray-400">|</span>
+                    <a href="{{ route('login') }}" class="hover:text-gray-900">Sign In</a>
+                @endauth
             </nav>
         </div>
     </header>
