@@ -43,7 +43,9 @@ class Loader
             abort(404, sprintf('Component "%s" not found.', $option));
         }
 
-        $client = 'site';
+        $client = app()->bound('hubzero.client')
+            ? app('hubzero.client')->alias
+            : 'site';
         $clientPath = $componentPath . DIRECTORY_SEPARATOR . $client;
 
         // Define PATH_COMPONENT for legacy compatibility
@@ -57,13 +59,39 @@ class Loader
             define('PATH_COMPONENT_ADMINISTRATOR', $componentPath . DIRECTORY_SEPARATOR . 'admin');
         }
 
+        // Register class aliases that legacy components expect as global classes.
+        // These must be set before the component runs, since component views
+        // (e.g. com_cpanel/html/default.php) reference Toolbar::, Submenu::, etc.
+        $aliases = [
+            'Toolbar' => \Hubzero\Facades\Toolbar::class,
+            'Submenu' => \Hubzero\Facades\Submenu::class,
+            'Session' => \Hubzero\Facades\Session::class,
+            'Module'  => \Hubzero\Facades\Module::class,
+        ];
+        foreach ($aliases as $alias => $class) {
+            if (!class_exists($alias, false)) {
+                class_alias($class, $alias);
+            }
+        }
+
         // Register generic autoloader for Components\ namespace
         $compName = ucfirst(substr($option, 4));
         $this->registerComponentAutoloader();
 
         // Find and execute the component
-        $namespace = '\\Components\\' . $compName . '\\Site\\' . $compName;
+        $clientNs = ucfirst($client); // 'Site' or 'Admin'
+        $namespace = '\\Components\\' . $compName . '\\' . $clientNs . '\\' . $compName;
         $bootstrapPath = $clientPath . DIRECTORY_SEPARATOR . $compName . '.php';
+
+        // Ensure HubZero's Route facade is available as 'Route' for legacy code
+        if (!class_exists('Route', false)) {
+            class_alias(\Hubzero\Framework\Facades\LegacyRoute::class, 'Route');
+        }
+
+        // Auto-load the component's language file
+        if ($this->app->bound('hubzero.lang')) {
+            $this->app->make('hubzero.lang')->load($option, $componentPath);
+        }
 
         ob_start();
 
@@ -110,14 +138,18 @@ class Loader
     /**
      * Find the component directory.
      *
-     * Only matches directories that contain a site/ subdirectory
-     * (legacy component structure). Modern Laravel packages in
-     * packages/ use src/routes/resources/ and are not dispatched
-     * through the legacy component pipeline.
+     * Matches directories that contain the requested client subdirectory
+     * (site/ or admin/). Defaults to the current client context.
      */
-    public function path(string $option): string
+    public function path(string $option, ?string $client = null): string
     {
         $name = substr($option, 4);
+
+        if ($client === null) {
+            $client = app()->bound('hubzero.client')
+                ? app('hubzero.client')->alias
+                : 'site';
+        }
 
         $searchPaths = [
             base_path('packages/hubzero/components/' . $option),
@@ -127,7 +159,7 @@ class Loader
         ];
 
         foreach ($searchPaths as $path) {
-            if (is_dir($path) && is_dir($path . DIRECTORY_SEPARATOR . 'site')) {
+            if (is_dir($path) && is_dir($path . DIRECTORY_SEPARATOR . $client)) {
                 return $path;
             }
         }

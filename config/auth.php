@@ -22,7 +22,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'hubzero',
-            'model' => Hubzero\Component\Users\Models\User::class,
+            'model' => Hubzero\Framework\Auth\User::class,
         ],
     ],
 

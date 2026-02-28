@@ -24,12 +24,22 @@ class LegacyRoute
         }
 
         // Bare 'index.php' with no query → return base URL
+        // In admin context, base is /admin
         if ($url === 'index.php') {
-            $base = rtrim(request()->root(), '/') . '/';
-            return $base;
+            $isAdmin = app()->bound('hubzero.client')
+                && app('hubzero.client')->id === 1;
+            return $isAdmin ? '/admin' : '/';
         }
 
         parse_str(substr($url, 10), $params);
+
+        // Admin context: preserve query string style (/admin?option=...)
+        $isAdmin = app()->bound('hubzero.client')
+            && app('hubzero.client')->id === 1;
+        if ($isAdmin) {
+            $qs = http_build_query($params);
+            return '/admin' . ($qs ? '?' . $qs : '');
+        }
 
         // If we have an Itemid, look up the menu item's SEF path
         if (!empty($params['Itemid'])) {

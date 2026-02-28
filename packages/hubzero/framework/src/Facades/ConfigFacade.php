@@ -21,4 +21,41 @@ class ConfigFacade
             default => config('hubzero.app.' . $key, $default),
         };
     }
+
+    public static function toArray(): array
+    {
+        return config('hubzero', []);
+    }
+
+    public static function set(string $key, mixed $value): void
+    {
+        config(['hubzero.app.' . $key => $value]);
+    }
+
+    /**
+     * Return the root config object (all HubZero config sections).
+     */
+    public static function getRoot(): object
+    {
+        $data = config('hubzero', []);
+
+        return new class($data) {
+            private array $data;
+
+            public function __construct(array $data)
+            {
+                $this->data = $data;
+            }
+
+            public function toArray(): array
+            {
+                return $this->data;
+            }
+
+            public function get(string $key, mixed $default = null): mixed
+            {
+                return $this->data[$key] ?? $default;
+            }
+        };
+    }
 }

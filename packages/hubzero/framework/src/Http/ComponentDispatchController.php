@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Dispatches legacy HubZero components via the fallback route.
@@ -70,11 +71,107 @@ class ComponentDispatchController extends Controller
         $document = app('hubzero.document');
         $title = $document->getTitle() ?: ucfirst($component);
 
-        // Render through the legacy template
-        $renderer = new LegacyTemplateRenderer(
-            'hubzero',
-            base_path('app/templates/hubzero')
-        );
+        // Check engine preference for page shell selection
+        $engine = config('hubzero.app.view_engine', 'legacy');
+        $templateDir = base_path('app/templates/hubzero');
+
+        if ($engine === 'blade' && file_exists($templateDir . '/index.blade.php')) {
+            $html = \Hubzero\View\Blade::render($templateDir . '/index.blade.php', [
+                'content' => $componentHtml,
+                'option'  => $option,
+                'title'   => $title,
+            ]);
+            return new Response($html);
+        }
+
+        // Legacy template
+        $renderer = new LegacyTemplateRenderer('hubzero', $templateDir);
+
+        $html = $renderer->render($componentHtml, $title);
+
+        return new Response($html);
+    }
+
+    /**
+     * Dispatch a legacy admin component.
+     *
+     * Admin routing is simpler than site — no SEF menu resolution.
+     * URL: /admin?option=com_X or /admin/content → com_content.
+     * Defaults to com_cpanel (or com_login if unauthenticated).
+     */
+    public function adminDispatch(Request $request, Loader $loader): Response|RedirectResponse
+    {
+        // Admin routing: option from query string or path segment after /admin
+        $option = $request->input('option');
+        if (!$option) {
+            $segment = $request->segment(2, '');
+            $option = $segment ? 'com_' . $segment : '';
+        }
+
+        // Default component: com_login for guests, com_cpanel for authed users
+        if (!$option) {
+            $option = Auth::guest() ? 'com_login' : 'com_cpanel';
+        }
+
+        // Guests may only access com_login — redirect everything else
+        if (Auth::guest() && $option !== 'com_login') {
+            return new RedirectResponse('/admin');
+        }
+
+        $option = $loader->canonical($option);
+
+        // Set the document title like the legacy admin DocumentServiceProvider:
+        // "sitename - Administration"
+        $document = app('hubzero.document');
+        $sitename = config('app.name', 'Hubzero');
+        $lang = app('hubzero.lang');
+        $document->setTitle($sitename . ' - ' . $lang->txt('JADMINISTRATION'));
+
+        // Set the component option on the HubZero request
+        $hubzeroRequest = app('hubzero.request');
+        $hubzeroRequest->setVar('option', $option);
+
+        // Copy all query params to HubZero request (controller, task, etc.)
+        foreach ($request->query() as $key => $value) {
+            if ($key !== 'option') {
+                $hubzeroRequest->setVar($key, $value);
+            }
+        }
+
+        try {
+            $componentHtml = $loader->render($option);
+        } catch (LegacyRedirectException $e) {
+            $url = $e->url;
+            // Rewrite legacy admin redirects: index.php?option=... → /admin?option=...
+            if (str_starts_with($url, 'index.php')) {
+                $url = '/admin' . substr($url, strlen('index.php'));
+            }
+            return new RedirectResponse($url, $e->statusCode);
+        }
+
+        $title = $document->getTitle() ?: $sitename . ' - ' . $lang->txt('JADMINISTRATION');
+
+        $templatePath = base_path('core/templates/kameleon');
+
+        $renderer = new LegacyTemplateRenderer('kameleon', $templatePath);
+
+        // Load template params from database
+        $renderer->params = $this->loadTemplateParams('kameleon', 1);
+
+        // Select the appropriate template file for the component.
+        // tmpl=component or tmpl=help → use component.php (minimal, no chrome).
+        // Read from query string only — components may set tmpl via Request::setVar().
+        $tmpl = $request->query('tmpl', '');
+        $templateFile = match (true) {
+            $tmpl !== '' && is_file($templatePath . '/' . $tmpl . '.php') => $tmpl . '.php',
+            $tmpl !== '' => 'component.php',
+            $option === 'com_login' => 'login.php',
+            $option === 'com_cpanel' => 'cpanel.php',
+            default => 'index.php',
+        };
+        if (is_file($templatePath . '/' . $templateFile)) {
+            $renderer->setTemplateFile($templateFile);
+        }
 
         $html = $renderer->render($componentHtml, $title);
 
@@ -166,5 +263,29 @@ class ComponentDispatchController extends Controller
             }
             $hubzeroRequest->setVar($key, $value);
         }
+    }
+
+    /**
+     * Load template params from jos_template_styles.
+     */
+    private function loadTemplateParams(
+        string $template,
+        int $clientId
+    ): \Hubzero\Framework\View\TemplateParams {
+        try {
+            $row = \Illuminate\Support\Facades\DB::table('template_styles')
+                ->where('template', $template)
+                ->where('client_id', $clientId)
+                ->first();
+
+            if ($row && !empty($row->params)) {
+                $data = json_decode($row->params, true) ?: [];
+                return new \Hubzero\Framework\View\TemplateParams($data);
+            }
+        } catch (\Throwable $e) {
+            // Silently fall back to empty params
+        }
+
+        return new \Hubzero\Framework\View\TemplateParams();
     }
 }

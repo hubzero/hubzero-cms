@@ -73,7 +73,7 @@ class HubzeroUserProvider extends EloquentUserProvider
         // Try canonical source: jos_users_password table
         $passhash = $this->getCanonicalHash($user->getKey());
 
-        if ($passhash && $this->hasher->check($password, $passhash)) {
+        if ($passhash && $this->checkPassword($password, $passhash)) {
             $this->rehashIfNeeded($user, $passhash, $password);
             return true;
         }
@@ -81,9 +81,40 @@ class HubzeroUserProvider extends EloquentUserProvider
         // Fall back to jos_users.password column
         $userPassword = $user->getAuthPassword();
 
-        if ($userPassword && $this->hasher->check($password, $userPassword)) {
+        if ($userPassword && $this->checkPassword($password, $userPassword)) {
             $this->rehashIfNeeded($user, $userPassword, $password);
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check a password against a hash, supporting both Laravel (bcrypt)
+     * and HubZero legacy formats ({CRYPT}, {MD5}, {SSHA}, Joomla md5:salt).
+     */
+    private function checkPassword(string $password, string $hash): bool
+    {
+        // Try Laravel's hasher first (handles bcrypt/$2y$ hashes)
+        if ($this->hasher->check($password, $hash)) {
+            return true;
+        }
+
+        // Legacy HubZero {CRYPT}$6$... format
+        if (str_starts_with($hash, '{CRYPT}')) {
+            $cryptHash = substr($hash, 7); // strip {CRYPT} prefix
+            return hash_equals($cryptHash, crypt($password, $cryptHash));
+        }
+
+        // Legacy Joomla md5:salt format
+        if (str_contains($hash, ':')) {
+            [$md5, $salt] = explode(':', $hash, 2);
+            return hash_equals($md5, md5($password . $salt));
+        }
+
+        // Plain md5 (very old Joomla 1.0)
+        if (preg_match('/^[a-f0-9]{32}$/', $hash)) {
+            return hash_equals($hash, md5($password));
         }
 
         return false;
@@ -103,21 +134,12 @@ class HubzeroUserProvider extends EloquentUserProvider
 
     /**
      * Transparently upgrade legacy hashes to bcrypt.
+     *
+     * Disabled while the legacy entry point is still active — rehashing
+     * to bcrypt would break legacy login which expects {CRYPT} format.
      */
     private function rehashIfNeeded(Authenticatable $user, string $currentHash, string $plaintext): void
     {
-        if (!$this->hasher->needsRehash($currentHash)) {
-            return;
-        }
-
-        $newHash = $this->hasher->make($plaintext);
-
-        // Update jos_users.password
-        $user->forceFill(['password' => $newHash])->save();
-
-        // Update jos_users_password if row exists
-        DB::table('users_password')
-            ->where('user_id', $user->getKey())
-            ->update(['passhash' => $newHash]);
+        // No-op: legacy and Laravel must share password hashes during migration
     }
 }

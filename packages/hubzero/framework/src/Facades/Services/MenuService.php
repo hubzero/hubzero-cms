@@ -43,7 +43,7 @@ class MenuService
             $rows = DB::table('menu')
                 ->where('published', 1)
                 ->where('parent_id', '>', 0)
-                ->where('client_id', 0)
+                ->where('client_id', app()->bound('hubzero.client') ? app('hubzero.client')->id : 0)
                 ->orderBy('lft')
                 ->get();
         } catch (\Exception $e) {

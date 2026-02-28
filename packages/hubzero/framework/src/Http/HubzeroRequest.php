@@ -27,6 +27,19 @@ class HubzeroRequest
     }
 
     /**
+     * Alias for getVar() — used by some legacy components.
+     */
+    public function get(
+        string $key,
+        mixed $default = null,
+        string $hash = 'input',
+        string $type = 'none',
+        int $mask = 0
+    ): mixed {
+        return $this->getVar($key, $default, $hash, $type, $mask);
+    }
+
+    /**
      * Get a variable from the request.
      */
     public function getVar(
@@ -72,7 +85,7 @@ class HubzeroRequest
     /**
      * Get an integer value.
      */
-    public function getInt(string $key, int $default = 0, string $hash = 'input'): int
+    public function getInt(string $key, mixed $default = 0, string $hash = 'input'): int
     {
         return (int) $this->readFromHash($key, $default, $hash);
     }
@@ -199,6 +212,52 @@ class HubzeroRequest
         return $this->request->query($key, $default);
     }
 
+    public function getQueryString(): string
+    {
+        return $this->request->getQueryString() ?? '';
+    }
+
+    /**
+     * Get a user state variable, updating it from the request if present.
+     *
+     * Used by admin list controllers to persist filters/sort across requests.
+     * Reads from session, overridden by request value if set.
+     */
+    public function getState(
+        string $key,
+        string $requestKey,
+        mixed $default = null,
+        string $type = 'none'
+    ): mixed {
+        $curState = session($key, $default);
+        $newState = $this->getVar($requestKey, null, 'default', $type);
+
+        if ($newState !== null) {
+            $curState = match ($type) {
+                'int', 'integer' => (int) $newState,
+                'float', 'double' => (float) $newState,
+                'bool', 'boolean' => (bool) $newState,
+                'word' => preg_replace('/[^A-Z_]/i', '', (string) $newState),
+                'cmd' => preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $newState),
+                'string' => (string) $newState,
+                'array' => (array) $newState,
+                default => $newState,
+            };
+            session([$key => $curState]);
+        }
+
+        return $curState;
+    }
+
+    /**
+     * Set a user state variable in the session.
+     */
+    public function setState(string $key, mixed $value): mixed
+    {
+        session([$key => $value]);
+        return $value;
+    }
+
     public function checkToken(string $method = 'post'): bool
     {
         // CSRF is handled by Laravel's middleware
@@ -222,5 +281,13 @@ class HubzeroRequest
             'files' => $this->request->file($key),
             default => $this->request->input($key, $default),
         };
+    }
+
+    /**
+     * Delegate unknown method calls to the underlying Laravel/Symfony request.
+     */
+    public function __call(string $method, array $args): mixed
+    {
+        return $this->request->$method(...$args);
     }
 }

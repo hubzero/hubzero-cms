@@ -18,4 +18,9 @@ class DateFacade
     {
         return (new DateWrapper('now'))->toSql();
     }
+
+    public static function format(string $format): string
+    {
+        return (new DateWrapper('now'))->format($format);
+    }
 }

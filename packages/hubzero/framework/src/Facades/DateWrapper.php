@@ -80,6 +80,17 @@ class DateWrapper
         return 'just now';
     }
 
+    public function modify(string $modifier): static
+    {
+        $this->datetime->modify($modifier);
+        return $this;
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->datetime->getTimestamp();
+    }
+
     public function __toString(): string
     {
         return $this->toSql();

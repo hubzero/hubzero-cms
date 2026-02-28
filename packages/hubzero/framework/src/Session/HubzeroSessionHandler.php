@@ -39,17 +39,36 @@ class HubzeroSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    /**
+     * Laravel auth session key: login_web_{sha1(SessionGuard class)}
+     */
+    private const AUTH_KEY = 'login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d';
+
     public function read(string $id): string|false
     {
         $session = DB::table('session')
             ->where('session_id', $id)
             ->first();
 
-        if ($session && $session->time >= time() - ($this->lifetime * 60)) {
-            return $session->data ?? '';
+        if (!$session || $session->time < time() - ($this->lifetime * 60)) {
+            return '';
         }
 
-        return '';
+        $data = $session->data ?? '';
+
+        // Bridge legacy → Laravel auth: if the session row has a userid
+        // (set by legacy login) but the serialized data lacks Laravel's
+        // auth key, inject it so Laravel recognises the user as logged in.
+        if ($session->userid > 0 && !str_contains($data, self::AUTH_KEY)) {
+            $decoded = $data !== '' ? @unserialize($data) : [];
+            if (!is_array($decoded)) {
+                $decoded = [];
+            }
+            $decoded[self::AUTH_KEY] = (int) $session->userid;
+            $data = serialize($decoded);
+        }
+
+        return $data;
     }
 
     public function write(string $id, string $data): bool
@@ -68,7 +87,7 @@ class HubzeroSessionHandler implements \SessionHandlerInterface
 
         $payload = [
             'session_id' => $id,
-            'client_id' => 0, // 0 = site
+            'client_id' => app()->bound('hubzero.client') ? app('hubzero.client')->id : 0,
             'guest' => $guest,
             'time' => (string) time(),
             'data' => $data,

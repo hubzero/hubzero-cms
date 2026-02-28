@@ -17,8 +17,10 @@ namespace Hubzero\Framework\Document;
  */
 class Document
 {
+    private string $type = 'html';
     private string $title = '';
     private string $description = '';
+    private array $buffers = [];
     private array $stylesheets = [];
     private array $scripts = [];
     private array $styleDeclarations = [];
@@ -104,6 +106,41 @@ class Document
     {
         $this->customTags[] = $tag;
         return $this;
+    }
+
+    /**
+     * Set a content buffer by type and name.
+     */
+    public function setBuffer(string $content, mixed $options = []): static
+    {
+        $args = func_get_args();
+        if (!is_array($args[1]) && func_num_args() > 1) {
+            $options = ['type' => $args[1], 'name' => $args[2] ?? null];
+        }
+        $this->buffers[$options['type'] ?? 'component'][$options['name'] ?? null] = $content;
+        return $this;
+    }
+
+    /**
+     * Get a content buffer by type and name.
+     */
+    public function getBuffer(?string $type = null, ?string $name = null, array $attribs = []): mixed
+    {
+        if ($type === null) {
+            return $this->buffers;
+        }
+        return $this->buffers[$type][$name] ?? null;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

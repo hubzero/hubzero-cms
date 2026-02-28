@@ -27,6 +27,7 @@ class LegacyTemplateRenderer
     public TemplateParams $params;
 
     private string $templatePath;
+    private string $templateFile = 'index.php';
     private string $title;
     private string $componentOutput;
 
@@ -37,6 +38,14 @@ class LegacyTemplateRenderer
         $this->baseurl = '';
         $this->params = new TemplateParams();
         $this->title = config('app.name', 'Hubzero');
+    }
+
+    /**
+     * Set which template file to use (e.g. 'login.php', 'cpanel.php').
+     */
+    public function setTemplateFile(string $file): void
+    {
+        $this->templateFile = $file;
     }
 
     /**
@@ -97,6 +106,40 @@ class LegacyTemplateRenderer
     }
 
     /**
+     * Add a stylesheet to the document head.
+     */
+    public function addStyleSheet(
+        string $url,
+        string $type = 'text/css',
+        ?string $media = null,
+        array $attribs = []
+    ): void {
+        if (app()->bound('hubzero.document')) {
+            app('hubzero.document')->addStyleSheet($url, $type, $media, $attribs);
+        }
+    }
+
+    /**
+     * Add inline CSS to the document head.
+     */
+    public function addStyleDeclaration(string $content, string $type = 'text/css'): void
+    {
+        if (app()->bound('hubzero.document')) {
+            app('hubzero.document')->addStyleDeclaration($content, $type);
+        }
+    }
+
+    /**
+     * Add inline JavaScript to the document head.
+     */
+    public function addScriptDeclaration(string $content, string $type = 'text/javascript'): void
+    {
+        if (app()->bound('hubzero.document')) {
+            app('hubzero.document')->addScriptDeclaration($content, $type);
+        }
+    }
+
+    /**
      * Execute the template PHP file and capture its output.
      */
     private function executeTemplate(): string
@@ -114,6 +157,20 @@ class LegacyTemplateRenderer
             class_alias(\Hubzero\Framework\Facades\AppFacade::class, 'App');
         }
 
+        // Override Laravel's Session facade with HubZero's, which provides
+        // getFormToken() and checkToken() that legacy templates expect.
+        if (!class_exists('Session', false)) {
+            class_alias(\Hubzero\Facades\Session::class, 'Session');
+        }
+
+        // Admin facades — may already be registered by Component\Loader::render()
+        if (!class_exists('Toolbar', false)) {
+            class_alias(\Hubzero\Facades\Toolbar::class, 'Toolbar');
+        }
+        if (!class_exists('Submenu', false)) {
+            class_alias(\Hubzero\Facades\Submenu::class, 'Submenu');
+        }
+
         // Load template language file
         if (app()->bound('hubzero.lang')) {
             $langFile = $this->templatePath . '/language/en-GB/en-GB.tpl_' . $this->template . '.ini';
@@ -124,7 +181,7 @@ class LegacyTemplateRenderer
 
         ob_start();
         // Template uses $this to access renderer properties/methods
-        require $this->templatePath . '/index.php';
+        require $this->templatePath . '/' . $this->templateFile;
         return ob_get_clean();
     }
 
@@ -248,9 +305,11 @@ class LegacyTemplateRenderer
     {
         $messages = [];
 
-        // Laravel session flash
-        if (session()->has('status')) {
-            $messages[] = ['message' => session('status'), 'type' => 'info'];
+        // Laravel session flash messages
+        foreach (['info' => 'status', 'warning' => 'warning', 'error' => 'error', 'success' => 'success'] as $type => $key) {
+            if (session()->has($key)) {
+                $messages[] = ['message' => session($key), 'type' => $type];
+            }
         }
 
         // HubZero Notify service

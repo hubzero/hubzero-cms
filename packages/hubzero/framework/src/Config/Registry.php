@@ -11,7 +11,7 @@ namespace Hubzero\Framework\Config;
 /**
  * Simple key-value registry for component parameters and state.
  */
-class Registry
+class Registry implements \ArrayAccess
 {
     private array $data = [];
 
@@ -109,6 +109,26 @@ class Registry
     public function toArray(): array
     {
         return $this->data;
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return array_key_exists($offset, $this->data);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->data[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->data[$offset] = $value;
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        unset($this->data[$offset]);
     }
 
     public function __toString(): string

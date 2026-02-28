@@ -40,7 +40,7 @@ class UserService
         return !Auth::guest();
     }
 
-    public function getInstance(?int $id = null): static
+    public function getInstance(mixed $id = null): static
     {
         return $this;
     }
@@ -73,6 +73,25 @@ class UserService
         bool $thumbit = true
     ): string {
         return '/core/components/com_members/site/assets/img/profile.gif';
+    }
+
+    /**
+     * Get a user parameter (stored in jos_users.params JSON column).
+     */
+    public function getParam(string $key, mixed $default = null): mixed
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return $default;
+        }
+
+        $params = $user->params ?? '';
+        if (is_string($params) && $params !== '') {
+            $decoded = json_decode($params, true);
+            return $decoded[$key] ?? $default;
+        }
+
+        return $default;
     }
 
     /**

@@ -140,32 +140,44 @@ class ModuleLoader
     /**
      * Get the layout path for a module.
      *
-     * Checks template override first, then falls back to module's
-     * own tmpl directory.
+     * When view_engine is 'blade', checks for .blade.php before .php.
+     * Checks template overrides before module's own tmpl directory.
      */
     public function getLayoutPath(string $module, string $layout = 'default'): string
     {
         $module = $this->canonical($module);
+        $preferBlade = config('hubzero.app.view_engine', 'legacy') === 'blade';
 
         // Check for template override
         $templatePath = $this->getTemplatePath();
         if ($templatePath) {
-            $override = $templatePath . '/html/' . $module . '/' . $layout . '.php';
-            if (file_exists($override)) {
-                return $override;
+            $overrideBase = $templatePath . '/html/' . $module . '/' . $layout;
+            if ($preferBlade && file_exists($overrideBase . '.blade.php')) {
+                return $overrideBase . '.blade.php';
+            }
+            if (file_exists($overrideBase . '.php')) {
+                return $overrideBase . '.php';
             }
         }
 
         // Fall back to module's own layout
         $base = dirname($this->path($module));
-        $layoutPath = $base . '/tmpl/' . $layout . '.php';
-        $defaultPath = $base . '/tmpl/default.php';
+        $layoutBase = $base . '/tmpl/' . $layout;
 
-        if (file_exists($layoutPath)) {
-            return $layoutPath;
+        if ($preferBlade && file_exists($layoutBase . '.blade.php')) {
+            return $layoutBase . '.blade.php';
+        }
+        if (file_exists($layoutBase . '.php')) {
+            return $layoutBase . '.php';
         }
 
-        return $defaultPath;
+        // Default layout fallback
+        $defaultBase = $base . '/tmpl/default';
+        if ($preferBlade && file_exists($defaultBase . '.blade.php')) {
+            return $defaultBase . '.blade.php';
+        }
+
+        return $defaultBase . '.php';
     }
 
     /**
@@ -263,7 +275,7 @@ class ModuleLoader
                          ->on('e.client_id', '=', 'm.client_id');
                 })
                 ->where('m.published', 1)
-                ->where('m.client_id', 0)
+                ->where('m.client_id', app()->bound('hubzero.client') ? app('hubzero.client')->id : 0)
                 ->where(function ($q) {
                     $q->where('e.enabled', 1)->orWhereNull('e.enabled');
                 })
