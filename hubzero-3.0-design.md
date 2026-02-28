@@ -23,6 +23,9 @@ as Composer packages.
 - Frontend-agnostic: Blade, Livewire, Inertia, HTMX all first-class
 - Design token system with Blade component library for consistent, themeable UI (§10)
 - Layered bot protection: honeypot, behavioral scoring, Turnstile CAPTCHA (§27)
+- Bridge first, rewrite later — all legacy components serve traffic through
+  Laravel immediately via bridge facades; individual components migrate to
+  Eloquent/Blade as time permits
 - Incremental migration — hybrid operation at every stage
 
 ---
@@ -584,8 +587,12 @@ Registration order determines priority:
 //    Registered via service providers
 //    Feature flags (§26) can gate between migrated and legacy controllers
 
-// 5. Legacy catch-all for un-migrated components (temporary, removed after migration)
-Route::fallback([LegacyDispatchController::class, 'handle']);
+// 5. Legacy catch-all (ComponentDispatchController)
+//    Resolves URL → menu item → component via MenuService and Component\Loader.
+//    Populates pathway breadcrumbs from menu tree before dispatch.
+//    Catches LegacyRedirectException to return proper RedirectResponse.
+//    Temporary — removed when all components are migrated to Laravel routes.
+Route::fallback([ComponentDispatchController::class, 'dispatch']);
 ```
 
 Content pages have highest priority because they're exact-match routes.
@@ -765,10 +772,71 @@ class PublicationCuration extends Page
 }
 ```
 
-**Backward compatibility:** Un-migrated components keep their current structure.
-The `LegacyDispatchController` handles them through the existing `Component\Loader`.
-This catch-all is temporary and removed when all components are migrated.
-Feature flags (§26) gate individual components between legacy and migrated
+**Backward compatibility — the legacy component bridge:**
+
+Un-migrated components keep their current structure and run **unmodified** through
+the Laravel pipeline via a comprehensive bridge layer. This is the centerpiece of
+the strangler-fig migration — rather than rewriting components before they can
+serve traffic, all legacy components work immediately.
+
+The bridge infrastructure consists of:
+
+1. **`ComponentDispatchController`** — Laravel fallback route that resolves any
+   URL to its legacy component via the menu service and component loader. Before
+   dispatching, it populates pathway breadcrumbs from the active menu item's
+   `tree` property and sets the document title from menu params.
+
+2. **Generic `Components\*` autoloader** — single `spl_autoload_register` handler
+   that resolves any `Components\{Name}\...` class by extracting the component
+   name from the namespace and mapping to `com_{name}/`. This enables cross-
+   component dependencies (e.g., com_content using `Components\Categories\Helpers`)
+   without requiring each component to register its own autoloader. Components
+   without a `site/` directory (like com_categories) act as library components —
+   the autoloader finds them, but `Loader::path()` won't dispatch to them directly.
+
+3. **Bridge facades** — `App`, `Config`, `User`, `Document`, `Pathway`,
+   `Component`, `Session`, `Html`, `Lang`, `Route` (as `LegacyRoute`),
+   `Request`, `Event`, `Notify` all delegate to Laravel services while
+   presenting the API that legacy components expect. Registered as
+   `class_alias` entries so existing `use` statements work unchanged.
+
+4. **`HubzeroRequest`** — wraps Laravel's `Illuminate\Http\Request` with
+   HubZero's typed accessor API (`getCmd`, `getInt`, `getUInt`, `getString`,
+   `getVar`, `setVar`, `getArray`, `getBool`, `getWord`, `getFloat`).
+   The `$hash` parameter maps to Laravel's `query()`, `post()`, `server()`,
+   `cookie()`, `file()`, or `input()` methods.
+
+5. **`LegacyRedirectException`** — thrown by `App::redirect()` to break out
+   of arbitrarily nested legacy component code. Caught in
+   `ComponentDispatchController`, which returns a proper `RedirectResponse`
+   through Laravel's middleware pipeline (so sessions are saved, cookies set,
+   CORS headers applied, etc.).
+
+6. **`Registry`** — framework config registry matching legacy empty-string
+   semantics: `get()` treats `null` and `''` as "not set" and returns the
+   default value, matching `Hubzero\Config\Registry` behavior that components
+   depend on for cascading defaults (e.g., page title falling back to menu
+   item title when component sets an empty string).
+
+7. **`ComponentService`** — reads real component params and enabled state
+   from `jos_extensions`, replacing the original stub that returned empty
+   values. `Loader::params()` delegates here.
+
+8. **CSRF dual-format** — `Html::input('token')` emits both the legacy
+   `<input name="CSRF_TOKEN_NAME">` and Laravel's `<input name="_token">`
+   so forms work with both stacks. `Session::checkToken()` defers to
+   Laravel's `VerifyCsrfToken` middleware.
+
+9. **Relational ORM** — HubZero's `Relational` and `Nested` ORMs are wired
+   to Laravel's database connection via `App::get('db')`, so legacy models
+   query the same database through the same connection pool.
+
+This bridge is production-ready, not a prototype. The legacy and Laravel stacks
+produce identical output for bridged pages (verified by diffing `/login`,
+`/about`, `/about/contact`, `/about/terms`, `/about/copyright` between the
+two servers).
+
+Feature flags (§26) can gate individual components between legacy and migrated
 versions — operators can roll out migrated components per-tenant or per-user
 and instantly rollback if issues arise.
 
@@ -1304,10 +1372,15 @@ the full page:
 ```
 
 **The key insight:** During the hybrid phase, both rendering paths coexist:
-- Legacy components → Document pipeline → `<jdoc:include>` template
+- Legacy components → `LegacyTemplateRenderer` → `<jdoc:include>` template
 - Migrated components → Blade views → Blade layout
 
-The `DocumentMiddleware` detects which path to use based on the response type.
+**Current implementation:** `LegacyTemplateRenderer` replaces the proposed
+`DocumentMiddleware`. It processes `<jdoc:include>` tags in the existing PHP
+template (`index.php`), renders module positions via `ModuleLoader`, injects
+accumulated assets via the `Head` renderer, and registers bridge facades as
+`class_alias` entries so templates reference the classes they expect (`Html`,
+`Lang`, `Config`, `User`, `Route`, etc.) without modification.
 
 **Asset management bridge:** `$this->css()` / `$this->js()` / `Document::addScript()`
 continue to work. For Blade views, a `@hubzeroAssets` directive renders accumulated
@@ -2074,8 +2147,14 @@ class HubzeroUserProvider implements UserProvider
 {
     // Queries existing #__users and #__xprofiles tables
     // Returns User model that implements Authenticatable
+    // Supports both bcrypt and legacy hash formats for password verification
 }
 ```
+
+**Legacy auth bridge:** `AuthManagerBridge` bridges `App::get('auth')->login()`
+calls in legacy login controllers to `Auth::attempt()`. Legacy components call
+`App::get('auth')` and get an object whose `login()` method delegates to Laravel's
+session guard, so the existing `com_users` login controller works unchanged.
 
 **API authentication:** The existing token-based system is wrapped in the
 `hubzero-token` guard driver so existing API clients continue to work with
@@ -4110,7 +4189,7 @@ Route::get('/blog', function () {
     if (Feature::active('blog-migrated')) {
         return app(NewBlogController::class)->index();
     }
-    return app(LegacyDispatchController::class)->handle();
+    return app(ComponentDispatchController::class)->dispatch();
 });
 
 // Blade — show different UI based on flag
@@ -4611,75 +4690,107 @@ touched.
 **MVP 1 — First real route + dual-view engine (done)**
 A `/status` health-check page rendered two ways: Blade layout with Tailwind CSS
 (`/status`) and the existing HubZero PHP template (`/status/legacy`).
-`LegacyTemplateRenderer` processes jdoc:include tags and provides stub facades
+`LegacyTemplateRenderer` processes jdoc:include tags and provides bridge facades
 (`Html`, `Lang`, `Config`, `User`, `Request`, `App`, `Component`, `Route`) so
-existing templates render without touching `core/`. Module positions are stubbed
-(return empty). Database connection reads from the existing HubZero MariaDB
-instance. On real hub deployments, templates get a mechanical facade-rename
-cleanup pass — structure and HTML output stay identical.
+existing templates render without touching `core/`. Module positions rendered
+by `ModuleLoader`. Database connection reads from the existing HubZero MariaDB
+instance. Template gets a mechanical facade-rename cleanup pass — structure and
+HTML output stay identical.
 
 **MVP 2 — First component (done)**
 Blog read-only viewer using Eloquent models on existing `blog_entries`,
 `blog_comments`, and `users` tables. Blade views with shared Tailwind components
 (`<x-page-header>`, `<x-card>`, `<x-comment>`). Dual rendering via `?tmpl=legacy`
-query string reuses the legacy template engine from MVP 1. Not yet in a
-`packages/` layout — models in `app/Models/`, controller in `app/Http/Controllers/`.
-BlogSeeder provides sample data for development.
+query string reuses the legacy template engine from MVP 1.
 
-**MVP 3 — Core: User model + authentication**
-Laravel User model on existing `jos_users` with HubZero's group-based permission
-system. Auth middleware so controllers can use `auth()->user()` and
-`$user->can('core.edit', 'com_blog')`. Session login against existing password
-hashes. Unblocks every component that checks permissions.
+**MVP 3 — Core: User model + authentication (done)**
+Laravel User model (`App\Models\User`) on existing `jos_users` with
+`HubzeroUserProvider` for password verification (supports both bcrypt and
+legacy hash formats). `AuthManagerBridge` bridges `App::get('auth')->login()`
+to `Auth::attempt()` so legacy login controllers work unchanged. Session
+login with Laravel's session guard. `UserService` facade provides the
+`User::get()`, `User::isGuest()`, `User::authorise()` API that legacy
+components expect.
 
-**MVP 4 — Core: Language system**
-Translation layer that loads HubZero's INI language files
-(`en-GB.com_blog.ini`) and exposes them via Laravel's `__()` / `@lang()`.
-Components keep existing language files — no string migration. A `Lang::txt()`
-compatibility helper maps to Laravel's translator.
+**MVP 4 — Core: Language system (done)**
+`LangService` loads HubZero's INI language files (`en-GB.com_blog.ini`) and
+exposes them via `Lang::txt()`. Components keep existing language files — no
+string migration. Supports `sprintf`-style substitution (`%s`, `%d`) and
+positional arguments.
 
-**MVP 5 — First real migration: com_blog**
-Migrate `core/components/com_blog/` to Laravel. Convert Relational models to
-Eloquent, views to Blade, task controller to Laravel controller, component router
-to Laravel routes. Read views first (browse, entry, comments), then write (new,
-edit, delete, comment). Uses User model (MVP 3) and language system (MVP 4).
+**MVP 5 — Legacy component bridge (done)**
+This is the centerpiece of the strangler-fig migration. Rather than rewriting
+components one at a time before they can serve traffic on the new stack, legacy
+components run **unmodified** through the Laravel pipeline via a comprehensive
+bridge layer:
 
-**MVP 6 — Second migration: com_poll**
-Migrate com_poll (3 models, simplest component). Validates the migration pattern
-generalizes. Identifies shared infrastructure gaps. At this point we have a
-repeatable playbook for component migration.
+- **`ComponentDispatchController`** — fallback route that dispatches any
+  URL to its legacy component via the menu service and component loader
+- **Generic `Components\*` autoloader** — resolves any component class from
+  any component directory, enabling cross-component dependencies
+  (e.g., com_content using com_categories helpers)
+- **`MenuService`** — loads menu items from `jos_menu`, resolves SEF paths
+  to components, provides the active menu item for breadcrumbs and params
+- **`LegacyRedirectException`** — thrown by `App::redirect()` to break out
+  of legacy component code and return a proper `RedirectResponse` through
+  Laravel's middleware pipeline (so sessions are saved, cookies set, etc.)
+- **Bridge facades** — `App`, `Config`, `User`, `Document`, `Pathway`,
+  `Component`, `Session`, `Html`, `Lang`, `Route` (as `LegacyRoute`),
+  `Request`, `Event`, `Notify` all delegate to Laravel services
+- **`HubzeroRequest`** — wraps Laravel's Request with typed accessors
+  (`getCmd`, `getInt`, `getUInt`, `getString`, `getVar`, `setVar`, etc.)
+- **`Registry`** — framework config registry matching legacy empty-string
+  semantics (`get()` treats `null` and `''` as "not set")
+- **`ComponentService`** — reads component params from `jos_extensions`
+- **Pathway breadcrumbs** — populated from menu item tree before dispatch
+- **Relational ORM** — HubZero's `Relational` and `Nested` ORMs wired to
+  Laravel's database connection
+- **CSRF dual-format** — `Html::input('token')` emits both legacy format
+  and Laravel `_token` field; `Session::checkToken()` defers to middleware
 
-**MVP 7 — Admin panel (Filament)**
-Filament with admin resources for blog and poll. CRUD in a modern admin UI
-managing real data alongside the old admin.
+Working legacy components: `com_users` (login/logout), `com_content`
+(articles/pages), `com_categories` (as a library dependency). The `/login`,
+`/about`, `/about/contact`, `/about/terms`, `/about/copyright` pages all
+render identically to the legacy server.
 
-**MVP 8 — Legacy catch-all route**
-Fallback route passes unhandled requests to legacy HubZero router. Migrated
-components served by Laravel, everything else falls through to `core/`. Visitors
-can't tell which engine served a given page. Both share the same template chrome.
+**MVP 6 — Event/plugin bridge (done)**
+`HubzeroEventDispatcher` wrapping Laravel events. Plugin loading via
+`PluginManager` (DB-backed, ordered). `Event::trigger()` routes to Laravel
+events, existing plugin `onEventName` methods fire as listeners. Authentication
+plugins loaded and dispatched during login flow.
 
-**MVP 9 — Event/plugin bridge**
-Laravel events wired to HubZero plugin handlers. `Event::trigger()` routes to
-Laravel events, existing plugin `onEventName` methods fire as listeners. Enables
-cross-cutting concerns (search indexing, activity logging, notifications) to work
-during migration.
+**MVP 7 — Module system (done)**
+`ModuleLoader` renders legacy modules by position. Modules loaded from
+`jos_modules` with access-level filtering. Module classes instantiated directly
+via resolved class names. Template `<jdoc:include type="modules">` tags render
+real module output (breadcrumbs, menu, footer content).
 
-**MVP 10+ — Component migrations (ongoing)**
-Migrate in rough complexity order:
+**MVP 8+ — Component migrations (ongoing)**
+With the legacy bridge in place, ALL legacy components can serve traffic on
+the new Laravel stack without rewriting. Component migration to Eloquent/Blade
+is now a quality-of-life improvement rather than a prerequisite for serving
+pages. Migrate in rough complexity order:
 - Simple: com_answers, com_kb, com_wishlist, com_feedback
 - Medium: com_citations, com_support, com_wiki, com_storefront
 - Complex: com_members, com_groups, com_resources, com_tools
 - Heaviest: com_projects, com_publications, com_courses
 Build shared infrastructure as needed (tagging, search, file handling).
-Cross-dependent components (publications↔projects, members↔courses) migrate
-together.
 
-**MVP 11 — Multi-tenancy**
+**MVP 9 — Admin panel (Filament)**
+Filament with admin resources for content and users. CRUD in a modern admin UI
+managing real data alongside the old admin.
+
+**MVP 10 — Multi-tenancy**
 TenantManager resolving tenants from hostname. Two tenants, same codebase, own
 data. Can be done earlier if deployment needs require it.
 
-Strategy is **migrate first, rewrite later** — get existing component code
-running on Laravel with Eloquent and Blade, then clean up and modernize once
-it's working and tested. The real bottleneck is not code generation — it is the
-per-component decisions about schema preservation, undocumented side effects,
-and legacy behavior that require human judgement.
+Strategy is **bridge first, rewrite later** — get ALL existing components
+running on Laravel through the bridge layer, then migrate individual components
+to Eloquent/Blade/Laravel routes as time permits. The bridge approach means:
+1. The new stack can serve production traffic immediately (not after N months
+   of component rewrites)
+2. Components can be migrated in any order without blocking the switchover
+3. Migrated and legacy components coexist transparently — visitors can't tell
+   which engine rendered a given page
+4. The real bottleneck (per-component decisions about schema, undocumented
+   side effects, legacy behavior) is decoupled from the infrastructure work
