@@ -48,6 +48,7 @@ class Mail extends AdminController
         $registry = $session->get('registry');
 
         $dflt = array();
+        $data = $dflt;
 
         if (!is_null($registry)) {
             $data = $registry->get('com_members.display.mail.data', $dflt);

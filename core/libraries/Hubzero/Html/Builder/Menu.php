@@ -14,6 +14,25 @@ namespace Hubzero\Html\Builder;
 class Menu
 {
     /**
+     * Get a list of menu types for use in a select list.
+     *
+     * @return  array  Array of objects with value/text properties
+     */
+    public static function menus()
+    {
+        $db = \Hubzero\Facades\App::get('db');
+        $query = $db->getQuery()
+            ->select('menutype', 'value')
+            ->select('title', 'text')
+            ->from('#__menu_types')
+            ->order('title', 'asc');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /**
      * Build a flattened tree list from a parent-child hierarchy
      *
      * @param   integer  $id         Parent item ID to start from
