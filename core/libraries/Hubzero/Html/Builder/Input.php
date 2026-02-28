@@ -54,7 +54,17 @@ class Input
      */
     public static function token()
     {
-        return self::input('hidden', \Hubzero\Facades\App::get('session')->getFormToken(), 1, array('id' => null)) . "\n";
+        $token = \Hubzero\Facades\App::get('session')->getFormToken();
+        $html = self::input('hidden', $token, 1, array('id' => null)) . "\n";
+
+        // When running under Laravel, also emit a _token field for
+        // Laravel's VerifyCsrfToken middleware. On legacy HubZero this
+        // is a no-op since csrf_token() doesn't exist.
+        if (function_exists('csrf_token')) {
+            $html .= self::input('hidden', '_token', csrf_token(), array('id' => null)) . "\n";
+        }
+
+        return $html;
     }
 
     /**

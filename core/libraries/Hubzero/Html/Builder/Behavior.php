@@ -134,7 +134,7 @@ class Behavior
 
         $document = App::get('document')->instance();
 
-        if ($document instanceof \Hubzero\Document\Type\Html) {
+        if (method_exists($document, 'getHeadData') && method_exists($document, 'setHeadData')) {
             $pushed = false;
 
             // Get the old data
