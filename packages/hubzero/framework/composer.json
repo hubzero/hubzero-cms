@@ -1,0 +1,22 @@
+{
+    "name": "hubzero/framework",
+    "description": "Hubzero framework — shared infrastructure for all extensions",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hubzero\\Framework\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hubzero\\Framework\\FrameworkServiceProvider"
+            ]
+        }
+    }
+}
