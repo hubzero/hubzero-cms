@@ -149,9 +149,11 @@ if (!function_exists('dump')) {
  * @param   mixed  $object
  * @return  mixed
  */
-function with($object)
-{
-    return $object;
+if (!function_exists('with')) {
+    function with($object)
+    {
+        return $object;
+    }
 }
 
 /**

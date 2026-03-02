@@ -196,6 +196,15 @@ class Base extends Obj
     public $_type = null;
 
     /**
+     * Render engine for the current page ('blade' or 'legacy').
+     * Resolved lazily from global config + template capability.
+     * null = not yet resolved.
+     *
+     * @var  string|null
+     */
+    protected $renderEngine = null;
+
+    /**
      * Array of buffered output
      *
      * @var  mixed (depends on the renderer)
@@ -241,6 +250,74 @@ class Base extends Obj
         if (array_key_exists('base', $options)) {
             $this->setBase($options['base']);
         }
+    }
+
+    /**
+     * Set the render engine preference.
+     *
+     * Controllers, views, and other code can call this to change
+     * the render engine. The request is deconflicted against the
+     * template's capability — setting 'blade' when the template
+     * doesn't support it silently falls back to 'legacy'.
+     *
+     * @param   string  $engine  'blade' or 'legacy'
+     * @return  void
+     */
+    public function setRenderEngine(string $engine): void
+    {
+        if ($engine === 'blade') {
+            try {
+                $loader = \Hubzero\Facades\App::get('template.loader');
+                if (!$loader->supports('blade')) {
+                    $engine = 'legacy';
+                }
+            } catch (\Throwable $e) {
+                $engine = 'legacy';
+            }
+        }
+
+        $this->renderEngine = $engine;
+    }
+
+    /**
+     * Get the render engine for this page.
+     *
+     * Resolves lazily: checks global config preference against
+     * the active template's capability. Views, modules, and plugins
+     * all call this to determine which layout files to use.
+     *
+     * @return  string  'blade' or 'legacy'
+     */
+    public function getRenderEngine(): string
+    {
+        if ($this->renderEngine === null) {
+            $this->renderEngine = $this->resolveRenderEngine();
+        }
+
+        return $this->renderEngine;
+    }
+
+    /**
+     * Resolve the render engine from config + template capability.
+     *
+     * @return  string  'blade' or 'legacy'
+     */
+    protected function resolveRenderEngine(): string
+    {
+        try {
+            $preferred = \Hubzero\Facades\Config::get('view_engine', 'legacy');
+
+            if ($preferred === 'blade') {
+                $loader = \Hubzero\Facades\App::get('template.loader');
+                if ($loader->supports('blade')) {
+                    return 'blade';
+                }
+            }
+        } catch (\Throwable $e) {
+            // Config or template loader not available
+        }
+
+        return 'legacy';
     }
 
     /**

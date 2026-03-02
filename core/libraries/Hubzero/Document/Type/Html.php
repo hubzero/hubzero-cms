@@ -438,11 +438,46 @@ class Html extends Base
             // Store the file path
             $this->_file = $directory . DS . $filename;
 
-            //get the file content
-            ob_start();
-            require $directory . DS . $filename;
-            $contents = ob_get_contents();
-            ob_end_clean();
+            // Render .blade.php via the standalone Blade engine.
+            // The Blade page shell renders everything (modules, head,
+            // messages) directly — no jdoc tags to parse afterward.
+            if (str_ends_with($filename, '.blade.php')) {
+                // Component output is already in the buffer
+                // Buffer is keyed as $_buffer['component'][$name]
+                $componentBuf = parent::$_buffer['component'] ?? [];
+                if (is_array($componentBuf)) {
+                    // Grab the first (and typically only) component output
+                    $componentHtml = reset($componentBuf) ?: '';
+                } else {
+                    $componentHtml = (string) $componentBuf;
+                }
+
+                // Option from the current request
+                $option = \Hubzero\Facades\Request::getCmd('option', '');
+
+                try {
+                    $contents = \Hubzero\View\Blade::render(
+                        $directory . DS . $filename,
+                        [
+                            'document' => $this,
+                            'content'  => $componentHtml,
+                            'title'    => $this->getTitle(),
+                            'option'   => $option,
+                        ]
+                    );
+                } catch (\Throwable $e) {
+                    error_log('Blade page shell error: ' . $e->getMessage()
+                        . ' in ' . $e->getFile() . ':' . $e->getLine());
+                    throw $e;
+                }
+
+            } else {
+                //get the file content
+                ob_start();
+                require $directory . DS . $filename;
+                $contents = ob_get_contents();
+                ob_end_clean();
+            }
         }
 
         // Try to find a favicon by checking the template and root folder
@@ -484,6 +519,16 @@ class Html extends Base
             '',
             $params['file']
         )     : 'index.php';
+
+        // Use the blade page shell when getRenderEngine() resolves to 'blade'
+        // (global config prefers blade AND the template supports it)
+        if ($this->getRenderEngine() === 'blade') {
+            $bladeFile = preg_replace('/\.php$/', '.blade.php', $file);
+            if (file_exists($directory . DS . $template . DS . $bladeFile)) {
+                $file = $bladeFile;
+            }
+        }
+
         if (!file_exists($directory . DS . $template . DS . $file)) {
             $directory = PATH_CORE . '/templates';
             $template  = 'system';
@@ -520,6 +565,11 @@ class Html extends Base
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseTemplate()
     {
+        // Blade page shell renders everything directly — no jdoc tags
+        if ($this->getRenderEngine() === 'blade') {
+            return $this;
+        }
+
         $matches = array();
 
         if (preg_match_all('#<jdoc:include\ type="([^"]+)" (.*)\/>#iU', $this->_template, $matches)) {
@@ -583,12 +633,21 @@ class Html extends Base
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _renderTemplate()
     {
+        // Blade page shell is already complete — return as-is
+        if ($this->getRenderEngine() === 'blade') {
+            return $this->_template;
+        }
+
         $replace = array();
         $with    = array();
 
         foreach ($this->_template_tags as $jdoc => $args) {
             $replace[] = $jdoc;
-            $with[]    = $this->getBuffer($args['type'], $args['name'], $args['attribs']);
+            try {
+                $with[] = $this->getBuffer($args['type'], $args['name'], $args['attribs']);
+            } catch (\Throwable $e) {
+                $with[] = '';
+            }
         }
 
         return str_replace($replace, $with, $this->_template);

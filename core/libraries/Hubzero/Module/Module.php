@@ -55,7 +55,39 @@ class Module
      */
     public function display()
     {
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+
+        $this->renderLayout($path, [
+            'module' => $this->module,
+            'params' => $this->params,
+        ]);
+    }
+
+    /**
+     * Render a layout file, using Blade for .blade.php files.
+     *
+     * Modules that override display() should call this instead of
+     * raw `require` so that .blade.php layouts are compiled through
+     * the Blade engine.
+     *
+     * @param   string  $path  Absolute path to the layout file
+     * @param   array   $data  Variables to make available to the template
+     * @return  void
+     */
+    protected function renderLayout(string $path, array $data = []): void
+    {
+        if (str_ends_with($path, '.blade.php')) {
+            echo \Hubzero\View\Blade::render($path, $data);
+            return;
+        }
+
+        // Legacy .php layout — extract variables into scope and require.
+        // Use a prefixed name so extract() can't clobber the file path
+        // (e.g. mod_menu passes 'path' => array in $data).
+        $__layoutFile = $path;
+        unset($path);
+        extract($data);
+        require $__layoutFile;
     }
 
     /**

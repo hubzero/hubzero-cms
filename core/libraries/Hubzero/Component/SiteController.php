@@ -134,6 +134,7 @@ class SiteController extends Obj implements ControllerInterface
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_messageType = 'message';
 
+
     /**
      * Constructor
      *

@@ -424,6 +424,25 @@ class View extends Obj
     }
 
     /**
+     * Get the render engine for this page.
+     *
+     * Delegates to Document::getRenderEngine() which resolves the
+     * global config preference against the template's capability.
+     * All callers (views, modules, plugins) get the same answer.
+     *
+     * @return  string  'legacy' or 'blade'
+     */
+    public function getEngine(): string
+    {
+        try {
+            $doc = \Hubzero\Facades\App::get('document');
+            return $doc->getRenderEngine();
+        } catch (\Throwable $e) {
+            return 'legacy';
+        }
+    }
+
+    /**
      * Set a path to the site template
      *
      * @param   string  $template
@@ -488,7 +507,34 @@ class View extends Obj
         ) {
             $this->_path['template'] = str_replace($template ?? '', $layoutTemplate, $this->_path['template']);
         }
-        // Load the template script
+
+        // Try Blade templates when the Document's render engine is 'blade'
+        if ($this->getEngine() === 'blade') {
+            $bladeFile = strtolower($file) . '.blade.php';
+            $this->_template = $this->find($this->_path['template'], $bladeFile);
+
+            if ($this->_template == false) {
+                $bladeDefault = 'default' . ($tpl ? '_' . $tpl : '');
+                $bladeDefault = strtolower($bladeDefault) . '.blade.php';
+                $this->_template = $this->find($this->_path['template'], $bladeDefault);
+            }
+
+            if ($this->_template != false && str_ends_with($this->_template, '.blade.php')) {
+                $this->_output = $this->renderBlade($this->_template);
+                return $this->_output;
+            }
+
+            // Blade preferred but no blade template found — downgrade
+            // so the page shell and modules also fall back to legacy
+            try {
+                $doc = \Hubzero\Facades\App::get('document');
+                $doc->setRenderEngine('legacy');
+            } catch (\Throwable $e) {
+                // Document not available
+            }
+        }
+
+        // Legacy path: find .php template
         $this->_template = $this->find(
             $this->_path['template'],
             $this->createFileName('template', array('name' => $file))
@@ -526,6 +572,37 @@ class View extends Obj
         }
 
         throw new InvalidLayoutException(sprintf('Layout %s not found', $file), 404);
+    }
+
+    /**
+     * Render a Blade template file, passing all public view properties as data.
+     *
+     * Blade templates receive the same variables that legacy templates
+     * access via $this->propertyName, but as local variables ($propertyName).
+     * The view instance itself is available as $__view for accessing
+     * methods like $__view->loadTemplate() or $__view->escape().
+     *
+     * @param   string  $templatePath  Absolute path to the .blade.php file
+     * @return  string  Rendered output
+     */
+    protected function renderBlade(string $templatePath): string
+    {
+        // Extract public properties as Blade template data.
+        // In legacy templates these are accessed as $this->foo;
+        // in Blade templates they become $foo.
+        $data = get_object_vars($this);
+
+        // Remove internal/protected-by-convention properties
+        foreach (array_keys($data) as $key) {
+            if (str_starts_with($key, '_')) {
+                unset($data[$key]);
+            }
+        }
+
+        // Provide the view instance for method access (escape, loadTemplate, etc.)
+        $data['__view'] = $this;
+
+        return Blade::render($templatePath, $data);
     }
 
     /**

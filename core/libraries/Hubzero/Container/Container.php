@@ -162,12 +162,17 @@ class Container implements ArrayAccess
     /**
      * Gets a parameter or an object.
      *
-     * @param   string  $id  The unique identifier for the parameter or object
+     * @param   string  $id       The unique identifier for the parameter or object
+     * @param   mixed   $default  Value to return if the identifier is not defined
      * @return  mixed   The value of the parameter or an object
-     * @throws  \InvalidArgumentException if the identifier is not defined
+     * @throws  \InvalidArgumentException if the identifier is not defined and no default given
      */
-    public function get($id)
+    public function get($id, $default = null)
     {
+        if (func_num_args() > 1 && !$this->offsetExists($id)) {
+            return $default;
+        }
+
         return $this->offsetGet($id);
     }
 
@@ -179,6 +184,17 @@ class Container implements ArrayAccess
      * @return bool
      */
     public function has($id)
+    {
+        return $this->offsetExists($id);
+    }
+
+    /**
+     * Alias for has() — matches Laravel's Container::bound().
+     *
+     * @param   string  $id  The unique identifier
+     * @return  bool
+     */
+    public function bound($id)
     {
         return $this->offsetExists($id);
     }

@@ -361,22 +361,42 @@ class Loader
             $default  = ($temp[1]) ? $temp[1] : 'default';
         }
 
-        // Build the template and base path for the layout
-        $tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
-
-        $base = dirname($this->path($module));
-
-        $bPath = $base . '/tmpl/' . $default . '.php';
-        $dPath = $base . '/tmpl/default.php';
-
-        // If the template has a layout override use it
-        if (file_exists($tPath)) {
-            return $tPath;
-        } elseif (file_exists($bPath)) {
-            return $bPath;
+        // Check the Document's render engine to match the page shell.
+        // When the page shell is blade, prefer blade module layouts.
+        $preferBlade = false;
+        try {
+            $doc = $this->app['document'];
+            $preferBlade = $doc->getRenderEngine() === 'blade';
+        } catch (\Throwable $e) {
+            // Document not available, stick with legacy
         }
 
-        return $dPath;
+        // Template override (Blade first when preferred, then legacy)
+        $tBase = $path . '/' . $template . '/html/' . $module . '/' . $layout;
+        if ($preferBlade && file_exists($tBase . '.blade.php')) {
+            return $tBase . '.blade.php';
+        }
+        if (file_exists($tBase . '.php')) {
+            return $tBase . '.php';
+        }
+
+        // Module layout (Blade first when preferred, then legacy)
+        $base = dirname($this->path($module));
+        $bBase = $base . '/tmpl/' . $default;
+        if ($preferBlade && file_exists($bBase . '.blade.php')) {
+            return $bBase . '.blade.php';
+        }
+        if (file_exists($bBase . '.php')) {
+            return $bBase . '.php';
+        }
+
+        // Default fallback
+        $dBase = $base . '/tmpl/default';
+        if ($preferBlade && file_exists($dBase . '.blade.php')) {
+            return $dBase . '.blade.php';
+        }
+
+        return $dBase . '.php';
     }
 
     /**

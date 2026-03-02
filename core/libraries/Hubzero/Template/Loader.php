@@ -194,6 +194,31 @@ class Loader
     }
 
     /**
+     * Check whether the active template supports a given render engine.
+     *
+     * For 'blade', checks for index.blade.php in the template directory.
+     * For 'legacy', always returns true (all templates have index.php).
+     *
+     * @param   string  $engine  'blade' or 'legacy'
+     * @return  bool
+     */
+    public function supports(string $engine): bool
+    {
+        if ($engine === 'legacy') {
+            return true;
+        }
+
+        if ($engine === 'blade') {
+            $template = $this->app->get('template');
+            $path = $template->path . DIRECTORY_SEPARATOR . 'index.blade.php';
+
+            return file_exists($path);
+        }
+
+        return false;
+    }
+
+    /**
      * Get a list of templates for the specified client
      *
      * @param   integer  $client_id
