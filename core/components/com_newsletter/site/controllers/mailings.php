@@ -120,7 +120,7 @@ class Mailings extends SiteController
 					'action_vars' => $actionVars,
 					'email'       => $recipient->email,
 					'ip'          => Request::ip(),
-					'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
+					'user_agent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
 					'date'        => Date::toSql()
 				));
 
