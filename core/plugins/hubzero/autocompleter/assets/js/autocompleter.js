@@ -191,6 +191,7 @@ $.TokenList = function (input, url_or_data, settings) {
 			outline: "none"
 		})
 		.attr("id", settings.idPrefix + input.id)
+		.attr("aria-label", input.placeholder || "Enter a value")
 		.attr("placeholder", input.placeholder)
 		.focus(function () {
 			if (settings.tokenLimit === null || settings.tokenLimit !== token_count) {
@@ -502,11 +503,21 @@ $.TokenList = function (input, url_or_data, settings) {
 		{
 			$("<span>" + settings.deleteText + "</span>")
 				.addClass(settings.classes.tokenDelete)
+				.attr("role", "button")
+				.attr("aria-label", "Remove " + item[settings.propertyToSearch])
+				.attr("tabindex", "0")
 				.appendTo(this_token)
 				.click(function () {
 					delete_token($(this).parent());
 					hidden_input.change();
 					return false;
+				})
+				.keydown(function (event) {
+					if (event.keyCode === KEY.ENTER || event.keyCode === KEY.SPACE) {
+						delete_token($(this).parent());
+						hidden_input.change();
+						return false;
+					}
 			});
 		}
 

@@ -82,18 +82,18 @@
 	li.token-input-token-act span,
 	li.token-input-token-acg span,
 	li.token-input-token-acm span {
-		color: #DFD5AF;
+		color: #5a4e1e;
 		margin-left: 5px;
 		font-weight: bold;
 		cursor: pointer;
 	}
 	/* Groups */
 	li.token-input-token-acg span {
-		color: #bdd1ad;
+		color: #2a5518;
 	}
 	/* Members */
 	li.token-input-token-acm span {
-		color: #a6b3cf;
+		color: #2e4a7a;
 	}
 	li.token-input-token-act span:hover,
 	li.token-input-token-acg span:hover,
@@ -200,7 +200,7 @@
 	div.token-input-dropdown-acg ul li span,
 	div.token-input-dropdown-acm ul li span {
 		display: block;
-		color: #ccc;
+		color: #767676;
 	}
 /* Holder Stylings */
 	ul.textboxlist-holder {
@@ -351,7 +351,7 @@
 	}
 	ul.autocompleter-choices li span {
 		display: block;
-		color: #ccc;
+		color: #767676;
 	}
 	ul.autocompleter-choices li span.autocompleter-queried {
 		display: inline;
