@@ -44,7 +44,19 @@ class Menu extends Module
         $toplevelLinks  = $params->get('toplevelLinks', false);
 
         if (count($list)) {
-            require $this->getLayoutPath($params->get('layout', 'default'));
+            $layoutPath = $this->getLayoutPath($params->get('layout', 'default'));
+
+            $this->renderLayout($layoutPath, [
+                'params'         => $params,
+                'module'         => $module,
+                'list'           => $list,
+                'active_id'      => $active_id,
+                'path'           => $path,
+                'showAll'        => $showAll,
+                'class_sfx'      => $class_sfx,
+                'disclosureMenu' => $disclosureMenu,
+                'toplevelLinks'  => $toplevelLinks,
+            ]);
         }
     }
 

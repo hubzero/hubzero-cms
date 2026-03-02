@@ -9,6 +9,7 @@
 namespace Modules\Custom;
 
 use Hubzero\Module\Module;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Html;
 
@@ -28,6 +29,21 @@ class Custom extends Module
         $params = $this->params;
         $module = $this->module;
 
+        // Split on <!-- BLADE --> separator if present.
+        // Content above the marker is for the legacy engine,
+        // content below is for the blade engine.
+        $separator = '<!-- BLADE -->';
+        $pos = stripos($module->content, $separator);
+
+        if ($pos !== false) {
+            $engine = Document::getRenderEngine();
+            if ($engine === 'blade') {
+                $module->content = trim(substr($module->content, $pos + strlen($separator)));
+            } else {
+                $module->content = trim(substr($module->content, 0, $pos));
+            }
+        }
+
         if ($params->def('prepare_content', 1)) {
             Plugin::import('content');
             $module->content = Html::content('prepare', $module->content, '', 'mod_custom.content');
@@ -35,6 +51,12 @@ class Custom extends Module
 
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $layoutPath = $this->getLayoutPath($params->get('layout', 'default'));
+
+        $this->renderLayout($layoutPath, [
+            'params'          => $params,
+            'module'          => $module,
+            'moduleclass_sfx' => $moduleclass_sfx,
+        ]);
     }
 }

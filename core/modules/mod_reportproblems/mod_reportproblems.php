@@ -60,6 +60,15 @@ class Reportproblems extends Module
         $this->browser     = $browser->name();
         $this->browser_ver = $browser->version();
 
+        $layoutPath = $this->getLayoutPath();
+
+        // Blade layout is handled by the page shell's help-drawer partial.
+        // Skip loading legacy JS/CSS when using the blade layout.
+        if (str_ends_with($layoutPath, '.blade.php')) {
+            $this->renderLayout($layoutPath, []);
+            return;
+        }
+
         $trigger = $this->params->get('trigger', '#tab');
         $jsInit = 'jQuery(document).ready(function(jq) { '
             . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
@@ -76,6 +85,6 @@ class Reportproblems extends Module
 
         $this->allowed = $allowed;
 
-        require $this->getLayoutPath();
+        require $layoutPath;
     }
 }

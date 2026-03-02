@@ -62,6 +62,19 @@ class Search extends Module
         $label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
         $moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx', ''));
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $layoutPath = $this->getLayoutPath($this->params->get('layout', 'default'));
+
+        $this->renderLayout($layoutPath, [
+            'params'          => $params,
+            'module'          => $this->module,
+            'button'          => $button,
+            'button_pos'      => $button_pos,
+            'button_text'     => $button_text,
+            'width'           => $width,
+            'text'            => $text,
+            'label'           => $label,
+            'moduleclass_sfx' => $moduleclass_sfx,
+            'instances'       => self::$instances,
+        ]);
     }
 }
