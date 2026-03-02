@@ -20,13 +20,17 @@ $sortbys['title'] = Lang::txt('COM_RESOURCES_TITLE');
 $this->css()
      ->js();
 ?>
-<div id="content-header-extra">
-	<p>
-		<a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
-			<?php echo Lang::txt('COM_RESOURCES_SUBMIT_A_RESOURCE'); ?>
-		</a>
-	</p>
-</div>
+<header id="content-header">
+	<h2><?php echo Lang::txt('COM_RESOURCES'); ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+				<?php echo Lang::txt('COM_RESOURCES_SUBMIT_A_RESOURCE'); ?>
+			</a>
+		</p>
+	</div>
+</header>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
 	<section class="main section">

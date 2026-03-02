@@ -29,11 +29,11 @@ if (!function_exists('paginator_item_active'))
 	{
 		if (App::isAdmin())
 		{
-			return '<a title="' . $item->text . '" data-prefix="' . $prefix . '" data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
+			return '<a data-prefix="' . $prefix . '" data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
 		}
 		else
 		{
-			return '<a title="' . $item->text . '" href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '') . 'class="pagenav">' . $item->text . '</a>';
+			return '<a href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '') . 'class="pagenav">' . $item->text . '</a>';
 		}
 	}
 }
@@ -88,13 +88,12 @@ if (!function_exists('paginator_item_active'))
 			}
 			?>
 		</li>
+		<?php if ($this->pages->start->base !== null && $this->pages->start->base !== $this->pages->previous->base) { ?>
 		<li class="pagination-start start">
-			<?php if ($this->pages->start->base !== null) { ?>
 				<?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
-			<?php } else { ?>
-				<span class="pagenav"><?php echo $this->pages->start->text; ?></span>
-			<?php } ?>
 		</li>
+		<?php } ?>
+		<?php if (App::isAdmin()) { ?>
 		<li class="pagination-prev prev">
 			<?php if ($this->pages->previous->base !== null) { ?>
 				<?php echo paginator_item_active($this->pages->previous, $this->prefix); ?>
@@ -102,6 +101,7 @@ if (!function_exists('paginator_item_active'))
 				<span class="pagenav"><?php echo $this->pages->previous->text; ?></span>
 			<?php } ?>
 		</li>
+		<?php } ?>
 		<?php if ($this->pages->ellipsis && $this->pages->i > 1) { ?>
 			<li class="page"><span>...</span></li>
 		<?php } ?>
@@ -129,6 +129,7 @@ if (!function_exists('paginator_item_active'))
 		<?php if ($this->pages->ellipsis && ($this->pages->i - 1) < $this->pages->total) { ?>
 			<li class="page"><span>...</span></li>
 		<?php } ?>
+		<?php if (App::isAdmin()) { ?>
 		<li class="pagination-next next">
 			<?php if ($this->pages->next->base !== null) { ?>
 				<?php echo paginator_item_active($this->pages->next, $this->prefix); ?>
@@ -136,13 +137,12 @@ if (!function_exists('paginator_item_active'))
 				<span class="pagenav"><?php echo $this->pages->next->text; ?></span>
 			<?php } ?>
 		</li>
+		<?php } ?>
+		<?php if ($this->pages->end->base !== null && $this->pages->end->base !== $this->pages->next->base) { ?>
 		<li class="pagination-end end">
-			<?php if ($this->pages->end->base !== null) { ?>
 				<?php echo paginator_item_active($this->pages->end, $this->prefix); ?>
-			<?php } else { ?>
-				<span class="pagenav"><?php echo $this->pages->end->text; ?></span>
-			<?php } ?>
 		</li>
+		<?php } ?>
 	</ul>
 	<input type="hidden" name="<?php echo $this->prefix; ?>limitstart" value="<?php echo $this->start; ?>" />
 </nav>
