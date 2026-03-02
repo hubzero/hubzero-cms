@@ -128,7 +128,7 @@ class Initialcon implements Resolver
 		}
 
 		// If the name has a space
-		if (strstr($name, ' '))
+		if (strstr($name ?? '', ' '))
 		{
 			$parts = explode(' ', $name);
 			$first = array_shift($parts);
@@ -140,7 +140,7 @@ class Initialcon implements Resolver
 		// Take the first two letters
 		else
 		{
-			$initials = substr($name, 0, 2);
+			$initials = substr($name ?? '', 0, 2);
 		}
 		$initials = strtoupper(trim($initials));
 
