@@ -107,7 +107,6 @@ class Message extends \Symfony\Component\Mime\Email
 				$port = strtolower(trim(\Config::get('smtpport','0')));
 				$username = strtolower(trim(\Config::get('smtpuser','')));
 				$password = strtolower(trim(\Config::get('smtppass','')));
-
 				switch ($scheme)
 				{
 					case 'smtp':
@@ -552,7 +551,7 @@ class Message extends \Symfony\Component\Mime\Email
 				$address = new \Symfony\Component\Mime\Address($key, $value);
 			}
 
-			if (isset($first_set))
+			if (!isset($first_set))
 			{
 				parent::bcc($address);
 				$first_set = true;
