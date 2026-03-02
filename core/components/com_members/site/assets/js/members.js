@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
 	if (el.length) {
 		el.addClass('js');
 
-		var select = $("<select />").on('change', function() {
+		var select = $("<select />", {"aria-label": "Member navigation"}).on('change', function() {
 			window.location = $(this).find("option:selected").val();
 		});
 
