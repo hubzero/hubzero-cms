@@ -41,7 +41,7 @@ $urls = array_map("trim", explode($urlSeparator, html_entity_decode($citation->u
 $url = (filter_var($urls[0], FILTER_VALIDATE_URL)) ? $urls[0] : '';
 
 //get citation eprint
-$eprints = array_map("trim", explode(PHP_EOL, html_entity_decode($citation->eprint)));
+$eprints = array_map("trim", explode(PHP_EOL, html_entity_decode($citation->eprint ?? '')));
 $eprintUrl = (filter_var($eprints[0], FILTER_VALIDATE_URL)) ? $eprints[0] : '';
 
 //check to see if we are wanting to use a custom url

@@ -327,7 +327,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 
 			<label for="research_notes">
 				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_RESEARCH_NOTES'); ?>:
-				<textarea name="research_notes" id="research_notes" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->research_notes)); ?></textarea>
+				<textarea name="research_notes" id="research_notes" rows="8" cols="10"><?php echo $this->escape(stripslashes($this->row->research_notes ?? '')); ?></textarea>
 			</label>
 
 			<div class="group twoup">
