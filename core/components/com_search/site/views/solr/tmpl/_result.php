@@ -9,7 +9,7 @@
 <div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
 <div class="result-body">
 	<!-- Title : mandatory -->
-	<h3 class="result-title"><a href="<?php echo $this->result['url']; ?>"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>
+	<h3 class="result-title"><a href="<?php echo $this->result['url']; ?>" rel="nofollow"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>
 
 	<div class="result-extras">
 		<!-- Cateogory : mandatory -->
@@ -73,7 +73,7 @@
 	<?php endif; ?>
 	<!-- Result URL -->
 	<?php if (isset($this->result['url'])): ?>
-	<div class="result-url"><a href="<?php echo $this->result['url']; ?>"><?php echo $this->result['url']; ?></a></div>
+	<div class="result-url"><a href="<?php echo $this->result['url']; ?>" rel="nofollow"><?php echo $this->result['url']; ?></a></div>
 	<?php endif; ?>
 </div> <!-- End Result Body -->
 </div> <!-- End Result -->
