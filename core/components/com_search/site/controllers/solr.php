@@ -38,6 +38,26 @@ use Components\Resources\Models\Entry;
 class Solr extends SiteController
 {
 	/**
+	 * Escape special Lucene/Solr syntax characters in search terms
+	 *
+	 * @param   string  $term  Raw search term
+	 * @return  string  Escaped search term
+	 */
+	public function solrEscape($term)
+	{
+		$pattern = '/([+\-!(){}[\]^"~*?:\\/]|&&|\|\|)/';
+		$escaped = preg_replace($pattern, '\\\\$1', $term);
+
+		$reserved = array('AND', 'OR', 'NOT');
+		foreach ($reserved as $word)
+		{
+			$escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, $escaped);
+		}
+
+		return $escaped;
+	}
+
+	/**
 	 * Display search form and results (if any)
 	 *
 	 * @param   unknown  $response
@@ -104,7 +124,7 @@ class Solr extends SiteController
 			$multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, array('exclude' => 'filter_type', 'include' => 'child_type'));
 		}
 
-		$queryTerms = $terms;
+		$queryTerms = Solr::solrEscape($terms);
 		if ($tags && $tags->count() > 0)
 		{
 			foreach ($tags as $tag)
