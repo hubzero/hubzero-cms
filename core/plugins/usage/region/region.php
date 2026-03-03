@@ -55,18 +55,15 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		// Set region list parameters...
-		$hub = 1;
-		if (!$enddate)
+		// Get latest enddate from database
+		$sql = "SELECT DATE_FORMAT(max(datetime), '%Y-%m-%d')
+				FROM regionvals
+				WHERE region = " . $db->Quote($region);
+		$db->setQuery($sql);
+		$result = $db->loadRow();
+		if ($result)
 		{
-			$dtmonth = date("m") - 1;
-			$dtyear = date("Y");
-			if (!$dtmonth)
-			{
-				$dtmonth = 12;
-				$dtyear = $dtyear - 1;
-			}
-			$enddate = $dtyear . '-' . $dtmonth;
+			$enddate = strval($result[0]);
 		}
 
 		// Look up region list information...
@@ -86,18 +83,17 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 		if ($regionname)
 		{
 			// Prepare some date ranges...
-			$enddate .= "-00";
-			$dtmonth = floor(substr($enddate, 5, 2));
-			$dtyear  = floor(substr($enddate, 0, 4));
+			$dtmonth = floor(intval(substr($enddate, 5, 2)));
+			$dtyear  = floor(intval(substr($enddate, 0, 4)));
 			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
-			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
+			$dtmonthnext = floor(intval(substr($enddate, 5, 2)) + 1);
 			$dtyearnext = $dtyear + 1;
 			if ($dtmonthnext > 12)
 			{
 				$dtmonthnext = 1;
 				$dtyearnext++;
 			}
-			$dtyearprior = substr($enddate, 0, 4) - 1;
+			$dtyearprior = intval(substr($enddate, 0, 4)) - 1;
 			$monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
 			$yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
 			$twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
@@ -117,7 +113,6 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT regionvals.name, regionvals.value
 						FROM regions, regionvals
 						WHERE regions.region = regionvals.region
-						AND regionvals.hub = " . $db->quote($hub) . "
 						AND regions.region = " . $db->quote($region) . "
 						AND regionvals.datetime = " . $db->quote($dt) . "
 						AND regionvals.period = " . $db->quote($period[$pidx]["key"]) . "
@@ -150,7 +145,6 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value
 						FROM regions, regionvals
 						WHERE regions.region = regionvals.region
-						AND regionvals.hub = " . $db->quote($hub) . "
 						AND regions.region = " . $db->quote($region) . "
 						AND datetime = " . $db->quote($dt) . "
 						AND regionvals.period = " . $db->quote($period[$pidx]["key"]) . "
@@ -280,21 +274,8 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Set tome vars
-		$thisyear = date("Y");
-
-		$o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
-
 		// Build HTML
 		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
-		$html .= "\t" . '<fieldset class="filters">' . "\n";
-		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".Lang::txt('COM_USAGE_SHOW_DATA_FOR').': ' . "\n";
-		$html .= "\t\t\t" . '<select name="selectedPeriod" id="selectedPeriod">' . "\n";
-		$html .= $o;
-		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> <input type="submit" value="' . Lang::txt('COM_USAGE_VIEW') . '" />' . "\n";
-		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 		$html .= $this->regionlist($db, 1, 1, $enddate);
 		$html .= $this->regionlist($db, 2, 2, $enddate);
