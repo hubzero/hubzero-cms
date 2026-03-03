@@ -58,5 +58,8 @@ jQuery(document).ready(function(jq){
 			timeFormat: 'HH:mm:ss',
 			timezone: $('input.datetime-field').attr('data-timezone')
 		});
+		$('#hubForm').submit(function(){
+			$(this).children('input[type=submit]').attr('disabled', 'disabled');
+		});
 	}
 });
