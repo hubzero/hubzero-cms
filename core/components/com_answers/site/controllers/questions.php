@@ -592,6 +592,11 @@ class Questions extends SiteController
 			App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
+		if ($this->isAccountTooNew())
+		{
+			return;
+		}
+
 		// Instantiate if doesn't exist
 		if (!is_object($question))
 		{
@@ -952,6 +957,11 @@ class Questions extends SiteController
 			return $this->loginTask();
 		}
 
+		if ($this->isAccountTooNew())
+		{
+			return;
+		}
+
 		// Incoming
 		$response = Request::getArray('response', array(), 'post');
 
@@ -1237,5 +1247,36 @@ class Questions extends SiteController
 		$recipients = array_unique($recipients);
 
 		return $recipients;
+	}
+
+	/**
+	 * Check if the current user's account is too new to post
+	 *
+	 * @return  bool  True if account is too new and redirect was issued
+	 */
+	private function isAccountTooNew()
+	{
+		$restrict = \Component::params('com_answers')->get('restrict_users');
+
+		if ($restrict != 'active')
+		{
+			return false;
+		}
+
+		$minDays = (int) \Component::params('com_answers')->get('restrict_days', 0);
+		$now = new \DateTime();
+		$registered = new \DateTime(User::get('registerDate'));
+
+		if ($now->diff($registered)->days < $minDays)
+		{
+			App::redirect(
+				Route::url('index.php?option=com_answers'),
+				Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
+				'warning'
+			);
+			return true;
+		}
+
+		return false;
 	}
 }
