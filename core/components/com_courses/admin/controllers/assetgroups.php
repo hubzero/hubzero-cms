@@ -143,7 +143,7 @@ class Assetgroups extends AdminController
 	 */
 	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
-		if (@$children[$id] && $level <= $maxlevel)
+		if (isset($children[$id]) && @$children[$id] && $level <= $maxlevel)
 		{
 			foreach ($children[$id] as $v)
 			{
@@ -172,7 +172,7 @@ class Assetgroups extends AdminController
 
 				$list[$id] = $v;
 				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = (@children[$id]) ? count(@$children[$id]) : 0;
+				$list[$id]->children = (isset($children[$id]) && @$children[$id]) ? count(@$children[$id]) : 0;
 				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
 		}
