@@ -240,174 +240,275 @@ if ($mode != 'preview')
 		{
 			$o = 'even';
 			?>
-			<section class="section" id="series">
-				<table class="child-listing">
-					<colgroup class="lecture_name"></colgroup>
-					<colgroup class="lecture_online"></colgroup>
-					<colgroup class="lecture_video"></colgroup>
-					<colgroup class="lecture_notes"></colgroup>
-					<colgroup class="lecture_supp"></colgroup>
-					<colgroup class="lecture_exercises"></colgroup>
-					<thead>
-						<tr>
-							<th><?php echo Lang::txt('Lecture Number/Topic'); ?></th>
-							<th width="12%"><?php echo Lang::txt('Online Lecture'); ?></th>
-							<th><?php echo Lang::txt('Video'); ?></th>
-							<th><?php echo Lang::txt('Lecture Notes'); ?></th>
-							<th><?php echo Lang::txt('Supplemental Material'); ?></th>
-							<th><?php echo Lang::txt('Suggested Exercises'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php
-						$html = '';
-						foreach ($schildren as $child)
+			<section id="series" class="course-accordion-series">
+				<div class="course-accordion">
+					<?php foreach ($schildren as $child): ?>
+						<?php
+						$child->title = $this->escape($child->title);
+						$title = $child->title;
+
+						$o = ($o == 'odd') ? 'even' : 'odd';
+
+						$childHref = Route::url('index.php?option=' . $this->option . '&id=' . $child->id);
+						$childParams = $child->params;
+						$link_action = $childParams->get('link_action', '');
+
+						if ($child->standalone == 1)
 						{
-							$child_params = $child->params;
-							$link_action = $child_params->get( 'link_action', '' );
-
-							$child->title = $this->escape($child->title);
-
-							$o = ($o == 'odd') ? 'even' : 'odd';
-
-							$html .= "\t\t".'<tr class="'.$o.'">'."\n";
-							$html .= "\t\t\t".'<td>';
-							if ($child->standalone == 1)
+							$titleHtml = '<a href="' . $childHref . '"';
+							if ($link_action == 1)
 							{
-								$html .= '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$child->id).'"';
-								if ($link_action == 1)
-								{
-									$html .= ' rel="noreferrer" target="_blank"';
-								}
-								elseif ($link_action == 2)
-								{
-									$html .= ' onclick="popupWindow(\''.$url.'\', \''.$child->title.'\', 400, 400, \'auto\');"';
-								}
-								$html .= '>'.$child->title.'</a>';
+								$titleHtml .= ' rel="noreferrer" target="_blank"';
 							}
-							$html .= '</td>'."\n";
-
-							// Retrieve the grandchildren
-							$grandchildren = $child->children()
-								->whereEquals('standalone', 0)
-								->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-								->order('ordering', 'asc')
-								->rows();
-
-							if (count($grandchildren) > 0)
+							elseif ($link_action == 2)
 							{
-								$videoi       = '';
-								$breeze       = '';
-								$hubpresenter = '';
-								$youtube      = '';
-								$pdf          = '';
-								$video        = '';
-								$exercises    = '';
-								$supp         = '';
+								$titleHtml .= ' onclick="popupWindow(\'' . addslashes($childHref) . '\', \'' . addslashes($title) . '\', 400, 400, \'auto\'); return false;"';
+							}
+							$titleHtml .= '>' . $title . '</a>';
+						}
+						else
+						{
+							$titleHtml = $title;
+						}
 
-								foreach ($grandchildren as $grandchild)
+						$grandchildren = $child->children()
+							->whereEquals('standalone', 0)
+							->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+							->order('ordering', 'asc')
+							->rows();
+
+						$videoi = $breeze = $hubpresenter = $youtube = $pdf = $exercises = $supp = '';
+
+						if (count($grandchildren) > 0)
+						{
+							foreach ($grandchildren as $grandchild)
+							{
+								$grandchild->set('title', $this->escape($grandchild->title));
+								$grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
+
+								$alias = isset($grandchild->type->alias) ? $grandchild->type->alias : '';
+
+								switch ($alias)
 								{
-									$grandchild->set('title', $this->escape($grandchild->title));
-									$grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
+									case 'player':
+									case 'quicktime':
+										$videoi .= (!$videoi) ? '<a href="' . $this->escape($grandchild->path) . '">' . Lang::txt('View') . '</a>' : '';
+										break;
+									case 'breeze':
+										$breeze .= (!$breeze) ? '<a class="breeze flash" href="' . $this->escape($grandchild->path) . '&amp;no_html=1" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View Flash') . '</a>' : '';
+										break;
+									case 'hubpresenter':
+										$hubpresenter .= (!$hubpresenter) ? '<a class="hubpresenter html5" href="' . $this->escape($grandchild->path) . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View HTML') . '</a>' : '';
+										break;
+									case 'elink':
+									case 'youtube':
+										if ($grandchild->get('logical_type') == 68)
+										{
+											$youtube .= (!$youtube) ? '<a class="youtube" href="' . $this->escape($grandchild->path) . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View on YouTube') . '</a>' : '';
+											break;
+										}
+										// fallthrough to default when elink isn't youtube
+									case 'pdf':
+									default:
+										if ($grandchild->get('logical_type') == 14)
+										{
+											$ext = Filesystem::extension($grandchild->path);
+											$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
+											$pdf .= '<a href="' . $this->escape($grandchild->path) . '">' . Lang::txt('Notes') . ' (' . $this->escape($ext) . ')</a>' . "\n";
+										}
+										elseif ($grandchild->get('logical_type') == 51)
+										{
+											$exercises .= '<a href="' . $this->escape($grandchild->path) . '">' . $this->escape(stripslashes($grandchild->title)) . '</a>' . "\n";
+										}
+										else
+										{
+											$grandchildParams  = $grandchild->params;
+											$grandchildAttribs = $grandchild->attribs;
+											$linkAction = $grandchildParams->get('link_action', 0);
+											$width      = $grandchildAttribs->get('width', 640) + 20;
+											$height     = $grandchildAttribs->get('height', 360) + 60;
 
-									$alias = $grandchild->type->alias;
-
-									switch ($alias)
-									{
-										case 'player':
-										case 'quicktime':
-											$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.Lang::txt('View').'</a>' : '';
-											break;
-										case 'breeze':
-											$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View Flash').'</a>' : '';
-											break;
-										case 'hubpresenter':
-											$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View HTML').'</a>' : '';
-											break;
-										case 'elink':
-										case 'youtube':
-											if ($grandchild->get('logical_type') == 68) // youtube
+											if ($linkAction == 1)
 											{
-												$youtube .= (!$youtube) ? '<a title="View Presentation - YouTube Version" class="youtube" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View on YouTube').'</a>' : '';
-												break;	
+												$supp .= '<a rel="external" href="' . $this->escape($grandchild->path) . '">' . $this->escape(stripslashes($grandchild->title)) . '</a>' . "\n";
 											}
-										case 'pdf':
-										default:
-											if ($grandchild->get('logical_type') == 14)
+											elseif ($linkAction == 2)
 											{
-												$ext = Filesystem::extension($grandchild->path);
-												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
-												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a><br />'."\n";
-											}
-											elseif ($grandchild->get('logical_type') == 51)
-											{
-												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
+												$url = Route::url('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
+												$supp .= '<a class="play ' . $width . 'x' . $height . '" href="' . $this->escape($url) . '">' . $this->escape(stripslashes($grandchild->title)) . '</a>' . "\n";
 											}
 											else
 											{
-												$grandchildParams  = $grandchild->params;
-												$grandchildAttribs = $grandchild->attribs;
-												$linkAction = $grandchildParams->get('link_action', 0);
-												$width      = $grandchildAttribs->get('width', 640) + 20;
-												$height     = $grandchildAttribs->get('height', 360) + 60;
-
-												if ($linkAction == 1)
-												{
-													$supp .= '<a rel="external" href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
-												}
-												elseif ($linkAction == 2)
-												{
-													$url = Route::url('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
-													$supp .= '<a class="play '.$width.'x'.$height.'" href="'.$url.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
-												}
-												else
-												{
-													$supp .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
-												}
+												$supp .= '<a href="' . $this->escape($grandchild->path) . '">' . $this->escape(stripslashes($grandchild->title)) . '</a>' . "\n";
 											}
-											break;
-									}
-								}
-
-								if ($hubpresenter)
-								{
-									$html .= "\t\t\t".'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
-								}
-								else if ($youtube)
-								{
-									$html .= "\t\t\t".'<td>'.$youtube.'</td>'."\n";
-								}
-								else
-								{
-									$html .= "\t\t\t".'<td>'.$breeze.'</td>'."\n";
-								}
-								$html .= "\t\t\t".'<td>'.$videoi.'</td>'."\n";
-								$html .= "\t\t\t".'<td>'.$pdf.'</td>'."\n";
-								$html .= "\t\t\t".'<td>'.$supp.'</td>'."\n";
-								$html .= "\t\t\t".'<td>'.$exercises.'</td>'."\n";
-							}
-							else
-							{
-								$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
-							}
-							$html .= "\t\t".'</tr>'."\n";
-							if ($child->standalone == 1)
-							{
-								if ($child->get('type') != 31 && $child->introtext)
-								{
-									$html .= "\t\t".'<tr class="'.$o.'">'."\n";
-									$html .= "\t\t\t".'<td colspan="6">';
-									$html .= \Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200) . '<br /><br />';
-									$html .= "\t\t\t".'</td>'."\n";
-									$html .= "\t\t".'</tr>'."\n";
+										}
+										break;
 								}
 							}
 						}
-						echo $html;
+
+						$videoSection = trim($hubpresenter . $youtube . $breeze . $videoi);
 						?>
-						</tbody>
-					</table>
-			</section><!-- / .main section -->
+
+						<div class="course-accordion-item course-<?php echo $o; ?>">
+							<button
+								class="course-accordion-header"
+								aria-expanded="false"
+								aria-controls="course-body-<?php echo $child->id; ?>"
+								id="course-hdr-<?php echo $child->id; ?>">
+								<span class="course-accordion-icon" aria-hidden="true">+</span>
+								<span class="course-lecture-title"><?php echo $titleHtml; ?></span>
+								<?php if ($child->get('type') != 31 && $child->introtext): ?>
+									<span class="course-lecture-description">
+										<?php echo nl2br(\Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200)); ?>
+									</span>
+								<?php endif; ?>
+							</button>
+
+							<div
+								id="course-body-<?php echo $child->id; ?>"
+								class="course-accordion-body"
+								role="region"
+								aria-labelledby="course-hdr-<?php echo $child->id; ?>"
+								hidden>
+								<?php if ($videoSection || $pdf || $supp || $exercises): ?>
+									<div class="course-lecture-subsections">
+										<?php if ($videoSection): ?>
+											<div class="course-subsection">
+												<h4><?php echo Lang::txt('Video'); ?></h4>
+												<div class="course-subsection-content"><?php echo $videoSection; ?></div>
+											</div>
+										<?php endif; ?>
+
+										<?php if ($pdf): ?>
+											<div class="course-subsection">
+												<h4><?php echo Lang::txt('Lecture Notes'); ?></h4>
+												<div class="course-subsection-content"><?php echo $pdf; ?></div>
+											</div>
+										<?php endif; ?>
+
+										<?php if ($supp): ?>
+											<div class="course-subsection">
+												<h4><?php echo Lang::txt('Supplemental Material'); ?></h4>
+												<div class="course-subsection-content"><?php echo $supp; ?></div>
+											</div>
+										<?php endif; ?>
+
+										<?php if ($exercises): ?>
+											<div class="course-subsection">
+												<h4><?php echo Lang::txt('Suggested Exercises'); ?></h4>
+												<div class="course-subsection-content"><?php echo $exercises; ?></div>
+											</div>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+						</div>
+
+					<?php endforeach; ?>
+				</div>
+			</section>
+			<style>
+				.course-accordion-series {
+					padding: 0 50px;
+				}
+				.course-accordion {
+					border: 2px solid #e5e5e5;
+					border-radius: 1em;
+					overflow: hidden;
+				}
+				.course-accordion-item {
+					border-bottom: 1px solid #f0f0f0;
+				}
+				.course-accordion-header {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					width: 100%;
+					padding: 12px 16px;
+					background: #fafafa;
+					border: none;
+					cursor: pointer;
+					font-size: 1rem;
+					text-align: left;
+				}
+				.course-accordion-header:focus {
+					outline: 2px solid #9ad0ff;
+					outline-offset: 2px;
+				}
+				.course-lecture-title {
+					font-weight: 400;
+					flex: 1;
+				}
+				.course-accordion-icon {
+					margin-left: 12px;
+					margin-right: 12px;
+					font-weight: 700;
+					border: 2px solid #6ca3ba;
+					background-color: #EEE;
+					padding: 0.2em 0.5em 0.3em;
+					border-radius: 50%;
+				}
+				.course-accordion-body {
+					padding: 12px 16px;
+					background: #fff;
+				}
+				.course-lecture-description {
+					color: #444;
+					max-width: 600px;
+				}
+				.course-lecture-subsections {
+					margin-top: 8px;
+				}
+				.course-subsection {
+					margin-bottom: 12px;
+					background-color: rgba(200, 200, 200, 0.1);
+					padding: 1em;
+					border-radius: 1em;
+				}
+				.course-subsection h4 {
+					margin: 0 0 6px 0;
+					font-size: 0.95rem;
+					color: #222;
+					font-weight: 600;
+				}
+				.course-subsection-content {
+					margin-left: 22px;
+				}
+				.course-subsection-content a {
+					display: block;
+					margin: 2px 0;
+					word-break: break-word;
+					border: 0;
+					margin-top: 1em;
+				}
+				.course-odd .course-accordion-header {
+					background: #fbfbfb;
+				}
+				.course-even .course-accordion-header {
+					background: #f7f7f7;
+				}
+			</style>
+			<script>
+				jQuery(document).ready(function($) {
+					$(".course-accordion-header").on("click", function() {
+						var $btn = $(this);
+						var panelId = $btn.attr("aria-controls");
+						var $panel = $("#" + panelId);
+
+						var expanded = $btn.attr("aria-expanded") === "true";
+						if (expanded) {
+							$btn.attr("aria-expanded", "false").find(".course-accordion-icon").text("+");
+							$panel.slideUp(180, function() {
+								$(this).attr("hidden", true);
+							});
+						} else {
+							$btn.attr("aria-expanded", "true").find(".course-accordion-icon").text("\u2212");
+							$panel.attr("hidden", false).slideDown(200);
+						}
+					});
+				});
+			</script>
 			<?php
 		}
 	}
