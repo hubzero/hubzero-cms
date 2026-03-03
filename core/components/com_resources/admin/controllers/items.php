@@ -991,7 +991,7 @@ class Items extends AdminController
 				}
 			}
 
-			$row->set('path', str_replace($tmpid, Str::pad($row->get('id')), $row->get('path')));
+			$row->set('path', str_replace($tmpid, Str::pad($row->get('id')), $row->get('path', '')));
 			$row->save();
 		}
 

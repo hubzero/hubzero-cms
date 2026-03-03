@@ -111,8 +111,9 @@ class Create extends SiteController
 		}
 		if ($this->step)
 		{
+			$stepLabel = $this->steps[$this->step] ?? 'UNKNOWN';
 			Pathway::append(
-				Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step])),
+				Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($stepLabel)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step
 			);
 		}
