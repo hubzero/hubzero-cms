@@ -20,6 +20,7 @@ use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php';
+require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Tools controller class for simulation sessions
@@ -1124,6 +1125,17 @@ class Sessions extends SiteController
 		//$tv->loadFromInstance($row->appname);
 		$app->title = stripslashes($tv->title);
 		$app->params = new \Hubzero\Config\Registry($tv->params);
+
+		$res = \Components\Resources\Models\Entry::getInstance($toolname);
+		if ($res->get('id') > 0)
+		{
+			$page_template = $res->params->get('page_template');
+			if ($page_template && $page_template != '')
+			{
+				$_app = App::getApplication()->template;
+				$_app->template = $page_template;
+			}
+		}
 
 		// Ensure we found an active session
 		if (!$row->sesstoken)
