@@ -1075,7 +1075,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$coltitle = Request::getString('collection_title', '', 'post');
-		if (!$p['collection_id'] && $coltitle)
+		$p['collection_id'] =  $p['collection_id'] ?? '';
+		if (isset($p['collection_id']) && !$p['collection_id'] && $coltitle)
 		{
 			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', $coltitle);
