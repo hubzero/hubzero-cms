@@ -1059,6 +1059,7 @@ class Tickets extends SiteController
 		$prevSubmission = Ticket::all()
 			->whereEquals('status', 0)
 			->whereEquals('open', 1)
+			->whereEquals('type', 0)
 			->order('id', 'desc')
 			->limit(1)
 			->start(0)
