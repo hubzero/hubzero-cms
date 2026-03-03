@@ -116,7 +116,24 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 
 						<?php if ($this->question->get('question')) { ?>
 							<div class="entry-long">
-								<?php echo htmlspecialchars_decode($this->question->question); ?>
+								<?php
+									$val = htmlspecialchars_decode($this->question->question);
+									$componentPath = Component::path('com_redirect');
+									if ($componentPath)
+									{
+										require_once $componentPath . DS . 'helpers' . DS . 'converter.php';
+										$val = \Component\Redirect\Helpers\Converter::convert($val);
+									}
+									else
+									{
+										$val = preg_replace(
+											'#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+											'<a href="$1" rel="nofollow">$2</a>',
+											$val
+										);
+									}
+									echo $val;
+								?>
 							</div><!-- / .question-long -->
 						<?php } ?>
 
