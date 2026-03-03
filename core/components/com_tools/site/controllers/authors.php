@@ -232,7 +232,7 @@ class Authors extends SiteController
 		// Incoming
 		$id  = Request::getInt('id', 0);
 		$pid = Request::getInt('pid', 0);
-
+		$ver = Request::getString('ver', 'dev');
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid)
 		{
@@ -252,7 +252,7 @@ class Authors extends SiteController
 		}
 
 		// Push through to the authors view
-		$this->displayTask($pid);
+		$this->displayTask($pid, $ver);
 	}
 
 	/**
@@ -353,22 +353,20 @@ class Authors extends SiteController
 	 * @param   integer  $id  Resource ID
 	 * @return  void
 	 */
-	public function displayTask($id=null)
+	public function displayTask($id=null, $version="dev")
 	{
 		// Incoming
 		if (!$id)
 		{
 			$id = Request::getInt('rid', 0);
 		}
-
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 		}
 
-		$version = Request::getString('version', 'dev');
-
+		$version = Request::getString('version', $version);
 		// Get all contributors of this resource
 		$resource = Entry::oneOrFail($id);
 
