@@ -66,7 +66,7 @@ class Url extends Content
 
 		foreach ($urls as $url)
 		{
-			if (!preg_match('/^(http[s]*\:\/\/)?([0-9A-Za-z\.\/\-\=\:\?\_\&\%\~]+)$/', $url, $matches))
+			if (!preg_match('/^(http[s]*\:\/\/)?([0-9A-Za-z\.\/\-\=\:\?\_\&\%\~\(\)]+)$/', $url, $matches))
 			{
 				return array('error' => 'Content did not match the pre-defined filter');
 			}
