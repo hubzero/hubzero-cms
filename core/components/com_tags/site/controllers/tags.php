@@ -606,13 +606,13 @@ class Tags extends SiteController
 				$title = html_entity_decode($title);
 
 				// Strip html from feed item description text
-				$description = html_entity_decode(Str::truncate(strip_tags(stripslashes($row->ftext)), 300));
+				$description = html_entity_decode(Str::truncate(strip_tags(stripslashes($row->ftext ?: '')), 300));
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
 				if (isset($row->data3) || isset($row->rcount))
 				{
-					$author = strip_tags($row->data3);
+					$author = strip_tags($row->data3 ?: '');
 				}
 
 				// Load individual item creator class
