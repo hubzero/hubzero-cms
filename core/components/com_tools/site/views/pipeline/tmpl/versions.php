@@ -35,6 +35,7 @@ $this->css('pipeline.css')
 	}
 
 	$rconfig = Component::params( 'com_resources' );
+	$tconfig = Component::params('com_tools');
 	$hubDOIpath = $rconfig->get('doi');
 	?>
 	<div class="grid">
@@ -91,7 +92,18 @@ $this->css('pipeline.css')
 						// get wiki access text
 						$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
+						$handle = '';
+
+						if (isset($t->doi) && $t->doi && $tconfig->get('doi_shoulder'))
+						{
+							$handle = 'doi:' . (isset($t->doi_shoulder) ? $t->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($t->doi);
+							$handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
+						}
+						else if (isset($t->doi_label) && $t->doi_label)
+						{
+							$handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $t->doi_label;
+							$handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
+						}
 
 						$t->version = ($t->state==3 && $t->version==$this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
 				?>
@@ -137,7 +149,7 @@ $this->css('pipeline.css')
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>
-								<?php if ($handle) { echo ' <p><span class="heading">'.Lang::txt('COM_TOOLS_DOI').': </span><span class="desc"><a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a></span></p>'; } ?>
+								<?php if ($handle!='') { echo ' <p><span class="heading">'.Lang::txt('COM_TOOLS_DOI').': </span><span class="desc">' . $handle . '</span></p>'; } ?>
 							</div>
 						</td>
 					</tr>
