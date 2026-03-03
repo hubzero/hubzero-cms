@@ -83,6 +83,19 @@ class Router extends Base
 			//  /projects/##/files/connections/##/download
 			//  /projects/##/files/connections/##/getmetadata
 			//  /projects/##/files/connections/##/setmetadata
+			//  /projects/##/filefs
+			//  /projects/##/filefs/list
+			//  /projects/##/filefs/get
+			//  /projects/##/filefs/insert
+			//  /projects/##/filefs/update
+			//  /projects/##/filefs/delete
+			//  /projects/##/filefs/makedirectory
+			//  /projects/##/filefs/rename
+			//  /projects/##/filefs/move
+			//  /projects/##/filefs/upload
+			//  /projects/##/filefs/download
+			//  /projects/##/filefs/getmetadata
+			//  /projects/##/filefs/setmetadata
 
 			if (isset($segments[1]) && $segments[1] == 'files')
 			{
@@ -97,6 +110,12 @@ class Router extends Base
 				{
 					$vars['task'] = isset($segments[2]) ? $segments[2] : 'list';
 				}
+			}
+			elseif (isset($segments[1]) && $segments[1] == 'filefs')
+			{
+				$vars['controller'] = 'filefs';
+				$vars['id']         = $segments[0];
+				$vars['task'] = isset($segments[2]) ? $segments[2] : 'list';
 			}
 			elseif (isset($segments[1]) && $segments[1] == 'team')
 			{
