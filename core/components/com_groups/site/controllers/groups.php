@@ -232,6 +232,13 @@ class Groups extends Base
 			return;
 		}
 
+		$gparams = new \Hubzero\Config\Registry($this->view->group->params);
+		$page_template = $gparams->get('page_template');
+		if ($page_template)
+		{
+			App::get('template')->template = $page_template;
+		}
+
 		// Ensure it's an allowable group type to display
 		if (!in_array($this->view->group->get('type'), array(1, 3)))
 		{

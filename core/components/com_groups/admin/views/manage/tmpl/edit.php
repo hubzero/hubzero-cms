@@ -215,6 +215,10 @@ $this->js();
 									<option <?php if ($author == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES'); ?></option>
 								</select>
 							</div>
+							<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_TEMPLATE'); ?>">
+								<label for="param-page_template"><?php echo Lang::txt('COM_GROUPS_TEMPLATE'); ?>:</label>
+								<input type="text" name="group[params][page_template]" value="<?php echo $this->escape($gparams->get('page_template', '')); ?>" id="param-page_template">
+							</div>
 						</fieldset>
 					</div>
 					<div class="col span5">
