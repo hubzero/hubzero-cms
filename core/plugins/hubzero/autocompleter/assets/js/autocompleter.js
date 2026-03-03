@@ -192,6 +192,7 @@ $.TokenList = function (input, url_or_data, settings) {
 		})
 		.attr("id", settings.idPrefix + input.id)
 		.attr("placeholder", input.placeholder)
+		.attr("aria-label", $(input).attr("aria-label") || input.placeholder)
 		.focus(function () {
 			if (settings.tokenLimit === null || settings.tokenLimit !== token_count) {
 				if (!isReadOnly) {
@@ -371,6 +372,11 @@ $.TokenList = function (input, url_or_data, settings) {
 			}
 		})
 		.insertBefore(hidden_input);
+
+	// Update any associated label to point to the new visible input
+	if (input.id) {
+		$("label[for='" + input.id + "']").attr("for", settings.idPrefix + input.id);
+	}
 
 	// The token holding the input box
 	var input_token = $("<li />")
