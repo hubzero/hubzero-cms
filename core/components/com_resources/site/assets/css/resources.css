@@ -287,11 +287,11 @@
 
 /* Licensing */	
 	.opensource_license { 
-		background: url("/core/components/com_resources/site/assets/img/os.gif") 0 1px no-repeat;
+		background: url("/core/components/com_resources/site/assets/img/os.gif") 0 0.3em no-repeat;
 		padding-left: 17px;
 	}
 	.closedsource_license { 
-		background: url("/core/components/com_resources/site/assets/img/cs.gif") 0 0 no-repeat;
+		background: url("/core/components/com_resources/site/assets/img/cs.gif") 0 0.35em no-repeat;
 		padding-left: 17px;
 	}
 	.unavail {
@@ -803,11 +803,12 @@
 	#level-1, 
 	#level-2, 
 	#level-3 {
-		background-color: transparent;
-		margin: 0;
-		padding: 0;
-		width: 33%;
+		background-color: #fafafa;
+		margin: 1em;
+		padding: 1em;
+		width: 30%;
 		float: left;
+		border-radius: 1em;
 	}
 	div.ie {
 		height: 373px; 
@@ -823,12 +824,12 @@
 /*\*/
 	#tagbrowser ul {
 		background: #fff;
-		border: 1px solid #C5C5C5; 
+		border: 0px solid #C5C5C5; 
 		height: 350px; 
 		overflow: auto;
 		overflow-x: hidden;
 		margin: 0; 
-		padding: 0;
+		padding: 1em;
 		list-style: none;
 	}
 	#tagbrowser li#selecta {
@@ -914,7 +915,7 @@
 		font-family: 'Fontcons';
 		content: "\203A";
 		font-size: 1em;
-		display: block;
+		display: none;
 		width: 1em;
 		height: 1em;
 		position: absolute;
