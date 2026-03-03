@@ -252,6 +252,23 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$restrictUsers = \Component::params('com_answers')->get('restrict_users');
+		if ($restrictUsers == 'active')
+		{
+			$restrictDays = \Component::params('com_answers')->get('restrict_days');
+			$now = new \DateTime();
+			$registered = new \DateTime(User::get('registerDate'));
+			if ($now->diff($registered)->days < $restrictDays)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_answers'),
+					Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
+					'warning'
+				);
+				return;
+			}
+		}
+
 		if (!is_object($row))
 		{
 			$row  = new \Components\Answers\Models\Question();
