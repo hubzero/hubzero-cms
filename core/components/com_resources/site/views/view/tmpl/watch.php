@@ -465,12 +465,16 @@ $presentation->subtitles = array_values($presentation->subtitles);
 					<?php $num = 0;
 $counter = 0;
 $last_slide_id = 0; ?>
-					<?php foreach ($presentation->slides as $slide) : ?>
+					<?php foreach ($presentation->slides as &$slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
 								<?php
 									//use thumb if possible
-									$thumb = $content_folder . DS . is_array($slide->media) ? $slide->media[0] : $slide->media;
+									$thumb = $slide->media;
+									$thumb = is_array($thumb)? $thumb[0] : $thumb;
+									if (is_string($thumb)){
+										$thumb = $content_url . DS . $thumb;
+									}
 									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb))
 									{
 										$thumb = $content_url.DS.$slide->thumb;
