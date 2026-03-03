@@ -1328,6 +1328,14 @@ class Resources extends SiteController
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
+		// Template overloading
+		$page_template = $this->model->params->get('page_template');
+		if ($page_template && $page_template != '')
+		{
+			$app = App::getApplication()->template;
+			$app->template = $page_template;
+		}
+
 		// Make sure the resource is published and standalone
 		if (!$this->model->get('standalone')) // || !$this->model->isPublished())
 		{
