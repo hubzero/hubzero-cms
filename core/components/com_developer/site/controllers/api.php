@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,6 +48,7 @@ class Api extends SiteController
 		// render view
 		$this->view
 			->set('documentation', $generator->output('array'))
+			->set('tokens', $this->_getUserTokens())
 			->display();
 	}
 
@@ -66,8 +68,7 @@ class Api extends SiteController
 		$generator = new Generator(!Config::get('debug'));
 		$documentation = $generator->output('array');
 
-		if (!isset($documentation['sections'][$active]))
-		{
+		if (!isset($documentation['sections'][$active])) {
 			throw new \Exception(Lang::txt('Endpoint not found'), 404);
 		}
 
@@ -75,6 +76,7 @@ class Api extends SiteController
 		$this->view
 			->set('active', $active)
 			->set('documentation', $documentation)
+			->set('tokens', $this->_getUserTokens())
 			->display();
 	}
 
@@ -114,8 +116,7 @@ class Api extends SiteController
 	private function _buildPathway()
 	{
 		// create breadcrumbs
-		if (Pathway::count() <= 0)
-		{
+		if (Pathway::count() <= 0) {
 			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
@@ -127,12 +128,36 @@ class Api extends SiteController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 
-		if (isset($this->_task) && $this->_task != '')
-		{
+		if (isset($this->_task) && $this->_task != '') {
 			Pathway::append(
 				Lang::txt(strtoupper($this->_option . '_' . $this->_controller . '_' . $this->_task)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task
 			);
 		}
+	}
+
+	/**
+	 * Get all active tokens for the current user
+	 * 
+	 * @return  array
+	 */
+	private function _getUserTokens()
+	{
+		$tokens = array();
+
+		if (!\User::isGuest()) {
+			// Ensure model is loaded
+			require_once \Component::path('com_developer') . '/models/accesstoken.php';
+
+			// Get all active tokens
+			$tokens = \Components\Developer\Models\Accesstoken::all()
+				->whereEquals('uidNumber', \User::get('id'))
+				->where('expires', '>', \Hubzero\Utility\Date::of('now')->toSql())
+				->whereEquals('state', 1)
+				->order('created', 'desc')
+				->rows();
+		}
+
+		return $tokens;
 	}
 }

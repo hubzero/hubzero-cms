@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,13 +9,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$host = $_SERVER['HTTP_HOST'];
+$host = Request::host();
 list($base, ) = explode('.', $host);
 $url = 'https://' . $host . '/api';
 
 // include needed css
 $this->css('docs')
-     ->css();
+	->js('api-docs')
+	->css();
 
 // add highlight lib
 //Document::addStyleSheet('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css');
@@ -33,7 +35,8 @@ $activeVersion = Request::getString('version', reset($versions));
 	<div id="content-header-extra">
 		<ul>
 			<li>
-				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api&version=' . $activeVersion); ?>">
+				<a class="btn icon-cog"
+					href="<?php echo Route::url('index.php?option=com_developer&controller=api&version=' . $activeVersion); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
 				</a>
 			</li>
@@ -44,24 +47,31 @@ $activeVersion = Request::getString('version', reset($versions));
 <section class="section api docs">
 	<div class="section-inner hz-layout-with-aside">
 		<aside class="aside">
-			<?php 
+			<?php
 			$this->view('_menu')
-				 ->set('documentation', $this->documentation)
-				 ->set('active', '')
-				 ->set('version', $activeVersion)
-				 ->display();
+				->set('documentation', $this->documentation)
+				->set('active', '')
+				->set('version', $activeVersion)
+				->display();
 			?>
 		</aside>
 		<div class="subject">
-			<?php 
+			<?php
+			// Display active tokens if available
+			if (isset($this->tokens) && !empty($this->tokens)) {
+				$this->view('_active_tokens')
+					->set('tokens', $this->tokens)
+					->display();
+			}
+
 			$this->view('_docs_overview')
-				 ->set('url', $url)
-				 ->set('base', $base)
-				 ->display();
+				->set('url', $url)
+				->set('base', $base)
+				->display();
 
 			$this->view('_docs_oauth')
-				 ->set('url', $url)
-				 ->display();
+				->set('url', $url)
+				->display();
 			?>
 		</div>
 	</div>
