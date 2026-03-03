@@ -671,7 +671,7 @@ class Events extends SiteController
 		$row->load($id);
 
 		// Ensure we have an event
-		if (!$row || !$row->id)
+		if (!$row || !$row->id || $row->state!=1 )
 		{
 			App::abort(404, Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'));
 		}
@@ -2018,8 +2018,6 @@ class Events extends SiteController
 		{
 			$row->state = 1;
 		}
-
-		$row->state = 1;
 
 		// Verify that the event doesn't start after it ends or ends before it starts.
 		$pubdow = strtotime($row->publish_down);

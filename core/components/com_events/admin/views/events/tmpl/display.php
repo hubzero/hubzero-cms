@@ -140,7 +140,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 					if ($times) {
 					?>
-						<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
+						<a class="state <?php echo $row->state ? (($row->state==2) ? 'trash' :'publish') : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>
