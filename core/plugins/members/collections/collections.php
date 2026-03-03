@@ -891,6 +891,22 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			return $this->_login();
 		}
+		$restrictUsers = \Component::params('com_answers')->get('restrict_users');
+		if ($restrictUsers == 'active')
+		{
+			$restrictDays = \Component::params('com_answers')->get('restrict_days');
+			$now = new \DateTime();
+			$registered = new \DateTime(User::get('registerDate'));
+			if ($now->diff($registered)->days < $restrictDays)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_members'),
+					Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
+					'warning'
+				);
+				return;
+			}
+		}
 
 		if (!$this->params->get('access-edit-item') && !$this->params->get('access-create-item'))
 		{
@@ -1673,6 +1689,22 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 				'warning'
 			);
 			return;
+		}
+		$restrictUsers = \Component::params('com_answers')->get('restrict_users');
+		if ($restrictUsers == 'active')
+		{
+			$restrictDays = \Component::params('com_answers')->get('restrict_days');
+			$now = new \DateTime();
+			$registered = new \DateTime(User::get('registerDate'));
+			if ($now->diff($registered)->days < $restrictDays)
+			{
+				App::redirect(
+					Route::url('index.php?option=com_members'),
+					Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
+					'warning'
+				);
+				return;
+			}
 		}
 
 		// Access check
