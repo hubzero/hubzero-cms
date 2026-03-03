@@ -86,12 +86,28 @@ $this->css('theme' . $theme . '.css');
 					</div>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php if ($this->model->about('parsed')) { ?>
+			<?php if ($this->model->about('parsed')) {
+				$val = $this->model->about('parsed');
+				$componentPath = Component::path('com_redirect');
+				if ($componentPath)
+				{
+					require_once $componentPath . DS . 'helpers' . DS . 'converter.php';
+					$val = \Component\Redirect\Helpers\Converter::convert($val);
+				}
+				else
+				{
+					$val = preg_replace(
+						'#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+						'<a href="$1" rel="nofollow">$2</a>',
+						$val
+					);
+				}
+			?>
 				<div class="public-list-header">
 					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>
 				</div>
 				<div class="public-list-wrap">
-					<?php echo $this->model->about('parsed'); ?>
+					<?php echo $val; ?>
 				</div>
 			<?php } ?>
 			<?php
