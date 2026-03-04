@@ -13,7 +13,7 @@ $this->js();
 <div id="recommendations">
 	<h3><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>
 	<div class="subject" id="recommendations-subject" data-base="<?php echo Request::base(true); ?>">
-		<?php if ($this->results) { ?>
+		<?php if (count($this->results)) { ?>
 			<ul>
 			<?php foreach ($this->results as $line) { ?>
 				<li>

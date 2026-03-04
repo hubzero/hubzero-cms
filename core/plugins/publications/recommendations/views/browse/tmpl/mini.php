@@ -12,7 +12,7 @@ $this->css();
 ?>
 <div id="recommendations">
 	<h3><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
-	<?php if ($this->results) { ?>
+	<?php if (count($this->results)) { ?>
 		<ul>
 			<?php
 			foreach ($this->results as $line)

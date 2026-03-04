@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 <div class="container" id="recommendations">
 	<h3><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>
 
-	<?php if ($this->results) { ?>
+	<?php if (count($this->results)) { ?>
 		<ul>
 		<?php foreach ($this->results as $line) { ?>
 			<li>

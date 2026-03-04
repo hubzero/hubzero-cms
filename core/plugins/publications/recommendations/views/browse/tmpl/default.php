@@ -18,7 +18,7 @@ $this->js()
 		<p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_EXPLANATION'); ?></p>
 	</div>
 	<div class="subject" id="recommendations-subject">
-		<?php if ($this->results) { ?>
+		<?php if (count($this->results)) { ?>
 			<ul>
 				<?php
 				foreach ($this->results as $line)
