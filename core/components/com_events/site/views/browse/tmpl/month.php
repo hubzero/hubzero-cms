@@ -59,9 +59,10 @@ $this->css()
 		<div class="aside">
 		<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year.'&month='.$this->month); ?>" method="get" id="event-categories">
 			<fieldset>
-				<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
+				<legend class="sr-only"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></legend>
+				<label for="event-category"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
 				<div class="hz-input-combo">
-					<select name="category" id="event-cateogry">
+					<select name="category" id="event-category">
 						<option value=""><?php echo Lang::txt('EVENTS_ALL_CATEGORIES'); ?></option>
 					<?php
 					if ($this->categories)
@@ -119,8 +120,8 @@ $this->css()
 				}
 
 				?>
-				<a class="prv" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>">&lsaquo;</a>
-				<a class="nxt" href="<?php echo $next;?>" title="<?php echo $next_text; ?>">&rsaquo;</a>
+				<a class="prv" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>" aria-label="<?php echo $prev_text; ?>">&lsaquo;</a>
+				<a class="nxt" href="<?php echo $next;?>" title="<?php echo $next_text; ?>" aria-label="<?php echo $next_text; ?>">&rsaquo;</a>
 				<?php echo $this->year; ?>
 			</p>
 		</div><!-- / .calendarwrap -->
