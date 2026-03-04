@@ -8,9 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
 <?php
-if (isset($this->comments))
+if (isset($this->comments) && count($this->comments))
 {
 	$cls = 'odd';
 	if (isset($this->cls))
@@ -19,7 +18,9 @@ if (isset($this->comments))
 	}
 
 	$this->depth++;
-
+?>
+<ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
+<?php
 	foreach ($this->comments as $comment)
 	{
 		$this->view('_comment')
@@ -31,6 +32,8 @@ if (isset($this->comments))
 		     ->set('base', $this->base)
 		     ->display();
 	}
-}
 ?>
 </ol>
+<?php
+}
+?>

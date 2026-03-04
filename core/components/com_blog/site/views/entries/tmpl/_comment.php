@@ -154,8 +154,8 @@ else
 
 						<div class="form-group">
 							<div class="form-check">
-								<label class="form-check-label" id="comment-anonymous-label" for="comment-anonymous">
-									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+								<label class="form-check-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
 									<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
 								</label>
 							</div>

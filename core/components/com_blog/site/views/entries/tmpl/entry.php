@@ -318,6 +318,7 @@ $first = $this->archive->entries(array(
 					<img src="<?php echo User::picture(User::isGuest() ? 1 : 0); ?>" alt="" />
 				</p>
 				<fieldset>
+					<legend class="sr-only"><?php echo Lang::txt('COM_BLOG_POST_COMMENT'); ?></legend>
 					<?php
 					$replyto = $this->row->comments()
 						->whereEquals('id', Request::getInt('reply', 0))
@@ -374,8 +375,8 @@ $first = $this->archive->entries(array(
 					<?php } ?>
 
 					<?php if (!User::isGuest()) { ?>
-						<label id="comment-anonymous-label">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+						<label for="comment-anonymous-0">
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous-0" value="1" />
 							<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
 						</label>
 
