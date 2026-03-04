@@ -22,15 +22,30 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 ?>
 <div class="project-card" id="project-<?php echo $this->row->get('id'); ?>">
 	<div class="project-contents">
-		<?php if ((!$this->row->inSetup() && $this->row->access('view'))
-				|| ($this->row->inSetup() && $this->row->access('owner'))): ?>
-			<a class="project-identity" href="<?php echo Route::url($this->row->link()); ?>">
+		<?php
+		$canView = ((!$this->row->inSetup() && $this->row->access('view'))
+				|| ($this->row->inSetup() && $this->row->access('owner')));
+		?>
+		<?php if ($canView): ?>
+			<a class="project-identity project-link" href="<?php echo Route::url($this->row->link()); ?>">
 				<img src="<?php echo $src; ?>" alt="<?php echo $this->escape($this->row->get('title')); ?>" />
+				<span class="project-details">
+					<span class="project-alias"><?php echo $this->escape($this->row->get('alias')); ?></span>
+					<span class="project-title" data-id="<?php echo $this->row->get('id'); ?>">
+						<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
+					</span>
+				</span>
 			</a>
 		<?php else: ?>
 			<span class="project-identity">
 				<img src="<?php echo $src; ?>" alt="<?php echo $this->escape($this->row->get('title')); ?>" />
 			</span>
+			<div class="project-details">
+				<span class="project-alias"><?php echo $this->escape($this->row->get('alias')); ?></span>
+				<span class="project-title">
+					<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
+				</span>
+			</div>
 		<?php endif; ?>
 
 		<?php if ($this->row->get('featured')): ?>
@@ -39,25 +54,19 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 			</span>
 		<?php endif; ?>
 
-		<div class="project-details">
-			<span class="project-alias"><?php echo $this->escape($this->row->get('alias')); ?></span>
-
-			<?php if ((!$this->row->inSetup() && $this->row->access('view'))
-					|| ($this->row->inSetup() && $this->row->access('owner'))): ?>
-				<a class="project-title" rel="<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($this->row->link()); ?>">
-					<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
-				</a>
-			<?php else: ?>
-				<span class="project-title">
-					<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
-				</span>
-			<?php endif; ?>
-
+		<?php if ($canView): ?>
 			<?php if ($role): ?>
 				<span class="<?php echo str_replace(array('(', ')'), '', $role); ?> project-membership-status">
 					<?php echo $role; ?>
 				</span>
 			<?php endif; ?>
+		<?php else: ?>
+			<?php if ($role): ?>
+				<span class="<?php echo str_replace(array('(', ')'), '', $role); ?> project-membership-status">
+					<?php echo $role; ?>
+				</span>
+			<?php endif; ?>
+		<?php endif; ?>
 
 			<?php
 			// Private
@@ -86,10 +95,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 				$icon = 'icon-archive';
 			endif;
 			?>
-			<span class="<?php echo $icon; ?> project-privacy tooltips" title="<?php echo $privacyTxt; ?>">
+			<span class="<?php echo $icon; ?> project-privacy">
 				<?php echo $privacyTxt; ?>
 			</span>
-		</div>
 
 		<div class="project-meta">
 			<?php

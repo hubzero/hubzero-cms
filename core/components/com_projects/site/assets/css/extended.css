@@ -221,7 +221,25 @@
 		margin-left: 1em;
 		list-style: none;
 	}
-	
+	.project-header .col.span2.omega {
+		display: flex;
+		align-items: center;
+		height: 150px;
+		justify-content: flex-end;
+		padding-right: 1.5em;
+	}
+	.project-header #useroptions {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		text-align: right;
+	}
+	.project-header #useroptions li {
+		list-style: none;
+		display: inline-block;
+		margin: 0 0 0.5em 0;
+	}
+
 /*
 	Side content
 --------------------------------------------- */

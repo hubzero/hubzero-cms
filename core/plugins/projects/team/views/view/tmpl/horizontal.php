@@ -27,7 +27,7 @@ defined('_HZEXEC_') or die();
 				//$thumb   = $profile->get('id') ? $profile->picture() : $actor->picture(true);
 			?>
 			<li>
-				<img width="50" height="50" src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($owner->fullname); ?>" />
+				<img width="50" height="50" src="<?php echo $profile->picture(); ?>" alt="" />
 				<span class="block"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $owner->userid); ?>"><?php echo $this->escape($owner->fullname); ?></a></span>
 			</li>
 			<?php } ?>

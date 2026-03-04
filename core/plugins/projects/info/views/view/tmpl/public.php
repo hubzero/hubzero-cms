@@ -9,23 +9,23 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="basic_info">
-	<table id="infotbl">
-		<tbody>
+	<?php
+	// This is for the admin-defined project information
+	if ($this->info)
+	{
+		?>
+		<dl id="infotbl">
 			<?php
-			// This is for the admin-defined project information
-			if ($this->info)
+			foreach ($this->info as $field)
 			{
-				foreach ($this->info as $field)
-				{
-					?>
-					<tr>
-						<th class="htd"><?php echo $field->label; ?></th>
-						<td><?php echo $field->value; ?></td>
-					</tr>
-					<?php
-				} // end foreach
-			} // end if
+				?>
+				<dt><?php echo $field->label; ?></dt>
+				<dd><?php echo $field->value; ?></dd>
+				<?php
+			} // end foreach
 			?>
-		</tbody>
-	</table>
+		</dl>
+		<?php
+	} // end if
+	?>
 </div><!-- / .basic info -->
