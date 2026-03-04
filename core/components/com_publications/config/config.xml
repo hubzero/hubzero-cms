@@ -47,6 +47,7 @@
 			<option value="0">JOFF</option>
 			<option value="1">JON</option>
 		</field>
+		<field name="data_publishing_self_assessment_guide" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DATA_PUBLISHING_GUIDE" description="COM_PUBLICATIONS_CONFIG_DATA_PUBLISHING_GUIDE_DESC" />
 	</fieldset>
 	<fieldset name="CURATION">
 		<field name="curatorreplyto" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO" description="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO_DESC" />
