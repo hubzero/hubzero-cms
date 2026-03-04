@@ -41,6 +41,7 @@ $this->css('introduction.css', 'system')
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH'); ?>" />
 					<fieldset class="entry-search">
+						<legend class="sr-only"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></legend>
 						<label for="gsearch"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
 						<input type="text" name="search" id="gsearch" value="" placeholder="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>" />
 					</fieldset>
