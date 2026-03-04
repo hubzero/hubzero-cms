@@ -8,35 +8,112 @@
 	.list-footer {
 		margin: 1em 0 1em 0;
 		padding: 0;
-		color: #ccc;
 		background-image: none;
 		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem;
 	}
 	.list-footer li {
-		float: left;
 		margin: 0;
-		padding: 0 0.4em;
+		padding: 0;
 		background-image: none;
 		list-style: none;
 	}
 	.list-footer .counter {
-		float: right;
-		padding: 0;
-		color: #333;
+		margin-left: auto;
+		padding: 0.5em 0;
+		font-size: 0.85em;
+		color: #666;
+		order: 10;
 	}
-	.list-footer .page { 
-		padding: 0 0.3em;
+	.list-footer .page {
+		padding: 0;
+	}
+	.list-footer .page a {
+		display: block;
+		min-width: 2em;
+		padding: 0.4em 0.5em;
+		text-align: center;
+		font-size: 0.85em;
+		line-height: 1.5;
+		border: 1px solid transparent;
+		border-radius: 0.25em;
+	}
+	.list-footer .page a:hover,
+	.list-footer .page a:focus {
+		background: #f0f0f0;
+		border-color: #ddd;
+	}
+	.list-footer .page strong {
+		display: block;
+		min-width: 2em;
+		padding: 0.4em 0.5em;
+		text-align: center;
+		font-size: 0.85em;
+		line-height: 1.5;
+		color: #fff;
+		background: #333;
+		border: 1px solid #333;
+		border-radius: 0.25em;
+	}
+	.list-footer .page.ellipsis span {
+		display: block;
+		min-width: 1.5em;
+		padding: 0.4em 0.25em;
+		text-align: center;
+		font-size: 0.85em;
+		line-height: 1.5;
+		color: #999;
 	}
 	.list-footer .limit {
-		padding-right: 1em;
-		color: #333;
-		float: right;
+		padding: 0.5em 0;
+		font-size: 0.85em;
+		color: #666;
+		order: 11;
+		margin-left: 1em;
 	}
-	.list-footer .start {
-		margin-left: 0;
-		padding-left: 0;
+	.list-footer .limit label,
+	.list-footer .limit select,
+	.list-footer .limit input {
+		display: inline;
+		width: auto;
 	}
-	.list-footer .next,
-	.list-footer .prev {
+	.list-footer .start,
+	.list-footer .end {
 		display: none;
+	}
+	.list-footer .prev a,
+	.list-footer .next a {
+		display: block;
+		padding: 0.4em 0.6em;
+		font-size: 1em;
+		line-height: 1.5;
+		border: 1px solid #ddd;
+		border-radius: 0.25em;
+	}
+	.list-footer .prev a:hover,
+	.list-footer .prev a:focus,
+	.list-footer .next a:hover,
+	.list-footer .next a:focus {
+		background: #f0f0f0;
+		border-color: #bbb;
+	}
+	.list-footer .prev .disabled,
+	.list-footer .next .disabled {
+		display: block;
+		padding: 0.4em 0.6em;
+		font-size: 1em;
+		line-height: 1.5;
+		color: #666;
+		border: 1px solid #eee;
+		border-radius: 0.25em;
+		cursor: default;
+	}
+	.list-footer .prev {
+		margin-right: 0.25em;
+	}
+	.list-footer .next {
+		margin-left: 0.25em;
 	}

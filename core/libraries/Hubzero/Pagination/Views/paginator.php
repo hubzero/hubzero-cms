@@ -88,12 +88,12 @@ if (!function_exists('paginator_item_active'))
 			}
 			?>
 		</li>
-		<?php if ($this->pages->start->base !== null && $this->pages->start->base !== $this->pages->previous->base) { ?>
-		<li class="pagination-start start">
-				<?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
-		</li>
-		<?php } ?>
 		<?php if (App::isAdmin()) { ?>
+			<?php if ($this->pages->start->base !== null && $this->pages->start->base !== $this->pages->previous->base) { ?>
+			<li class="pagination-start start">
+					<?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
+			</li>
+			<?php } ?>
 		<li class="pagination-prev prev">
 			<?php if ($this->pages->previous->base !== null) { ?>
 				<?php echo paginator_item_active($this->pages->previous, $this->prefix); ?>
@@ -101,9 +101,23 @@ if (!function_exists('paginator_item_active'))
 				<span class="pagenav"><?php echo $this->pages->previous->text; ?></span>
 			<?php } ?>
 		</li>
+		<?php } else { ?>
+		<li class="pagination-prev prev">
+			<?php if ($this->pages->previous->base !== null) { ?>
+				<a href="<?php echo $this->pages->previous->link; ?>" aria-label="<?php echo Lang::txt('Previous page'); ?>">&lsaquo;</a>
+			<?php } else { ?>
+				<span class="disabled" aria-hidden="true">&lsaquo;</span>
+			<?php } ?>
+		</li>
 		<?php } ?>
 		<?php if ($this->pages->ellipsis && $this->pages->i > 1) { ?>
-			<li class="page"><span>...</span></li>
+			<?php
+			// Show page 1 link and ellipsis
+			$firstPage = isset($this->pages->pages[1]) ? $this->pages->pages[1] : null;
+			if ($firstPage && $firstPage->base !== null) { ?>
+				<li class="page"><?php echo paginator_item_active($firstPage, $this->prefix); ?></li>
+			<?php } ?>
+			<li class="page ellipsis" aria-hidden="true"><span>&hellip;</span></li>
 		<?php } ?>
 		<?php
 		for (; $this->pages->i <= $this->pages->stoploop && $this->pages->i <= $this->pages->total; $this->pages->i++)
@@ -120,14 +134,20 @@ if (!function_exists('paginator_item_active'))
 				else
 				{
 					?>
-					<li class="page"><strong><?php echo $page->text; ?></strong></li>
+					<li class="page active"><strong aria-current="page"><?php echo $page->text; ?></strong></li>
 					<?php
 				}
 			}
 		}
 		?>
 		<?php if ($this->pages->ellipsis && ($this->pages->i - 1) < $this->pages->total) { ?>
-			<li class="page"><span>...</span></li>
+			<li class="page ellipsis" aria-hidden="true"><span>&hellip;</span></li>
+			<?php
+			// Show last page link
+			$lastPage = isset($this->pages->pages[$this->pages->total]) ? $this->pages->pages[$this->pages->total] : null;
+			if ($lastPage && $lastPage->base !== null) { ?>
+				<li class="page"><?php echo paginator_item_active($lastPage, $this->prefix); ?></li>
+			<?php } ?>
 		<?php } ?>
 		<?php if (App::isAdmin()) { ?>
 		<li class="pagination-next next">
@@ -137,10 +157,18 @@ if (!function_exists('paginator_item_active'))
 				<span class="pagenav"><?php echo $this->pages->next->text; ?></span>
 			<?php } ?>
 		</li>
-		<?php } ?>
-		<?php if ($this->pages->end->base !== null && $this->pages->end->base !== $this->pages->next->base) { ?>
-		<li class="pagination-end end">
-				<?php echo paginator_item_active($this->pages->end, $this->prefix); ?>
+			<?php if ($this->pages->end->base !== null && $this->pages->end->base !== $this->pages->next->base) { ?>
+			<li class="pagination-end end">
+					<?php echo paginator_item_active($this->pages->end, $this->prefix); ?>
+			</li>
+			<?php } ?>
+		<?php } else { ?>
+		<li class="pagination-next next">
+			<?php if ($this->pages->next->base !== null) { ?>
+				<a href="<?php echo $this->pages->next->link; ?>" aria-label="<?php echo Lang::txt('Next page'); ?>">&rsaquo;</a>
+			<?php } else { ?>
+				<span class="disabled" aria-hidden="true">&rsaquo;</span>
+			<?php } ?>
 		</li>
 		<?php } ?>
 	</ul>
