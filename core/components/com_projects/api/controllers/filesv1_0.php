@@ -174,7 +174,7 @@ class Filesv1_0 extends ApiController
 			$response->results = $this->_parseResults($files);
 		}
 
-		$response->count   = count($files);
+		$response->count = is_array($files)?count($files):0;
 
 		if ($this->model->repo()->getError())
 		{
