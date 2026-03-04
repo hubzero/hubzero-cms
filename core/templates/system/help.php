@@ -12,15 +12,17 @@ Html::behavior('framework', true);
 Html::behavior('modal');
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $this->language; ?>">
 	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0 />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<jdoc:include type="head" />
 		<link rel="stylesheet" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" type="text/css" />
 		<link rel="stylesheet" media="screen" href="<?php echo $this->baseurl; ?>/templates/system/css/help.css" type="text/css" />
 	</head>
 	<body>
-		<jdoc:include type="message" />
-		<jdoc:include type="component" />
+		<main>
+			<jdoc:include type="message" />
+			<jdoc:include type="component" />
+		</main>
 	</body>
 </html>
