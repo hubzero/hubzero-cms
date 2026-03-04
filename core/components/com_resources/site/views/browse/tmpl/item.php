@@ -127,7 +127,7 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 			}
 		}
 
-		echo implode(' <span>|</span> ', $info);
+		echo implode(' <span aria-hidden="true">|</span> ', $info);
 		?>
 	</p>
 

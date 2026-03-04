@@ -786,10 +786,19 @@
 
 /* Tag browser */
 	div#tagbrowser {
-		text-align: left; 
-		position: relative; 
-		margin-bottom: 25px; 
+		text-align: left;
+		position: relative;
+		margin-bottom: 25px;
 		display: none;
+	}
+	#tagbrowser.tagbrowser-ready {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: 0;
+		border: 1px solid #c5c5c5;
+		border-radius: 0.5em;
+		background: #fafafa;
+		margin-top: 1em;
 	}
 	#tagbrowser:after {
 		content: "";
@@ -797,11 +806,14 @@
 		line-height: 0;
 		clear: left;
 	}
+	#tagbrowser.tagbrowser-ready:after {
+		display: none;
+	}
 	#tbh2 {
 		display: none;
 	}
-	#level-1, 
-	#level-2, 
+	#level-1,
+	#level-2,
 	#level-3 {
 		background-color: #fafafa;
 		margin: 1em;
@@ -809,6 +821,24 @@
 		width: 30%;
 		float: left;
 		border-radius: 1em;
+		box-sizing: border-box;
+	}
+	#tagbrowser.tagbrowser-ready #level-1,
+	#tagbrowser.tagbrowser-ready #level-2,
+	#tagbrowser.tagbrowser-ready #level-3 {
+		flex: 1 1 0;
+		float: none;
+		margin: 0;
+		width: auto;
+		min-width: 0;
+		border-radius: 0;
+		border-right: 1px solid #d9d9d9;
+	}
+	#tagbrowser.tagbrowser-ready #level-3 {
+		border-right: none;
+	}
+	#tagbrowser.tagbrowser-ready > .clear {
+		display: none;
 	}
 	div.ie {
 		height: 373px; 
@@ -821,21 +851,29 @@
 		font-weight: bold;
 		display: block;
 	}
+	#tagbrowser.tagbrowser-ready h3 {
+		margin: 0;
+		padding: 0.6em 1em;
+		background: #e8e8e8;
+		border-bottom: 1px solid #d9d9d9;
+		font-size: 1em;
+		color: #333;
+	}
 /*\*/
 	#tagbrowser ul {
 		background: #fff;
-		border: 0px solid #C5C5C5; 
-		height: 350px; 
+		border: 0px solid #C5C5C5;
+		height: 350px;
 		overflow: auto;
 		overflow-x: hidden;
-		margin: 0; 
+		margin: 0;
 		padding: 1em;
 		list-style: none;
 	}
 	#tagbrowser li#selecta {
 		height: 200px;
 		text-align: center;
-		color: #c8c8c8;
+		color: #767676;
 		font-size: 30px;
 		font-weight: bold;
 		margin: 140px auto 0 0;
@@ -869,8 +907,10 @@
 	}
 	#tagbrowser #sortby {
 		position: absolute;
-		top: -0.2em;
-		margin: 0 0 0 0.5em;
+		top: 50%;
+		right: 0.5em;
+		transform: translateY(-50%);
+		margin: 0;
 	}
 	#tagbrowser li {
 		margin: 0; 
@@ -899,45 +939,48 @@
 	#level-1 ul li.ie a:hover {
 		color: blue;
 	}*/
-	#level-1 ul a, 
+	#level-1 ul a,
 	#level-2 ul a {
 		display: block;
-		padding: 0.2em 1em 0.2em 0.2em;
+		padding: 0.2em 1.5em 0.2em 0.4em;
 		margin: 0;
 		text-decoration: none;
 		border: none;
 		color: #333;
 		position: relative;
-		*position: static; /* IE 7 and IE 8 compatibility mode go apeshit without this */
+		border-radius: 0.25em;
 	}
 	#level-1 ul a:after,
 	#level-2 ul a:after {
 		font-family: 'Fontcons';
 		content: "\203A";
 		font-size: 1em;
-		display: none;
+		display: block;
 		width: 1em;
 		height: 1em;
 		position: absolute;
 		top: 0.2em;
-		right: 0;
-		color: #ccc;
+		right: 0.3em;
+		color: #999;
+	}
+	#level-1 ul a.open,
+	#level-2 ul a.open {
+		background: #c0c0c0;
+		color: #333;
 	}
 	#level-1 ul a.open:after,
 	#level-2 ul a.open:after {
 		color: #333;
 	}
-	#level-1 ul a:hover:after,
-	#level-2 ul a:hover:after,
-	#level-1 ul a:focus:after,
-	#level-2 ul a:focus:after,
-	#level-1 ul a.hi:after,
-	#level-2 ul a.hi:after {
+	/* Active column: selected item is blue */
+	#level-1:focus-within ul a.open,
+	#level-2:focus-within ul a.open {
+		background: #3875D7;
 		color: #fff;
 	}
-	#level-1 ul a.open,
-	#level-2 ul a.open {
-		background: #D0D0D0;
+	#level-1:focus-within ul a.open:after,
+	#level-2:focus-within ul a.open:after {
+		color: #fff;
 	}
 	#level-1 ul a.hi,
 	#level-2 ul a.hi {
@@ -945,37 +988,48 @@
 		color: #fff;
 	}
 	#level-1 ul a:hover,
-	#level-2 ul a:hover,
+	#level-2 ul a:hover {
+		background: #5088dd;
+		color: #fff;
+	}
+	#level-1 ul a:hover:after,
+	#level-2 ul a:hover:after {
+		color: #fff;
+	}
 	#level-1 ul a:focus,
 	#level-2 ul a:focus {
 		background: #3875D7;
 		color: #fff;
-		outline: 2px solid #3875D7;
+		outline: 2px solid #1a56a8;
 		outline-offset: -2px;
+	}
+	#level-1 ul a:focus:after,
+	#level-2 ul a:focus:after {
+		color: #fff;
 	}
 	/* When keyboard focus is inside a column, suppress hover highlight on other items */
 	#level-1:focus-within ul a:hover:not(:focus),
 	#level-2:focus-within ul a:hover:not(:focus) {
 		background: transparent;
-		color: #ccc;
+		color: #333;
 		outline: none;
 	}
 	#level-1:focus-within ul a:hover:not(:focus):after,
 	#level-2:focus-within ul a:hover:not(:focus):after {
-		color: #ccc;
+		color: #999;
 	}
 	#level-3 h3 {
-		text-align: right;
+		text-align: left;
 	}
 	#level-3 h4, 
 	#level-3 h5 {
 		border: none;
 	}
 	#level-3 h4 {
-		color: #a1a5a9;
+		color: #545454;
 	}
 	#level-3 h5 {
-		color: #39AA44; 
+		color: #217a2a;
 		margin-bottom: 10px;
 	}
 	#tagbrowser a.more {
@@ -1015,6 +1069,28 @@
 	#browse-resources .subject,
 	#browse-resources .aside {
 		padding-top: 0;
+	}
+	#tagBrowserForm .below .aside p {
+		background: #f0f4f8;
+		border: 1px solid #d0dae4;
+		border-radius: 0.4em;
+		padding: 1em;
+		color: #333;
+		font-size: 0.9em;
+		line-height: 1.5;
+	}
+	#tagBrowserForm .below .results {
+		border: none;
+	}
+	#tagBrowserForm .below .results li {
+		background: #fff;
+		border: 1px solid #d9d9d9;
+		border-radius: 0.4em;
+		padding: 1em 1.2em;
+		margin-bottom: 0.75em;
+	}
+	#tagBrowserForm .below .results .title {
+		margin-left: 0;
 	}
 	#play-section {
 		padding-top: 1em;

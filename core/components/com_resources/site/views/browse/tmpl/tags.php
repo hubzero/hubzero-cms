@@ -49,19 +49,19 @@ $this->css()
 
 			<div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
 				<h3><?php echo Lang::txt('COM_RESOURCES_TAG'); ?></h3>
-				<ul>
+				<ul id="ultags" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
 					<li id="level-1-loading"></li>
 				</ul>
 			</div><!-- / #level-1 -->
 			<div id="level-2" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>" aria-live="polite">
 				<h3><?php echo Lang::txt('COM_RESOURCES'); ?></h3>
-				<ul>
+				<ul id="ulitems" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>">
 					<li id="level-2-loading"></li>
 				</ul>
 			</div><!-- / #level-2 -->
 			<div id="level-3" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_INFO'); ?>" aria-live="polite">
 				<h3><?php echo Lang::txt('COM_RESOURCES_INFO'); ?></h3>
-				<ul>
+				<ul id="ulinfo" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES_INFO'); ?>">
 					<li><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_COL_EXPLANATION'); ?></li>
 				</ul>
 			</div><!-- / #level-3 -->
