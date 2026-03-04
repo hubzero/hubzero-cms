@@ -408,7 +408,7 @@ class View
 				}
 
 				// return message letting user know they dont have access
-				$content = '<p class="info">' . Lang::txt('You do not have the permissions to access this group page.') . '</p>';
+				$content = '<p class="info">' . Lang::txt('You do not have the permissions to access this group page. Please log in to access or request membership.') . '</p>';
 			}
 		}
 
