@@ -52,13 +52,14 @@ $this->css('introduction.css', 'system')
 
 	<div class="grid">
 		<div class="col span3">
-			<h2><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></h2>
+			<h3><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></h3>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span-half">
 					<form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
 						<fieldset>
+							<legend class="sr-only"><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
 							<p class="hz-v-align">
 								<label for="rsearch"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
 								<span class="hz-input-combo">
@@ -83,7 +84,7 @@ if ($this->categories) {
 ?>
 	<div class="grid">
 		<div class="col span3">
-			<h2><?php echo Lang::txt('COM_RESOURCES_CATEGORIES'); ?></h2>
+			<h3><?php echo Lang::txt('COM_RESOURCES_CATEGORIES'); ?></h3>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
@@ -138,11 +139,6 @@ if ($this->categories) {
 						</h3>
 						<p>
 							<?php echo $category->description; ?>
-						</p>
-						<p>
-							<a class="read-more" href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
-								<?php echo Lang::txt('COM_RESOURCES_BROWSE_CATEGORY', $this->escape(stripslashes($category->type))); ?>
-							</a>
 						</p>
 					</div>
 				</div><!-- / .col span-third <?php echo $clm; ?> -->
