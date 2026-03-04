@@ -1,4 +1,5 @@
 name: update-code-push
+if: false
 on: [push]
 jobs:
   push-step-1:
