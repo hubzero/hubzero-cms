@@ -144,7 +144,7 @@ $this->js('events.js');
 				<tbody>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-						<td><?php echo $this->row->state > 0 ? Lang::txt('COM_EVENTS_EVENT_PUBLISHED') : ($this->row->state < 0 ? Lang::txt('COM_EVENTS_EVENT_ARCHIVED') : Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED')); ?></td>
+						<td><?php echo $this->row->state > 0 ? (($this->row->state == 2) ? Lang::txt('COM_EVENTS_EVENT_DELETED'):Lang::txt('COM_EVENTS_EVENT_PUBLISHED')) : ($this->row->state < 0 ? Lang::txt('COM_EVENTS_EVENT_ARCHIVED') : Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED')); ?></td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>

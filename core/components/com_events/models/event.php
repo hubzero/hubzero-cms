@@ -35,6 +35,8 @@ class Event extends Model
 	 */
 	protected $_tbl_name = '\\Components\\Events\\Tables\\Event';
 
+	protected $address_info = '';
+
 	/**
 	 * Constructor
 	 *
