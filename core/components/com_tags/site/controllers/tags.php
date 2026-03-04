@@ -612,7 +612,7 @@ class Tags extends SiteController
 
 				if (isset($row->data3) || isset($row->rcount))
 				{
-					$author = strip_tags($row->data3);
+					$author = strip_tags($row->data3 ?? '');
 				}
 
 				// Load individual item creator class

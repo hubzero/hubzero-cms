@@ -100,9 +100,9 @@ $namespaces = \Components\Wiki\Models\Page::all()
 							$k = 0;
 							foreach ($column as $row)
 							{
-								if (strtoupper(substr($row->title, 0, 1)) != $index)
+								if (strtoupper(substr($row->title ?? '', 0, 1)) != $index)
 								{
-									$index = strtoupper(substr($row->title, 0, 1));
+									$index = strtoupper(substr($row->title ?? '', 0, 1));
 									if ($k != 0) {
 									?>
 									</ul>

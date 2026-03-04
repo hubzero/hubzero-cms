@@ -93,7 +93,6 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$limit = 5;
 			$activeareas = $areas;
 		}
 

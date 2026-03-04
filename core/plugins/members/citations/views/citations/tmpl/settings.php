@@ -29,7 +29,7 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 			<div class="grid">
 				<div class="col span6">
 					<div class="form-group">
-						<label for="display-members">
+						<label for="show_tags">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DISPLAY_TAGS'); ?>
 							<select name="citations_show_tags" id="show_tags" class="form-control">
 								<option value="yes" <?php echo ($this->citations_show_tags == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
@@ -40,7 +40,7 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 				</div>
 				<div class="col span6 omega">
 					<div class="form-group">
-						<label for="display-members">
+						<label for="show_badges">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DISPLAY_BADGES'); ?>
 							<select name="citations_show_badges" id="show_badges" class="form-control">
 								<option value="yes" <?php echo ($this->citations_show_badges == "yes") ? "selected=selected" : ""; ?>><?php echo Lang::txt('Yes'); ?></option>
@@ -66,7 +66,7 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 			<div class="grid">
 				<div class="col span6">
 					<div class="form-group">
-						<label for="display-members">
+						<label for="include-coins">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_INCLUDE_COINS'); ?>
 							<select name="include_coins" id="include-coins" class="form-control">
 								<option value="no" <?php echo ($this->include_coins == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
@@ -77,7 +77,7 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 				</div>
 				<div class="col span6 omega">
 					<div class="form-group">
-						<label for="display-members">
+						<label for="coins-only">
 							<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_COINS_ONLY'); ?>
 							<select name="coins_only" id="coins-only" class="form-control">
 								<option value="no" <?php echo ($this->coins_only == "no") ? "selected=selected" : ""; ?>><?php echo Lang::txt('No'); ?></option>
@@ -98,7 +98,7 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 			<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FORMAT'); ?></legend>
 
 			<div class="form-group">
-				<label for="cite">
+				<label for="format-selector">
 					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FORMAT'); ?>:
 					<select name="citation-format" id="format-selector" class="form-control" data-uid="<?php echo $this->member->get('id'); ?>">
 						<?php foreach ($this->formats as $format): ?>

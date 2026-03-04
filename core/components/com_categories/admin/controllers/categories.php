@@ -235,7 +235,7 @@ class Categories extends AdminController
 		if (!$category->isNew())
 		{
 			$assetId = $category->get('asset_id');
-			$createdBy = $category->get('created_by');
+			$createdBy = $category->get('created_user_id');
 			$checkedOut = $category->get('checked_out');
 			if ($checkedOut)
 			{
@@ -255,7 +255,7 @@ class Categories extends AdminController
 			}
 			$category->set('checked_out', User::getInstance()->get('id'));
 			$category->set('checked_out_time', Date::of()->toSql());
-			$category->save();
+			//$category->save();
 			$lang = 'COM_CATEGORIES_CATEGORY_EDIT_TITLE';
 		}
 		else

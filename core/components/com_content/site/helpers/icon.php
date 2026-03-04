@@ -151,7 +151,7 @@ class HtmlIcon
 	public static function print_popup($article, $params, $attribs = array())
 	{
 		$url  = Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language);
-		$url .= '&tmpl=component&print=1&layout=default&page=' . $request == null ? '' : $request->limitstart;
+		$url .= '&tmpl=component&print=1&layout=default';
 
 		$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 

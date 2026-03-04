@@ -73,7 +73,7 @@ class Log extends Relational
 	 *
 	 * @var  object
 	 */
-	protected $entryDetails = null;
+	public $entryDetails = null;
 
 	/**
 	 * Generate a UUID
@@ -221,7 +221,24 @@ class Log extends Relational
 	{
 		if (!isset($this->entryDetails))
 		{
-			$this->entryDetails = new Registry($this->get('details'));
+			$details = $this->get('scope');
+
+			if (empty($details))
+			{
+				$this->entryDetails = new Registry();
+			}
+			else if (is_array($details))
+			{
+				$this->entryDetails = new Registry($details);
+			}
+			else if ($details[0] == '[' || $details[1] == '{' || $details[0] == '{')
+			{
+				$this->entryDetails = json_decode($details);
+			}
+			else
+			{
+				$this->entryDetails = new Registry($this->get('details'));
+			}
 		}
 
 		return $this->entryDetails;

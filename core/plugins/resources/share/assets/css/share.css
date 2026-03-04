@@ -182,11 +182,11 @@
 		height: 16px;
 		font-size: 16px;
 	}
-	.share_twitter:before         { content: "\f010"; color: #46b1e8; }
-	.share_facebook:before        { content: "\f012"; color: #49659d; }
+	.share_twitter:before         { content: "\f010"; color: #0d6eac; }
+	.share_facebook:before        { content: "\f012"; color: #344e86; }
 	.share_google:before          { content: "\f014"; color: black }
-	.share_linkedin:before        { content: "\f016"; color: #2875b7; }
-	.share_pinterest:before       { content: "\f01a"; color: #ba1325; }
+	.share_linkedin:before        { content: "\f016"; color: #0b5394; }
+	.share_pinterest:before       { content: "\f01a"; color: #a01020; }
 	.share_delicious,
 	.share_delicious {
 		background: url("../img/delicious.gif") 0 -18px no-repeat;

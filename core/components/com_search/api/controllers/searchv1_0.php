@@ -141,7 +141,7 @@ class Searchv1_0 extends ApiController
 
 				if ($field == 'description' || $field == 'fulltext' || $field == 'abstract')
 				{
-					if (isset($result['description']) && $result['description'] != $result['fulltext'])
+					if (isset($result['description']) && isset($result['fulltext']) && $result['description'] != $result['fulltext'])
 					{
 						$snippet .= $r;
 					}

@@ -21,7 +21,7 @@ $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_RESOURCES'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -29,8 +29,8 @@ $this->css()
 				<?php echo Lang::txt('COM_RESOURCES_SUBMIT_A_RESOURCE'); ?>
 			</a>
 		</p>
-	</div><!-- / #content-header -->
-</header><!-- / #content-header -->
+	</div>
+</header>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
 	<section class="main section">
@@ -47,6 +47,7 @@ $this->css()
 					</fieldset>
 					<?php if ($this->filters['tag']) { ?>
 						<fieldset class="applied-tags">
+							<legend class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_TAGS'); ?></legend>
 							<ol class="tags">
 							<?php
 							$url  = 'index.php?option=' . $this->option . '&task=browse';
@@ -107,14 +108,14 @@ $this->css()
 						?>
 						<ul class="entries-menu order-options">
 							<li>
-								<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
+								<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
 							</li>
 							<li>
-								<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+								<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
 							</li>
 							<?php if ($this->config->get('show_ranking')) { ?>
 								<li>
-									<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+									<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
 								</li>
 							<?php } ?>
 						</ul>
@@ -122,8 +123,8 @@ $this->css()
 						<?php if (count($this->types) > 0) { ?>
 							<ul class="entries-menu filter-options">
 								<li>
-									<label for="filter-type" class="sr-only visibliy-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></label>
-									<select name="type" id="filter-type">
+									<label for="filter-type" class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></label>
+									<select name="type" id="filter-type" aria-label="<?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>">
 										<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
 										<?php foreach ($this->types as $item) { ?>
 											<?php

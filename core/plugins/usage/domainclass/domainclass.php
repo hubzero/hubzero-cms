@@ -55,18 +55,15 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		// Set class list parameters...
-		$hub = 1;
-		if (!$enddate)
+		// Get latest enddate from database
+		$sql = "SELECT DATE_FORMAT(max(datetime), '%Y-%m-%d')
+				FROM classvals
+				WHERE class = " . $db->Quote($class);
+		$db->setQuery($sql);
+		$result = $db->loadRow();
+		if ($result)
 		{
-			$dtmonth = date("m") - 1;
-			$dtyear = date("Y");
-			if (!$dtmonth)
-			{
-				$dtmonth = 12;
-				$dtyear = $dtyear - 1;
-			}
-			$enddate = $dtyear . '-' . $dtmonth;
+			$enddate = strval($result[0]);
 		}
 
 		// Look up class list information...
@@ -86,18 +83,17 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 		if ($classname)
 		{
 			// Prepare some date ranges...
-			$enddate .= '-00';
-			$dtmonth = floor(substr($enddate, 5, 2));
-			$dtyear = floor(substr($enddate, 0, 4));
+			$dtmonth = floor(intval(substr($enddate, 5, 2)));
+			$dtyear = floor(intval(substr($enddate, 0, 4)));
 			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
 			$dtyearnext = $dtyear + 1;
-			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
+			$dtmonthnext = floor(intval(substr($enddate, 5, 2)) + 1);
 			if ($dtmonthnext > 12)
 			{
 				$dtmonthnext = 1;
 				$dtyearnext++;
 			}
-			$dtyearprior = substr($enddate, 0, 4) - 1;
+			$dtyearprior = intval(substr($enddate, 0, 4)) - 1;
 			$monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
 			$yeartext    = "Jan - " . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
 			$twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
@@ -117,7 +113,6 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT classvals.name, classvals.value
 						FROM classes, classvals
 						WHERE classes.class = classvals.class
-						AND classvals.hub = " . $db->Quote($hub) . "
 						AND classes.class = " . $db->Quote($class) . "
 						AND classvals.datetime = " . $db->Quote($dt) . "
 						AND classvals.period = " . $db->Quote($period[$pidx]["key"]) . "
@@ -128,7 +123,7 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($results as $row)
 					{
-						$formattedval = UsageHtml::valformat($row->value, $valfmt);
+						$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
 						if (strstr($formattedval, 'day') !== false)
 						{
 							$chopchar = strrpos($formattedval, ',');
@@ -150,7 +145,6 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT classvals.rank, classvals.name, classvals.value
 						FROM classes, classvals
 						WHERE classes.class = classvals.class
-						AND classvals.hub = " . $db->Quote($hub) . "
 						AND classes.class = " . $db->Quote($class) . "
 						AND datetime = " . $db->Quote($dt) . "
 						AND classvals.period = " . $db->Quote($period[$pidx]["key"]) . "
@@ -169,7 +163,7 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 								array_push($classlistset, array('n/a', 0, 'n/a', 'n/a'));
 								$rank++;
 							}
-							$formattedval = UsageHtml::valformat($row->value, $valfmt);
+							$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
 							if (strstr($formattedval, 'day') !== false)
 							{
 								$chopchar = strrpos($formattedval, ',');
@@ -275,21 +269,8 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Set some vars
-		$thisyear = date("Y");
-
-		$o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata');
-
 		// Build HTML
 		$html  = '<form method="post" action="' . Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
-		$html .= "\t" . '<fieldset class="filters">' . "\n";
-		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t" . Lang::txt('COM_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
-		$html .= "\t\t\t" . '<select name="selectedPeriod" id="selectedPeriod">' . "\n";
-		$html .= $o;
-		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> <input type="submit" value="' . Lang::txt('COM_USAGE_VIEW') . '" />' . "\n";
-		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 		$html .= $this->classlist($db, 8, 1, $enddate);
 		$html .= $this->classlist($db, 9, 2, $enddate);

@@ -45,7 +45,7 @@ $this->css();
 					//]]>
 				</script>
 
-				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" title="<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?>"><?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?></a>
+				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;"><?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?></a>
 			</div>
 		</div>
 	</div>

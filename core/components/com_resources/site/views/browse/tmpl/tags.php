@@ -15,46 +15,21 @@ $this->css()
      ->js()
      ->js('tagbrowser');
 ?>
-<header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
-
-	<?php foreach ($this->types as $type) { ?>
-		<?php if ($type->id == $this->filters['type'] && $type->contributable) { ?>
-		<div id="content-header-extra">
-			<p>
-				<?php if ($type->id == 7) { ?>
-					<a class="icon-add btn" href="<?php echo Route::url('index.php?option=com_tools&task=create'); ?>">
-						<?php
-						$name = $type->type;
-						if (substr($type->type, -1) == 's')
-						{
-							$name = substr($type->type, 0, -1);
-						}
-						echo Lang::txt('COM_RESOURCES_START_NEW_TYPE', $this->escape(stripslashes($name))); ?>
-					</a>
-				<?php } else { ?>
-					<a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
-						<?php
-						$name = $type->type;
-						if (substr($type->type, -1) == 's')
-						{
-							$name = substr($type->type, 0, -1);
-						}
-						echo Lang::txt('COM_RESOURCES_START_NEW_TYPE', $this->escape(stripslashes($name))); ?>
-					</a>
-				<?php } ?>
-			</p>
-		</div>
-		<?php } ?>
-	<?php } ?>
-</header><!-- / #content-header -->
+<?php
+// Note: Duplicate #content-header removed to fix accessibility issues:
+// - Duplicate ID (template already outputs <header id="content-header"><h1>)
+// - Contrast error (white link text on light background when no hero image)
+// The "Start new" button links are available via the main resources browse page.
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" id="tagBrowserForm">
 	<section class="main section" id="browse-resources">
+		<h2 class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL'); ?></h2>
 		<fieldset>
+			<legend class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></legend>
 			<label for="browse-type">
 				<span><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>:</span>
-				<select name="type" id="browse-type">
+				<select name="type" id="browse-type" aria-label="<?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>">
 				<?php foreach ($this->types as $type) {
 					if (!$type->state)
 					{
@@ -69,22 +44,22 @@ $this->css()
 			<input type="hidden" name="task" value="browsetags" />
 		</fieldset>
 
-		<div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif">
+		<div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif" role="application" aria-label="<?php echo Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL'); ?>">
 			<p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
-			<div id="level-1">
+			<div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
 				<h3><?php echo Lang::txt('COM_RESOURCES_TAG'); ?></h3>
 				<ul>
 					<li id="level-1-loading"></li>
 				</ul>
 			</div><!-- / #level-1 -->
-			<div id="level-2">
+			<div id="level-2" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>" aria-live="polite">
 				<h3><?php echo Lang::txt('COM_RESOURCES'); ?></h3>
 				<ul>
 					<li id="level-2-loading"></li>
 				</ul>
 			</div><!-- / #level-2 -->
-			<div id="level-3">
+			<div id="level-3" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_INFO'); ?>" aria-live="polite">
 				<h3><?php echo Lang::txt('COM_RESOURCES_INFO'); ?></h3>
 				<ul>
 					<li><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_COL_EXPLANATION'); ?></li>

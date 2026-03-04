@@ -96,7 +96,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		{
 			if (!in_array($this_area['name'], $areas))
 			{
-				$return = '';
+				return $arr;
 			}
 		}
 

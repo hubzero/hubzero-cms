@@ -135,6 +135,21 @@ jQuery(document).ready(function($){
 			var timer = setTimeout('HUB.Register.checkLogin()', 200);
 		});
 	}
+
+	// Show/hide "Other" text input for select fields with option_other
+	$('select').each(function() {
+		var $select = $(this);
+		var $other = $select.next('input.option-other-input');
+		if ($other.length) {
+			$select.on('change', function() {
+				if ($select.val() === 'other') {
+					$other.show().focus();
+				} else {
+					$other.hide().val('');
+				}
+			});
+		}
+	});
 });
 
 $(function(){

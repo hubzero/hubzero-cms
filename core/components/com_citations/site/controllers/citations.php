@@ -584,7 +584,7 @@ class Citations extends SiteController
 
 		//make sure title isnt too long
 		$maxTitleLength = 30;
-		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength)
+		$shortenedTitle = (strlen($this->view->row->title ?? '') > $maxTitleLength)
 						? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;'
 						: $this->view->row->title;
 

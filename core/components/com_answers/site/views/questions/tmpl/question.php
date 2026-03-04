@@ -116,8 +116,8 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 
 						<?php if ($this->question->get('question')) { ?>
 							<div class="entry-long">
-								<?php 
-									$val = htmlspecialchars_decode($this->question->question); 
+								<?php
+									$val = htmlspecialchars_decode($this->question->question);
 									$componentPath = Component::path('com_redirect');
 									if($componentPath){
 										require_once($componentPath . DS . "helpers" . DS . "converter.php");

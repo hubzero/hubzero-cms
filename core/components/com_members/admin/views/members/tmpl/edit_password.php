@@ -8,7 +8,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<fieldset class="adminform">
+<fieldset class="adminform" id="edit_password_fragment">
 	<legend><span><?php echo Lang::txt('COM_MEMBERS_FIELD_PASSWORD'); ?></span></legend>
 
 	<?php if (is_object($this->password)) : ?>

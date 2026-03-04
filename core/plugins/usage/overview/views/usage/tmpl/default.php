@@ -249,6 +249,7 @@ if ($this->message) { ?>
 									</span>
 								</li>
 							<?php } ?>
+							<?php if (empty($residence)) : ?><li>No data available</li><?php endif; ?>
 						</ul>
 					</div>
 				</div><!-- / .col -->
@@ -273,6 +274,7 @@ if ($this->message) { ?>
 									</span>
 								</li>
 							<?php } ?>
+							<?php if (empty($organization)) : ?><li>No data available</li><?php endif; ?>
 						</ul>
 					</div>
 				</div><!-- / .col -->
@@ -408,6 +410,7 @@ if ($this->message) { ?>
 									</span>
 								</li>
 							<?php } ?>
+							<?php if (empty($residence)) : ?><li>No data available</li><?php endif; ?>
 						</ul>
 					</div>
 				</div><!-- / .col -->
@@ -432,6 +435,7 @@ if ($this->message) { ?>
 									</span>
 								</li>
 							<?php } ?>
+							<?php if (empty($organization)) : ?><li>No data available</li><?php endif; ?>
 						</ul>
 					</div>
 				</div><!-- / .col -->

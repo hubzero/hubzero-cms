@@ -27,7 +27,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'prov
 /**
  * API controller for the projects files
  */
-class Filesv1_0 extends ApiController
+class Filefsv1_0 extends ApiController
 {
 	/**
 	 * Execute a request
@@ -68,27 +68,8 @@ class Filesv1_0 extends ApiController
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
 		}
 
-		//connection ID
-		$this->cid = Request::getString('cid', '');
-
-		if ((in_array($this->_task, $connectionTasks)) && !$this->cid)
-		{
-			throw new Exception("This action is only supported by connection adapters", 401);
-		}
-
-		//if task involves connections, get the ORM Project object
-		//if there is a connection id, get an ORM Connection object as well
-		if ($this->cid || ($this->_task == 'connections'))
-		{
-			$this->ormproj = \Components\Projects\Models\Orm\Project::oneOrFail($id);
-			if ($this->cid)
-			{
-				$this->ormconn = \Components\Projects\Models\Orm\Connection::oneOrFail($this->cid);
-			}
-		}
-
 		// Check for local repo if no connection has been specified
-		if (!$this->cid && !$this->model->repo()->exists())
+		if (!$this->model->repo()->exists())
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_NO_LOCAL_REPO'), 404);
 		}
@@ -142,37 +123,18 @@ class Filesv1_0 extends ApiController
 	public function listTask()
 	{
 		$response = new stdClass;
+		$files = $this->model->repo()->filelist(array(
+			'subdir'           => Request::getString('subdir', ''),
+			'filter'           => Request::getString('filter', ''),
+			'limit'            => Request::getInt('limit', 0),
+			'start'            => Request::getInt('limitstart', 0),
+			'sortby'           => 'localpath',
+			'showFullMetadata' => true,
+			'getParents'       => true,
+			'getChildren'      => true
+		));
 
-		if ($this->cid) //connection specific listing
-		{
-			$dir = Entity::fromPath(Request::getString('subdir', ''), $this->ormconn->adapter());
-
-			try
-			{
-				$files = $dir->listContents();
-			}
-			catch (Exception $e)
-			{
-				$files = array();
-			}
-
-			$response->results = $this->_parseFlysystemListing($files);
-		}
-		else
-		{
-			$files = $this->model->repo()->filelist(array(
-				'subdir'           => Request::getString('subdir', ''),
-				'filter'           => Request::getString('filter', ''),
-				'limit'            => Request::getInt('limit', 0),
-				'start'            => Request::getInt('limitstart', 0),
-				'sortby'           => 'localpath',
-				'showFullMetadata' => true,
-				'getParents'       => true,
-				'getChildren'      => true
-			));
-
-			$response->results = $this->_parseResults($files);
-		}
+		$response->results = $this->_parseResults($files);
 
 		$response->count = is_array($files)?count($files):0;
 
@@ -225,33 +187,15 @@ class Filesv1_0 extends ApiController
 
 		$response = new stdClass;
 
-		if ($this->cid) //connection specific listing
-		{
-			$entities = array();
-			foreach ($files as $file)
-			{
-				try
-				{
-					$entities[] = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
-				}
-				catch (Exception $e)
-				{
-					// Nothing here
-				}
-			}
-			$response->results = $this->_parseFlysystemListing($entities);
-		}
-		else
-		{
-			$files = $this->model->repo()->filelist(array(
-				'subdir'           => Request::getString('subdir', '', 'post'),
-				'files'            => $files,
-				'showFullMetadata' => true,
-				'getParents'       => true,
-				'getChildren'      => true
-			));
-			$response->results = $this->_parseResults($files);
-		}
+		$files = $this->model->repo()->filelist(array(
+			'subdir'           => Request::getString('subdir', '', 'post'),
+			'files'            => $files,
+			'showFullMetadata' => true,
+			'getParents'       => true,
+			'getChildren'      => true
+		));
+		$response->results = $this->_parseResults($files);
+
 		$this->send($response);
 	}
 
@@ -294,35 +238,20 @@ class Filesv1_0 extends ApiController
 		}
 		$response = new stdClass;
 
-		if ($this->cid) //connection specific operation
-		{
-			$entity  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $directory, $this->ormconn->adapter());
 
-			if (!$entity->create())
-			{
-				$response->error = Lang::txt('Error creating directory');
-			}
-			else
-			{
-				$response->success = 1;
-			}
+		// Set params
+		$params = array(
+			'subdir' => Request::getString('subdir', '', 'post'),
+			'newDir' => urldecode($directory)
+		);
+
+		if ($this->model->repo()->makeDirectory($params))
+		{
+			$response->success = 1;
 		}
-		else
+		if ($this->model->repo()->getError())
 		{
-			// Set params
-			$params = array(
-				'subdir' => Request::getString('subdir', '', 'post'),
-				'newDir' => urldecode($directory)
-			);
-
-			if ($this->model->repo()->makeDirectory($params))
-			{
-				$response->success = 1;
-			}
-			if ($this->model->repo()->getError())
-			{
-				$response->error = $this->model->repo()->getError();
-			}
+			$response->error = $this->model->repo()->getError();
 		}
 
 		$this->send($response);
@@ -391,40 +320,21 @@ class Filesv1_0 extends ApiController
 				continue;
 			}
 
-			if ($this->cid) //connection specific operation
-			{
-				$entity  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $item, $this->ormconn->adapter());
+			$params = array(
+				'type'   => $type,
+				'item'   => $item,
+				'subdir' => Request::getString('subdir', '', 'post')
+			);
 
-				try
-				{
-					if ($entity->delete())
-					{
-						$deleted++;
-					}
-				}
-				catch (Exception $e)
-				{
-					// Nothing here
-				}
-			}
-			else
+			if ($this->model->repo()->deleteItem($params))
 			{
-				$params = array(
-					'type'   => $type,
-					'item'   => $item,
-					'subdir' => Request::getString('subdir', '', 'post')
-				);
-
-				if ($this->model->repo()->deleteItem($params))
-				{
-					$deleted++;
-				}
+				$deleted++;
 			}
 		}
 		$response->total   = count($items);
 		$response->deleted = $deleted;
 
-		if (!$this->cid && $this->model->repo()->getError())
+		if ($this->model->repo()->getError())
 		{
 			$response->error = $this->model->repo()->getError();
 		}
@@ -498,40 +408,22 @@ class Filesv1_0 extends ApiController
 				continue;
 			}
 
-			if ($this->cid)
-			{
-				$entity = Entity::fromPath($item, $this->ormconn->adapter());
-				try
-				{
-					if ($entity->move($target))
-					{
-						$moved++;
-					}
-				}
-				catch (Exception $e)
-				{
-					// Nothing here
-				}
-			}
-			else
-			{
-				$params = array(
-					'type'            => $type,
-					'item'            => $item,
-					'targetDir'       => $target,
-					'createTargetDir' => true // allow new directories
-				);
+			$params = array(
+				'type'            => $type,
+				'item'            => $item,
+				'targetDir'       => $target,
+				'createTargetDir' => true // allow new directories
+			);
 
-				if ($this->model->repo()->moveItem($params))
-				{
-					$moved++;
-				}
+			if ($this->model->repo()->moveItem($params))
+			{
+				$moved++;
 			}
 		}
 		$response->total = count($items);
 		$response->moved = $moved;
 
-		if (!$this->cid && $this->model->repo()->getError())
+		if ($this->model->repo()->getError())
 		{
 			$response->error = $this->model->repo()->getError();
 		}
@@ -590,40 +482,22 @@ class Filesv1_0 extends ApiController
 		$response = new stdClass;
 		$response->success = 0;
 
-		if ($this->cid)
+
+		$params = array(
+			'subdir'  => Request::getString('subdir', ''),
+			'from'    => Request::getString('from', ''),
+			'to'      => Request::getString('to', ''),
+			'type'    => Request::getString('type', 'file')
+		);
+
+		if ($this->model->repo()->rename($params))
 		{
-			$entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . Request::getString('from', ''), $this->ormconn->adapter());
-			try
-			{
-				if ($entity->rename(Request::getString('to', '')))
-				{
-					$response->success = 1;
-				}
-			}
-			catch (Exception $e)
-			{
-				$response->error = "Error renaming entity";
-			}
+			$response->success = 1;
 		}
-		else
+
+		if ($this->model->repo()->getError())
 		{
-			// Set params
-			$params = array(
-				'subdir'  => Request::getString('subdir', ''),
-				'from'    => Request::getString('from', ''),
-				'to'      => Request::getString('to', ''),
-				'type'    => Request::getString('type', 'file')
-			);
-
-			if ($this->model->repo()->rename($params))
-			{
-				$response->success = 1;
-			}
-
-			if ($this->model->repo()->getError())
-			{
-				$response->error = $this->model->repo()->getError();
-			}
+			$response->error = $this->model->repo()->getError();
 		}
 
 		$this->send($response);
@@ -633,17 +507,10 @@ class Filesv1_0 extends ApiController
 	 * upload/replace a project file (only for non-default connection providers)
 	 *
 	 * @apiMethod POST
-	 * @apiUri    /projects/{id}/files/connections/{cid}/upload
+	 * @apiUri    /projects/{id}/files/upload
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "cid",
-	 * 		"description": "Connection identifier (numeric ID)",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
@@ -668,286 +535,44 @@ class Filesv1_0 extends ApiController
 	 */
 	public function uploadTask()
 	{
+
 		$response = new stdClass;
 
-		if ($this->cid) //connection specific operation
-		{
-			if (is_uploaded_file($_FILES["file"]["tmp_name"]))
-			{
-				$updateType = 'uploaded';
-
-				$file  = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
-
-				if ($file->exists())
-				{
-					$updateType = 'updated';
-				}
-				$file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
-				$file->size = (int) $_FILES["file"]["size"];
-				if ($file->save())
-				{
-
-					$parsedResults = array();
-
-					// Get metadata
-					$parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
-
-					$response->results = $parsedResults;
-				}
-				else
-				{
-					$response->error = "Error uploading file";
-				}
-			}
-			else
-			{
-				$response->error = "No uploaded file found";
-			}
+		// Check permission
+		if (!$this->model->access('content')) {
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
-		else
-		{
-			$response->error = "Connection not specified";
-		}
+		$render = Request::getString('render', 'download');
+		$hash   = Request::getString('hash', '');
+		$this->repo = new \Components\Projects\Models\Repo($this->model, "local");
 
+		$this->_database   = \App::get('db');
+		$this->_uid        = User::get('id');
+		$this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
+
+		// Set params
+		$params = array(
+			'subdir'     => $this->subdir,
+			'expand'     => Request::getInt('expand_zip', 0),
+			'ajaxUpload' => 1,
+			'path'       => $this->repo->get('path')
+		);
+
+		// Upload file
+		$results = $this->repo->insert($params);
+
+		$response->results = $results;
 		$this->send($response);
-	}
-
-	/**
-	 * Uploads file chunk(s) and combines them before adding the
-	 * final file to repository
-	 *
-	 * @apiMethod GET,POST
-	 * @apiUri    /projects/{id}/files/connections/{cid}/chunkedUpload
-	 * @apiParameter {
-	 * 		"name":        "id",
-	 * 		"description": "Project identifier (numeric ID or alias)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "cid",
-	 * 		"description": "Connection identifier (numeric ID)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "subdir",
-	 * 		"description":   "Directory path to upload to",
-	 * 		"type":          "string",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowFilename",
-	 * 		"description":   "Name of file being uploaded",
-	 * 		"type":          "string",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowIdentifier",
-	 * 		"description":   "Temporary file basename for chunk parts",
-	 * 		"type":          "string",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowTotalChunks",
-	 * 		"description":   "Total number of file chunks",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowTotalSize",
-	 * 		"description":   "Total file size",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowChunkNumber",
-	 * 		"description":   "Index of the chunk in the request",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowChunkSize",
-	 * 		"description":   "Size of ths chunk in the request",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "flowChunkHash",
-	 * 		"description":   "MD5 hash of the chunk in the request",
-	 * 		"type":          "string",
-	 * 		"required":      true,
-	 * 		"default":       "",
-	 * 		"allowedValues": ""
-	 * }
-	 *
-	 * @return  void
-	 */
-	public function chunkedUploadTask()
-	{
-
-		// Check if request is GET and the requested chunk exists or not.
-		if (Request::getMethod() === 'GET')
-		{
-			$flowIdentifier = Request::getString('flowIdentifier', '', 'GET');
-			$flowFilename = Request::getString('flowFilename', '', 'GET');
-			$flowChunkNumber = Request::getString('flowChunkNumber', '', 'GET');
-			$flowChunkHash = Request::getString('flowChunkHash', '', 'GET');
-			$subdir = Request::getString('subdir', '', 'GET');
-
-			$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-			$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
-
-			$chunk_file = $temp_dir . DS . $flowFilename . '.part' . $flowChunkNumber;
-
-			if (file_exists($chunk_file))
-			{
-				// Also compare MD5 hash to make sure this is the same part as before
-				$hash = md5_file($chunk_file);
-				if (strcmp($hash, $flowChunkHash) === 0)
-				{
-					header("HTTP/1.0 200 OK");
-					exit;
-				}
-				else
-				{
-					unlink($chunk_file);
-					header("HTTP/1.0 204 Not Found");
-					exit;
-				}
-			}
-			else
-			{
-				header("HTTP/1.0 204 Not Found");
-				exit;
-			}
-		}
-
-		// Loop through files and move the chunks to a temporarily created directory
-		if (!empty($_FILES))
-		{
-			foreach ($_FILES as $file)
-			{
-				// check the error status
-				if ($file['error'] != 0)
-				{
-					continue;
-				}
-
-				// Init the destination file (format <filename.ext>.part<#chunk>)
-				// The file is stored in a temporary directory identified by the
-				// project ID, the base64 encoded destination and the filename
-				$flowIdentifier = Request::getString('flowIdentifier', '', 'POST');
-				$subdir = Request::getString('subdir', '', 'POST');
-				if (trim($flowIdentifier) != '')
-				{
-					$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-					$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
-				}
-
-				$flowFilename = Request::getString('flowFilename', '', 'POST');
-				$flowChunkNumber = Request::getString('flowChunkNumber', '', 'POST');
-				$flowChunkSize = Request::getString('flowChunkSize', '', 'POST');
-				$flowTotalChunks = Request::getString('flowTotalChunks', '', 'POST');
-				$flowTotalSize = Request::getString('flowTotalSize', '', 'POST');
-
-				$dest_file = $temp_dir . DS . $flowFilename . '.part' . $flowChunkNumber;
-
-				// Create the temporary directory
-				if (!is_dir($temp_dir))
-				{
-					mkdir($temp_dir, 0777, true);
-				}
-
-				// Move the temporary file
-				if (!move_uploaded_file($file['tmp_name'], $dest_file))
-				{
-					header("HTTP/1.0 404 Error Uploading File");
-					exit;
-				}
-				else
-				{
-					// Check if all the parts present, and create the final destination file
-					$result = $this->createFileFromChunks(
-						$temp_dir,
-						$flowFilename,
-						$flowChunkSize,
-						$flowTotalSize,
-						$flowTotalChunks,
-						$subdir
-					);
-				}
-			}
-		}
-
-		if ($result)
-		{
-			$file  = Entity::fromPath($subdir . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
-			if ($file->exists())
-			{
-				$updateType = 'updated';
-			}
-			$file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
-			$file->size = (int) $_FILES["file"]["size"];
-			if ($file->save())
-			{
-				$parsedResults = array();
-
-				// Get metadata
-				$parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
-
-				$response->results = $parsedResults;
-				$this->send($response);
-			}
-		}
-		else
-		{
-			//all chunks have been sent, but couldn't be recombined
-			if ($flowTotalChunks == $flowChunkNumber)
-			{
-				$response->error = "Error uploading file";
-				$this->send($response);
-			}
-			else
-			{
-				//not all chunks have been sent yet, just succeed
-				header("HTTP/1.0 200 OK");
-				exit;
-			}
-		}
 	}
 
 	/**
 	 * Download file or folder from project (non-default connection providers only)
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/files/connections/{cid}/download
+	 * @apiUri    /projects/{id}/files/download
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "cid",
-	 * 		"description": "Connection identifier (numeric ID)",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
@@ -978,39 +603,186 @@ class Filesv1_0 extends ApiController
 	 */
 	public function downloadTask()
 	{
-		$items = $this->_getCollection();
+		// Incoming
+		$render = Request::getString('render', 'download');
+		$hash   = Request::getString('hash', '');
+		$this->repo = new \Components\Projects\Models\Repo($this->model, "local");
+		// Metadata collector
+		$collector = array();
 
-		// Check items
-		if (!$items || count($items) == 0)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
-			return;
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
+
+		$this->_database   = \App::get('db');
+		$this->_uid        = User::get('id');
+		$this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
+
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => []
+		);
+
+		// Collect items
+		if (!$items) {
+			App::abort(404, Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+		} else {
+			foreach ($items as $element) {
+				foreach ($element as $type => $item) {
+					// Get type and item name
+					break;
+				}
+
+				// Must have a name
+				if (trim($item) == '') {
+					continue;
+				}
+
+				// Build metadata object
+				$collector[] = $this->repo->getMetadata($item, $type, $params);
+			}
 		}
 
-		if (count($items) > 1)
-		{
-			$archive = $items->compress();
-			$result  = $archive->serve('project_files_'
-					. \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1)
-					. '.zip');
-
-			// Delete the tmp file for serving
-			$archive->delete();
-		}
-		else
-		{
-			$result = $items->first()->serve();
+		// Check that we have item(s) to download
+		if (empty($collector)) {
+			// Throw error
+			App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 		}
 
-		if (!$result)
-		{
-			// Should only get here on error
-			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+		// File preview?
+		if ($render == 'preview') {
+			// Output HTML
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'preview'
+				)
+			);
+
+			$view->file = isset($collector[0]) ? $collector[0] : null;
+
+			// Get last revision
+			if (!$view->file->get('converted') && !$hash) {
+				$params['file'] = $view->file;
+				$hash = $this->repo->getLastRevision($params);
+				$view->file->set('hash', $hash);
+			}
+			$view->option = $this->_option;
+			$view->model  = $this->model;
+
+			if (!($view->file instanceof \Components\Projects\Models\File)) {
+				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
+			}
+			return $view->loadTemplate();
 		}
-		else
-		{
-			exit;
+
+		// Other rendering?
+		if ($render == 'thumb' || $render == 'inline' || $render == 'medium') {
+			$file = isset($collector[0]) ? $collector[0] : null;
+			if (!($file instanceof \Components\Projects\Models\File)) {
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
+			}
+			// Get last revision
+			if (!$file->get('converted') && !$hash) {
+				$params['file'] = $file;
+				$hash = $this->repo->getLastRevision($params);
+			}
+
+			$image = $file->getPreview($this->model, $hash, 'fullPath', $render);
+
+			// Serve image
+			if ($image && is_file($image)) {
+				$server = new \Hubzero\Content\Server();
+				$server->filename($image);
+				$server->serve_inline($image);
+				exit;
+			}
 		}
+
+		// File download
+		if (count($items) > 1) {
+			$archive = $this->_archiveFiles($items);
+
+			if (!$archive) {
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
+			} else {
+				$downloadPath   = $archive['path'];
+				$serveas        = 'Project Files ' . Date::toSql() . '.zip';
+			}
+		} else {
+			$file = isset($collector[0]) ? $collector[0] : null;
+			if (!($file instanceof \Components\Projects\Models\File)) {
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
+			}
+			$serveas = $file->get('name');
+
+
+			// Download local revision
+			if ($hash) {
+				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0) . $serveas;
+				$downloadPath = sys_get_temp_dir() . DS . $tempPath;
+
+				// Get file content
+				$params = array('fileName' => $file->get('localPath'), 'hash' => $hash, 'target' => $downloadPath);
+				$this->repo->getFileContent($params);
+			} else {
+				// Viewing current file
+				$serveas      = urldecode(Request::getString('serveas', $file->get('name')));
+				$downloadPath = $file->get('fullPath');
+			}
+		}
+
+		// Now we can actually download
+		if (!empty($downloadPath)) {
+			// Ensure the file exist
+			if (!file_exists($downloadPath)) {
+				// Throw error
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
+			}
+			if (!is_file($downloadPath)) {
+				// Throw error
+				App::abort(416, Lang::txt('PLG_PROJECTS_FILES_FOLDER_NOT_DOWNLOAD'));
+			}
+			// Cannot download zero byte files
+			if (filesize($downloadPath) == 0) {
+				exit;
+			}
+
+			// Proceed with download
+			// Initiate a new content server and serve up the file
+			$server = new \Hubzero\Content\Server();
+			$server->filename($downloadPath);
+			$server->disposition('attachment');
+			$server->acceptranges(false);
+			$server->saveas($serveas);
+			$result = $server->serve_attachment($downloadPath, $serveas, false);
+
+			if (!$result) {
+				// Should only get here on error
+				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'));
+			} else {
+				// Clean up the /tmp directory from zip files (download multiple files)
+				$temp_path = sys_get_temp_dir();
+				$matches = array();
+				preg_match('/^(\\/tmp.*?\\.zip)/is', $downloadPath, $matches);
+				if (!empty($matches)) {
+					\Hubzero\Filesystem::delete($downloadPath);
+				}
+
+				exit;
+			}
+		}
+
+
+		// Redirect to file list
+		$url  = $this->model->link('files') . '&action=browse';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+
+		// Redirect
+		App::redirect(Route::url($url));
 	}
 
 	/**
@@ -1108,17 +880,10 @@ class Filesv1_0 extends ApiController
 	 * Get file annotation
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/files/connections/{cid}/getmetadata
+	 * @apiUri    /projects/{id}/files/getmetadata
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "cid",
-	 * 		"description": "Connection identifier (numeric ID or alias)",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
@@ -1203,17 +968,10 @@ class Filesv1_0 extends ApiController
 	 * Set file annotation
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/files/connections/{cid}/setmetadata
+	 * @apiUri    /projects/{id}/files/setmetadata
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "cid",
-	 * 		"description": "Connection identifier (numeric ID or alias)",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
@@ -1491,116 +1249,5 @@ class Filesv1_0 extends ApiController
 
 		return $packedMetadata;
 	}
-
-	/**
-	 * Get a list of project files connections
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /projects/{id}/files/connections
-	 * @apiParameter {
-	 *              "name":        "id",
-	 *              "description": "Project identifier (numeric ID or alias)",
-	 *              "type":        "string",
-	 *              "required":    true,
-	 *              "default":     null
-	 * }
-	 * @return  void
-	 */
-	public function connectionsTask()
-	{
-		$response = new stdClass;
-		$connections = $this->ormproj->connections()->thatICanView()->rows();
-		$response->count = count($connections);
-		$response->connections = array();
-
-		foreach ($connections as $connection)
-		{
-			$obj = new stdClass;
-			$obj->id = $connection->get('id');
-			$obj->name = $connection->get('name');
-			$response->connections[] = $obj;
-		}
-
-		$this->send($response);
-	}
-
-	/**
-	 * Check if all the chunks exist, and combine them into a final file
-	 *
-	 * @param   string  $temp_dir     The temporary directory holding all the parts of the file
-	 * @param   string  $fileName     The original file name
-	 * @param   string  $chunkSize    Each chunk size (in bytes)
-	 * @param   string  $totalSize    Original file size (in bytes)
-	 * @param   int     $total_files  The total number of chunks for this file
-	 * @param   int     $expand       Whether to automatically expand zip,tar,gz files
-	 * @return  array
-	 */
-	protected function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize, $total_files, $subdir)
-	{
-		// Count all the parts of this file
-		$total_files_on_server_size = 0;
-		$temp_total = 0;
-
-		$result = false;
-
-		foreach (scandir($temp_dir) as $file)
-		{
-			$temp_total = $total_files_on_server_size;
-			$tempfilesize = filesize($temp_dir . DS . $file);
-			$total_files_on_server_size = $temp_total + $tempfilesize;
-		}
-
-		// Check that all the parts are present
-		// If the Size of all the chunks on the server is equal to the size of the file uploaded.
-		if ($total_files_on_server_size >= $totalSize)
-		{
-			// Create a temporary file to combine all the chunks into
-			$fp = tmpfile();
-
-			for ($i = 1; $i <= $total_files; $i++)
-			{
-				fwrite($fp, file_get_contents($temp_dir . DS . $fileName . '.part' . $i));
-				unlink($temp_dir . DS . $fileName . '.part' . $i);
-			}
-
-			fseek($fp, 0);
-
-			$path = trim($subdir, DS) . DS . $fileName;
-
-			// Final destination file
-			$file = Entity::fromPath($path, $this->ormconn->adapter());
-
-			$file->contents = $fp;
-			$file->size     = $totalSize;
-
-			if ($file->save())
-			{
-				$result = true;
-			}
-			else
-			{
-				$result = false;
-			}
-
-			if (is_resource($file))
-			{
-				// Some (3rd party) adapters close the stream internally.
-				fclose($file);
-			}
-
-			// Rename the temporary directory (to avoid access from other
-			// Concurrent chunks uploads) and then delete it
-			if (rename($temp_dir, $temp_dir . '_UNUSED'))
-			{
-				Filesystem::deleteDirectory($temp_dir . '_UNUSED');
-			}
-			else
-			{
-				Filesystem::deleteDirectory($temp_dir);
-			}
-
-		}
-
-		return $result;
-	}
 }
+

@@ -98,6 +98,7 @@ $this->js();
 							<input type="hidden" name="fields[id]" value="<?php echo $this->item->get('id', 0); ?>" />
 						</td>
 					</tr>
+					<?php if ($this->item->get('created_user_id', false)): ?>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATOR'); ?></th>
 						<td>
@@ -105,12 +106,15 @@ $this->js();
 							<input type="hidden" name="fields[created_user_id]" value="<?php echo $this->item->created_user_id; ?>" />
 						</td>
 					</tr>
+					<?php endif; ?>
+					<?php if ($this->item->get('created_time', false)): ?>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATED'); ?></th>
 						<td>
 							<?php echo Date::of($this->item->get('created_time'))->toLocal(); ?>
 						</td>
 					</tr>
+					<?php endif; ?>
 					<?php if ($this->item->get('modified_time', false)): ?>
 						<tr>
 							<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIER'); ?></th>

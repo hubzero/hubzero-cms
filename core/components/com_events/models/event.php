@@ -35,6 +35,8 @@ class Event extends Model
 	 */
 	protected $_tbl_name = '\\Components\\Events\\Tables\\Event';
 
+	protected $address_info = '';
+
 	/**
 	 * Constructor
 	 *
@@ -212,11 +214,11 @@ class Event extends Model
 		// get event timezone setting
 		// use this in "DTSTART;TZID="
 		$tzInfo = \plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($this->get('time_zone'));
-		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
+		$tzName = timezone_name_from_abbr($tzInfo['abbreviation'] ?? '');
 
 		// get publish up/down dates in UTC
-		$publishUp   = new DateTime($this->get('publish_up'), new DateTimezone('UTC'));
-		$publishDown = new DateTime($this->get('publish_down'), new DateTimezone('UTC'));
+		$publishUp   = new DateTime($this->get('publish_up',''), new DateTimezone('UTC'));
+		$publishDown = new DateTime($this->get('publish_down',''), new DateTimezone('UTC'));
 
 		// Set eastern timezone as publish up/down date timezones
 		// since all event date/times are stores relative to eastern

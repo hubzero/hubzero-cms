@@ -496,7 +496,7 @@ class View extends Obj
 		 && $layoutTemplate != '_'
 		 && $layoutTemplate != $template)
 		{
-			$this->_path['template'] = str_replace($template, $layoutTemplate, $this->_path['template']);
+			$this->_path['template'] = str_replace($template ?? '', $layoutTemplate, $this->_path['template']);
 		}
 		// Load the template script
 		$this->_template = $this->find(

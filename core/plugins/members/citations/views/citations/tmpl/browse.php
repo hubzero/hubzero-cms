@@ -46,6 +46,7 @@ if (isset($this->messages))
 					<input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
 					<fieldset class="entry-search"> <!-- text box container -->
 						<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+						<label for="entry-search-field" class="sr-only"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></label>
 						<input type="text" name="filters[search]" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
@@ -57,7 +58,7 @@ if (isset($this->messages))
 						<thead>
 							<tr>
 								<th class="batch">
-									<input type="checkbox" class="checkall-download" />
+									<input type="checkbox" class="checkall-download" aria-label="Select all citations" />
 								</th>
 								<th colspan="6"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></th>
 							</tr>
@@ -80,7 +81,7 @@ if (isset($this->messages))
 							<?php foreach ($this->citations as $cite) : ?>
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : ''; ?>">
 									<td class="batch">
-										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+										<input type="checkbox" class="download-marker" aria-label="Select citation for download" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
 									<?php if ($this->label != "none") : ?>
 										<td class="citation-label <?php echo $this->citations_label_class; ?>">
@@ -230,7 +231,7 @@ if (isset($this->messages))
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'); ?><br />
 						<input type="text" name="filters[year_start]" id="filter_year_start" class="half" value="<?php echo $this->escape($this->filters['year_start']); ?>" />
 						to
-						<input type="text" name="filters[year_end]" id="filter_year_end" class="half" value="<?php echo $this->escape($this->filters['year_end']); ?>" />
+						<input type="text" name="filters[year_end]" id="filter_year_end" class="half" aria-label="Year end" value="<?php echo $this->escape($this->filters['year_end']); ?>" />
 					</label>
 					<label for="filter_sort">
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY'); ?>

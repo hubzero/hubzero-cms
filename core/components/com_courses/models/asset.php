@@ -162,7 +162,17 @@ class Asset extends Base
 		// Override path for url/link type assets
 		if (in_array(strtolower($this->get('type')), array('form', 'link', 'url')))
 		{
-			$path = $this->get('url');
+			$path    = $this->get('url');
+			$content = $this->get('content');
+
+			// Recover full URL from content if url field was truncated at VARCHAR(255) limit
+			if ($path !== null && strlen($path) >= 250)
+			{
+				if (preg_match('~https?://[^\s"\')<>]+~i', $content, $m))
+				{
+					$path = $m[0];
+				}
+			}
 		}
 
 		return $path;

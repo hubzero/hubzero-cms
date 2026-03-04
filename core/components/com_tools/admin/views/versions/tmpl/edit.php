@@ -57,7 +57,7 @@ $this->js();
 
 						<div class="input-wrap">
 							<label for="field-timeout"><?php echo Lang::txt('COM_TOOLS_FIELD_TIMEOUT'); ?>:</label><br />
-							<input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout));?>" size="50" />
+							<input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout ?: ''));?>" size="50" />
 						</div>
 
 						<div class="input-wrap">

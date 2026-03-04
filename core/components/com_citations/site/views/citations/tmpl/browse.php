@@ -277,6 +277,7 @@ if ($label == 'none') {
 			<?php endif; ?>
 
 			<fieldset>
+				<legend class="sr-only">Filter citations</legend>
 				<label for="type">
 					<?php echo Lang::txt('COM_CITATIONS_TYPE'); ?>
 					<select name="type" id="type">

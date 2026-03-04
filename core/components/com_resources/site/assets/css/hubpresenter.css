@@ -18,6 +18,10 @@ a:focus {
 	outline: none;
 }
 
+#watch-section {
+    z-index: 10;
+    position: relative;
+}
 
 /*---------------------------------------------------------------
 	Overlay
@@ -85,29 +89,19 @@ a:focus {
     Container
 ---------------------------------------------------------------*/
 #presenter-container {
-	width: 960px;
-	margin: 20px auto;
-	border: 5px solid #222;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
-	-ms-border-radius: 5px;
-	-khtml-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	border-radius: 0;
-	box-shadow: none;
-	border: none;
+    width: 960px;
+    margin: 20px auto;
+    border-radius: 12px;
+    background: #1a1a1a;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
 }
+
 #presenter-content {
-	overflow: hidden;
-	margin: 0;
-	padding: 0;
-	min-height: inherit;
-	background: #FFF;
+    display: flex;
+    background: #111;
 }
+
 #presenter-left {
 	overflow: hidden;
 	float: left;
@@ -282,7 +276,7 @@ video {
 	background: #efefef;
 }
 #list ul li img {
-	width: 50px;
+	width: 130px;
 	float: left;
 	margin-right: 10px;
 	border: 1px solid #aaa;
@@ -328,16 +322,19 @@ video {
 	transition: opacity 0.5s;
 }
 #control-box {
-	position: absolute;
-	bottom: -45px;
-	left: 0;
-	right: 1px;
-	height: 50px;
-	background: #222;
-	z-index: 9997;
-	-webkit-transition: bottom 0.4s;
-	-moz-transition: bottom 0.4s;
-	transition: bottom 0.4s;
+    position: absolute;
+    bottom: -45px;
+    left: 0;
+    right: 1px;
+    height: 60px;
+    -webkit-transition: bottom 0.4s;
+    -moz-transition: bottom 0.4s;
+    transition: bottom 0.4s;
+    background: linear-gradient(to top, rgba(20, 20, 20, 0.95), rgba(20, 20, 20, 0.7));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px);
+    padding: 0 15px;
+    z-index: 9997;    
 }
 #presenter-content.paused #control-box,
 #presenter-content:hover #control-box {
@@ -757,7 +754,7 @@ a.ui-slider-handle {
 ---------------------------------------------------------------*/
 .list-progress {
 	position: absolute;
-	top: 30px;
+	top: 70px;
 	right: 11px;
 	color: #444;
 	font-size: 10px;
@@ -1073,7 +1070,35 @@ a.ui-slider-handle {
 	width: auto;
 }
 #presenter-container.presentation-hd .list-slider {
-	width: 280px;
+    	width: calc(100% - 180px);
+    	height: 6px;
+    	background: #2a2a2a;
+    	border-radius: 3px;
+    	margin: 30px 90px 0px;
+    	cursor: pointer;
+}
+
+#presenter-container.presentation-hd .list-slider .ui-slider-range {
+    background: #1e90ff;
+    height: 100%;
+    border-radius: 3px;
+}
+
+#presenter-container.presentation-hd .list-slider .ui-slider-handle {
+    position: absolute;
+    top: -5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, background 0.2s ease;
+    cursor: grab;
+}
+
+#presenter-container.presentation-hd .list-slider .ui-slider-handle:hover {
+    transform: scale(1.2);
+    background: #f1f1f1;
 }
 
 /*---------------------------------------------------------------
@@ -1203,3 +1228,4 @@ a.ui-slider-handle {
 #component-body .embed-popout {
 	display: none;
 }
+

@@ -502,7 +502,7 @@ class Field extends Relational
 	 */
 	public function renderValue($value)
 	{
-		$value = count($value) == 1 ? $value[0] : $value;
+		$value = (is_array($value) && count($value) > 0) ? $value[0] : $value;
 		if (empty($value))
 		{
 			return false;
@@ -517,6 +517,7 @@ class Field extends Relational
 				$value = $type->renderValue($value);
 			}
 		}
+
 		return $value;
 	}
 

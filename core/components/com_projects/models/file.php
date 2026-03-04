@@ -599,11 +599,17 @@ class File extends Obj
 	public static function getIconImage($ext, $basename = false, $icon = '')
 	{
 		$ext = strtolower($ext);
-
-		$icon = \Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
-		if (!$icon)
+		if (class_exists('Html'))
 		{
-			$icon = \Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
+			$icon = \Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+			if (!$icon)
+			{
+				$icon = \Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
+			}
+		}
+		else
+		{
+			$icon = $ext;
 		}
 
 		return $basename ? basename($icon) : $icon;

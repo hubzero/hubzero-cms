@@ -549,7 +549,7 @@ class Form extends SiteController
 
 			$now   = strtotime(Date::of('now'));
 			$start = strtotime($resp->getStartTime());
-			$end   = strtotime($dep->getEndTime());
+			$end   = strtotime($dep->getEndTime() ?: '');
 			$dur   = $limit * 60;
 
 			if ($now > ($start + $dur) || ($dep->getEndTime() && $end < $now))

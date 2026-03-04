@@ -287,11 +287,11 @@
 
 /* Licensing */	
 	.opensource_license { 
-		background: url("/core/components/com_resources/site/assets/img/os.gif") 0 1px no-repeat;
+		background: url("/core/components/com_resources/site/assets/img/os.gif") 0 0.3em no-repeat;
 		padding-left: 17px;
 	}
 	.closedsource_license { 
-		background: url("/core/components/com_resources/site/assets/img/cs.gif") 0 0 no-repeat;
+		background: url("/core/components/com_resources/site/assets/img/cs.gif") 0 0.35em no-repeat;
 		padding-left: 17px;
 	}
 	.unavail {
@@ -803,11 +803,12 @@
 	#level-1, 
 	#level-2, 
 	#level-3 {
-		background-color: transparent;
-		margin: 0;
-		padding: 0;
-		width: 33%;
+		background-color: #fafafa;
+		margin: 1em;
+		padding: 1em;
+		width: 30%;
 		float: left;
+		border-radius: 1em;
 	}
 	div.ie {
 		height: 373px; 
@@ -823,12 +824,12 @@
 /*\*/
 	#tagbrowser ul {
 		background: #fff;
-		border: 1px solid #C5C5C5; 
+		border: 0px solid #C5C5C5; 
 		height: 350px; 
 		overflow: auto;
 		overflow-x: hidden;
 		margin: 0; 
-		padding: 0;
+		padding: 1em;
 		list-style: none;
 	}
 	#tagbrowser li#selecta {
@@ -914,7 +915,7 @@
 		font-family: 'Fontcons';
 		content: "\203A";
 		font-size: 1em;
-		display: block;
+		display: none;
 		width: 1em;
 		height: 1em;
 		position: absolute;
@@ -928,7 +929,9 @@
 	}
 	#level-1 ul a:hover:after,
 	#level-2 ul a:hover:after,
-	#level-1 ul a.hi:after, 
+	#level-1 ul a:focus:after,
+	#level-2 ul a:focus:after,
+	#level-1 ul a.hi:after,
 	#level-2 ul a.hi:after {
 		color: #fff;
 	}
@@ -942,9 +945,24 @@
 		color: #fff;
 	}
 	#level-1 ul a:hover,
-	#level-2 ul a:hover {
+	#level-2 ul a:hover,
+	#level-1 ul a:focus,
+	#level-2 ul a:focus {
 		background: #3875D7;
 		color: #fff;
+		outline: 2px solid #3875D7;
+		outline-offset: -2px;
+	}
+	/* When keyboard focus is inside a column, suppress hover highlight on other items */
+	#level-1:focus-within ul a:hover:not(:focus),
+	#level-2:focus-within ul a:hover:not(:focus) {
+		background: transparent;
+		color: #ccc;
+		outline: none;
+	}
+	#level-1:focus-within ul a:hover:not(:focus):after,
+	#level-2:focus-within ul a:hover:not(:focus):after {
+		color: #ccc;
 	}
 	#level-3 h3 {
 		text-align: right;
