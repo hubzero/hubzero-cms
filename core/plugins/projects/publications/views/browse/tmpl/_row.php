@@ -63,7 +63,7 @@ elseif ($row->isWorked()) { echo ' <span><a href="' . Route::url($this->project-
 
 <td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=versions'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->get('versions'); ?><?php if ($row->get('versions') > 0) { ?></a><?php } ?></td>
 <td class="autowidth">
-	<a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id')); ?>" class="manageit" title="<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
+	<a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id')); ?>" class="manageit" title="<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>"><span class="sr-only"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?></span></a>
 
-	<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->get('id') . '&v=' . $row->get('version_number')); ?>" class="public-page" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
+	<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->get('id') . '&v=' . $row->get('version_number')); ?>" class="public-page" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></span></a></td>
 </tr>

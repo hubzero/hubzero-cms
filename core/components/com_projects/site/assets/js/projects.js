@@ -388,7 +388,7 @@ jQuery(document).ready(function($){
 	if (el.length) {
 		el.addClass('jsm');
 
-		var select = $("<select />").on('change', function() {
+		var select = $("<select />", {"aria-label": "Project navigation"}).on('change', function() {
 			window.location = $(this).find("option:selected").val();
 		});
 

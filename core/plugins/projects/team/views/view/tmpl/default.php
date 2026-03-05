@@ -38,7 +38,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 		<table id="teamlist" class="listing">
 			<thead>
 				<tr>
-					<th class="priority-3 imagebox"></th>
+					<th class="priority-3 imagebox" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
 					<th>
 						<a class="sort-title <?php if ($this->filters['sortby'] == 'name') { echo strtolower($this->filters['sortdir']) . ' active'; } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))); ?>">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
@@ -54,7 +54,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
 						</a>
 					</th>
-					<th></th>
+					<th aria-label="<?php echo Lang::txt('Actions'); ?>"><span class="sr-only">Actions</span></th>
 					<?php if ($this->count_groups) { ?>
 						<th class="priority-2">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP'); ?>
@@ -108,7 +108,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<td>
 						<?php echo $this->escape($owner->fullname); ?>
-						<span class="block mini short prominent"><?php echo $this->escape($username); ?></span>
+						<span class="block short prominent"><?php echo $this->escape($username); ?></span>
 					</td>
 					<td>
 						<?php echo ($creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : '') . $role; ?>
@@ -140,7 +140,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<?php if ($this->count_groups) { ?>
 						<td class="priority-2">
-							<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span>
+							<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?><span class="block short prominent"><?php echo $owner->groupname; ?></span>
 						</td>
 					<?php } ?>
 					<td class="priority-4">
@@ -165,7 +165,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 			</tbody>
 		</table>
 
-		<fieldset>
+		<div>
 			<?php
 			// Pagination
 			$pageNav = $this->pagination(
@@ -180,7 +180,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
 			echo $pagenavhtml;
 			?>
-		</fieldset>
+		</div>
 	</div>
 </form>
 

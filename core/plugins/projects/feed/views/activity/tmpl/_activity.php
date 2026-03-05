@@ -8,6 +8,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+// Skip rendering if the activity log is missing
+if (!$this->activity->log || !$this->activity->log->get('id'))
+{
+	return;
+}
+
 $class       = $this->activity->log->details->get('class', 'activity');
 $commentable = (!$this->activity->log->get('parent'));
 $deletable   = $this->model->access('manager');
@@ -15,6 +21,12 @@ $showProject = isset($this->showProject) ? $this->showProject : false;
 $edit        = isset($this->edit) ? $this->edit : true;
 
 $creator = User::getInstance($this->activity->log->get('created_by'));
+
+// Skip rendering if both the creator and description are missing
+if (!$creator->get('id') && !trim($this->activity->log->get('description')))
+{
+	return;
+}
 
 $new = false;
 if ($this->model->member())
@@ -25,6 +37,7 @@ if ($this->model->member())
 $recorded = $this->activity->get('created');
 
 $name = Lang::txt('JANONYMOUS');
+$nameText = $name;
 
 $online = false;
 
@@ -33,6 +46,7 @@ if (!$this->activity->log->get('anonymous'))
 {
 	// Get their full name
 	$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_PROJECTS_ACTIVITY_UNKNOWN'))));
+	$nameText = $name;
 
 	// Can we see their profile?
 	if (in_array($creator->get('access'), User::getAuthorisedViewLevels()))
@@ -51,14 +65,14 @@ if (!$this->activity->log->get('anonymous'))
 	<div class="activity-actor-picture<?php if ($online) { echo ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE'); } ?>">
 		<?php if ($showProject) { ?>
 			<span class="user-img-wrap">
-				<img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" />
+				<img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" />
 				<?php if ($online) { ?>
 					<span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
 				<?php } ?>
 			</span>
 		<?php } else { ?>
 			<a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>">
-				<img src="<?php echo $creator->picture(); ?>" alt="" />
+				<img src="<?php echo $creator->picture(); ?>" alt="<?php echo $nameText; ?>" />
 				<?php if ($online) { ?>
 					<span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
 				<?php } ?>

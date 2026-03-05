@@ -160,8 +160,8 @@ $roles = [
 <table id="teamlist" class="listing">
 	<thead>
 		<tr>
-			<th class="checkbox"></th>
-			<th class="th_image"></th>
+			<th class="checkbox" aria-label="<?php echo Lang::txt('Select'); ?>"><span class="sr-only">Select</span></th>
+			<th class="th_image" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
 			<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>">
 				<a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=name&sortdir=' . $sortbyDir); ?>">
 					<?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>

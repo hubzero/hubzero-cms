@@ -64,7 +64,7 @@ $rows = $this->todo->entries('list', $this->filters);
 			<th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_PROJECT'); ?></th>
 			<th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ASSIGNED'); ?></th>
 			<th><?php echo ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE'); ?></th>
-			<th></th>
+			<th aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
 		</tr>
 	</thead>
 	<tbody id="todo-table-body" class="allow-sort">

@@ -129,7 +129,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=name&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 					<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?></a>
 				</th>
-				<th class="centeralign"></th>
+				<th class="centeralign" aria-label="<?php echo Lang::txt('Type'); ?>"><span class="sr-only">Type</span></th>
 				<th <?php if ($this->params['sortby'] == 'size') { echo 'class="activesort"'; } ?>>
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?></a>
 				</th>
@@ -139,7 +139,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 				<?php if ($this->repo->getAdapterName() == 'git'){ ?>
 				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
 				<?php }; ?>
-				<th class="centeralign nojs"></th>
+				<th class="centeralign nojs" aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
 				<?php if ($this->publishing) { ?>
 				<th><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
 				<?php } ?>

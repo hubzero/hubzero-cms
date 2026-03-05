@@ -28,7 +28,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 		<table class="listing">
 		 <thead>
 			<tr>
-				<th class="tdmini"></th>
+				<th class="tdmini" aria-label="#">#</th>
 				<th class="tdmini"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
 				<th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
 				<th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>

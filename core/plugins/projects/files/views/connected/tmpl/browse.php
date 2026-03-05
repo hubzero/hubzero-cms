@@ -107,7 +107,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 						<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>
 					</a>
 				</th>
-				<th class="centeralign"></th>
+				<th class="centeralign" aria-label="<?php echo Lang::txt('Type'); ?>"><span class="sr-only">Type</span></th>
 				<th <?php if ($this->sortby == 'size') { echo 'class="activesort"'; } ?>>
 					<a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>"
 						class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>">
@@ -121,7 +121,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 					</a>
 				</th>
 				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
-				<th class="centeralign nojs"></th>
+				<th class="centeralign nojs" aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
 			</tr>
 		</thead>
 		<tbody>
