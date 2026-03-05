@@ -11,7 +11,8 @@ jQuery(function($) {
 			.text(li.text())
 		);
 	});
-	sa.empty().append('<div class="default-icon">').append(sel);
+	var $heading = sa.children('h3').detach();
+	sa.empty().append($heading).append('<div class="default-icon">').append(sel);
 		//sel = sa.children('select');
 	// if we make the select box multiple-select we can remove the placeholder
 	// <option> and let selectpicker manage the label. since we're watching the
@@ -77,6 +78,12 @@ jQuery(function($) {
 			sa.submit();
 		}
 	});
+
+	// Accessibility fixes for bootstrap-select generated markup
+	// Remove redundant title from the button (WAVE: redundant title text)
+	sa.find('.bootstrap-select .btn-default').removeAttr('title');
+	// Add aria-label to select for screen readers
+	sel.attr('aria-label', sa.data('placeholder'));
 
 	sa.find('input').attr('placeholder', 'Search');
 	

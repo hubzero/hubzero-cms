@@ -59,11 +59,14 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 {
 	$primary = null;
 }
+
 ?>
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<header id="content-header">
 		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
 	</header>
+<?php else : ?>
+	<h2 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0"><?php echo Lang::txt('COM_USERS_LOGIN'); ?></h2>
 <?php endif; ?>
 
 <section class="main section">

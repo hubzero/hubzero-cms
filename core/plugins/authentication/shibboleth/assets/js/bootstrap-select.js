@@ -118,7 +118,7 @@
       var inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '';
       var autofocus = this.autofocus ? ' autofocus' : '';
       var header = this.options.header ? '<div class="popover-title"><button type="button" class="close" aria-hidden="true">&times;</button>' + this.options.header + '</div>' : '';
-      var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox"><input type="text" class="input-block-level form-control" autocomplete="off" /></div>' : '';
+      var searchbox = this.options.liveSearch ? '<div class="bootstrap-select-searchbox"><label for="bs-search-input" class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">Search</label><input type="text" id="bs-search-input" class="input-block-level form-control" autocomplete="off" aria-label="Search" /></div>' : '';
       var actionsbox = this.options.actionsBox ? '<div class="bs-actionsbox">' +
           '<div class="btn-group btn-block">' +
           '<button class="actions-btn bs-select-all btn btn-sm btn-default">' +
@@ -139,7 +139,7 @@
               header +
               searchbox +
               actionsbox +
-              '<ul class="dropdown-menu inner selectpicker" role="menu">' +
+              '<ul class="dropdown-menu inner selectpicker" role="listbox">' +
               '</ul>' +
               '</div>' +
               '</div>';
@@ -312,7 +312,8 @@
         title = this.options.title !== undefined ? this.options.title : this.options.noneSelectedText;
       }
 
-      this.$button.attr('title', $.trim($("<div/>").html(title).text()).replace(/\s\s+/g, ' '));
+      // Set title as aria-label instead of title to avoid redundant title text (WCAG)
+      this.$button.attr('aria-label', $.trim($("<div/>").html(title).text()).replace(/\s\s+/g, ' '));
       this.$newElement.find('.filter-option').html(title);
     },
 
@@ -804,7 +805,7 @@
 
       if (that.options.container) $parent = that.$menu;
 
-      $items = $('[role=menu] li:not(.divider) a', $parent);
+      $items = $('[role=listbox] li:not(.divider) a', $parent);
 
       isActive = that.$menu.parent().hasClass('open');
 
@@ -825,7 +826,7 @@
           that.$menu.parent().removeClass('open');
           that.$button.focus();
         }
-        $items = $('[role=menu] li:not(.divider):visible', $parent);
+        $items = $('[role=listbox] li:not(.divider):visible', $parent);
         if (!$this.val() && !/(38|40)/.test(e.keyCode.toString(10))) {
           if ($items.filter('.active').length === 0) {
             $items = that.$newElement.find('li').filter(':icontains(' + keyCodeMap[e.keyCode] + ')');
@@ -1022,8 +1023,8 @@
 
   $(document)
       .data('keycount', 0)
-      .on('keydown', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role=menu], .bootstrap-select-searchbox input', Selectpicker.prototype.keydown)
-      .on('focusin.modal', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role=menu], .bootstrap-select-searchbox input', function (e) {
+      .on('keydown', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role=listbox], .bootstrap-select-searchbox input', Selectpicker.prototype.keydown)
+      .on('focusin.modal', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role=listbox], .bootstrap-select-searchbox input', function (e) {
         e.stopPropagation();
       });
 
