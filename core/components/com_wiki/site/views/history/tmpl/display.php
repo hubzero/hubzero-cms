@@ -98,9 +98,9 @@ $revisions = $this->page->versions()
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
-							<th scope="col"></th>
+							<th scope="col"><span class="sr-only">Markup</span></th>
 							<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
-								<th scope="col"></th>
+								<th scope="col"><span class="sr-only">Actions</span></th>
 							<?php } ?>
 						</tr>
 					</thead>
@@ -153,11 +153,13 @@ $revisions = $this->page->versions()
 
 									</td>
 									<td>
-										<input type="radio" name="diff" value="<?php echo $revision->get('version'); ?>" checked="checked" />
+										<label class="sr-only" for="diff-<?php echo $revision->get('version'); ?>">New revision <?php echo $revision->get('version'); ?></label>
+									<input type="radio" name="diff" id="diff-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>" checked="checked" />
 									</td>
 								<?php } else { ?>
 									<td>
-										<input type="radio" name="oldid" value="<?php echo $revision->get('version'); ?>"
+										<label class="sr-only" for="oldid-<?php echo $revision->get('version'); ?>">Old revision <?php echo $revision->get('version'); ?></label>
+										<input type="radio" name="oldid" id="oldid-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>"
 										<?php if ($comparefirst == true)
 										{
 											echo ' checked="checked"';

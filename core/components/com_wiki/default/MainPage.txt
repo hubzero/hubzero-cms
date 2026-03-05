@@ -29,7 +29,6 @@ Anyone with an account can create a new article. When creating a new article, th
 
  * [?task=new Create a new article]
  * [Help:Index Help Articles]
- * [Special:AllPages Full Article List]
 
 {{{
 #!html
@@ -50,10 +49,12 @@ Anyone with an account can create a new article. When creating a new article, th
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span6">
-					<form action="/search" method="get" class="search">
+					<form action="/search" method="get" class="search" role="search">
 						<fieldset>
+							<legend class="sr-only">Search wiki articles</legend>
 							<p>
-								<input type="text" name="terms" value="" />
+								<label for="wiki-search-terms" class="sr-only">Search terms</label>
+								<input type="text" name="terms" id="wiki-search-terms" value="" />
 								<input type="submit" value="Search" />
 								<input type="hidden" name="section" value="wiki" />
 							</p>

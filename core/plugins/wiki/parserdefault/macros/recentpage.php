@@ -117,7 +117,6 @@ class RecentPageMacro extends WikiMacro
 				}
 				$html .= '</p>' . "\n";
 				$html .= '<p>' . \Hubzero\Utility\Str::truncate($txt, 300) . '</p>' . "\n";
-				$html .= "\t" . '<p><a href="' . Route::url($row->link()) . '">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE') . '</a></p>' . "\n";
 				$html .= '</div>' . "\n";
 			}
 
