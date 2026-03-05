@@ -125,12 +125,14 @@ if (!$no_html)
 						<a class="<?php echo $key; ?>" data-icon="<?php echo '&#x' . $c['icon']; ?>;" title="<?php echo $prefix . ' ' . $name; ?>" href="<?php echo $url; ?>">
 							<?php echo $name; ?>
 						</a>
+						<?php if ($meta_count || $meta_alert) : ?>
 						<span class="meta">
 							<?php if ($meta_count) : ?>
 								<span class="count"><?php echo $meta_count; ?></span>
 							<?php endif; ?>
 							<?php echo $meta_alert; ?>
 						</span>
+						<?php endif; ?>
 						<?php if (isset($metadata['options']) && is_array($metadata['options'])) : ?>
 							<ul class="tab-options">
 								<?php
@@ -240,14 +242,15 @@ if (!$no_html)
 						<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 					</a>
 				</h2>
-				<span>►</span>
+				<span aria-hidden="true">►</span>
 				<h3><?php echo $tab_name; ?></h3>
 			</div>
-			<div id="page_notifications">
-				<?php
+			<?php
+				$notificationHtml = '';
+
 				if ($this->getError())
 				{
-					echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
+					$notificationHtml .= '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 				}
 
 				$results = array();
@@ -260,10 +263,15 @@ if (!$no_html)
 
 				if ($results)
 				{
-					echo '<p class="info">' . $results . '</p>';
+					$notificationHtml .= '<p class="info">' . $results . '</p>';
 				}
-				?>
+
+				if ($notificationHtml):
+			?>
+			<div id="page_notifications" role="status">
+				<?php echo $notificationHtml; ?>
 			</div>
+			<?php endif; ?>
 			<div id="page_content" class="member_<?php echo $this->active; ?>">
 				<?php
 }
