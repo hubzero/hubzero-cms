@@ -411,15 +411,23 @@ class Citations extends SiteController
 	 *
 	 * @return  string
 	 */
+	/**
+	 * Get Open URL
+	 *
+	 * OCLC discontinued the worldcatlibraries.org registry lookup API
+	 * (deadline: November 2025). Commented out until a replacement is found.
+	 *
+	 * @return  array
+	 */
 	private function openUrl()
 	{
-		// var to store open url stuff
-		$openUrl = array(
+		return array(
 			'link' => '',
 			'text' => '',
 			'icon' => ''
 		);
 
+		/*
 		// get the users id to make lookup
 		$userIp = Request::ip();
 
@@ -474,6 +482,7 @@ class Citations extends SiteController
 		}
 
 		return $openUrl;
+		*/
 	}
 
 	/**

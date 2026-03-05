@@ -1443,8 +1443,23 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array  $openURL
 	 */
+	/**
+	 * Uses URL to determine OpenURL server
+	 *
+	 * OCLC discontinued the worldcatlibraries.org registry lookup API
+	 * (deadline: November 2025). Commented out until a replacement is found.
+	 *
+	 * @return  array  $openURL
+	 */
 	private function _handleOpenURL()
 	{
+		return array(
+			'link' => '',
+			'text' => '',
+			'icon' => ''
+		);
+
+		/*
 		// get the users id to make lookup
 		$users_ip = Request::ip();
 
@@ -1507,6 +1522,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		return $openURL;
+		*/
 	}
 
 	/**

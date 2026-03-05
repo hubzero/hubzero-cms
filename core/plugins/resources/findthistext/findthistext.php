@@ -87,8 +87,19 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  string
 	 */
+	/**
+	 * Get OpenURL resolver for user's institution.
+	 *
+	 * OCLC discontinued the worldcatlibraries.org registry lookup API
+	 * (deadline: November 2025). Commented out until a replacement is found.
+	 *
+	 * @return  null
+	 */
 	private function getOpenUrl()
 	{
+		return null;
+
+		/*
 		// Var to store open url stuff
 		$openUrl = null;
 
@@ -149,5 +160,6 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 
 		// Return open URL
 		return $openUrl;
+		*/
 	}
 }

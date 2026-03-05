@@ -85,11 +85,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		$this->database = App::get('db');
 
-		$filters = array(
-			'scope' => 'member',
-			'scope_id' => $member->get('id')
-		);
-		$this->grand_total = Citation::getFilteredRecords($filters)->count();
+		$this->grand_total = Citation::all()
+			->where('scope', '=', 'member')
+			->where('scope_id', '=', $member->get('id'))
+			->where('published', '!=', Citation::STATE_DELETED)
+			->total();
 
 		$arr['metadata']['count'] = $this->grand_total;
 
@@ -183,15 +183,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$obj = $this->_filterHandler(Request::getArray('filters', array()), $this->member->get('id'));
 
 		$count = clone $obj['citations'];
-		$count = $count->count();
+		$count = $count->total();
 		$isAdmin = $this->member->get('id') == User::get('id');
 		$config =  $this->member->params;
 
-		$total = \Components\Citations\Models\Citation::all()
-			->where('scope', '=', 'member')
-			->where('scope_id', '=', $this->member->get('id'))
-			->where('published', '!=', \Components\Citations\Models\Citation::STATE_DELETED)
-			->count();
+		// Reuse the count already computed in onMembers()
+		$total = $this->grand_total;
 
 		if ($total == 0 && $isAdmin)
 		{
@@ -1524,69 +1521,22 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array<string,string>
 	 */
+	/**
+	 * Returns OpenURL resolver info.
+	 *
+	 * Previously looked up the user's institutional OpenURL resolver via
+	 * worldcatlibraries.org/registry/lookup, but OCLC discontinued that
+	 * API (deadline: November 2025). Returns empty values until a
+	 * replacement is configured.
+	 *
+	 * @return  array<string,string>
+	 */
 	private function _handleOpenURL()
 	{
-		// get the users id to make lookup
-		$users_ip = Request::ip();
-
-		// get the param for ip regex to use machine ip
-		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
-
-		$use_machine_ip = false;
-		foreach ($ip_regex as $ipr)
-		{
-			$match = preg_match('/' . $ipr . '/i', $users_ip);
-			if ($match)
-			{
-				$use_machine_ip = true;
-			}
-		}
-
-		// make url based on if were using machine ip or users
-		if ($use_machine_ip)
-		{
-			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
-		}
-		else
-		{
-			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
-		}
-
-		// get the resolver
-		$r = null;
-		if (function_exists('curl_init'))
-		{
-			$cURL = curl_init();
-			curl_setopt($cURL, CURLOPT_URL, $url );
-			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
-			$r = curl_exec($cURL);
-			curl_close($cURL);
-		}
-
-		// parse the returned xml
-		$openurl = array(
+		return array(
 			'link' => '',
 			'text' => '',
 			'icon' => ''
 		);
-
-		// parse the return from resolver lookup
-		$resolver = null;
-		$xml = simplexml_load_string($r);
-		if (isset($xml->resolverRegistryEntry))
-		{
-			$resolver = $xml->resolverRegistryEntry->resolver;
-		}
-
-		// if we have resolver set vars for creating open urls
-		if ($resolver != null)
-		{
-			$openurl['link'] = $resolver->baseURL;
-			$openurl['text'] = $resolver->linkText;
-			$openurl['icon'] = $resolver->linkIcon;
-		}
-
-		return $openurl;
 	}
 }
