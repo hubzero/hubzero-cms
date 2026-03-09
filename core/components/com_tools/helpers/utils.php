@@ -10,6 +10,8 @@ namespace Components\Tools\Helpers;
 use Exception;
 use Component;
 use Request;
+use Hubzero\Utility\Validate;
+use Config;
 use User;
 use Lang;
 use App;
@@ -649,12 +651,10 @@ class Utils
 
 		exec($cmd, $results, $status);
 
-		// Check exec status
-		if ($status != 0)
+		$execFailed = ($status != 0);
+		if ($execFailed)
 		{
-			// Uh-oh. Something went wrong...
 			$retval = false;
-			//throw new \Exception($results[0]);
 		}
 
 		if (is_array($results))
@@ -663,58 +663,58 @@ class Utils
 		}
 		$results = trim($results);
 
-		try
-		{
-			$output = @json_decode($results);
+		$output = json_decode($results);
 
-			if ($output === null && json_last_error() !== JSON_ERROR_NONE)
-			{
-				throw new \Exception(Lang::txt('COM_TOOLS_ERROR_BAD_DATA'));
-			}
-		}
-		catch (\Exception $e)
+		if ($execFailed)
 		{
-			$output = new stdClass();
+			$defs = array_filter(array_map('trim', explode(',', Component::params('com_support')->get('emails', '{config.mailfrom}'))));
+			if ($defs)
+			{
+				$sitename = Config::get('sitename');
+				$mailfrom = Config::get('mailfrom');
 
-			// If it's a new session, catch the session number...
-			if ($retval && preg_match("/^Session is ([0-9]+)/", $results, $sess))
-			{
-				$retval = $sess[1];
-				$output->session = $sess[1];
-			}
-			else
-			{
-				$patterns = array(
-					'id' => 'applet id=(["\'])(?:(?=(\\?))\2.)*?\1',
-					'code' => 'code=(["\'])(?:(?=(\\?))\2.)*?\1',
-					'archive' => 'archive=(["\'])(?:(?=(\\?))\2.)*?\1',
-					'class' => 'class=(["\'])(?:(?=(\\?))\2.)*?\1',
-					'height' => 'height=\"(\d+)\"',
-					'width' => 'width=\"(\d+)\"',
-					'height' => 'height=\"(\d+)\"',
-					'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
-					'host' => '<param name=\"HOST\" value=\"?([^>]+)\"?>',
-					'encpassword' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',
-					'name' => '<param name=\"name\" value=\"?([^>]+)\"?>',
-					'connect' => '<param name=\"CONNECT\" value=\"?([^>]+)\"?>',
-					'encoding' => '<param name=\"ENCODING\" value=\"?([^>]+)\"?>',
-					'show_local_cursor' => '<param name=\"ShowLocalCursor\" value=\"?([^>]+)\"?>',
-					'trust_all_vnc_certs' => '<param name=\"trustAllVncCerts\" value=\"?([^>]+)\"?>',
-					'offer_relogin' => '<param name=\"Offer relogin\" value=\"?([^>]+)\"?>',
-					'disable_ssl' => '<param name=\"DisableSSL\" value=\"?([^>]+)\"?>',
-					'permissions' => '<param name=\"permissions\" value=\"?([^>]+)\"?>',
-					'view_only' => '<param name=\"View Only\" value=\"?([^>]+)\"?>',
-					'show_controls' => '<param name=\"Show Controls\" value=\"?([^>]+)\"?>',
-					'debug' => '<param name=\"Debug\" value=\"?([^>]+)\"?>'
-				);
-				foreach ($patterns as $key => $pattern)
+				$fields = [
+					'Command'           => $comm,
+					'User message'      => $output->user_message      ?? null,
+					'Technical message' => $output->technical_message ?? null,
+					'Hostname'          => $output->hostname           ?? null,
+					'Session'           => $output->session            ?? null,
+					'Username'          => $output->username           ?? null,
+					'Stack dump'        => $output->stack_dump         ?? null,
+				];
+
+				$body = 'An error occurred invoking maxwell.' . "\r\n\r\n";
+				foreach ($fields as $label => $value)
 				{
-					if (preg_match("/$pattern/i", $results, $param))
+					if ($value !== null)
 					{
-						$output->$key = trim($param[1], '"');
+						$body .= $label . ': ' . $value . "\r\n";
+					}
+				}
+
+				$message = new \Hubzero\Mail\Message();
+				$message->setSubject($sitename . ': maxwell error');
+				$message->addFrom($mailfrom, $sitename);
+				$message->addPart($body, 'text/plain');
+
+				foreach ($defs as $def)
+				{
+					if ($def === '{config.mailfrom}')
+					{
+						$def = $mailfrom;
+					}
+					if (Validate::email($def))
+					{
+						$message->setTo([$def]);
+						$message->send();
 					}
 				}
 			}
+		}
+
+		if ($retval && isset($output->session))
+		{
+			$retval = $output->session;
 		}
 
 		if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0))
