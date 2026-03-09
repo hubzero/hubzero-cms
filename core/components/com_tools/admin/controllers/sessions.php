@@ -159,7 +159,7 @@ class Sessions extends AdminController
 				Event::trigger('mw.onBeforeSessionStop', array($row->appname));
 
 				// Stop the session
-				$status = $this->middleware("stop $id", $output);
+				$status = Utils::middleware("stop $id", $output);
 
 				if ($status)
 				{
@@ -185,87 +185,6 @@ class Sessions extends AdminController
 		}
 
 		$this->cancelTask();
-	}
-
-	/**
-	 * Invoke the Python script to do work elsewhere.
-	 *
-	 * @param   string   $comm
-	 * @param   array    &$output
-	 * @return  integer  Session ID
-	 */
-	public function middleware($comm, &$output)
-	{
-		$retval = true; // Assume success.
-		$output = new \stdClass();
-		$hubname = \App::get('config')->get('database.db');
-		//$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm dbname=$hubname 2>&1 </dev/null";
-		$cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw $comm 2>&1 </dev/null";
-
-		exec($cmd, $results, $status);
-
-		// Check exec status
-		if ($status != 0)
-		{
-			// Uh-oh. Something went wrong...
-			$retval = false;
-			$this->setError($results[0]);
-		}
-
-		if (is_array($results))
-		{
-			// HTML
-			// Print out the viewer tags or the error message, as the case may be.
-			foreach ($results as $line)
-			{
-				$line = trim($line);
-
-				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess))
-				{
-					$retval = $sess[1];
-					$output->session = $sess[1];
-				}
-				else
-				{
-					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
-					{
-						$output->width = trim($param[1], '"');
-					}
-					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
-					{
-						$output->height = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
-					{
-						$output->port = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->password = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->connect = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->encoding = trim($param[1], '"');
-					}
-				}
-			}
-		}
-		else
-		{
-			// JSON
-			$output = json_decode($results);
-			if ($output == null)
-			{
-				$retval = false;
-			}
-		}
-
-		return $retval;
 	}
 
 	/**

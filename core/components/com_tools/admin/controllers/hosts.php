@@ -125,7 +125,7 @@ class Hosts extends AdminController
 		// clean at least some of it. See RFC 1034 for valid character set info
 		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-		$status = $this->_middleware("check " . $hostname . " yes", $output);
+		$status = Utils::middleware("check " . $hostname . " yes", $output);
 
 		// Display results
 		$this->view
@@ -133,54 +133,6 @@ class Hosts extends AdminController
 			->set('output', $output)
 			->set('status', $status)
 			->display();
-	}
-
-	/**
-	 * Execute a middleware command
-	 *
-	 * @param   string   $comm       Command to execute
-	 * @param   array    &$fnoutput  Command output
-	 * @return  integer  1 = success, 0 = failure
-	 */
-	protected function _middleware($comm, &$fnoutput)
-	{
-		$retval = 1; // Assume success.
-		$fnoutput = array();
-
-		$dbname = \App::get('config')->get('database.db');
-		//$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
-		$cmd = "/bin/sh " . dirname(__DIR__) . "/../scripts/mw $comm 2>&1 </dev/null";
-		exec($cmd, $output, $status);
-
-		$outln = 0;
-		if ($status != 0)
-		{
-			$retval = 0;
-		}
-
-		// Print out the viewer  tags or the error message, as the case may be.
-		foreach ($output as $line)
-		{
-			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/", $line, $sess))
-			{
-				$retval = $sess[1];
-			}
-			else
-			{
-				if ($status != 0)
-				{
-					$fnoutput[$outln] = $line;
-				}
-				else
-				{
-					$fnoutput[$outln] = $line;
-				}
-				$outln++;
-			}
-		}
-
-		return $retval;
 	}
 
 	/**
