@@ -48,6 +48,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 		</h3>
 	</div>
 	<fieldset>
+		<legend class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY'); ?></legend>
 		<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
 		<input type="hidden" name="sortby" id="sortby" value="<?php echo $this->params['sortby']; ?>" />
 		<input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->params['sortdir']; ?>" />
@@ -123,25 +124,25 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 		<thead>
 			<tr>
 				<?php if ($this->model->access('content')) { ?>
-				<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
+				<th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
 				<?php } ?>
-				<th class="asset_doc <?php if ($this->params['sortby'] == 'name') { echo ' activesort'; } ?>">
+				<th scope="col" class="asset_doc <?php if ($this->params['sortby'] == 'name') { echo ' activesort'; } ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=name&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 					<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?></a>
 				</th>
-				<th class="centeralign" aria-label="<?php echo Lang::txt('Type'); ?>"><span class="sr-only">Type</span></th>
-				<th <?php if ($this->params['sortby'] == 'size') { echo 'class="activesort"'; } ?>>
+				<th scope="col" class="centeralign" aria-label="<?php echo Lang::txt('Type'); ?>"><span class="sr-only">Type</span></th>
+				<th scope="col" <?php if ($this->params['sortby'] == 'size') { echo 'class="activesort"'; } ?>>
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?></a>
 				</th>
-				<th <?php if ($this->params['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
+				<th scope="col" <?php if ($this->params['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=modified&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?></a>
 				</th>
 				<?php if ($this->repo->getAdapterName() == 'git'){ ?>
-				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
+				<th scope="col"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
 				<?php }; ?>
-				<th class="centeralign nojs" aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
+				<th scope="col" class="centeralign nojs" aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
 				<?php if ($this->publishing) { ?>
-				<th><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
 				<?php } ?>
 			</tr>
 		</thead>

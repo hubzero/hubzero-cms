@@ -44,7 +44,7 @@ $this->view('_title')
 	     ->set('step', $this->step)
 	     ->display();
 	?>
-	<div class="clear"></div>
+	<div class="clear" aria-hidden="true"></div>
 	<div class="setup-wrap">
 		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<div class="explaination">
@@ -86,7 +86,7 @@ $this->view('_title')
 					<?php echo $this->content; ?>
 				</div>
 			</fieldset>
-			<div class="clear"></div>
+			<div class="clear" aria-hidden="true"></div>
 			<div class="submitarea">
 				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
 			</div>

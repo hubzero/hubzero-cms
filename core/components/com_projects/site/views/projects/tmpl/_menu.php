@@ -23,6 +23,7 @@ $a = 0;
 $counts = $this->model->get('counts');
 
 ?>
+<nav aria-label="Project tools">
 <ul class="projecttools">
 	<?php
 	foreach ($this->tabs as $tab)
@@ -106,3 +107,4 @@ $counts = $this->model->get('counts');
 		<li><?php echo $integration; ?></li>
 	<?php endforeach; ?>
 </ul>
+</nav>

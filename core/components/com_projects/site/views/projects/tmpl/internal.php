@@ -140,7 +140,7 @@ $sideContent 	= $sideContent && !empty($sideContent)
 				</div>
 			</div> <!-- / .grid -->
 			<?php } ?>
-				<div class="clear"></div>
+				<div class="clear" aria-hidden="true"></div>
 			</div><!-- / plg-content -->
 		<?php if ($layout != 'extended') { ?>
 		</div><!-- / .main-content -->

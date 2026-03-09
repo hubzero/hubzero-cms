@@ -43,7 +43,7 @@ $this->view('_title')
 	     ->set('step', $this->step)
 	     ->display();
 	?>
-	<div class="clear"></div>
+	<div class="clear" aria-hidden="true"></div>
 	<div class="setup-wrap">
 		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
 			<div class="explaination">
@@ -98,7 +98,7 @@ $this->view('_title')
 					</p>
 				</div>
 			</fieldset>
-			<div class="clear"></div>
+			<div class="clear" aria-hidden="true"></div>
 
 			<div id="describearea">
 				<div class="explaination">
@@ -134,7 +134,7 @@ $this->view('_title')
 
 				<?php if ($this->model->get('id')): ?>
 					<div class="js">
-						<div class="clear"></div>
+						<div class="clear" aria-hidden="true"></div>
 						<div class="explaination">
 							<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_THUMB'); ?></h4>
 							<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_THUMB'); ?></p>

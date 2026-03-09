@@ -97,9 +97,9 @@ $this->css()
 						</form>
 					</div>
 				</div>
-				<div class="clear"></div>
+				<div class="clear" aria-hidden="true"></div>
 			</div>
 		</div><!-- / #introduction.section -->
-		<div class="clear"></div>
+		<div class="clear" aria-hidden="true"></div>
 	</section><!-- / .main section -->
 </div>

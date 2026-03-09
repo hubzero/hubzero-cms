@@ -31,10 +31,10 @@ defined('_HZEXEC_') or die();
 				<span class="block"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $owner->userid); ?>"><?php echo $this->escape($owner->fullname); ?></a></span>
 			</li>
 			<?php } ?>
-			<li class="clear">&nbsp;</li>
+			<li class="clear" aria-hidden="true">&nbsp;</li>
 		</ul>
 	<?php } else { ?>
 		<div class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EXTERNAL_NO_TEAM'); ?></div>
 	<?php } ?>
-	<div class="clear"></div>
+	<div class="clear" aria-hidden="true"></div>
 </div>

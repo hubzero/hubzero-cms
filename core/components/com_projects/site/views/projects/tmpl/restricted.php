@@ -39,7 +39,7 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
 			?>
 		</div>
 
-		<div class="clear"></div>
+		<div class="clear" aria-hidden="true"></div>
 
 		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<div class="explaination">

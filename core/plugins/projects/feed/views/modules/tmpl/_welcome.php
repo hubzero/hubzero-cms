@@ -39,7 +39,7 @@ $i = 0;
 				</div>
 			<?php }
 			} ?>
-			<div class="clear"></div>
+			<div class="clear" aria-hidden="true"></div>
 		</div>
 	</div>
 <?php }

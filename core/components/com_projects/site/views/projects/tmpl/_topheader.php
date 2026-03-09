@@ -75,6 +75,6 @@ defined('_HZEXEC_') or die();
 			}
 			?>
 		</div>
-		<div class="clear"></div>
+		<div class="clear" aria-hidden="true"></div>
 	</div>
 </div>

@@ -48,7 +48,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 	     ->set('step', $this->step)
 	     ->display();
 	?>
-	<div class="clear"></div>
+	<div class="clear" aria-hidden="true"></div>
 	<div class="setup-wrap">
 		<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 			<?php 
@@ -158,7 +158,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 					</div>
 				<?php endif ?>
 			</fieldset>
-			<div class="clear"></div>
+			<div class="clear" aria-hidden="true"></div>
 
 			<?php if ($this->config->get('grantinfo', 0)): ?>
 				<div class="explaination">
@@ -216,7 +216,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 						</div>
 					</div>
 				</fieldset>
-				<div class="clear"></div>
+				<div class="clear" aria-hidden="true"></div>
 			<?php endif; ?>
 
 			<fieldset>
@@ -230,7 +230,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 					</label>
 				</div>
 			</fieldset>
-			<div class="clear"></div>
+			<div class="clear" aria-hidden="true"></div>
 
 			<div class="submitarea">
 				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="btn-finalize" />

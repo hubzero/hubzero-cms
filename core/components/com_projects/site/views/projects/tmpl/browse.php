@@ -109,7 +109,7 @@ $total = $this->model->entries('count', $this->filters);
 				<?php if (!empty($this->filters['reviewer'])): ?>
 					<input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer'];?>" />
 				<?php endif; ?>
-				<div class="clear"></div>
+				<div class="clear" aria-hidden="true"></div>
 				<?php
 			}
 			else
