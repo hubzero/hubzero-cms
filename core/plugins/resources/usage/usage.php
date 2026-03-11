@@ -401,6 +401,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		ob_clean();
 
+		header('Content-Type: application/json');
 		echo json_encode($data);
 		die();
 	}
@@ -562,6 +563,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		ob_clean();
 
+		header('Content-Type: application/json');
 		echo json_encode($json);
 		die();
 	}

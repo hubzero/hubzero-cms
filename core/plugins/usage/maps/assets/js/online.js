@@ -91,6 +91,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	map = new google.maps.Map(div, myOptions);
 
+	// Add title to Google Maps iframe for accessibility
+	var iframe = div.querySelector('iframe');
+	if (iframe) {
+		iframe.setAttribute('title', 'Online users map');
+	}
+	google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+		var iframes = div.querySelectorAll('iframe');
+		for (var i = 0; i < iframes.length; i++) {
+			if (!iframes[i].getAttribute('title')) {
+				iframes[i].setAttribute('title', 'Online users map');
+			}
+		}
+	});
+
 	var urlstr= div.getAttribute('data-url');
 
 	downloadUrl(urlstr, function(data) {

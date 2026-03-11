@@ -327,7 +327,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$cur_month = floor(date("n"));
 		$year_data_start = 2000;
 
-		$html = '<select name="dthis">' . "\n";
+		$html = '<label class="sr-only" for="usage-dthis">' . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . '</label>' . "\n";
+		$html .= '<select name="dthis" id="usage-dthis">' . "\n";
 		$html .= "<option selected disabled hidden>" . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . "</option>\n";
 		switch ($period)
 		{
@@ -738,9 +739,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		}
 		$html  = '<form method="post" action="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
-		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
-		$html .= "\t\t\t" . '<select name="top">' . "\n";
+		$html .= "\t\t" . '<legend class="sr-only">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . '</legend>' . "\n";
+		$html .= "\t\t" . '<label for="usage-top">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': </label>' . "\n";
+		$html .= "\t\t\t" . '<select name="top" id="usage-top">' . "\n";
 
 		$sql = "SELECT * FROM `#__stats_tops` ORDER BY id";
 		$database->setQuery($sql);
@@ -768,7 +769,6 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		}
 
 		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> ' . "\n";
 		if ($s_top < 9)
 		{
 			$html .= $this->drop_down_dates($database, $period, $s_top, $dthis) . ' ';
@@ -781,7 +781,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		if ($s_top)
 		{
 			$s_top_name = $data[$s_top]['name'];
-			$html .= '<table summary="' . $s_top_name . '">' . "\n";
+			$html .= '<table>' . "\n";
 			$html .= "\t" . '<caption>' . $s_top_name . '</caption>' . "\n";
 			if (!empty($description))
 			{
