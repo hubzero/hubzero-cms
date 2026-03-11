@@ -636,15 +636,22 @@ class Sessions extends SiteController
 			{
 				if ($zone->exists())
 				{
-					$toolparams .= ' zone=' . $zone->get('zone');
+					$toolparams .= ' zone=' . escapeshellarg($zone->get('zone'));
 					$app->zone_id = $zone->get('id');
 				}
 			}
 		}
 
 		// We've passed all checks so let's actually start the session
-		$status = Utils::middleware("start user=" . User::get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version . $toolparams, $output);
-		if ($status === false)
+		$status = Utils::middleware(
+			"start user=" . escapeshellarg(User::get('username')) .
+			" ip=" . escapeshellarg($app->ip) .
+			" app=" . escapeshellarg($app->name) .
+			" version=" . escapeshellarg($app->version) .
+			$toolparams,
+			$output
+		);
+		if (!$status)
 		{
 			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
@@ -733,19 +740,6 @@ class Sessions extends SiteController
 
 		// Stop the old session
 		$status = Utils::middleware("stop $id", $output);
-		if ($status == 0)
-		{
-			$msg = '<p>Stopping ' . $id;
-			if (is_array($output))
-			{
-				$msg .= '<br />';
-				foreach ($output as $line)
-				{
-					$msg .= $line . "\n";
-				}
-			}
-			$msg .= '</p>'."\n";
-		}
 
 		// Get tool params
 		$toolparams = '';
@@ -760,13 +754,20 @@ class Sessions extends SiteController
 			$mwz = $middleware->zone($zone);
 			if ($mwz->exists())
 			{
-				$toolparams .= ' zone=' . $mwz->get('zone');
+				$toolparams .= ' zone=' . escapeshellarg($mwz->get('zone'));
 			}
 		}
 
 		// We've passed all checks so let's actually start the new session
-		$status = Utils::middleware("start user=" . User::get('username') . " ip=" . Request::ip() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
-		if ($status === false)
+		$status = Utils::middleware(
+			"start user=" . escapeshellarg(User::get('username')) .
+			" ip=" . escapeshellarg(Request::ip()) .
+			" app=" . escapeshellarg($session->app()) .
+			" version=" . escapeshellarg($session->app('version')) .
+			$toolparams,
+			$output
+		);
+		if (!$status)
 		{
 			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
@@ -1152,11 +1153,11 @@ class Sessions extends SiteController
 		// Build the view command
 		if ($this->config->get('access-manage-session'))
 		{
-			$command = "view user=" . $row->username . " ip=" . $app->ip . " sess=" . $app->sess;
+			$command = "view user=" . escapeshellarg($row->username) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
 		}
 		else
 		{
-			$command = "view user=" . User::get('username') . " ip=" . $app->ip . " sess=" . $app->sess;
+			$command = "view user=" . escapeshellarg(User::get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
 		}
 
 		// Check if we have access to run this tool.
@@ -1185,6 +1186,16 @@ class Sessions extends SiteController
 
 		// Call the view command
 		$status = Utils::middleware($command, $output);
+
+		if (!$status)
+		{
+			App::redirect(
+				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
+				isset($output->user_message) ? $output->user_message : 'no reason given',
+				'error'
+			);
+			return;
+		}
 
 		// If weber_auth is defined, set a cookie for it.
 		if (isset($output->weber_auth))
@@ -1455,7 +1466,7 @@ class Sessions extends SiteController
 		}
 
 		// Incoming
-		$sess = Request::getString('sess', '');
+		$sess = Request::getInt('sess', 0);
 		$rtrn = base64_decode(Request::getString('return', '', 'method', 'base64'));
 
 		$rediect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
@@ -1499,21 +1510,14 @@ class Sessions extends SiteController
 
 		// Stop the session
 		$status = Utils::middleware("stop $sess", $output);
-		if ($status == 0)
+		if ($status)
 		{
-			echo '<p>Stopping ' . $sess . '<br />';
-			if (is_array($output))
+			echo '<p>Stopping ' . $sess;
+			if (isset($output->user_message))
 			{
-				foreach ($output as $line)
-				{
-					echo $line . "\n";
-				}
+				echo ': ' . htmlspecialchars($output->user_message);
 			}
-			else if (is_string($output))
-			{
-				echo $output . "\n";
-			}
-			echo '</p>'."\n";
+			echo '</p>' . "\n";
 		}
 
 		// Trigger any events that need to be called after session stop
