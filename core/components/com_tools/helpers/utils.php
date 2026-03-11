@@ -126,7 +126,7 @@ class Utils
 	public static function createHomeDirectory($username)
 	{
 		$dbname = \App::get('config')->get('database.db');
-		$command = "create_userhome '{$username}'";
+		$command = "create_userhome " . escapeshellarg($username);
 		//$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} dbname={$dbname} 2>&1 </dev/null";
 		$cmd = "/bin/sh " . dirname(__DIR__) . "/scripts/mw {$command} 2>&1 </dev/null";
 
@@ -643,7 +643,9 @@ class Utils
 	{
 		$retval = true; // Assume success.
 
-		$comm = escapeshellcmd($comm);
+		// Note: callers are responsible for escaping individual argument values
+		// with escapeshellarg() before building $comm. Do not apply escapeshellcmd()
+		// here — it would corrupt the quoting produced by escapeshellarg().
 		$dbname = \App::get('config')->get('database.db');
 
 		//$cmd = "/bin/sh ". dirname(__DIR__) . "/scripts/mw $comm dbname=$dbname 2>&1 </dev/null";
@@ -659,11 +661,30 @@ class Utils
 
 		if (is_array($results))
 		{
-			$results = implode('', $results);
+			// Maxwell may emit non-JSON lines before the JSON payload.
+			// Find the first line that decodes successfully instead of
+			// concatenating everything (which would produce invalid JSON).
+			$output = null;
+			foreach ($results as $line)
+			{
+				$decoded = json_decode(trim($line));
+				if ($decoded !== null)
+				{
+					$output = $decoded;
+					break;
+				}
+			}
+			if ($output === null)
+			{
+				// Fall back to concatenated output in case the JSON spans lines.
+				$results = trim(implode('', $results));
+				$output = json_decode($results);
+			}
 		}
-		$results = trim($results);
-
-		$output = json_decode($results);
+		else
+		{
+			$output = json_decode(trim($results));
+		}
 
 		if ($execFailed)
 		{
@@ -712,9 +733,18 @@ class Utils
 			}
 		}
 
-		if ($retval && isset($output->session))
+		if (isset($output->exit_code) && (bool)$output->exit_code !== $execFailed)
 		{
-			$retval = $output->session;
+			\Log::warning('maxwell shell exit code and JSON exit_code disagree.'
+				. ' shell_exit_code=' . $status
+				. ' json_exit_code=' . $output->exit_code
+				. ' command=' . $comm
+				. (isset($output->user_message)      ? ' user_message='      . $output->user_message      : '')
+				. (isset($output->technical_message) ? ' technical_message=' . $output->technical_message : '')
+				. (isset($output->username)          ? ' username='          . $output->username          : '')
+				. (isset($output->session)           ? ' session='           . $output->session           : '')
+				. (isset($output->stack_dump)        ? ' stack_dump='        . $output->stack_dump        : '')
+			);
 		}
 
 		if ($output == null || (is_object($output) && count(get_object_vars($output)) <= 0))
@@ -722,6 +752,6 @@ class Utils
 			$retval = false;
 		}
 
-		return $retval;
+		return (bool)$retval;
 	}
 }
