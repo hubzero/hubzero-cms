@@ -163,10 +163,10 @@ class Sessions extends AdminController
 
 				if ($status)
 				{
-					$msg = 'Stopping ' . $id . '<br />';
-					foreach ($output as $line)
+					$msg = 'Stopping ' . $id;
+					if (isset($output->user_message))
 					{
-						$msg .= $line . "\n";
+						$msg .= ': ' . $output->user_message;
 					}
 					Notify::error($msg);
 					continue;
