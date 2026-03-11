@@ -208,7 +208,7 @@ if ($mode != 'preview')
 			->display();
 		?>
 		</div><!-- / .subject -->
-		<aside class="aside rankarea">
+		<aside class="aside rankarea" aria-label="<?php echo Lang::txt('Resource metadata'); ?>">
 			<?php
 			// Show metadata
 			if ($this->model->params->get('show_metadata', 1))
@@ -244,7 +244,7 @@ if ($mode != 'preview')
 					->display();
 				?>
 			</div><!-- / .subject -->
-			<aside class="aside extracontent">
+			<aside class="aside extracontent" aria-label="<?php echo Lang::txt('Related content'); ?>">
 			<?php
 			// Show related content
 			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));

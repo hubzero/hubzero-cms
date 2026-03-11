@@ -1166,8 +1166,8 @@ class Html
 		}
 		else if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
 		{
-			$type = 'HTM';
-			$fs = '';
+			// No caption needed for web URLs
+			return '';
 		}
 		// Check if the path has the extension (e.g. Databases don't)
 		elseif (strrpos($path, '.') === false)

@@ -170,7 +170,7 @@ if ($mode != 'preview')
 				->display();
 			?>
 		</div><!-- / .subject -->
-		<aside class="aside rankarea">
+		<aside class="aside rankarea" aria-label="<?php echo Lang::txt('Resource metadata'); ?>">
 		<?php
 		// Show metadata
 		if ($this->model->params->get('show_metadata', 1))

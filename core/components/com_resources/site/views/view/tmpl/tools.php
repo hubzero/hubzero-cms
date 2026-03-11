@@ -223,7 +223,7 @@ $revision = $this->revision;
 				->display();
 			?>
 		</div><!-- / .subject -->
-		<aside class="aside rankarea">
+		<aside class="aside rankarea" aria-label="<?php echo Lang::txt('Resource metadata'); ?>">
 		<?php
 		// Show resource ratings
 		if (!$thistool)
@@ -280,7 +280,7 @@ $revision = $this->revision;
 					->display();
 				?>
 			</div><!-- / .subject -->
-			<aside class="aside extracontent">
+			<aside class="aside extracontent" aria-label="<?php echo Lang::txt('Related content'); ?>">
 			<?php
 			// Show related content
 			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
