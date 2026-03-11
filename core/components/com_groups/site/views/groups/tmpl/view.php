@@ -98,7 +98,7 @@ $no_html = Request::getInt( 'no_html', 0 );
 	<div id="page_main">
 	<div id="page_header">
 		<h2><a href="<?php echo $link; ?>"><?php echo $this->group->get('description'); ?></a></h2>
-		<span class="divider">&#9658;</span>
+		<span class="divider" aria-hidden="true">&#9658;</span>
 		<h3>
 			<?php echo \Components\Groups\Helpers\View::displayTab( $this->group ); ?>
 		</h3>

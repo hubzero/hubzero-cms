@@ -180,7 +180,7 @@ $this->css('browse.css');
 									</a>
 								</h4>
 								<p class="course-identity">
-									<a href="<?php echo Route::url($course->link()); ?>">
+									<a href="<?php echo Route::url($course->link()); ?>" aria-label="<?php echo $this->escape($course->get('title')); ?>">
 										<?php if ($logo = $course->logo('url')) { ?>
 											<img src="<?php echo Route::url($logo); ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
 										<?php } else { ?>

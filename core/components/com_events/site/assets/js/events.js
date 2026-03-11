@@ -482,8 +482,10 @@ HUB.Events = {
 jQuery(document).ready(function($){
 	HUB.Events.initialize();
 	HUB.Events.preventDelete();
-	if ($('.prior').length != 0) {
-		$('#toggle-prior-anchor').click(function() { 
+	var priorItems = $('.events > .prior');
+	var allItems = $('.events > li');
+	if (priorItems.length != 0 && priorItems.length < allItems.length) {
+		$('#toggle-prior-anchor').click(function() {
 			if ($('#toggle-prior-anchor').text() == 'Show Past Events') {
 				$('#toggle-prior-anchor').text('Hide Past Events');
 			} else {

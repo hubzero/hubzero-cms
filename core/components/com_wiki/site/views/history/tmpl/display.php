@@ -87,6 +87,8 @@ $revisions = $this->page->versions()
 			</p>
 
 			<div class="container">
+				<fieldset style="border:0;margin:0;padding:0;">
+				<legend class="sr-only"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?></legend>
 				<p><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 
 				<table class="entries" id="revisionhistory">
@@ -219,6 +221,7 @@ $revisions = $this->page->versions()
 					</tbody>
 				</table>
 				<p><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="clear"></div>

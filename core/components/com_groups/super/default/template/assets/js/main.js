@@ -25,7 +25,7 @@ jQuery(document).ready(function(jq) {
 	if (el.length) {
 		el.addClass('js');
 
-		var select = $("<select />").on('change', function() {
+		var select = $("<select />", {"aria-label": "Group navigation"}).on('change', function() {
 			window.location = $(this).find("option:selected").val();
 		});
 

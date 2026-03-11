@@ -65,7 +65,14 @@ $rows = Components\Wiki\Models\Page::all()
 	->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
-	<p><?php echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a>'); ?></p>
+	<p><?php
+		$pageTitle = $page->get('title', $page->get('pagename', ''));
+		if ($pageTitle):
+			echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $this->escape($pageTitle) . '</a>');
+		else:
+			echo Lang::txt('The following pages link to this page');
+		endif;
+	?></p>
 	<div class="container">
 		<table class="file entries">
 			<thead>

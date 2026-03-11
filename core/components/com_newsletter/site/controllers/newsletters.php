@@ -125,7 +125,9 @@ class Newsletters extends SiteController
 		//are we trying to output the newsletter by itself?
 		if (Request::getInt('no_html', 0))
 		{
-			echo $newsletter;
+			$lang = Lang::getTag();
+			$title = is_object($current) ? htmlspecialchars($current->get('name', 'Newsletter')) : 'Newsletter';
+			echo '<!DOCTYPE html><html lang="' . htmlspecialchars($lang) . '"><head><meta charset="utf-8"><title>' . $title . '</title></head><body><main><h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">' . $title . '</h1>' . $newsletter . '</main></body></html>';
 			return;
 		}
 

@@ -300,7 +300,7 @@ class View
 				else
 				{
 					$out .= '<li class="' . $cls . '">';
-					$out .= '<a class="page" title="' . $page->get('title') . '" href="' . $page->url() . '">' . $page->get('title') . '</a>';
+					$out .= '<a class="page" href="' . $page->url() . '">' . $page->get('title') . '</a>';
 				}
 
 				// do we have child menu items

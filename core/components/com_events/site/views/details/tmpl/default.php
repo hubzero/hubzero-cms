@@ -64,14 +64,12 @@ $this->css()
 					$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id.'&page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'."\n";
 				}
 			}
-			$html .= "\t".'<li';
-
 			if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00' && strtotime($this->row->registerby) >= time()) {
+				$html .= "\t".'<li';
 				if ($this->page->alias == 'register') {
 					$html .= ' class="active"';
 				}
 				$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id.'&page=register') .'"><span>'.Lang::txt('EVENTS_REGISTER').'</span></a></li>'."\n";
-
 			}
 			$html .= '</ul>'."\n";
 			$html .= '<div class="clear"></div>'."\n";
