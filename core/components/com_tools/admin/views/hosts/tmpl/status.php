@@ -26,9 +26,10 @@ Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOSTS'), 'to
 				<?php
 				if ($this->output)
 				{
-					foreach ($this->output as $line)
+					echo htmlspecialchars($this->output->user_message ?? '') . "\n";
+					if (!$this->status && isset($this->output->technical_message))
 					{
-						echo "$line<br />\n";
+						echo '<br /><small>' . htmlspecialchars($this->output->technical_message) . '</small>' . "\n";
 					}
 				}
 				?>
