@@ -322,7 +322,7 @@ class Sessionsv1_0 extends ApiController
 			$dbname = \App::get('config')->get('database.db');
 			// take new screenshots for user
 			//$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " dbname=$dbname 2>&1 </dev/null";
-			$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " 2>&1 </dev/null";
+			$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . escapeshellarg($username) . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 			$object->screenshots_taken = true;
 		}
@@ -718,7 +718,13 @@ class Sessionsv1_0 extends ApiController
 		Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
 
 		// We've passed all checks so let's actually start the session
-		$status = \Components\Tools\Helpers\Utils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
+		$status = \Components\Tools\Helpers\Utils::middleware(
+			"start user=" . escapeshellarg($result->get('username')) .
+			" ip=" . escapeshellarg($app->ip) .
+			" app=" . escapeshellarg($app->name) .
+			" version=" . escapeshellarg($app->version),
+			$output
+		);
 
 		//make sure we got a valid session back from the middleware
 		if (!isset($output->session))
@@ -977,7 +983,7 @@ class Sessionsv1_0 extends ApiController
 		// We know from the checks above that this directory already exists
 		$params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . $inst;
 		$encoded = ' params=' . rawurlencode($params) . ' ';
-		$command = 'start user=' . $profile->get('username') . " ip={$app->ip} app={$app->name} version={$app->version}" . $encoded;
+		$command = 'start user=' . escapeshellarg($profile->get('username')) . ' ip=' . escapeshellarg($app->ip) . ' app=' . escapeshellarg($app->name) . ' version=' . escapeshellarg($app->version) . $encoded;
 		$status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
 		if (!$status)
@@ -1179,7 +1185,7 @@ class Sessionsv1_0 extends ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		//get request vars
-		$sessionid = Request::getString('sessionid', '');
+		$sessionid = (int)Request::getString('sessionid', '');
 		$ip        = Request::ip();
 
 		//make sure we have the session
@@ -1218,7 +1224,7 @@ class Sessionsv1_0 extends ApiController
 		$tv->loadFromInstance($row->appname);
 
 		//command to run on middleware
-		$command = "view user=" . $result->get('username') . " ip=" . $app->ip . " sess=" . $app->sess;
+		$command = "view user=" . escapeshellarg($result->get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int)$app->sess;
 
 		//app vars
 		$app->caption  = $row->sessname;
@@ -1234,6 +1240,14 @@ class Sessionsv1_0 extends ApiController
 		// Call the view command
 		$status = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
+		if (!$status)
+		{
+			throw new Exception(
+				isset($output->user_message) ? $output->user_message : Lang::txt('COM_TOOLS_ERROR_SESSION_VIEW_FAILED'),
+				500
+			);
+		}
+
 		// Trigger any events that need to be called after session start
 		Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
 
@@ -1246,11 +1260,7 @@ class Sessionsv1_0 extends ApiController
 		$output->owner = ($row->viewuser == $row->username) ? 1 : 0;
 		$output->readonly = ($row->readonly == 'Yes') ? 1 : 0;
 
-		//return result
-		if ($status)
-		{
-			$this->send($output);
-		}
+		$this->send($output);
 	}
 
 	/**
@@ -1303,13 +1313,13 @@ class Sessionsv1_0 extends ApiController
 		Event::trigger('mw.onBeforeSessionStop', array($ms->get('appname')));
 
 		//run command to stop session
-		$status = \Components\Tools\Helpers\Utils::middleware("stop $sessionid", $out);
+		$status = \Components\Tools\Helpers\Utils::middleware("stop " . (int)$sessionid, $out);
 
 		// Trigger any events that need to be called after session stop
 		Event::trigger('mw.onAfterSessionStop', array($ms->get('appname')));
 
 		// was the session stopped successfully
-		if ($status == 1)
+		if ($status)
 		{
 			$object = new stdClass();
 			$object->session = array(
@@ -1561,7 +1571,7 @@ class Sessionsv1_0 extends ApiController
 	 */
 	public function fileshareTask()
 	{
-		//$this->requiresAuthentication();
+		$this->requiresAuthentication();
 
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
@@ -1585,8 +1595,12 @@ class Sessionsv1_0 extends ApiController
 		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$sess = $ms->loadSession($sessionid);
 
-		$command = "/usr/bin/sudo /usr/bin/hzappstream --remote 128.46.19.124 fileshare add $username $sessionid $public_ip $private_ip --ipsec-use-default-psk";
-		$command = escapeshellcmd($command);
+		$command = "/usr/bin/sudo /usr/bin/hzappstream --remote 128.46.19.124 fileshare add " .
+			escapeshellarg($username) . " " .
+			escapeshellarg($sessionid) . " " .
+			escapeshellarg($public_ip) . " " .
+			escapeshellarg($private_ip) .
+			" --ipsec-use-default-psk";
 
 		$descriptorspec = array(
 			0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
