@@ -241,78 +241,51 @@ class Behavior
 
     public static function math()
     {
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
 
-        $path = Asset::script('assets/MathJax/MathJax.js', true, true, true);
+        if (Document::getCssFramework() === 'daisyui') {
+            // CSP mode: load MathJax via external script, admin.js reads
+            // <meta name="behavior-math"> and applies configuration
+            Asset::script('assets/MathJax/MathJax.js', true, true);
+            Document::setMetaData('behavior-math', 'true');
+        } else {
+            $path = Asset::script('assets/MathJax/MathJax.js', true, true, true);
 
-        Document::addScriptDeclaration('
-
-		(function() {
-
-			public script = document.createElement("script");
-
-			script.type = "text/javascript";
-
-			script.src = "' . $path . '";
-
-			public config = `
-
-			MathJax.Hub.Config({
-
-				extensions: ["tex2jax.js"],
-
-				jax: ["input/TeX", "output/HTML-CSS"],
-
-				"HTML-CSS": {
-
-						preferredFont: "TeX",
-
-						availableFonts: ["STIX","TeX"],
-
-						linebreaks: { automatic:true },
-
-						EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-
-				},
-
-				tex2jax:{
-
-						inlineMath: [ ["$$", "$$"] ], // , ["\\\\(","\\\\)"]
-
-						displayMath: [ ["$$$","$$$"], ["\\[", "\\]"] ],
-
-						processEscapes: true,
-
-						ignoreClass: "tex2jax_ignore|dno"
-
-				},
-
-				TeX: {
-
-					extensions: ["autoload-all.js", "mediawiki-texvc.js"],
-
-					noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
-
-					Macros: { href: "{}" }
-
-				},
-
-				messageStyle: "none",
-
-				styles: { ".MathJax_Display, .MathJax_Preview, .MathJax_Preview > *": { "background": "inherit" } }
-
-			});`;
-
-			if (window.opera) { script.innerHTML = config; } else { script.text = config; }
-
-			document.getElementsByTagName("head")[0].appendChild(script);
-
-		})();
-
-		');
+            App::get('document')->addScriptDeclaration('
+            (function() {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = "' . $path . '";
+                var config = \'MathJax.Hub.Config({\' +
+                    \'extensions: ["tex2jax.js"],\' +
+                    \'jax: ["input/TeX", "output/HTML-CSS"],\' +
+                    \'"HTML-CSS": {\' +
+                        \'preferredFont: "TeX",\' +
+                        \'availableFonts: ["STIX","TeX"],\' +
+                        \'linebreaks: { automatic:true },\' +
+                        \'EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)\' +
+                    \'},\' +
+                    \'tex2jax: {\' +
+                        \'inlineMath: [ ["$$", "$$"] ],\' +
+                        \'displayMath: [ ["$$$","$$$"], ["\\\\[", "\\\\]"] ],\' +
+                        \'processEscapes: true,\' +
+                        \'ignoreClass: "tex2jax_ignore|dno"\' +
+                    \'},\' +
+                    \'TeX: {\' +
+                        \'extensions: ["autoload-all.js", "mediawiki-texvc.js"],\' +
+                        \'noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },\' +
+                        \'Macros: { href: "{}" }\' +
+                    \'},\' +
+                    \'messageStyle: "none",\' +
+                    \'styles: { ".MathJax_Display, .MathJax_Preview, .MathJax_Preview > *": { "background": "inherit" } }\' +
+                \'});\';
+                if (window.opera) { script.innerHTML = config; } else { script.text = config; }
+                document.getElementsByTagName("head")[0].appendChild(script);
+            })();
+            ');
+        }
 
         self::$loaded[__METHOD__] = true;
     }
@@ -331,48 +304,34 @@ class Behavior
 
     public static function caption($selector = 'img.caption')
     {
-
         if (isset(self::$loaded[__METHOD__][$selector])) {
             return;
         }
 
-        self::framework(true);        App::get('document')->addScriptDeclaration(
-            "jQuery(document).ready(function($){
+        self::framework(true);
 
-				$('" . $selector . "').tooltip({
-
-					position: {
-
-						my: 'center bottom',
-
-						at: 'center top'
-
-					},
-
-					create: function(event, ui) {
-
-						public tip = $(this),
-
-							tipText = tip.attr('title');
-
-						if (tipText.indexOf('::') != -1) {
-
-							public parts = tipText.split('::');
-
-							tip.attr('title', parts[1]);
-
-						}
-
-					},
-
-					tooltipClass: 'tooltip'
-
-				});
-
-			});"
-        );
-
-        // Set static array
+        if (Document::getCssFramework() !== 'daisyui') {
+            App::get('document')->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    $('" . $selector . "').tooltip({
+                        position: {
+                            my: 'center bottom',
+                            at: 'center top'
+                        },
+                        create: function(event, ui) {
+                            var tip = $(this),
+                                tipText = tip.attr('title');
+                            if (tipText.indexOf('::') != -1) {
+                                var parts = tipText.split('::');
+                                tip.attr('title', parts[1]);
+                            }
+                        },
+                        tooltipClass: 'tooltip'
+                    });
+                });"
+            );
+        }
+        // DaisyUI: admin.js initBehaviorCaption() scans img.caption elements
 
         self::$loaded[__METHOD__][$selector] = true;
     }
@@ -627,20 +586,21 @@ class Behavior
 
     public static function switcher($toggler = 'tabs')
     {
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
 
         self::framework(true);
+        Asset::script('assets/switcher.js', false, true);
 
-        Asset::script('assets/switcher.js', false, true);        App::get('document')->addScriptDeclaration(
-            "jQuery(document).ready(function($){
-
-				$('#" . $toggler . "').switcher();
-
-			});"
-        );
+        if (Document::getCssFramework() !== 'daisyui') {
+            App::get('document')->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    $('#" . $toggler . "').switcher();
+                });"
+            );
+        }
+        // DaisyUI: admin.js initBehaviorSwitcher() scans [data-switcher] elements
 
         self::$loaded[__METHOD__] = true;
     }
@@ -725,7 +685,6 @@ class Behavior
 
     public static function tooltip($selector = '.hasTip', $params = array())
     {
-
         $sig = md5(serialize(array($selector, $params)));
 
         if (isset(self::$loaded[__METHOD__][$sig])) {
@@ -734,80 +693,37 @@ class Behavior
 
         self::framework(true);
 
-        // Setup options object
-        /*$opt['maxTitleChars'] = (isset($params['maxTitleChars']) &&
-            ($params['maxTitleChars'])) ? (int) $params['maxTitleChars'] : 50;
-        // offsets needs an array in the format: array('x'=>20, 'y'=>30)
-        $opt['offset']          = (isset($params['offset']) &&
-            (is_array($params['offset']))) ? $params['offset'] : null;
-        if (!isset($opt['offset']))
-
-        {
-            $opt['offset']      = (isset($params['offsets']) &&
-                (is_array($params['offsets']))) ? $params['offsets'] : null;
+        if (Document::getCssFramework() !== 'daisyui') {
+            App::get('document')->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    $('" . $selector . "').tooltip({
+                        track: true,
+                        show: false,
+                        content: function() {
+                            return $(this).attr('title');
+                        },
+                        create: function(event, ui) {
+                            var tip = $(this),
+                                tipText = tip.attr('title');
+                            if (tipText && tipText.indexOf('::') != -1) {
+                                var parts = tipText.split('::');
+                                tip.attr(
+                                    'title',
+                                    '<div class=\"tip-title\">' + parts[0] +
+                                    '</div><div class=\"tip-text\">' + parts[1] + '</div>'
+                                );
+                            } else {
+                                tip.attr('title', '<div class=\"tip-text\">' + tipText + '</div>');
+                            }
+                        },
+                        tooltipClass: 'tool-tip'
+                    });
+                });"
+            );
         }
-
-        $opt['showDelay']       = (isset($params['showDelay'])) ? (int) $params['showDelay'] : null;
-
-        $opt['hideDelay']       = (isset($params['hideDelay'])) ? (int) $params['hideDelay'] : null;
-
-        $opt['className']       = (isset($params['className'])) ? $params['className'] : null;
-
-        $opt['fixed']           = (isset($params['fixed']) && ($params['fixed'])) ? true : false;
-
-        $opt['onShow']          = (isset($params['onShow'])) ? '\\' . $params['onShow'] : null;
-
-        $opt['onHide']          = (isset($params['onHide'])) ? '\\' . $params['onHide'] : null;
-
-        $options = Behavior::getJSObject($opt);*/
-
-        App::get('document')->addScriptDeclaration(
-            "jQuery(document).ready(function($){
-
-				$('" . $selector . "').tooltip({
-
-					track: true,
-
-					show: false,
-
-					content: function() {
-
-						return $(this).attr('title');
-
-					},
-
-					create: function(event, ui) {
-
-						public tip = $(this),
-
-							tipText = tip.attr('title');
-
-						if (tipText && tipText.indexOf('::') != -1) {
-
-							public parts = tipText.split('::');
-							tip.attr(
-							    'title',
-							    '<div class=\"tip-title\">' + parts[0] +
-							    '</div><div class=\"tip-text\">' + parts[1] + '</div>'
-							);
-						} else {
-
-							tip.attr('title', '<div class=\"tip-text\">' + tipText + '</div>');
-
-						}
-
-					},
-
-					tooltipClass: 'tool-tip'
-
-				});
-
-			});"
-        );
+        // DaisyUI: admin.js initBehaviorTooltip() scans .hasTip elements
 
         self::$loaded[__METHOD__][$sig] = true;
-
-        return;
     }
 
     /**
@@ -848,7 +764,6 @@ class Behavior
 
     public static function modal($selector = 'a.modal', $params = array())
     {
-
         if (!isset(self::$loaded[__METHOD__])) {
             self::framework();
 
@@ -901,78 +816,60 @@ class Behavior
 
         );*/
 
-        if (!empty($params) || App::isAdmin()) {
-            $opt = array('arrows' => false);
-            $opt['ajax']       = (isset($params['ajaxOptions']) &&
-                (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
-            $opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
-
-            $opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
-
-            $opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
-            $opt['iframe']     = (isset($params['iframeOptions']) &&
-                (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
-            if (
-                isset($params['size'])
-
-                && is_array($params['size'])
-            ) {
-                if (isset($params['size']['width'])) {
-                    $opt['width']  = $params['size']['width'];
+        if (Document::getCssFramework() !== 'daisyui') {
+            if (!empty($params) || App::isAdmin()) {
+                $opt = array('arrows' => false);
+                $opt['ajax']       = (isset($params['ajaxOptions']) &&
+                    (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+                $opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
+                $opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
+                $opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
+                $opt['iframe']     = (isset($params['iframeOptions']) &&
+                    (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+                if (isset($params['size']) && is_array($params['size'])) {
+                    if (isset($params['size']['width'])) {
+                        $opt['width']  = $params['size']['width'];
+                    }
+                    if (isset($params['size']['height'])) {
+                        $opt['height'] = $params['size']['height'];
+                    }
+                    if (isset($params['size']['minWidth'])) {
+                        $opt['minWidth']  = $params['size']['minWidth'];
+                    }
+                    if (isset($params['size']['maxWidth'])) {
+                        $opt['maxWidth']  = $params['size']['maxWidth'];
+                    }
+                    if (isset($params['size']['minHeight'])) {
+                        $opt['minHeight'] = $params['size']['minHeight'];
+                    }
+                    if (isset($params['size']['maxHeight'])) {
+                        $opt['maxHeight'] = $params['size']['maxHeight'];
+                    }
                 }
+                $opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen']
+                    : '\\function(){ var atts = $(this.element).attr("data-rel");'
+                    . ' if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
+                $opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
+                $opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
+                $opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
+                $opt['afterShow']  = (isset($params['onShow'])) ? $params['onShow'] : null;
+                $opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
+                $opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
+                $opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
+                $opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : true;
 
-                if (isset($params['size']['height'])) {
-                    $opt['height'] = $params['size']['height'];
-                }
+                $options = self::getJSObject($opt);
 
-                if (isset($params['size']['minWidth'])) {
-                    $opt['minWidth']  = $params['size']['minWidth'];
-                }
-
-                if (isset($params['size']['maxWidth'])) {
-                    $opt['maxWidth']  = $params['size']['maxWidth'];
-                }
-
-                if (isset($params['size']['minHeight'])) {
-                    $opt['minHeight'] = $params['size']['minHeight'];
-                }
-
-                if (isset($params['size']['maxHeight'])) {
-                    $opt['maxHeight'] = $params['size']['maxHeight'];
-                }
+                App::get('document')->addScriptDeclaration(
+                    'jQuery(document).ready(function($){
+                        $("' . $selector . '").fancybox(' . $options . ');
+                    });'
+                );
             }
-            $opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ public atts = 
-                $(this.element).attr("data-rel"); if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
-            $opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
-
-            $opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
-
-            $opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
-
-            $opt['afterShow']  = (isset($params['onShow'])) ? $params['onShow'] : null;
-
-            $opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
-
-            $opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
-
-            $opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
-
-            $opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : true;
-
-            $options = self::getJSObject($opt);
-
-            App::get('document')->addScriptDeclaration(
-                'jQuery(document).ready(function($){
-
-					$("' . $selector . '").fancybox(' . $options . ');
-
-				});'
-            );
         }
+        // DaisyUI: admin.js initBehaviorModal() scans a.modal elements
 
         self::$loaded[__METHOD__][$sig] = true;
-
-        return;
     }
 
     /**
@@ -989,29 +886,23 @@ class Behavior
 
     public static function multiselect($id = 'adminForm')
     {
-
         if (isset(self::$loaded[__METHOD__][$id])) {
             return;
         }
 
         self::framework();
-
         Asset::script('assets/multiselect.js', true, true);
 
-        // Attach multiselect to document
-        App::get('document')->addScriptDeclaration(
-            "jQuery(document).ready(function($){
-
-				new Hubzero.MultiSelect('" . $id . "');
-
-			});"
-        );
-
-        // Set static array
+        if (Document::getCssFramework() !== 'daisyui') {
+            App::get('document')->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    new Hubzero.MultiSelect('" . $id . "');
+                });"
+            );
+        }
+        // DaisyUI: admin.js initBehaviorMultiselect() scans [data-multiselect] forms
 
         self::$loaded[__METHOD__][$id] = true;
-
-        return;
     }
 
     /**
@@ -1048,7 +939,6 @@ class Behavior
 
     public static function tree($id, $params = array(), $root = array())
     {
-
         self::framework();
 
         /*Asset::script('assets/mootree.js', true, true, false, false);
@@ -1133,7 +1023,6 @@ class Behavior
 
     public static function calendar()
     {
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
@@ -1173,45 +1062,30 @@ class Behavior
 
     public static function colorpicker()
     {
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
 
         self::framework(true);
-
         Asset::stylesheet('assets/jquery.colpick.css', array('media' => 'all'), true);
+        Asset::script('assets/jquery.colpick.js', false, true);
 
-        Asset::script('assets/jquery.colpick.js', false, true);        App::get('document')
-
-            ->addScriptDeclaration(
+        if (Document::getCssFramework() !== 'daisyui') {
+            App::get('document')->addScriptDeclaration(
                 "jQuery(document).ready(function($){
-
-				$('.input-colorpicker').colpick({
-
-					layout:'hex',
-
-					colorScheme:'dark',
-
-					onChange:function(hsb, hex, rgb, el, bySetColor) {
-
-						//$(el).css('border-color','#' + hex);
-						// Fill the text box just if the color was set using the picker,
-						// and not the colpickSetColor function.
-						if (!bySetColor) $(el).val('#' + hex);
-
-					}
-
-				}).keyup(function(){
-
-					$(this).colpickSetColor(this.value);
-
-				});
-
-			});
-
-		"
+                    $('.input-colorpicker').colpick({
+                        layout:'hex',
+                        colorScheme:'dark',
+                        onChange:function(hsb, hex, rgb, el, bySetColor) {
+                            if (!bySetColor) $(el).val('#' + hex);
+                        }
+                    }).keyup(function(){
+                        $(this).colpickSetColor(this.value);
+                    });
+                });"
             );
+        }
+        // DaisyUI: admin.js initBehaviorColorpicker() scans .input-colorpicker elements
 
         self::$loaded[__METHOD__] = true;
     }
@@ -1228,50 +1102,40 @@ class Behavior
 
     public static function keepalive()
     {
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
 
-        self::framework();
-
         $lifetime    = (App::get('config')->get('lifetime') * 60000);
-
         $refreshTime = ($lifetime <= 60000) ? 30000 : $lifetime - 60000;
 
-        // Refresh time is 1 minute less than the configured liftime.
-
-        // the longest refresh period is one hour to prevent integer overflow.
-
+        // Refresh time is 1 minute less than the configured lifetime.
+        // The longest refresh period is one hour to prevent integer overflow.
         if ($refreshTime > 3600000 || $refreshTime <= 0) {
             $refreshTime = 3600000;
         }
 
-        App::get('document')->addScriptDeclaration('
+        if (Document::getCssFramework() === 'daisyui') {
+            // CSP mode: emit meta tag, admin.js reads interval and starts polling
+            Document::setMetaData('behavior-keepalive', (string) $refreshTime);
+        } else {
+            self::framework();
 
-			jQuery(document).ready(function($){
-
-				(function keepAlive() {
-
-					$.ajax({
-
-						url: "index.php",
-
-						complete: function() {
-
-							setTimeout(keepAlive, ' . $refreshTime . ');
-
-						}
-
-					});
-
-				})();
-
-			});');
+            App::get('document')->addScriptDeclaration(
+                'jQuery(document).ready(function($){
+                    (function keepAlive() {
+                        $.ajax({
+                            url: "index.php",
+                            complete: function() {
+                                setTimeout(keepAlive, ' . $refreshTime . ');
+                            }
+                        });
+                    })();
+                });'
+            );
+        }
 
         self::$loaded[__METHOD__] = true;
-
-        return;
     }
 
     /**
@@ -1304,7 +1168,6 @@ class Behavior
         $className = 'highlight',
         $tag = 'span'
     ) {
-
         $sig = md5(serialize(array($terms, $start, $end)));
 
         if (isset(self::$loaded[__METHOD__][$sig])) {
@@ -1312,36 +1175,31 @@ class Behavior
         }
 
         $script = 'assets/jquery.highlight.js';
-
         if (App::get('config')->get('debug')) {
             $script = 'assets/jquery.highlight.min.js';
         }
-
         Asset::script($script, true, true);
 
-        $terms = str_replace('"', '\"', $terms);
+        if (Document::getCssFramework() === 'daisyui') {
+            // CSP mode: emit meta tag with terms JSON, admin.js reads and highlights
+            $config = json_encode(array(
+                'terms' => $terms,
+                'className' => $className,
+                'element' => $tag,
+            ));
+            Document::setMetaData('behavior-highlight', $config);
+        } else {
+            $terms = str_replace('"', '\"', $terms);
+            $options = "{ className: '" . $className . "', element: '" . $tag . "' }";
 
-        $options = "{
-
-			className: '" . $className . "',
-
-			element: '" . $tag . "'
-
-		}";
-
-        App::get('document')->addScriptDeclaration("
-
-			jQuery(document).ready(function($){
-
-				$('body').highlight([\"" . implode('","', $terms) . "\"], " . $options . ");
-
-			});
-
-		");
+            App::get('document')->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    $('body').highlight([\"" . implode('","', $terms) . "\"], " . $options . ");
+                });"
+            );
+        }
 
         self::$loaded[__METHOD__][$sig] = true;
-
-        return;
     }
 
     /**
@@ -1358,44 +1216,68 @@ class Behavior
 
     public static function noframes($location = 'top.location.href')
     {
-
-        // Only load once
-
         if (isset(self::$loaded[__METHOD__])) {
             return;
         }
 
-        // Include MooTools framework
-
-        self::framework();
-
-        // $js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display =
-
-        // 'block';}" .
-
-        //  " else {top.location = self.location; }});";
-
-        $js = "jQuery(document).ready(function($){
-
-			if (top == self) {
-
-				document.documentElement.style.display = 'block';
-
-			} else {
-
-				top.location = self.location;
-
-			}
-
-		});";
-
-        $document = App::get('document');
-
-        $document->addStyleDeclaration('html { display:none }');
-
-        $document->addScriptDeclaration($js);
-
+        // Always set the X-Frame-Options header — the proper modern mechanism
         App::get('response')->headers->set('X-Frame-Options', 'SAMEORIGIN');
+
+        if (Document::getCssFramework() !== 'daisyui') {
+            // Legacy: inline CSS hide + JS iframe breakout as belt-and-suspenders
+            self::framework();
+
+            $document = App::get('document');
+            $document->addStyleDeclaration('html { display:none }');
+            $document->addScriptDeclaration(
+                "jQuery(document).ready(function($){
+                    if (top == self) {
+                        document.documentElement.style.display = 'block';
+                    } else {
+                        top.location = self.location;
+                    }
+                });"
+            );
+        }
+        // DaisyUI: X-Frame-Options header is sufficient
+
+        self::$loaded[__METHOD__] = true;
+    }
+
+    /**
+     * Add flatpickr date/time picker support.
+     *
+     * Loads the flatpickr CSS and JS assets. In Blade mode, admin.js
+     * scans for [data-flatpickr="date|datetime"] elements and initializes them.
+     *
+     * @return  void
+     */
+    public static function flatpickr()
+    {
+        if (isset(self::$loaded[__METHOD__])) {
+            return;
+        }
+
+        Asset::stylesheet('assets/flatpickr.min.css', array('media' => 'all'), true);
+        Asset::script('assets/flatpickr.min.js', false, true);
+
+        self::$loaded[__METHOD__] = true;
+    }
+
+    /**
+     * Declare that the page uses the picker modal behavior.
+     *
+     * This is a discoverability marker — admin.js already handles
+     * [data-picker-url] elements via initPickerButtons(). Calling this
+     * method documents the dependency and makes usage greppable.
+     *
+     * @return  void
+     */
+    public static function picker()
+    {
+        if (isset(self::$loaded[__METHOD__])) {
+            return;
+        }
 
         self::$loaded[__METHOD__] = true;
     }
