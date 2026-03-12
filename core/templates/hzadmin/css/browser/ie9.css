@@ -1,0 +1,27 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* IE 9 overrides */
+	.input-text,
+	input[type=text],
+	input[type=password],
+	input[type=email] {
+		font-size: 1em;
+		line-height: 1;
+		padding: 0.4045084975em 0.4045084975em 0.6045084975em 0.4045084975em;
+	}
+	input.input-username,
+	input[type=text] {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	}
+	input.input-password,
+	input[type=password] {
+		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		margin-top: -1px;
+	}
+	.input-datetime:after {
+		top: 0;
+	}

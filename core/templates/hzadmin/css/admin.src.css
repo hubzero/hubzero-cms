@@ -1,0 +1,2129 @@
+/**
+ * Admin Blade Shell — Tailwind + daisyUI source
+ *
+ * Build: npx @tailwindcss/cli -i css/admin.src.css -o css/admin.css --minify
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Fontcons icon font — used by legacy component icon classes (e.g. icon-upload, icon-trash) */
+@font-face {
+  font-family: 'Fontcons';
+  font-display: block;
+  src: url('../../../assets/css/fonts/fontcons-webfont.woff') format('woff'),
+       url('../../../assets/css/fonts/fontcons-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Fix Tailwind v4 preflight: remove transitions on native form controls */
+@layer base {
+  select, input, textarea {
+    transition: none;
+  }
+  .drawer-side {
+    overflow: hidden !important;
+  }
+}
+
+/* Tell Tailwind where to scan for class names */
+@source "../index.blade.php";
+@source "../login.blade.php";
+@source "../partials/*.blade.php";
+@source "../js/*.js";
+@source "../../../../core/blade/components/admin-*.blade.php";
+@source "../../../../core/components/*/admin/views/*/tmpl/*.blade.php";
+@source "../../../../core/modules/*/tmpl/*.blade.php";
+@source "../../../../core/libraries/Hubzero/Html/Builder/Batch.php";
+@source "../../../../core/libraries/Hubzero/Form/Fields/*.php";
+@source "../../../../core/components/com_members/models/fields/*.php";
+@source "../component.blade.php";
+
+/* ==========================================================================
+   daisyUI Theme — Admin
+   Same tokens as site template; defined separately so it can diverge later.
+   ========================================================================== */
+
+@plugin "daisyui/theme" {
+  name: "hubzero";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  --color-primary: #0a7b72;
+  --color-primary-content: #ffffff;
+  --color-secondary: #6b7280;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f59e0b;
+  --color-accent-content: #1f2937;
+  --color-neutral: #1f2937;
+  --color-neutral-content: #f9fafb;
+  --color-base-100: #ffffff;
+  --color-base-200: #f8fafc;
+  --color-base-300: #e2e8f0;
+  --color-base-content: #1e293b;
+  --color-info: #0284c7;
+  --color-info-content: #ffffff;
+  --color-success: #16a34a;
+  --color-success-content: #ffffff;
+  --color-warning: #d97706;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+}
+
+/* ==========================================================================
+   Semantic Color Tokens
+   Role-based tokens derived from daisyUI theme primitives.  Naming follows
+   shadcn/ui conventions (--muted-foreground, --border, --ring, etc.) and
+   extends with --subtle-foreground / --faint-foreground for a richer
+   text hierarchy.
+
+   Key technique: mix with the *target background* (base-100), NOT
+   transparent.  This yields a solid color whose contrast ratio is
+   deterministic regardless of element stacking.  Any daisyUI 5 community
+   theme auto-populates these tokens — no per-theme config required.
+   ========================================================================== */
+
+[data-theme] {
+  /* ---- Text hierarchy -------------------------------------------------- */
+  /* Mix base-content toward base-100 to produce solid mid-tone grays.      */
+  /* All three tiers set to 70% to guarantee WCAG AA 4.5:1 contrast.      */
+  /* Semantic names preserved so views can express intent (muted > subtle  */
+  /* > faint) even though the rendered color is identical for now.         */
+  --muted-foreground:  color-mix(in oklch, var(--color-base-content) 70%, var(--color-base-100));
+  --subtle-foreground: color-mix(in oklch, var(--color-base-content) 70%, var(--color-base-100));
+  --faint-foreground:  color-mix(in oklch, var(--color-base-content) 70%, var(--color-base-100));
+
+  /* ---- Status text on base backgrounds --------------------------------- */
+  /* Darkened variants of status colors for WCAG AA on white/light bgs.     */
+  --success-foreground: color-mix(in oklch, var(--color-success) 60%, black);
+  --error-foreground:   color-mix(in oklch, var(--color-error) 60%, black);
+  --warning-foreground: color-mix(in oklch, var(--color-warning) 60%, black);
+  --info-foreground:    color-mix(in oklch, var(--color-info) 60%, black);
+  --primary-foreground-on-base: color-mix(in oklch, var(--color-primary) 70%, black);
+
+  /* ---- Surfaces -------------------------------------------------------- */
+  --muted:                 color-mix(in oklch, var(--color-base-content) 4%, var(--color-base-100));
+  --accent-surface:        color-mix(in oklch, var(--color-base-content) 8%, var(--color-base-100));
+  --accent-primary:        color-mix(in oklch, var(--color-primary) 10%, var(--color-base-100));
+  --accent-primary-subtle: color-mix(in oklch, var(--color-primary) 5%, var(--color-base-100));
+  --success-surface:       color-mix(in oklch, var(--color-success) 10%, var(--color-base-100));
+  --error-surface:         color-mix(in oklch, var(--color-error) 10%, var(--color-base-100));
+  --warning-surface:       color-mix(in oklch, var(--color-warning) 10%, var(--color-base-100));
+  --info-surface:          color-mix(in oklch, var(--color-info) 10%, var(--color-base-100));
+
+  /* ---- Borders --------------------------------------------------------- */
+  /* NOTE: --border is reserved by daisyUI v5 as a *size* (e.g. 1px).     */
+  /* Use --color-border for our semantic border-color token.               */
+  --color-border:        color-mix(in oklch, var(--color-base-content) 20%, var(--color-base-100));
+  --color-border-strong: color-mix(in oklch, var(--color-base-content) 35%, var(--color-base-100));
+  --input:          color-mix(in oklch, var(--color-base-content) 28%, var(--color-base-100));
+  --ring:           color-mix(in oklch, var(--color-primary) 25%, var(--color-base-100));
+  --border-primary: color-mix(in oklch, var(--color-primary) 45%, var(--color-base-100));
+}
+
+/* ==========================================================================
+   Tailwind @utility registrations for semantic tokens
+   ========================================================================== */
+
+/* Text */
+@utility text-muted-foreground  { color: var(--muted-foreground); }
+@utility text-subtle-foreground { color: var(--subtle-foreground); }
+@utility text-faint-foreground  { color: var(--faint-foreground); }
+@utility text-success-fg        { color: var(--success-foreground); }
+@utility text-error-fg          { color: var(--error-foreground); }
+@utility text-warning-fg        { color: var(--warning-foreground); }
+@utility text-info-fg           { color: var(--info-foreground); }
+@utility text-primary-on-base   { color: var(--primary-foreground-on-base); }
+
+/* Surfaces */
+@utility bg-muted               { background-color: var(--muted); }
+@utility bg-accent-surface      { background-color: var(--accent-surface); }
+@utility bg-accent-primary      { background-color: var(--accent-primary); }
+
+/* Borders */
+@utility border-default         { border-color: var(--color-border); }
+@utility border-strong          { border-color: var(--color-border-strong); }
+
+/* ==========================================================================
+   daisyUI Component Overrides (contrast-safe via tokens)
+   ========================================================================== */
+
+/* Table headers: daisyUI default opacity 0.6 fails AA */
+.table thead th,
+.table thead td {
+  opacity: 1;
+  color: var(--muted-foreground);
+}
+
+/* Inactive tabs: daisyUI default ~3.0:1, needs 4.5:1 */
+.tabs .tab:not(.tab-active) {
+  color: var(--muted-foreground);
+}
+
+/* Active tab: primary on primary/12% bg gives ~3.2:1, use full base-content */
+.tabs .tab.tab-active,
+.tabs .tab[aria-selected="true"] {
+  --tab-color: var(--color-base-content) !important;
+  color: var(--color-base-content) !important;
+}
+
+/* Legacy file uploader: #bbb on #f7f7f7 is ~1.4:1 */
+.qq-upload-button span,
+.qq-upload-drop-area span {
+  color: var(--color-base-content);
+}
+
+/* Active sidebar nav link */
+.drawer-side .icon-components,
+.drawer-side .active > a,
+.drawer-side a.active {
+  color: var(--primary-foreground-on-base) !important;
+}
+
+/* ==========================================================================
+   Admin Layout
+   ========================================================================== */
+
+/* Title module resets — strip legacy wrapper markup */
+.admin-title .module-title,
+.admin-title h2 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Submenu module — render legacy submenu links as tabs */
+.admin-submenu ul {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.admin-submenu li {
+  margin: 0;
+}
+.admin-submenu a {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-base-content);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.admin-submenu a:hover {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.admin-submenu a.active,
+.admin-submenu .active > a {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Sub-submenu — breaks out of main p-6 to sit flush under the main nav bar */
+nav.sub.sub-navigation {
+  margin: -1.5rem -1.5rem 1.5rem;
+  padding: 0.3rem 1.5rem;
+  border-bottom: 1px solid var(--color-base-300);
+  background: var(--color-base-200);
+}
+nav.sub.sub-navigation ul {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav.sub.sub-navigation a {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: color 0.15s, background 0.15s;
+}
+nav.sub.sub-navigation a:hover {
+  color: var(--color-primary);
+  background: var(--accent-primary);
+}
+nav.sub.sub-navigation a.active {
+  color: white;
+  background: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Topbar Layout
+   ========================================================================== */
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-base-100);
+  border-bottom: 1px solid var(--color-base-300);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.admin-topbar-start {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.admin-topbar-hamburger {
+  display: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+.admin-topbar-hamburger:hover {
+  background: var(--color-base-200);
+}
+@media (max-width: 1023px) {
+  .admin-topbar-hamburger {
+    display: flex;
+  }
+}
+.admin-topbar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.admin-topbar-end {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.admin-topbar-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.admin-topbar-user:hover {
+  background: var(--color-base-200);
+}
+.admin-topbar-user-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Toolbar Buttons
+   ========================================================================== */
+
+/* Button group container */
+.admin-tb-group {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+/* Separator between button groups */
+.admin-tb-sep {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--color-border);
+  margin: 0 0.25rem;
+}
+
+/* Base button style */
+.admin-tb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  border-radius: var(--radius-field);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.admin-tb-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Outline variants — colored border + text */
+.admin-tb-outline-primary {
+  color: var(--color-primary);
+  border-color: var(--border-primary);
+  background: transparent;
+}
+.admin-tb-outline-primary:hover {
+  background: var(--accent-primary);
+  border-color: var(--color-primary);
+}
+
+.admin-tb-outline-success {
+  color: var(--color-success);
+  border-color: color-mix(in oklch, var(--color-success) 50%, var(--color-base-100));
+  background: transparent;
+}
+.admin-tb-outline-success:hover {
+  background: var(--success-surface);
+  border-color: var(--color-success);
+}
+
+.admin-tb-outline-warning {
+  color: var(--color-warning);
+  border-color: color-mix(in oklch, var(--color-warning) 50%, var(--color-base-100));
+  background: transparent;
+}
+.admin-tb-outline-warning:hover {
+  background: var(--warning-surface);
+  border-color: var(--color-warning);
+}
+
+.admin-tb-outline-error {
+  color: var(--color-error);
+  border-color: color-mix(in oklch, var(--color-error) 50%, var(--color-base-100));
+  background: transparent;
+}
+.admin-tb-outline-error:hover {
+  background: var(--error-surface);
+  border-color: var(--color-error);
+}
+
+/* Neutral — subtle border */
+.admin-tb-neutral {
+  color: var(--color-base-content);
+  background: transparent;
+  border-color: var(--color-border);
+}
+.admin-tb-neutral:hover {
+  background: var(--color-base-200);
+  border-color: var(--color-border-strong);
+}
+
+/* Ghost — text only */
+.admin-tb-ghost {
+  color: var(--subtle-foreground);
+  background: transparent;
+}
+.admin-tb-ghost:hover {
+  color: var(--color-base-content);
+  background: var(--color-base-200);
+}
+
+/* User name in topbar — only show on wide screens */
+.admin-user-name {
+  display: none;
+}
+@media (min-width: 1536px) {
+  .admin-user-name {
+    display: inline;
+  }
+}
+
+/* Icon-only toolbar — always hide text, show tooltip on hover */
+.admin-tb-btn span {
+  display: none;
+}
+.admin-tb-btn {
+  padding: 0.5rem;
+  position: relative;
+  justify-content: center;
+}
+.admin-tb-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.admin-tb-outline-success,
+.admin-tb-outline-warning {
+  padding: 0.25rem;
+}
+.admin-tb-outline-success .admin-tb-icon,
+.admin-tb-outline-warning .admin-tb-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.admin-tb-ghost {
+  color: var(--muted-foreground);
+}
+.admin-tb-ghost .admin-tb-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.admin-tb-sep {
+  height: 1rem;
+}
+.admin-tb-btn:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: var(--color-neutral);
+  color: var(--color-neutral-content);
+  border-radius: 0.25rem;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Admin menu module — style legacy admin menu */
+.admin-submenu-container,
+nav[aria-label] .module {
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Sidebar Admin Menu — Flyout style
+   Sidebar shows only top-level section labels. Clicking a section
+   opens a flyout panel to the right with that section's children.
+   ========================================================================== */
+
+/* Reset all lists */
+.drawer-side nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.drawer-side nav ul li {
+  margin: 0;
+}
+
+/* Hide the legacy toggler spans */
+.drawer-side nav .toggler {
+  display: none;
+}
+
+/* All sidebar menu links — compact, one line per section */
+.drawer-side nav ul li a {
+  display: block;
+  padding: 0.4375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-base-content);
+  text-decoration: none;
+  border-radius: var(--radius-field);
+  transition: background 0.15s, color 0.15s;
+}
+.drawer-side nav ul li a:hover {
+  background: var(--accent-surface);
+}
+
+/* Section that contains the current page */
+.drawer-side nav ul li.section-active > a {
+  color: var(--color-primary);
+  background: var(--accent-primary);
+}
+
+/* Section with flyout currently open */
+.drawer-side nav ul li.flyout-active > a {
+  background: var(--accent-surface);
+  color: var(--color-base-content);
+}
+
+/* Chevron on right side of section labels */
+.admin-menu-chevron {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+.drawer-side nav ul li a:hover .admin-menu-chevron,
+.drawer-side nav ul li.flyout-active .admin-menu-chevron {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Flyout Panel — floating panel anchored to sidebar right edge
+   ========================================================================== */
+
+.admin-flyout {
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--color-base-content) 4%, transparent),
+    0 2px 6px color-mix(in oklch, var(--color-base-content) 6%, transparent),
+    0 8px 24px color-mix(in oklch, var(--color-base-content) 10%, transparent),
+    0 16px 48px color-mix(in oklch, var(--color-base-content) 8%, transparent);
+  min-width: 13rem;
+  max-width: 18rem;
+  overflow-y: auto;
+  animation: flyout-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes flyout-in {
+  from { opacity: 0; transform: translateX(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Connecting notch — small triangle pointing left toward the sidebar */
+.admin-flyout::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: var(--notch-top, 1rem);
+  width: 12px;
+  height: 12px;
+  background: var(--color-base-100);
+  border-left: 1px solid var(--color-base-300);
+  border-bottom: 1px solid var(--color-base-300);
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+/* Flyout header — section title */
+.admin-flyout-header {
+  padding: 0.625rem 0.875rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint-foreground);
+  border-bottom: 1px solid var(--color-base-300);
+  background: var(--color-base-200);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.admin-flyout-title-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.admin-flyout-title-link:hover {
+  text-decoration: underline;
+}
+
+/* Flyout list items */
+.admin-flyout-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.375rem;
+}
+.admin-flyout-list li {
+  margin: 0;
+}
+.admin-flyout-list li a {
+  display: block;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--color-base-content);
+  text-decoration: none;
+  border-radius: var(--radius-field);
+  transition: background 0.1s, color 0.1s;
+}
+.admin-flyout-list li a:hover {
+  background: var(--accent-primary);
+  color: var(--color-primary);
+}
+.admin-flyout-list li.active > a {
+  color: var(--color-primary);
+  background: var(--accent-primary);
+  font-weight: 500;
+}
+
+/* Nested lists in flyout */
+.admin-flyout-list ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0.75rem;
+}
+.admin-flyout-list ul li a {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  color: var(--muted-foreground);
+}
+.admin-flyout-list ul li a:hover {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Admin Component View Styles (for converted Blade views)
+   ========================================================================== */
+
+/* Admin table — used by <x-admin-form> list views */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-table thead th {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  text-align: left;
+  border-bottom: 2px solid var(--border-primary);
+  white-space: nowrap;
+}
+.admin-table tbody td {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--color-base-300);
+  vertical-align: middle;
+}
+.admin-table tbody tr:hover {
+  background: var(--muted);
+}
+
+/* Sortable column headers */
+.admin-table th a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.admin-table th a:hover {
+  color: var(--color-primary);
+}
+
+/* Checkbox column */
+.admin-table .column-check {
+  width: 2.5rem;
+  text-align: center;
+}
+
+/* Status column */
+.admin-table .column-status {
+  width: 5rem;
+  text-align: center;
+}
+
+/* Admin form sections — used by <x-admin-edit> */
+.admin-fieldset {
+  background: var(--color-base-100);
+  border-radius: var(--radius-box);
+  border: 1px solid var(--color-base-300);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.admin-fieldset-heading {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--color-base-200);
+  border-bottom: 1px solid var(--color-base-300);
+  border-left: 3px solid var(--color-primary);
+  margin: 0;
+}
+.admin-fieldset-body {
+  padding: 1rem;
+}
+
+/* When admin-fieldset is a <details> accordion panel */
+details.admin-fieldset > .admin-fieldset-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+details.admin-fieldset > .admin-fieldset-heading::-webkit-details-marker,
+details.admin-fieldset > .admin-fieldset-heading::marker {
+  display: none;
+  content: '';
+}
+details.admin-fieldset > .admin-fieldset-heading::after {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'%3E%3Cpath d='M4.5 6L8 9.5 11.5 6' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+  transform: rotate(-90deg);
+  opacity: 0.6;
+}
+details.admin-fieldset[open] > .admin-fieldset-heading::after {
+  transform: rotate(0deg);
+}
+details.admin-fieldset:not([open]) > .admin-fieldset-heading {
+  border-bottom-color: transparent;
+}
+details.admin-fieldset[open] > .admin-fieldset-heading {
+  color: var(--color-primary);
+}
+
+/* Form controls inside admin fieldset bodies */
+.admin-fieldset-body .form-control > label,
+.admin-fieldset-body .form-control > .control-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--muted-foreground);
+}
+
+/* Input focus states — primary color border + glow */
+.admin-fieldset-body input[type="text"]:focus,
+.admin-fieldset-body input[type="number"]:focus,
+.admin-fieldset-body input[type="email"]:focus,
+.admin-fieldset-body input[type="password"]:focus,
+.admin-fieldset-body input[type="url"]:focus,
+.admin-fieldset-body textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+}
+.input-modal .input-cell:first-child input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+}
+
+/* Required field indicator — hide "Required" text, show red asterisk */
+span.required.star {
+  font-size: 0;
+  color: transparent;
+}
+span.required.star::after {
+  content: ' *';
+  font-size: 0.75rem;
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+/* Config form field — stacked label-above-input, used in Global Configuration */
+.cfg-field {
+  margin-bottom: 1rem;
+}
+.cfg-field:last-child {
+  margin-bottom: 0;
+}
+.cfg-field > label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--muted-foreground);
+}
+.cfg-field select,
+.cfg-field input[type="text"],
+.cfg-field input[type="number"],
+.cfg-field input[type="email"],
+.cfg-field input[type="password"],
+.cfg-field textarea {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-sizing: border-box;
+}
+.cfg-field textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+/* Radio groups — form engine outputs <fieldset class="radio"><ul><li> */
+.cfg-field fieldset.radio {
+  display: block;
+  width: 100%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+.cfg-field fieldset.radio ul,
+.cfg-field ul.radio {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+}
+.cfg-field fieldset.radio ul li,
+.cfg-field ul.radio li {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+}
+.cfg-field fieldset.radio ul li label,
+.cfg-field ul.radio li label {
+  margin: 0;
+  font-weight: normal;
+  color: var(--color-base-content);
+  display: inline;
+  font-size: 0.875rem;
+}
+/* Modal image/file picker inside cfg-field */
+.cfg-field .input-modal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.cfg-field .input-modal .input-cell:first-child {
+  flex: 1;
+}
+.cfg-field .input-modal input[type="text"] {
+  width: 100%;
+}
+.cfg-field .input-modal .input-cell:last-child a {
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* General input-modal layout (text field + button picker, used in any context) */
+.input-modal {
+  display: flex;
+  align-items: stretch;
+  gap: 0.375rem;
+  width: 100%;
+}
+.input-modal .input-cell:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.input-modal .input-cell:first-child input[type="text"],
+.input-modal .input-cell:first-child input[type="text"].inputbox {
+  width: 100%;
+  height: 2rem;
+  padding: 0 0.5rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  outline: none;
+}
+.input-modal .input-cell:first-child input[type="text"]:disabled,
+.input-modal .input-cell:first-child input[type="text"].inputbox:disabled {
+  background: var(--color-base-200);
+  color: var(--subtle-foreground);
+}
+.input-modal input[type="button"],
+.input-modal a.button,
+.input-modal button.button,
+.input-modal .input-cell:last-child a {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.625rem;
+  height: 2rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 0.375rem;
+  background: var(--accent-primary-subtle);
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 500;
+}
+.input-modal input[type="button"]:hover,
+.input-modal a.button:hover,
+.input-modal button.button:hover,
+.input-modal .input-cell:last-child a:hover {
+  background: var(--accent-primary);
+}
+
+/* Description text above filter table */
+.cfg-filters-note {
+  font-size: 0.8125rem;
+  color: var(--subtle-foreground);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* Text Filter table (#filter-config) — 4-column table inside cfg-field */
+#filter-config {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+#filter-config thead tr {
+  border-bottom: 2px solid var(--color-base-300);
+}
+#filter-config thead th {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+#filter-config thead th:first-child {
+  width: 25%;
+}
+#filter-config thead th:nth-child(2) {
+  width: 22%;
+}
+#filter-config tbody tr {
+  border-bottom: 1px solid var(--color-base-200);
+}
+#filter-config tbody tr:last-child {
+  border-bottom: none;
+}
+#filter-config tbody th.acl-groups {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#filter-config tbody td {
+  padding: 0.375rem 0.75rem;
+  vertical-align: middle;
+}
+/* Override the full-width input rule for cells inside filter-config */
+/* Note: filter_tags/filter_attributes inputs have no type attribute, so use plain `input` */
+#filter-config select,
+#filter-config input {
+  width: 100%;
+  padding: 0.25rem 0.375rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.25rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-sizing: border-box;
+}
+
+/* Hint/description text below fields */
+.cfg-field .hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-top: 0.25rem;
+}
+
+/* Admin form field */
+.admin-field {
+  margin-bottom: 1rem;
+}
+.admin-field:last-child {
+  margin-bottom: 0;
+}
+.admin-field label:not(.flex) {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--muted-foreground);
+}
+.admin-field-input select,
+.admin-field-input input[type="text"],
+.admin-field-input textarea {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+/* Admin meta table (sidebar) */
+.admin-meta {
+  width: 100%;
+}
+.admin-meta tr td {
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--color-base-300);
+}
+.admin-meta tr:last-child td {
+  border-bottom: none;
+}
+.admin-meta tr td:first-child {
+  font-weight: 500;
+  color: var(--muted-foreground);
+  width: 40%;
+}
+
+/* Filter bar */
+.admin-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-box);
+  margin-bottom: 1rem;
+}
+
+/* Prevent filter selects from shrinking below readable width */
+.admin-filters select {
+  min-width: 10rem;
+}
+
+/* Clear search button always shows a border */
+[data-clear-search] {
+  border: 1px solid var(--color-base-300);
+}
+
+/* Pagination */
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+/* ── Alerts — subtle left-border style ───────────────────── */
+.alert {
+  border-radius: var(--radius-box);
+  border: 1px solid var(--color-base-300);
+  border-left: 3px solid currentColor;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  padding: 0.625rem 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.alert-success {
+  border-left-color: var(--color-success);
+  background: var(--success-surface);
+  color: var(--color-base-content);
+}
+.alert-error {
+  border-left-color: var(--color-error);
+  background: var(--error-surface);
+  color: var(--color-base-content);
+}
+.alert-warning {
+  border-left-color: var(--color-warning);
+  background: var(--warning-surface);
+  color: var(--color-base-content);
+}
+.alert-info {
+  border-left-color: var(--color-info);
+  background: var(--info-surface);
+  color: var(--color-base-content);
+}
+
+/* ── Toolbar popup modal ─────────────────────────────────── */
+.admin-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0% 0 0 / 0);
+  transition: background 0.2s ease;
+}
+.admin-popup-backdrop.admin-popup-open {
+  background: oklch(0% 0 0 / 0.45);
+}
+.admin-popup-dialog {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-base-100);
+  border-radius: var(--radius-box);
+  box-shadow:
+    0 20px 60px -12px oklch(0% 0 0 / 0.35),
+    0 8px 20px -6px oklch(0% 0 0 / 0.15);
+  overflow: hidden;
+  opacity: 0;
+  scale: 0.96;
+  transition: opacity 0.2s ease, scale 0.2s ease;
+}
+.admin-popup-open .admin-popup-dialog {
+  opacity: 1;
+  scale: 1;
+}
+.admin-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-primary) 80%, black);
+}
+.admin-popup-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-primary-content);
+}
+.admin-popup-close {
+  display: inline-flex;
+  padding: 0.25rem;
+  color: var(--color-primary-content);
+  border-radius: var(--radius-btn);
+  color: var(--color-base-content);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+  background: none;
+  border: none;
+}
+.admin-popup-close:hover {
+  opacity: 1;
+  background: color-mix(in oklch, var(--color-primary-content) 20%, transparent);
+}
+.admin-popup-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+}
+
+/* ── Picker iframe — tmpl=component views that supply their own header ── */
+
+/* Sticky header bar (teal, matches popup chrome) */
+.admin-picker-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+/* Search input inside the picker header */
+.admin-picker-search {
+  margin-left: auto;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  background: color-mix(in oklch, var(--color-primary-content) 15%, transparent);
+  color: var(--color-primary-content);
+  border: 1px solid color-mix(in oklch, var(--color-primary-content) 40%, transparent);
+  outline: none;
+  width: 14rem;
+}
+.admin-picker-search::placeholder {
+  color: color-mix(in oklch, var(--color-primary-content) 60%, transparent);
+}
+
+/* Close button inside the picker header */
+.admin-picker-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary-content);
+  opacity: 0.8;
+  line-height: 0;
+  border-radius: var(--radius-btn);
+  transition: opacity 0.15s, background 0.15s;
+}
+.admin-picker-close:hover {
+  opacity: 1;
+  background: color-mix(in oklch, var(--color-primary-content) 20%, transparent);
+}
+
+/* Accordion card with primary left border */
+.admin-picker-card {
+  border-left: 3px solid var(--color-primary);
+}
+
+/* 3-column grid for picker accordion cards */
+.admin-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  align-items: start;
+}
+
+/* ==========================================================================
+   Config Modal — component configuration popup
+   ========================================================================== */
+
+/* Full-height form inside the iframe */
+.config-modal {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Header bar ──────────────────────────────────────────── */
+.config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  background: var(--color-neutral);
+  border-bottom: 1px solid var(--color-neutral);
+  flex-shrink: 0;
+}
+.config-header-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-content);
+  margin: 0;
+}
+.config-header-actions {
+  display: flex;
+  gap: 0.375rem;
+}
+
+/* Header buttons */
+.config-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: var(--radius-field);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.25rem;
+}
+.config-btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border-color: var(--color-primary);
+}
+.config-btn-primary:hover {
+  background: color-mix(in oklch, var(--color-primary) 85%, black);
+}
+.config-btn-default {
+  background: color-mix(in oklch, var(--color-neutral-content) 15%, transparent);
+  color: var(--color-neutral-content);
+  border-color: color-mix(in oklch, var(--color-neutral-content) 25%, transparent);
+}
+.config-btn-default:hover {
+  background: color-mix(in oklch, var(--color-neutral-content) 25%, transparent);
+}
+.config-btn-ghost {
+  background: transparent;
+  color: color-mix(in oklch, var(--color-neutral-content) 70%, transparent);
+}
+.config-btn-ghost:hover {
+  background: color-mix(in oklch, var(--color-neutral-content) 15%, transparent);
+  color: var(--color-neutral-content);
+}
+
+/* ── Tabs ────────────────────────────────────────────────── */
+.config-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 1rem;
+  background: var(--color-base-100);
+  border-bottom: 1px solid var(--color-base-300);
+  flex-shrink: 0;
+}
+.config-tab {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.config-tab:hover {
+  color: var(--color-base-content);
+}
+.config-tab-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* ── Flash messages inside config modal ──────────────────── */
+.config-messages {
+  padding: 0.625rem 1rem 0;
+}
+.config-message {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-field);
+  margin-bottom: 0.25rem;
+}
+.config-message-success {
+  background: var(--success-surface);
+  color: var(--success-foreground);
+}
+.config-message-error {
+  background: var(--error-surface);
+  color: var(--error-foreground);
+}
+.config-message-warning {
+  background: var(--warning-surface);
+  color: var(--warning-foreground);
+}
+.config-message-info {
+  background: var(--info-surface);
+  color: var(--info-foreground);
+}
+
+/* ── Tab panels ──────────────────────────────────────────── */
+.config-panels {
+  flex: 1;
+  padding: 1.25rem 1rem;
+  overflow-y: auto;
+}
+.config-tab-desc {
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+/* ── Standard config fields ──────────────────────────────── */
+.config-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.config-field {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.config-field:last-child {
+  border-bottom: none;
+}
+.config-field-label {
+  flex: 0 0 12rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-base-content);
+  padding-top: 0.375rem;
+  padding-right: 1rem;
+}
+.config-field-label span {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.config-field-input {
+  flex: 1;
+}
+.config-field-input select {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  background: var(--color-base-100);
+  font-size: 0.8125rem;
+  min-width: 10rem;
+  color: var(--color-base-content);
+}
+.config-field-input select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+.config-field-input input[type="text"],
+.config-field-input input[type="password"],
+.config-field-input input[type="number"],
+.config-field-input input[type="email"],
+.config-field-input input[type="url"] {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  background: var(--color-base-100);
+  font-size: 0.8125rem;
+  width: 100%;
+  max-width: 20rem;
+  color: var(--color-base-content);
+}
+.config-field-input input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+.config-field-input textarea {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  background: var(--color-base-100);
+  font-size: 0.8125rem;
+  width: 100%;
+  max-width: 20rem;
+  color: var(--color-base-content);
+  resize: vertical;
+}
+.config-field-input textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+.config-field-input fieldset.radio {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.config-field-input fieldset.radio label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-right: 1rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+/* ── Permissions UI ──────────────────────────────────────── */
+.config-permissions {
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-box);
+  overflow: hidden;
+}
+
+/* Each user group row */
+.config-perm-group {
+  border-bottom: 1px solid var(--color-base-300);
+}
+.config-perm-group:last-child {
+  border-bottom: none;
+}
+
+/* Summary (clickable header) */
+.config-perm-summary {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-base-content);
+  cursor: pointer;
+  background: var(--color-base-200);
+  user-select: none;
+  list-style: none; /* removes default marker */
+  transition: background 0.1s;
+}
+.config-perm-summary::-webkit-details-marker {
+  display: none;
+}
+/* Custom chevron */
+.config-perm-summary::before {
+  content: '';
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  margin-right: 0.5rem;
+  opacity: 0.4;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.config-perm-group[open] > .config-perm-summary::before {
+  transform: rotate(45deg);
+}
+.config-perm-summary:hover {
+  background: var(--accent-surface);
+}
+.config-perm-indent {
+  color: var(--faint-foreground);
+  margin-right: 0.125rem;
+}
+
+/* Permission table inside each group */
+.config-perm-body {
+  background: var(--color-base-100);
+  border-top: 1px solid var(--color-base-300);
+}
+.config-perm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.config-perm-table thead th {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--subtle-foreground);
+  text-align: left;
+  border-bottom: 1px solid var(--color-base-300);
+  background: var(--muted);
+}
+.config-perm-table tbody td {
+  padding: 0.4375rem 0.75rem;
+  font-size: 0.8125rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+.config-perm-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.config-perm-table tbody tr:hover {
+  background: var(--muted);
+}
+
+/* Permission select dropdown */
+.config-perm-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  background: var(--color-base-100);
+  font-size: 0.75rem;
+  color: var(--color-base-content);
+  min-width: 7rem;
+}
+.config-perm-select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+
+/* Permission badges */
+.config-perm-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  letter-spacing: 0.02em;
+}
+.config-perm-badge-success {
+  background: var(--success-surface);
+  color: var(--color-success);
+}
+.config-perm-badge-error {
+  background: var(--error-surface);
+  color: var(--color-error);
+}
+.config-perm-badge-neutral {
+  background: var(--color-base-200);
+  color: var(--subtle-foreground);
+}
+.config-perm-conflict {
+  font-size: 0.6875rem;
+  color: var(--color-warning);
+  margin-left: 0.25rem;
+  font-weight: 600;
+}
+
+/* Notes at bottom of permissions */
+.config-perm-notes {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin: 0.75rem 0 0;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Batch Processing — collapsible batch panel used by list views
+   ========================================================================== */
+
+.batch-details {
+  overflow: hidden;
+}
+.batch-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.batch-summary::-webkit-details-marker {
+  display: none;
+}
+.batch-summary:hover {
+  color: var(--color-base-content);
+}
+.batch-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.batch-details[open] .batch-chevron {
+  transform: rotate(90deg);
+}
+.details-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+details[open] > summary .details-chevron {
+  transform: rotate(90deg);
+}
+.batch-content {
+  padding: 0 1rem 1rem;
+}
+.batch-tip {
+  font-size: 0.8125rem;
+  color: var(--subtle-foreground);
+  margin: 0 0 0.75rem;
+}
+.batch-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.batch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+@media (max-width: 768px) {
+  .batch-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.batch-field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--muted-foreground);
+}
+.batch-field select {
+  width: 100%;
+  height: 2rem;
+  padding: 0 0.5rem;
+  font-size: 0.8125rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.25rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+}
+.batch-radios {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 2rem;
+}
+.batch-radios label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  margin-bottom: 0;
+  color: inherit;
+  font-weight: normal;
+}
+.batch-radios input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Ordering UI — up/down buttons and group headers for nested-set ordering
+   ========================================================================== */
+
+.order-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s;
+}
+.order-btn:hover {
+  background: var(--accent-surface);
+  color: var(--color-base-content);
+}
+.order-btn.is-disabled {
+  opacity: 0.15;
+  cursor: default;
+  pointer-events: none;
+}
+.order-num {
+  display: inline-block;
+  min-width: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.order-input {
+  width: 38px;
+  min-width: 0;
+  padding: 2px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: transparent;
+  outline: none;
+}
+.order-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-base-100);
+}
+/* Status icon circles in list views */
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.status-icon[data-title]:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: var(--color-neutral);
+  color: var(--color-neutral-content);
+  border-radius: 0.25rem;
+  z-index: 50;
+  pointer-events: none;
+}
+.status-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+.status-icon:hover { opacity: 0.75; }
+.status-icon.btn-success { color: var(--color-success); }
+.status-icon.btn-warning { color: var(--color-warning); }
+.status-icon.btn-error   { color: var(--color-error); }
+.status-icon.is-dimmed   { color: var(--faint-foreground); }
+.status-icon.no-ring { border-color: transparent; }
+
+.order-group-header td {
+  background: var(--color-base-200);
+  padding: 4px 12px !important;
+  border-bottom: 1px solid var(--color-base-300);
+  border-top: 1px solid var(--color-base-300);
+}
+.order-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Editor XTD buttons (Article, Image, Page Break, Read More) ── */
+#editor-xtd-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  margin-top: 4px;
+  background: var(--color-base-200);
+}
+#editor-xtd-buttons .button2-left {
+  float: none;
+  margin: 0;
+}
+#editor-xtd-buttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-base-content);
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+#editor-xtd-buttons a:hover,
+#editor-xtd-buttons a:focus {
+  background: var(--color-base-300);
+  border-color: var(--color-border-strong);
+}
+.toggle-editor {
+  margin-top: 4px;
+}
+.toggle-editor button {
+  font-size: 12px;
+  padding: 2px 10px;
+  color: var(--subtle-foreground);
+  background: transparent;
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-field);
+  cursor: pointer;
+}
+.toggle-editor button:hover {
+  background: var(--color-base-200);
+}
+
+/* ==========================================================================
+   Help Content — prose-like typography for .phtml help pages
+   ========================================================================== */
+
+.help-content {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-base-content);
+}
+.help-content h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  line-height: 1.3;
+}
+.help-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  line-height: 1.3;
+}
+.help-content h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  line-height: 1.4;
+}
+.help-content p {
+  margin: 0 0 0.75rem;
+}
+.help-content ul,
+.help-content ol {
+  margin: 0 0 0.75rem;
+  padding-left: 1.5rem;
+}
+.help-content li {
+  margin: 0.25rem 0;
+}
+.help-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.help-content a:hover {
+  color: color-mix(in oklch, var(--color-primary) 80%, black);
+}
+.help-content code {
+  font-size: 0.875em;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--color-base-200);
+}
+.help-content pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-box);
+  background: var(--color-base-200);
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.help-content pre code {
+  padding: 0;
+  background: none;
+}
+.help-content table {
+  width: 100%;
+  margin: 0 0 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.help-content th,
+.help-content td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-base-300);
+}
+.help-content th {
+  font-weight: 600;
+  background: var(--color-base-200);
+}
+.help-content hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid var(--color-base-300);
+}
+.help-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-box);
+}
+
+/* ==========================================================================
+   Login Page Shell (login.blade.php — tmpl=login)
+   ========================================================================== */
+
+/* Dark backdrop for the login page */
+.login-page html,
+.login-page body,
+html:has(.login-page),
+body:has(.login-page) {
+  background: var(--color-neutral);
+}
+
+/* Full-height centered column, card in upper third */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding-top: 15vh;
+  padding-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: var(--color-neutral);
+}
+
+/* Card width constraint */
+.login-wrap {
+  max-width: 20rem;
+  width: 100%;
+}
+
+/* Card header — primary brand color */
+.login-card-header {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  padding: 0.875rem 1.25rem;
+  border-radius: calc(var(--radius-box, 0.5rem) - 1px)
+                 calc(var(--radius-box, 0.5rem) - 1px) 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stacked inputs — small gap between username and password */
+.login-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/* ── Flatpickr calendar theme override ───────────────────── */
+.flatpickr-calendar {
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: var(--radius-box, 0.5rem);
+  box-shadow: 0 4px 24px -2px oklch(0 0 0 / 0.12);
+  font-family: inherit;
+  font-size: 0.8125rem;
+}
+.flatpickr-calendar.arrowTop::before,
+.flatpickr-calendar.arrowTop::after { border-bottom-color: var(--color-base-300); }
+.flatpickr-calendar.arrowBottom::before,
+.flatpickr-calendar.arrowBottom::after { border-top-color: var(--color-base-300); }
+.flatpickr-months {
+  background: var(--color-primary);
+  border-radius: calc(var(--radius-box, 0.5rem) - 1px)
+                 calc(var(--radius-box, 0.5rem) - 1px) 0 0;
+  padding: 0.25rem 0;
+}
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month,
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  color: var(--color-primary-content);
+  fill: var(--color-primary-content);
+}
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover { color: var(--color-primary-content); opacity: 0.75; }
+.flatpickr-current-month input.cur-year { color: var(--color-primary-content); }
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+}
+.flatpickr-weekdays { background: var(--color-base-200); }
+span.flatpickr-weekday {
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+.flatpickr-day {
+  color: var(--color-base-content);
+  border-radius: var(--radius-btn, 0.375rem);
+}
+.flatpickr-day:hover,
+.flatpickr-day:focus { background: var(--color-base-200); border-color: var(--color-base-200); }
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+.flatpickr-day.today { border-color: var(--color-primary); }
+.flatpickr-day.today:hover { background: var(--color-base-200); }
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay { color: var(--faint-foreground); }
+.flatpickr-time { border-top: 1px solid var(--color-base-300); }
+.flatpickr-time input,
+.flatpickr-time .flatpickr-am-pm {
+  color: var(--color-base-content);
+  background: var(--color-base-100);
+}
+.flatpickr-time input:hover,
+.flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-time input:focus { background: var(--color-base-200); }

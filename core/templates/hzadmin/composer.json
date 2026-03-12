@@ -1,0 +1,24 @@
+{
+	"name": "hubzero/tpl_kameleon",
+	"description": "Kameleon admin template for the HUBzero CMS",
+	"type": "hubzero-template",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+		"install-directory": "/templates/kameleon/"
+	}
+}

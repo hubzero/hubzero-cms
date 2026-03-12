@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" version="2.5" client="administrator">
+	<name>hzadmin</name>
+	<creationDate>03/06/26</creationDate>
+	<author>Purdue University</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright © 2026 Purdue University. All Rights Reserved.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>1.0</version>
+	<description>Administration template for Hubzero CMS — daisyUI + Tailwind</description>
+	<files>
+		<filename>index.php</filename>
+		<filename>index.blade.php</filename>
+		<filename>css/index.css</filename>
+		<filename>css/admin.css</filename>
+		<filename>css/login.css</filename>
+		<filename>css/component.css</filename>
+		<filename>css/error.css</filename>
+	</files>
+	<positions>
+		<position>menu</position>
+		<position>submenu</position>
+		<position>toolbar</position>
+		<position>title</position>
+		<position>status</position>
+		<position>icon</position>
+		<position>cpanel</position>
+		<position>debug</position>
+		<position>notices</position>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="viewEngines" type="hidden" default="blade,php" />
+				<field name="cssFrameworks" type="hidden" default="daisyui,classic" />
+				<field name="header" type="list" default="light" label="TPL_KAMELEON_FIELD_HEADER_LABEL" description="TPL_KAMELEON_FIELD_HEADER_DESC">
+					<option value="light">TPL_KAMELEON_FIELD_HEADER_LIGHT</option>
+					<option value="dark">TPL_KAMELEON_FIELD_HEADER_DARK</option>
+				</field>
+				<field name="theme" type="list" default="" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
+					<option value="custom">TPL_KAMELEON_FIELD_THEME_CUSTOM</option>
+					<option value="">TPL_KAMELEON_FIELD_THEME_GRAY</option>
+					<option value="charcoal">TPL_KAMELEON_FIELD_THEME_CHARCOAL</option>
+					<option value="blue">TPL_KAMELEON_FIELD_THEME_BLUE</option>
+					<option value="bluesteel">TPL_KAMELEON_FIELD_THEME_BLUESTEEL</option>
+					<option value="aqua">TPL_KAMELEON_FIELD_THEME_AQUA</option>
+					<option value="green">TPL_KAMELEON_FIELD_THEME_GREEN</option>
+					<option value="olive">TPL_KAMELEON_FIELD_THEME_OLIVE</option>
+					<option value="lime">TPL_KAMELEON_FIELD_THEME_LIME</option>
+					<option value="orange">TPL_KAMELEON_FIELD_THEME_ORANGE</option>
+					<option value="red">TPL_KAMELEON_FIELD_THEME_RED</option>
+					<option value="wine">TPL_KAMELEON_FIELD_THEME_WINE</option>
+					<option value="salmon">TPL_KAMELEON_FIELD_THEME_SALMON</option>
+					<option value="pink">TPL_KAMELEON_FIELD_THEME_PINK</option>
+					<option value="purplepowder">TPL_KAMELEON_FIELD_THEME_PURPLEPOWDER</option>
+					<option value="purple">TPL_KAMELEON_FIELD_THEME_PURPLE</option>
+					<option value="grape">TPL_KAMELEON_FIELD_THEME_GRAPE</option>
+					<option value="yellow">TPL_KAMELEON_FIELD_THEME_YELLOW</option>
+				</field>
+				<field name="color" type="color" default="" label="TPL_KAMELEON_FIELD_COLOR_LABEL" description="TPL_KAMELEON_FIELD_COLOR_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
