@@ -27,6 +27,8 @@ class Quickicon extends Module
      */
     protected static $buttons = array();
 
+    protected $buttonList;
+
     /**
      * Display module contents
      *
@@ -38,9 +40,10 @@ class Quickicon extends Module
             return;
         }
 
-        $buttons = self::getButtons($this->params);
+        $this->buttonList = self::getButtons($this->params);
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($path);
     }
 
     /**

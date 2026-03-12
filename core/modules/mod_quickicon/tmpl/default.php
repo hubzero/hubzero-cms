@@ -8,7 +8,7 @@
 
 defined('_HZEXEC_') or die();
 
-$html = \Modules\QuickIcon\Icons::buttons($buttons);
+$html = \Modules\QuickIcon\Icons::buttons($buttonList);
 
 if (!empty($html)) : ?>
     <?php $this->css(); ?>

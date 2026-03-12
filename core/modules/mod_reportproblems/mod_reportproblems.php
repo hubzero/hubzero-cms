@@ -11,6 +11,7 @@ namespace Modules\Reportproblems;
 use Hubzero\Module\Module;
 use Hubzero\Browser\Detector;
 use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Request;
 
@@ -60,22 +61,6 @@ class Reportproblems extends Module
         $this->browser     = $browser->name();
         $this->browser_ver = $browser->version();
 
-        $layoutPath = $this->getLayoutPath();
-
-        // Blade layout is handled by the page shell's help-drawer partial.
-        // Skip loading legacy JS/CSS when using the blade layout.
-        if (str_ends_with($layoutPath, '.blade.php')) {
-            $this->renderLayout($layoutPath, []);
-            return;
-        }
-
-        $trigger = $this->params->get('trigger', '#tab');
-        $jsInit = 'jQuery(document).ready(function(jq) { '
-            . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
-        $this->css()
-             ->js()
-             ->js($jsInit);
-
         $this->supportParams = Component::params('com_support');
 
         $allowed = Component::params('com_media')->get('upload_extensions');
@@ -85,6 +70,20 @@ class Reportproblems extends Module
 
         $this->allowed = $allowed;
 
-        require $layoutPath;
+        $layoutPath = $this->getLayoutPath();
+
+        // Legacy path: load assets and inline init script from class
+        // (legacy template doesn't call $this->css()/$this->js() itself).
+        // Blade path: template loads assets via $__module->css()->js().
+        if (Document::getViewEngine() !== 'blade') {
+            $trigger = $this->params->get('trigger', '#tab');
+            $jsInit = 'jQuery(document).ready(function(jq) { '
+                . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
+            $this->css()
+                 ->js()
+                 ->js($jsInit);
+        }
+
+        $this->renderLayout($layoutPath);
     }
 }

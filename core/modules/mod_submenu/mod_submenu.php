@@ -15,6 +15,8 @@ use Hubzero\Module\Module;
  */
 class Submenu extends Module
 {
+    protected $list;
+
     /**
      * Get the items of the submenu and display them.
      *
@@ -26,13 +28,13 @@ class Submenu extends Module
             return;
         }
 
-        // Initialise variables.
-        $list = \Hubzero\Facades\Submenu::getItems();
+        $this->list = \Hubzero\Facades\Submenu::getItems();
 
-        if (!is_array($list) || !count($list)) {
+        if (!is_array($this->list) || !count($this->list)) {
             return;
         }
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($path);
     }
 }

@@ -22,6 +22,8 @@ use Hubzero\Facades\User;
  */
 class Popular extends Module
 {
+    protected $list;
+
     /**
      * Display module contents
      *
@@ -33,14 +35,10 @@ class Popular extends Module
             return;
         }
 
-        // [!] Legacy compatibility
-        $params = $this->params;
+        $this->list = $this->getList($this->params);
 
-        // Get module data.
-        $list = $this->getList($params);
-
-        // Render the module
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($path);
     }
 
     /**

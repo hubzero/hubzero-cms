@@ -67,7 +67,8 @@ class Whosonline extends Module
         }
 
         // Render view
-        require $this->getLayoutPath('default');
+        $path = $this->getLayoutPath('default');
+        $this->renderLayout($path);
     }
 
     /**
@@ -86,6 +87,7 @@ class Whosonline extends Module
         ));
 
         // Get the view
-        require $this->getLayoutPath('default_admin');
+        $path = $this->getLayoutPath('default_admin');
+        $this->renderLayout($path);
     }
 }
