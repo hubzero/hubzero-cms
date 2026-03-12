@@ -424,21 +424,20 @@ class View extends Obj
     }
 
     /**
-     * Get the render engine for this page.
+     * Get the resolved view engine for this page.
      *
-     * Delegates to Document::getRenderEngine() which resolves the
-     * global config preference against the template's capability.
-     * All callers (views, modules, plugins) get the same answer.
+     * Delegates to Document::getViewEngine() which negotiates the
+     * template's preferences against the component's accepted engines.
      *
-     * @return  string  'legacy' or 'blade'
+     * @return  string  'php' or 'blade'
      */
     public function getEngine(): string
     {
         try {
             $doc = \Hubzero\Facades\App::get('document');
-            return $doc->getRenderEngine();
+            return $doc->getViewEngine();
         } catch (\Throwable $e) {
-            return 'legacy';
+            return 'php';
         }
     }
 
@@ -524,14 +523,8 @@ class View extends Obj
                 return $this->_output;
             }
 
-            // Blade preferred but no blade template found — downgrade
-            // so the page shell and modules also fall back to legacy
-            try {
-                $doc = \Hubzero\Facades\App::get('document');
-                $doc->setRenderEngine('legacy');
-            } catch (\Throwable $e) {
-                // Document not available
-            }
+            // Blade preferred but no blade template found for this view.
+            // Continue to legacy .php template lookup below.
         }
 
         // Legacy path: find .php template
@@ -602,7 +595,45 @@ class View extends Obj
         // Provide the view instance for method access (escape, loadTemplate, etc.)
         $data['__view'] = $this;
 
+        // Register a view namespace for the current component so that
+        // @include('com_foo::some.partial') works from Blade templates.
+        $this->registerBladeNamespace($templatePath);
+
         return Blade::render($templatePath, $data);
+    }
+
+    /**
+     * Register a Blade view namespace for the component owning $templatePath.
+     *
+     * Extracts the component name (e.g. "com_categories") from the path
+     * and registers the component's base directory so that Blade
+     * @include('com_categories::admin.views.foo.tmpl.bar') resolves correctly.
+     *
+     * @param  string  $templatePath  Absolute path to the current .blade.php
+     */
+    private function registerBladeNamespace(string $templatePath): void
+    {
+        // Match components/com_xxx/ in the path
+        if (!preg_match('#[/\\\\]components[/\\\\](com_[a-z0-9_]+)[/\\\\]#i', $templatePath, $m)) {
+            return;
+        }
+
+        $namespace = $m[1]; // e.g. "com_categories"
+
+        // Already registered?
+        $finder = Blade::factory()->getFinder();
+        $hints  = $finder->getHints();
+        if (isset($hints[$namespace])) {
+            return;
+        }
+
+        // Derive the component base directory from the template path
+        $pos = strpos($templatePath, $m[0]);
+        $componentBase = substr($templatePath, 0, $pos) . '/components/' . $namespace;
+
+        if (is_dir($componentBase)) {
+            $finder->addNamespace($namespace, $componentBase);
+        }
     }
 
     /**

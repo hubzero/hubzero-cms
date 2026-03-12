@@ -179,6 +179,10 @@ class Loader
         define('PATH_COMPONENT_SITE', $this->path($option) . DIRECTORY_SEPARATOR . 'site');
         define('PATH_COMPONENT_ADMINISTRATOR', $this->path($option) . DIRECTORY_SEPARATOR . 'admin');
 
+        // Register Blade component path for this extension
+        $bladePrefix = str_replace('_', '-', $option);
+        \Hubzero\View\Blade::registerPath($this->path($option), $bladePrefix);
+
         // Legacy compatibility
         // @TODO: Deprecate this!
         define('JPATH_COMPONENT', PATH_COMPONENT);

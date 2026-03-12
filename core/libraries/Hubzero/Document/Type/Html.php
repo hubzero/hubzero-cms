@@ -520,9 +520,8 @@ class Html extends Base
             $params['file']
         )     : 'index.php';
 
-        // Use the blade page shell when getRenderEngine() resolves to 'blade'
-        // (global config prefers blade AND the template supports it)
-        if ($this->getRenderEngine() === 'blade') {
+        // Use the blade page shell when the view engine resolves to 'blade'
+        if ($this->getViewEngine() === 'blade') {
             $bladeFile = preg_replace('/\.php$/', '.blade.php', $file);
             if (file_exists($directory . DS . $template . DS . $bladeFile)) {
                 $file = $bladeFile;
@@ -566,7 +565,7 @@ class Html extends Base
     protected function _parseTemplate()
     {
         // Blade page shell renders everything directly — no jdoc tags
-        if ($this->getRenderEngine() === 'blade') {
+        if ($this->getViewEngine() === 'blade') {
             return $this;
         }
 
@@ -634,7 +633,7 @@ class Html extends Base
     protected function _renderTemplate()
     {
         // Blade page shell is already complete — return as-is
-        if ($this->getRenderEngine() === 'blade') {
+        if ($this->getViewEngine() === 'blade') {
             return $this->_template;
         }
 

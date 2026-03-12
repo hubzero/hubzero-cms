@@ -249,6 +249,12 @@ class Loader
 
         $path = $this->path($module->module);
 
+        // Register Blade component path for this module
+        if ($path) {
+            $bladePrefix = str_replace('_', '-', $this->canonical($module->module));
+            \Hubzero\View\Blade::registerPath(dirname($path), $bladePrefix);
+        }
+
         // Load the module
         if ($path) {
             $this->app['language']->load($module->module, PATH_APP .
@@ -361,14 +367,14 @@ class Loader
             $default  = ($temp[1]) ? $temp[1] : 'default';
         }
 
-        // Check the Document's render engine to match the page shell.
-        // When the page shell is blade, prefer blade module layouts.
+        // Check the Document's view engine to match the page shell.
+        // When the view engine is blade, prefer blade module layouts.
         $preferBlade = false;
         try {
             $doc = $this->app['document'];
-            $preferBlade = $doc->getRenderEngine() === 'blade';
+            $preferBlade = $doc->getViewEngine() === 'blade';
         } catch (\Throwable $e) {
-            // Document not available, stick with legacy
+            // Document not available, stick with php
         }
 
         // Template override (Blade first when preferred, then legacy)

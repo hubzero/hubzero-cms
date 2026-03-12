@@ -34,7 +34,13 @@ class Js extends AbstractHelper
             $extension = 'plg_' . $extension . '_' . $element;
         }
 
+        $isDefault = ($asset === '' || $asset === null);
+
         $asset = new Javascript($extension, $asset);
+
+        if ($isDefault) {
+            $asset = $this->resolveBladeAsset(Javascript::class, $extension, $asset);
+        }
 
         $asset = $this->isSuperGroupAsset($asset);
 
@@ -60,6 +66,26 @@ class Js extends AbstractHelper
         }
 
         return $this->getView()->get('option', Request::getCmd('option'));
+    }
+
+    /**
+     * For default js() calls, substitute the blade variant in daisyUI mode.
+     *
+     * @param   string  $class      Asset class
+     * @param   string  $extension  Extension name
+     * @param   object  $original   The original constructed asset
+     * @return  object
+     */
+    private function resolveBladeAsset($class, $extension, $original)
+    {
+        if (Document::getCssFramework() === 'daisyui') {
+            $file = $original->file();
+            $bladeFile = preg_replace('/\.(\w+)$/', '.blade.$1', $file);
+
+            return new $class($extension, $bladeFile);
+        }
+
+        return $original;
     }
 
     /**

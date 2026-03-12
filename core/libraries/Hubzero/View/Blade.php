@@ -114,16 +114,112 @@ class Blade
 
         // Register template namespaces so @include('hubzero::partials.head')
         // resolves to app/templates/hubzero/partials/head.blade.php
-        if (defined('PATH_APP') && is_dir(PATH_APP . '/templates/hubzero')) {
-            $finder->addNamespace('hubzero', PATH_APP . '/templates/hubzero');
-        }
-        if (defined('PATH_CORE') && is_dir(PATH_CORE . '/templates/hubzero')) {
-            $finder->addNamespace('hubzero', PATH_CORE . '/templates/hubzero');
+        foreach (['hubzero', 'hzadmin'] as $tplNs) {
+            if (defined('PATH_APP') && is_dir(PATH_APP . '/templates/' . $tplNs)) {
+                $finder->addNamespace($tplNs, PATH_APP . '/templates/' . $tplNs);
+            }
+            if (defined('PATH_CORE') && is_dir(PATH_CORE . '/templates/' . $tplNs)) {
+                $finder->addNamespace($tplNs, PATH_CORE . '/templates/' . $tplNs);
+            }
         }
 
         $container = new Container();
         $dispatcher = new Dispatcher($container);
 
-        return new Factory($resolver, $finder, $dispatcher);
+        $factory = new Factory($resolver, $finder, $dispatcher);
+
+        // Bind factory + compiler into container for component tag resolution.
+        // BladeCompiler::anonymousComponentPath() needs the view factory interface.
+        // ComponentTagCompiler::guessClassName() needs an Application to get a
+        // namespace for class-based component lookup — we provide a stub so the
+        // lookup fails cleanly and falls through to anonymous resolution.
+        $container->instance(Factory::class, $factory);
+        $container->instance(\Illuminate\Contracts\View\Factory::class, $factory);
+        $container->instance('view', $factory);
+        $container->instance(BladeCompiler::class, $compiler);
+        $container->instance(
+            \Illuminate\Contracts\Foundation\Application::class,
+            new class {
+                public function getNamespace(): string
+                {
+                    return 'App\\';
+                }
+            }
+        );
+        $factory->setContainer($container);
+        Container::setInstance($container);
+
+        static::registerGlobalComponentPaths($compiler);
+
+        return $factory;
+    }
+
+    /**
+     * Register global and template-level anonymous component paths.
+     *
+     * Called once at factory creation. Extension-specific paths are
+     * registered lazily by their loaders via registerPath().
+     *
+     * @param  BladeCompiler  $compiler
+     */
+    private static function registerGlobalComponentPaths(BladeCompiler $compiler): void
+    {
+        // Layer 1: Global components (no prefix)
+        if (defined('PATH_CORE')) {
+            $globalPath = PATH_CORE . '/blade/components';
+            if (is_dir($globalPath)) {
+                $compiler->anonymousComponentPath($globalPath);
+            }
+        }
+
+        // Layer 2: Template global override (no prefix, wins over layer 1)
+        if (defined('PATH_APP')) {
+            $tplComponents = PATH_APP . '/templates/hubzero/blade/components';
+            if (is_dir($tplComponents)) {
+                $compiler->anonymousComponentPath($tplComponents);
+            }
+        }
+    }
+
+    /**
+     * Register a blade/components directory for an extension.
+     *
+     * Called by Component/Module/Plugin loaders after resolving the
+     * extension path. Also registers the template override directory
+     * if it exists. Available for explicit use in edge cases.
+     *
+     * @param  string  $path    Resolved extension base path (e.g., core/components/com_blog)
+     * @param  string  $prefix  Component prefix (e.g., com-blog)
+     */
+    public static function registerPath(string $path, string $prefix): void
+    {
+        $bladeDir = $path . '/blade/components';
+        if (!is_dir($bladeDir)) {
+            return;
+        }
+
+        $compiler = static::compiler();
+        $compiler->anonymousComponentPath($bladeDir, $prefix);
+
+        // Template override for this extension
+        if (defined('PATH_APP')) {
+            $override = PATH_APP . '/templates/hubzero/blade/components/' . $prefix;
+            if (is_dir($override)) {
+                $compiler->anonymousComponentPath($override, $prefix);
+            }
+        }
+    }
+
+    /**
+     * Get the BladeCompiler instance.
+     *
+     * @return BladeCompiler
+     */
+    public static function compiler(): BladeCompiler
+    {
+        // Ensure factory is initialized (creates compiler)
+        static::factory();
+
+        return Container::getInstance()->make(BladeCompiler::class);
     }
 }

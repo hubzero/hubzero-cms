@@ -34,7 +34,13 @@ class Css extends AbstractHelper
             $extension = 'plg_' . $extension . '_' . $element;
         }
 
+        $isDefault = ($stylesheet === '' || $stylesheet === null);
+
         $asset = new Stylesheet($extension, $stylesheet);
+
+        if ($isDefault) {
+            $asset = $this->resolveBladeAsset(Stylesheet::class, $extension, $asset);
+        }
 
         $asset = $this->isSuperGroupAsset($asset);
 
@@ -59,6 +65,26 @@ class Css extends AbstractHelper
             return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
         }
         return $this->getView()->get('option', Request::getCmd('option'));
+    }
+
+    /**
+     * For default css() calls, substitute the blade variant in daisyUI mode.
+     *
+     * @param   string  $class      Asset class
+     * @param   string  $extension  Extension name
+     * @param   object  $original   The original constructed asset
+     * @return  object
+     */
+    private function resolveBladeAsset($class, $extension, $original)
+    {
+        if (Document::getCssFramework() === 'daisyui') {
+            $file = $original->file();
+            $bladeFile = preg_replace('/\.(\w+)$/', '.blade.$1', $file);
+
+            return new $class($extension, $bladeFile);
+        }
+
+        return $original;
     }
 
     /**

@@ -14,6 +14,20 @@ namespace Hubzero\Component;
 class AdminController extends SiteController
 {
     /**
+     * View engines this controller accepts.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks this controller accepts.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Cancels a task and redirects to default view
      */
     public function cancelTask()

@@ -224,12 +224,19 @@ class Loader implements LoaderInterface
         // Legacy: plg{type}{name} (BC — case-insensitive, covers PlgTypeName too)
         $classNameL = 'plg' . $plugin->type . $plugin->name;
 
+        // Register Blade component path for this plugin
+        $pluginPath = $this->path($plugin->type, $plugin->name);
+        if ($pluginPath) {
+            $bladePrefix = 'plg-' . $plugin->type . '-' . $plugin->name;
+            \Hubzero\View\Blade::registerPath($pluginPath, $bladePrefix);
+        }
+
         // Include the file only if neither class is already defined.
         // Use class_exists(..., false) to avoid triggering the autoloader here:
         // if the autoloader were invoked and successfully loaded the class, the
         // outer condition would become false and we'd skip instantiation entirely.
         if (!class_exists($classNameN, false) && !class_exists($classNameL, false)) {
-            $path = $this->path($plugin->type, $plugin->name) . DS . $plugin->name . '.php';
+            $path = $pluginPath . DS . $plugin->name . '.php';
 
             if (file_exists($path)) {
                 require_once $path;

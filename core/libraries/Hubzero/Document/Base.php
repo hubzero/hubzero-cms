@@ -196,13 +196,37 @@ class Base extends Obj
     public $_type = null;
 
     /**
-     * Render engine for the current page ('blade' or 'legacy').
-     * Resolved lazily from global config + template capability.
+     * Resolved view engine for this request ('blade' or 'php').
      * null = not yet resolved.
      *
      * @var  string|null
      */
-    protected $renderEngine = null;
+    protected $_viewEngine = null;
+
+    /**
+     * Resolved CSS framework for this request ('daisyui' or 'classic').
+     * null = not yet resolved.
+     *
+     * @var  string|null
+     */
+    protected $_cssFramework = null;
+
+    /**
+     * View engines the current component accepts.
+     * Defaults to ['php'] if never called.
+     *
+     * @var  array
+     */
+    protected $_acceptedEngines = ['php'];
+
+    /**
+     * CSS frameworks the current component accepts.
+     * Defaults to ['classic'] if never called.
+     *
+     * @var  array
+     */
+    protected $_acceptedFrameworks = ['classic'];
+
 
     /**
      * Array of buffered output
@@ -253,71 +277,203 @@ class Base extends Obj
     }
 
     /**
-     * Set the render engine preference.
+     * Declare that the current component accepts a view engine.
      *
-     * Controllers, views, and other code can call this to change
-     * the render engine. The request is deconflicted against the
-     * template's capability — setting 'blade' when the template
-     * doesn't support it silently falls back to 'legacy'.
+     * Multiple calls accumulate. The base controller calls this
+     * from its $viewEngines property before creating the view.
+     * A controller task can call it again to narrow/change.
      *
-     * @param   string  $engine  'blade' or 'legacy'
+     * Calling this invalidates any previous resolution so the
+     * next get call re-negotiates.
+     *
+     * @param   string  $engine  'blade' or 'php'
      * @return  void
      */
-    public function setRenderEngine(string $engine): void
+    public function acceptViewEngine(string $engine): void
     {
-        if ($engine === 'blade') {
-            try {
-                $loader = \Hubzero\Facades\App::get('template.loader');
-                if (!$loader->supports('blade')) {
-                    $engine = 'legacy';
-                }
-            } catch (\Throwable $e) {
-                $engine = 'legacy';
+        if (!in_array($engine, $this->_acceptedEngines, true)) {
+            $this->_acceptedEngines[] = $engine;
+        }
+        $this->_viewEngine = null;
+        $this->_cssFramework = null;
+    }
+
+    /**
+     * Declare that the current component accepts a CSS framework.
+     *
+     * Multiple calls accumulate. The base controller calls this
+     * from its $cssFrameworks property before creating the view.
+     * A controller task can call it again to narrow/change.
+     *
+     * Calling this invalidates any previous resolution so the
+     * next get call re-negotiates.
+     *
+     * @param   string  $framework  'daisyui' or 'classic'
+     * @return  void
+     */
+    public function acceptCssFramework(string $framework): void
+    {
+        if (!in_array($framework, $this->_acceptedFrameworks, true)) {
+            $this->_acceptedFrameworks[] = $framework;
+        }
+        $this->_viewEngine = null;
+        $this->_cssFramework = null;
+    }
+
+    /**
+     * Get the resolved view engine for this request.
+     *
+     * Resolves lazily on first call by negotiating the template's
+     * preferences against the component's accepted engines.
+     * Throws RuntimeException if no compatible engine is found.
+     *
+     * @return  string  'blade' or 'php'
+     * @throws  \RuntimeException
+     */
+    public function getViewEngine(): string
+    {
+        if ($this->_viewEngine === null) {
+            $this->resolveViewEngine();
+        }
+
+        return $this->_viewEngine;
+    }
+
+    /**
+     * Get the resolved CSS framework for this request.
+     *
+     * Resolves lazily on first call by negotiating the template's
+     * preferences against the component's accepted frameworks.
+     * Throws RuntimeException if no compatible framework is found.
+     *
+     * @return  string  'daisyui' or 'classic'
+     * @throws  \RuntimeException
+     */
+    public function getCssFramework(): string
+    {
+        if ($this->_cssFramework === null) {
+            $this->resolveCssFramework();
+        }
+
+        return $this->_cssFramework;
+    }
+
+    /**
+     * Resolve the view engine by negotiating template preferences
+     * against component acceptance.
+     *
+     * The template declares its preferred engines as a comma-separated
+     * priority list in params (e.g. "blade,php"). The first preference
+     * that the component also accepts wins.
+     *
+     * @return  void
+     * @throws  \RuntimeException  If no compatible engine is found
+     */
+    protected function resolveViewEngine(): void
+    {
+        $templatePrefs = $this->getTemplateParam('viewEngines', 'php');
+        $preferred = array_map('trim', explode(',', $templatePrefs));
+
+        foreach ($preferred as $engine) {
+            if (in_array($engine, $this->_acceptedEngines, true)) {
+                $this->_viewEngine = $engine;
+                return;
             }
         }
 
-        $this->renderEngine = $engine;
+        $templateName = $this->getTemplateName();
+        $component = $this->getComponentName();
+
+        throw new \RuntimeException(
+            'View engine negotiation failed: template "' . $templateName
+            . '" prefers [' . implode(', ', $preferred)
+            . '] but component "' . $component
+            . '" only accepts [' . implode(', ', $this->_acceptedEngines) . '].'
+        );
     }
 
     /**
-     * Get the render engine for this page.
+     * Resolve the CSS framework by negotiating template preferences
+     * against component acceptance.
      *
-     * Resolves lazily: checks global config preference against
-     * the active template's capability. Views, modules, and plugins
-     * all call this to determine which layout files to use.
+     * The template declares its preferred frameworks as a comma-separated
+     * priority list in params (e.g. "daisyui,classic"). The first preference
+     * that the component also accepts wins.
      *
-     * @return  string  'blade' or 'legacy'
+     * @return  void
+     * @throws  \RuntimeException  If no compatible framework is found
      */
-    public function getRenderEngine(): string
+    protected function resolveCssFramework(): void
     {
-        if ($this->renderEngine === null) {
-            $this->renderEngine = $this->resolveRenderEngine();
+        $templatePrefs = $this->getTemplateParam('cssFrameworks', 'classic');
+        $preferred = array_map('trim', explode(',', $templatePrefs));
+
+        foreach ($preferred as $framework) {
+            if (in_array($framework, $this->_acceptedFrameworks, true)) {
+                $this->_cssFramework = $framework;
+                return;
+            }
         }
 
-        return $this->renderEngine;
+        $templateName = $this->getTemplateName();
+        $component = $this->getComponentName();
+
+        throw new \RuntimeException(
+            'CSS framework negotiation failed: template "' . $templateName
+            . '" prefers [' . implode(', ', $preferred)
+            . '] but component "' . $component
+            . '" only accepts [' . implode(', ', $this->_acceptedFrameworks) . '].'
+        );
     }
 
     /**
-     * Resolve the render engine from config + template capability.
+     * Read a parameter from the active template's params registry.
      *
-     * @return  string  'blade' or 'legacy'
+     * @param   string  $key      Parameter name
+     * @param   mixed   $default  Default value if not set
+     * @return  mixed
      */
-    protected function resolveRenderEngine(): string
+    protected function getTemplateParam(string $key, $default = null)
     {
         try {
-            $preferred = \Hubzero\Facades\Config::get('view_engine', 'legacy');
-
-            if ($preferred === 'blade') {
-                $loader = \Hubzero\Facades\App::get('template.loader');
-                if ($loader->supports('blade')) {
-                    return 'blade';
-                }
+            $template = \Hubzero\Facades\App::get('template');
+            if (isset($template->params) && method_exists($template->params, 'get')) {
+                return $template->params->get($key, $default);
             }
         } catch (\Throwable $e) {
-            // Config or template loader not available
+            // Template not available yet
         }
 
-        return 'legacy';
+        return $default;
+    }
+
+    /**
+     * Get the active template name for error messages.
+     *
+     * @return  string
+     */
+    protected function getTemplateName(): string
+    {
+        try {
+            $template = \Hubzero\Facades\App::get('template');
+            return $template->template ?? 'unknown';
+        } catch (\Throwable $e) {
+            return 'unknown';
+        }
+    }
+
+    /**
+     * Get the current component name for error messages.
+     *
+     * @return  string
+     */
+    protected function getComponentName(): string
+    {
+        try {
+            return \Hubzero\Facades\Request::getCmd('option', 'unknown');
+        } catch (\Throwable $e) {
+            return 'unknown';
+        }
     }
 
     /**
@@ -434,6 +590,14 @@ class Base extends Obj
      */
     public function addScriptDeclaration($content, $type = 'text/javascript')
     {
+        if ($this->getViewEngine() === 'blade') {
+            throw new \RuntimeException(
+                'addScriptDeclaration() is not allowed under strict CSP in Blade mode. '
+                . 'Move inline JS to an external file. Content: '
+                . substr($content, 0, 120)
+            );
+        }
+
         if (!isset($this->_script[strtolower($type)])) {
             $this->_script[strtolower($type)] = array($content);
         } else {
@@ -470,6 +634,14 @@ class Base extends Obj
      */
     public function addStyleDeclaration($content, $type = 'text/css')
     {
+        if ($this->getViewEngine() === 'blade') {
+            throw new \RuntimeException(
+                'addStyleDeclaration() is not allowed under strict CSP in Blade mode. '
+                . 'Move inline CSS to an external file. Content: '
+                . substr($content, 0, 120)
+            );
+        }
+
         if (!isset($this->_style[strtolower($type)])) {
             $this->_style[strtolower($type)] = $content;
         } else {

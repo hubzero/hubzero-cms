@@ -32,6 +32,7 @@ trait AssetAware
     public function css($stylesheet = '', $extension = null, $attributes = array())
     {
         $extension = $extension ?: $this->detectExtensionName();
+        $isDefault = ($stylesheet === '' || $stylesheet === null);
 
         $attr = array_merge(array(
             'type'    => 'text/css',
@@ -40,6 +41,10 @@ trait AssetAware
         ), $attributes);
 
         $asset = new Stylesheet($extension, $stylesheet);
+
+        if ($isDefault) {
+            $asset = $this->resolveBladeAsset(Stylesheet::class, $extension, $asset);
+        }
 
         $asset = $this->isSuperGroupAsset($asset);
 
@@ -65,6 +70,7 @@ trait AssetAware
     public function js($asset = '', $extension = null, $attributes = array())
     {
         $extension = $extension ?: $this->detectExtensionName();
+        $isDefault = ($asset === '' || $asset === null);
 
         $attr = array_merge(array(
             'type'  => 'text/javascript',
@@ -73,6 +79,10 @@ trait AssetAware
         ), $attributes);
 
         $asset = new Javascript($extension, $asset);
+
+        if ($isDefault) {
+            $asset = $this->resolveBladeAsset(Javascript::class, $extension, $asset);
+        }
 
         $asset = $this->isSuperGroupAsset($asset);
 
@@ -101,6 +111,27 @@ trait AssetAware
         $asset = new Image($extension, $asset);
 
         return $asset->link();
+    }
+
+    /**
+     * For default js()/css() calls, substitute the blade variant
+     * in daisyUI mode.
+     *
+     * @param   string  $class      Asset class (Javascript or Stylesheet)
+     * @param   string  $extension  Extension name
+     * @param   object  $original   The original constructed asset
+     * @return  object
+     */
+    private function resolveBladeAsset($class, $extension, $original)
+    {
+        if (\Hubzero\Facades\Document::getCssFramework() === 'daisyui') {
+            $file = $original->file();
+            $bladeFile = preg_replace('/\.(\w+)$/', '.blade.$1', $file);
+
+            return new $class($extension, $bladeFile);
+        }
+
+        return $original;
     }
 
     /**

@@ -108,6 +108,22 @@ class SiteController extends Obj implements ControllerInterface
     protected $_basePath = null;
 
     /**
+     * View engines this controller accepts.
+     * Override in subclass to declare blade support.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['php'];
+
+    /**
+     * CSS frameworks this controller accepts.
+     * Override in subclass to declare daisyui support.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['classic'];
+
+    /**
      * Redirection URL
      *
      * @public string
@@ -313,6 +329,15 @@ class SiteController extends Obj implements ControllerInterface
             // No controller name found - single controller component
                 $name = $doTask;
             }
+        }
+
+        // Declare view engine and CSS framework acceptance from controller properties
+        $doc = \Hubzero\Facades\App::get('document');
+        foreach ($this->viewEngines as $engine) {
+            $doc->acceptViewEngine($engine);
+        }
+        foreach ($this->cssFrameworks as $framework) {
+            $doc->acceptCssFramework($framework);
         }
 
         // Instantiate a view with layout the same name as the task
