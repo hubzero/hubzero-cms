@@ -122,16 +122,37 @@ class AddComponentEntry extends Macro
             }
         }
 
-        if ($createMenuItem && $this->db->tableExists('#__menu')) {
-            // Check for an admin menu entry...if it's not there, create it
+        if (!$createMenuItem && $this->db->tableExists('#__menu')) {
+            $query = $this->db->getQuery()
+                ->delete('#__menu')
+                ->whereEquals('link', 'index.php?option=' . $option)
+                ->whereEquals('client_id', 1)
+                ->toString();
+            $this->db->setQuery($query);
+            $this->db->query();
+        } elseif ($createMenuItem && $this->db->tableExists('#__menu')) {
+            // Check for an admin menu entry...if it's not there, create it.
+            // Check both 'main' (Hubzero migrations) and 'menu' (legacy Joomla seed)
+            // menutypes to avoid creating duplicate entries.
             $query = $this->db->getQuery()
                 ->select('id')
                 ->from('#__menu')
-                ->whereEquals('menutype', 'main')
-                ->whereEquals('title', $option)
+                ->whereIn('menutype', ['main', 'menu'])
+                ->whereEquals('link', 'index.php?option=' . $option)
                 ->toString();
             $this->db->setQuery($query);
-            if ($this->db->loadResult()) {
+            $existingId = $this->db->loadResult();
+            if ($existingId) {
+                // Normalize legacy 'menu' menutype to 'main'
+                $update = $this->db->getQuery()
+                    ->update('#__menu')
+                    ->set(['menutype' => 'main'])
+                    ->whereEquals('id', (int) $existingId)
+                    ->whereEquals('menutype', 'menu')
+                    ->toString();
+                $this->db->setQuery($update);
+                $this->db->query();
+
                 return true;
             }
 
