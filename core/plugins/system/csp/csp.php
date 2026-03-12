@@ -2,7 +2,7 @@
 
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2022 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -65,14 +65,6 @@ class Csp extends Plugin
             $reportUri = trim($reportUri);
 
             $report .= '; report-uri ' . $reportUri;
-
-            /*if ($reportTo = $this->params->get('report-to'))
-            {
-                $reportTo = str_replace('{host}', Request::host(), $reportTo);
-                $reportTo = trim($reportTo);
-
-                $report .= '; report-to ' . $reportTo;
-            }*/
         }
 
         // Enforce Only or Enforce & Report?
@@ -95,7 +87,6 @@ class Csp extends Plugin
             $policy = implode('; ', $ps);
             $policy = trim($policy);
 
-            // Add to the headers
             if ($policy) {
                 App::get('response')->headers->set('Content-Security-Policy', $policy . $report, true);
             }
@@ -116,7 +107,7 @@ class Csp extends Plugin
                 }
 
                 if (!$val) {
-                    // Deferr to the regular policy
+                    // Defer to the regular policy
                     $val = (string)$this->params->get($key);
                 }
 

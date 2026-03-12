@@ -43,7 +43,7 @@ class Local extends Plugin
             break;
         }
 
-        return new \Plugins\Geocode\LocalProvider(
+        return new \Plugins\Geocode\Local\LocalProvider(
             $adapter,
             $provider
         );
