@@ -188,9 +188,15 @@ class Ckeditor extends Plugin
         /*$config = str_replace(
             '"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config
         );*/
-        $config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
-        $config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
-        $config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
+        /* These str_replace calls previously converted JSON-escaped regex
+         * strings back to raw regex literals, which broke JSON.parse() in
+         * the jQuery adapter. The adapter's regExpFromString() already
+         * handles converting the JSON string form to RegExp objects.
+         *
+         * $config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
+         * $config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
+         * $config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
+         */
 
         // Script to actually make ckeditor
         /*$script  = '<script type="text/javascript">
@@ -248,8 +254,13 @@ class Ckeditor extends Plugin
      */
     private function displayButtons($name, $buttons, $asset, $author)
     {
-        // Load modal popup behavior
-        Html::behavior('modal', 'a.modal-button');
+        $isDaisyUi = Document::getCssFramework() === 'daisyui';
+
+        // In legacy mode, load fancybox modal behavior for XTD buttons.
+        // In Blade mode, admin.js handles modals via data-* delegation.
+        if (!$isDaisyUi) {
+            Html::behavior('modal', 'a.modal-button');
+        }
 
         $return = '';
         $results[] = $this->onGetInsertMethod($name);
@@ -263,20 +274,63 @@ class Ckeditor extends Plugin
         if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
             $results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
-            // This will allow plugins to attach buttons or change the behavior on the fly using AJAX
             $return .= "\n<div id=\"editor-xtd-buttons\">\n";
 
             foreach ($results as $button) {
-                // Results should be an object
                 if ($button->get('name')) {
-                    $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
-                    $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
-                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"'
-                        : 'onclick="return false;"';
-                    $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
-                    $return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal
-                        . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">'
-                        . $button->get('text') . "</a></div></div>\n";
+                    $title = ($button->get('title')) ? $button->get('title') : $button->get('text');
+                    $href  = ($button->get('link'))
+                        ? Request::base() . $button->get('link')
+                        : '#';
+
+                    if ($isDaisyUi) {
+                        // Blade mode: use data-picker-url for modals,
+                        // data-action for direct actions (readmore).
+                        $attrs = '';
+                        if ($button->get('modal')) {
+                            // Parse fancybox-style options for dimensions
+                            $opts = $button->get('options') ?? '';
+                            $w = 800;
+                            $h = 500;
+                            if (preg_match('/x\s*:\s*(\d+)/', $opts, $m)) {
+                                $w = (int) $m[1];
+                            }
+                            if (preg_match('/y\s*:\s*(\d+)/', $opts, $m)) {
+                                $h = (int) $m[1];
+                            }
+                            $attrs .= ' data-picker-url="' . $href . '"'
+                                . ' data-picker-width="' . $w . '"'
+                                . ' data-picker-height="' . $h . '"'
+                                . ' data-editor="' . htmlspecialchars($name, ENT_QUOTES) . '"';
+                            $href = '#';
+                        }
+                        // Emit data-action / data-editor for non-modal buttons
+                        if ($button->get('data-action')) {
+                            $attrs .= ' data-action="'
+                                . htmlspecialchars($button->get('data-action'), ENT_QUOTES) . '"'
+                                . ' data-editor="' . htmlspecialchars($name, ENT_QUOTES) . '"';
+                            if ($button->get('data-alert-exists')) {
+                                $attrs .= ' data-alert-exists="'
+                                    . htmlspecialchars($button->get('data-alert-exists'), ENT_QUOTES) . '"';
+                            }
+                        }
+                        $return .= '<div class="button2-left"><div class="' . $button->get('name') . '">'
+                            . '<a title="' . $title . '"'
+                            . ' href="' . $href . '"'
+                            . $attrs . '>'
+                            . $button->get('text') . "</a></div></div>\n";
+                    } else {
+                        // Legacy mode: onclick handlers
+                        $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
+                        $hrefAttr = ($button->get('link')) ? ' href="' . $href . '"' : null;
+                        $onclick = ($button->get('onclick'))
+                            ? ' onclick="' . $button->get('onclick') . '"'
+                            : 'onclick="return false;"';
+                        $return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a'
+                            . $modal . ' title="' . $title . '"' . $hrefAttr . $onclick
+                            . ' rel="' . $button->get('options') . '">'
+                            . $button->get('text') . "</a></div></div>\n";
+                    }
                 }
             }
 

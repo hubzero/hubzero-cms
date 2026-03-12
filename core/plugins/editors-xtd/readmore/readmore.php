@@ -58,16 +58,24 @@ class Readmore extends Plugin
 			}
 			";
 
-        Document::addScriptDeclaration($js);
+        $isDaisyUi = Document::getCssFramework() === 'daisyui';
 
         $button = new \Hubzero\Base\Obj();
         $button->set('modal', false);
-        $button->set('onclick', 'insertReadmore(\'' . $name . '\');return false;');
         $button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));
         $button->set('name', 'readmore');
-        // TODO: The button writer needs to take into account the javascript directive
-        //$button->set('link', 'javascript:void(0)');
         $button->set('link', '#');
+
+        if ($isDaisyUi) {
+            // Blade mode: admin.js handles via data-action delegation
+            $button->set('onclick', '');
+            $button->set('data-action', 'insertReadmore');
+            $button->set('data-alert-exists', Lang::txt('PLG_READMORE_ALREADY_EXISTS'));
+        } else {
+            // Legacy mode: inline script + onclick handler
+            Document::addScriptDeclaration($js);
+            $button->set('onclick', 'insertReadmore(\'' . $name . '\');return false;');
+        }
 
         return $button;
     }

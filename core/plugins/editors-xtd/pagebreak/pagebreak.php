@@ -5,6 +5,7 @@ namespace Plugins\EditorsXtd\Pagebreak;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Html;
 
 /**
@@ -46,7 +47,11 @@ class Pagebreak extends Plugin
         $link = 'index.php?option=com_content&amp;view=article&amp;layout=pagebreak&amp;tmpl=component&amp;e_name='
             . $name;
 
-        Html::behavior('modal');
+        // In Blade mode, admin.js handles modals via data-* delegation
+        $isDaisyUi = Document::getCssFramework() === 'daisyui';
+        if (!$isDaisyUi) {
+            Html::behavior('modal');
+        }
 
         $button = new \Hubzero\Base\Obj();
         $button->set('modal', true);

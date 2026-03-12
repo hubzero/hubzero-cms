@@ -7,6 +7,7 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Component;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Html;
 
 /**
@@ -63,7 +64,11 @@ class Image extends Plugin
         ) {
             $link = 'index.php?option=com_media&amp;layout=list&amp;tmpl=component&amp;e_name='
                 . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
-            Html::behavior('modal');
+            // In Blade mode, admin.js handles modals via data-* delegation
+            $isDaisyUi = Document::getCssFramework() === 'daisyui';
+            if (!$isDaisyUi) {
+                Html::behavior('modal');
+            }
 
             $button = new \Hubzero\Base\Obj();
             $button->set('modal', true);

@@ -737,6 +737,26 @@
       }
       window.parent.postMessage('admin-popup-close', '*');
     });
+
+    // Readmore insert — <a data-action="insertReadmore" data-editor="editorName">
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action="insertReadmore"]');
+      if (!btn) return;
+      e.preventDefault();
+      var editor = btn.getAttribute('data-editor');
+      if (typeof jInsertEditorText === 'function') {
+        // Check if readmore already exists in editor content
+        var content = '';
+        if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[editor]) {
+          content = CKEDITOR.instances[editor].getData();
+        }
+        if (content.match(/<hr\s+id=["']system-readmore["']\s*\/?>/i)) {
+          alert(btn.getAttribute('data-alert-exists') || 'Read more already exists.');
+          return;
+        }
+        jInsertEditorText('<hr id="system-readmore" />', editor);
+      }
+    });
   }
 
   /* ================================================================
@@ -767,7 +787,9 @@
         type:  'picker-select',
         id:    link.getAttribute('data-id'),
         title: link.getAttribute('data-title'),
-        catid: link.getAttribute('data-catid') || ''
+        catid: link.getAttribute('data-catid') || '',
+        link:  link.getAttribute('data-link') || '',
+        lang:  link.getAttribute('data-lang') || ''
       };
       if (window.parent && window.parent !== window) {
         window.parent.postMessage(msg, '*');
@@ -869,15 +891,25 @@
     function msgHandler(e) {
       if (!e.data || e.data.type !== 'picker-select') return;
       if (triggerBtn) {
-        var valField = triggerBtn.getAttribute('data-value-field');
-        var dispField = triggerBtn.getAttribute('data-display-field');
-        if (valField) {
-          var valEl = document.getElementById(valField);
-          if (valEl) valEl.value = e.data.id || '';
-        }
-        if (dispField) {
-          var dispEl = document.getElementById(dispField);
-          if (dispEl) dispEl.value = e.data.title || '';
+        var editorName = triggerBtn.getAttribute('data-editor');
+        if (editorName && typeof jInsertEditorText === 'function') {
+          // Editor XTD button: construct tag and insert into editor
+          var hreflang = e.data.lang ? ' hreflang="' + e.data.lang + '"' : '';
+          var tag = '<a' + hreflang + ' href="' + (e.data.link || '#') + '">'
+            + (e.data.title || '') + '</a>';
+          jInsertEditorText(tag, editorName);
+        } else {
+          // Standard field picker: update form field values
+          var valField = triggerBtn.getAttribute('data-value-field');
+          var dispField = triggerBtn.getAttribute('data-display-field');
+          if (valField) {
+            var valEl = document.getElementById(valField);
+            if (valEl) valEl.value = e.data.id || '';
+          }
+          if (dispField) {
+            var dispEl = document.getElementById(dispField);
+            if (dispEl) dispEl.value = e.data.title || '';
+          }
         }
       }
       close();

@@ -89,6 +89,13 @@
         @foreach($items as $i => $item)
           @php
             $fnEsc = $function;
+            $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                $item->id, $item->catid, $item->language ?? ''
+            );
+            $articleLang = '';
+            if (!empty($item->language) && $item->language !== '*' && Lang::isMultilang()) {
+                $articleLang = substr($item->language, 0, strlen($item->language) <= 5 ? 2 : 3);
+            }
           @endphp
           <tr>
             <td>
@@ -98,7 +105,9 @@
                  data-function="{{ $fnEsc }}"
                  data-id="{{ $item->id }}"
                  data-title="{{ $item->title }}"
-                 data-catid="{{ $item->catid }}">
+                 data-catid="{{ $item->catid }}"
+                 data-link="{{ $articleRoute }}"
+                 data-lang="{{ $articleLang }}">
                 {{ $item->title }}
               </a>
             </td>

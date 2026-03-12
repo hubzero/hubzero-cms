@@ -42,27 +42,26 @@ class Article extends Plugin
      */
     public function onDisplay($name)
     {
-        // Javascript to insert the link
-        // View element calls jSelectArticle when an article is clicked
-        // jSelectArticle creates the link tag, sends it to the editor,
-        // and closes the select frame.
-        $js = "
-		function jSelectArticle(id, title, catid, object, link, lang) {
-			var hreflang = '';
-			if (lang !== '') {
-				var hreflang = ' hreflang = \"' + lang + '\"';
-			}
-			var tag = '<a' + hreflang + ' href=\"' + link + '\">' + title + '</a>';
-			jInsertEditorText(tag, '" . $name . "');
-			$.fancybox.close();
-		}";
+        $isDaisyUi = Document::getCssFramework() === 'daisyui';
 
-        Document::addScriptDeclaration($js);
+        if (!$isDaisyUi) {
+            // Legacy mode: inject inline JS for article selection + fancybox
+            $js = "
+            function jSelectArticle(id, title, catid, object, link, lang) {
+                var hreflang = '';
+                if (lang !== '') {
+                    var hreflang = ' hreflang = \"' + lang + '\"';
+                }
+                var tag = '<a' + hreflang + ' href=\"' + link + '\">' + title + '</a>';
+                jInsertEditorText(tag, '" . $name . "');
+                $.fancybox.close();
+            }";
+            Document::addScriptDeclaration($js);
+            Html::behavior('modal');
+        }
+        // In Blade mode: admin.js handles modals via data-* delegation.
+        // jSelectArticle is defined in admin.js for Blade mode.
 
-        Html::behavior('modal');
-
-        // Use the built-in element view to select the article.
-        // Currently uses blank class.
         $link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;'
             . Session::getFormToken() . '=1';
 

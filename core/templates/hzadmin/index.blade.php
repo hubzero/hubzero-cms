@@ -83,8 +83,8 @@
         // jQuery + noconflict already loaded above; skip duplicates
         if (!empty($headData['scripts'])) {
             foreach ($headData['scripts'] as $src => $attribs) {
-                if (str_contains($src, '/jquery.js')
-                    || str_contains($src, '/jquery.noconflict.js')) {
+                if (str_contains($src, '/js/jquery.js')
+                    || str_contains($src, '/js/jquery.noconflict.js')) {
                     continue;
                 }
                 $type = $attribs['type'] ?? 'text/javascript';
