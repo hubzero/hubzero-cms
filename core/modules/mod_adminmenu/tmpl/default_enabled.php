@@ -70,14 +70,12 @@ if ($chm || $cam) {
         $menu->addChild(new Node(
             Lang::txt('MOD_MENU_CLEAR_CACHE'),
             'index.php?option=com_cache',
-            'class:clear',
-            ($active == 'com_cache')
+            'class:clear'
         ));
         $menu->addChild(new Node(
             Lang::txt('MOD_MENU_PURGE_EXPIRED_CACHE'),
             'index.php?option=com_cache&view=purge',
-            'class:purge',
-            ($active == 'com_cache')
+            'class:purge'
         ));
         $menu->addSeparator();
     }
@@ -85,20 +83,17 @@ if ($chm || $cam) {
     $menu->addChild(new Node(
         Lang::txt('MOD_MENU_SYS_LDAP'),
         'index.php?option=com_system&controller=ldap',
-        'class:ldap',
-        ($active == 'com_system')
+        'class:ldap'
     ));
     $menu->addChild(new Node(
         Lang::txt('MOD_MENU_SYS_GEO'),
         'index.php?option=com_system&controller=geodb',
-        'class:geo',
-        ($active == 'com_system')
+        'class:geo'
     ));
     $menu->addChild(new Node(
         Lang::txt('MOD_MENU_SYS_APC'),
-        'index.php?option=com_system&controller=apc',
-        'class:apc',
-        ($active == 'com_system')
+        'index.php?option=com_system&controller=cache',
+        'class:apc'
     ));
     $menu->addChild(new Node(
         Lang::txt('MOD_MENU_SYS_ROUTES'),
@@ -115,8 +110,7 @@ if (User::authorise('core.admin')) {
     $menu->addChild(new Node(
         Lang::txt('MOD_MENU_SYSTEM_INFORMATION'),
         'index.php?option=com_system&controller=info',
-        'class:info',
-        ($active == 'com_system')
+        'class:info'
     ));
     $menu->addSeparator();
 }

@@ -76,9 +76,15 @@ class Node extends Obj
     /**
      * Constructor
      *
+     * @param   string   $title      Node title
+     * @param   string   $link       URL for the node
+     * @param   string   $class      CSS class
+     * @param   mixed    $active     True/false to force active state, null to auto-detect from link URL
+     * @param   string   $target     Link target attribute
+     * @param   string   $titleicon  Optional icon HTML appended to title
      * @return  void
      */
-    public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)
+    public function __construct($title, $link = null, $class = null, $active = null, $target = null, $titleicon = null)
     {
         $this->title  = $titleicon ? $title . $titleicon : $title;
         if ($link && substr($link, 0, strlen('index.php')) == 'index.php') {
@@ -86,7 +92,12 @@ class Node extends Obj
         }
         $this->link   = $link ? \Hubzero\Utility\Str::ampReplace($link) : '';
         $this->class  = $class;
-        $this->active = $active;
+
+        if ($active === null) {
+            $this->active = $this->detectActive($link);
+        } else {
+            $this->active = (bool) $active;
+        }
 
         $this->id = null;
         if (!empty($link) && $link !== '#') {
@@ -101,6 +112,47 @@ class Node extends Obj
         }
 
         $this->target = $target;
+    }
+
+    /**
+     * Auto-detect active state by comparing the link's query params against
+     * the current request. The node is active when:
+     *   1. All params in the link match the current request, AND
+     *   2. The current request has no extra navigation params (option, view,
+     *      controller) that the link does not explicitly specify.
+     *
+     * This ensures that a link to ?option=com_cache is only active on the
+     * default cache view, not on ?option=com_cache&view=purge.
+     *
+     * @param   string  $link  The raw link before Route::url() processing
+     * @return  bool
+     */
+    protected function detectActive($link)
+    {
+        if (!$link || $link === '#') {
+            return false;
+        }
+
+        $linkParams = with(new \Hubzero\Utility\Uri($link))->getQuery(true);
+        if (empty($linkParams)) {
+            return false;
+        }
+
+        // All link params must match current request
+        foreach ($linkParams as $key => $value) {
+            if (\Hubzero\Facades\Request::getCmd($key) !== $value) {
+                return false;
+            }
+        }
+
+        // Current request must not have extra navigation params the link omits
+        foreach (['option', 'view', 'controller'] as $navKey) {
+            if (!isset($linkParams[$navKey]) && \Hubzero\Facades\Request::getCmd($navKey, '') !== '') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
