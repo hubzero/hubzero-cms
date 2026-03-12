@@ -56,11 +56,7 @@ class Module
     public function display()
     {
         $path = $this->getLayoutPath($this->params->get('layout', 'default'));
-
-        $this->renderLayout($path, [
-            'module' => $this->module,
-            'params' => $this->params,
-        ]);
+        $this->renderLayout($path);
     }
 
     /**
@@ -76,6 +72,13 @@ class Module
      */
     protected function renderLayout(string $path, array $data = []): void
     {
+        // Auto-gather all object properties (including subclass protected
+        // ones) so templates get the same access legacy `require` gave
+        // via $this->. Explicit $data entries take precedence.
+        // Also pass the module instance as $__module so Blade templates
+        // can call $__module->css() / $__module->js() for asset loading.
+        $data = array_merge(get_object_vars($this), ['__module' => $this], $data);
+
         if (str_ends_with($path, '.blade.php')) {
             echo \Hubzero\View\Blade::render($path, $data);
             return;
