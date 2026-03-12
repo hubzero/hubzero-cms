@@ -13,7 +13,7 @@
 --}}
 @php
   $sfx    = $instances > 1 ? $module->id : '';
-  $action = Route::url('index.php?option=com_search');
+  $action = Route::url('index.php?option=com_search', false);
 @endphp
 <form action="{{ $action }}" method="get" id="searchform{{ $sfx }}">
   <label for="searchword{{ $sfx }}" class="sr-only">{{ $label }}</label>
