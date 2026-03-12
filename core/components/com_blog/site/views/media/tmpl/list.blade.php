@@ -20,9 +20,11 @@
   use Hubzero\Facades\Route;
   use Hubzero\Facades\Session;
 
+  $__view->js('media-list');
+
   $formAction = Route::url(
       'index.php?option=' . $option
-      . '&controller=' . $controller
+      . '&controller=' . $controller, false
   );
   $filespace = $archive->filespace();
 
@@ -145,26 +147,3 @@
     </div>
   @endif
 </div>
-
-<script>
-var selected = null;
-document.addEventListener('click', function(e) {
-  var row = e.target.closest('.file-row');
-  if (!row) return;
-  if (selected) selected.style.background = '';
-  selected = row;
-  row.style.background = 'color-mix(in srgb, var(--color-primary) 10%, transparent)';
-  if (window.parent && typeof window.parent.showFileDetail === 'function') {
-    window.parent.showFileDetail({
-      filename: row.dataset.filename,
-      ext: row.dataset.ext,
-      size: row.dataset.size,
-      date: row.dataset.date,
-      ref: row.dataset.ref,
-      isImage: row.dataset.isImage === '1',
-      deleteUrl: row.dataset.deleteUrl,
-      confirm: row.dataset.confirm
-    });
-  }
-});
-</script>

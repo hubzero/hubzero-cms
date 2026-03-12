@@ -18,9 +18,9 @@
     @foreach($tags as $tag)
       <li>
         <a class="badge badge-soft badge-primary"
-           href="{{ Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) }}"
+           href="{{ Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'), false) }}"
            rel="tag">
-          {{ e(stripslashes($tag->get('raw_tag'))) }}
+          {{ $tag->get('raw_tag') }}
         </a>
       </li>
     @endforeach

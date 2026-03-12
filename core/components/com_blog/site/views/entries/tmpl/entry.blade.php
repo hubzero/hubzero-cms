@@ -36,11 +36,11 @@
       . '&month=' . sprintf('%02d', $row->published('m'))
   );
   Pathway::append(
-      stripslashes($row->get('title')),
+      $row->get('title'),
       $row->link()
   );
 
-  Document::setTitle(Lang::txt('COM_BLOG') . ': ' . stripslashes($row->get('title')));
+  Document::setTitle(Lang::txt('COM_BLOG') . ': ' . $row->get('title'));
 
   $__view->css();
   $__view->js();
@@ -111,16 +111,15 @@
   $tagCloud = $row->tags('cloud');
 
   // Archive URL
-  $archiveUrl = Route::url('index.php?option=' . $option . '&task=archive');
+  $archiveUrl = Route::url('index.php?option=' . $option . '&task=archive', false);
 
   // Max comment depth
   $maxDepth = $config->get('comments_depth', 3);
 @endphp
 
-{{-- Page header --}}
-<header class="page-header">
-  <h1>{{ Lang::txt('COM_BLOG') }}</h1>
-  <div class="page-header-actions">
+{{-- Page container --}}
+<x-page-container :title="Lang::txt('COM_BLOG')">
+  @slot('actions')
     <a class="btn" href="{{ $archiveUrl }}">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -129,18 +128,120 @@
       </svg>
       {{ Lang::txt('COM_BLOG_ARCHIVE') }}
     </a>
-  </div>
-</header>
+  @endslot
 
-<section class="page-body">
-  <div class="page-layout">
-    <div class="page-main">
+  @slot('sidebar')
+      {{-- Author card --}}
+      @if($config->get('show_authors') && $row->creator->get('name'))
+        <div class="author-card">
+          <div class="author-card-inner">
+            <div class="author-card-avatar">
+              <img src="{{ $row->creator->picture() }}" alt="" />
+            </div>
+            <div class="author-card-info">
+              <h3 class="author-card-name">
+                @if(in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
+                  <a href="{{ Route::url($row->creator->link(), false) }}">
+                    {{ $row->creator->get('name') }}
+                  </a>
+                @else
+                  {{ $row->creator->get('name') }}
+                @endif
+              </h3>
+              @if($row->creator->get('bio'))
+                <p class="author-card-bio">
+                  {{ strip_tags($row->creator->get('bio')) }}
+                </p>
+              @endif
+            </div>
+          </div>
+        </div>
+      @endif
+
+      {{-- New entry button --}}
+      @if($config->get('access-create-entry'))
+        <a class="btn btn-outline btn-primary w-full"
+           href="{{ Route::url('index.php?option=' . $option . '&task=new', false) }}">
+          {{ Lang::txt('COM_BLOG_NEW_ENTRY') }}
+        </a>
+      @endif
+
+      {{-- Archive by year/month --}}
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_ENTRIES_BY_YEAR') }}</h3>
+          @if($first->get('id'))
+            @php
+              $startYear  = intval(substr($first->get('publish_up'), 0, 4));
+              $nowYear    = intval(Date::format('Y'));
+              $entryYear  = substr($row->get('publish_up'), 0, 4);
+              $entryMonth = substr($row->get('publish_up'), 5, 2);
+              $months = [
+                  'COM_BLOG_JANUARY', 'COM_BLOG_FEBRUARY', 'COM_BLOG_MARCH',
+                  'COM_BLOG_APRIL',   'COM_BLOG_MAY',      'COM_BLOG_JUNE',
+                  'COM_BLOG_JULY',    'COM_BLOG_AUGUST',    'COM_BLOG_SEPTEMBER',
+                  'COM_BLOG_OCTOBER', 'COM_BLOG_NOVEMBER',  'COM_BLOG_DECEMBER',
+              ];
+            @endphp
+            <ul class="menu menu-sm p-0">
+              @for($i = $nowYear; $i >= $startYear; $i--)
+                <li>
+                  <a href="{{ Route::url('index.php?option=' . $option . '&year=' . $i, false) }}">
+                    {{ $i }}
+                  </a>
+                  @if($i == $entryYear)
+                    <ul>
+                      @for($k = 0; $k < intval($entryMonth); $k++)
+                        <li>
+                          <a href="{{ Route::url('index.php?option=' . $option . '&year=' . $i . '&month=' . sprintf('%02d', $k + 1), false) }}"
+                             @if(sprintf('%02d', $k + 1) == $entryMonth) class="active" @endif>
+                            {{ Lang::txt($months[$k]) }}
+                          </a>
+                        </li>
+                      @endfor
+                    </ul>
+                  @endif
+                </li>
+              @endfor
+            </ul>
+          @else
+            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+          @endif
+        </div>
+      </div>
+
+      {{-- Popular entries --}}
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_POPULAR_ENTRIES') }}</h3>
+          @php
+            $popular = $archive->entries([
+                'state'  => $filters['state'],
+                'access' => $filters['access'],
+            ])->order('hits', 'desc')->limit(5)->rows();
+          @endphp
+          @if($popular->count())
+            <ul class="menu menu-sm p-0">
+              @foreach($popular as $prow)
+                <li>
+                  <a href="{{ Route::url($prow->link(), false) }}">
+                    {{ $prow->get('title') }}
+                  </a>
+                </li>
+              @endforeach
+            </ul>
+          @else
+            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+          @endif
+        </div>
+      </div>
+  @endslot
 
       <article id="e{{ $row->get('id') }}">
         {{-- Entry header --}}
         <header class="mb-6">
           <h2 class="text-3xl font-bold mb-2">
-            {{ e(stripslashes($row->get('title'))) }}
+            {{ $row->get('title') }}
           </h2>
           <div class="entry-meta">
             <time datetime="{{ $row->published() }}">
@@ -148,14 +249,14 @@
             </time>
             @if($config->get('show_authors'))
               @php
-                $authorName = e(stripslashes($row->creator->get('name')));
+                $authorName = $row->creator->get('name');
                 $authorAccess = $row->creator->get('access');
                 $viewLevels = User::getAuthorisedViewLevels();
               @endphp
               <span>
                 by
                 @if(in_array($authorAccess, $viewLevels))
-                  <a class="link link-hover" href="{{ Route::url($row->creator->link()) }}">
+                  <a class="link link-hover" href="{{ Route::url($row->creator->link(), false) }}">
                     {{ $authorName }}
                   </a>
                 @else
@@ -178,7 +279,7 @@
             @if($isOwnerOrAdmin)
               <span class="entry-actions">
                 <a class="btn btn-xs btn-ghost"
-                   href="{{ Route::url($row->link('edit')) }}"
+                   href="{{ Route::url($row->link('edit'), false) }}"
                    title="{{ Lang::txt('JACTION_EDIT') }}">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                        stroke-width="1.5" stroke="currentColor" class="size-3.5" aria-hidden="true">
@@ -187,7 +288,7 @@
                   </svg>
                 </a>
                 <a class="btn btn-xs btn-ghost text-error"
-                   href="{{ Route::url($row->link('delete')) }}"
+                   href="{{ Route::url($row->link('delete'), false) }}"
                    title="{{ Lang::txt('JACTION_DELETE') }}"
                    data-confirm="{{ Lang::txt('COM_BLOG_CONFIRM_DELETE') }}">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -209,7 +310,7 @@
         {{-- Footer: tags + actions --}}
         @if($tagCloud)
           <footer class="entry-footer">
-            <nav aria-label="Tags" class="tags-cloud">
+            <nav aria-label="Tags">
               {!! $tagCloud !!}
             </nav>
           </footer>
@@ -249,7 +350,7 @@
 
               @if(!User::isGuest())
                 <form method="post"
-                      action="{{ Route::url($row->link()) }}"
+                      action="{{ Route::url($row->link(), false) }}"
                       id="commentform"
                       class="comment-form"
                       aria-label="{{ Lang::txt('COM_BLOG_POST_COMMENT') }}">
@@ -258,12 +359,12 @@
                     @php
                       $replyName = Lang::txt('JANONYMOUS');
                       if (!$replyTo->get('anonymous')) {
-                          $replyName = e(stripslashes($replyTo->creator->get('name', $replyName)));
+                          $replyName = $replyTo->creator->get('name', $replyName);
                       }
                     @endphp
                     <blockquote class="border-l-4 border-base-300 pl-4 mb-4 text-sm text-base-content/70">
                       <p class="font-medium">{{ $replyName }}</p>
-                      <p>{{ \Hubzero\Utility\Str::truncate(stripslashes($replyTo->get('content')), 300) }}</p>
+                      <p>{{ \Hubzero\Utility\Str::truncate($replyTo->get('content'), 300) }}</p>
                     </blockquote>
                   @endif
 
@@ -306,7 +407,7 @@
                       Route::url($row->link() . '#post-comment', false, true)
                   );
                   $loginUrl = Route::url(
-                      'index.php?option=com_users&view=login&return=' . $returnUrl
+                      'index.php?option=com_users&view=login&return=' . $returnUrl, false
                   );
                 @endphp
                 <p class="login-to-comment">
@@ -322,120 +423,4 @@
       @endif
 
     </div>
-
-    {{-- Sidebar --}}
-    <aside class="page-sidebar">
-
-      {{-- Author card --}}
-      @if($config->get('show_authors') && $row->creator->get('name'))
-        <div class="card bg-base-100 shadow-sm author-card">
-          <div class="card-body">
-            <div class="author-card-inner">
-              <div class="avatar">
-                <div class="w-16 rounded-full">
-                  <img src="{{ $row->creator->picture() }}" alt="" />
-                </div>
-              </div>
-              <div>
-                <h3 class="card-title text-sm">
-                  @if(in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
-                    <a class="link link-hover"
-                       href="{{ Route::url($row->creator->link()) }}">
-                      {{ e(stripslashes($row->creator->get('name'))) }}
-                    </a>
-                  @else
-                    {{ e(stripslashes($row->creator->get('name'))) }}
-                  @endif
-                </h3>
-                @if($row->creator->get('bio'))
-                  <p class="text-xs text-base-content/60 line-clamp-3">
-                    {{ strip_tags($row->creator->get('bio')) }}
-                  </p>
-                @endif
-              </div>
-            </div>
-          </div>
-        </div>
-      @endif
-
-      {{-- New entry button --}}
-      @if($config->get('access-create-entry'))
-        <a class="btn btn-outline btn-primary w-full"
-           href="{{ Route::url('index.php?option=' . $option . '&task=new') }}">
-          {{ Lang::txt('COM_BLOG_NEW_ENTRY') }}
-        </a>
-      @endif
-
-      {{-- Archive by year/month --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_ENTRIES_BY_YEAR') }}</h3>
-          @if($first->get('id'))
-            @php
-              $startYear  = intval(substr($first->get('publish_up'), 0, 4));
-              $nowYear    = intval(Date::format('Y'));
-              $entryYear  = substr($row->get('publish_up'), 0, 4);
-              $entryMonth = substr($row->get('publish_up'), 5, 2);
-              $months = [
-                  'COM_BLOG_JANUARY', 'COM_BLOG_FEBRUARY', 'COM_BLOG_MARCH',
-                  'COM_BLOG_APRIL',   'COM_BLOG_MAY',      'COM_BLOG_JUNE',
-                  'COM_BLOG_JULY',    'COM_BLOG_AUGUST',    'COM_BLOG_SEPTEMBER',
-                  'COM_BLOG_OCTOBER', 'COM_BLOG_NOVEMBER',  'COM_BLOG_DECEMBER',
-              ];
-            @endphp
-            <ul class="menu menu-sm p-0">
-              @for($i = $nowYear; $i >= $startYear; $i--)
-                <li>
-                  <a href="{{ Route::url('index.php?option=' . $option . '&year=' . $i) }}">
-                    {{ $i }}
-                  </a>
-                  @if($i == $entryYear)
-                    <ul>
-                      @for($k = 0; $k < intval($entryMonth); $k++)
-                        <li>
-                          <a href="{{ Route::url('index.php?option=' . $option . '&year=' . $i . '&month=' . sprintf('%02d', $k + 1)) }}"
-                             @if(sprintf('%02d', $k + 1) == $entryMonth) class="active" @endif>
-                            {{ Lang::txt($months[$k]) }}
-                          </a>
-                        </li>
-                      @endfor
-                    </ul>
-                  @endif
-                </li>
-              @endfor
-            </ul>
-          @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
-          @endif
-        </div>
-      </div>
-
-      {{-- Popular entries --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_POPULAR_ENTRIES') }}</h3>
-          @php
-            $popular = $archive->entries([
-                'state'  => $filters['state'],
-                'access' => $filters['access'],
-            ])->order('hits', 'desc')->limit(5)->rows();
-          @endphp
-          @if($popular->count())
-            <ul class="menu menu-sm p-0">
-              @foreach($popular as $prow)
-                <li>
-                  <a href="{{ Route::url($prow->link()) }}">
-                    {{ e(stripslashes($prow->get('title'))) }}
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
-          @endif
-        </div>
-      </div>
-
-    </aside>
-  </div>
-</section>
+</x-page-container>

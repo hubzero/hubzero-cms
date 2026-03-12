@@ -35,7 +35,7 @@
       }
       $providerUrl = Route::url(
           'index.php?option=' . $option . '&authenticator=' . $a['name']
-          . $returnQueryString
+          . $returnQueryString, false
       );
       $providerButtons[] = '<a class="btn btn-outline w-full login-provider-'
           . e($a['name']) . '" href="' . $providerUrl . '">'
@@ -47,8 +47,8 @@
   $allowRegister = $usersConfig->get('allowUserRegistration') != '0';
   $errorText     = Request::getString('errorText', '');
   $formAction    = Route::url('index.php', true, true);
-  $remindUrl     = Route::url('index.php?option=com_members&task=remind');
-  $resetUrl      = Route::url('index.php?option=com_members&task=reset');
+  $remindUrl     = Route::url('index.php?option=com_members&task=remind', false);
+  $resetUrl      = Route::url('index.php?option=com_members&task=reset', false);
   $registerUrl   = Request::base(true) . '/register'
                  . ($return ? '?return=' . $return : '');
   $siteName      = Config::get('sitename');
@@ -56,7 +56,7 @@
 
 @if($params->get('show_page_heading', 1))
   <header class="page-header">
-    <h1>{{ e($params->get('page_heading', Lang::txt('COM_USERS_LOGIN'))) }}</h1>
+    <h1>{{ $params->get('page_heading', Lang::txt('COM_USERS_LOGIN')) }}</h1>
   </header>
 @endif
 
@@ -66,14 +66,14 @@
     {{-- Error message from failed login attempt --}}
     @if($errorText)
       <div class="alert alert-error mb-6" role="alert">
-        {{ e($errorText) }}
+        {{ $errorText }}
       </div>
     @endif
 
     {{-- Description from menu params --}}
     @if($description)
       <p class="text-center text-base-content/70 mb-6">
-        {{ e($description) }}
+        {{ $description }}
       </p>
     @endif
 
@@ -164,8 +164,8 @@
             <input type="hidden" name="option" value="{{ $option }}" />
             <input type="hidden" name="authenticator" value="hubzero" />
             <input type="hidden" name="task" value="login" />
-            <input type="hidden" name="return" value="{{ e($return) }}" />
-            <input type="hidden" name="freturn" value="{{ e($freturn) }}" />
+            <input type="hidden" name="return" value="{{ $return }}" />
+            <input type="hidden" name="freturn" value="{{ $freturn }}" />
             {!! Html::input('token') !!}
           </form>
         @endif

@@ -32,7 +32,7 @@
   $showLogoutDesc = $params->get('logoutdescription_show') == 1;
   $logoutDesc     = $params->get('logout_description');
   $logoutImage    = $params->get('logout_image');
-  $logoutUrl      = Route::url('index.php?option=' . $option . '&task=user.logout');
+  $logoutUrl      = Route::url('index.php?option=' . $option . '&task=user.logout', false);
   $returnVal      = base64_encode(
       $params->get('logout_redirect_url', $form->getValue('return'))
   );
@@ -40,7 +40,7 @@
 
 @if($params->get('show_page_heading', 1))
   <header class="page-header">
-    <h1>{{ e($params->get('page_heading', Lang::txt('COM_USERS_LOGOUT'))) }}</h1>
+    <h1>{{ $params->get('page_heading', Lang::txt('COM_USERS_LOGOUT')) }}</h1>
   </header>
 @endif
 
@@ -50,11 +50,11 @@
       <div class="card-body">
 
         @if($showLogoutDesc && trim($logoutDesc) !== '')
-          <p class="mb-4">{{ e($logoutDesc) }}</p>
+          <p class="mb-4">{{ $logoutDesc }}</p>
         @endif
 
         @if($logoutImage)
-          <img src="{{ e($logoutImage) }}"
+          <img src="{{ $logoutImage }}"
                class="mb-4 mx-auto"
                alt="{{ Lang::txt('COM_USERS_LOGOUT_IMAGE_ALT') }}" />
         @endif
@@ -63,7 +63,7 @@
           <button type="submit" class="btn btn-primary w-full">
             {{ Lang::txt('JLOGOUT') }}
           </button>
-          <input type="hidden" name="return" value="{{ e($returnVal) }}" />
+          <input type="hidden" name="return" value="{{ $returnVal }}" />
           {!! Html::input('token') !!}
         </form>
 

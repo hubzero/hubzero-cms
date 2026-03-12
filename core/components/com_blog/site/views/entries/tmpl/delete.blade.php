@@ -34,17 +34,15 @@
   $__view->css();
   $__view->js();
 
-  $deleteUrl  = Route::url($entry->link('delete'));
-  $cancelUrl  = Route::url($entry->link());
-  $archiveUrl = Route::url('index.php?option=' . $option);
+  $deleteUrl  = Route::url($entry->link('delete'), false);
+  $cancelUrl  = Route::url($entry->link(), false);
+  $archiveUrl = Route::url('index.php?option=' . $option, false);
 
-  $entryTitle = e(stripslashes($entry->get('title')));
+  $entryTitle = $entry->get('title');
 @endphp
 
 {{-- Page header --}}
-<header class="page-header">
-  <h1>{{ Lang::txt('COM_BLOG') }}: {{ Lang::txt('JACTION_DELETE') }}</h1>
-  <div class="page-header-actions">
+<x-page-header :title="Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE')">
     <a class="btn" href="{{ $archiveUrl }}">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -53,8 +51,7 @@
       </svg>
       {{ Lang::txt('COM_BLOG_ARCHIVE') }}
     </a>
-  </div>
-</header>
+</x-page-header>
 
 <section class="confirm-delete" role="alertdialog"
          aria-labelledby="confirm-title" aria-describedby="confirm-desc">

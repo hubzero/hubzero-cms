@@ -22,9 +22,9 @@
   $nameLink = null;
 
   if (!$comment->get('anonymous')) {
-      $name = e(stripslashes($comment->creator->get('name', $name)));
+      $name = $comment->creator->get('name', $name);
       if (in_array($comment->creator->get('access'), User::getAuthorisedViewLevels())) {
-          $nameLink = Route::url($comment->creator->link());
+          $nameLink = Route::url($comment->creator->link(), false);
       }
   }
 
@@ -36,7 +36,7 @@
   $canEdit = $config->get('access-edit-comment')
       || User::get('id') == $comment->get('created_by');
 
-  $permalinkUrl = Route::url($row->link() . '#c' . $comment->get('id'));
+  $permalinkUrl = Route::url($row->link() . '#c' . $comment->get('id'), false);
   $commentId    = $comment->get('id');
 
   $replies = ($depth < $maxDepth)
@@ -86,7 +86,7 @@
       @if(!$isReported)
         @if($canEdit)
           <a class="btn btn-xs btn-ghost"
-             href="{{ Route::url($row->link() . '&action=editcomment&comment=' . $commentId) }}">
+             href="{{ Route::url($row->link() . '&action=editcomment&comment=' . $commentId, false) }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke-width="1.5" stroke="currentColor" class="size-3.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -97,7 +97,7 @@
         @endif
         @if($depth < $maxDepth)
           <a class="btn btn-xs btn-ghost"
-             href="{{ Route::url($row->link() . '&reply=' . $commentId) }}">
+             href="{{ Route::url($row->link() . '&reply=' . $commentId, false) }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke-width="1.5" stroke="currentColor" class="size-3.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -107,7 +107,7 @@
           </a>
         @endif
         <a class="btn btn-xs btn-ghost"
-           href="{{ Route::url('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $commentId . '&parent=' . $comment->get('entry_id')) }}">
+           href="{{ Route::url('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $commentId . '&parent=' . $comment->get('entry_id'), false) }}">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                stroke-width="1.5" stroke="currentColor" class="size-3.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -119,7 +119,7 @@
       @if($config->get('access-delete-comment'))
         <a class="btn btn-xs btn-ghost text-error"
            data-confirm="{{ Lang::txt('COM_BLOG_CONFIRM_DELETE') }}"
-           href="{{ Route::url($row->link() . '&action=deletecomment&comment=' . $commentId) }}">
+           href="{{ Route::url($row->link() . '&action=deletecomment&comment=' . $commentId, false) }}">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                stroke-width="1.5" stroke="currentColor" class="size-3.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round"

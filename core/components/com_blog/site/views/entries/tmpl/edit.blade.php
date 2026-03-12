@@ -37,15 +37,15 @@
   }
 
   // Form URLs
-  $saveUrl = Route::url('index.php?option=' . $option . '&task=save');
+  $saveUrl = Route::url('index.php?option=' . $option . '&task=save', false);
   $cancelUrl = $entry->get('id')
-      ? Route::url($entry->link())
-      : Route::url('index.php?option=' . $option);
-  $archiveUrl = Route::url('index.php?option=' . $option);
+      ? Route::url($entry->link(), false)
+      : Route::url('index.php?option=' . $option, false);
+  $archiveUrl = Route::url('index.php?option=' . $option, false);
 
   // File manager URL
   $mediaUrl = Route::url(
-      'index.php?option=' . $option . '&tmpl=component&controller=media'
+      'index.php?option=' . $option . '&tmpl=component&controller=media', false
   );
 
   // Timezone offset for date fields
@@ -65,10 +65,9 @@
   $access = $entry->get('access', 1);
 @endphp
 
-{{-- Page header --}}
-<header class="page-header">
-  <h1>{{ Lang::txt('COM_BLOG') . ': ' . $editTitle }}</h1>
-  <div class="page-header-actions">
+{{-- Page container --}}
+<x-page-container :title="Lang::txt('COM_BLOG') . ': ' . $editTitle" bodyClass="edit-form">
+  @slot('actions')
     <a class="btn" href="{{ $archiveUrl }}">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -77,12 +76,27 @@
       </svg>
       {{ Lang::txt('COM_BLOG_ARCHIVE') }}
     </a>
-  </div>
-</header>
+  @endslot
 
-<section class="edit-form page-body">
-  <div class="page-layout">
-    <div class="page-main">
+  @slot('sidebar')
+      {{-- File manager --}}
+      <div class="file-manager-card">
+        <div class="file-manager-header">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
+          </svg>
+          {{ Lang::txt('COM_BLOG_FIELD_FILES') }}
+        </div>
+        <iframe height="520"
+                name="filer"
+                id="filer"
+                src="{{ $mediaUrl }}"
+                class="w-full border-0"
+                title="{{ Lang::txt('COM_BLOG_FIELD_FILES') }}"></iframe>
+      </div>
+  @endslot
 
       <form id="hubForm" method="post" action="{{ $saveUrl }}" class="space-y-6">
 
@@ -108,7 +122,7 @@
                      id="field-title"
                      name="entry[title]"
                      class="input w-full"
-                     value="{{ e(stripslashes($entry->get('title', ''))) }}"
+                     value="{{ $entry->get('title', '') }}"
                      placeholder="{{ Lang::txt('COM_BLOG_FIELD_TITLE') }}"
                      required />
               <p class="form-field-hint text-error hidden" id="field-title-error" role="alert">
@@ -257,29 +271,5 @@
 
       </form>
 
-    </div>
 
-    {{-- Sidebar --}}
-    <aside class="page-sidebar">
-
-      {{-- File manager --}}
-      <div class="file-manager-card">
-        <div class="file-manager-header">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-               stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-          </svg>
-          {{ Lang::txt('COM_BLOG_FIELD_FILES') }}
-        </div>
-        <iframe height="520"
-                name="filer"
-                id="filer"
-                src="{{ $mediaUrl }}"
-                class="w-full border-0"
-                title="{{ Lang::txt('COM_BLOG_FIELD_FILES') }}"></iframe>
-      </div>
-
-    </aside>
-  </div>
-</section>
+</x-page-container>
