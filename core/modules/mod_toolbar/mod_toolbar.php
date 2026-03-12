@@ -26,10 +26,21 @@ class Toolbar extends Module
             return;
         }
 
-        // Get the toolbar.
-        $toolbar = \Hubzero\Facades\Toolbar::render();
+        // Get the toolbar instance
+        $bar = \Hubzero\Facades\Toolbar::getRoot();
+
+        // Legacy HTML output (for non-Blade templates)
+        $toolbar = $bar->render();
+
+        // Structured button data (for Blade templates)
+        $buttons = $bar->getButtons();
 
         // Get the view
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+
+        $this->renderLayout($path, [
+            'toolbar' => $toolbar,
+            'buttons' => $buttons,
+        ]);
     }
 }

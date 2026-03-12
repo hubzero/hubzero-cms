@@ -159,17 +159,27 @@
 @endphp
 
 @if (!$enabled)
-  {{-- Disabled menu (readonly labels) --}}
-  <ul class="menu menu-xs">
+  {{-- Disabled menu (readonly labels, no flyouts) --}}
+  <ul id="menu">
     @foreach ($sections as $section)
-      <li class="opacity-40">
-        <span class="font-medium text-xs">{{ $section['title'] }}</span>
+      @php $iconPaths = $svgIcons[$section['icon']] ?? ''; @endphp
+      <li class="node disabled">
+        <a aria-disabled="true">
+          @if ($iconPaths)
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" class="shrink-0 opacity-60">
+              {!! $iconPaths !!}
+            </svg>
+          @endif
+          {{ $section['title'] }}
+        </a>
       </li>
     @endforeach
   </ul>
 @else
-  {{-- Active sidebar menu --}}
-  <ul class="menu menu-xs gap-0.5 w-full">
+  {{-- Active sidebar menu — flyout JS attaches to #menu > li.node --}}
+  <ul id="menu">
     @foreach ($sections as $section)
       @php
         $hasActiveChild = false;
@@ -179,45 +189,42 @@
         $sectionActive = $section['active'] || $hasActiveChild;
         $iconPaths = $svgIcons[$section['icon']] ?? '';
       @endphp
-      <li>
-        <details {{ $sectionActive ? 'open' : '' }}>
-          <summary class="font-medium text-xs {{ $sectionActive ? 'text-primary' : '' }}">
-            @if ($iconPaths)
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                   stroke-linejoin="round" class="shrink-0 opacity-60">
-                {!! $iconPaths !!}
-              </svg>
-            @endif
-            {{ $section['title'] }}
-          </summary>
-          <ul>
-            @foreach ($section['items'] as $item)
-              @php
-                $itemActive = !empty($item['active']);
-                $itemIcon   = $svgIcons[$item['icon'] ?? ''] ?? '';
-                $link       = $item['link'];
-                if (str_starts_with($link, 'index.php')) {
-                    $link = Route::url($link, false);
-                }
-              @endphp
-              <li>
-                <a href="{{ $link }}"
-                   class="{{ $itemActive ? 'active font-medium' : '' }}"
-                   {!! !empty($item['target']) ? 'target="' . $item['target'] . '" rel="noopener"' : '' !!}>
-                  @if ($itemIcon)
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                         stroke-linejoin="round" class="shrink-0 opacity-50">
-                      {!! $itemIcon !!}
-                    </svg>
-                  @endif
-                  {{ $item['title'] }}
-                </a>
-              </li>
-            @endforeach
-          </ul>
-        </details>
+      <li class="node{{ $sectionActive ? ' active' : '' }}">
+        <a href="#" aria-expanded="false">
+          @if ($iconPaths)
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" class="shrink-0 opacity-60">
+              {!! $iconPaths !!}
+            </svg>
+          @endif
+          {{ $section['title'] }}
+        </a>
+        <ul>
+          @foreach ($section['items'] as $item)
+            @php
+              $itemActive = !empty($item['active']);
+              $itemIcon   = $svgIcons[$item['icon'] ?? ''] ?? '';
+              $link       = $item['link'];
+              if (str_starts_with($link, 'index.php')) {
+                  $link = Route::url($link, false);
+              }
+            @endphp
+            <li{!! $itemActive ? ' class="active"' : '' !!}>
+              <a href="{{ $link }}"
+                 {!! !empty($item['target']) ? 'target="' . $item['target'] . '" rel="noopener"' : '' !!}>
+                @if ($itemIcon)
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round" class="shrink-0 opacity-50">
+                    {!! $itemIcon !!}
+                  </svg>
+                @endif
+                {{ $item['title'] }}
+              </a>
+            </li>
+          @endforeach
+        </ul>
       </li>
     @endforeach
   </ul>

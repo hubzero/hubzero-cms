@@ -41,7 +41,14 @@ class Adminmenu extends Module
         $params  = $this->params;
 
         // Render the module layout
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+
+        $this->renderLayout($path, [
+            'menu'    => $menu,
+            'enabled' => $enabled,
+            'lang'    => $lang,
+            'user'    => $user,
+        ]);
     }
 
     /**

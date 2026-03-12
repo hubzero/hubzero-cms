@@ -57,7 +57,16 @@ class Adminlogin extends Module
             }
         }
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $path = $this->getLayoutPath($this->params->get('layout', 'default'));
+
+        $this->renderLayout($path, [
+            'return'            => $return,
+            'freturn'           => $freturn,
+            'returnQueryString' => $returnQueryString,
+            'authenticators'    => $authenticators,
+            'site_display'      => $site_display ?? '',
+            'basic'             => $basic ?? false,
+        ]);
     }
 
     /**
