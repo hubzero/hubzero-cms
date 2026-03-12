@@ -2482,7 +2482,7 @@ abstract class BaseSqlSyntax
                 }
             } elseif ($select['column'] instanceof \Hubzero\Database\Expression) {
                 $string = $this->buildExpression($select['column']);
-            } elseif (isset($select['count']) && $select['count'] == 'distinct') {
+            } elseif (isset($select['count']) && $select['count'] === 'distinct') {
                 $string = "COUNT(DISTINCT({$select['column']}))";
             } elseif (!empty($select['count'])) {
                 $string = "COUNT({$select['column']})";
