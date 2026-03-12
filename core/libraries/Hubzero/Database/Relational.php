@@ -5361,7 +5361,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // Default the keys if not set
         $thisKey   = $thisKey   ?: strtolower($parent->getModelName()) . '_id';
-        $parentKey = $parentKey ?: $this->getPrimaryKey();
+        $parentKey = $parentKey ?: $parent->getPrimaryKey();
 
         return new BelongsToOne($this, $parent, $thisKey, $parentKey);
     }
