@@ -19,6 +19,7 @@
 
   $mod  = app()->bound('module') ? app('module') : null;
   $user = User::getInstance();
+  $menuEnabled = !Request::getInt('hidemainmenu');
 @endphp
 <!DOCTYPE html>
 <html dir="{{ $direction }}" lang="{{ $lang }}" data-theme="hubzero">
@@ -50,8 +51,8 @@
 </head>
 <body class="bg-base-200 text-base-content min-h-screen">
 
-  <div class="drawer lg:drawer-open">
-    {{-- Drawer toggle (controlled by hamburger in topbar) --}}
+  <div class="drawer{{ $menuEnabled ? ' lg:drawer-open' : '' }}">
+    {{-- Drawer toggle (controlled by hamburger in topbar, mobile only) --}}
     <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
 
     {{-- Main content area --}}
@@ -67,8 +68,10 @@
       @include('hzadmin::partials.footer')
     </div>
 
-    {{-- Sidebar drawer --}}
-    @include('hzadmin::partials.sidebar')
+    {{-- Sidebar drawer — hidden entirely in modal/edit mode --}}
+    @if($menuEnabled)
+      @include('hzadmin::partials.sidebar')
+    @endif
   </div>
 
   <script src="/core/templates/hzadmin/js/admin.js"></script>

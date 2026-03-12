@@ -156,15 +156,20 @@
       var link = li.children[0];
       if (!link || link.tagName !== 'A') return;
 
-      var chevron = document.createElement('svg');
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var chevron = document.createElementNS(svgNS, 'svg');
       chevron.setAttribute('class', 'admin-menu-chevron');
       chevron.setAttribute('viewBox', '0 0 20 20');
       chevron.setAttribute('fill', 'currentColor');
       chevron.setAttribute('aria-hidden', 'true');
-      chevron.innerHTML = '<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z" clip-rule="evenodd" />';
+      var path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('fill-rule', 'evenodd');
+      path.setAttribute('d', 'M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z');
+      path.setAttribute('clip-rule', 'evenodd');
+      chevron.appendChild(path);
       link.style.display = 'flex';
       link.style.alignItems = 'center';
-      link.style.justifyContent = 'space-between';
+      link.style.gap = '0.375rem';
       link.appendChild(chevron);
 
       link.addEventListener('click', function (e) {
@@ -182,13 +187,24 @@
       closeFlyout();
       activeLi = li;
       li.classList.add('flyout-active');
+      var trigger = li.querySelector('a[aria-expanded]');
+      if (trigger) trigger.setAttribute('aria-expanded', 'true');
 
       var link = li.children[0];
       var sub = li.querySelector('ul');
       if (!sub) return;
 
       var href = link ? link.getAttribute('href') : null;
-      var title = link ? link.childNodes[0].textContent.trim() : '';
+      var title = '';
+      if (link) {
+        // Extract text, skipping SVG child nodes
+        for (var n = 0; n < link.childNodes.length; n++) {
+          if (link.childNodes[n].nodeType === 3) {
+            var t = link.childNodes[n].textContent.trim();
+            if (t) { title = t; break; }
+          }
+        }
+      }
 
       flyout = document.createElement('div');
       flyout.className = 'admin-flyout';
@@ -264,6 +280,8 @@
       }
       if (activeLi) {
         activeLi.classList.remove('flyout-active');
+        var trigger = activeLi.querySelector('a[aria-expanded]');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
         activeLi = null;
       }
     }
@@ -283,8 +301,9 @@
       if (activeLi) positionFlyout(activeLi);
     });
 
+    // Mark the section containing the active page
     var activeItem = menu.querySelector('li.active');
-    if (activeItem) {
+    if (activeItem && activeItem.parentNode !== menu) {
       var el = activeItem;
       while (el && el !== menu) {
         if (el.parentNode === menu && el.classList.contains('node')) {
@@ -294,6 +313,15 @@
         el = el.parentNode;
       }
     }
+  }
+
+  /* ================================================================
+     Drawer toggle — hamburger collapses/expands sidebar on desktop
+     ================================================================ */
+  function initDrawerToggle() {
+    // Hamburger is mobile-only (hidden on lg: via CSS).
+    // The <label for="admin-drawer"> toggles the daisyUI checkbox natively.
+    // No extra JS needed — drawer opens/closes via CSS :checked state.
   }
 
   /* ================================================================
@@ -1145,6 +1173,7 @@
      ================================================================ */
   function initAll() {
     initSidebarMenu();
+    initDrawerToggle();
     initToolbar();
     initPagination();
     initDelegatedHandlers();
