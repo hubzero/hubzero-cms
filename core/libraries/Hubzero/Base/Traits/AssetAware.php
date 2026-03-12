@@ -114,8 +114,10 @@ trait AssetAware
     }
 
     /**
-     * For default js()/css() calls, substitute the blade variant
-     * in daisyUI mode.
+     * In daisyUI mode, substitute the blade variant of a CSS/JS
+     * asset. Default calls (no explicit filename) get the blade
+     * variant; named calls are suppressed entirely — if the
+     * current mode's file doesn't exist, load nothing.
      *
      * @param   string  $class      Asset class (Javascript or Stylesheet)
      * @param   string  $extension  Extension name
@@ -124,14 +126,17 @@ trait AssetAware
      */
     private function resolveBladeAsset($class, $extension, $original)
     {
-        if (\Hubzero\Facades\Document::getCssFramework() === 'daisyui') {
-            $file = $original->file();
-            $bladeFile = preg_replace('/\.(\w+)$/', '.blade.$1', $file);
-
-            return new $class($extension, $bladeFile);
+        if (\Hubzero\Facades\Document::getCssFramework() !== 'daisyui') {
+            return $original;
         }
 
-        return $original;
+        // In daisyUI mode, swap to the .blade.css/.blade.js variant.
+        // If it doesn't exist, the caller's exists() check will
+        // skip loading — no fallback to legacy assets.
+        $file = $original->file();
+        $bladeFile = preg_replace('/\.(\w+)$/', '.blade.$1', $file);
+
+        return new $class($extension, $bladeFile);
     }
 
     /**
