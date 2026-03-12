@@ -33,8 +33,11 @@ class Grid
         self::behavior();
 
         // Build the title.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
         $title  = ($value) ? Lang::txt('JYES') : Lang::txt('JNO');
-        $title .= '::' . Lang::txt('JGLOBAL_CLICK_TO_TOGGLE_STATE');
+        if (!$isDaisyui) {
+            $title .= '::' . Lang::txt('JGLOBAL_CLICK_TO_TOGGLE_STATE');
+        }
 
         // Build the <a> tag.
         $bool   = ($value) ? 'true' : 'false';
@@ -45,7 +48,8 @@ class Grid
         if ($toggle) {
             $html = '<a class="grid-action grid-boolean state grid_' .
                 $bool .
-                ' hasTip" title="' .
+                ($isDaisyui ? '' : ' hasTip') .
+                '" title="' .
                 $title .
                 '" data-id="cb' .
                 $i .
@@ -325,15 +329,22 @@ class Grid
             $date = with(new Date($row->checked_out_time))->toLocal(Lang::txt('DATE_FORMAT_LC1'));
             $time = with(new Date($row->checked_out_time))->toLocal('H:i');
 
-            $hover = '<span class="editlinktip hasTip" title="' .
-                Lang::txt('JLIB_HTML_CHECKED_OUT') .
-                '::' .
-                $text .
-                '<br />' .
-                $date .
-                '<br />' .
-                $time .
-                '">';
+            $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+            if ($isDaisyui) {
+                $hover = '<span class="editlinktip" title="' .
+                    htmlspecialchars($text . ', ' . $date . ' ' . $time, ENT_COMPAT, 'UTF-8') .
+                    '">';
+            } else {
+                $hover = '<span class="editlinktip hasTip" title="' .
+                    Lang::txt('JLIB_HTML_CHECKED_OUT') .
+                    '::' .
+                    $text .
+                    '<br />' .
+                    $date .
+                    '<br />' .
+                    $time .
+                    '">';
+            }
         }
 
         return $hover . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
@@ -771,12 +782,17 @@ class Grid
             $prefix         = array_key_exists('prefix', $options) ? $options['prefix'] : '';
         }
 
-        if ($tip) {
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+
+        if ($tip && !$isDaisyui) {
+            // In Blade mode, tooltips are handled via native title attrs or admin.js
             Behavior::tooltip();
         }
 
+        $tipClass = ($tip && !$isDaisyui) ? ' hasTip' : '';
+
         if ($enabled) {
-            $html[] = '<a class="grid-action' . ($tip ? ' hasTip' : '') . '"';
+            $html[] = '<a class="grid-action' . $tipClass . '"';
             $html[] = ' href="#" data-id="' . $checkbox . $i . '" data-task="' . $prefix . $task . '"';
             $html[] = ' title="' .
                 addslashes(htmlspecialchars(
@@ -790,7 +806,7 @@ class Grid
             $html[] = '</span>';
             $html[] = '</a>';
         } else {
-            $html[] = '<a class="grid-action' . ($tip ? ' hasTip' : '') . '"';
+            $html[] = '<a class="grid-action' . $tipClass . '"';
             $html[] = ' title="' .
                 addslashes(htmlspecialchars(
                     $translate ? Lang::txt($inactive_title) : $inactive_title,

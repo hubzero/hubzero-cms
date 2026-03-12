@@ -98,11 +98,14 @@ class Element extends Obj
     {
         $output = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
         if ($description) {
-            $output .= ' class="hasTip" title="' .
-                \Hubzero\Facades\App::get('language')->txt($label) .
-                '::' .
-                \Hubzero\Facades\App::get('language')->txt($description) .
-                '">';
+            $lang = \Hubzero\Facades\App::get('language');
+            $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+            if ($isDaisyui) {
+                $output .= ' title="' . $lang->txt($description) . '">';
+            } else {
+                $output .= ' class="hasTip" title="' .
+                    $lang->txt($label) . '::' . $lang->txt($description) . '">';
+            }
         } else {
             $output .= '>';
         }

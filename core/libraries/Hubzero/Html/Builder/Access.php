@@ -2,7 +2,7 @@
 
 /**
  * @package    framework
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -11,6 +11,7 @@ namespace Hubzero\Html\Builder;
 use Hubzero\Error\Exception\Exception;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 /**
  * Extended Utility class for all HTML drawing classes.
@@ -23,6 +24,17 @@ class Access
      * @public array
      */
     protected static $asset_groups = null;
+
+    /**
+     * Escape a string for safe HTML output.
+     *
+     * @param   string  $value
+     * @return  string
+     */
+    protected static function esc($value)
+    {
+        return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', true);
+    }
 
     /**
      * Displays a list of the available access view levels
@@ -66,6 +78,21 @@ class Access
             array_unshift($options, Select::option('', Lang::txt('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
         }
 
+        if (Document::getCssFramework() === 'daisyui') {
+            $idAttr  = $id ? ' id="' . static::esc($id) . '"' : '';
+            $html  = '<select name="' . static::esc($name) . '"' . $idAttr
+                   . ' class="select select-sm select-bordered w-full">';
+            foreach ($options as $opt) {
+                $v = is_object($opt) ? $opt->value : ($opt['value'] ?? '');
+                $t = is_object($opt) ? $opt->text  : ($opt['text'] ?? '');
+                $sel = ((string) $v === (string) $selected) ? ' selected' : '';
+                $html .= '<option value="' . static::esc($v) . '"' . $sel . '>'
+                       . static::esc($t) . '</option>';
+            }
+            $html .= '</select>';
+            return $html;
+        }
+
         return Select::genericlist(
             $options,
             $name,
@@ -86,7 +113,7 @@ class Access
      * @param   boolean  $allowAll  True to add "All Groups" option.
      * @return  string   The required HTML for the SELECT tag.
      */
-    public static function usergroup($name, $selected, $attribs = '', $allowAll = true)
+    public static function usergroup($name, $selected, $attribs = '', $allowAll = true, $id = null)
     {
         $db = App::get('db');
         $query = $db->getQuery()
@@ -116,6 +143,22 @@ class Access
         // If all usergroups is allowed, push it into the array.
         if ($allowAll) {
             array_unshift($options, Select::option('', Lang::txt('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+        }
+
+        if (Document::getCssFramework() === 'daisyui') {
+            $idAttr = $id ? ' id="' . static::esc($id) . '"' : '';
+            $html  = '<select name="' . static::esc($name) . '"'
+                   . $idAttr
+                   . ' class="select select-sm select-bordered w-full">';
+            foreach ($options as $opt) {
+                $v = is_object($opt) ? $opt->value : ($opt['value'] ?? '');
+                $t = is_object($opt) ? $opt->text  : ($opt['text'] ?? '');
+                $sel = ((string) $v === (string) $selected) ? ' selected' : '';
+                $html .= '<option value="' . static::esc($v) . '"' . $sel . '>'
+                       . static::esc($t) . '</option>';
+            }
+            $html .= '</select>';
+            return $html;
         }
 
         return Select::genericlist($options, $name, array('list.attr' => $attribs, 'list.select' => $selected));
@@ -160,45 +203,77 @@ class Access
 
         $html = array();
 
-        $html[] = '<ul class="checklist usergroups">';
+        if (Document::getCssFramework() === 'daisyui') {
+            $html[] = '<ul class="space-y-1">';
 
-        for ($i = 0, $n = count($groups); $i < $n; $i++) {
-            $item = &$groups[$i];
+            for ($i = 0, $n = count($groups); $i < $n; $i++) {
+                $item = &$groups[$i];
 
-            // If checkSuperAdmin is true, only add item if the user is superadmin or the group is not super admin
-            if (
-                (!$checkSuperAdmin) ||
-                $isSuperAdmin ||
-                (!\Hubzero\Access\Access::checkGroup($item->id, 'core.admin'))
-            ) {
-                // Setup  the variable attributes.
-                $eid = $count . 'group_' . $item->id;
-                // Don't call in_array unless something is selected
-                $checked = '';
-                if ($selected) {
-                    $checked = in_array($item->id, $selected) ? ' checked="checked"' : '';
+                if (
+                    (!$checkSuperAdmin) ||
+                    $isSuperAdmin ||
+                    (!\Hubzero\Access\Access::checkGroup($item->id, 'core.admin'))
+                ) {
+                    $eid     = $count . 'group_' . $item->id;
+                    $checked = ($selected && in_array($item->id, $selected)) ? ' checked' : '';
+                    $rel     = ($item->parent_id > 0)
+                        ? ' data-parent="' . $count . 'group_' . $item->parent_id . '"'
+                        : '';
+                    $indent  = str_repeat(
+                        '<span class="text-faint-foreground select-none">|&mdash;</span>',
+                        $item->level
+                    );
+
+                    $html[] = '<li class="flex items-center gap-2">';
+                    $html[] = '<input type="checkbox" class="checkbox checkbox-sm" name="'
+                        . static::esc($name) . '[]" value="' . static::esc($item->id)
+                        . '" id="' . static::esc($eid) . '"' . $checked . $rel . ' />';
+                    $html[] = '<label for="' . static::esc($eid)
+                        . '" class="label label-text cursor-pointer text-sm">'
+                        . $indent . static::esc($item->title) . '</label>';
+                    $html[] = '</li>';
                 }
-                $rel = ($item->parent_id > 0) ? ' rel="' . $count . 'group_' . $item->parent_id . '"' : '';
-
-                // Build the HTML for the item.
-                $html[] = '	<li>';
-                $html[] = '		<input type="checkbox" name="' .
-                    $name .
-                    '[]" value="' .
-                    $item->id .
-                    '" id="' .
-                    $eid .
-                    '"' .
-                    $checked .
-                    $rel .
-                    ' />';
-                $html[] = '		<label for="' . $eid . '">';
-                $html[] = '		' . str_repeat('<span class="gi">|&mdash;</span>', $item->level) . $item->title;
-                $html[] = '		</label>';
-                $html[] = '	</li>';
             }
+
+            $html[] = '</ul>';
+        } else {
+            $html[] = '<ul class="checklist usergroups">';
+
+            for ($i = 0, $n = count($groups); $i < $n; $i++) {
+                $item = &$groups[$i];
+
+                if (
+                    (!$checkSuperAdmin) ||
+                    $isSuperAdmin ||
+                    (!\Hubzero\Access\Access::checkGroup($item->id, 'core.admin'))
+                ) {
+                    $eid = $count . 'group_' . $item->id;
+                    $checked = '';
+                    if ($selected) {
+                        $checked = in_array($item->id, $selected) ? ' checked="checked"' : '';
+                    }
+                    $rel = ($item->parent_id > 0) ? ' rel="' . $count . 'group_' . $item->parent_id . '"' : '';
+
+                    $html[] = '	<li>';
+                    $html[] = '		<input type="checkbox" name="' .
+                        $name .
+                        '[]" value="' .
+                        $item->id .
+                        '" id="' .
+                        $eid .
+                        '"' .
+                        $checked .
+                        $rel .
+                        ' />';
+                    $html[] = '		<label for="' . $eid . '">';
+                    $html[] = '		' . str_repeat('<span class="gi">|&mdash;</span>', $item->level) . $item->title;
+                    $html[] = '		</label>';
+                    $html[] = '	</li>';
+                }
+            }
+
+            $html[] = '</ul>';
         }
-        $html[] = '</ul>';
 
         return implode("\n", $html);
     }
@@ -232,30 +307,50 @@ class Access
         }
 
         $html = array();
-        $html[] = '<ul class="checklist access-actions">';
 
-        for ($i = 0, $n = count($actions); $i < $n; $i++) {
-            $item = &$actions[$i];
+        if (Document::getCssFramework() === 'daisyui') {
+            $html[] = '<ul class="space-y-1">';
 
-            // Setup  the variable attributes.
-            $eid = $count . 'action_' . $item->id;
-            $checked = in_array($item->id, $selected) ? ' checked="checked"' : '';
+            for ($i = 0, $n = count($actions); $i < $n; $i++) {
+                $item    = &$actions[$i];
+                $eid     = $count . 'action_' . $item->id;
+                $checked = in_array($item->id, $selected) ? ' checked' : '';
 
-            // Build the HTML for the item.
-            $html[] = '	<li>';
-            $html[] = '		<input type="checkbox" name="' .
-                $name .
-                '[]" value="' .
-                $item->id .
-                '" id="' .
-                $eid .
-                '"' .
-                $checked .
-                ' />';
-            $html[] = '		<label for="' . $eid . '">' . Lang::txt($item->title) . '</label>';
-            $html[] = '	</li>';
+                $html[] = '<li class="flex items-center gap-2">';
+                $html[] = '<input type="checkbox" class="checkbox checkbox-sm" name="'
+                    . static::esc($name) . '[]" value="' . static::esc($item->id)
+                    . '" id="' . static::esc($eid) . '"' . $checked . ' />';
+                $html[] = '<label for="' . static::esc($eid)
+                    . '" class="label label-text cursor-pointer text-sm">'
+                    . static::esc(Lang::txt($item->title)) . '</label>';
+                $html[] = '</li>';
+            }
+
+            $html[] = '</ul>';
+        } else {
+            $html[] = '<ul class="checklist access-actions">';
+
+            for ($i = 0, $n = count($actions); $i < $n; $i++) {
+                $item    = &$actions[$i];
+                $eid     = $count . 'action_' . $item->id;
+                $checked = in_array($item->id, $selected) ? ' checked="checked"' : '';
+
+                $html[] = '	<li>';
+                $html[] = '		<input type="checkbox" name="' .
+                    $name .
+                    '[]" value="' .
+                    $item->id .
+                    '" id="' .
+                    $eid .
+                    '"' .
+                    $checked .
+                    ' />';
+                $html[] = '		<label for="' . $eid . '">' . Lang::txt($item->title) . '</label>';
+                $html[] = '	</li>';
+            }
+
+            $html[] = '</ul>';
         }
-        $html[] = '</ul>';
 
         return implode("\n", $html);
     }
@@ -311,11 +406,27 @@ class Access
             array_unshift($options, Select::option('', $config['title']));
         }
 
+        $id = isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count;
+
+        if (Document::getCssFramework() === 'daisyui') {
+            $html  = '<select name="' . static::esc($name) . '" id="' . static::esc($id) . '"'
+                   . ' class="select select-sm select-bordered w-full">';
+            foreach ($options as $opt) {
+                $v = is_object($opt) ? $opt->value : ($opt['value'] ?? '');
+                $t = is_object($opt) ? $opt->text  : ($opt['text'] ?? '');
+                $sel = ((string) $v === (string) $selected) ? ' selected' : '';
+                $html .= '<option value="' . static::esc($v) . '"' . $sel . '>'
+                       . static::esc($t) . '</option>';
+            }
+            $html .= '</select>';
+            return $html;
+        }
+
         return Select::genericlist(
             $options,
             $name,
             array(
-                'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count,
+                'id' => $id,
                 'list.attr' => (is_null($attribs) ? 'class="inputbox" size="3"' : $attribs),
                 'list.select' => (int) $selected
             )

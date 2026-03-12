@@ -203,6 +203,20 @@ class Toolbar extends Obj
     }
 
     /**
+     * Get the raw button definitions for Blade rendering.
+     *
+     * Each entry is an array whose first element is the button type
+     * (Standard, Confirm, Link, Help, Popup, Separator) followed by
+     * type-specific parameters matching the fetchButton() signature.
+     *
+     * @return  array
+     */
+    public function getButtons()
+    {
+        return $this->_bar;
+    }
+
+    /**
      * Searches the directory paths for a given file.
      *
      * @param   mixed   $paths  An path string or array of path strings to search in

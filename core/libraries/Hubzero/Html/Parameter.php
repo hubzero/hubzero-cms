@@ -124,12 +124,81 @@ class Parameter extends Registry
             return false;
         }
 
+        try {
+            $engine = \Hubzero\Facades\Document::getViewEngine();
+        } catch (\Throwable $e) {
+            $engine = 'php';
+        }
+
+        if ($engine === 'blade') {
+            return $this->renderBlade($name, $group);
+        }
+
+        return $this->renderLegacy($name, $group);
+    }
+
+    /**
+     * Render parameters with Blade-compatible markup.
+     *
+     * @param   string  $name   HTML form control name.
+     * @param   string  $group  Parameter group.
+     * @return  string  HTML
+     */
+    protected function renderBlade($name = 'params', $group = '_default')
+    {
+        $params = $this->getParams($name, $group);
+        $lang   = \Hubzero\Facades\App::get('language');
+        $html   = array();
+
+        if ($description = $this->_xml[$group]['description']) {
+            $html[] = '<p class="admin-field-desc">'
+                . $lang->txt((string) $description) . '</p>';
+        }
+
+        foreach ($params as $param) {
+            if ($param[0]) {
+                // Extract id from the rendered form element for label[for]
+                $forAttr = '';
+                if (preg_match('/\bid=["\']([^"\']+)["\']/', $param[1], $m)) {
+                    $forAttr = ' for="' . $m[1] . '"';
+                }
+                $html[] = '<div class="admin-field">';
+                $html[] = '  <label class="label"' . $forAttr . '>'
+                    . $lang->txt($param[3]) . '</label>';
+                $html[] = '  <div class="admin-field-input">';
+                $html[] = '    ' . $param[1];
+                $html[] = '  </div>';
+                $html[] = '</div>';
+            } else {
+                $html[] = $param[1];
+            }
+        }
+
+        if (count($params) < 1) {
+            $html[] = '<p>'
+                . $lang->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM')
+                . '</p>';
+        }
+
+        return implode(PHP_EOL, $html);
+    }
+
+    /**
+     * Render parameters with legacy markup.
+     *
+     * @param   string  $name   HTML form control name.
+     * @param   string  $group  Parameter group.
+     * @return  string  HTML
+     */
+    protected function renderLegacy($name = 'params', $group = '_default')
+    {
         $params = $this->getParams($name, $group);
         $html = array();
 
         if ($description = $this->_xml[$group]['description']) {
-            // Add the params description to the display
-            $html[] = '<p class="paramrow_desc">' . \Hubzero\Facades\App::get('language')->txt((string) $description) . '</p>';
+            $html[] = '<p class="paramrow_desc">'
+                . \Hubzero\Facades\App::get('language')->txt((string) $description)
+                . '</p>';
         }
 
         foreach ($params as $param) {
@@ -144,9 +213,9 @@ class Parameter extends Registry
         }
 
         if (count($params) < 1) {
-            $html[] = '<p class="noparams">' .
-                \Hubzero\Facades\App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') .
-                '</p>';
+            $html[] = '<p class="noparams">'
+                . \Hubzero\Facades\App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM')
+                . '</p>';
         }
 
         return implode(PHP_EOL, $html);

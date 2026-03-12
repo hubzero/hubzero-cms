@@ -22,12 +22,17 @@ class Batch
      */
     public static function access()
     {
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+
         // Create the batch selector to change an access level on a selection list.
         $lines = array(
-            '<label id="batch-access-lbl" for="batch-access" class="hasTip" title="' .
-                Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL') .
-                '::' .
-                Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL_DESC') .
+            '<label id="batch-access-lbl" for="batch-access"' .
+                ($isDaisyui ? '' : ' class="hasTip"') .
+                ' title="' .
+                ($isDaisyui
+                    ? Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL_DESC')
+                    : Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL_DESC')
+                ) .
                 '">',
             Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL'),
             '</label>',
@@ -59,13 +64,16 @@ class Batch
             Select::option('m', Lang::txt('JLIB_HTML_BATCH_MOVE'))
         );
 
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $selectCls = $isDaisyui ? 'select select-bordered select-sm w-full' : 'inputbox';
+
         // Create the batch selector to change select the category by which to move or copy.
         $lines = array(
             '<label id="batch-choose-action-lbl" for="batch-choose-action">',
             Lang::txt('JLIB_HTML_BATCH_MENU_LABEL'),
             '</label>',
             '<fieldset id="batch-choose-action" class="combo">',
-            '<select name="batch[category_id]" class="inputbox" id="batch-category-id">',
+            '<select name="batch[category_id]" class="' . $selectCls . '" id="batch-category-id">',
             '<option value="">' . Lang::txt('JSELECT') . '</option>',
             Select::options(Category::options($extension)),
             '</select>',
@@ -83,16 +91,23 @@ class Batch
      */
     public static function language()
     {
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+
         // Create the batch selector to change the language on a selection list.
         $lines = array(
-            '<label id="batch-language-lbl" for="batch-language" class="hasTip" title="' .
-                Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL') .
-                '::' .
-                Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC') .
+            '<label id="batch-language-lbl" for="batch-language"' .
+                ($isDaisyui ? '' : ' class="hasTip"') .
+                ' title="' .
+                ($isDaisyui
+                    ? Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC')
+                    : Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC')
+                ) .
                 '">',
             Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL'),
             '</label>',
-            '<select name="batch[language_id]" class="inputbox" id="batch-language-id">',
+            '<select name="batch[language_id]" class="' .
+                ($isDaisyui ? 'select select-bordered select-sm w-full' : 'inputbox') .
+                '" id="batch-language-id">',
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>',
             Select::options(ContentLanguage::existing(true, true), 'value', 'text'),
             '</select>'
@@ -129,16 +144,23 @@ class Batch
         $db->setQuery($query->toString());
         $items = $db->loadObjectList();
 
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+
         // Create the batch selector to select a user on a selection list.
         $lines = array(
-            '<label id="batch-user-lbl" for="batch-user" class="hasTip" title="' .
-                Lang::txt('JLIB_HTML_BATCH_USER_LABEL') .
-                '::' .
-                Lang::txt('JLIB_HTML_BATCH_USER_LABEL_DESC') .
+            '<label id="batch-user-lbl" for="batch-user"' .
+                ($isDaisyui ? '' : ' class="hasTip"') .
+                ' title="' .
+                ($isDaisyui
+                    ? Lang::txt('JLIB_HTML_BATCH_USER_LABEL_DESC')
+                    : Lang::txt('JLIB_HTML_BATCH_USER_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_USER_LABEL_DESC')
+                ) .
                 '">',
             Lang::txt('JLIB_HTML_BATCH_USER_LABEL'),
             '</label>',
-            '<select name="batch[user_id]" class="inputbox" id="batch-user-id">',
+            '<select name="batch[user_id]" class="' .
+                ($isDaisyui ? 'select select-bordered select-sm w-full' : 'inputbox') .
+                '" id="batch-user-id">',
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_USER_NOCHANGE') . '</option>',
             $optionNo,
             Select::options($items, 'value', 'text'),

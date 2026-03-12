@@ -10,6 +10,7 @@ namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
 use Hubzero\Html\Builder\Behavior;
+use Hubzero\Facades\Document;
 
 /**
  * Renders a popup window button
@@ -49,15 +50,25 @@ class Popup extends Button
         $left = 0,
         $onClose = ''
     ) {
-        Behavior::modal();
-
         $text  = \Hubzero\Facades\Lang::txt($text);
         $class = $this->fetchIconClass($name);
         $url   = $this->_getCommand($name, $url, $width, $height, $top, $left);
-        $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" 
-            rel=\"{size: {width: $width, height: $height}, onClose: function() {" .
-            $onClose .
-            "}}\">\n";
+
+        // In Blade mode, admin.js handles modals via data-* attributes.
+        // In legacy mode, load the fancybox behavior.
+        $isDaisyui = Document::getCssFramework() === 'daisyui';
+
+        if ($isDaisyui) {
+            $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\"";
+            $html .= " data-width=\"$width\" data-height=\"$height\">\n";
+        } else {
+            Behavior::modal();
+            $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\"";
+            $html .= " data-width=\"$width\" data-height=\"$height\"";
+            $html .= " rel=\"{size: {width: $width, height: $height}, onClose: function() {";
+            $html .= $onClose . "}}\">\n";
+        }
+
         $html .= "<span class=\"$class\">\n";
         $html .= "$text\n";
         $html .= "</span>\n";

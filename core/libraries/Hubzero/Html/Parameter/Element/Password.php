@@ -37,8 +37,13 @@ class Password extends Element
         $size = (string) $node['size'];
         $size = ($size ? 'size="' . $size . '"' : '');
 
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
         $class = (string) $node['class'];
-        $class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
+        if ($isDaisyui) {
+            $class = 'class="input input-bordered input-sm w-full' . ($class ? ' ' . $class : '') . '"';
+        } else {
+            $class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
+        }
 
         return '<input type="password" name="' .
             $control_name .

@@ -12,6 +12,7 @@ use Hubzero\Utility\Arr;
 use Hubzero\Base\Obj;
 use stdClass;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Document;
 
 /**
  * Utility class for creating HTML select lists
@@ -128,6 +129,24 @@ class Select
         $id = $options['id'] !== false ? $options['id'] : $name;
         $id = str_replace(array('[', ']'), '', $id);
 
+        // In Blade rendering context inject daisyUI select classes
+        $isDaisyui = Document::getCssFramework() === 'daisyui';
+        if ($isDaisyui && strpos($attribs, 'select select-') === false) {
+            $daisyCls = 'select select-bordered select-sm';
+            if (preg_match('/\bclass="([^"]*)"/', $attribs)) {
+                $attribs = preg_replace_callback(
+                    '/\bclass="([^"]*)"/',
+                    function ($m) use ($daisyCls) {
+                        $existing = trim(str_replace('inputbox', '', $m[1]));
+                        return 'class="' . trim($daisyCls . ($existing ? ' ' . $existing : '')) . '"';
+                    },
+                    $attribs
+                );
+            } else {
+                $attribs .= ' class="' . $daisyCls . '"';
+            }
+        }
+
         $html  = '<select' . ($id !== '' ? ' id="' . $id . '"' : '') . ' name="' . $name . '"' . $attribs . '>';
         $html .= self::options($data, $options);
         $html .= '</select>';
@@ -194,6 +213,24 @@ class Select
 
         $id = $options['id'] !== false ? $options['id'] : $name;
         $id = str_replace(array('[', ']'), '', $id);
+
+        // In Blade rendering context inject daisyUI select classes
+        $isDaisyui = Document::getCssFramework() === 'daisyui';
+        if ($isDaisyui && strpos($attribs, 'select select-') === false) {
+            $daisyCls = 'select select-bordered select-sm';
+            if (preg_match('/\bclass="([^"]*)"/', $attribs)) {
+                $attribs = preg_replace_callback(
+                    '/\bclass="([^"]*)"/',
+                    function ($m) use ($daisyCls) {
+                        $existing = trim(str_replace('inputbox', '', $m[1]));
+                        return 'class="' . trim($daisyCls . ($existing ? ' ' . $existing : '')) . '"';
+                    },
+                    $attribs
+                );
+            } else {
+                $attribs .= ' class="' . $daisyCls . '"';
+            }
+        }
 
         // Disable groups in the options.
         $options['groups'] = false;
@@ -640,6 +677,8 @@ class Select
 
         $id_text = $idtag ? $idtag : $name;
 
+        $isDaisyui = Document::getCssFramework() === 'daisyui';
+
         foreach ($data as $obj) {
             $k  = $obj->$optKey;
             $t  = $translate ? Lang::txt($obj->$optText) : $obj->$optText;
@@ -659,32 +698,40 @@ class Select
                 $extra .= ((string) $k == (string) $selected ? ' checked="checked"' : '');
             }
 
-            $html .= '<label for="' .
-                $id_text .
-                $k .
-                '"' .
-                ' id="' .
-                $id_text .
-                $k .
-                '-lbl" class="radiobtn option">' .
-                "\n";
-            $html .= '<input type="radio" name="' .
-                $name .
-                '"' .
-                ' id="' .
-                $id_text .
-                $k .
-                '" value="' .
-                $k .
-                '"' .
-                ' ' .
-                $extra .
-                ' ' .
-                $attribs .
-                '/>' .
-                $t .
-                "\n";
-            $html .= '</label>' . "\n";
+            if ($isDaisyui) {
+                $html .= '<label for="' . $id_text . $k . '" class="flex items-center gap-1.5 cursor-pointer text-sm">' . "\n";
+                $html .= '<input type="radio" name="' . $name . '" id="' . $id_text . $k .
+                    '" value="' . $k . '" ' . $extra . ' ' . $attribs . ' class="radio radio-sm" />' .
+                    $t . "\n";
+                $html .= '</label>' . "\n";
+            } else {
+                $html .= '<label for="' .
+                    $id_text .
+                    $k .
+                    '"' .
+                    ' id="' .
+                    $id_text .
+                    $k .
+                    '-lbl" class="radiobtn option">' .
+                    "\n";
+                $html .= '<input type="radio" name="' .
+                    $name .
+                    '"' .
+                    ' id="' .
+                    $id_text .
+                    $k .
+                    '" value="' .
+                    $k .
+                    '"' .
+                    ' ' .
+                    $extra .
+                    ' ' .
+                    $attribs .
+                    '/>' .
+                    $t .
+                    "\n";
+                $html .= '</label>' . "\n";
+            }
         }
         $html .= "\n";
         return $html;

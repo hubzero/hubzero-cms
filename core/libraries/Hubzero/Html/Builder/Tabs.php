@@ -8,8 +8,13 @@
 
 namespace Hubzero\Html\Builder;
 
+use Hubzero\Facades\Document;
+
 /**
  * Utility class for Tabs elements.
+ *
+ * Legacy mode: jQuery UI tabs with <dl>/<dt>/<dd> structure.
+ * daisyUI mode: radio-input tabs (pure CSS, no JS).
  */
 class Tabs
 {
@@ -19,6 +24,27 @@ class Tabs
      * @var  boolean
      */
     public static $open = false;
+
+    /**
+     * Whether we are rendering in daisyui mode
+     *
+     * @var  boolean
+     */
+    protected static $blade = false;
+
+    /**
+     * Current group name (used as radio input name in daisyui mode)
+     *
+     * @var  string
+     */
+    protected static $group = 'tabs';
+
+    /**
+     * Whether the first panel has been rendered
+     *
+     * @var  boolean
+     */
+    protected static $firstPanel = true;
 
     /**
      * Creates a panes and creates the JavaScript object for it.
@@ -31,6 +57,14 @@ class Tabs
     {
         self::behavior($group, $params);
         self::$open = false;
+        self::$blade = Document::getCssFramework() === 'daisyui';
+        self::$group = $group;
+        self::$firstPanel = true;
+
+        if (self::$blade) {
+            return '<div id="' . $group
+                . '" role="tablist" class="tabs tabs-bordered">';
+        }
 
         return '<dl class="tabs" id="' . $group . '">';
     }
@@ -42,9 +76,24 @@ class Tabs
      */
     public static function end()
     {
+        $content = '';
+
+        if (self::$open) {
+            if (self::$blade) {
+                $content .= '</div>';
+            } else {
+                $content .= '</dd>';
+            }
+        }
         self::$open = false;
 
-        return '</dd></dl>';
+        if (self::$blade) {
+            $content .= '</div>';
+        } else {
+            $content .= '</dl>';
+        }
+
+        return $content;
     }
 
     /**
@@ -58,12 +107,35 @@ class Tabs
     {
         $content = '';
 
-        if (self::$open) {
-            $content .= '</dd>';
+        if (self::$blade) {
+            if (self::$open) {
+                // Close previous tab-content
+                $content .= '</div>';
+            } else {
+                self::$open = true;
+            }
+            $checked = self::$firstPanel ? ' checked="checked"' : '';
+            self::$firstPanel = false;
+
+            $content .= '<input type="radio"'
+                . ' name="' . self::$group . '"'
+                . ' role="tab"'
+                . ' class="tab"'
+                . ' aria-label="' . htmlspecialchars($text, ENT_COMPAT, 'UTF-8') . '"'
+                . ' id="tab' . $id . '"'
+                . $checked . ' />'
+                . '<div role="tabpanel"'
+                . ' class="tab-content border-base-300 p-4">';
         } else {
-            self::$open = true;
+            if (self::$open) {
+                $content .= '</dd>';
+            } else {
+                self::$open = true;
+            }
+            $content .= '<dt id="tab' . $id . '">'
+                . '<a href="#tab' . $id . '">'
+                . $text . '</a></dt><dd>';
         }
-        $content .= '<dt id="tab' . $id . '"><a href="#tab' . $id . '">' . $text . '</a></dt><dd>';
 
         return $content;
     }
@@ -80,22 +152,13 @@ class Tabs
         static $loaded = array();
 
         if (!array_key_exists((string) $group, $loaded)) {
-            $options = array();
+            $loaded[(string) $group] = true;
 
-            $opt['onActive']            = (isset($params['onActive'])) ? $params['onActive'] : null;
-            $opt['onBackground']        = (isset($params['onBackground'])) ? $params['onBackground'] : null;
-            $opt['display']             = (isset($params['startOffset'])) ? (int) $params['startOffset'] : null;
-            $opt['useStorage']          = (isset($params['useCookie']) && $params['useCookie']) ? 'true' : 'false';
-            $opt['titleSelector']       = "'dt.tabs'";
-            $opt['descriptionSelector'] = "'dd.tabs'";
-
-            foreach ($opt as $k => $v) {
-                if ($v) {
-                    $options[] = $k . ': ' . $v;
-                }
+            // In daisyui mode, radio-input tabs are pure CSS —
+            // no JavaScript needed.
+            if (Document::getCssFramework() === 'daisyui') {
+                return;
             }
-
-            $options = '{' . implode(',', $options) . '}';
 
             Behavior::framework(true);
 
@@ -106,8 +169,6 @@ class Tabs
             );
 
             Asset::script('system/jquery.tabs.js', false, true);
-
-            $loaded[(string) $group] = true;
         }
     }
 }

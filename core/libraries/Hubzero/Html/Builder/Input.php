@@ -172,28 +172,38 @@ class Input
         if (!isset($options['class'])) {
             $options['class'] = 'calendar-field';
         } else {
-            $options['class'] = ' calendar-field';
+            $options['class'] .= ' calendar-field';
         }
 
-        if (!$readonly && !$disabled) {
-            // Load the calendar behavior
-            Behavior::calendar();
-            Behavior::tooltip();
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
+        if (!$readonly && !$disabled) {
             $id = self::getIdAttribute($name, $options);
 
-            // Only display the triggers once for each control.
-            if (!in_array($id, $done)) {
-                if ($format == 'Y-m-d H:i:s' || $format == '%Y-%m-%d %H:%M:%S') {
-                    $time = true;
+            if ($isDaisyui) {
+                // Blade mode: load flatpickr assets + set data attribute
+                // for admin.js delegation
+                Behavior::flatpickr($time ? 'datetime' : 'date');
+                if (!isset($options['data-flatpickr'])) {
+                    $options['data-flatpickr'] = $time ? 'datetime' : 'date';
                 }
-                $altformats = array('Y-m-d H:i:s', '%Y-%m-%d %H:%M:%S', 'Y-m-d', '%Y-%m-%d');
+                $done[] = $id;
+            } else {
+                // Legacy jQuery datepicker for non-Blade views
+                Behavior::calendar();
+                Behavior::tooltip();
 
-                $format = (in_array($format, $altformats) ? 'yy-mm-dd' : $format);
+                if (!in_array($id, $done)) {
+                    if ($format == 'Y-m-d H:i:s' || $format == '%Y-%m-%d %H:%M:%S') {
+                        $time = true;
+                    }
+                    $altformats = array('Y-m-d H:i:s', '%Y-%m-%d %H:%M:%S', 'Y-m-d', '%Y-%m-%d');
 
-                \Hubzero\Facades\App::get('document')->addScriptDeclaration("
-					jQuery(document).ready(function($){
-						" . ($time ? "$('#" . $id . "').datetimepicker({" : "$('#" . $id . "').datepicker({") . "
+                    $format = (in_array($format, $altformats) ? 'yy-mm-dd' : $format);
+
+                    \Hubzero\Facades\App::get('document')->addScriptDeclaration("
+					jQuery(document).ready(function(\$){
+						" . ($time ? "\$('#" . $id . "').datetimepicker({" : "\$('#" . $id . "').datepicker({") . "
 							duration: '',
 							showTime: true,
 							constrainInput: false,
@@ -206,7 +216,8 @@ class Input
 					});
 				");
 
-                $done[] = $id;
+                    $done[] = $id;
+                }
             }
 
             return '<span class="input-datetime">' . self::text($name, $value, $options) . '</span>';

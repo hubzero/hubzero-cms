@@ -36,8 +36,13 @@ class Textarea extends Element
     {
         $rows  = (string) $node['rows'];
         $cols  = (string) $node['cols'];
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
         $class = (string) $node['class'];
-        $class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
+        if ($isDaisyui) {
+            $class = 'class="textarea textarea-bordered textarea-sm w-full' . ($class ? ' ' . $class : '') . '"';
+        } else {
+            $class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
+        }
         // Convert <br /> tags so they are not visible when editing
         $value = str_replace('<br />', "\n", $value);
 

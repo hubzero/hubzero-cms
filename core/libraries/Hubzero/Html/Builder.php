@@ -41,13 +41,25 @@ class Builder
      * @param   array   $parameters
      * @return  mixed
      */
+    /**
+     * Map of lowercase method names to their correct PascalCase class names
+     * for cases where ucfirst() alone doesn't produce the right casing.
+     *
+     * @var  array
+     */
+    protected static $classAliases = [
+        'contentlanguage' => 'ContentLanguage',
+    ];
+
     public function __call($method, $parameters)
     {
         $func = array_shift($parameters);
         $key  = $method . '.' . $func;
 
         if (!array_key_exists($key, static::$registry)) {
-            $cls  = __NAMESPACE__ . '\\Builder\\' . ucfirst($method);
+            $alias = static::$classAliases[strtolower($method)]
+                ?? ucfirst($method);
+            $cls  = __NAMESPACE__ . '\\Builder\\' . $alias;
 
             if (!class_exists($cls)) {
                 $cls = $this->find($method);

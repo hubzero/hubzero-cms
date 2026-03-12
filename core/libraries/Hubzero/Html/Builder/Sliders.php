@@ -8,10 +8,14 @@
 
 namespace Hubzero\Html\Builder;
 
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Request;
 
 /**
  * Utility class for Sliders elements
+ *
+ * Legacy mode: jQuery UI accordion with inline JS init.
+ * daisyUI mode: native <details>/<summary> collapse elements (pure CSS).
  */
 class Sliders
 {
@@ -21,6 +25,20 @@ class Sliders
      * @var  boolean
      */
     public static $open = false;
+
+    /**
+     * Whether we are rendering in daisyui mode
+     *
+     * @var  boolean
+     */
+    protected static $blade = false;
+
+    /**
+     * Whether the first panel has been rendered (for daisyui open state)
+     *
+     * @var  boolean
+     */
+    protected static $firstPanel = true;
 
     /**
      * Creates a panes and loads the javascript behavior for it.
@@ -33,6 +51,13 @@ class Sliders
     {
         self::behavior($group, $params);
         self::$open = false;
+        self::$blade = Document::getCssFramework() === 'daisyui';
+        self::$firstPanel = true;
+
+        if (self::$blade) {
+            return '<div id="' . $group
+                . '" class="join join-vertical w-full">';
+        }
 
         return '<div id="' . $group . '" class="pane-sliders">';
     }
@@ -40,13 +65,19 @@ class Sliders
     /**
      * Close the current pane.
      *
-     * @return  string  hTML to close the pane
+     * @return  string  HTML to close the pane
      */
     public static function end()
     {
         $content = '';
         if (self::$open) {
-            $content .= '</div></div>';
+            if (self::$blade) {
+                // Close collapse-content + details
+                $content .= '</div></details>';
+            } else {
+                // Close pane-slider content + panel
+                $content .= '</div></div>';
+            }
         }
         self::$open = false;
         $content .= '</div>';
@@ -63,18 +94,35 @@ class Sliders
     public static function panel($text, $id)
     {
         $content = '';
-        if (self::$open) {
-            $content .= '</div></div>';
+
+        if (self::$blade) {
+            if (self::$open) {
+                // Close previous collapse-content + details
+                $content .= '</div></details>';
+            } else {
+                self::$open = true;
+            }
+            $open = self::$firstPanel ? ' open' : '';
+            self::$firstPanel = false;
+
+            $content .= '<details class="collapse collapse-arrow'
+                . ' join-item border border-base-300"'
+                . ' id="' . $id . '"' . $open . '>'
+                . '<summary class="collapse-title font-medium">'
+                . $text . '</summary>'
+                . '<div class="collapse-content">';
         } else {
-            self::$open = true;
+            if (self::$open) {
+                $content .= '</div></div>';
+            } else {
+                self::$open = true;
+            }
+            $content .= '<h3 class="pane-toggler title" id="'
+                . $id . '"><a href="#' . $id . '"><span>'
+                . $text . '</span></a></h3>'
+                . '<div class="panel">'
+                . '<div class="pane-slider content">';
         }
-        $content .= '<h3 class="pane-toggler title" id="' .
-            $id .
-            '"><a href="#' .
-            $id .
-            '"><span>' .
-            $text .
-            '</span></a></h3><div class="panel"><div class="pane-slider content">';
 
         return $content;
     }
@@ -92,41 +140,15 @@ class Sliders
 
         if (!array_key_exists($group, $loaded)) {
             $loaded[$group] = true;
-            $display = (isset($params['startOffset']) &&
-                isset($params['startTransition']) &&
-                $params['startTransition'])
-                ? (int) $params['startOffset'] : null;
-            $show = (isset($params['startOffset']) &&
-                !(isset($params['startTransition']) &&
-                $params['startTransition']))
-                ? (int) $params['startOffset'] : null;
+
+            // In daisyui mode, <details>/<summary> handles
+            // expand/collapse natively — no JS needed.
+            if (Document::getCssFramework() === 'daisyui') {
+                return;
+            }
 
             $opt = array();
             $opt['heightStyle'] = "'content'";
-            /*$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
-                "toggler.removeClass('pane-toggler');i.addClass('pane-down');" .
-                "i.removeClass('pane-hide');Cookie.write('jpanesliders_" . $group .
-                "',$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
-            $opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
-                "toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($('div#"
-                .
-                    $group .
-                    ".pane-sliders > .panel > h3').length==$('div#" .
-                    $group .
-                    ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" .
-                    $group .
-                    "',-1);}";
-            $opt['duration']   = (isset($params['duration'])) ? (int) $params['duration'] : 300;
-            $opt['display']    = (isset($params['useCookie']) &&
-                $params['useCookie']) ? Request::getInt('jpanesliders_' .
-                $group, $display, 'cookie')
-                : $display;
-            $opt['show']       = (isset($params['useCookie']) &&
-                $params['useCookie']) ? Request::getInt('jpanesliders_' .
-                $group, $show, 'cookie') : $show;
-            $opt['opacity']    = (isset($params['opacityTransition']) &&
-                ($params['opacityTransition'])) ? 'true' : 'false';
-            $opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';*/
 
             $options = array();
             foreach ($opt as $k => $v) {

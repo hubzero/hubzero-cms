@@ -72,11 +72,14 @@ class Radio extends Element
             $name .
             '"><legend';
         if ($description) {
-            $output .= ' class="hasTip" title="' .
-                App::get('language')->txt($label) .
-                '::' .
-                App::get('language')->txt($description) .
-                '">';
+            $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+            if ($isDaisyui) {
+                $output .= ' title="' . App::get('language')->txt($description) . '">';
+            } else {
+                $output .= ' class="hasTip" title="' .
+                    App::get('language')->txt($label) . '::' .
+                    App::get('language')->txt($description) . '">';
+            }
         } else {
             $output .= '>';
         }
