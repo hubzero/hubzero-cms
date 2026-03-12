@@ -38,6 +38,7 @@ class Calendar extends Field
         $format = $this->element['format'] ? (string) $this->element['format'] : 'yy-mm-dd';
 
         // Build the attributes array.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
         $attributes = array();
         if ($this->element['size']) {
             $attributes['size'] = (int) $this->element['size'];
@@ -45,8 +46,12 @@ class Calendar extends Field
         if ($this->element['maxlength']) {
             $attributes['maxlength'] = (int) $this->element['maxlength'];
         }
-        if ($this->element['class']) {
-            $attributes['class'] = (string) $this->element['class'];
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $attributes['class'] = trim('input input-bordered input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } elseif ($xmlClass) {
+            $attributes['class'] = $xmlClass;
         }
         if ((string) $this->element['readonly'] == 'true') {
             $attributes['readonly'] = 'readonly';
@@ -59,7 +64,11 @@ class Calendar extends Field
             $attributes['time'] = true;
         }
         if ($this->element['onchange']) {
-            $attributes['onchange'] = (string) $this->element['onchange'];
+            if ($isDaisyui) {
+                $attributes['csp_data'] = self::cspDataAttr((string) $this->element['onchange']);
+            } else {
+                $attributes['onchange'] = (string) $this->element['onchange'];
+            }
         }
 
         // Handle the special case for "now".

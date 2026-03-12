@@ -41,13 +41,19 @@ class Checkboxes extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html    = array();
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
+        $fieldClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $fsClass = ' class="flex flex-col gap-1"';
+        } else {
+            $fsClass = $fieldClass ? ' class="radio ' . $fieldClass . '"' : ' class="radio"';
+        }
 
         // Start the checkbox field output.
-        $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+        $html[] = '<fieldset id="' . $this->id . '"' . $fsClass . '>';
 
         // Get the field options.
         $options = $this->getOptions();
@@ -55,12 +61,15 @@ class Checkboxes extends Field
         $found  = false;
         $values = (array)$this->value;
 
+        if (!$isDaisyui) {
+            $html[] = '<ul>';
+        }
+
         // Build the checkbox field output.
-        $html[] = '<ul>';
         foreach ($options as $i => $option) {
             // Initialize some option attributes.
-            $checked = (in_array((string) $option->value, $values) ? ' checked="checked"' : '');
-            $class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+            $checked  = (in_array((string) $option->value, $values) ? ' checked="checked"' : '');
+            $optClass = !empty($option->class) ? $option->class : '';
             $disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
 
             // Add data attributes
@@ -82,75 +91,70 @@ class Checkboxes extends Field
             }
 
             // Initialize some JavaScript option attributes.
-            $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+            $onclick = '';
+            if (!empty($option->onclick)) {
+                $onclick = $isDaisyui
+                    ? self::cspDataAttr($option->onclick, 'onclick')
+                    : ' onclick="' . $option->onclick . '"';
+            }
 
-            $html[] = '<li>';
-            $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"' .
-                ' value="' .
-                    htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') .
-                    '"' .
-                    $checked .
-                    $class .
-                    $onclick .
-                    $disabled .
-                    $dataAttributes .
-                    '/>';
+            $optText = App::get('language')->txt($option->text);
 
-            $html[] = '<label for="' .
-                $this->id .
-                $i .
-                '"' .
-                $class .
-                '>' .
-                App::get('language')->txt($option->text) .
-                '</label>';
-            $html[] = '</li>';
+            if ($isDaisyui) {
+                $inputClass = trim('checkbox checkbox-sm' . ($optClass ? ' ' . $optClass : ''));
+                $html[] = '<label class="flex items-center gap-2 cursor-pointer text-sm">';
+                $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"' .
+                    ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' .
+                    $checked . $disabled . $onclick . $dataAttributes .
+                    ' class="' . $inputClass . '" />';
+                $html[] = $optText . '</label>';
+            } else {
+                $classAttr = $optClass ? ' class="' . $optClass . '"' : '';
+                $html[] = '<li>';
+                $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"' .
+                    ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' .
+                    $checked . $classAttr . $onclick . $disabled . $dataAttributes . '/>';
+                $html[] = '<label for="' . $this->id . $i . '"' . $classAttr . '>' . $optText . '</label>';
+                $html[] = '</li>';
+            }
         }
 
         if ($this->element['option_other']) {
-            $values = implode('', $values);
-            $values = trim($values);
-
+            $values  = implode('', $values);
+            $values  = trim($values);
             $checked = '';
             if (!empty($values)) {
                 $checked = ' checked="checked"';
             }
-            $html[] = '<li>';
-            $html[] = '<input type="checkbox" id="' .
-                $this->id .
-                ($i + 1) .
-                '" name="' .
-                $this->name .
-                '" value=""' .
-                $checked .
-                $class .
-                $onclick .
-                $disabled .
-                '/>';
-            $html[] = '<label for="' .
-                $this->id .
-                ($i + 1) .
-                '"' .
-                $class .
-                '>' .
-                App::get('language')->txt('JOTHER') .
-                '</label>';
-            $html[] = '<input type="text" id="' .
-                $this->id .
-                '_other" name="' .
-                substr($this->getName($this->fieldname .
-                '_other'), 0, -2) .
-                '" value="' .
-                ($checked ? htmlspecialchars($values, ENT_COMPAT, 'UTF-8') : '') .
-                '"' .
-                $class .
-                $onclick .
-                $disabled .
-                '/>';
-            $html[] = '</li>';
+            $otherText = App::get('language')->txt('JOTHER');
+            if ($isDaisyui) {
+                $html[] = '<label class="flex items-center gap-2 cursor-pointer text-sm">';
+                $html[] = '<input type="checkbox" id="' . $this->id . ($i + 1) .
+                    '" name="' . $this->name . '" value=""' .
+                    $checked . $disabled . $onclick . ' class="checkbox checkbox-sm" />';
+                $html[] = $otherText . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '_other" name="' .
+                    substr($this->getName($this->fieldname . '_other'), 0, -2) . '" value="' .
+                    ($checked ? htmlspecialchars($values, ENT_COMPAT, 'UTF-8') : '') .
+                    '" class="input input-bordered input-sm w-full" />';
+            } else {
+                $classAttr = $optClass ? ' class="' . $optClass . '"' : '';
+                $html[] = '<li>';
+                $html[] = '<input type="checkbox" id="' . $this->id . ($i + 1) .
+                    '" name="' . $this->name . '" value=""' .
+                    $checked . $classAttr . $onclick . $disabled . '/>';
+                $html[] = '<label for="' . $this->id . ($i + 1) . '"' . $classAttr . '>' . $otherText . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '_other" name="' .
+                    substr($this->getName($this->fieldname . '_other'), 0, -2) . '" value="' .
+                    ($checked ? htmlspecialchars($values, ENT_COMPAT, 'UTF-8') : '') .
+                    '"' . $classAttr . $onclick . $disabled . '/>';
+                $html[] = '</li>';
+            }
         }
 
-        $html[] = '</ul>';
+        if (!$isDaisyui) {
+            $html[] = '</ul>';
+        }
 
         // End the checkbox field output.
         $html[] = '</fieldset>';

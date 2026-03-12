@@ -30,6 +30,7 @@ class Hidden extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
         $attributes = array(
             'type'         => 'hidden',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
@@ -38,7 +39,8 @@ class Hidden extends Field
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => (!$isDaisyui && $this->element['onchange']
+                                  ? (string) $this->element['onchange'] : '')
         );
 
         $attr = array();
@@ -50,6 +52,10 @@ class Hidden extends Field
             $attr[] = $key . '="' . $value . '"';
         }
         $attr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
 
         return '<input ' . $attr . ' />';
     }

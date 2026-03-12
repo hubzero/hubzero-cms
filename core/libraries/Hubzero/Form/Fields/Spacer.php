@@ -59,26 +59,29 @@ class Spacer extends Field
             $text = $this->translateLabel ? App::get('language')->txt($text) : $text;
 
             // Build the class for the label.
-            $class = !empty($this->description) ? 'hasTip' : '';
+            $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+            $class = (!empty($this->description) && !$isDaisyui) ? 'hasTip' : '';
             $class = $this->required == true ? $class . ' required' : $class;
 
             // Add the opening label tag and main attributes attributes.
-            $label .= '<label id="' . $this->id . '-lbl" class="' . $class . '"';
+            $label .= '<label id="' . $this->id . '-lbl" class="' . trim($class) . '"';
 
             // If a description is specified, use it to build a tooltip.
             if (!empty($this->description)) {
-                $label .= ' title="'
-                    . htmlspecialchars(
-                        trim($text, ':') .
-                            '::' .
-                            ($this->
-                                translateDescription ? App::get('language')->
-                                txt($this->
-                                description) : $this->
-                                description),
-                        ENT_COMPAT,
-                        'UTF-8'
-                    ) . '"';
+                $desc = $this->translateDescription
+                    ? App::get('language')->txt($this->description)
+                    : $this->description;
+
+                if ($isDaisyui) {
+                    $label .= ' title="' . htmlspecialchars($desc, ENT_COMPAT, 'UTF-8') . '"';
+                } else {
+                    $label .= ' title="'
+                        . htmlspecialchars(
+                            trim($text, ':') . '::' . $desc,
+                            ENT_COMPAT,
+                            'UTF-8'
+                        ) . '"';
+                }
             }
 
             // Add the label text and closing tag.

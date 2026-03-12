@@ -32,7 +32,14 @@ class Email extends Field
         // Initialize some field attributes.
         $size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
         $maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
-        $class = $this->element['class'] ? ' ' . (string) $this->element['class'] : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls = trim('input input-bordered input-sm w-full validate-email' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = 'validate-email' . ($xmlClass ? ' ' . $xmlClass : '');
+        }
         $readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
         $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
@@ -40,12 +47,17 @@ class Email extends Field
         $this->value = str_replace(array('"','\\'), '', $this->value);
 
         // Initialize JavaScript field attributes.
-        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $onchange = '';
+        if ($this->element['onchange']) {
+            $onchange = $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onchange'])
+                : ' onchange="' . (string) $this->element['onchange'] . '"';
+        }
 
         return '<input type="text" name="' .
             $this->name .
-            '" class="validate-email' .
-            $class .
+            '" class="' .
+            $cls .
             '" id="' .
             $this->id .
             '"' .

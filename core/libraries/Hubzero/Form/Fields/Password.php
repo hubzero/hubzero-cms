@@ -33,7 +33,15 @@ class Password extends Field
         // Initialize some field attributes.
         $size      = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
         $maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
-        $class     = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass  = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls      = trim('input input-bordered input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = $xmlClass;
+        }
+        $class = $cls ? ' class="' . $cls . '"' : '';
         $auto      = ((string) $this->element['autocomplete'] == 'off') ? ' autocomplete="off"' : '';
         $readonly  = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
         $disabled  = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
@@ -41,9 +49,14 @@ class Password extends Field
         $threshold = $this->element['threshold'] ? (int) $this->element['threshold'] : 66;
 
         $script = '';
+        $meterAttr = '';
         if ($meter) {
-            Asset::script('system/passwordstrength.js', true, true);
-            $script = '<script type="text/javascript">jQuery(document).ready(function ($) {
+            if ($isDaisyui) {
+                // CSP-safe: admin.js initPasswordStrength() picks up this data attribute
+                $meterAttr = ' data-strength-meter="' . $threshold . '"';
+            } else {
+                Asset::script('system/passwordstrength.js', true, true);
+                $script = '<script type="text/javascript">jQuery(document).ready(function ($) {
 				$("#' . $this->id . '").passwordstrength({
 					threshold: ' . $threshold . ',
 					onUpdate: function(element, strength, threshold) {
@@ -51,10 +64,12 @@ class Password extends Field
 					}
 				});
 			});</script>';
+            }
         }
 
         return '<input type="password" name="' . $this->name . '" id="' . $this->id . '"' .
             ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' .
-            $auto . $class . $readonly . $disabled . $size . $maxLength . ' autocomplete="off" />' . $script;
+            $auto . $class . $readonly . $disabled . $size . $maxLength . $meterAttr .
+            ' autocomplete="off" />' . $script;
     }
 }

@@ -32,12 +32,25 @@ class Checkbox extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $class    = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls      = trim('checkbox checkbox-sm' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = $xmlClass;
+        }
+        $class    = $cls ? ' class="' . $cls . '"' : '';
         $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
         $checked  = ((string) $this->element['value'] == $this->value) ? ' checked="checked"' : '';
 
         // Initialize JavaScript field attributes.
-        $onclick = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
+        $onclick = '';
+        if ($this->element['onclick']) {
+            $onclick = $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onclick'], 'onclick')
+                : ' onclick="' . (string) $this->element['onclick'] . '"';
+        }
 
         return '<input type="checkbox" name="' .
             $this->name .

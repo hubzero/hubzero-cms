@@ -30,6 +30,15 @@ class Number extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $class = trim('input input-bordered input-sm w-24' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $class = $xmlClass ?: null;
+        }
+
         $attributes = array(
             'type'         => 'number',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
@@ -39,10 +48,10 @@ class Number extends Field
             'max'          => ($this->element['max'] ? (int) $this->element['max'] : null),
             'step'         => ($this->element['step'] ? (int) $this->element['step'] : null),
             'pattern'      => ($this->element['pattern'] ? $this->element['pattern'] : null),
-            'class'        => ($this->element['class'] ? (string) $this->element['class'] : null),
+            'class'        => $class,
             'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : null),
             'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : null),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : null)
+            'onchange'     => (!$isDaisyui && $this->element['onchange'] ? (string) $this->element['onchange'] : null)
         );
 
         $attr = array();
@@ -57,6 +66,10 @@ class Number extends Field
             $attr[] = $key . '="' . $value . '"';
         }
         $attr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
 
         return '<input ' . $attr . ' />';
     }

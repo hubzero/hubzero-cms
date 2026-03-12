@@ -111,11 +111,23 @@ class Media extends Field
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls = trim('input input-bordered input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = $xmlClass;
+        }
+        $attr .= $cls ? ' class="' . $cls . '"' : '';
         $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        if ($this->element['onchange']) {
+            $attr .= $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onchange'])
+                : ' onchange="' . (string) $this->element['onchange'] . '"';
+        }
 
         // The text field.
         $html[] = '<div class="input-modal">';
@@ -187,10 +199,12 @@ class Media extends Field
             case 'tooltip':
             default:
                 $showAsTooltip = true;
-                $options = array(
-                    'onShow' => 'jMediaRefreshPreviewTip',
-                );
-                Behavior::tooltip('.hasTipPreview', $options);
+                if (!$isDaisyui) {
+                    $options = array(
+                        'onShow' => 'jMediaRefreshPreviewTip',
+                    );
+                    Behavior::tooltip('.hasTipPreview', $options);
+                }
                 break;
         }
 
@@ -222,34 +236,42 @@ class Media extends Field
                 $lang->txt('JLIB_FORM_MEDIA_PREVIEW_EMPTY') .
                 '</div>';
 
-            //$html[] = '<div class="media-preview fltlft">';
             if ($showAsTooltip) {
-                $tooltip = $previewImgEmpty . $previewImg;
-                $options = array(
-                    'title' => htmlspecialchars(
-                        $lang->txt('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),
-                        ENT_COMPAT,
-                        'UTF-8'
-                    ),
-                    'text'  => htmlspecialchars($lang->txt('JLIB_FORM_MEDIA_PREVIEW_TIP_TITLE'), ENT_COMPAT, 'UTF-8'),
-                    'class' => 'hasTipPreview'
-                );
-                $html[] = '<span class="' .
-                    $options['class'] .
-                    '" title="' .
-                    $options['title'] .
-                    '::' .
-                    htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') .
-                    '">' .
-                    $options['text'] .
-                    '</span>';
+                if ($isDaisyui) {
+                    // In daisyUI mode, show preview inline instead of tooltip
+                    $html[] = ' ' . $previewImgEmpty;
+                    $html[] = ' ' . $previewImg;
+                } else {
+                    $tooltip = $previewImgEmpty . $previewImg;
+                    $options = array(
+                        'title' => htmlspecialchars(
+                            $lang->txt('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),
+                            ENT_COMPAT,
+                            'UTF-8'
+                        ),
+                        'text'  => htmlspecialchars(
+                            $lang->txt('JLIB_FORM_MEDIA_PREVIEW_TIP_TITLE'),
+                            ENT_COMPAT,
+                            'UTF-8'
+                        ),
+                        'class' => 'hasTipPreview'
+                    );
+                    $html[] = '<span class="' .
+                        $options['class'] .
+                        '" title="' .
+                        $options['title'] .
+                        '::' .
+                        htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') .
+                        '">' .
+                        $options['text'] .
+                        '</span>';
 
-                Behavior::tooltip('.hasTipPreview', $options);
+                    Behavior::tooltip('.hasTipPreview', $options);
+                }
             } else {
                 $html[] = ' ' . $previewImgEmpty;
                 $html[] = ' ' . $previewImg;
             }
-            //$html[] = '</div>';
         }
 
         return implode("\n", $html);

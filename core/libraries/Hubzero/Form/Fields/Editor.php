@@ -67,7 +67,7 @@ class Editor extends Field
         // Get an editor object.
         $editor = $this->getEditor();
 
-        return $editor->display(
+        $output = $editor->display(
             $this->name,
             htmlspecialchars($this->value ?: '', ENT_COMPAT, 'UTF-8'),
             $width,
@@ -79,6 +79,13 @@ class Editor extends Field
             $asset,
             $this->form->getValue($authorField)
         );
+
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        if ($isDaisyui) {
+            return '<div class="border border-base-300 rounded overflow-hidden">' . $output . '</div>';
+        }
+
+        return $output;
     }
 
     /**

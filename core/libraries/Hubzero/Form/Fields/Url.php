@@ -28,6 +28,15 @@ class Url extends Text
     protected function getInput()
     {
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $class = trim('input input-bordered input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $class = $xmlClass;
+        }
+
         $attributes = array(
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
@@ -36,11 +45,11 @@ class Url extends Text
             'placeholder'  => 'http://',
             'size'         => ($this->element['size']      ? (int) $this->element['size']      : ''),
             'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'class'        => $class,
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => (!$isDaisyui && $this->element['onchange'] ? (string) $this->element['onchange'] : '')
         );
 
         $attr = array();
@@ -52,6 +61,10 @@ class Url extends Text
             $attr[] = $key . '="' . $value . '"';
         }
         $attr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
 
         return '<input ' . $attr . ' />';
     }

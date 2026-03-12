@@ -38,6 +38,15 @@ class Color extends Field
         $this->value = '#' . ltrim($this->value, '#');
 
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $class = trim('input input-bordered input-sm w-24' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $class = $xmlClass;
+        }
+
         $attributes = array(
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
@@ -45,11 +54,12 @@ class Color extends Field
             'id'           => $this->id,
             'size'         => ($this->element['size']      ? (int) $this->element['size']      : ''),
             'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'class'        => $class,
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => (!$isDaisyui && $this->element['onchange']
+                ? (string) $this->element['onchange'] : '')
         );
 
         if (!$attributes['disabled']) {
@@ -66,6 +76,12 @@ class Color extends Field
             $attr[] = $key . '="' . $val . '"';
         }
 
-        return '<span class="input-color"><input ' . implode(' ', $attr) . ' /></span>';
+        $attrStr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attrStr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
+
+        return '<span class="input-color"><input ' . $attrStr . ' /></span>';
     }
 }

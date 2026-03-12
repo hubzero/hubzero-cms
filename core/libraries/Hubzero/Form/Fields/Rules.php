@@ -144,17 +144,22 @@ class Rules extends Field
             foreach ($actions as $action) {
                 $html[] = '<tr>';
                 $html[] = '<td headers="actions-th' . $group->value . '">';
-                $html[] = '<label class="hasTip" for="' .
+                $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+                $tipClass = $isDaisyui ? '' : ' class="hasTip"';
+                $tipTitle = $isDaisyui
+                    ? htmlspecialchars($lang->txt($action->description), ENT_COMPAT, 'UTF-8')
+                    : htmlspecialchars(
+                        $lang->txt($action->title) . '::' . $lang->txt($action->description),
+                        ENT_COMPAT,
+                        'UTF-8'
+                    );
+                $html[] = '<label' . $tipClass . ' for="' .
                     $this->id .
                     '_' .
                     $action->name .
                     '_' .
                     $group->value .
-                    '" title="' .
-                    htmlspecialchars($lang->txt($action->title) .
-                    '::' .
-                    $lang->txt($action->description), ENT_COMPAT, 'UTF-8') .
-                    '">';
+                    '" title="' . $tipTitle . '">';
                 $html[] = $lang->txt($action->title);
                 $html[] = '</label>';
                 $html[] = '</td>';

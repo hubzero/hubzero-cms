@@ -37,13 +37,25 @@ class Usergroup extends Field
         $attr = '';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls = trim('select select-bordered select-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = $xmlClass;
+        }
+        $attr .= $cls ? ' class="' . $cls . '"' : '';
         $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
         $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        if ($this->element['onchange']) {
+            $attr .= $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onchange'])
+                : ' onchange="' . (string) $this->element['onchange'] . '"';
+        }
 
         // Iterate through the children and build an array of options.
         foreach ($this->element->children() as $option) {

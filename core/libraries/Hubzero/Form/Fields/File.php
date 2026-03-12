@@ -32,15 +32,24 @@ class File extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $class = trim('file-input file-input-bordered file-input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $class = $xmlClass;
+        }
+
         $attributes = array(
             'type'         => 'file',
             'name'         => $this->name,
             'id'           => $this->id,
             'size'         => ($this->element['size']      ? (int) $this->element['size']      : ''),
             'accept'       => ($this->element['accept']    ? (string) $this->element['accept'] : ''),
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'class'        => $class,
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => (!$isDaisyui && $this->element['onchange'] ? (string) $this->element['onchange'] : '')
         );
 
         $attr = array();
@@ -52,6 +61,10 @@ class File extends Field
             $attr[] = $key . '="' . $value . '"';
         }
         $attr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
 
         return '<input ' . $attr . ' value="" />';
     }

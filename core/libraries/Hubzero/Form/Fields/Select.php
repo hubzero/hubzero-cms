@@ -35,9 +35,17 @@ class Select extends Field
         // Initialize variables.
         $html = array();
         $attr = '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $cls = trim('select select-bordered select-sm w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $cls = $xmlClass;
+        }
+        $attr .= $cls ? ' class="' . $cls . '"' : '';
 
         // To avoid user's confusion, readonly="true" should imply disabled="true".
         if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true') {
@@ -48,7 +56,11 @@ class Select extends Field
         $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        if ($this->element['onchange']) {
+            $attr .= $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onchange'])
+                : ' onchange="' . (string) $this->element['onchange'] . '"';
+        }
 
         // Get the field options.
         $options = (array) $this->getOptions();
@@ -75,17 +87,16 @@ class Select extends Field
                         $found = true;
                     }
                 }
+                $otherClass = $isDaisyui ? ' class="input input-bordered input-sm w-full mt-1"' : '';
                 $html[] = '<input type="text" name="' .
-                    $this->getName($this->fieldname .
-                    '_other') .
+                    $this->getName($this->fieldname . '_other') .
                     '" value="' .
                     ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) .
                     '" placeholder="' .
-                    (empty($this->
-                        placeholder) ?  App::get('language')->
-                        txt('Other...') : htmlspecialchars($this->
-                        placeholder, ENT_COMPAT, 'UTF-8')) .
-                    '" />';
+                    (empty($this->placeholder)
+                        ? App::get('language')->txt('Other...')
+                        : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8')) .
+                    '"' . $otherClass . ' />';
             }
         }
 

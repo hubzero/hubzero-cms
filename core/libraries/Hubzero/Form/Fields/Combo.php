@@ -33,42 +33,59 @@ class Combo extends Select
         // Initialize variables.
         $html = array();
         $attr = '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
         // Initialize some field attributes.
-        $attr .= $this->element['class'] ? ' class="combobox ' .
-            (string) $this->element['class'] .
-            '"' : ' class="combobox"';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $attr .= ' class="' . trim('input input-bordered input-sm w-full' . ($xmlClass ? ' ' . $xmlClass : '')) . '"';
+        } else {
+            $attr .= ' class="combobox' . ($xmlClass ? ' ' . $xmlClass : '') . '"';
+        }
         $attr .= ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
         $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
         $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
         // Initialize JavaScript field attributes.
-        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        if ($this->element['onchange']) {
+            $attr .= $isDaisyui
+                ? self::cspDataAttr((string) $this->element['onchange'])
+                : ' onchange="' . (string) $this->element['onchange'] . '"';
+        }
 
         // Get the field options.
         $options = $this->getOptions();
 
-        // Load the combobox behavior.
-        Behavior::combobox();
+        if ($isDaisyui) {
+            // Native HTML5 datalist combo box.
+            $attr .= ' list="datalist-' . $this->id . '"';
 
-        // Build the input for the combo box.
-        $html[] = '<input type="text" name="' .
-            $this->name .
-            '" id="' .
-            $this->id .
-            '"' .
-            ' value="' .
-            htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-            '"' .
-            $attr .
-            '/>';
+            $html[] = '<input type="text" name="' . $this->name .
+                '" id="' . $this->id . '"' .
+                ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' .
+                $attr . '/>';
 
-        // Build the list for the combo box.
-        $html[] = '<ul id="combobox-' . $this->id . '" style="display:none;">';
-        foreach ($options as $option) {
-            $html[] = '<li>' . $option->text . '</li>';
+            $html[] = '<datalist id="datalist-' . $this->id . '">';
+            foreach ($options as $option) {
+                $html[] = '<option value="' . htmlspecialchars($option->text, ENT_COMPAT, 'UTF-8') . '">';
+            }
+            $html[] = '</datalist>';
+        } else {
+            // Legacy jQuery combobox behavior.
+            Behavior::combobox();
+
+            $html[] = '<input type="text" name="' . $this->name .
+                '" id="' . $this->id . '"' .
+                ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' .
+                $attr . '/>';
+
+            $html[] = '<ul id="combobox-' . $this->id . '" style="display:none;">';
+            foreach ($options as $option) {
+                $html[] = '<li>' . $option->text . '</li>';
+            }
+            $html[] = '</ul>';
         }
-        $html[] = '</ul>';
 
         return implode($html);
     }

@@ -31,15 +31,25 @@ class Textarea extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $xmlClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $xmlClass = trim(str_replace('inputbox', '', $xmlClass));
+            $class    = trim('textarea textarea-bordered w-full' . ($xmlClass ? ' ' . $xmlClass : ''));
+        } else {
+            $class = $xmlClass;
+        }
+
         $attributes = array(
             'type'         => 'text',
             'name'         => $this->name,
             'id'           => $this->id,
-            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'class'        => $class,
             'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
             'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => (!$isDaisyui && $this->element['onchange']
+                                  ? (string) $this->element['onchange'] : '')
         );
 
         $attr = array();
@@ -51,6 +61,10 @@ class Textarea extends Field
             $attr[] = $key . '="' . $value . '"';
         }
         $attr = implode(' ', $attr);
+
+        if ($isDaisyui && $this->element['onchange']) {
+            $attr .= self::cspDataAttr((string) $this->element['onchange']);
+        }
 
         return '<textarea ' .
             $attr .

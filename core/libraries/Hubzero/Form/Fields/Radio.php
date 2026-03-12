@@ -32,25 +32,33 @@ class Radio extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html    = array();
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
+        $fieldClass = $this->element['class'] ? (string) $this->element['class'] : '';
+        if ($isDaisyui) {
+            $fsClass = ' class="flex flex-col gap-1"';
+        } else {
+            $fsClass = $fieldClass ? ' class="radio ' . $fieldClass . '"' : ' class="radio"';
+        }
 
         // Start the radio field output.
-        $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
+        $html[] = '<fieldset id="' . $this->id . '"' . $fsClass . '>';
 
         // Get the field options.
         $options = $this->getOptions();
-        $found = false;
+        $found   = false;
 
-        $html[] = '<ul>';
+        if (!$isDaisyui) {
+            $html[] = '<ul>';
+        }
 
         // Build the radio field output.
         foreach ($options as $i => $option) {
             // Initialize some option attributes.
             $checked  = ((string) $option->value == (string) $this->value) ? ' checked="checked"' : '';
-            $class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+            $optClass = !empty($option->class) ? $option->class : '';
             $disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
 
             if ($checked) {
@@ -66,75 +74,76 @@ class Radio extends Field
                 }
             }
             // Initialize some JavaScript option attributes.
-            $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
+            $onclick = '';
+            if (!empty($option->onclick)) {
+                $onclick = $isDaisyui
+                    ? self::cspDataAttr($option->onclick, 'onclick')
+                    : ' onclick="' . $option->onclick . '"';
+            }
 
-            $html[] = '<li>';
-            $html[] = '<input type="radio" id="' .
-                $this->id .
-                $i .
-                '" name="' .
-                $this->name .
-                '" value="' .
-                htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') .
-                '"' .
-                $checked .
-                $class .
-                $onclick .
-                $disabled .
-                $dataAttributes .
-                '/>';
-            $html[] = '<label for="' .
-                $this->id .
-                $i .
-                '"' .
-                $class .
-                '>' .
-                App::get('language')->alt($option->text, preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)) .
-                '</label>';
-            $html[] = '</li>';
+            $optText = App::get('language')->alt(
+                $option->text,
+                preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
+            );
+
+            if ($isDaisyui) {
+                $inputClass = trim('radio radio-sm' . ($optClass ? ' ' . $optClass : ''));
+                $html[] = '<label class="flex items-center gap-2 cursor-pointer text-sm">';
+                $html[] = '<input type="radio" id="' . $this->id . $i .
+                    '" name="' . $this->name .
+                    '" value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' .
+                    $checked . $disabled . $onclick . $dataAttributes .
+                    ' class="' . $inputClass . '" />';
+                $html[] = $optText . '</label>';
+            } else {
+                $classAttr = $optClass ? ' class="' . $optClass . '"' : '';
+                $html[] = '<li>';
+                $html[] = '<input type="radio" id="' . $this->id . $i .
+                    '" name="' . $this->name .
+                    '" value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' .
+                    $checked . $classAttr . $onclick . $disabled . $dataAttributes . '/>';
+                $html[] = '<label for="' . $this->id . $i . '"' . $classAttr . '>' . $optText . '</label>';
+                $html[] = '</li>';
+            }
         }
 
         if ($this->element['option_other']) {
-            $checked = '';
+            $checked  = '';
+            $optClass = isset($optClass) ? $optClass : '';
+            $onclick  = isset($onclick) ? $onclick : '';
+            $disabled = isset($disabled) ? $disabled : '';
             if (!$found && $this->value) {
                 $checked = ' checked="checked"';
             }
-            $html[] = '<li>';
-            $html[] = '<input type="radio" id="' .
-                $this->id .
-                ($i + 1) .
-                '" name="' .
-                $this->name .
-                '" value=""' .
-                $checked .
-                $class .
-                $onclick .
-                $disabled .
-                '/>';
-            $html[] = '<label for="' .
-                $this->id .
-                ($i + 1) .
-                '"' .
-                $class .
-                '>' .
-                App::get('language')->txt('JOTHER') .
-                '</label>';
-            $html[] = '<input type="text" id="' .
-                $this->id .
-                '_other" name="' .
-                $this->getName($this->fieldname .
-                '_other') .
-                '" value="' .
-                ($checked ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : '') .
-                '"' .
-                $class .
-                $onclick .
-                $disabled .
-                '/>';
-            $html[] = '</li>';
+            $otherText = App::get('language')->txt('JOTHER');
+            if ($isDaisyui) {
+                $html[] = '<label class="flex items-center gap-2 cursor-pointer text-sm">';
+                $html[] = '<input type="radio" id="' . $this->id . ($i + 1) .
+                    '" name="' . $this->name . '" value=""' .
+                    $checked . $disabled . $onclick . ' class="radio radio-sm" />';
+                $html[] = $otherText . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '_other" name="' .
+                    $this->getName($this->fieldname . '_other') . '" value="' .
+                    ($checked ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : '') .
+                    '" class="input input-bordered input-sm w-full" />';
+            } else {
+                $classAttr = $optClass ? ' class="' . $optClass . '"' : '';
+                $html[] = '<li>';
+                $html[] = '<input type="radio" id="' . $this->id . ($i + 1) .
+                    '" name="' . $this->name . '" value=""' .
+                    $checked . $classAttr . $onclick . $disabled . '/>';
+                $html[] = '<label for="' . $this->id . ($i + 1) . '"' . $classAttr . '>' . $otherText . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '_other" name="' .
+                    $this->getName($this->fieldname . '_other') . '" value="' .
+                    ($checked ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : '') .
+                    '"' . $classAttr . $onclick . $disabled . '/>';
+                $html[] = '</li>';
+            }
         }
 
-        $html[] = '</ul>';
+        if (!$isDaisyui) {
+            $html[] = '</ul>';
+        }
 
         // End the radio field output.
         $html[] = '</fieldset>';

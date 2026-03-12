@@ -453,23 +453,30 @@ abstract class Field
         $text = $this->translateLabel ? Lang::txt($text) : $text;
 
         // Build the class for the label.
-        $class = !empty($this->description) ? 'hasTip' : '';
+        $isDaisyui = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
+        $class = (!empty($this->description) && !$isDaisyui) ? 'hasTip' : '';
         $class = $this->required == true ? $class . ' required-field' : $class;
         $class = !empty($this->labelClass) ? $class . ' ' . $this->labelClass : $class;
 
         // Add the opening label tag and main attributes attributes.
-        $label .= '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '"';
+        $label .= '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . trim($class) . '"';
 
         // If a description is specified, use it to build a tooltip.
         if (!empty($this->description)) {
-            $label .= ' title="'
-                . htmlspecialchars(
-                    trim($text, ':') .
-                        '::' .
-                        ($this->translateDescription ? Lang::txt($this->description) : $this->description),
-                    ENT_COMPAT,
-                    'UTF-8'
-                ) . '"';
+            $desc = $this->translateDescription ? Lang::txt($this->description) : $this->description;
+
+            if ($isDaisyui) {
+                // Native title with plain description text
+                $label .= ' title="' . htmlspecialchars($desc, ENT_COMPAT, 'UTF-8') . '"';
+            } else {
+                // Legacy jQuery UI tooltip format: "Label::Description"
+                $label .= ' title="'
+                    . htmlspecialchars(
+                        trim($text, ':') . '::' . $desc,
+                        ENT_COMPAT,
+                        'UTF-8'
+                    ) . '"';
+            }
         }
 
         // Add the label text and closing tag.
@@ -480,6 +487,43 @@ abstract class Field
         }
 
         return $label;
+    }
+
+    /**
+     * Convert an inline JS handler to a CSP-safe data attribute string.
+     *
+     * In daisyUI mode inline onclick/onchange attributes violate CSP.
+     * This method maps common Joomla handler patterns to the data-*
+     * attributes recognised by admin.js event delegation:
+     *
+     *   this.form.submit()            → data-submit-on-change
+     *   Joomla.submitbutton('task')   → data-submit-task="task"
+     *   Hubzero.submitbutton('task')  → data-submit-task="task"
+     *
+     * Unknown patterns are emitted as data-onchange / data-onclick so
+     * future JS can still pick them up.
+     *
+     * @param   string  $handler  The inline JS expression (e.g. "this.form.submit()")
+     * @param   string  $event    The event name: "onchange" or "onclick"
+     * @return  string  One or more data-* attribute strings ready for HTML output
+     */
+    protected static function cspDataAttr($handler, $event = 'onchange')
+    {
+        $handler = trim($handler, " \t\n\r\0\x0B;");
+
+        // this.form.submit()
+        if (preg_match('/^this\.form\.submit\(\)$/', $handler)) {
+            return ' data-submit-on-change';
+        }
+
+        // Joomla.submitbutton('task') or Hubzero.submitbutton('task')
+        if (preg_match('/^(?:Joomla|Hubzero)\.submitbutton\([\'"]([^\'"]+)[\'"]\)$/', $handler, $m)) {
+            return ' data-submit-task="' . htmlspecialchars($m[1], ENT_COMPAT, 'UTF-8') . '"';
+        }
+
+        // Unknown pattern — preserve as data attribute for custom JS
+        $attr = ($event === 'onclick') ? 'data-onclick' : 'data-onchange';
+        return ' ' . $attr . '="' . htmlspecialchars($handler, ENT_COMPAT, 'UTF-8') . '"';
     }
 
     /**
