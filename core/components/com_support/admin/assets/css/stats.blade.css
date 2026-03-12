@@ -1,0 +1,30 @@
+/**
+ * Support Stats — Blade-specific CSS overrides
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Table headers: #999 on white is ~2.8:1 */
+.support-stats-overview thead th {
+	color: #555;
+}
+
+/* Entry title span: #999 on white */
+.entry-title span {
+	color: #555;
+}
+
+/* Stats table unit labels: #aaa on white is ~2.3:1 */
+.support-stats-overview tbody td span {
+	color: #555;
+}
+
+/* Severity colors: #ce7d7d (major) ~2.6:1, red (critical) ~4.0:1 on white */
+.support-stats-overview tbody td.major {
+	color: #a33;
+}
+.support-stats-overview tbody td.critical {
+	color: #c00;
+}

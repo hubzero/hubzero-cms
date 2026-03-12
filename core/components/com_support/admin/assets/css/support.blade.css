@@ -1,0 +1,79 @@
+/**
+ * Support — Blade-specific CSS overrides
+ *
+ * Fixes WCAG AA contrast issues in the legacy support.css
+ * (which cannot be modified as it's shared with legacy PHP views).
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Query sidebar: #999 on #ebebeb is ~2.3:1 — needs 4.5:1 */
+.pane-queries {
+	color: #555;
+}
+
+/* Query links: #777 on #ebebeb is ~3.7:1 — needs 4.5:1 */
+.pane-queries li a {
+	color: #555;
+}
+
+/* Query count badges: #777 on #e1e1e1 is ~3.5:1 */
+.pane-queries li a span {
+	color: #555;
+}
+
+/* Ticket list: #b9b9b9 on #f9f9f9 is ~1.6:1 — #6e6e6e gives ~4.7:1 */
+.pane-list .ticket-id {
+	color: #6e6e6e;
+}
+
+/* Ticket details/author: #aaa on #f9f9f9 is ~2.3:1 */
+.pane-list .ticket-details,
+.pane-list .ticket-details a {
+	color: #6e6e6e;
+}
+
+/* Ticket activity (time): #6b85ce on #f9f9f9 is ~3.4:1 — #4a67b0 gives ~5.0:1 */
+.pane-list .ticket-activity {
+	color: #4a67b0;
+}
+
+/* Ticket datetime: rgba(0,0,0,0.3) on #f9f9f9 is ~2.6:1 */
+.pane-list .ticket-datetime {
+	color: #6e6e6e;
+}
+
+/* No-records text: #bbb on #f9f9f9 is ~1.8:1 */
+.pane-list .no-records {
+	color: #6e6e6e;
+}
+
+/* Ticket meta text: #777 on white bg is ~4.5:1 (borderline ok) */
+.ticket .ticket-member-photo,
+ol.comments .comment-member-photo {
+	color: #555;
+}
+
+/* Ticket edit: permalink #bfbfbf on #f8fafc is ~1.75:1 */
+.ticket .permalink,
+.ticket-head a.permalink,
+.comment-head a.permalink {
+	color: #6e6e6e;
+}
+
+/* Ticket edit: details table #aaa on #eef0f2 is ~2.03:1 */
+.ticket .ticket-details,
+.ticket .ticket-details th,
+.ticket .ticket-details td,
+.ticket .ticket-details a {
+	color: #555;
+}
+
+/* Comment changelog: #999/#aaa on #eef0f2 is ~2.5:1 */
+ol.comments .comment-changelog,
+ol.comments .comment-changelog ul,
+ol.comments .comment-changelog li {
+	color: #555;
+}
