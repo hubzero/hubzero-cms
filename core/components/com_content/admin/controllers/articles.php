@@ -152,8 +152,14 @@ class Articles extends AdminController
 
         $articles = Article::all()
             ->select('`#__languages`.title', 'language_title')
+            ->select('`#__categories`.title', 'category_title')
+            ->select('`#__viewlevels`.title', 'access_level')
+            ->select('`#__users`.name', 'author_name')
             ->select('`#__content`.*')
-            ->join('#__languages', 'language', 'lang_code', 'left outer');
+            ->join('#__languages', 'language', 'lang_code', 'left outer')
+            ->join('#__categories', '#__categories.id', '#__content.catid', 'left')
+            ->join('#__viewlevels', '#__viewlevels.id', '#__content.access', 'left')
+            ->join('#__users', '#__users.id', '#__content.created_by', 'left');
 
         $filterableFields = array(
             'category_id' => 'catid',
@@ -183,9 +189,7 @@ class Articles extends AdminController
             }
         }
 
-        $articles->including('accessLevel')
-                 ->including('category')
-                 ->including('author');
+        // Related data (category, access level, author) loaded via SQL JOINs above
         if (strtolower($filters['sort']) == 'ordering') {
             $articles->order('catid', 'asc');
         }
@@ -274,6 +278,9 @@ class Articles extends AdminController
 
         $query
             ->select($l . '.title', 'language_title')
+            ->select('#__categories.title', 'category_title')
+            ->select('#__viewlevels.title', 'access_level')
+            ->select('#__users.name', 'author_name')
             ->select($a . '.id')
             ->select($a . '.title')
             ->select($a . '.alias')
@@ -283,12 +290,16 @@ class Articles extends AdminController
             ->select($a . '.state')
             ->select($a . '.access')
             ->select($a . '.created')
+            ->select($a . '.created_by')
             ->select($a . '.created_by_alias')
             ->select($a . '.hits')
             ->select($a . '.language')
             ->select($a . '.publish_up')
             ->select($a . '.publish_down')
-            ->join($l, $l . '.lang_code', $a . '.language', 'left');
+            ->join($l, $l . '.lang_code', $a . '.language', 'left')
+            ->join('#__categories', '#__categories.id', $a . '.catid', 'left')
+            ->join('#__viewlevels', '#__viewlevels.id', $a . '.access', 'left')
+            ->join('#__users', '#__users.id', $a . '.created_by', 'left');
 
         // Join over the content table.
         $query->select($fp . '.ordering');
@@ -324,9 +335,6 @@ class Articles extends AdminController
             }
         }
 
-        $query->including('accessLevel')
-            ->including('category')
-            ->including('author');
         if (strtolower($filters['sort']) == 'ordering') {
             $query->order('catid', 'asc');
         }
