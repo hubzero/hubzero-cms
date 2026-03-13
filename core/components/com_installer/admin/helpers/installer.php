@@ -48,6 +48,11 @@ class Installer
             Route::url('index.php?option=com_installer&controller=warnings'),
             $vName == 'warnings'
         );
+        Submenu::addEntry(
+            Lang::txt('COM_INSTALLER_SUBMENU_PACKAGES'),
+            Route::url('index.php?option=com_installer&controller=packages'),
+            ($vName == 'packages' || $vName == 'repositories')
+        );
     }
 
     /**

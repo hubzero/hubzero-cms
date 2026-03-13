@@ -10,14 +10,13 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Composer as ComposerHelper;
-use Hubzero\Facades\Request;
-use Hubzero\Facades\Config;
-use Hubzero\Facades\Notify;
-use Hubzero\Facades\Event;
-use Route;
 use Hubzero\Facades\App;
-use Hubzero\Facades\User;
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Notify;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
 /**
  * Packages Controller
@@ -32,12 +31,10 @@ class Packages extends AdminController
     public function execute()
     {
         if (!is_file(PATH_APP . '/composer.json')) {
-            $view = new \Hubzero\Component\View(array(
-                'base_path' => dirname(__DIR__),
-                'name'      => 'warnings',
-                'layout'    => 'composer'
-            ));
-            $view->display();
+            $this->view
+                ->setName('warnings')
+                ->setLayout('composer')
+                ->display();
             return;
         }
 

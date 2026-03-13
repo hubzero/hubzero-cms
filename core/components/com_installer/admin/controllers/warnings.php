@@ -9,7 +9,6 @@
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Hubzero\Utility\Number;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
 
@@ -30,6 +29,31 @@ class Warnings extends AdminController
         $this->view
             ->set('messages', $messages)
             ->display();
+    }
+
+    /**
+     * Convert a PHP ini size string (e.g. "128M", "1G") to bytes.
+     * Returns -1 unchanged (no memory limit).
+     *
+     * @param   string  $val
+     * @return  int
+     */
+    protected static function iniToBytes($val)
+    {
+        $val = trim((string) $val);
+        if ($val === '-1') {
+            return -1;
+        }
+        $last = strtolower(substr($val, -1));
+        $num  = (int) $val;
+        switch ($last) {
+            case 'g': $num *= 1024;
+            // fall through
+            case 'm': $num *= 1024;
+            // fall through
+            case 'k': $num *= 1024;
+        }
+        return $num;
     }
 
     /**
@@ -84,22 +108,21 @@ class Warnings extends AdminController
             }
         }
 
-        $memory_limit = Number::formatBytes(ini_get('memory_limit'));
-        if ($memory_limit < (8 * 1024 * 1024) && $memory_limit != -1) { // 8MB
+        $memory_limit = self::iniToBytes(ini_get('memory_limit'));
+        if ($memory_limit != -1 && $memory_limit < (8 * 1024 * 1024)) { // 8MB
             $messages[] = array(
                 'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_LOWMEMORYWARN'),
                 'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_LOWMEMORYDESC')
             );
-        } elseif ($memory_limit < (16 * 1024 * 1024) && $memory_limit != -1) { //16MB
+        } elseif ($memory_limit != -1 && $memory_limit < (16 * 1024 * 1024)) { // 16MB
             $messages[] = array(
                 'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_MEDMEMORYWARN'),
                 'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_MEDMEMORYDESC')
             );
         }
 
-
-        $post_max_size = Number::formatBytes(ini_get('post_max_size'));
-        $upload_max_filesize = Number::formatBytes(ini_get('upload_max_filesize'));
+        $post_max_size       = self::iniToBytes(ini_get('post_max_size'));
+        $upload_max_filesize = self::iniToBytes(ini_get('upload_max_filesize'));
 
         if ($post_max_size < $upload_max_filesize) {
             $messages[] = array(
