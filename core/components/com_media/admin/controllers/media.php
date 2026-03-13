@@ -428,7 +428,7 @@ class Media extends AdminController
         if (!in_array(strtolower($ext), $allowed)) {
             echo json_encode(array(
                 'success' => false,
-                'error' => Lang::txt('COM_MEDIA_ERROR_INCORRECT_FILE_TYPE') . $ext
+                'error' => Lang::txt('COM_MEDIA_ERROR_INCORRECT_FILE_TYPE', $ext)
             ));
             return;
         }
