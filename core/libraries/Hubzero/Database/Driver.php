@@ -2625,6 +2625,10 @@ abstract class Driver implements LoggerAwareInterface
      */
     protected function freeResult()
     {
+        if ($this->statement === null) {
+            return $this;
+        }
+
         if ($this->connection instanceof ConnectionInterface) {
             $this->connection->freeResult($this->statement);
         } else {
@@ -3071,6 +3075,13 @@ abstract class Driver implements LoggerAwareInterface
     public function execute()
     {
         $this->hasConnectionOrFail();
+
+        if ($this->statement === null) {
+            throw new QueryFailedException(
+                'No prepared statement to execute. Call setQuery() or prepare() first.',
+                500
+            );
+        }
 
         $start = microtime(true);
 
