@@ -36,24 +36,32 @@ class Article extends Field
      */
     protected function getInput()
     {
-        // Load the modal behavior script.
-        Html::behavior('modal', 'a.modal');
+        $blade = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
-        // Build the script.
-        $script = array();
-        $script[] = '	function jSelectArticle_' . $this->id . '(id, title, catid, object) {';
-        $script[] = '		$("#' . $this->id . '_id").val(id);';
-        $script[] = '		$("#' . $this->id . '_name").val(title);';
-        $script[] = '		$.fancybox.close();';
-        $script[] = '	}';
+        if ($blade) {
+            // Blade mode: no inline JS or fancybox — use data-* attributes
+            // admin.js handles [data-article-picker] buttons
+            Html::behavior('picker');
+        } else {
+            Html::behavior('modal', 'a.modal');
 
-        // Add the script to the document head.
-        Document::addScriptDeclaration(implode("\n", $script));
+            // Build the callback script (legacy mode only).
+            $script = array();
+            $script[] = '      function jSelectArticle_' . $this->id
+                . '(id, title, catid, object) {';
+            $script[] = '              $("#' . $this->id . '_id").val(id);';
+            $script[] = '              $("#' . $this->id . '_name").val(title);';
+            $script[] = '              $.fancybox.close();';
+            $script[] = '      }';
+
+            Document::addScriptDeclaration(implode("\n", $script));
+        }
 
         // Setup variables for display.
         $html = array();
         $link = Route::url(
-            'index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=jSelectArticle_'
+            'index.php?option=com_content&view=articles&layout=modal'
+            . '&tmpl=component&function=jSelectArticle_'
             . $this->id . '&' . Session::getFormToken() . '=1'
         );
 
@@ -77,15 +85,33 @@ class Article extends Field
         // The current user display field.
         $html[] = '<div class="input-modal">';
         $html[] = '  <span class="input-cell">';
-        $html[] = '    <input type="text" id="' . $this->id . '_name" value="' . $title . '" '
-            . 'disabled="disabled" size="35" />';
+        $html[] = '    <input type="text" id="' . $this->id
+            . '_name" value="' . $title . '" '
+            . 'disabled="disabled" size="35"'
+            . ' aria-label="' . Lang::txt('COM_CONTENT_SELECT_AN_ARTICLE') . '" />';
         $html[] = '  </span>';
 
-        // The user select button.
+        // The picker button.
         $html[] = '  <span class="input-cell">';
-        $html[] = '    <a class="modal button" title="' . Lang::txt('COM_CONTENT_CHANGE_ARTICLE')
-            . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'
-            . Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON') . '</a>';
+        if ($blade) {
+            $html[] = '    <button type="button" class="button"'
+                . ' data-article-picker'
+                . ' data-picker-url="' . $link . '"'
+                . ' data-picker-width="800"'
+                . ' data-picker-height="450"'
+                . ' data-value-field="' . $this->id . '_id"'
+                . ' data-display-field="' . $this->id . '_name"'
+                . ' title="' . Lang::txt('COM_CONTENT_CHANGE_ARTICLE')
+                . '">'
+                . Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON')
+                . '</button>';
+        } else {
+            $html[] = '    <a class="modal button" title="'
+                . Lang::txt('COM_CONTENT_CHANGE_ARTICLE')
+                . '"  href="' . $link
+                . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'
+                . Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON') . '</a>';
+        }
         $html[] = '  </span>';
         $html[] = '</div>';
 
