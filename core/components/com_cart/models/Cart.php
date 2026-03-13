@@ -279,8 +279,8 @@ abstract class Cart
         $this->_db->setQuery($sql);
         // Get all info
         $allSkuInfo = $this->_db->loadObjectList('sId');
-        // Get just sku IDs
-        $skus = $this->_db->loadColumn();
+        // Get just sku IDs (keys of the sId-keyed result)
+        $skus = array_keys($allSkuInfo);
 
         $items = new \stdClass();
         $items->allSkuInfo = $allSkuInfo;

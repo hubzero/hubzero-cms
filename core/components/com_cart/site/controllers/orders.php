@@ -73,10 +73,21 @@ class Orders extends ComponentController
             foreach ($transactions as $transaction) {
                 $transactionInfo = Cart::getTransactionInfo($transaction->tId);
 
-                // Figure out if the items int the transactions are still available
-                $tItems = unserialize($transactionInfo->tiItems);
+                // Figure out if the items in the transactions are still available
+                $tItems = [];
+                if (!empty($transactionInfo->tiItems) && is_string($transactionInfo->tiItems)) {
+                    $unserialized = @unserialize($transactionInfo->tiItems);
+                    if (is_array($unserialized)) {
+                        $tItems = $unserialized;
+                    }
+                }
 
-                foreach ($tItems as $item) {
+                foreach ($tItems as &$item) {
+                    // Ensure info is an object (may be array from unserialize)
+                    if (is_array($item['info'])) {
+                        $item['info'] = (object) $item['info'];
+                    }
+
                     // Check if the product is still available
                     $warehouse = new Warehouse();
                     $skuInfo = $warehouse->getSkuInfo($item['info']->sId, false);
@@ -86,6 +97,7 @@ class Orders extends ComponentController
                         $item['info']->available = false;
                     }
                 }
+                unset($item);
 
                 $transactionInfo->tiItems = $tItems;
                 $transaction->tInfo = $transactionInfo;
