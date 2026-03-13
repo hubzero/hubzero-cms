@@ -196,6 +196,13 @@ class Base extends Obj
     public $_type = null;
 
     /**
+     * Extra data-* attributes for the <body> tag.
+     *
+     * @var  array
+     */
+    protected $bodyAttributes = array();
+
+    /**
      * Resolved view engine for this request ('blade' or 'php').
      * null = not yet resolved.
      *
@@ -787,6 +794,45 @@ class Base extends Obj
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set a body attribute (rendered on the <body> tag by Blade templates).
+     *
+     * @param   string  $name   Attribute name (e.g. 'data-auto-close')
+     * @param   string  $value  Attribute value
+     * @return  object  Document instance of $this to allow chaining
+     */
+    public function setBodyAttribute($name, $value)
+    {
+        $this->bodyAttributes[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get all body attributes as an associative array.
+     *
+     * @return  array
+     */
+    public function getBodyAttributes()
+    {
+        return $this->bodyAttributes;
+    }
+
+    /**
+     * Render body attributes as an HTML attribute string.
+     *
+     * @return  string  e.g. ' data-auto-close="close-refresh"'
+     */
+    public function renderBodyAttributes()
+    {
+        $html = '';
+        foreach ($this->bodyAttributes as $name => $value) {
+            $html .= ' ' . htmlspecialchars($name) . '="'
+                . htmlspecialchars($value) . '"';
+        }
+        return $html;
     }
 
     /**

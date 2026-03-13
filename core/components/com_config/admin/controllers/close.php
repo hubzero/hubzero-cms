@@ -23,9 +23,13 @@ class Close extends AdminController
      */
     public function displayTask()
     {
-        Document::addScriptDeclaration('
+        if (Document::getViewEngine() === 'blade') {
+            Document::setBodyAttribute('data-auto-close', 'close-refresh');
+        } else {
+            Document::addScriptDeclaration('
 			window.parent.location.href=window.parent.location.href;
 			window.parent.$.fancybox.close();
 		');
+        }
     }
 }

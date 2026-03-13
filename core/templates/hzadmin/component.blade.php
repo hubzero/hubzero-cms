@@ -20,7 +20,8 @@
   $pageTitle  = $title ?? '';
 @endphp
 <!DOCTYPE html>
-<html dir="{{ $direction }}" lang="{{ $lang }}" data-theme="hubzero">
+<html dir="{{ $direction }}" lang="{{ $lang }}" data-theme="hubzero"
+      data-css-framework="daisyui" data-view-engine="blade">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,7 +47,7 @@
   @endphp
   @stack('styles')
 </head>
-<body class="bg-base-100 text-base-content">
+<body class="bg-base-100 text-base-content"{!! Document::renderBodyAttributes() !!}>
   {!! $content ?? '' !!}
 
   <script src="/core/templates/hzadmin/js/admin.js"></script>

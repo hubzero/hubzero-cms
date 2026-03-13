@@ -1201,9 +1201,29 @@
   }
 
   /* ================================================================
+     Auto-close popup from iframe
+
+     When an iframe page sets <body data-auto-close="close"> or
+     <body data-auto-close="close-refresh">, admin.js sends the
+     corresponding postMessage to the parent on load. This replaces
+     component-specific close.js files and inline scripts.
+     ================================================================ */
+  function initAutoClose() {
+    var action = document.body && document.body.getAttribute('data-auto-close');
+    if (!action || !window.parent || window.parent === window) return;
+
+    if (action === 'close-refresh') {
+      window.parent.postMessage('admin-popup-close-refresh', '*');
+    } else if (action === 'close') {
+      window.parent.postMessage('admin-popup-close', '*');
+    }
+  }
+
+  /* ================================================================
      Init
      ================================================================ */
   function initAll() {
+    initAutoClose();
     initSidebarMenu();
     initDrawerToggle();
     initToolbar();
