@@ -47,6 +47,7 @@ class Categories extends AdminController
         $this->registerTask('trash', 'state');
         $this->registerTask('orderup', 'reorder');
         $this->registerTask('orderdown', 'reorder');
+        $this->registerTask('rebuild', 'rebuild');
 
         parent::execute();
     }
@@ -248,6 +249,8 @@ class Categories extends AdminController
             $lang = 'COM_CATEGORIES_CATEGORY_ADD_TITLE';
         }
 
+        // Load the extension's sys language so COM_CONTENT etc. resolve
+        Lang::load($extension . '.sys', PATH_CORE . '/components/' . $extension . '/admin');
         $extensionLang = Lang::txt(strtoupper($extension));
         $title = Lang::txt($lang, $extensionLang);
         $canDo = CategoriesHelper::getActions($extension, 'category', $category->get('id', 0));
@@ -453,8 +456,10 @@ class Categories extends AdminController
         }
 
         if ($success) {
+            // Rebuild the nested set tree to normalize lft/rgt gaps
+            Category::blank()->rebuild(1);
+
             Cache::clean($this->_option);
-            // Set the success message
             Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
         }
 
@@ -487,6 +492,27 @@ class Categories extends AdminController
         }
         $url .= '&extension=' . $extension;
         App::redirect(Route::url($url, false));
+    }
+
+    /**
+     * Rebuild the nested set tree (renumber lft/rgt/level/path).
+     *
+     * @return  void
+     */
+    public function rebuildTask()
+    {
+        Request::checkToken(['get', 'post']);
+
+        $category = Category::blank();
+
+        if ($category->rebuild(1) === false) {
+            Notify::error(Lang::txt('COM_CATEGORIES_REBUILD_FAILURE'));
+        } else {
+            Notify::success(Lang::txt('COM_CATEGORIES_REBUILD_SUCCESS'));
+            Cache::clean($this->_option);
+        }
+
+        $this->cancelTask();
     }
 
     /**

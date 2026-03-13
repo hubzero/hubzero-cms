@@ -462,7 +462,10 @@ class Category extends Nested
             ->whereEquals('id', (int) $parentId);
 
         // If there is an update failure, return false to break out of the recursion.
-        if (!$query->execute()) {
+        // Note: execute() returns affected row count for UPDATE queries.
+        // A return of 0 means no rows changed (values identical), which is
+        // not an error. Only `false` indicates actual failure.
+        if ($query->execute() === false) {
             return false;
         }
 
