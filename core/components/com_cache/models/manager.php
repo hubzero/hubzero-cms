@@ -207,7 +207,7 @@ class Manager extends Obj
         $client  = ClientManager::client($this->state('clientId'));
 
         $clientPath = isset($client->alias) ? $client->alias : $client->name;
-        App::get('config')->set($handler, array(
+        App::get('config')->set('cache.' . $handler, array(
             'cachebase' => PATH_APP . '/cache/' . $clientPath
         ));
 
