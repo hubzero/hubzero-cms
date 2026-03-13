@@ -103,7 +103,8 @@ class Orders extends AdminController
         foreach ($this->view->rows as $r) {
             $tInfo = Cart::getTransactionInfo($r->tId);
             $r->tiTotal = $tInfo->tiTotal;
-            $tiItemsQty = count(unserialize($tInfo->tiItems));
+            $items = @unserialize($tInfo->tiItems);
+            $tiItemsQty = is_array($items) ? count($items) : 0;
             $r->tiItemsQty = $tiItemsQty;
         }
 
@@ -233,16 +234,18 @@ class Orders extends AdminController
 
         $tInfo = $transactionInfo;
 
-        foreach ($transactionItems as $item) {
+        foreach ($transactionItems as $sId => $item) {
             // Check if the product is still available
-            $warehouse = new Warehouse();
-            $skuInfo = $warehouse->getSkuInfo($item['info']->sId);
-            if (!$skuInfo) {
-                // product no longer available
-                $item['info']->available = false;
+            if (!empty($item['info']->sId)) {
+                $warehouse = new Warehouse();
+                $skuInfo = $warehouse->getSkuInfo($item['info']->sId);
+                $item['info']->available = (bool) $skuInfo;
             } else {
-                $item['info']->available = true;
+                // SKU info not found in warehouse; set sId from the key
+                $item['info']->sId = $sId;
+                $item['info']->available = false;
             }
+            $transactionItems[$sId] = $item;
         }
 
         $tInfo->tiItems = $transactionItems;
@@ -443,8 +446,17 @@ class Orders extends AdminController
         $orders = OrdersHelper::getItemsOrdered('list', $this->view->filters);
 
         foreach ($orders as $order) {
-            $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
-            $order->itemInfo = $orderItems[$order->sId];
+            $orderItems = @unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+            if (is_array($orderItems) && isset($orderItems[$order->sId])) {
+                $order->itemInfo = $orderItems[$order->sId];
+            } else {
+                $info = new \stdClass();
+                $info->sId = $order->sId;
+                $info->pId = null;
+                $info->pName = 'Unknown product';
+                $info->sSku = 'SKU-' . $order->sId;
+                $order->itemInfo = ['info' => $info];
+            }
         }
 
         $this->view->rows = $orders;
@@ -516,7 +528,10 @@ class Orders extends AdminController
             //continue;
 
             $transactionInfo = Cart::getTransactionInfo($row['tId']);
-            $transactionInfoItems = unserialize($transactionInfo->tiItems);
+            $transactionInfoItems = @unserialize($transactionInfo->tiItems);
+            if (!is_array($transactionInfoItems)) {
+                $transactionInfoItems = [];
+            }
 
             $notes = array();
             foreach ($transactionItems as $sId => $item) {
@@ -629,8 +644,17 @@ class Orders extends AdminController
         $orders = OrdersHelper::getItemsOrdered('list', $filters);
 
         foreach ($orders as $order) {
-            $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
-            $order->itemInfo = $orderItems[$order->sId];
+            $orderItems = @unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
+            if (is_array($orderItems) && isset($orderItems[$order->sId])) {
+                $order->itemInfo = $orderItems[$order->sId];
+            } else {
+                $info = new \stdClass();
+                $info->sId = $order->sId;
+                $info->pId = null;
+                $info->pName = 'Unknown product';
+                $info->sSku = 'SKU-' . $order->sId;
+                $order->itemInfo = ['info' => $info];
+            }
         }
         $rowsRaw = $orders;
 

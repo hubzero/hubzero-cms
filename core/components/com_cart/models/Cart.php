@@ -701,7 +701,7 @@ abstract class Cart
             return $allSkuInfo;
         }
 
-        $skus = $db->loadColumn();
+        $skus = array_keys($allSkuInfo);
 
         $warehouse = new Warehouse();
 
@@ -711,12 +711,16 @@ abstract class Cart
                 foreach ($allSkuInfo as $sId => $skuInfo) {
                     $info = array();
                     $info['info'] = new \stdClass();
+                    $info['info']->sId = $sId;
+                    $info['info']->pId = null;
+                    $info['info']->pName = 'Unknown product';
+                    $info['info']->sSku = 'SKU-' . $sId;
                     $info['meta'] = false;
 
                     $transactionInfo = new \stdClass();
                     $transactionInfo->qty = $skuInfo->tiQty;
                     $transactionInfo->tiPrice = $skuInfo->tiPrice;
-                    $transactionInfo->tiMeta = json_decode($skuInfo->tiMeta);
+                    $transactionInfo->tiMeta = json_decode($skuInfo->tiMeta ?? '');
                     $info['transactionInfo'] = $transactionInfo;
                     $allSkuInfo[$sId] = $info;
                 }
