@@ -27,7 +27,7 @@ abstract class Cart
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    protected $_db = null;
 
     /**
      * Cart ID

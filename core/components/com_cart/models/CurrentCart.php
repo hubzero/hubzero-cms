@@ -24,7 +24,7 @@ use Hubzero\Facades\Component;
  */
 class CurrentCart extends Cart
 {
-    protected $db;
+
 
     // Session cart
     public $cart = null;
@@ -190,8 +190,8 @@ class CurrentCart extends Cart
     {
         // Load cart items info
         $sql = "SELECT * FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
-        $this->db->setQuery($sql);
-        $items = $this->db->loadObjectList();
+        $this->_db->setQuery($sql);
+        $items = $this->_db->loadObjectList();
 
         // Initiate changes array
         $changes = array();
@@ -247,14 +247,14 @@ class CurrentCart extends Cart
             // Delete zero inventory items and unavailable SKUs
             $sql = "DELETE FROM `#__cart_cart_items` "
                 . "WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
 
             // Clear old info since the message has already been displayed
             $sql = "UPDATE `#__cart_cart_items` SET `crtiOldQty` = NULL, `crtiOldPrice` = NULL "
                 . "WHERE `crtId` = {$this->crtId}";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
 
             $this->updateSession();
             return $changes;
@@ -364,8 +364,8 @@ class CurrentCart extends Cart
         // Get DB steps for this transaction
         $sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts "
             . "WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId ASC";
-        $this->db->setQuery($sql);
-        $nextStep = $this->db->loadObject();
+        $this->_db->setQuery($sql);
+        $nextStep = $this->_db->loadObject();
 
         // Initialize stepInfo
         $stepInfo = new \stdClass();
@@ -391,8 +391,8 @@ class CurrentCart extends Cart
         // Get DB steps for this transaction
         $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts "
             . "WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId DESC";
-        $this->db->setQuery($sql);
-        $steps = $this->db->loadColumn();
+        $this->_db->setQuery($sql);
+        $steps = $this->_db->loadColumn();
 
         return $steps;
     }
@@ -511,12 +511,12 @@ class CurrentCart extends Cart
 
         if (empty($errors)) {
             // save shipping info
-            $shippingToFirst = $this->db->quote(Request::getString('shippingToFirst', false, 'post'));
-            $shippingToLast = $this->db->quote(Request::getString('shippingToLast', false, 'post'));
-            $shippingAddress = $this->db->quote(Request::getString('shippingAddress', false, 'post'));
-            $shippingCity = $this->db->quote(Request::getString('shippingCity', false, 'post'));
-            $shippingState = $this->db->quote(Request::getString('shippingState', false, 'post'));
-            $shippingZip = $this->db->quote(Request::getString('shippingZip', false, 'post'));
+            $shippingToFirst = $this->_db->quote(Request::getString('shippingToFirst', false, 'post'));
+            $shippingToLast = $this->_db->quote(Request::getString('shippingToLast', false, 'post'));
+            $shippingAddress = $this->_db->quote(Request::getString('shippingAddress', false, 'post'));
+            $shippingCity = $this->_db->quote(Request::getString('shippingCity', false, 'post'));
+            $shippingState = $this->_db->quote(Request::getString('shippingState', false, 'post'));
+            $shippingZip = $this->_db->quote(Request::getString('shippingZip', false, 'post'));
 
             if ($this->debug) {
                 echo '<br>saving transaction shipping info';
@@ -529,10 +529,10 @@ class CurrentCart extends Cart
             $sql = "INSERT INTO `#__cart_transaction_info`
 					SET `tId` = {$this->cart->tId}, {$sqlUpdateValues}
 					ON DUPLICATE KEY UPDATE {$sqlUpdateValues}";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
 
-            $saveAddress = $this->db->quote(Request::getString('saveAddress', false, 'post'));
+            $saveAddress = $this->_db->quote(Request::getString('saveAddress', false, 'post'));
             // Save the address for future use if requested
             if ($saveAddress) {
                 // Update DB prefix
@@ -544,8 +544,8 @@ class CurrentCart extends Cart
 
                 $sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
-                $this->db->setQuery($sql);
-                $this->db->query();
+                $this->_db->setQuery($sql);
+                $this->_db->query();
             }
         } else {
             // Set errors and status
@@ -594,12 +594,12 @@ class CurrentCart extends Cart
         }
 
         $sql = "UPDATE `#__cart_transaction_info` SET
-				`tiShipping` = " . $this->db->quote($shippingCost) . ",
-				`tiShippingDiscount` = " . $this->db->quote($shippingDiscountAmount) . "
-				WHERE `tId` = " . $this->db->quote($this->cart->tId);
+				`tiShipping` = " . $this->_db->quote($shippingCost) . ",
+				`tiShippingDiscount` = " . $this->_db->quote($shippingDiscountAmount) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
     }
 
     /**
@@ -612,11 +612,11 @@ class CurrentCart extends Cart
     {
         $notes = \Hubzero\Utility\Sanitize::stripAll($notes);
         $sql = "UPDATE `#__cart_transaction_info` SET
-				`tiNotes` = " . $this->db->quote($notes) . "
-				WHERE `tId` = " . $this->db->quote($this->cart->tId);
+				`tiNotes` = " . $this->_db->quote($notes) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         return true;
     }
@@ -631,12 +631,12 @@ class CurrentCart extends Cart
     private function setTransactionItemMeta($sId, $meta)
     {
         $sql = "UPDATE `#__cart_transaction_items` SET
-				`tiMeta` = " . $this->db->quote($meta) . "
-				WHERE `tId` = " . $this->db->quote($this->cart->tId) . "
-				AND `sId` = " . $this->db->quote($sId);
+				`tiMeta` = " . $this->_db->quote($meta) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId) . "
+				AND `sId` = " . $this->_db->quote($sId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
     }
 
     /**
@@ -669,11 +669,11 @@ class CurrentCart extends Cart
     private function getTransactionItemMeta($sId)
     {
         $sql = "SELECT `tiMeta` FROM `#__cart_transaction_items`
-				WHERE `tId` = " . $this->db->quote($this->cart->tId) . "
-				AND `sId` = " . $this->db->quote($sId);
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId) . "
+				AND `sId` = " . $this->_db->quote($sId);
 
-        $this->db->setQuery($sql);
-        $itemMeta = $this->db->loadResult();
+        $this->_db->setQuery($sql);
+        $itemMeta = $this->_db->loadResult();
         return $itemMeta;
     }
 
@@ -690,8 +690,8 @@ class CurrentCart extends Cart
             // Try to find if there is a pending transaction for this cart in DB and use it
             $sql = "SELECT `tId` FROM `#__cart_transactions` "
                 . "WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
-            $this->db->setQuery($sql);
-            $tId = $this->db->loadResult();
+            $this->_db->setQuery($sql);
+            $tId = $this->_db->loadResult();
         } else {
             $tId = $this->cart->tId;
         }
@@ -735,13 +735,13 @@ class CurrentCart extends Cart
         }
 
         // update status
-        $sql = "UPDATE `#__cart_transaction_info` SET `tiCustomerStatus` = " . $this->db->quote($status)
-            . " WHERE `tId` = " . $this->db->quote($tId);
+        $sql = "UPDATE `#__cart_transaction_info` SET `tiCustomerStatus` = " . $this->_db->quote($status)
+            . " WHERE `tId` = " . $this->_db->quote($tId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
-        $affectedRows = $this->db->getAffectedRows();
+        $affectedRows = $this->_db->getAffectedRows();
 
         if (!$affectedRows) {
             return false;
@@ -763,15 +763,15 @@ class CurrentCart extends Cart
             throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
-        $sql = "SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->db->quote($saId);
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $sql = "SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->_db->quote($saId);
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
-        if ($this->db->getNumRows() < 1) {
+        if ($this->_db->getNumRows() < 1) {
             throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
-        $quotedSaId = $this->db->quote($saId);
+        $quotedSaId = $this->_db->quote($saId);
         $sql = "UPDATE `#__cart_transaction_info` ti, "
             . "(SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $quotedSaId . ") sa
 				SET
@@ -783,8 +783,8 @@ class CurrentCart extends Cart
 				ti.`tiShippingZip` = sa.`saZip`
 
 				WHERE ti.`tId` = {$this->cart->tId}";
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         return true;
     }
@@ -837,11 +837,11 @@ class CurrentCart extends Cart
             - $this->tInfo->tiShippingDiscount - $this->tInfo->tiDiscounts;
 
         $sql = "UPDATE `#__cart_transaction_info` SET
-				`titotal` = " . $this->db->quote($tiTotal) . "
-				WHERE `tId` = " . $this->db->quote($this->cart->tId);
+				`titotal` = " . $this->_db->quote($tiTotal) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
     }
 
     /**
@@ -856,13 +856,13 @@ class CurrentCart extends Cart
     public function setStepStatus($step, $meta = '', $status = true)
     {
         $sql = "UPDATE `#__cart_transaction_steps`
-				SET `tsStatus` = " .  $this->db->quote($status) . "
+				SET `tsStatus` = " .  $this->_db->quote($status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
         if (!empty($meta)) {
             $sql .= "AND `tsMeta` = '{$meta}'";
         }
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         return true;
     }
@@ -901,10 +901,10 @@ class CurrentCart extends Cart
 
         // Add coupon
         $sql = "INSERT INTO `#__cart_coupons` (`crtId`, `cnId`, `crtCnAdded`, `crtCnStatus`)
-				VALUES ({$this->crtId}, " . $this->db->quote($cnId) . ", NOW(), 'active')";
+				VALUES ({$this->crtId}, " . $this->_db->quote($cnId) . ", NOW(), 'active')";
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         return true;
     }
@@ -985,8 +985,8 @@ class CurrentCart extends Cart
     {
         $sql = "SELECT cnId FROM `#__cart_coupons` "
             . "WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY `crtCnAdded`";
-        $this->db->setQuery($sql);
-        $cnIds = $this->db->loadColumn();
+        $this->_db->setQuery($sql);
+        $cnIds = $this->_db->loadColumn();
 
         // Get coupon types
 
@@ -1330,12 +1330,12 @@ class CurrentCart extends Cart
         }
 
         // Remove coupon
-        $sql = "DELETE FROM `#__cart_coupons` WHERE `cnId` = " . $this->db->quote($cnId)
-            . " AND `crtId` = " . $this->db->quote($this->crtId);
+        $sql = "DELETE FROM `#__cart_coupons` WHERE `cnId` = " . $this->_db->quote($cnId)
+            . " AND `crtId` = " . $this->_db->quote($this->crtId);
 
-        $this->db->setQuery($sql);
-        //echo $this->db->_sql;
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        //echo $this->_db->_sql;
+        $this->_db->query();
 
         return true;
     }
@@ -1521,8 +1521,8 @@ class CurrentCart extends Cart
 
         // update 'lastUpdated
         $sql = "UPDATE `#__cart_carts` SET `crtLastUpdated` = NOW() WHERE `crtId` = {$this->crtId}";
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         return $cartItems;
     }
@@ -1702,9 +1702,9 @@ class CurrentCart extends Cart
         }
 
         $sql = "INSERT INTO `#__cart_carts` SET `crtCreated` = NOW(), `crtLastUpdated` = NOW(), `uidNumber` = {$uId}";
-        $this->db->setQuery($sql);
-        $this->db->query();
-        $crtId = $this->db->insertid();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
+        $crtId = $this->_db->insertid();
 
         $session = \Hubzero\Facades\App::get('session');
         $cart->crtId = $crtId;
@@ -1759,8 +1759,8 @@ class CurrentCart extends Cart
         // If no user cart -- make the session cart a user's cart. Easy.
         if (!$userCartId) {
             $sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$user->id} WHERE `crtId` = {$this->crtId}";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
             $existingCnIds = array();
         } else {
             // Merge session and user carts. Not so easy.
@@ -1800,11 +1800,11 @@ class CurrentCart extends Cart
 
             // Find all coupons in the user's cart that are already applied and don't need to be reapplied
             $sql = "SELECT `cnId` FROM `#__cart_coupons`
-					WHERE `crtId` = " . $this->db->quote($userCartId) . "
+					WHERE `crtId` = " . $this->_db->quote($userCartId) . "
 					AND `cnId` IN (" . $cnSql . ") AND `crtCnStatus` = 'active'";
-            $this->db->setQuery($sql);
-            $this->db->query();
-            $existingCnIds = $this->db->loadColumn();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
+            $existingCnIds = $this->_db->loadColumn();
 
             // merge coupons
             $couponsIdsToMerge = array_diff($allCouponsIds, $existingCnIds);
@@ -1815,8 +1815,8 @@ class CurrentCart extends Cart
             $sql = "INSERT INTO `#__cart_coupons` (`crtId`, `cnId`, `crtCnAdded`, `crtCnStatus`)
 					SELECT {$userCartId}, `cnId`, `crtCnAdded`, 'active' FROM `#__cart_coupons` cc
 					WHERE cc.crtId = {$this->crtId} AND `cnId` IN (" . $mergeSql . ")";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
 
             // kill old cart
             $this->kill($this->crtId);
@@ -1862,16 +1862,16 @@ class CurrentCart extends Cart
         // Create transaction record
         $sql = "INSERT INTO `#__cart_transactions` "
             . "SET `crtId` = {$this->crtId}, `tCreated` = NOW(), `tLastUpdated` = NOW(), `tStatus` = 'pending'";
-        $this->db->setQuery($sql);
-        $this->db->query();
-        $tId = $this->db->insertid();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
+        $tId = $this->_db->insertid();
 
         $this->cart->tId = $tId;
 
         // Create transaction info record
         $sql = "INSERT INTO `#__cart_transaction_info` SET `tId` = {$tId}";
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         $this->populateTransaction();
         return true;
@@ -1950,8 +1950,8 @@ class CurrentCart extends Cart
 
         // populate items
         $sql = "INSERT INTO `#__cart_transaction_items` (`tId`, `sId`, `tiQty`, `tiPrice`) VALUES {$sqlValues}";
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
         // merge pre- and post- steps to ensure the correct order
         $steps = array_merge($preSteps, $postSteps);
@@ -1962,8 +1962,8 @@ class CurrentCart extends Cart
             }
             $sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`, `tsMeta`)
 					VALUES ({$this->cart->tId}, '{$step->name}', '{$step->meta}')";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->_db->setQuery($sql);
+            $this->_db->query();
         }
 
         // get perks
@@ -1979,15 +1979,15 @@ class CurrentCart extends Cart
         // Update transaction info
         $sql = "UPDATE `#__cart_transaction_info`
 				SET
-				`tiPerks` = " . $this->db->quote(serialize($perks)) . ",
-				`tiMeta` = " . $this->db->quote(serialize($meta)) . ",
-				`tiItems` = " . $this->db->quote(serialize($cartItems)) . ",
-				`tiSubtotal` = " . $this->db->quote($transactionSubtotalAmount) . ",
-				`tiDiscounts` = " . $this->db->quote($perksTotalDiscount) . "
-				WHERE `tId` = " . $this->db->quote($this->cart->tId);
+				`tiPerks` = " . $this->_db->quote(serialize($perks)) . ",
+				`tiMeta` = " . $this->_db->quote(serialize($meta)) . ",
+				`tiItems` = " . $this->_db->quote(serialize($cartItems)) . ",
+				`tiSubtotal` = " . $this->_db->quote($transactionSubtotalAmount) . ",
+				`tiDiscounts` = " . $this->_db->quote($perksTotalDiscount) . "
+				WHERE `tId` = " . $this->_db->quote($this->cart->tId);
 
-        $this->db->setQuery($sql);
-        $this->db->query();
+        $this->_db->setQuery($sql);
+        $this->_db->query();
     }
 
     /**
@@ -2044,8 +2044,8 @@ class CurrentCart extends Cart
         // Get all pending transactions for this cart
         $sql = "SELECT `tId` FROM `#__cart_transactions` "
             . "WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
-        $this->db->setQuery($sql);
-        $tIds = $this->db->loadColumn();
+        $this->_db->setQuery($sql);
+        $tIds = $this->_db->loadColumn();
 
         if (is_array($tIds)) {
             foreach ($tIds as $tId) {
