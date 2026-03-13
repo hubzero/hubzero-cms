@@ -285,13 +285,13 @@ class Override extends Obj
         if ($version >= '5.3.1') {
             $contents = file_get_contents($filename);
             $contents = str_replace('_QQ_', '"\""', $contents);
-            $strings  = parse_ini_string($contents, false, INI_PARSER_RAW);
+            $strings  = parse_ini_string($contents, false, INI_SCANNER_RAW);
 
             if ($strings === false) {
                 return array();
             }
         } else {
-            $strings = parse_ini_file($filename, false, INI_PARSER_RAW);
+            $strings = parse_ini_file($filename, false, INI_SCANNER_RAW);
 
             if ($strings === false) {
                 return array();

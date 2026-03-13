@@ -92,10 +92,11 @@ class Languages extends AdminController
 
         // Select the language home pages
         $query->select($m . '.home');
-        $joinCondition = $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'';
-        $query->join($m, $m . '.language', $joinCondition, 'left');
-            //->whereEquals($m . '.home', 1)
-            //->where($m . '.language', '<>', '*');
+        $query->joinRaw(
+            $m,
+            $m . '.language = ' . $l . '.lang_code AND ' . $m . '.home = 1 AND ' . $m . '.language <> \'*\'',
+            'left'
+        );
 
         if ($filters['published'] >= 0) {
             $query->whereEquals($l . '.published', (int) $filters['published']);
@@ -309,7 +310,19 @@ class Languages extends AdminController
     public function multilangstatusTask()
     {
 
+        // Check if the language filter plugin is enabled
+        $db = App::get('db');
+        $query = $db->getQuery()
+            ->select('COUNT(*)')
+            ->from('#__extensions')
+            ->whereEquals('type', 'plugin')
+            ->whereEquals('element', 'languagefilter')
+            ->whereEquals('enabled', 1);
+        $db->setQuery($query->toString());
+        $langFilter = (bool) $db->loadResult();
+
         $this->view
+            ->set('language_filter', $langFilter)
             ->set('homes', Multilangstatus::getHomes())
             ->set('switchers', Multilangstatus::getLangswitchers())
             ->set('contentlangs', Multilangstatus::getContentlangs())

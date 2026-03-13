@@ -46,7 +46,7 @@ abstract class Multilangstatus
         $query = $db->getQuery();
         $query->select('COUNT(*)');
         $query->from('#__modules');
-        $query->where('module', '=', $db->quote('mod_languages'));
+        $query->where('module', '=', 'mod_languages');
         $query->where('published', '=', 1);
         $query->where('client_id', '=', 0);
         $db->setQuery($query);
@@ -65,7 +65,7 @@ abstract class Multilangstatus
         $query = $db->getQuery();
         $query->select('a.lang_code AS lang_code');
         $query->select('a.published AS published');
-        $query->from('#__languages AS a');
+        $query->from('#__languages', 'a');
         $db->setQuery($query);
         return $db->loadObjectList();
     }
@@ -81,8 +81,8 @@ abstract class Multilangstatus
         $db = App::get('db');
         $query = $db->getQuery();
         $query->select('a.element AS element');
-        $query->from('#__extensions AS a');
-        $query->where('a.type', '=', $db->Quote('language'));
+        $query->from('#__extensions', 'a');
+        $query->where('a.type', '=', 'language');
         $query->where('a.client_id', '=', 0);
         $db->setQuery($query);
         return $db->loadObjectList('element');
@@ -120,19 +120,25 @@ abstract class Multilangstatus
         $query = $db->getQuery();
 
         // Select all fields from the languages table.
-        $query->select('a.*', 'l.home');
-        $query->select('a.published AS published');
-        $query->select('a.lang_code AS lang_code');
-        $query->from('#__languages AS a');
+        $query->select('a.published', 'published');
+        $query->select('a.lang_code', 'lang_code');
+        $query->from('#__languages', 'a');
 
         // Select the language home pages
         $query->select('l.home AS home');
         $query->select('l.language AS home_language');
-        $joinCond = 'l.language = a.lang_code AND l.home=1 AND l.published=1 AND l.language <> \'*\'';
-        $query->join('LEFT', '#__menu  AS l  ON  ' . $joinCond);
+        $query->joinRaw(
+            '#__menu AS l',
+            'l.language = a.lang_code AND l.home=1 AND l.published=1 AND l.language <> \'*\'',
+            'left'
+        );
         $query->select('e.enabled AS enabled');
         $query->select('e.element AS element');
-        $query->join('LEFT', '#__extensions  AS e ON e.element = a.lang_code');
+        $query->joinRaw(
+            '#__extensions AS e',
+            'e.element = a.lang_code',
+            'left'
+        );
         $query->where('e.client_id', '=', 0);
         $query->where('e.enabled', '=', 1);
         $query->where('e.state', '=', 0);
