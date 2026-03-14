@@ -19,10 +19,12 @@ HUB.Presenter = (() => {
         subtitles: null,
         transcriptLineActive: 0,
         transcriptBoxScrolling: false,
+        _transcriptScrollTimer: null,
         canSendTracking: true,
         sendingTracking: false,
         detailedTrackingId: null,
         doneLoading: false,
+        suppressAutoplay: false,
         audio: false,
         current: 0,
         duration: 0
@@ -311,6 +313,43 @@ HUB.Presenter = (() => {
     // Control bar
     const controls = {
         init() {
+            // Toggle popups on click; close when clicking outside
+            $(document).on('click', '.control', function (e) {
+                const btn = $(this);
+                // Buttons with no popup (no .control-container child) do nothing here
+                if (!btn.find('.control-container').length) return;
+                e.stopPropagation();
+                const isOpen = btn.hasClass('open');
+                // Close all other open popups
+                $('.control.open').not(btn).removeClass('open').attr('aria-expanded', 'false');
+                // Toggle this one
+                if (isOpen) {
+                    btn.removeClass('open').attr('aria-expanded', 'false');
+                } else {
+                    btn.addClass('open').attr('aria-expanded', 'true');
+                }
+            });
+            // Prevent clicks inside popup from closing it
+            $(document).on('click', '.control-container', function (e) {
+                e.stopPropagation();
+            });
+            // Close all popups when clicking outside
+            $(document).on('click', function () {
+                $('.control.open').removeClass('open').attr('aria-expanded', 'false');
+            });
+            // Close all popups on Escape key
+            $(document).on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $('.control.open').removeClass('open').attr('aria-expanded', 'false');
+                }
+            });
+            // Close all popups when the toolbar hides (mouse leaves presenter while playing)
+            $('#presenter-content').on('mouseleave', function () {
+                if (!$(this).hasClass('paused')) {
+                    $('.control.open').removeClass('open').attr('aria-expanded', 'false');
+                }
+            });
+
             $('#play-pause').on('click', (e) => {
                 e.preventDefault();
                 this.playPause(true);
@@ -335,8 +374,7 @@ HUB.Presenter = (() => {
                 this.switchVideo();
             });
 
-            $('#link').on('mouseover', (e) => {
-                e.preventDefault();
+            $('#link').on('click', () => {
                 this.linkVideo();
             });
 
@@ -351,17 +389,24 @@ HUB.Presenter = (() => {
 
             progressBar.init();
             volumeBar.init();
+            fullscreen.init();
         },
 
         playPause(clicking) {
             const paused = player.isPaused();
 
             if (paused) {
-                $('#play-pause').removeClass('playing').addClass('paused');
+                $('#play-pause').removeClass('playing').addClass('paused')
+                    .attr('aria-label', 'Play presentation').attr('aria-pressed', 'false');
+                $('#play-pause .icon-pause').hide();
+                $('#play-pause .icon-play').show();
                 $('#presenter-content').addClass('paused');
                 if (clicking) player.get().play();
             } else {
-                $('#play-pause').removeClass('paused').addClass('playing');
+                $('#play-pause').removeClass('paused').addClass('playing')
+                    .attr('aria-label', 'Pause presentation').attr('aria-pressed', 'true');
+                $('#play-pause .icon-play').hide();
+                $('#play-pause .icon-pause').show();
                 $('#presenter-content').removeClass('paused');
                 if (clicking) player.get().pause();
             }
@@ -402,8 +447,9 @@ HUB.Presenter = (() => {
 
         linkVideo() {
             const url = this.getTimestampUrl();
-            $('.link-controls input')
+            $('#timestamp-link')
                 .val(url)
+                .off('click')
                 .on('click', function () {
                     $(this).select();
                 });
@@ -451,7 +497,7 @@ HUB.Presenter = (() => {
                 step: 0.1,
                 min: 0,
                 max: 1,
-                orientation: 'vertical',
+                orientation: 'horizontal',
                 slide: (e, ui) => {
                     this.updateIcon(ui.value * 100);
                     player.setVolume(ui.value);
@@ -461,13 +507,11 @@ HUB.Presenter = (() => {
         },
 
         updateIcon(volume) {
-            const icon = $('#volume');
-            icon.removeClass('mute low medium high');
-
-            if (volume === 0) icon.addClass('mute');
-            else if (volume <= 33) icon.addClass('low');
-            else if (volume <= 66) icon.addClass('medium');
-            else icon.addClass('high');
+            $('#volume .icon-vol-high, #volume .icon-vol-medium, #volume .icon-vol-low, #volume .icon-vol-mute').hide();
+            if (volume === 0) $('#volume .icon-vol-mute').show();
+            else if (volume <= 33) $('#volume .icon-vol-low').show();
+            else if (volume <= 66) $('#volume .icon-vol-medium').show();
+            else $('#volume .icon-vol-high').show();
         }
     };
 
@@ -527,6 +571,68 @@ HUB.Presenter = (() => {
         }
     };
 
+    // Fullscreen
+    const fullscreen = {
+        get isFullscreen() {
+            return !!(document.fullscreenElement || document.webkitFullscreenElement);
+        },
+
+        enter() {
+            const el = document.getElementById('presenter-container');
+            if (el.requestFullscreen) el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        },
+
+        exit() {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        },
+
+        toggle() {
+            this.isFullscreen ? this.exit() : this.enter();
+        },
+
+        syncButton() {
+            const btn = $('#fullscreen');
+            if (this.isFullscreen) {
+                btn.addClass('is-fullscreen').attr('aria-label', 'Exit fullscreen').attr('title', 'Exit fullscreen');
+                btn.find('.icon-enter-fs').hide();
+                btn.find('.icon-exit-fs').show();
+            } else {
+                btn.removeClass('is-fullscreen').attr('aria-label', 'Enter fullscreen').attr('title', 'Fullscreen');
+                btn.find('.icon-exit-fs').hide();
+                btn.find('.icon-enter-fs').show();
+            }
+        },
+
+        init() {
+            $('#fullscreen').on('click', (e) => {
+                e.preventDefault();
+                this.toggle();
+                // Remove focus so outline doesn't persist after fullscreen toggle
+                e.currentTarget.blur();
+            });
+
+            $(document).on('fullscreenchange webkitfullscreenchange', () => {
+                this.syncButton();
+                // Resize slides to fill available space when entering/exiting
+                slides.sync();
+            });
+
+            // Keyboard shortcut: F key
+            $(document).on('keydown', (e) => {
+                if (e.key === 'f' || e.key === 'F') {
+                    // Don't trigger when typing in an input
+                    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+                    this.toggle();
+                }
+                if (e.key === 'Escape' && this.isFullscreen) {
+                    this.exit();
+                }
+            });
+        }
+    };
+
     // Initialization
     const init = {
         loading() {
@@ -572,8 +678,8 @@ HUB.Presenter = (() => {
                 },
                 volumechange: () => player.syncVolume(),
                 canplay: () => {
-                    this.doneLoading();
                     this.locationHash();
+                    this.doneLoading();
                 },
                 seeked: () => {
                     state.seeking = true;
@@ -588,8 +694,25 @@ HUB.Presenter = (() => {
 
         doneLoading() {
             if (state.doneLoading) return;
+            state.doneLoading = true;
             $('#overlayer').remove();
-            controls.playPause(false);
+            if (state.suppressAutoplay) {
+                // Loaded at a specific timestamp — show paused state, don't autoplay
+                player.get().pause();
+                controls.playPause(false);
+            } else {
+                // Attempt autoplay; fall back to showing play button if browser blocks it
+                const playPromise = player.get().play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        controls.playPause(false); // sync UI to playing state
+                    }).catch(() => {
+                        controls.playPause(false); // browser blocked autoplay; show play button
+                    });
+                } else {
+                    controls.playPause(false);
+                }
+            }
             this.previews();
         },
 
@@ -663,8 +786,8 @@ HUB.Presenter = (() => {
                 this.resume(utils.formatTime(time));
                 player.seek(time);
                 progressBar.setProgress(time);
-                player.get().pause();
-                state.doneLoading = true;
+                // Suppress autoplay when loading at a specific timestamp
+                state.suppressAutoplay = true;
             }
         },
 
@@ -868,7 +991,7 @@ HUB.Presenter = (() => {
         setupPicker(subTitles) {
             let auto = false;
 
-            $('#subtitle').show();
+            $('#subtitle').css('display', 'inline-flex');
 
             subTitles.forEach(sub => {
                 const subLang = sub.lang.toLowerCase();
@@ -879,16 +1002,63 @@ HUB.Presenter = (() => {
                     state.track = subLang;
                 }
 
-                $('#video-subtitles').append(`<div id="${subLang}"></div>`);
+                $('#video-subtitles').append(`<div id="${subLang}" role="status"></div>`);
                 $('#subtitle-selector').append(`<option ${sel} value="${subLang}">${sub.lang}</option>`);
             });
 
-            if (auto) $('#subtitle').addClass('on');
+            if (auto) {
+                $('#subtitle').addClass('on').attr('aria-pressed', 'true');
+            }
 
             $('#subtitle-selector').on('change', function () {
                 state.track = $(this).val();
-                $('#subtitle').toggleClass('on', state.track !== '');
+                const isOn = state.track !== '';
+                $('#subtitle').toggleClass('on', isOn).attr('aria-pressed', String(isOn));
             });
+
+            // Options toggle
+            $('.options-toggle').on('click', function () {
+                const $settings = $('.subtitle-settings');
+                const isVisible = $settings.is(':visible');
+                $settings.toggle();
+                $(this).text(isVisible ? 'Options' : 'Hide Options')
+                       .attr('aria-expanded', String(!isVisible));
+            });
+
+            // Subtitle settings — font, size, color
+            $('#font-selector').on('change', function () {
+                $('#video-subtitles div').css('font-family', $(this).val());
+                $('.subtitle-settings-preview .test').css('font-family', $(this).val());
+            });
+
+            $('#font-size-selector').on('change', function () {
+                $('#video-subtitles div').css('font-size', $(this).val() + 'px');
+                $('.subtitle-settings-preview .test').css('font-size', $(this).val() + 'px');
+            });
+
+            if ($.fn.colpick) {
+                $('#font-color').colpick({
+                    layout: 'hex',
+                    submit: 0,
+                    colorScheme: 'dark',
+                    onChange(_hsb, hex) {
+                        $('#font-color').css('background-color', '#' + hex);
+                        $('#video-subtitles div').css('color', '#' + hex);
+                        $('.subtitle-settings-preview .test').css('color', '#' + hex);
+                    }
+                });
+
+                $('#background-color').colpick({
+                    layout: 'hex',
+                    submit: 0,
+                    colorScheme: 'dark',
+                    onChange(_hsb, hex) {
+                        $('#background-color').css('background-color', '#' + hex);
+                        $('#video-subtitles div').css('background-color', '#' + hex);
+                        $('.subtitle-settings-preview .test').css('background-color', '#' + hex);
+                    }
+                });
+            }
         },
 
         sync(subTitles) {
@@ -924,9 +1094,9 @@ HUB.Presenter = (() => {
 
                 subs.forEach(sub => {
                     const line = `
-            <div class="transcript-line" data-time="${sub.start}">
-              <div class="transcript-line-time">${utils.formatTime(sub.start)}</div>
-              <div class="transcript-line-text">${sub.text}</div>
+            <div class="transcript-line" data-time="${sub.start}" role="button" tabindex="0" aria-label="Jump to ${utils.formatTime(sub.start)}: ${sub.text.replace(/<[^>]*>/g, '')}">
+              <span class="transcript-line-time" aria-hidden="true">${utils.formatTime(sub.start)}</span>
+              <span class="transcript-line-text">${sub.text}</span>
             </div>`;
                     $(`.transcript-${language}`).append(line);
                 });
@@ -938,6 +1108,18 @@ HUB.Presenter = (() => {
             this.setupFontChanger();
             this.setupSearch();
             this.setupJumpTo();
+            this.setupScrollSuppression();
+
+            // Auto-show transcript if any subtitle has autoplay set
+            const autoSub = subTitles.find(s => parseInt(s.auto));
+            if (autoSub) {
+                const lang = autoSub.lang.toLowerCase();
+                $('.transcript-selector').val(lang).trigger('change');
+            } else if (subTitles.length > 0) {
+                // No explicit auto, show first available transcript
+                const lang = subTitles[0].lang.toLowerCase();
+                $('.transcript-selector').val(lang).trigger('change');
+            }
 
             setInterval(() => this.sync(), 300);
         },
@@ -947,17 +1129,21 @@ HUB.Presenter = (() => {
                 const language = $(this).val();
 
                 if (language) {
-                    $('#transcript-container').slideDown(() => {
-                        if (parent.HUB?.Resources) {
-                            parent.HUB.Resources.resizeInlineHubpresenter($('body').outerHeight() + 20);
-                        }
-                    });
+                    $('#transcript-container')
+                        .attr('aria-hidden', 'false')
+                        .slideDown(() => {
+                            if (parent.HUB?.Resources) {
+                                parent.HUB.Resources.resizeInlineHubpresenter($('body').outerHeight() + 20);
+                            }
+                        });
                 } else {
-                    $('#transcript-container').slideUp(() => {
-                        if (parent.HUB?.Resources) {
-                            parent.HUB.Resources.resizeInlineHubpresenter($('body').outerHeight() + 20);
-                        }
-                    });
+                    $('#transcript-container')
+                        .attr('aria-hidden', 'true')
+                        .slideUp(() => {
+                            if (parent.HUB?.Resources) {
+                                parent.HUB.Resources.resizeInlineHubpresenter($('body').outerHeight() + 20);
+                            }
+                        });
                 }
 
                 $('#transcript-select').html($('.transcript-selector option:selected').text());
@@ -969,12 +1155,12 @@ HUB.Presenter = (() => {
         setupFontChanger() {
             $('#font-smaller').on('click', (e) => {
                 e.preventDefault();
-                this.changeFontSize(-2, 8);
+                this.changeFontSize(-2, 12);
             });
 
             $('#font-bigger').on('click', (e) => {
                 e.preventDefault();
-                this.changeFontSize(2, 18);
+                this.changeFontSize(2, 32);
             });
         },
 
@@ -1003,16 +1189,85 @@ HUB.Presenter = (() => {
         },
 
         setupSearch() {
-            $('#transcript-search').on('keyup change', function () {
+            $('#transcript-search').on('input', function () {
+                const term = $(this).val().trim();
+                // Clear previous state
                 $('.transcript-line-text').removeHighlight();
-                $('.transcript-line-text').highlight($(this).val());
+                $('.transcript-line').removeClass('search-hidden');
+                $('#transcript-search-clear').toggle(term.length > 0);
+
+                if (!term) {
+                    $('#transcript-search-count').hide();
+                    return;
+                }
+
+                // Filter lines — hide those that don't contain the term
+                let count = 0;
+                let $firstMatch = null;
+                $('.transcript-line').each(function () {
+                    const text = $(this).find('.transcript-line-text').text();
+                    if (text.toUpperCase().indexOf(term.toUpperCase()) === -1) {
+                        $(this).addClass('search-hidden');
+                    } else {
+                        count++;
+                        if (!$firstMatch) $firstMatch = $(this);
+                    }
+                });
+
+                // Highlight matching text within visible lines
+                $('.transcript-line:not(.search-hidden) .transcript-line-text').highlight(term);
+
+                // Show result count
+                $('#transcript-search-count')
+                    .text(count > 0 ? `${count} result${count !== 1 ? 's' : ''}` : 'No results')
+                    .show();
+
+                // Scroll to first match
+                if ($firstMatch) {
+                    const containerTop = $('#transcripts').offset().top;
+                    const matchTop = $firstMatch.offset().top;
+                    const scrollTarget = $('#transcripts').scrollTop() + (matchTop - containerTop) - 20;
+                    $('#transcripts').animate({ scrollTop: scrollTarget }, 200);
+                }
+            });
+
+            $('#transcript-search-clear').on('click', () => {
+                $('#transcript-search').val('').trigger('input').trigger('focus');
             });
         },
 
         setupJumpTo() {
-            $('.transcript-line').on('click', function (e) {
+            // After clicking a line, suppress auto-scroll for 2s so the
+            // transcript box doesn't fight the user's intentional scroll position.
+            const suppressScroll = () => {
+                state.transcriptBoxScrolling = true;
+                clearTimeout(state._transcriptScrollTimer);
+                state._transcriptScrollTimer = setTimeout(() => {
+                    state.transcriptBoxScrolling = false;
+                }, 2000);
+            };
+
+            $(document).on('click', '.transcript-line', function (e) {
                 e.preventDefault();
+                suppressScroll();
                 player.seek($(this).data('time'));
+            });
+            $(document).on('keydown', '.transcript-line', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    suppressScroll();
+                    player.seek($(this).data('time'));
+                }
+            });
+        },
+
+        setupScrollSuppression() {
+            $('#transcripts').on('scroll', function () {
+                state.transcriptBoxScrolling = true;
+                clearTimeout($.data(this, 'scrollTimer'));
+                $.data(this, 'scrollTimer', setTimeout(() => {
+                    state.transcriptBoxScrolling = false;
+                }, 250));
             });
         },
 
@@ -1026,19 +1281,11 @@ HUB.Presenter = (() => {
 
             if (!subs) return;
 
-            $('#transcripts').on('scroll', function () {
-                state.transcriptBoxScrolling = true;
-                clearTimeout($.data(this, 'scrollTimer'));
-                $.data(this, 'scrollTimer', setTimeout(() => {
-                    state.transcriptBoxScrolling = false;
-                }, 250));
-            });
-
-            $('.transcript-line').removeClass('active');
+            $('.transcript-line').removeClass('active').removeAttr('aria-current');
 
             subs.forEach((sub, i) => {
                 if (currentTime >= sub.start && currentTime <= sub.end) {
-                    $('.transcript-line').eq(i).addClass('active');
+                    $('.transcript-line').eq(i).addClass('active').attr('aria-current', 'true');
 
                     if (!state.transcriptBoxScrolling && state.transcriptLineActive !== i) {
                         const lineHeight = $('.transcript-line').outerHeight(true);
