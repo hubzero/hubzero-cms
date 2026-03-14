@@ -108,7 +108,7 @@
 		font-family: 'Fontcons';
 		-webkit-font-smoothing: antialiased;
 	}
-	.control:hover .control-container {
+	.control.open .control-container {
 		bottom: 40px;
 		opacity: 1;
 		-webkit-transition-delay: 0.35s;
@@ -214,21 +214,25 @@
 		content: '\f028';
 	}
 	.volume-controls {
-		min-width: inherit;
-		width: 40px;
-		height: 110px;
-		padding: 0;
+		min-width: 180px;
+		width: 180px;
+		height: auto;
+		padding: 14px 16px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
 	}
 	.volume-controls #volume-bar {
-		width: 10px;
-		left: 15px;
-		top: 15px;
-		height: 80px;
-		position: absolute;
+		flex: 1;
+		width: auto;
+		left: auto;
+		top: auto;
+		height: 4px;
+		position: relative;
 	}
 	.volume-controls #volume-bar .ui-slider-handle {
-		margin-left: -2px;
-		margin-bottom: -8px;
+		margin-left: -6px;
+		margin-top: -4px;
 	}
 	#settings:before {
 		content: '\2699';
@@ -639,106 +643,145 @@
 	}
 
 /*---------------------------------------------------------------
-    Transcript Viewer
+    Transcript Viewer  (video.css — defer to hubpresenter.css)
 ---------------------------------------------------------------*/
 	#transcript-container {
-		padding: 0px;
-		margin: 0px;
-		display: none;
-		border-bottom: 1px solid #ccc;
-		background: #FFF;
-	}
-	#transcript-toolbar {
-		position: relative;
-		background: #efefef;
 		padding: 0;
 		margin: 0;
-		border-bottom: 1px solid #ccc;
-		height: 36px;
+		display: none;
+		border-top: 3px solid #2074cb;
+		border-bottom: 1px solid #d0d0d0;
+		background: #fff;
+	}
+	#transcript-toolbar {
+		position: static;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: #f7f8fa;
+		padding: 0 14px;
+		margin: 0;
+		border-bottom: 1px solid #e0e0e0;
+		height: 50px;
+		flex-wrap: wrap;
 	}
 	#transcript-select {
-		position: absolute;
-		top: 8px;
-		left: 10px;
+		position: static;
+		top: auto;
+		left: auto;
+		flex: 1;
+		font-size: 13px;
+		font-weight: 600;
+		color: #444;
+		white-space: nowrap;
 	}
 	#transcript-select:before {
 		content: 'Language: ';
-		font-weight: bold;
-		font-size: 12px;	
+		font-weight: 600;
+		font-size: 13px;
+	}
+	#transcript-search-wrap {
+		position: relative;
+		display: flex;
+		align-items: center;
 	}
 	#transcript-search {
-		position: absolute;
-		top: 4px;
-		right: 10px;
-		background: #FFF;
-		font-size: 11px;
-		width: 150px;
+		position: static;
+		top: auto;
+		right: auto;
+		padding: 6px 30px 6px 32px;
+		font-size: 14px;
+		width: 200px;
+		background: #fff;
+		border: 1px solid #c5c8cc;
+		border-radius: 6px;
+		color: #222;
 	}
 	#font-smaller,
 	#font-bigger {
-		position: absolute;
-		top: 10px;
-		right: 190px;
-		width: 20px;
-		height: 20px;
-		border: none;
-	}
-	#font-bigger {
-		right: 170px;
+		position: static;
+		top: auto;
+		right: auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		border: 1px solid #c5c8cc;
+		border-radius: 6px;
+		background: #fff;
+		color: #444;
 	}
 	#font-smaller:before,
 	#font-bigger:before {
-		content: '\f031';
-		position: absolute;
-		top: 0;
-		left: 0;
-		font-family: 'Fontcons';
-		font-size: 14px;
-		color: #555;
+		content: none;
 	}
-	#font-bigger:before {
-		font-size: 24px;
-	}
-	#font-smaller:hover:before,
-	#font-bigger:hover:before {
-		color: #000;
-	}
-	#font-smaller.inactive:before,
-	#font-bigger.inactive:before {
-		color: #aaa;
+	#font-smaller svg,
+	#font-bigger svg {
+		width: 18px;
+		height: 18px;
 	}
 	#transcripts {
-		overflow-y: scroll;
-		height: 150px;
+		overflow-y: auto;
+		height: calc(100vh - 420px);
+		min-height: 150px;
+		scroll-behavior: smooth;
 	}
 	.transcript {
-		padding: 0 10px;
-		margin: 10px 0;
+		padding: 4px 14px 10px;
+		margin: 0;
 		display: none;
 	}
 	.transcript-line {
-		overflow: hidden;
-		padding: 0 3px;
-		font-size: 12px;
-		line-height: 16px;
-		border-radius: 3px;
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		padding: 7px 8px;
+		font-size: 15px;
+		line-height: 1.55;
+		border-radius: 5px;
+		border-left: 3px solid transparent;
+		overflow: visible;
 	}
 	.transcript-line:hover {
-		background: #efeffe;
+		background: #edf2fb;
 		cursor: pointer;
 	}
 	.transcript-line.active,
 	.transcript-line.active:hover {
-		background: #f0f0f0;
-		font-weight: bold;
+		background: #e8f0fb;
+		border-left-color: #2074cb;
+		font-weight: 600;
 	}
 	.transcript-line-time {
-		float: left;
-		margin-right: 10px;
-		color: #aaa;
+		float: none;
+		flex-shrink: 0;
+		font-size: 12px;
+		color: #888;
+		font-variant-numeric: tabular-nums;
+		min-width: 42px;
+		margin-right: 0;
+	}
+	.transcript-line.active .transcript-line-time {
+		color: #1a5fac;
 	}
 	.transcript-line-text {
-		color: #444;
+		color: #2a2a2a;
+		flex: 1;
+	}
+	.transcript-line.active .transcript-line-text {
+		color: #111;
+	}
+	.transcript-line-text .highlight {
+		background: #ffeb3b;
+		color: #111;
+		border-radius: 2px;
+		padding: 0 2px;
+	}
+	/* Lines hidden during search that don't match */
+	.transcript-line.search-hidden {
+		display: none;
 	}
 
 /*---------------------------------------------------------------
