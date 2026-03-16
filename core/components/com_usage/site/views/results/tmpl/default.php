@@ -16,7 +16,7 @@ if (!$this->no_html) {
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<nav>
+<nav aria-label="Usage categories">
 	<ul class="sub-menu">
 		<?php
 		if ($this->cats) {
@@ -49,16 +49,23 @@ if ($this->sections) {
 	{
 		if ($section != '')
 		{
-			$cls  = ($c) ? $c.' ' : '';
-			if (key($this->cats[$k]) != $this->task)
+			if ($this->no_html)
 			{
-				$cls .= ($h) ? $h.' ' : '';
+				echo $section;
 			}
-			?>
-			<section class="<?php echo $cls; ?>section" id="statistics">
-				<?php echo $section; ?>
-			</section><!-- / #statistics.<?php echo $cls; ?>section -->
-			<?php
+			else
+			{
+				$cls  = ($c) ? $c.' ' : '';
+				if (key($this->cats[$k]) != $this->task)
+				{
+					$cls .= ($h) ? $h.' ' : '';
+				}
+				?>
+				<section class="<?php echo $cls; ?>section" id="statistics">
+					<?php echo $section; ?>
+				</section><!-- / #statistics.<?php echo $cls; ?>section -->
+				<?php
+			}
 		}
 		$k++;
 	}
