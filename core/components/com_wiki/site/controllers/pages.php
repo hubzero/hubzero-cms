@@ -1145,7 +1145,11 @@ class Pages extends SiteController
 			->set('page', $this->page)
 			->set('revision', $revision);
 
-		$pdf->writeHTML($this->view->loadTemplate(), true, false, true, false, '');
+		$html = $this->view->loadTemplate();
+		// Strip thead/tbody and scope attributes that TCPDF doesn't handle
+		$html = preg_replace('#</?(?:thead|tbody)(?:\s[^>]*)?>#i', '', $html);
+		$html = preg_replace('#\s+scope="[^"]*"#i', '', $html);
+		$pdf->writeHTML($html, true, false, true, false, '');
 
 		header("Content-type: application/octet-stream");
 
