@@ -1146,10 +1146,49 @@ class Pages extends SiteController
 			->set('revision', $revision);
 
 		$html = $this->view->loadTemplate();
-		// Strip thead/tbody and scope attributes that TCPDF doesn't handle
+		// Strip elements that TCPDF doesn't handle
 		$html = preg_replace('#</?(?:thead|tbody)(?:\s[^>]*)?>#i', '', $html);
 		$html = preg_replace('#\s+scope="[^"]*"#i', '', $html);
+		// Render math formulas as PNG images for PDF (MathJax can't run in TCPDF)
+		$mathTmpDir = PATH_APP . '/site/wiki/tmp';
+		$mathOutDir = PATH_APP . '/site/wiki/math';
+		$html = preg_replace_callback('#<span class="asciimath">\$\$(.*?)\$\$</span>#s', function($m) use ($mathTmpDir, $mathOutDir) {
+			$tex = trim($m[1]);
+			if (empty($tex)) {
+				return '';
+			}
+			// Run texvc — it returns a status char + 32-char hash
+			$cmd = '/usr/bin/texvc ' . escapeshellarg($mathTmpDir) . ' ' . escapeshellarg($mathTmpDir) . ' ' . escapeshellarg($tex) . ' UTF-8';
+			$output = shell_exec($cmd);
+
+			if ($output && preg_match('/^[+cmlCML]([a-f0-9]{32})/', $output, $hm)) {
+				$hash = $hm[1];
+				$tmpPng = $mathTmpDir . '/' . $hash . '.png';
+				$hashDir = $mathOutDir . '/' . $hash[0] . '/' . $hash[1] . '/' . $hash[2];
+				$pngPath = $hashDir . '/' . $hash . '.png';
+
+				if (file_exists($tmpPng)) {
+					@mkdir($hashDir, 0775, true);
+					@rename($tmpPng, $pngPath);
+				}
+
+				if (file_exists($pngPath)) {
+					return '<img src="' . $pngPath . '" alt="' . htmlspecialchars($tex) . '" />';
+				}
+			}
+			// Fallback: show LaTeX source
+			return '<code>' . htmlspecialchars($tex) . '</code>';
+		}, $html);
+		// Suppress TCPDF warnings about unsupported HTML features (trids, cols)
+		// that the CMS error handler would escalate to 500 errors
+		$previousHandler = set_error_handler(function($errno, $errstr, $errfile) use (&$previousHandler) {
+			if (strpos($errfile, 'tcpdf.php') !== false) {
+				return true; // suppress TCPDF warnings
+			}
+			return $previousHandler ? call_user_func($previousHandler, $errno, $errstr, $errfile, func_get_arg(3)) : false;
+		});
 		$pdf->writeHTML($html, true, false, true, false, '');
+		restore_error_handler();
 
 		header("Content-type: application/octet-stream");
 
