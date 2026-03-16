@@ -392,7 +392,7 @@ class WikiParser
 		if (trim($this->_data['input']) && !trim($this->_data['output']))
 		{
 			$this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-			$this->_data['output'] .= '<pre role="code">' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
+			$this->_data['output'] .= '<pre>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
 		}
 
 		return $this->_data['output'];
@@ -796,11 +796,19 @@ class WikiParser
 			'scope_id' => $p->get('id')
 		);
 
+		$linkTitle = $this->glyphs(trim($title));
+
+		// If the link text is empty, don't generate an empty anchor
+		if (!trim(strip_tags($linkTitle)))
+		{
+			return $whole;
+		}
+
 		return $this->_dataPush(array(
 			$whole,
 			'anchor',
 			$this->_randomString(),
-			'<a class="' . $cls . '" href="' . str_replace(array('\\', '"', "'"), '', $href) . '">' . $this->glyphs(trim($title)) . '</a>'
+			'<a class="' . $cls . '" href="' . str_replace(array('\\', '"', "'"), '', $href) . '">' . $linkTitle . '</a>'
 		));
 	}
 
@@ -1184,12 +1192,12 @@ class WikiParser
 				default:
 					//$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					//$txt = trim($txt, "\n\r\t");
-					return '<pre role="code">' . $this->encodeHtml($txt) . '</pre>';
+					return '<pre>' . $this->encodeHtml($txt) . '</pre>';
 				break;
 			}
 		}
 
-		return '<pre role="code">' . $this->encodeHtml($txt) . '</pre>';
+		return '<pre>' . $this->encodeHtml($txt) . '</pre>';
 	}
 
 	/**
@@ -2299,6 +2307,9 @@ class WikiParser
 		$ac  = self::$_patterns['algn'] . self::$_patterns['clss'];
 		$sac = self::$_patterns['spns'] . self::$_patterns['algn'] . self::$_patterns['clss'];
 
+		$rows = array();
+		$rowMeta = array(); // Track cell types per row for thead/tbody
+
 		foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) as $row)
 		{
 			if (preg_match("/^({$ac}\.)(.*)/m", ltrim($row), $rmtch))
@@ -2312,6 +2323,7 @@ class WikiParser
 			}
 
 			$cells = array();
+			$cellTypes = array();
 
 			$colspan = 0;
 			// Can't use trim($row, '|') as it would remove empy (colspan) cells.
@@ -2374,14 +2386,77 @@ class WikiParser
 					$colspan = 0;
 				}
 				// Apply formatting to cell contents
+				$cell = $this->_code($cell);
 				$cell = $this->spans($cell);
 
-				$cells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
+				$cellTypes[] = $ctyp;
+				$cells[] = array('type' => $ctyp, 'atts' => $catts, 'content' => $cell);
 			}
-			$rows[] = "\t\t<tr$ratts>\n" . join("\n", $cells) . ($cells ? "\n" : '') . "\t\t</tr>";
-			unset($cells, $catts);
+			$rowMeta[] = $cellTypes;
+			$rows[] = array('ratts' => $ratts, 'cells' => $cells);
+			unset($cells, $catts, $cellTypes);
 		}
-		return "\t<table$tatts>\n" . join("\n", $rows) . "\n\t</table>\n\n";
+
+		// Determine if the first row is a header row (all <th> cells)
+		$hasTheadRow = false;
+		if (!empty($rowMeta[0]))
+		{
+			$hasTheadRow = (count(array_unique($rowMeta[0])) === 1 && $rowMeta[0][0] === 'h');
+		}
+
+		// Build HTML rows with scope attributes on <th> elements
+		$htmlRows = array();
+		foreach ($rows as $i => $rowData)
+		{
+			$htmlCells = array();
+			$isFirstRow = ($i === 0);
+			$allTh = (!empty($rowMeta[$i]) && count(array_unique($rowMeta[$i])) === 1 && $rowMeta[$i][0] === 'h');
+
+			foreach ($rowData['cells'] as $j => $cellData)
+			{
+				$ctyp = $cellData['type'];
+				$catts = $cellData['atts'];
+				$cell = $cellData['content'];
+
+				// Add scope to <th> elements
+				if ($ctyp === 'h')
+				{
+					if ($isFirstRow && $hasTheadRow)
+					{
+						// First row header cells are column headers
+						$catts = ' scope="col"' . $catts;
+					}
+					else if ($allTh && strpos($catts, 'colspan') !== false)
+					{
+						// Section divider row spanning all columns
+						$catts = ' scope="colgroup"' . $catts;
+					}
+					else if ($j === 0 && !$allTh)
+					{
+						// First cell in a data row is a row header
+						$catts = ' scope="row"' . $catts;
+					}
+				}
+
+				$htmlCells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
+			}
+			$htmlRows[] = "\t\t<tr" . $rowData['ratts'] . ">\n" . join("\n", $htmlCells) . ($htmlCells ? "\n" : '') . "\t\t</tr>";
+		}
+
+		// Build table with thead/tbody when first row is a header
+		$output = "\t<table$tatts>\n";
+		if ($hasTheadRow && count($htmlRows) > 1)
+		{
+			$output .= "\t<thead>\n" . $htmlRows[0] . "\n\t</thead>\n";
+			$output .= "\t<tbody>\n" . join("\n", array_slice($htmlRows, 1)) . "\n\t</tbody>\n";
+		}
+		else
+		{
+			$output .= join("\n", $htmlRows) . "\n";
+		}
+		$output .= "\t</table>\n\n";
+
+		return $output;
 	}
 
 	/**
@@ -2793,7 +2868,7 @@ class WikiParser
 						if ($this->mLastSection != 'pre')
 						{
 							$paragraphStack = false;
-							$output .= $this->_closeParagraph() . '<pre role="code">';
+							$output .= $this->_closeParagraph() . '<pre>';
 							$this->mLastSection = 'pre';
 						}
 						$t = substr($t, 1);

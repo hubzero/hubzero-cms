@@ -35,6 +35,7 @@ As some processors are meant to process Wiki markup, it's quite possible to nest
 
 === Available Processors ===
 
+||=Processor=||=Description=||
 || `#!default` || Present the text verbatim in a preformatted text block. This is the same as specifying no processor name (and no `#!`) ||
 || `#!comment` || Do not process the text in this section (i.e. contents exist only in the plain text - not in the rendered page). ||
 ||||==. Admonitions =||
