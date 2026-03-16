@@ -113,7 +113,7 @@ $language_data = array (
 		),
 	'STYLES' => array(
 		'KEYWORDS' => array(
-			1 => 'color: #b1b100;',
+			1 => 'color: #787800;',
 			2 => 'color: #000000; font-weight: bold;',
 			3 => 'color: #990000;'
 			),
@@ -128,14 +128,14 @@ $language_data = array (
 			'HARD' => 'color: #000099; font-weight: bold;'
 			),
 		'BRACKETS' => array(
-			0 => 'color: #009900;'
+			0 => 'color: #008900;'
 			),
 		'STRINGS' => array(
 			0 => 'color: #0000ff;',
 			'HARD' => 'color: #0000ff;'
 			),
 		'NUMBERS' => array(
-			0 => 'color: #cc66cc;',
+			0 => 'color: #ab55ab;',
 			GESHI_NUMBER_OCT_PREFIX => 'color: #208080;',
 			GESHI_NUMBER_HEX_PREFIX => 'color: #208080;',
 			GESHI_NUMBER_FLT_SCI_ZERO => 'color:#800080;',
@@ -145,7 +145,7 @@ $language_data = array (
 			2 => 'color: #004000;'
 			),
 		'SYMBOLS' => array(
-			0 => 'color: #339933;',
+			0 => 'color: #2c862c;',
 			1 => 'color: #000000; font-weight: bold;'
 			),
 		'REGEXPS' => array(

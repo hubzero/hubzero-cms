@@ -69,8 +69,8 @@ $language_data = array(
 		),
 	'STYLES' => array(
 		'KEYWORDS' => array(
-			1 => 'color: #aaaaaa; font-style: italic;',
-//            2 => 'color: #dd6611;',
+			1 => 'color: #767676; font-style: italic;',
+//            2 => 'color: #c0580e;',
 			),
 		'COMMENTS' => array(
 			),
@@ -98,14 +98,14 @@ $language_data = array(
 		'REGEXPS' => array(
 			0 => 'color: #440088;',
 			1 => 'color: #991111;',
-			2 => 'color: #00b000;',
-			3 => 'color: #888822;',
-			4 => 'color: #888822;',
+			2 => 'color: #008900;',
+			3 => 'color: #7a7a1e;',
+			4 => 'color: #7a7a1e;',
 			5 => 'color: #0011dd;',
 			6 => 'color: #440088;',
 			7 => 'color: #991111;',
-			8 => 'color: #00b000;',
-			9 => 'color: #888822;',
+			8 => 'color: #008900;',
+			9 => 'color: #7a7a1e;',
 			),
 		),
 	'URLS' => array(
