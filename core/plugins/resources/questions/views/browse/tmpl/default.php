@@ -50,7 +50,7 @@ $this->css();
 			</tr>
 		</thead>
 		<tbody>
-	<?php if ($this->rows) { ?>
+	<?php if (count($this->rows)) { ?>
 		<?php
 		$i = 1;
 

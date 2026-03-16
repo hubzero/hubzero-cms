@@ -101,7 +101,7 @@ $this->css()
 	</section>
 	<section class="below section">
 		<div class="section-inner hz-layout-with-aside">
-		<?php if ($this->results) { ?>
+		<?php if (count($this->results)) { ?>
 			<div class="subject">
 				<h3><?php echo Lang::txt('COM_RESOURCES_TOP_RATED'); ?></h3>
 				<?php
