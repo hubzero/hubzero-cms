@@ -406,7 +406,7 @@ if (empty($this->meta->qtyTxt))
 								template: '<div class="qq-uploader">' +
 								'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 								'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<ul class="qq-upload-list"></ul>' +
+								'<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' +
 								'</div>',
 								onComplete: function(id, file, response) {
 									if (response.success) {

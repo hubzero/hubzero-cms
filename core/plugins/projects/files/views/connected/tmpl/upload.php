@@ -58,7 +58,7 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 							<p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
 						</label>
 						<div id="upload-body">
-							<ul id="u-selected" class="qq-upload-list">
+							<ul id="u-selected" class="qq-upload-list" aria-label="Uploaded files" hidden>
 							</ul>
 						</div>
 					</div>
