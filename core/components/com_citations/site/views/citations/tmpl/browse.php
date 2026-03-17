@@ -37,6 +37,7 @@ if ($label == 'none') {
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
+	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin) || $this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
@@ -55,6 +56,7 @@ if ($label == 'none') {
 			<?php endif; ?>
 		</ul>
 	</div>
+	<?php endif; ?>
 </header>
 
 <form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="get" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">

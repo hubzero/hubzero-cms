@@ -188,6 +188,14 @@ $this->css();
 		<?php
 			} // end foreach
 		}
+		else
+		{
+		?>
+			<tr>
+				<td colspan="5"><?php echo Lang::txt('COM_WISHLIST_NO_WISHES_BE_FIRST'); ?></td>
+			</tr>
+		<?php
+		}
 		?>
 		</tbody>
 	</table>

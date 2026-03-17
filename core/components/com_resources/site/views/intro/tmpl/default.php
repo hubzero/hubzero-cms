@@ -61,7 +61,7 @@ $this->css('introduction.css', 'system')
 						<fieldset>
 							<legend class="sr-only"><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
 							<p class="hz-v-align">
-								<label for="rsearch"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
+								<label for="rsearch" class="sr-only"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
 								<span class="hz-input-combo">
 								<input type="text" name="search" id="rsearch" value="" />
 								<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
