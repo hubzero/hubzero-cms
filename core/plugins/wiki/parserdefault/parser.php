@@ -2428,8 +2428,9 @@ class WikiParser
 					}
 					else if ($allTh && strpos($catts, 'colspan') !== false)
 					{
-						// Section divider row spanning all columns
-						$catts = ' scope="colgroup"' . $catts;
+						// Section divider row spanning all columns - use td to avoid
+						// invalid scope="colgroup" without actual <colgroup> elements
+						$ctyp = 'd';
 					}
 					else if ($j === 0 && !$allTh)
 					{
