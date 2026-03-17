@@ -242,10 +242,16 @@
 		font-size: 1.2em;
 	}
 	.total {
+		display: block;
 		font-size: 3em;
 		line-height: 1;
 		margin: 0;
 		padding: 0.1em 0;
+	}
+	.total .total-value {
+		font-weight: bold;
+		font-size: inherit;
+		display: inline;
 	}
 	.total span {
 		display: block;

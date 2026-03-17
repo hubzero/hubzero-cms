@@ -142,9 +142,9 @@ $bars = array();
 			</ul>
 			<div class="grid">
 			<div class="col span3">
-				<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
-				<p class="total">
-					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
+				<h4 id="sim-users-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
+				<p class="total" aria-labelledby="sim-users-heading">
+					<span class="total-value" id="users-overview-total"><?php echo number_format($current->users); ?></span>
 					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .col span3 -->
@@ -601,9 +601,9 @@ $bars = array();
 		<div id="runs-overview-wrap" class="usage-wrap">
 			<div class="grid">
 				<div class="col span3">
-					<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
-					<p class="total">
-						<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
+					<h4 id="sim-runs-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
+					<p class="total" aria-labelledby="sim-runs-heading">
+						<span class="total-value" id="runs-overview-total"><?php echo number_format($current->jobs); ?></span>
 						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 					</p>
 				</div><!-- / .col span3 -->
@@ -660,14 +660,14 @@ $bars = array();
 						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
 						<thead>
 							<tr>
-								<th scope="col" class="numerical-data"></th>
+								<th scope="col" class="numerical-data"><span class="sr-only"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC'); ?></span></th>
 								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
 								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<th>
+								<th scope="row">
 									<?php echo Lang::txt('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
 								</th>
 								<td>
@@ -678,7 +678,7 @@ $bars = array();
 								</td>
 							</tr>
 							<tr>
-								<th>
+								<th scope="row">
 									<?php echo Lang::txt('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
 								</th>
 								<td>
@@ -689,7 +689,7 @@ $bars = array();
 								</td>
 							</tr>
 							<tr>
-								<th>
+								<th scope="row">
 									<?php echo Lang::txt('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
 								</th>
 								<td>

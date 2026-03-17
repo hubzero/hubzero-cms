@@ -23,6 +23,17 @@ $this->css();
 		<caption>
 			<?php echo $this->title; ?>
 		</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_COL_STATUS'); ?></th>
+				<th scope="col" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_COL_WISH'); ?></th>
+			<?php if ($this->config->get('banking')) { ?>
+				<th scope="col" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_COL_BONUS'); ?></th>
+			<?php } ?>
+				<th scope="col" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_COL_VOTES'); ?></th>
+				<th scope="col" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_COL_RANKING'); ?></th>
+			</tr>
+		</thead>
 		<tbody>
 		<?php
 		if ($this->rows->count())
@@ -76,7 +87,7 @@ $this->css();
 				}
 		?>
 				<tr class="<?php echo $state; ?>">
-					<th class="<?php echo $status; ?>">
+					<th scope="row" class="<?php echo $status; ?>">
 						<span class="entry-id"><?php echo $item->id; ?></span>
 					</th>
 					<td>
