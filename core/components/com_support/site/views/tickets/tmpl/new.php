@@ -93,8 +93,7 @@ endif;
 			</div>
 
 			<input type="hidden" name="reporter[org]" value="<?php echo $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))); ?>" id="reporter_org" />
-		</fieldset><div class="clear"></div>
-	<?php else: ?>
+		</fieldset>	<?php else: ?>
 		<input type="hidden" name="reporter[login]" value="<?php echo $this->escape($this->row->get('login', $this->row->submitter->get('username'))); ?>" id="reporter_login" />
 		<input type="hidden" name="reporter[name]" value="<?php echo $this->escape($this->row->get('name', $this->row->submitter->get('name'))); ?>" id="reporter_name" />
 		<input type="hidden" name="reporter[email]" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
@@ -138,14 +137,13 @@ endif;
 							</div>
 						</noscript>
 					</div>
-					<div class="file-list" id="ajax-uploader-list"></div>
+					<div class="file-list" id="ajax-uploader-list" aria-live="polite"></div>
 					<input type="hidden" name="tmp_dir" id="ticket-tmp_dir" value="<?php echo $tmp; ?>" />
 
 					<span class="hint">(.<?php echo str_replace(',', ', .', $this->file_types); ?>)</span>
 				</div>
 			</fieldset>
-		</fieldset><div class="clear"></div>
-
+		</fieldset>
 		<?php if ($this->row->get('verified') && $this->acl->check('update', 'tickets') > 0): ?>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?></legend>
@@ -292,8 +290,7 @@ endif;
 				<?php if ($this->getError() == 3): ?>
 					<p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_BAD_CAPTCHA_ANSWER'); ?></p>
 				<?php endif; ?>
-			</fieldset><div class="clear"></div>
-		<?php endif; ?>
+			</fieldset>		<?php endif; ?>
 
 		<?php echo Html::input('token'); ?>
 

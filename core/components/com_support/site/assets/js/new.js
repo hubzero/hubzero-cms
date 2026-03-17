@@ -28,6 +28,7 @@ jQuery(document).ready(function(jq){
 			action: attach.attr("data-action"),
 			multiple: true,
 			debug: true,
+			ariaLabel: attach.attr('data-instructions') || "Upload file",
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +

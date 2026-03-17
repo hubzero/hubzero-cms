@@ -53,6 +53,7 @@ jQuery(document).ready(function($){
 			action: attach.attr("data-action"),
 			multiple: true,
 			debug: true,
+			ariaLabel: attach.attr('data-instructions') || "Upload file",
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
