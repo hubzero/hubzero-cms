@@ -16,7 +16,7 @@ if (!$this->no_html) {
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<nav aria-label="Usage categories">
+<nav aria-label="<?php echo Lang::txt('COM_USAGE_CATEGORIES'); ?>">
 	<ul class="sub-menu">
 		<?php
 		if ($this->cats) {
@@ -26,8 +26,9 @@ if (!$this->no_html) {
 			{
 				$name = key($cat);
 				if ($cat[$name] != '') {
+					$isActive = (strtolower($name) == $this->task);
 		?>
-				<li id="sm-<?php echo $i; ?>"<?php if (strtolower($name) == $this->task) { echo ' class="active"'; } ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task='.$name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
+				<li id="sm-<?php echo $i; ?>"<?php if ($isActive) { echo ' class="active"'; } ?>><a class="tab" href="<?php echo Route::url('index.php?option='.$this->option.'&task='.$name); ?>"<?php if ($isActive) { echo ' aria-current="page"'; } ?>><span><?php echo $cat[$name]; ?></span></a></li>
 		<?php
 					$i++;
 					$cs[] = $name;

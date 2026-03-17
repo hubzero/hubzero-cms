@@ -32,13 +32,13 @@ if ($this->message) { ?>
 	<p class="info"><?php echo nl2br($this->message); ?></p>
 <?php } ?>
 
-<nav class="time-periods">
+<nav class="time-periods" aria-label="<?php echo Lang::txt('PLG_USAGE_PERIOD_NAV'); ?>">
 	<ul>
-		<li<?php if ($this->period == 12) { echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=prior12'); ?>"><span><?php echo Lang::txt('PLG_USAGE_PERIOD_PRIOR12'); ?></span></a></li>
-		<li<?php if ($this->period == 1) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=month'); ?>"><span><?php echo Lang::txt('PLG_USAGE_PERIOD_MONTH'); ?></span></a></li>
-		<li<?php if ($this->period == 3) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=qtr'); ?>"><span><?php echo Lang::txt('PLG_USAGE_PERIOD_QTR'); ?></span></a></li>
-		<li<?php if ($this->period == 0) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=year'); ?>"><span><?php echo Lang::txt('PLG_USAGE_PERIOD_YEAR'); ?></span></a></li>
-		<li<?php if ($this->period == 13) { echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=fiscal'); ?>"><span><?php echo Lang::txt('PLG_USAGE_PERIOD_FISCAL'); ?></span></a></li>
+		<li<?php if ($this->period == 12) { echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=prior12'); ?>"<?php if ($this->period == 12) { echo ' aria-current="page"'; } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_PRIOR12'); ?></span></a></li>
+		<li<?php if ($this->period == 1) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=month'); ?>"<?php if ($this->period == 1) { echo ' aria-current="page"'; } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_MONTH'); ?></span></a></li>
+		<li<?php if ($this->period == 3) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=qtr'); ?>"<?php if ($this->period == 3) { echo ' aria-current="page"'; } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_QTR'); ?></span></a></li>
+		<li<?php if ($this->period == 0) {  echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=year'); ?>"<?php if ($this->period == 0) { echo ' aria-current="page"'; } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_YEAR'); ?></span></a></li>
+		<li<?php if ($this->period == 13) { echo ' class="active"'; } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=fiscal'); ?>"<?php if ($this->period == 13) { echo ' aria-current="page"'; } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_FISCAL'); ?></span></a></li>
 	</ul>
 </nav>
 
@@ -114,11 +114,11 @@ if ($this->message) { ?>
 	$to   = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $currentDownload->datetime));
 	?>
 	<div class="chart-wrap">
-		<div id="chart-users" class="chart line multi-line"></div>
-		<div id="chart-users-overview" class="chart line multi-line overview"></div>
+		<div id="chart-users" class="chart line multi-line" role="img" aria-label="<?php echo Lang::txt('PLG_USAGE_OVERVIEW_CHART_USERS_LABEL'); ?>"></div>
+		<div id="chart-users-overview" class="chart line multi-line overview" role="img" aria-label="<?php echo Lang::txt('PLG_USAGE_OVERVIEW_CHART_TIMELINE_LABEL'); ?>"></div>
 	</div>
 
-	<div class="grid charts">
+	<div class="grid charts" aria-live="polite" aria-atomic="false">
 		<div class="col span6 usage-stat">
 			<!-- Selected point value. Defaults to most current date. -->
 			<span class="usage-value" id="users-visits"><?php echo number_format($currentVisit->value); ?></span>
@@ -231,7 +231,7 @@ if ($this->message) { ?>
 				<div class="col span6">
 					<div class="bar-table">
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
-						<ul class="bars">
+						<ul class="bars" role="list">
 							<?php foreach ($residence as $res) { ?>
 								<?php
 								$this->css(
@@ -244,8 +244,8 @@ if ($this->message) { ?>
 								<li id="users-visits-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-									<span class="bar-container">
-										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%"></span>
+									<span class="bar-container" role="presentation">
+										<span class="bar-value" aria-hidden="true"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -256,7 +256,7 @@ if ($this->message) { ?>
 				<div class="col span6 omega">
 					<div class="bar-table">
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
-						<ul class="bars">
+						<ul class="bars" role="list">
 							<?php foreach ($organization as $res) { ?>
 								<?php
 								$this->css(
@@ -269,8 +269,8 @@ if ($this->message) { ?>
 								<li id="users-visits-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-									<span class="bar-container">
-										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
+									<span class="bar-container" role="presentation">
+										<span class="bar-value" aria-hidden="true"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -392,7 +392,7 @@ if ($this->message) { ?>
 				<div class="col span6">
 					<div class="bar-table">
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
-						<ul class="bars">
+						<ul class="bars" role="list">
 							<?php foreach ($residence as $res) { ?>
 								<?php
 								$this->css(
@@ -405,8 +405,8 @@ if ($this->message) { ?>
 								<li id="users-downloads-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-									<span class="bar-container">
-										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
+									<span class="bar-container" role="presentation">
+										<span class="bar-value" aria-hidden="true"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -417,7 +417,7 @@ if ($this->message) { ?>
 				<div class="col span6 omega">
 					<div class="bar-table">
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
-						<ul class="bars">
+						<ul class="bars" role="list">
 							<?php foreach ($organization as $res) { ?>
 								<?php
 								$this->css(
@@ -430,8 +430,8 @@ if ($this->message) { ?>
 								<li id="users-downloads-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-									<span class="bar-container">
-										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
+									<span class="bar-container" role="presentation">
+										<span class="bar-value" aria-hidden="true"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -447,7 +447,7 @@ if ($this->message) { ?>
 <section class="usage-summary usage-simulation">
 	<h3><?php echo Lang::txt('PLG_USAGE_OVERVIEW_SIMULATION'); ?></h3>
 
-	<div class="grid charts">
+	<div class="grid charts" aria-live="polite" aria-atomic="false">
 		<div class="col span6 usage-stat">
 			<?php
 			$currentSimuser = new stdClass;
@@ -478,7 +478,7 @@ if ($this->message) { ?>
 			<span class="usage-label"><?php echo Lang::txt('PLG_USAGE_OVERVIEW_SIMULATION_USERS'); ?></span>
 
 			<div class="chart-wrap">
-				<div id="chart-sim-users" class="chart line"></div>
+				<div id="chart-sim-users" class="chart line" role="img" aria-label="<?php echo Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_USERS_LABEL'); ?>"></div>
 			</div>
 		</div>
 		<div class="col span6 omega usage-stat">
@@ -511,11 +511,11 @@ if ($this->message) { ?>
 			<span class="usage-label"><?php echo Lang::txt('PLG_USAGE_OVERVIEW_SIMULATION_JOBS'); ?></span>
 
 			<div class="chart-wrap">
-				<div id="chart-sim-jobs" class="chart line"></div>
+				<div id="chart-sim-jobs" class="chart line" role="img" aria-label="<?php echo Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_JOBS_LABEL'); ?>"></div>
 			</div>
 		</div>
 	</div>
-	<div class="usage-stats">
+	<div class="usage-stats" aria-live="polite">
 		<?php
 		$datetime = ($currentSimjob->datetime >= $currentSimuser->datetime ? $currentSimjob->datetime : $currentSimuser->datetime);
 
@@ -949,4 +949,3 @@ if ($this->message) { ?>
 		}
 	</script>
 </section>
-
