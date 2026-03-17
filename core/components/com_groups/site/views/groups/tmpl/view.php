@@ -26,7 +26,7 @@ $no_html = Request::getInt( 'no_html', 0 );
 		$link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn'));
 		?>
 		<div id="page_identity">
-			<a href="<?php echo $link; ?>" title="<?php echo Lang::txt('COM_GROUPS_OVERVIEW_HOME', $this->group->get('description')); ?>">
+			<a href="<?php echo $link; ?>">
 				<img src="<?php echo $this->group->getLogo(); ?>" alt="<?php echo Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->group->get('description')); ?>" />
 			</a>
 		</div><!-- /#page_identity -->
@@ -97,11 +97,11 @@ $no_html = Request::getInt( 'no_html', 0 );
 
 	<div id="page_main">
 	<div id="page_header">
-		<h2><a href="<?php echo $link; ?>"><?php echo $this->group->get('description'); ?></a></h2>
+		<h1><a href="<?php echo $link; ?>"><?php echo $this->group->get('description'); ?></a></h1>
 		<span class="divider" aria-hidden="true">&#9658;</span>
-		<h3>
+		<h2>
 			<?php echo \Components\Groups\Helpers\View::displayTab( $this->group ); ?>
-		</h3>
+		</h2>
 
 		<?php
 		if ($this->tab == 'overview') :
@@ -110,7 +110,7 @@ $no_html = Request::getInt( 'no_html', 0 );
 		endif;
 		?>
 	</div><!-- /#page_header -->
-	<div id="page_notifications">
+	<div id="page_notifications" role="status" aria-live="polite">
 		<?php
 		if (count($this->notifications) > 0)
 		{
@@ -133,7 +133,6 @@ echo $this->content;
 <?php if (!$no_html) : ?>
 	</div><!-- /#page_content -->
 	</div><!-- /#page_main -->
-	<br class="clear" />
 	</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
 <?php endif;

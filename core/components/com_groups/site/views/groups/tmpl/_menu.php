@@ -9,6 +9,7 @@
 defined('_HZEXEC_') or die();
 ?>
 
+<nav aria-label="<?php echo Lang::txt('COM_GROUPS_MENU_LABEL'); ?>">
 <ul <?php echo $this->classOrId; ?>>
 	<?php foreach ($this->sections as $k => $section) : ?>
 		<?php
@@ -24,6 +25,7 @@ defined('_HZEXEC_') or die();
 			$title   = $section['title'];
 			$link    = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=' . $section['name']);
 			$liClass = ($this->tab == $section['name']) ? 'active' : '';
+			$ariaCurrent = ($this->tab == $section['name']) ? ' aria-current="page"' : '';
 
 			if (!isset($section['icon']))
 			{
@@ -35,15 +37,16 @@ defined('_HZEXEC_') or die();
 			{
 				$trueTab = strtolower(Request::getString('active', 'overview'));
 				$liClass = ($trueTab != $this->tab) ? '' : $liClass;
+				$ariaCurrent = ($trueTab == $this->tab && $this->tab == $section['name']) ? ' aria-current="page"' : '';
 
 				if (($access == 'registered' && User::isGuest()) || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members'))))
 				{
-					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" class=\"disabled overview\">Overview</span>";
+					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" aria-disabled=\"true\" class=\"disabled overview\">Overview<span class=\"sr-only\"> - " . Lang::txt('COM_GROUPS_MENU_RESTRICTED') . "</span></span>";
 				}
 				else
 				{
 					$item  = "<li class=\"{$liClass} group-overview-tab\">";
-					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
+					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent}>Overview</a>";
 				}
 
 				// append pages html
@@ -59,20 +62,20 @@ defined('_HZEXEC_') or die();
 				}
 				elseif (!$this->group->get('approved'))
 				{
-					$item  = '<li class="protected members-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted until the group has been approved!') . '">';
-					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item  = '<li class="protected members-only group-' . $class . '-tab">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_RESTRICTED_APPROVAL') . '</span></span>';
 					$item .= '</li>';
 				}
 				elseif ($access == 'members' && !in_array(User::get('id'), $this->group->get('members')))
 				{
-					$item  = '<li class="protected members-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted to group members only!') . '">';
-					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item  = '<li class="protected members-only group-' . $class . '-tab">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_MEMBERS_ONLY') . '</span></span>';
 					$item .= '</li>';
 				}
 				elseif ($access == 'registered' && User::isGuest())
 				{
-					$item  = '<li class="protected registered-only group-' . $class . '-tab" title="' . Lang::txt('This page is restricted to registered hub users only!') . '">';
-					$item .= '<span data-icon="&#x' . $section['icon'] . '" class="disabled ' . $class . '">' . $title . '</span>';
+					$item  = '<li class="protected registered-only group-' . $class . '-tab">';
+					$item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_REGISTERED_ONLY') . '</span></span>';
 					$item .= '</li>';
 				}
 				else
@@ -87,7 +90,7 @@ defined('_HZEXEC_') or die();
 
 					//create menu item
 					$item  = "<li class=\"{$liClass} group-{$class}-tab {$cls}\">";
-					$item .= "<a class=\"{$class}\"  data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
+					$item .= "<a class=\"{$class}\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent}>{$title}</a>";
 					$item .= '<span class="meta">';
 					if ($meta_count)
 					{
@@ -133,3 +136,4 @@ defined('_HZEXEC_') or die();
 		?>
 	<?php endforeach; ?>
 </ul>
+</nav>
