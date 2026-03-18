@@ -127,13 +127,15 @@ HUB.Presenter = (() => {
                 ? `#list_${slide}`
                 : this.getListItem(slide, 'backward');
 
-            $('#list_items .time').show();
-            $(`${listItem} .time`).hide();
+            if (listItem) {
+                $('#list_items .time').show();
+                $(`${listItem} .time`).hide();
 
-            slideList.updateProgressBar(listItem.substr(6));
+                slideList.updateProgressBar(listItem.substr(6));
 
-            if (!state.mouseover) {
-                $('#list_items').stop().scrollTo(listItem, 1000, 'easeInOutQuad');
+                if (!state.mouseover) {
+                    $('#list_items').stop().scrollTo(listItem, 1000, 'easeInOutQuad');
+                }
             }
 
             $('#list_items li').removeClass('active');
@@ -210,6 +212,10 @@ HUB.Presenter = (() => {
 
         getListItem(slide, direction) {
             const newSlide = direction === 'forward' ? slide + 1 : slide - 1;
+            const total = $('#list_items li').length;
+            if (newSlide < 0 || newSlide >= total) {
+                return null;
+            }
             const item = `#list_${newSlide}`;
             return $(item).length ? item : this.getListItem(newSlide, direction);
         },
@@ -226,7 +232,9 @@ HUB.Presenter = (() => {
             let previous = parseInt(state.activeSlide) - 1;
             if (previous >= 0) {
                 if (!$(`#list_${previous}`).length) {
-                    previous = parseInt(this.getListItem(previous, 'backward').substr(6));
+                    const listItem = this.getListItem(previous, 'backward');
+                    if (!listItem) { return; }
+                    previous = parseInt(listItem.substr(6));
                 }
                 const time = parseFloat($(`#slide_${previous}`).attr('time')) + state.tolerance;
                 player.seek(time);
@@ -289,7 +297,9 @@ HUB.Presenter = (() => {
 
         updateProgress(active) {
             if (!$(`#list_${active}`).length) {
-                active = slides.getListItem(active, 'backward').substr(6);
+                const listItem = slides.getListItem(active, 'backward');
+                if (!listItem) { return; }
+                active = listItem.substr(6);
             }
 
             const start = parseFloat($(`#slide_${active}`).attr('time'));

@@ -26,9 +26,21 @@ $presentation = $presentation->presentation;
 if (!is_object($presentation))
 {
 	$presentation = new stdClass;
+}
+if (!isset($presentation->slides))
+{
 	$presentation->slides = array();
+}
+if (!isset($presentation->media))
+{
 	$presentation->media = array();
+}
+if (!isset($presentation->placeholder))
+{
 	$presentation->placeholder = null;
+}
+if (!isset($presentation->duration))
+{
 	$presentation->duration = null;
 }
 
