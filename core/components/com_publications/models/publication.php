@@ -886,7 +886,7 @@ class Publication extends Obj
 				}
 				if ($contributor->lastName || $contributor->firstName)
 				{
-					$name  = stripslashes($contributor->lastName);
+					$name  = (!empty($contributor->surname)) ? stripslashes($contributor->surname) : stripslashes($contributor->lastName);
 					if (strstr($contributor->firstName, ' '))
 					{
 						$parts = explode(' ', $contributor->firstName);

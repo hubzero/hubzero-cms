@@ -29,13 +29,13 @@ if ($this->contributors)
 		}
 
 		// Build the user's name and link to their profile
-		if ($contributor->name)
+		if ($contributor->p_name)
 		{
-			$name = $this->escape(stripslashes($contributor->name));
+			$name = $this->escape(stripslashes($contributor->p_name));
 		}
 		else
 		{
-			$name = $this->escape(stripslashes($contributor->p_name));
+			$name = $this->escape(stripslashes($contributor->name));
 		}
 		if ($this->format)
 		{
