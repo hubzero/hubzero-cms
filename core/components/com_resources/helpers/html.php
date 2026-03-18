@@ -669,7 +669,7 @@ class Html
 				break;
 
 				case 'hubpresenter':
-					$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
+					$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch') . '#watch-section';
 				break;
 
 				case 'breeze':
