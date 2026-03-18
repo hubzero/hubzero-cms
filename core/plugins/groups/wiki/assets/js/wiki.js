@@ -175,7 +175,7 @@ jQuery(document).ready(function(jq){
 				template: '<div class="qq-uploader">' +
 							'<div class="qq-upload-button"><span>' + filer.attr('data-instructions') + '</span></div>' + 
 							'<div class="qq-upload-drop-area"><span>' + filer.attr('data-instructions') + '</span></div>' +
-							'<ul class="qq-upload-list"></ul>' + 
+							'<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' + 
 						'</div>',
 				onSubmit: function(id, file) {
 					running++;

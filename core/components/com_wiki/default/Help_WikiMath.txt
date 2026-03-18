@@ -8,7 +8,9 @@ Mathematical Formula (!LaTeX) can be inserted into text like this:
 }}}
 
 For example:
-{{{<math>\alpha^2+\beta^2=1</math>}}}
+{{{
+<math>\alpha^2+\beta^2=1</math>
+}}}
 
 ...displays <math>\alpha^2+\beta^2=1</math>
 
@@ -175,7 +177,8 @@ You can use various delimiters with \left and \right:
 || Floor and ceiling functions: || `\left \lfloor \frac{a}{b} \right \rfloor \left \lceil \frac{c}{d} \right \rceil` || <math>\left \lfloor \frac{a}{b} \right \rfloor \left \lceil \frac{c}{d} \right \rceil</math> ||
 || Slashes and backslashes || `\left / \frac{a}{b} \right \backslash` || <math>\left / \frac{a}{b} \right \backslash</math> ||
 || Up, down and up-down arrows || `\left \uparrow \frac{a}{b} \right \downarrow \quad \left \Uparrow \frac{a}{b} \right \Downarrow \quad \left \updownarrow \frac{a}{b} \right \Updownarrow` || <math>\left \uparrow \frac{a}{b} \right \downarrow \quad \left \Uparrow \frac{a}{b} \right \Downarrow \quad \left \updownarrow \frac{a}{b} \right \Updownarrow</math> ||
-|| Delimiters can be mixed,[[BR]]as long as \left and \right match || `\left [ 0,1 \right )` [[BR]] `\left \langle \psi \right |` || <math>\left [ 0,1 \right )</math> [[BR]] <math>\left \langle \psi \right |</math> ||
+|| Delimiters can be mixed,[[BR]]as long as \left and \right match || `\left [ 0,1 \right )` || <math>\left [ 0,1 \right )</math> ||
+|| || `\left \langle \psi \right |` || <math>\left \langle \psi \right |</math> ||
 || Use \left. and \right. if you don't[[BR]]want a delimiter to appear: || `\left . \frac{A}{B} \right \} \to X` || <math>\left . \frac{A}{B} \right \} \to X</math> ||
 || Size of the delimiters || `\big( \Big( \bigg( \Bigg( \dots \Bigg] \bigg] \Big] \big]/` || <math>\big( \Big( \bigg( \Bigg( \dots \Bigg] \bigg] \Big] \big]</math> ||
 || . || `\big\{ \Big\{ \bigg\{ \Bigg\{ \dots \Bigg\rangle \bigg\rangle \Big\rangle \big\rangle` || <math>\big\{ \Big\{ \bigg\{ \Bigg\{ \dots \Bigg\rangle \bigg\rangle \Big\rangle \big\rangle</math> ||

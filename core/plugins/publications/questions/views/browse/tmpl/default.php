@@ -24,7 +24,7 @@ $this->css();
 			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
 		</caption>
 		<tbody>
-	<?php if ($this->rows) { ?>
+	<?php if (count($this->rows)) { ?>
 		<?php
 		$i = 1;
 

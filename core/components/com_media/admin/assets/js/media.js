@@ -292,7 +292,7 @@ jQuery(document).ready(function($){
 			template: '<div class="icon-upload qq-upload-button media-files-action hasTip" title="' + attach.attr('data-instructions-btn') + '"><span>' + attach.attr('data-instructions-btn') + '</span></div>' + 
 					'<div class="qq-uploader">' +
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
-						'<ul class="qq-upload-list"></ul>' + 
+						'<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' + 
 					'</div>',
 			onSubmit: function(id, file) {
 				running++;

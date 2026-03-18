@@ -27,6 +27,15 @@ HUB.Members.Profile = {
 
 	initialize: function()
 	{
+		// Reveal the profile list if it has any visible items
+		var profileList = document.getElementById('profile');
+		if (profileList) {
+			var items = profileList.querySelectorAll('li:not(.hide):not(.hidden)');
+			if (items.length) {
+				profileList.removeAttribute('hidden');
+			}
+		}
+
 		//enable edit mode
 		HUB.Members.Profile.edit();
 
@@ -536,7 +545,7 @@ HUB.Members.Profile = {
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>Upload an Image</span></div>' +
 						'<div class="qq-upload-drop-area"><span>Upload an Image</span></div>' +
-						'<ul class="qq-upload-list"></ul>' +
+						'<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' +
 					'</div>',
 			onSubmit: function(id, file)
 			{

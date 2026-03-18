@@ -96,14 +96,14 @@ $language_data = array (
 			),
 		'COMMENTS' => array(
 			1 => 'color: #006600; font-style: italic;',
-			2 => 'color: #009966; font-style: italic;',
+			2 => 'color: #008659; font-style: italic;',
 			'MULTI' => 'color: #006600; font-style: italic;'
 			),
 		'ESCAPE_CHAR' => array(
 			0 => 'color: #000099; font-weight: bold;'
 			),
 		'BRACKETS' => array(
-			0 => 'color: #009900;'
+			0 => 'color: #008900;'
 			),
 		'STRINGS' => array(
 			0 => 'color: #3366CC;'
@@ -115,7 +115,7 @@ $language_data = array (
 			1 => 'color: #660066;'
 			),
 		'SYMBOLS' => array(
-			0 => 'color: #339933;'
+			0 => 'color: #2c862c;'
 			),
 		'REGEXPS' => array(
 			),

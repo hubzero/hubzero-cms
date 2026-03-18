@@ -37,6 +37,7 @@ if ($label == 'none') {
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
+	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin) || $this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
@@ -55,6 +56,7 @@ if ($label == 'none') {
 			<?php endif; ?>
 		</ul>
 	</div>
+	<?php endif; ?>
 </header>
 
 <form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="get" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
@@ -66,7 +68,7 @@ if ($label == 'none') {
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('COM_CITATIONS_BROWSE_SEARCH_HELP'); ?></label>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" aria-label="<?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
 				<div class="container">
@@ -121,10 +123,7 @@ if ($label == 'none') {
 									<?php endif; ?>
 									<th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
 								</tr>
-								<?php if ($this->isAdmin) : ?>
-									<tr class="hidden"></tr>
-								<?php endif; ?>
-							</thead>
+								</thead>
 							<tbody>
 								<?php $x = 0; ?>
 								<?php foreach ($this->citations as $cite) : ?>
@@ -261,13 +260,12 @@ if ($label == 'none') {
 						}
 						echo $pageNav->render();
 					?>
-					<div class="clearfix"></div>
 				</div><!-- /.container -->
 			</div><!-- /.subject -->
 			<div class="aside">
 			<?php if ($batch_download) : ?>
 				<fieldset id="download-batch">
-					<strong><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+					<legend><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></legend>
 					<p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
 					<input type="submit" name="download" class="download" value="<?php echo Lang::txt('COM_CITATIONS_ENDNOTE'); ?>" />

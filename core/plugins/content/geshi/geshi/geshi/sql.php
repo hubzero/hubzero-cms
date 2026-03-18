@@ -124,26 +124,26 @@ $language_data = array (
 			1 => 'color: #993333; font-weight: bold;'
 			),
 		'COMMENTS' => array(
-			1 => 'color: #808080; font-style: italic;',
-			//2 => 'color: #808080; font-style: italic;',
-			'MULTI' => 'color: #808080; font-style: italic;'
+			1 => 'color: #757575; font-style: italic;',
+			//2 => 'color: #757575; font-style: italic;',
+			'MULTI' => 'color: #757575; font-style: italic;'
 			),
 		'ESCAPE_CHAR' => array(
 			0 => 'color: #000099; font-weight: bold;'
 			),
 		'BRACKETS' => array(
-			0 => 'color: #66cc66;'
+			0 => 'color: #428442;'
 			),
 		'STRINGS' => array(
-			0 => 'color: #ff0000;'
+			0 => 'color: #ed0000;'
 			),
 		'NUMBERS' => array(
-			0 => 'color: #cc66cc;'
+			0 => 'color: #ab55ab;'
 			),
 		'METHODS' => array(
 			),
 		'SYMBOLS' => array(
-			0 => 'color: #66cc66;'
+			0 => 'color: #428442;'
 			),
 		'SCRIPT' => array(
 			),

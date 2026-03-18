@@ -47,7 +47,7 @@
 	border: none !important;
 }
 .super-group-header h1 a span {
-	color: #777;
+	color: #aaa;
 }
 .super-group-header h1 a:hover {
 	border: none !important;
@@ -75,16 +75,16 @@
 	     -o-transition: background 0.1s ease-in-out;
 	        transition: background 0.1s ease-in-out;
 }
-.super-group-menu > ul li {
+.super-group-menu ul li {
 	float: left;
 	margin: 0;
 	padding: 0;
 	position: relative;
 }
-.super-group-menu > ul li.hasmeta a {
+.super-group-menu ul li.hasmeta a {
 	padding-right: 35px !important;
 }
-.super-group-menu > ul li .meta {
+.super-group-menu ul li .meta {
 	position: absolute;
 	top: 1em;
 	right: 1em;
@@ -94,29 +94,30 @@
 	font-size: 0.9%;
 	border-radius: 0.2em;
 }
-.super-group-menu > ul li .alrt {
+.super-group-menu ul li .alrt {
 	display: none;
 }
-.super-group-menu > ul li a,
-.super-group-menu > ul li.protected span {
+.super-group-menu ul li a,
+.super-group-menu ul li a:visited,
+.super-group-menu ul li.protected span {
 	display: block;
 	padding: 10px 15px;
 	color: #fff;
 	border: none;
 }
-.super-group-menu > ul li.protected span {
+.super-group-menu ul li.protected span {
 	color: rgba(255,255,255,0.5);
 }
-.super-group-menu > ul li.protected span:hover {
+.super-group-menu ul li.protected span:hover {
 	cursor: not-allowed;
 }
-.super-group-menu > ul > li >  a:hover {
+.super-group-menu ul > li >  a:hover {
 	background: rgba(0,0,0,0.15);
 }
-.super-group-menu > ul > li.active > a {
+.super-group-menu ul > li.active > a {
 	background: rgba(0,0,0,0.3);
 }
-.super-group-menu > ul li.active .meta {
+.super-group-menu ul li.active .meta {
 	color: rgba(255,255,255,0.8);
 }
 .super-group-menu ul ul {
@@ -218,7 +219,7 @@
 	width: 100%;
 	padding: 20px 0 40px 0;
 	font-size: 11px;
-	color: #999;
+	color: #eee;
 }
 
 

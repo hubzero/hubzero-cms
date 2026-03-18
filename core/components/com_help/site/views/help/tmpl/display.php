@@ -14,7 +14,7 @@ $this->js();
 ?>
 <div class="help-header" id="help-top">
 	<?php if ($this->page != 'index') : ?>
-		<button class="back" id="back" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
+		<button class="back" id="back"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
 	<?php endif; ?>
 </div>
 

@@ -337,17 +337,17 @@ $language_data = array (
 			1 => 'color: #990099; font-weight: bold;',      // mix
 			2 => 'color: #990099; font-weight: bold;',      // mix
 			3 => 'color: #9900FF; font-weight: bold;',      // constants
-			4 => 'color: #999900; font-weight: bold;',      // column data types
-			5 => 'color: #999900; font-weight: bold;',      // column data types
-			6 => 'color: #FF9900; font-weight: bold;',      // attributes
-			7 => 'color: #FF9900; font-weight: bold;',      // attributes
+			4 => 'color: #7a7a00; font-weight: bold;',      // column data types
+			5 => 'color: #7a7a00; font-weight: bold;',      // column data types
+			6 => 'color: #aa6600; font-weight: bold;',      // attributes
+			7 => 'color: #aa6600; font-weight: bold;',      // attributes
 			8 => 'color: #9900FF; font-weight: bold;',      // date-time units
 			9 => 'color: #9900FF; font-weight: bold;',      // date-time units
 
 			10 => 'color: #CC0099; font-weight: bold;',      // operators
 			11 => 'color: #CC0099; font-weight: bold;',      // operators
 
-			12 => 'color: #009900;',     // control flow (functions)
+			12 => 'color: #008900;',     // control flow (functions)
 			13 => 'color: #000099;',     // string functions
 			14 => 'color: #000099;',     // string functions
 			15 => 'color: #000099;',     // numeric functions
@@ -362,19 +362,19 @@ $language_data = array (
 			24 => 'color: #000099;',     // information functions
 			25 => 'color: #000099;',     // miscellaneous functions
 			26 => 'color: #000099;',     // miscellaneous functions
-			27 => 'color: #00CC00;',     // geometry functions
+			27 => 'color: #008a00;',     // geometry functions
 			),
 		'COMMENTS' => array(
-			'MULTI' => 'color: #808000; font-style: italic;',
-			1 => 'color: #808080; font-style: italic;',
-			2 => 'color: #808080; font-style: italic;'
+			'MULTI' => 'color: #7a7a00; font-style: italic;',
+			1 => 'color: #757575; font-style: italic;',
+			2 => 'color: #757575; font-style: italic;'
 			),
 		'ESCAPE_CHAR' => array(
 			0 => 'color: #004000; font-weight: bold;',
 			1 => 'color: #008080; font-weight: bold;'       // search wildcards
 			),
 		'BRACKETS' => array(
-			0 => 'color: #FF00FF;'
+			0 => 'color: #d100d1;'
 			),
 		'STRINGS' => array(
 			0 => 'color: #008000;'

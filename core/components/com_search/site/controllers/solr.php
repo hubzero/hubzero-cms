@@ -60,26 +60,6 @@ class Solr extends SiteController
 	/**
 	 * Display search form and results (if any)
 	 *
-	 * @param   $term
-	 * @return  string
-	 */
-	public function solrEscape($term) {
-			// List of special characters per Lucene syntax
-			$pattern = '/([+\-!(){}[\]^"~*?:\\/]|&&|\|\|)/';
-			$escaped = preg_replace($pattern, '\\\\$1', $term);
-	
-			// Escape reserved words (AND, OR, NOT)
-			$reserved = ['AND', 'OR', 'NOT'];
-			foreach ($reserved as $word) {
-					// Use word boundaries so only whole words are matched
-					$escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, $escaped);
-			}
-			return $escaped;
-	}
-	
-	/**
-	 * Display search form and results (if any)
-	 *
 	 * @param   unknown  $response
 	 * @return  void
 	 */

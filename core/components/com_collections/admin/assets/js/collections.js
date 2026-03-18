@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
 			template: '<div class="qq-uploader">' +
 						'<div class="qq-upload-button"><span>' + attach.attr('data-txt-instructions') + '</span></div>' + 
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-txt-instructions') + '</span></div>' +
-						'<ul class="qq-upload-list"></ul>' + 
+						'<ul class="qq-upload-list" aria-label="Uploaded files" hidden></ul>' + 
 					'</div>',
 			onComplete: function(id, file, response) {
 				if (response.id != $('#field-dir').val()) {
