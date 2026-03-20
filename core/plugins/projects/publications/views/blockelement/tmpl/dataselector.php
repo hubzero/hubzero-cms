@@ -32,6 +32,11 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 	$aboutText = '<p>' . $aboutText . '</p>';
 }
 
+if (!empty($this->pub->config('accessdoc')) && ($this->elementId == 2))
+{
+	$aboutText .= '<p>Add <a href="' . $this->pub->config('accessdoc') . '" target="_blank">meaningful description</a> to the image</p>';
+}
+
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
 

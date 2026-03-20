@@ -272,8 +272,7 @@ class ImageViewer extends Base
 			{
 				// Get extentsion
 				$ext = Filesystem::extension(PATH_APP . DS . $fpath);
-
-				$title = $attach->title ? $attach->title : basename($attach->path);
+				$title = $attach->attribs ? $attach->attribs : ($attach->title ? $attach->title : basename($attach->path));
 				$link  = Route::url($pub->link('versionid')) . '/Image:' . basename($fpath);
 				$rel   = ($ext == 'swf' || $ext == 'mov') ? '' : ' rel="lightbox"';
 				$class = ($ext == 'swf' || $ext == 'mov') ? ' class="video"' : '';
@@ -307,9 +306,10 @@ class ImageViewer extends Base
 	 * @param   object   $attConfigs
 	 * @param   object   $pub
 	 * @param   boolean  $authorized
+	 * @param   integer  $elementId
 	 * @return  void
 	 */
-	public function drawList($attachments, $attConfigs, $pub, $authorized)
+	public function drawList($attachments, $attConfigs, $pub, $authorized, $elementId)
 	{
 		if (!$attachments)
 		{
@@ -329,7 +329,9 @@ class ImageViewer extends Base
 		foreach ($attachments as $attach)
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
-			$fpath = str_replace(PATH_APP, '', $fpath);
+			
+			// File model
+			$file = new \Components\Projects\Models\File(trim($fpath));
 
 			$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 				basename($fpath),
@@ -348,7 +350,20 @@ class ImageViewer extends Base
 			$html .= '"><img src="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></span>';
 			$html .= '<span class="item-title">' . $title . '<span class="details">' . $attach->path . '</span></span>';
 			$html .= '</a>';
-			$html .= '<span class="clear"></span>';
+			
+			$html .= '<span class="extras">';
+			$html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
+			$html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+			$html .= $file->get('ext') ? ')' : '';
+			if ($authorized === 'administrator')
+			{
+				$html .= ' <span class="edititem">';
+				$html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">';
+				$html .= Lang::txt('COM_PUBLICATIONS_EDIT');
+				$html .= '</a>';
+				$html .= '</span>';
+			}
+			$html .= '</span>';
 			$html .= '</li>';
 		}
 
