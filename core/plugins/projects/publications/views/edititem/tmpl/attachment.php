@@ -82,6 +82,10 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
 							<span class="content-filepath"><?php echo $this->row->path; ?></span>
 						</p>
+						<p class="c-wrapper">
+							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION')); ?>:</span>
+							<input type="text" name="description" maxlength="250" class="long" value="<?php echo $this->row && $this->row->attribs ? $this->row->attribs : ""; ?>" placeholder="<?php echo $this->row->attribs; ?>" />
+						</p>
 					<?php } else { ?>
 						<p class="c-wrapper">
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>

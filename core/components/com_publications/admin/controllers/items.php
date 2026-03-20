@@ -294,6 +294,12 @@ class Items extends AdminController
 				if ($pContent->load($attachId))
 				{
 					$pContent->title = $attach['title'];
+					
+					if (!empty($attach['attribs']))
+					{
+						$pContent->attribs = $attach['attribs'];
+					}
+					
 					$pContent->store();
 				}
 			}
