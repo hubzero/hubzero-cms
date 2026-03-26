@@ -113,14 +113,13 @@ class Type extends Relational
 		foreach ($types as $type)
 		{
 			$typeTitle = $type->type_title;
-			foreach ($type->citations as $citation)
-			{
-				$typeStats[$typeTitle] = $citation->totalcite;
-			}
-
 			if (!isset($typeStats[$typeTitle]))
 			{
 				$typeStats[$typeTitle] = 0;
+			}
+			foreach ($type->citations as $citation)
+			{
+				$typeStats[$typeTitle] += $citation->totalcite;
 			}
 		}
 		return $typeStats;
