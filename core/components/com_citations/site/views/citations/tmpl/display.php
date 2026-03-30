@@ -15,20 +15,21 @@ $this->css('introduction.css', 'system')
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
+	<?php
+	$citationLinks = array();
+	if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
+		$citationLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option='.$this->option.'&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
+	}
+	if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) {
+		$citationLinks[] = '<li><a class="btn icon-upload" href="' . Route::url('index.php?option='.$this->option.'&task=import') . '">' . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
+	}
+	if (!empty($citationLinks)) : ?>
 	<div id="content-header-extra">
 		<ul>
-			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option='.$this->option.'&task=add'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATION'); ?>
-				</a></li>
-			<?php endif; ?>
-			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-				<li><a class="btn icon-upload" href="<?php echo Route::url('index.php?option='.$this->option.'&task=import'); ?>">
-					<?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION'); ?>
-				</a></li>
-			<?php endif; ?>
+			<?php echo implode("\n\t\t\t", $citationLinks); ?>
 		</ul>
 	</div>
+	<?php endif; ?>
 </header>
 
 <section id="introduction" class="section">
@@ -94,7 +95,7 @@ foreach ($yearlystats as $year => $amt)
 	$cls = ($cls == 'even') ? 'odd' : 'even';
 
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
-	$tr .= "\t\t\t".'<th class="textual-data">'.$year.'</th>'."\n";
+	$tr .= "\t\t\t".'<th scope="row" class="textual-data">'.$year.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$amt['affiliate'].'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$amt['non-affiliate'].'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data highlight">'.(intval($amt['affiliate']) + intval($amt['non-affiliate'])).'</td>'."\n";
@@ -120,7 +121,7 @@ $html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
-$html .= "\t\t\t".'<th class="numerical-data" colspan="3">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="row" class="numerical-data" colspan="3">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data highlight">'.$tot.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</tfoot>'."\n";
@@ -202,7 +203,7 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	');
 
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
-	$tr .= "\t\t\t".'<th class="textual-data">'.$text.'</th>'."\n";
+	$tr .= "\t\t\t".'<th scope="row" class="textual-data">'.$text.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'."\n";
 	$tr .= "\t\t\t\t".'<div class="graph">'."\n";
 	$tr .= "\t\t\t\t\t".'<strong class="bar bar' . $i . ' '.$tdclass.'"><span>'.$percent.'%</span></strong>'."\n";
@@ -230,7 +231,7 @@ $html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
-$html .= "\t\t\t".'<th class="text-data">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
+$html .= "\t\t\t".'<th scope="row" class="text-data">'.Lang::txt('COM_CITATIONS_TOTAL').'</th>'."\n";
 $html .= "\t\t\t".'<td class="textual-data">100%</td>'."\n";
 $html .= "\t\t\t".'<td class="numerical-data">'.$sumval.'</td>'."\n";
 $html .= "\t\t".'</tr>'."\n";

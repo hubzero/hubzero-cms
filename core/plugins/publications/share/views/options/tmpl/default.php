@@ -51,16 +51,14 @@ $popup .= '</ol>';
 // Show pop-up?
 if ($limit > 0)
 {
-	$metadata .= '<dl class="shareinfo">'."\n";
-	$metadata .= "\t".'<dd>'."\n";
-	$metadata .= "\t\t".'<p>'."\n";
-	$metadata .= "\t\t\t".Lang::txt('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
-	$metadata .= "\t\t".'</p>'."\n";
-	$metadata .= "\t\t".'<div>'."\n";
+	$metadata .= '<div class="shareinfo">'."\n";
+	$metadata .= "\t".'<p>'."\n";
+	$metadata .= "\t\t".Lang::txt('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
+	$metadata .= "\t".'</p>'."\n";
+	$metadata .= "\t".'<div>'."\n";
 	$metadata .= $popup;
-	$metadata .= "\t\t".'</div>'."\n";
-	$metadata .= "\t".'</dd>'."\n";
-	$metadata .= '</dl>'."\n";
+	$metadata .= "\t".'</div>'."\n";
+	$metadata .= '</div>'."\n";
 }
 $metadata .= '</div>'."\n";
 

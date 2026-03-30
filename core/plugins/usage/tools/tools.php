@@ -53,10 +53,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$cls = 'even';
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt($table_header) . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Percent') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col">' . Lang::txt('Tool') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt($table_header) . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Percent') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 		$count = 0;
@@ -80,13 +80,13 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					}
 					$html .= "\t" . '<tfoot>' . "\n";
 					$html .= "\t\t" . '<tr class="summary">' . "\n";
-					$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
-					$html .= "\t\t\t" . '<th class="numerical-data">' . $value . '</th>' . "\n";
+					$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
+					$html .= "\t\t\t" . '<td class="numerical-data">' . $value . '</td>' . "\n";
 					if ($total)
 					{
 						$vl = number_format((($row->value/$total)*100), 2);
 					}
-					$html .= "\t\t\t" . '<th class="numerical-data">' . $vl . '%</th>' . "\n";
+					$html .= "\t\t\t" . '<td class="numerical-data">' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 					$html .= "\t" . '</tfoot>' . "\n";
 					$html .= "\t" . '<tbody>' . "\n";
@@ -217,9 +217,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Citations') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col">' . Lang::txt('Tool') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Citations') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 
@@ -227,7 +227,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t" . '<tfoot>' . "\n";
 			$html .= "\t\t" . '<tr class="summary">' . "\n";
-			$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
 			$html .= "\t\t\t" . '<td class="numerical-data">' . $result . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</tfoot>' . "\n";

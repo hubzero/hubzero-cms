@@ -233,13 +233,14 @@ $rows = $this->archive->entries($this->filters)
 
 			<div class="container blog-entries-years">
 				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
-				<ol>
 				<?php
 				if ($first->get('id'))
 				{
 					$start = intval(substr($first->get('publish_up'), 0, 4));
 					$now = Date::format("Y");
-
+				?>
+				<ol>
+				<?php
 					for ($i=$now, $n=$start; $i >= $n; $i--)
 					{
 					?>
@@ -286,10 +287,11 @@ $rows = $this->archive->entries($this->filters)
 						</li>
 					<?php
 					}
-				} else { ?>
+				?>
+				</ol>
+				<?php } else { ?>
 					<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
 			</div><!-- / .blog-entries-years -->
 
 			<div class="container blog-popular-entries">

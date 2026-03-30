@@ -412,9 +412,31 @@ $this->css('course.css')
 			}
 			?>
 			<div class="course-summary">
+				<?php
+				$hasStats = $this->course->config('show_stats');
+				$hasLength = $this->course->get('length');
+				$hasEffort = $this->course->get('effort');
+				$hasCert = false;
+				if ($this->course->certificate()->exists())
+				{
+					foreach ($offerings as $off)
+					{
+						$secs = $off->sections(array('state' => 1, 'available' => true));
+						foreach ($secs as $sec)
+						{
+							if ($sec->params('certificate') && $sec->get('enrollment') != 2)
+							{
+								$hasCert = true;
+								break 2;
+							}
+						}
+					}
+				}
+				if ($hasStats || $hasLength || $hasEffort || $hasCert) :
+				?>
 				<table>
 					<tbody>
-						<?php if ($this->course->config('show_stats')) { ?>
+						<?php if ($hasStats) { ?>
 							<tr>
 								<th scope="row"><?php echo Lang::txt('COM_COURSES_COURSE_ENROLLED'); ?>:
 								</th>
@@ -476,6 +498,7 @@ $this->css('course.css')
 						<?php } ?>
 					</tbody>
 				</table>
+				<?php endif; ?>
 
 				<?php
 				$c = 0;

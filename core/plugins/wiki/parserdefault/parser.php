@@ -2397,11 +2397,12 @@ class WikiParser
 			unset($cells, $catts, $cellTypes);
 		}
 
-		// Determine if the first row is a header row (all <th> cells)
+		// Determine if the first row is a header row (majority of cells are <th>)
 		$hasTheadRow = false;
 		if (!empty($rowMeta[0]))
 		{
-			$hasTheadRow = (count(array_unique($rowMeta[0])) === 1 && $rowMeta[0][0] === 'h');
+			$headerCount = count(array_filter($rowMeta[0], function($t) { return $t === 'h'; }));
+			$hasTheadRow = ($headerCount > 0 && $headerCount >= count($rowMeta[0]) / 2);
 		}
 
 		// Build HTML rows with scope attributes on <th> elements
@@ -2437,6 +2438,18 @@ class WikiParser
 						// First cell in a data row is a row header
 						$catts = ' scope="row"' . $catts;
 					}
+				}
+				// Promote cells in header row to <th> when hasTheadRow
+				else if ($ctyp === 'd' && $isFirstRow && $hasTheadRow)
+				{
+					$ctyp = 'h';
+					$catts = ' scope="col"' . $catts;
+				}
+				// Promote first cell in data rows to row header when table has a header row
+				else if ($ctyp === 'd' && $j === 0 && !$isFirstRow && $hasTheadRow)
+				{
+					$ctyp = 'h';
+					$catts = ' scope="row"' . $catts;
 				}
 
 				$htmlCells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";

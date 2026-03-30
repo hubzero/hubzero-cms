@@ -190,7 +190,6 @@ $first = $this->archive->entries(array(
 
 			<div class="container blog-entries-years">
 				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
-				<ol>
 				<?php
 				if ($first->get('id'))
 				{
@@ -200,6 +199,9 @@ $first = $this->archive->entries(array(
 					$start = intval(substr($first->get('publish_up'), 0, 4));
 					$now = Date::of('now')->format("Y");
 					//$mon = date("m");
+				?>
+				<ol>
+				<?php
 					for ($i=$now, $n=$start; $i >= $n; $i--)
 					{
 						?>
@@ -243,10 +245,12 @@ $first = $this->archive->entries(array(
 						</li>
 						<?php
 					}
-				} else { ?>
+				}
+				?>
+				</ol>
+				<?php } else { ?>
 					<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
 			</div><!-- / .blog-entries-years -->
 
 			<div class="container blog-popular-entries">

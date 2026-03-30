@@ -37,23 +37,18 @@ if ($label == 'none') {
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin) || $this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+	<?php
+	$importLinks = array();
+	if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
+		$importLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=com_citations&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
+	}
+	if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) {
+		$importLinks[] = '<li><a class="btn icon-upload" href="' . Route::url('index.php?option='.$this->option.'&task=import') . '">' . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
+	}
+	if (!empty($importLinks)) : ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-				<li>
-					<a class="btn icon-add" href="<?php echo Route::url('index.php?option=com_citations&task=add'); ?>">
-						<?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATION'); ?>
-					</a>
-				</li>
-			<?php endif; ?>
-			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-				<li>
-					<a class="btn icon-upload" href="<?php echo Route::url('index.php?option='.$this->option.'&task=import'); ?>">
-						<?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION'); ?>
-					</a>
-				</li>
-			<?php endif; ?>
+			<?php echo implode("\n\t\t\t", $importLinks); ?>
 		</ul>
 	</div>
 	<?php endif; ?>
@@ -118,7 +113,7 @@ if ($label == 'none') {
 								<tr>
 									<?php if ($batch_download) : ?>
 										<th class="batch">
-											<input type="checkbox" class="checkall-download" />
+											<input type="checkbox" class="checkall-download" aria-label="Select all citations for download" />
 										</th>
 									<?php endif; ?>
 									<th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
