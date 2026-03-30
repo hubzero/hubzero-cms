@@ -68,6 +68,42 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 						</ul>
 					</nav>
 
+					<?php
+					$filters = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
+
+					$categories = $this->archive->categories($filters);
+
+					if (!$this->category->get('id'))
+					{
+						$articles = $this->archive->articles();
+					}
+					else
+					{
+						$articles = $this->category->articles();
+					}
+
+					$articles->whereEquals('state', 1)
+							->whereIn('access', User::getAuthorisedViewLevels());
+
+					if (isset($this->filters['search']) && $this->filters['search'])
+					{
+						$articles->whereLike('title', $this->filters['search'], 1)
+							->orWhereLike('fulltxt', $this->filters['search'], 1)
+							->resetDepth();
+					}
+					if ($this->filters['sort'] == 'popularity')
+					{
+						$articles->order('helpful', 'desc');
+					}
+					else
+					{
+						$articles->order('modified', 'desc')
+								->order('created', 'desc');
+					}
+
+					$articles = $articles->paginated();
+
+					if ($articles->count() > 0) { ?>
 					<table class="articles entries">
 						<caption class="sr-only"><?php echo Lang::txt('COM_KB_ARTICLES'); ?></caption>
 						<thead class="sr-only">
@@ -78,42 +114,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 							</tr>
 						</thead>
 						<tbody>
-						<?php
-						$filters = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
-
-						$categories = $this->archive->categories($filters);
-
-						if (!$this->category->get('id'))
-						{
-							$articles = $this->archive->articles();
-						}
-						else
-						{
-							$articles = $this->category->articles();
-						}
-
-						$articles->whereEquals('state', 1)
-								->whereIn('access', User::getAuthorisedViewLevels());
-
-						if (isset($this->filters['search']) && $this->filters['search'])
-						{
-							$articles->whereLike('title', $this->filters['search'], 1)
-								->orWhereLike('fulltxt', $this->filters['search'], 1)
-								->resetDepth();
-						}
-						if ($this->filters['sort'] == 'popularity')
-						{
-							$articles->order('helpful', 'desc');
-						}
-						else
-						{
-							$articles->order('modified', 'desc')
-									->order('created', 'desc');
-						}
-
-						$articles = $articles->paginated();
-
-						foreach ($articles as $row)
+						<?php foreach ($articles as $row)
 						{
 							if (!$this->category->get('id'))
 							{
@@ -171,13 +172,13 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 						<?php } ?>
 						</tbody>
 					</table>
+					<?php } ?>
 					<?php
 					echo $articles
 							->pagination
 							->setAdditionalUrlParam('search', $this->filters['search'])
 							->setAdditionalUrlParam('sort', $this->filters['sort']);
 					?>
-					<div class="clearfix"></div>
 				</div><!-- / .container -->
 			</form>
 		</div><!-- / .subject -->

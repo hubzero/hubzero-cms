@@ -56,22 +56,53 @@ if ($mode != 'preview')
 						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
 					</header>
 
-					<?php if ($this->model->params->get('show_authors', 1)) { ?>
+					<?php
+					$contributors = $this->model->contributors('!submitter');
+					if ($this->model->params->get('show_authors', 1) && $contributors && count($contributors) > 0) { ?>
 						<div id="authorslist">
 							<?php
-							// Display authors
 							$this->view('_contributors')
-								 ->set('option', $this->option)
-								 ->set('contributors', $this->model->contributors('!submitter'))
-								 ->display();
+							     ->set('option', $this->option)
+							     ->set('contributors', $contributors)
+							     ->display();
 							?>
 						</div><!-- / #authorslist -->
 					<?php } ?>
 				</div><!-- / .overviewcontainer -->
 
+				<?php
+				$hasLaunchContent = false;
+				$html = '';
+
+				if (!$this->model->access('view-all'))
+				{
+					$hasLaunchContent = true;
+				}
+				else
+				{
+					$children = $this->model->children()
+						->whereEquals('standalone', 0)
+						->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
+						->order('ordering', 'asc')
+						->rows();
+
+					$firstchild = $children->first();
+
+					$html .= $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model, $firstchild, '') : '';
+
+					$html .= $children && count($children) > 1
+						   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+						   : '';
+
+					if (trim($html) || ($this->tab != 'play' && $this->model->license()))
+					{
+						$hasLaunchContent = true;
+					}
+				}
+
+				if ($hasLaunchContent) { ?>
 				<div class="col span4 omega launcharea">
 					<?php
-					// Private/Public resource access check
 					if (!$this->model->access('view-all'))
 					{
 						$ghtml = array();
@@ -93,23 +124,6 @@ if ($mode != 'preview')
 					}
 					else
 					{
-						// Display some supporting documents
-						$children = $this->model->children()
-							->whereEquals('standalone', 0)
-							->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
-							->order('ordering', 'asc')
-							->rows();
-
-						// get launch button
-						$firstchild = $children->first();
-
-						$html  = $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model, $firstchild, '') : '';
-
-						// Sort out supporting docs
-						$html .= $children && count($children) > 1
-							   ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
-							   : '';
-
 						echo $html;
 
 						if ($this->tab != 'play')
@@ -118,9 +132,10 @@ if ($mode != 'preview')
 								->set('license', $this->model->license())
 								->display();
 						}
-					} // --- end else (if group check passed)
+					}
 					?>
 				</div><!-- / .aside launcharea -->
+				<?php } ?>
 			</div>
 
 			<?php
@@ -131,19 +146,17 @@ if ($mode != 'preview')
 				 ->display();
 			?>
 		</div><!-- / .subject -->
+		<?php if ($this->model->params->get('show_metadata', 1)) { ?>
 		<aside class="aside rankarea" aria-label="<?php echo Lang::txt('Resource metadata'); ?>">
-		<?php
-		// Show metadata
-		if ($this->model->params->get('show_metadata', 1))
-		{
+			<?php
 			$this->view('_metadata')
 			     ->set('option', $this->option)
 			     ->set('sections', $this->sections)
 			     ->set('model', $this->model)
 			     ->display();
-		}
-		?>
-	</aside><!-- / .aside -->
+			?>
+		</aside><!-- / .aside -->
+		<?php } ?>
 	</div>
 </section><!-- / .main section -->
 

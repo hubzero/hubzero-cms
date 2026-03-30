@@ -160,6 +160,11 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 			<?php
 			} ?>
 			<?php
+				// [a11y] Ensure table headers have data cells when empty
+				if (count($this->items) == 0 && !$this->subdir)
+				{ ?>
+				<tr><td colspan="<?php echo $this->publishing ? 7 - $min : 6 - $min; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?></td></tr>
+				<?php }
 				// Display contents
 				if (count($this->items) > 0)
 				{

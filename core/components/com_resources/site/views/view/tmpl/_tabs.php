@@ -14,36 +14,41 @@ $base .= '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id
 $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_key') : 'active';
 
 ?>
-<ul id="sub-menu" class="sub-menu">
-	<?php
-	foreach ($this->cats as $cat)
+<?php
+$tabItems = array();
+foreach ($this->cats as $cat)
+{
+	$name = key($cat);
+
+	if (!$name)
 	{
-		$name = key($cat);
-
-		if (!$name)
-		{
-			continue;
-		}
-
-		$active = false;
-
-		$url = $base . '&' . $active_key . '=' . $name;
-		if (strtolower($name) == $this->active)
-		{
-			Pathway::append($cat[$name], $url);
-
-			if ($active != 'about')
-			{
-				Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
-			}
-
-			$active = true;
-		}
-		?>
-		<li id="sm-<?php echo $name; ?>"<?php echo $active ? ' class="active"' : ''; ?>>
-			<a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo Route::url($url); ?>"><span><?php echo $cat[$name]; ?></span></a>
-		</li>
-		<?php
+		continue;
 	}
-	?>
+
+	$active = false;
+
+	$url = $base . '&' . $active_key . '=' . $name;
+	if (strtolower($name) == $this->active)
+	{
+		Pathway::append($cat[$name], $url);
+
+		if ($active != 'about')
+		{
+			Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
+		}
+
+		$active = true;
+	}
+
+	$tabItems[] = array('name' => $name, 'label' => $cat[$name], 'url' => $url, 'active' => $active);
+}
+
+if (count($tabItems) > 0) { ?>
+<ul id="sub-menu" class="sub-menu">
+	<?php foreach ($tabItems as $tab) { ?>
+		<li id="sm-<?php echo $tab['name']; ?>"<?php echo $tab['active'] ? ' class="active"' : ''; ?>>
+			<a class="tab" data-rel="<?php echo $tab['name']; ?>" href="<?php echo Route::url($tab['url']); ?>"><span><?php echo $tab['label']; ?></span></a>
+		</li>
+	<?php } ?>
 </ul>
+<?php } ?>

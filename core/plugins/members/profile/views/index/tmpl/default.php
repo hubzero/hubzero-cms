@@ -784,7 +784,11 @@ $legacy = array(
 
 				if (empty($value))
 				{
-					$cls[] = ($isUser) ? 'hidden' : 'hide';
+					if (!$isUser)
+					{
+						continue;
+					}
+					$cls[] = 'hidden';
 				}
 				?>
 				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
