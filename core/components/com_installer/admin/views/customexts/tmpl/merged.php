@@ -17,6 +17,8 @@ Html::behavior('tooltip');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+
+	<?php if (!empty($this->success)) : ?>
 		<table class="adminlist success">
 			<thead>
 				<tr>
@@ -24,21 +26,40 @@ Html::behavior('tooltip');
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($this->msg as $msg) : ?>
+				<?php foreach ($this->success as $item) : ?>
 					<tr>
 						<td>
-							<?php
-							echo '<strong> Extension:  ' . $msg['extension'] . '</strong>';
-							?>
-							<br />
-							<br />
-							<pre><?php echo $msg['message']; ?></pre>
+							<strong>Extension: <?php echo $item['extension']; ?></strong>
+							<hr />
+							<code><?php echo implode('<br>', $item['message']); ?></code>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+	<?php endif; ?>
 	<br /><br />
+
+	<?php if (!empty($this->failed)) : ?>
+		<table class="adminlist failed">
+			<thead>
+				<tr>
+					<th scope="col"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($this->failed as $item) : ?>
+					<tr>
+						<td>
+							<strong>Extension: <?php echo $item['extension']; ?></strong>
+							<hr />
+							<pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : array($item['message'])); ?></pre>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php endif; ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
