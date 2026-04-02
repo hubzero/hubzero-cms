@@ -673,7 +673,8 @@ class Customexts extends AdminController
 		}
 
 		// vars to hold results of pull
-		$msg = array();
+		$success = array();
+		$failed  = array();
 
 		// loop through each extension and pull code from repos
 		foreach ($ids as $id)
@@ -684,22 +685,33 @@ class Customexts extends AdminController
 			$update_response = Cli::call($museCmd, $task='repository');
 			$update_response = json_decode($update_response == null ? '' : $update_response);
 
-			// add output message, success or failure, just output.
-			$msg[] = array(
-				'extension'   => $extension->get('name'),
-				'message' => $update_response
-			);
+			// In minimal/json mode muse emits an empty array on success and a non-empty
+			// array of error strings on failure.  A null result means muse did not run.
+			if (is_null($update_response) || !empty($update_response))
+			{
+				$failed[] = array(
+					'extension' => $extension->get('name'),
+					'message'   => is_array($update_response) ? $update_response : array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL_GENERIC'))
+				);
+			}
+			else
+			{
+				// Run migrations only when the update succeeded
+				$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+				$migrations_response = json_decode($migrations_response == null ? '' : $migrations_response);
 
-			// Run migrations
-			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
-			$migrations_response = json_decode($migrations_response == null ? '' : $migration_response);
-
+				$success[] = array(
+					'extension' => $extension->get('name'),
+					'message'   => array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS'))
+				);
+			}
 		}
 
 		// display view
 		$this->view
 			->setLayout('merged')
-			->set('msg', $msg)
+			->set('success', $success)
+			->set('failed', $failed)
 			->display();
 	}
 
