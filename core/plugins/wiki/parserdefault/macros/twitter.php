@@ -29,13 +29,13 @@ class TwitterMacro extends WikiMacro
 							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
 						</ul>
 						<p>Displays:</p>
-						<a class="twitter-timeline"
+						<p><a class="twitter-timeline"
 							href="https://twitter.com/"
 							data-widget-id="346714310770302976"
 							data-screen-name="hubzeroplatform"
 							data-tweet-limit="2"
 							data-chrome=""
-							>Loading Tweets...</a>';
+							>Loading Tweets...</a></p>';
 
 		return $txt['html'];
 	}
