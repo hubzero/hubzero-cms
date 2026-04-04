@@ -245,7 +245,6 @@ $first = $this->archive->entries(array(
 						</li>
 						<?php
 					}
-				}
 				?>
 				</ol>
 				<?php } else { ?>
