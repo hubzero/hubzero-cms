@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 				<?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_RESET_PASSWORD_LABEL'); ?>:
 				<span class="required"><?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_REQUIRED'); ?></span>
 			</label>
-			<input type="text" name="username" />
+			<input type="text" name="username" id="username" />
 		</fieldset>
 		<div class="clear"></div>
 
