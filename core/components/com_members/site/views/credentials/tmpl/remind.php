@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
 				<?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_REMIND_EMAIL_LABEL'); ?>:
 				<span class="required"><?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_REQUIRED'); ?></span>
 			</label>
-			<input type="text" name="email" />
+			<input type="text" name="email" id="email" />
 
 			<div class="help">
 				<h4>What if I have also lost my password?</h4>
