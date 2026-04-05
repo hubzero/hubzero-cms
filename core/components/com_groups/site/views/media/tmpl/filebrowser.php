@@ -67,6 +67,6 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 		</form>
 	</div>
 	<div class="upload-browser-col right">
-		<iframe class="upload-browser-filelist-iframe" src="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
+		<iframe class="upload-browser-filelist-iframe" title="File list" src="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
 	</div>
 </div>
