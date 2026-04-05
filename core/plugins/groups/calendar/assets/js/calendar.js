@@ -97,6 +97,10 @@ HUB.Plugins.GroupCalendar = {
 			},
 			viewRender: function(view, element)
 			{
+				// [a11y] add aria-labels to prev/next buttons
+				$('.fc-prev-button').attr('aria-label', 'Previous month');
+				$('.fc-next-button').attr('aria-label', 'Next month');
+
 				//$calendar.fullCalendar('gotoDate', $year, $month, 0);
 				var date = $calendar.fullCalendar('getDate').format('YYYY/MM');
 
