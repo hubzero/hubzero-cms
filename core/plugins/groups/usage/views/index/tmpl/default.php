@@ -31,7 +31,7 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 			<h3>Group Page Views</h3>
 			<div id="page_view_settings">
 				<form name="page_selector" action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=usage'); ?>" method="get">
-					<select name="pid" id="page_view_selector">
+					<select name="pid" id="page_view_selector" aria-label="Page view filter">
 						<option value=""<?php if ($this->pid == '') { echo "selected"; } ?>>All Group Page Views</option>
 						<?php foreach ($this->pages as $page) : ?>
 							<?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
@@ -39,8 +39,8 @@ $demotions            = $logger->logs('list', array('gidNumber' => $this->group-
 						<?php endforeach; ?>
 					</select>
 					<span class="datepickers">
-						<input type="text" name="start" id="date_start" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->start)); ?>" />&nbsp;-&nbsp;
-						<input type="text" name="end" id="date_end" class="datepicker" value="<?php echo date("m/d/Y", strtotime($this->end)); ?>" />
+						<input type="text" name="start" id="date_start" class="datepicker" aria-label="Start date" value="<?php echo date("m/d/Y", strtotime($this->start)); ?>" />&nbsp;-&nbsp;
+						<input type="text" name="end" id="date_end" class="datepicker" aria-label="End date" value="<?php echo date("m/d/Y", strtotime($this->end)); ?>" />
 					</span>
 					<input type="submit" id="submit" value="Go" />
 				</form>

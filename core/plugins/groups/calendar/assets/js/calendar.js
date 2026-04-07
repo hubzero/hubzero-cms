@@ -101,6 +101,10 @@ HUB.Plugins.GroupCalendar = {
 				$('.fc-prev-button').attr('aria-label', 'Previous month');
 				$('.fc-next-button').attr('aria-label', 'Next month');
 
+				// [a11y] fix header-only table — add role=presentation so headers
+				// don't require data cells (SC 1.3.1)
+				$calendar.find('.fc-widget-header > table').attr('role', 'presentation');
+
 				//$calendar.fullCalendar('gotoDate', $year, $month, 0);
 				var date = $calendar.fullCalendar('getDate').format('YYYY/MM');
 

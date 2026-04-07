@@ -228,7 +228,7 @@ class Media extends Base
 
 			if (isset($treeLevel['children']) && is_array($treeLevel['children']))
 			{
-				$nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);"></a>';
+				$nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);" aria-label="Toggle folder"></a>';
 				$childrenHtml = $this->_buildFolderTreeHtml($treeLevel['children']);
 			}
 

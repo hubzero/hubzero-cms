@@ -42,7 +42,7 @@ foreach ($this->calendars as $calendar)
 
 			<label>
 				<input type="checkbox" value="0" checked="checked" />
-				<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" />
+				<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="" />
 				<?php echo Lang::txt('Uncategorized Events'); ?>
 			</label>
 
