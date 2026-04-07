@@ -92,10 +92,9 @@ class TitleIndexMacro extends WikiMacro
 		$rows = $pages->rows();
 
 		// Did we get a result from the database?
-		if ($rows)
+		if ($rows && count($rows))
 		{
-			// Build and return the link
-			$html = '<ul>';
+			$items = '';
 			foreach ($rows as $row)
 			{
 				if ($row->get('pagename') == $this->pagename)
@@ -110,13 +109,15 @@ class TitleIndexMacro extends WikiMacro
 					$row->set('scope_id', $this->domain_id);
 				}
 
-				$html .= '<li><a href="' . Route::url($row->link()) . '">';
-				$html .= stripslashes($row->get('title', $row->get('pagename')));
-				$html .= '</a></li>' . "\n";
+				$items .= '<li><a href="' . Route::url($row->link()) . '">';
+				$items .= stripslashes($row->get('title', $row->get('pagename')));
+				$items .= '</a></li>' . "\n";
 			}
-			$html .= '</ul>';
 
-			return $html;
+			if ($items !== '')
+			{
+				return '<ul>' . $items . '</ul>';
+			}
 		}
 
 		// Return error message
