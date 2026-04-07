@@ -283,6 +283,7 @@ $legacy = array(
 		</div>
 	<?php endif; ?>
 
+	<?php if ($isUser) : ?>
 	<ul id="profile" hidden>
 		<?php if ($isUser && (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<li class="profile-name section hidden">
@@ -974,4 +975,5 @@ $legacy = array(
 			<?php endif; ?>
 		<?php endif; ?>
 	</ul>
+	<?php endif; ?>
 </div><!-- /#profile-page-content -->

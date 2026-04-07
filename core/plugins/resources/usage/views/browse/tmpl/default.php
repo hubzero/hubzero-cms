@@ -343,6 +343,12 @@ $bars = array();
 							</tr>
 					<?php
 					}
+					if (empty($dataset) || $cls == 'even')
+					{
+					?>
+						<tr><td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></td></tr>
+					<?php
+					}
 					?>
 						</tbody>
 					</table>

@@ -256,10 +256,11 @@ $this->css()
 				</div>
 			</div><!-- / .subject -->
 			<aside class="aside">
+				<?php if ($first->get('id')) { ?>
 				<div class="container blog-entries-years">
 					<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 					<ol>
-						<?php if ($first->get('id')) { ?>
+						<?php { ?>
 							<?php
 								$start = intval(substr($first->get('publish_up'), 0, 4));
 								$now = date("Y");
@@ -306,6 +307,7 @@ $this->css()
 						<?php } ?>
 					</ol>
 				</div>
+				<?php } ?>
 
 				<div class="container blog-popular-entries">
 					<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
