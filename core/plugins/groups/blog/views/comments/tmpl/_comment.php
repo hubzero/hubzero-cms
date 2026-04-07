@@ -158,8 +158,8 @@ defined('_HZEXEC_') or die();
 
 						<div class="form-group">
 							<div class="form-check">
-								<label for="comment-anonymous" class="form-check-label comment-anonymous-label">
-									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+								<label for="comment-<?php echo $this->comment->get('id'); ?>-anonymous" class="form-check-label comment-anonymous-label">
+									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
 									<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
 								</label>
 							</div>
