@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h1><?php echo $this->title; ?></h1>
 
 	<?php if ($this->tool) { ?>
 		<?php if ($this->row->codeaccess=='@OPEN') { ?>
