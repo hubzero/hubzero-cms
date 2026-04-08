@@ -13,6 +13,8 @@ jQuery(document).ready(function(jq){
 		attach = $("#ajax-uploader");
 
 	if (attach.length) {
+		// [a11y] Ensure role="group" so aria-label is valid (4.1.2)
+		attach.attr('role', 'group');
 		$('#ajax-uploader-list')
 			.on('click', 'a.delete', function (e){
 				e.preventDefault();

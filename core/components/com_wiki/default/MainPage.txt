@@ -49,7 +49,7 @@ Anyone with an account can create a new article. When creating a new article, th
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span6">
-					<form action="/search" method="get" class="search" role="search">
+					<form action="/search" method="get" class="search" role="search" aria-label="Search wiki articles">
 						<fieldset>
 							<legend class="sr-only">Search wiki articles</legend>
 							<p>

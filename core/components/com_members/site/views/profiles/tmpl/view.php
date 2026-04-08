@@ -242,7 +242,7 @@ if (!$no_html)
 						<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 					</a>
 				</h2>
-				<span aria-hidden="true">►</span>
+				<span class="breadcrumb-separator" aria-hidden="true"></span>
 				<h3><?php echo $tab_name; ?></h3>
 			</div>
 			<?php
