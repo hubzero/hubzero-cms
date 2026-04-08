@@ -113,6 +113,13 @@ HUB.Plugins.GroupCalendar = {
 				{
 					window.history.pushState(null,null, $base + '/' + date);
 				}
+
+				// WCAG 4.1.2: FullCalendar's prev/next buttons ship with icon-only
+				// content and no accessible name. Add aria-labels so screen readers
+				// and speech-input users can identify them.
+				$('.fc-prev-button').attr('aria-label', 'Previous month').attr('title', 'Previous month');
+				$('.fc-next-button').attr('aria-label', 'Next month').attr('title', 'Next month');
+				$('.fc-today-button').attr('aria-label', 'Go to today');
 			},
 			eventAfterAllRender: function(view)
 			{
