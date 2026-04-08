@@ -9,9 +9,9 @@
 defined('_HZEXEC_') or die();
 
 ?>
+<?php if (isset($this->comments) && $this->comments && count($this->comments) > 0): ?>
 <ol class="comments" id="t<?php echo (isset($this->parent)) ? $this->parent : '0'; ?>">
 <?php
-if (isset($this->comments) && $this->comments)
 {
 	$cls = 'odd';
 	if (isset($this->cls))
@@ -36,3 +36,4 @@ if (isset($this->comments) && $this->comments)
 }
 ?>
 </ol>
+<?php endif; ?>

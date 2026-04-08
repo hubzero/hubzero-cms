@@ -28,7 +28,7 @@ if (isset($this->likes))
 } 
 
 ?>
-<?php if (count($this->comments)) : ?>
+<?php if ($this->comments && count($this->comments) > 0): ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
 {
