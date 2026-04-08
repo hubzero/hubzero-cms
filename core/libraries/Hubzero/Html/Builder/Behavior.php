@@ -189,7 +189,10 @@ class Behavior
 			script.src = "' . $path . '";
 			var config = `
 			MathJax.Hub.Config({
-				extensions: ["tex2jax.js"],
+				// [a11y] AssistiveMML adds a hidden MathML rendering for
+				// screen readers and aria-hidden="true" on the visible
+				// HTML-CSS glyph spans (SC 1.1.1, 1.3.1, 4.1.2).
+				extensions: ["tex2jax.js", "AssistiveMML.js"],
 				jax: ["input/TeX", "output/HTML-CSS"],
 				"HTML-CSS": {
 						preferredFont: "TeX",
@@ -210,6 +213,20 @@ class Behavior
 				},
 				messageStyle: "none",
 				styles: { ".MathJax_Display, .MathJax_Preview, .MathJax_Preview > *": { "background": "inherit" } }
+			});
+			// [a11y] axe-core does not honor aria-hidden on the deprecated
+			// <nobr> wrapper that MathJax v2 emits, so propagate it onto
+			// the .MathJax wrapper (the assistive MathML lives in a sibling
+			// .MJX_Assistive_MathML span and remains exposed to AT).
+			MathJax.Hub.Register.MessageHook("End Math", function() {
+				var els = document.querySelectorAll("span.MathJax, div.MathJax_Display");
+				for (var i = 0; i < els.length; i++) {
+					els[i].setAttribute("aria-hidden", "true");
+					// MathJax adds tabindex="0" to the wrapper for the
+					// context menu; that conflicts with aria-hidden so
+					// remove it.
+					els[i].removeAttribute("tabindex");
+				}
 			});`;
 			if (window.opera) { script.innerHTML = config; }
 			else { script.text = config; }
