@@ -1168,7 +1168,9 @@ class Pages extends SiteController
 				$pngPath = $hashDir . '/' . $hash . '.png';
 
 				if (file_exists($tmpPng)) {
-					@mkdir($hashDir, 0775, true);
+					if (!is_dir($hashDir)) {
+						@mkdir($hashDir, 0775, true);
+					}
 					@rename($tmpPng, $pngPath);
 				}
 
