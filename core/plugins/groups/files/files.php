@@ -314,7 +314,7 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	private function _buildFolderTreeSelect($tree)
 	{
-		$html  = '<select class="" name="folder">';
+		$html  = '<select class="" name="folder" aria-label="' . Lang::txt('Select folder') . '">';
 		if ($this->group->get('type') == 3)
 		{
 			$html .= '<option value="/">(root)</option>';
