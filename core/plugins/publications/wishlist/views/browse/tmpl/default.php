@@ -25,7 +25,7 @@ $this->css();
 			</caption>
 			<tbody>
 <?php
-	if ($this->rows->count()) {
+	if ($this->rows->count() > 0) {
 		foreach ($this->rows as $item)
 		{
 			$item->subject = $this->escape(stripslashes($item->subject));
@@ -174,6 +174,12 @@ $this->css();
 				</tr>
 <?php
 		} // end foreach
+	} else {
+?>
+				<tr>
+					<td colspan="4"><?php echo Lang::txt('There are currently no wishes on this list. Be the first to make a suggestion for improvement.'); ?></td>
+				</tr>
+<?php
 	}
 ?>
 			</tbody>
