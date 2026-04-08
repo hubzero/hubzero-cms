@@ -253,22 +253,24 @@ if ($mode != 'preview')
 						$childParams = $child->params;
 						$link_action = $childParams->get('link_action', '');
 
+						// The accordion header <button> must not contain a nested <a>
+						// (nested-interactive / WCAG 4.1.2). Render the title as plain
+						// text inside the button and expose the lecture page link as a
+						// separate sibling after the button.
+						$titleHtml = $title;
+						$titleLinkHtml = '';
 						if ($child->standalone == 1)
 						{
-							$titleHtml = '<a href="' . $childHref . '"';
+							$linkAttrs = 'href="' . $childHref . '" class="course-lecture-link"';
 							if ($link_action == 1)
 							{
-								$titleHtml .= ' rel="noreferrer" target="_blank"';
+								$linkAttrs .= ' rel="noreferrer" target="_blank"';
 							}
 							elseif ($link_action == 2)
 							{
-								$titleHtml .= ' onclick="popupWindow(\'' . addslashes($childHref) . '\', \'' . addslashes($title) . '\', 400, 400, \'auto\'); return false;"';
+								$linkAttrs .= ' onclick="popupWindow(\'' . addslashes($childHref) . '\', \'' . addslashes($title) . '\', 400, 400, \'auto\'); return false;"';
 							}
-							$titleHtml .= '>' . $title . '</a>';
-						}
-						else
-						{
-							$titleHtml = $title;
+							$titleLinkHtml = '<a ' . $linkAttrs . ' aria-label="' . Lang::txt('Open lecture page:') . ' ' . $title . '">' . Lang::txt('Open lecture page') . ' &raquo;</a>';
 						}
 
 						$grandchildren = $child->children()
@@ -364,6 +366,9 @@ if ($mode != 'preview')
 									</span>
 								<?php endif; ?>
 							</button>
+							<?php if ($titleLinkHtml): ?>
+								<?php echo $titleLinkHtml; ?>
+							<?php endif; ?>
 
 							<div
 								id="course-body-<?php echo $child->id; ?>"
