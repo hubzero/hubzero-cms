@@ -208,16 +208,19 @@ $maintext = $this->model->description;
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
-				<h3 id="citethis"><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h3>
-
-				<div class="resource-content">
-					<?php echo (isset($citations) && ($citations != null || $citations != '')) ? $citeinstruct : ''; ?>
-				</div>
+					<?php if (isset($citations) && ($citations != null || $citations != '')): ?>
+						<h3 id="citethis"><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h3>
+						<div class="resource-content">
+							<?php echo $citeinstruct; ?>
+						</div>
+					<?php endif; ?>
 				<?php else: ?>
-					<h3><?php echo (isset($cite) && ($cite != null || $cite != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h3>
-					<div class="resource-content">
-						<?php echo (isset($cite) && ($cite != null || $cite != '')) ? $citeinstruct : ''; ?>
-					</div>
+					<?php if (isset($cite) && ($cite != null || $cite != '')): ?>
+						<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h3>
+						<div class="resource-content">
+							<?php echo $citeinstruct; ?>
+						</div>
+					<?php endif; ?>
 				<?php endif; ?>
 			<?php } ?>
 		<?php } ?>

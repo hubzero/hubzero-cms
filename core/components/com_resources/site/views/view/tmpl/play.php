@@ -87,19 +87,19 @@ defined('_HZEXEC_') or die();
 				}
 				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
 			}
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'vimeo'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'blip'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
 	else if (is_file($source))
@@ -153,7 +153,7 @@ defined('_HZEXEC_') or die();
 
 			$sef = Route::url('index.php?option=com_resources&id='.$this->activechild->id.'&task=download&file='.basename($this->activechild->path).'&token='.$token . '&' . Session::getFormToken() . '=1');
 
-			$html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" bgcolor="white"></iframe>'."\n";
 		}
 		else if (in_array(strtolower($type), $videos))
 		{

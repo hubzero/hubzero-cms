@@ -140,13 +140,13 @@ if ($els) { ?>
 		<div id="showcase">
 			<div id="showcase-prev" ></div>
 			<div id="showcase-window">
-				<ul class="screenshots">
+				<div class="screenshots">
 		<?php } ?>
 
 		<?php echo $els; ?>
 
 		<?php if ($this->slidebar) { ?>
-				</ul>
+				</div>
 			</div>
 			<div id="showcase-next" ></div>
 		</div>

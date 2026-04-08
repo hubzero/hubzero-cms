@@ -63,7 +63,7 @@ $this->css('introduction.css', 'system')
 							<p class="hz-v-align">
 								<label for="rsearch" class="sr-only"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
 								<span class="hz-input-combo">
-								<input type="text" name="search" id="rsearch" value="" />
+								<input type="text" name="search" id="rsearch" value="" aria-label="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
 								<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
 								</span>
 							</p>
