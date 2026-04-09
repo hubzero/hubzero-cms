@@ -680,7 +680,7 @@ $bars = array();
 						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
 						<thead>
 							<tr>
-								<th scope="col" class="numerical-data"><span class="sr-only"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC'); ?></span></th>
+								<td class="numerical-data"><span class="sr-only"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC'); ?></span></td>
 								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
 								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
 							</tr>

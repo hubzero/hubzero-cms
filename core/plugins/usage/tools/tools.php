@@ -80,7 +80,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					}
 					$html .= "\t" . '<tfoot>' . "\n";
 					$html .= "\t\t" . '<tr class="summary">' . "\n";
-					$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
+					$html .= "\t\t\t" . '<td colspan="2" class="numerical-data"><strong>' . $row->name . '</strong></td>' . "\n";
 					$html .= "\t\t\t" . '<td class="numerical-data">' . $value . '</td>' . "\n";
 					if ($total)
 					{
@@ -228,7 +228,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t" . '<tfoot>' . "\n";
 			$html .= "\t\t" . '<tr class="summary">' . "\n";
-			$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="2" class="numerical-data"><strong>' . Lang::txt('Total Tools Citations') . '</strong></td>' . "\n";
 			$html .= "\t\t\t" . '<td class="numerical-data">' . $result . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</tfoot>' . "\n";
