@@ -34,7 +34,7 @@ if ($this->group->isSuperGroup())
 <ul <?php echo $this->classOrId; ?>>
 	<?php if (User::isGuest() == 1) : ?>
 		<li>
-			<a class="login btn" href="<?php echo $loginLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
+			<a class="login btn" href="<?php echo $loginLink; ?>" rel="nofollow"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
 		</li>
 	<?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
