@@ -62,9 +62,8 @@ $this->css('introduction.css', 'system')
 					<fieldset>
 						<legend class="sr-only"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION'); ?></legend>
 						<p class="hz-v-align">
-							<label for="csearch"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?></label>
 							<span class="hz-input-combo">
-								<input type="text" name="search" id="csearch" value="" />
+								<input type="text" name="search" id="csearch" value="" aria-label="<?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?>" />
 								<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
 							</span>
 						</p>
