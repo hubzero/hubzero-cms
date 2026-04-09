@@ -26,12 +26,12 @@ switch ($this->which)
 }
 ?>
 
-	<table class="entries">
+	<table class="entries"<?php echo (count($this->rows) > 0) ? '' : ' role="presentation"'; ?>>
 		<caption><?php echo $title . ' (' . count($this->rows) . ')'; ?></caption>
 <?php if (count($this->rows) > 0) { ?>
 		<thead>
 			<tr>
-				<th class="th_image" colspan="2"></th>
+				<th class="th_image" colspan="2"><span class="sr-only"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></span></th>
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></th>
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_STATUS'); ?></th>
 				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_MY_ROLE'); ?></th>

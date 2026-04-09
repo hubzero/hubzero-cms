@@ -126,7 +126,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t" . '<tbody>' . "\n";
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
+			$html .= "\t\t\t" . '<td>No data available to display.</td>' . "\n";
+			$html .= "\t\t\t" . '<td></td><td></td><td></td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";

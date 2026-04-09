@@ -33,7 +33,7 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_RELEASED'); ?></th>
 				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_DOI_HANDLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_STATUS'); ?></th>
-				<th scope="col"></th>
+				<th scope="col"><span class="sr-only"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW'); ?></span></th>
 			</tr>
 		</thead>
 		<tbody>

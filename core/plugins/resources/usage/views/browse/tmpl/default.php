@@ -334,12 +334,19 @@ $bars = array();
 							<?php
 							$i++;
 						}
+						if ($i == 0) { ?>
+							<tr>
+								<td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td></td>
+							</tr>
+						<?php }
 					}
 					else
 					{
 					?>
 							<tr>
-								<td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td></td>
 							</tr>
 					<?php
 					}
@@ -467,12 +474,19 @@ $bars = array();
 								<?php
 								$i++;
 							}
+							if ($i == 0) { ?>
+								<tr>
+									<td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+									<td></td>
+								</tr>
+							<?php }
 						}
 						else
 						{
 						?>
 							<tr>
-								<td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td></td>
 							</tr>
 						<?php
 						}
