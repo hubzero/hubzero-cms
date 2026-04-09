@@ -65,8 +65,9 @@ class Iframe extends Macro
 		// did user pass width/height args
 		$width  = (isset($args[1]) && $args[1] != '') ? $args[1] : $default_width;
 		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
+		$title  = (isset($args[3]) && $args[3] != '') ? $args[3] : 'Embedded content';
 
-		//return the emdeded youtube video
-		return '<iframe src="' . $url . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true" allowtransparency="true"></iframe>';
+		// WCAG 4.1.2: iframe must have a title attribute for screen readers
+		return '<iframe src="' . $url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" frameborder="0" allowfullscreen="true" allowtransparency="true"></iframe>';
 	}
 }
