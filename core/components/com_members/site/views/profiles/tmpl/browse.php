@@ -376,7 +376,7 @@ foreach ($this->fields as $field)
 							$results = Event::trigger('members.onMemberProfile', array($row));
 							$extras = implode("\n", $results);
 							?>
-							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>">
+							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>" role="group" aria-label="<?php echo $this->escape($name); ?>">
 								<div class="result-body">
 									<div class="result-img">
 										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">

@@ -20,7 +20,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 	? Lang::txt('COM_PROJECTS_LABEL_REVIEWER')
 	: $role;
 ?>
-<div class="project-card" id="project-<?php echo $this->row->get('id'); ?>">
+<div class="project-card" id="project-<?php echo $this->row->get('id'); ?>" role="group" aria-label="<?php echo $this->escape($this->row->get('title')); ?>">
 	<div class="project-contents">
 		<?php
 		$canView = ((!$this->row->inSetup() && $this->row->access('view'))
