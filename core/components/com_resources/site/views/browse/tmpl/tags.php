@@ -44,7 +44,7 @@ $this->css()
 			<input type="hidden" name="task" value="browsetags" />
 		</fieldset>
 
-		<div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif" role="application" aria-label="<?php echo Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL'); ?>">
+		<div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL'); ?>">
 			<p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
 			<div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">

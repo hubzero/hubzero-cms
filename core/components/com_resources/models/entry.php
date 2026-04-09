@@ -857,7 +857,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function transformDescription()
 	{
-		$content = stripslashes($this->get('fulltxt'));
+		// Load fulltxt directly from DB rather than via $this->get('fulltxt').
+		// The ORM attribute layer strips certain HTML attributes (e.g. alt)
+		// during model hydration, which breaks authored content with <img alt="...">.
+		$db = \App::get('db');
+		$db->setQuery("SELECT fulltxt FROM #__resources WHERE id=" . (int)$this->get('id'));
+		$raw = $db->loadResult();
+		$content = stripslashes($raw ?: $this->get('fulltxt'));
 		$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
 		$content = str_replace(array('="/site/', '="site/'), '="/app/site/', $content);
 

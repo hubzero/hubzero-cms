@@ -16,7 +16,10 @@ if (isset($this->disabled) && $this->disabled) { ?>
 	<p id="primary-document">
 		<a class="btn btn-primary<?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php
 				echo ($this->href)   ? ' href="' . $this->href . '"' : '';
-				echo ($this->title)  ? ' title="' . $this->escape($this->title) . '"' : '';
+				// WCAG 2.5.3 (Label in Name): omit `title` attribute since the
+				// visible button text already includes the action and file type.
+				// Filename was previously shown as a tooltip but caused
+				// "visible label / accessible name" mismatch warnings.
 				echo ($this->action) ? ' ' . $this->action : '';
 			?>><?php echo $this->msg; ?></a>
 	</p>
