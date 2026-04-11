@@ -100,7 +100,7 @@ $rows = Components\Wiki\Models\Page::all()
 						</td>
 						<td>
 							<a href="<?php echo Route::url($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->get('title',''))); ?>
+								<?php echo $this->escape(stripslashes($row->get('title', '') ?: $row->get('pagename', '(untitled)'))); ?>
 							</a>
 						</td>
 					</tr>
