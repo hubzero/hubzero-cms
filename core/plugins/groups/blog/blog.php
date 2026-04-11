@@ -501,6 +501,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output the feed
+		header('Content-Type: application/rss+xml; charset=UTF-8');
 		echo $doc->render();
 		exit();
 	}
