@@ -125,7 +125,7 @@ $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() 
 	</p>
 
 	<h4>BibTeX entry</h4>
-<pre>
+<pre><code>
 @misc{ wiki:xxx,
     author = "<?php echo $this->escape(Config::get('sitename')); ?>",
     title = "<?php echo $this->escape(stripslashes($page->get('title', ''))); ?> --- <?php echo $this->escape(Config::get('sitename')); ?>",
@@ -133,4 +133,4 @@ $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() 
     url = "<?php echo $permalink; ?>",
     note = "[Online; accessed 1-October-2012]"
 }
-</pre>
+</code></pre>

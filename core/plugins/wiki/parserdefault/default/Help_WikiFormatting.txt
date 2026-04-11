@@ -48,9 +48,13 @@ Example:
 
 Display:
 = Heading =
+Content for a top-level heading.
 == Subheading ==
+Content for a second-level heading.
 === About ''this'' ===
+Content for a third-level heading with ''formatting''.
 === Explicit id === #using-explicit-id-in-heading
+Content for a heading with an explicit id.
 
 == Paragraphs ==
 
