@@ -143,7 +143,7 @@ $bars = array();
 			<div class="grid">
 			<div class="col span3">
 				<h4 id="sim-users-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
-				<p class="total">
+			<p class="total" role="group" aria-labelledby="sim-users-heading">
 					<span class="total-value" id="users-overview-total"><?php echo number_format($current->users); ?></span>
 					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
@@ -622,7 +622,7 @@ $bars = array();
 			<div class="grid">
 				<div class="col span3">
 					<h4 id="sim-runs-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
-					<p class="total">
+				<p class="total" role="group" aria-labelledby="sim-runs-heading">
 						<span class="total-value" id="runs-overview-total"><?php echo number_format($current->jobs); ?></span>
 						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 					</p>
