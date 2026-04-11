@@ -203,8 +203,8 @@ if ($mode != 'preview')
 					->display();
 				?>
 			</div><!-- / .subject -->
-			<aside class="aside extracontent" aria-label="<?php echo Lang::txt('Related content'); ?>">
 			<?php
+			$asideContent = '';
 			// Show related content
 			$out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
 			if (count($out) > 0)
@@ -213,17 +213,21 @@ if ($mode != 'preview')
 				{
 					if (isset($ou['html']))
 					{
-						echo $ou['html'];
+						$asideContent .= $ou['html'];
 					}
 				}
 			}
 			// Show what's popular
 			if ($this->tab == 'about')
 			{
-				echo \Hubzero\Module\Helper::renderModules('extracontent');
+				$asideContent .= \Hubzero\Module\Helper::renderModules('extracontent');
 			}
-			?>
-		</aside><!-- / .aside extracontent -->
+
+			if (trim($asideContent) !== '') : ?>
+			<aside class="aside extracontent" aria-label="<?php echo Lang::txt('Related content'); ?>">
+				<?php echo $asideContent; ?>
+			</aside><!-- / .aside extracontent -->
+			<?php endif; ?>
 		</div>
 	</section><!-- / .main section -->
 <?php }

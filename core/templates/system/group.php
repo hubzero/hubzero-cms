@@ -177,6 +177,7 @@ $membership_control = $params->get('membership_control', 1);
 			</div>
 		</div>
 
+		<?php if ($isManager || $isMember || $isPending || $isInvitee) : ?>
 		<div id="group-info">
 			<a class="close" href="#"><?php echo Lang::txt('TPL_SYSTEM_GROUP_INFO_CLOSE'); ?></a>
 			<div class="links-header">
@@ -260,6 +261,7 @@ $membership_control = $params->get('membership_control', 1);
 				<?php endif; ?>
 			</ul>
 		</div>
+		<?php endif; ?>
 
 		<jdoc:include type="message" />
 		<jdoc:include type="component" />
