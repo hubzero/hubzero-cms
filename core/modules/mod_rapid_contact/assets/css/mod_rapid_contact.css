@@ -40,7 +40,7 @@
 	.mod_rapid_contact fieldset label span.required {
 		text-transform: uppercase;
 		font-size: xx-small;
-		color: red;
+		color: #cc0000; /* [a11y] 5.24:1 on #f4f4f4 (was red = 3.63:1, fails SC 1.4.3) */
 	}
 	.mod_rapid_contact fieldset span.input span.errorMessage {
 		display: block;

@@ -208,7 +208,7 @@ class Behavior
 				},
 				TeX: {
 					extensions: ["autoload-all.js", "mediawiki-texvc.js"],
-					noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" } }, // [a11y] darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
 					Macros: { href: "{}" }
 				},
 				messageStyle: "none",
