@@ -312,13 +312,14 @@
 	}
 	.zoom-controls a,
 	.dataset-controls li a {
-		background-color: #e0e0e0; /* [a11y] explicit fallback preserved when gradient not supported (SC 1.4.3) */
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
-		background-image: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
-		background-image: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background-image: -ms-linear-gradient(#FAFAFA, #e0e0e0);
-		background-image: -o-linear-gradient(#FAFAFA, #e0e0e0);
-		background-image: linear-gradient(#FAFAFA, #e0e0e0);
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		background: linear-gradient(#FAFAFA, #e0e0e0);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
 		border: 1px solid #999999;
@@ -341,13 +342,14 @@
 	.zoom-controls a:hover,
 	.dataset-controls li a:hover {
 		border-color: #6688aa;
-		background-color: #c9dbfd; /* [a11y] explicit fallback preserved when gradient not supported (SC 1.4.3) */
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#c9dbfd), to(#9bbcde));
-		background-image: -webkit-linear-gradient(#c9dbfd, #9bbcde);
-		background-image: -moz-linear-gradient(center top, #c9dbfd 0%, #9bbcde 100%);
-		background-image: -ms-linear-gradient(#c9dbfd, #9bbcde);
-		background-image: -o-linear-gradient(#c9dbfd, #9bbcde);
-		background-image: linear-gradient(#c9dbfd, #9bbcde);
+		background: #c9dbfd;
+		background: -webkit-gradient(linear, left top, left bottom, from(#c9dbfd), to(#9bbcde));
+		background: -webkit-linear-gradient(#c9dbfd, #9bbcde);
+		background: -moz-linear-gradient(center top, #c9dbfd 0%, #9bbcde 100%);
+		background: -moz-gradient(center top, #c9dbfd 0%, #9bbcde 100%);
+		background: -ms-linear-gradient(#c9dbfd, #9bbcde);
+		background: -o-linear-gradient(#c9dbfd, #9bbcde);
+		background: linear-gradient(#c9dbfd, #9bbcde);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c9dbfd,endColorstr=#9bbcde);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c9dbfd, endColorstr=#9bbcde)";
 		color: #333;
@@ -355,13 +357,14 @@
 	.zoom-controls a.selected,
 	.dataset-controls li a.active {
 		border-color: #6688aa;
-		background-color: #9bbcde; /* [a11y] explicit fallback preserved when gradient not supported (SC 1.4.3) */
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#9bbcde), to(#c9dbfd));
-		background-image: -webkit-linear-gradient(#9bbcde, #c9dbfd);
-		background-image: -moz-linear-gradient(center top, #9bbcde 0%, #c9dbfd 100%);
-		background-image: -ms-linear-gradient(#9bbcde, #c9dbfd);
-		background-image: -o-linear-gradient(#9bbcde, #c9dbfd);
-		background-image: linear-gradient(#9bbcde, #c9dbfd);
+		background: #9bbcde;
+		background: -webkit-gradient(linear, left top, left bottom, from(#9bbcde), to(#c9dbfd));
+		background: -webkit-linear-gradient(#9bbcde, #c9dbfd);
+		background: -moz-linear-gradient(center top, #9bbcde 0%, #c9dbfd 100%);
+		background: -moz-gradient(center top, #9bbcde 0%, #c9dbfd 100%);
+		background: -ms-linear-gradient(#9bbcde, #c9dbfd);
+		background: -o-linear-gradient(#9bbcde, #c9dbfd);
+		background: linear-gradient(#9bbcde, #c9dbfd);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9bbcde,endColorstr=#c9dbfd);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9bbcde, endColorstr=#c9dbfd)";
 		color: #333;
