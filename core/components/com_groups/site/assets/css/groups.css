@@ -841,6 +841,7 @@
 		margin-bottom: 5px;
 		overflow: hidden;
 	}
+	#page_header h1,
 	#page_header h2 {
 		color: #444;
 		margin: 0px;
@@ -848,6 +849,7 @@
 		line-height: 1em;
 		padding: 0;
 	}
+	#page_header h1 a,
 	#page_header h2 a {
 		color: #444;
 	}
