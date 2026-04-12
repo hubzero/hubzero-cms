@@ -936,7 +936,7 @@ class Setup extends Base
 							1,
 							1,
 							'',
-							$split_group_roles = 0
+							$split_group_roles = 1
 						);
 					}
 				}
