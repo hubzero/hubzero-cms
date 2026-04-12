@@ -129,7 +129,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
 <?php //if ($this->article->param('allow_comments')) { ?>
 <section class="below section" id="comments">
-	<div class="section-inner hz-layout-with-aside">
+	<div class="section-inner">
 		<div class="subject">
 			<h3 class="comments-title">
 				<?php echo Lang::txt('COM_KB_COMMENTS_ON_ENTRY'); ?>
@@ -267,7 +267,6 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 				</fieldset>
 			</form>
 		</div><!-- / .subject -->
-		<aside class="aside">&nbsp;</aside>
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->
 
