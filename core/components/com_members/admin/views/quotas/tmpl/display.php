@@ -99,7 +99,7 @@ $this->css('quotas.css')
 					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('user_id'); ?></label>
 				</td>
 				<td class="priority-5">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('user_id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape($row->get('user_id')); ?>
 					</a>
 				</td>
