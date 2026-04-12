@@ -423,6 +423,16 @@ class Sanitize
 	protected static function _addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
 	{
 		$htmlPurifierWhitelist->addAttribute('img', 'usemap', 'CDATA');
+
+		// Allow ARIA attributes on common elements for accessibility
+		$ariaElements = ['a', 'div', 'span', 'img', 'table', 'ul', 'ol', 'li', 'nav', 'section', 'button'];
+		foreach ($ariaElements as $element)
+		{
+			$htmlPurifierWhitelist->addAttribute($element, 'aria-label', 'Text');
+			$htmlPurifierWhitelist->addAttribute($element, 'aria-labelledby', 'Text');
+			$htmlPurifierWhitelist->addAttribute($element, 'aria-describedby', 'Text');
+			$htmlPurifierWhitelist->addAttribute($element, 'role', 'Text');
+		}
 	}
 
 	/**
