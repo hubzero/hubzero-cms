@@ -845,7 +845,13 @@ class Admin extends SiteController
 
 			$token = md5(uniqid());
 			$fname = '/tmp/license' . $this->_toolid . '-r' . $status['revision'] . '-' . $token . '.txt';
-			$handle = fopen($fname, "w");
+			Log::debug("finalizeTool(): attempting fopen to " . $fname); 
+			$handle = fopen($fname, "w"); 
+			if ($handle === false)
+			{
+				$out .= Lang::txt('COM_TOOLS_ERR_UNABLE_TO_CREATE_PATH') . ' ' . $fname;
+				return false; 
+			}
 			fwrite($handle, $status['license']);
 			fclose($handle);
 			chmod($fname, 0664);
