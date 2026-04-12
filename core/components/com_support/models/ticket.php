@@ -670,7 +670,10 @@ class Ticket extends Relational
 				if (in_array(User::get('username'), $cc) || in_array(User::get('email'), $cc))
 				{
 					$this->_acl->setAccess('read', 'tickets', 1);
-					$this->_acl->setAccess('create', 'comments', -1);
+					if (!$this->_acl->check('create', 'comments'))
+					{
+						$this->_acl->setAccess('create', 'comments', -1);
+					}
 					$this->_acl->setAccess('read', 'comments', 1);
 				}
 			}

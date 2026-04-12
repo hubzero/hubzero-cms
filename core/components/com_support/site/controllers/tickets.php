@@ -2820,6 +2820,33 @@ class Tickets extends SiteController
 			ksort($users);
 		}
 
+		// If the current owner is set but not in the group member list, include them
+		// so the dropdown reflects the actual assignment
+		if ($active)
+		{
+			$found = false;
+			foreach ($users as $usr)
+			{
+				if (is_object($usr) && isset($usr->value) && $usr->value == $active)
+				{
+					$found = true;
+					break;
+				}
+			}
+			if (!$found)
+			{
+				$ou = User::getInstance($active);
+				if (is_object($ou) && $ou->get('id'))
+				{
+					$m = new \stdClass();
+					$m->value = $ou->get('id');
+					$m->text  = $ou->get('name');
+					$m->groupname = $group;
+					$users[] = $m;
+				}
+			}
+		}
+
 		if ($nouser)
 		{
 			array_unshift($users, \Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
