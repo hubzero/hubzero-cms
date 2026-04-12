@@ -1784,7 +1784,7 @@ class Sessions extends SiteController
 		switch ($exportcontrol)
 		{
 			case 'us':
-				if ($country != 'us')
+				if ($country != 'us' && !\Hubzero\Geocode\Geocode::is_iplocation($ip, 'pu'))
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY'));
 					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");

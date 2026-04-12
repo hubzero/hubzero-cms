@@ -511,7 +511,7 @@ class Utils
 		switch ($export_control)
 		{
 			case 'us':
-				if ($country != 'us')
+				if ($country != 'us' && !\Hubzero\Geocode\Geocode::is_iplocation($ip, 'pu'))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
