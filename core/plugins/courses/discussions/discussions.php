@@ -1999,7 +1999,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check if user is authorized to delete entries
-		$this->_authorize('category', $model->id);
+		$this->_authorize('category', $category->get('id'));
 
 		if (!$this->params->get('access-delete-category'))
 		{

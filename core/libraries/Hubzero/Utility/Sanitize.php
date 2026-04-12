@@ -327,7 +327,7 @@ class Sanitize
 	 * @param    array   $purifierConfigSettings   HTML purifier configuration settings
 	 * @return   void
 	 */
-	protected static function _findOrCreateClientSerializerDirectory($purifierConfigSettings)
+	protected static function _findOrCreateClientSerializerDirectory(&$purifierConfigSettings)
 	{
 		$client = \App::get('client');
 		$clientAlias = isset($client->alias) ? $client->alias : $client->name;

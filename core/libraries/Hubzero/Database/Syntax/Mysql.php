@@ -529,7 +529,7 @@ class Mysql
 
 		foreach ($this->select as $select)
 		{
-                        if ($select['count'] == 'distinct')
+                        if ($select['count'] === 'distinct')
                                 $string = "COUNT(DISTINCT({$select['column']}))";
                         else if ($select['count'])
                                 $string = "COUNT({$select['column']})";
