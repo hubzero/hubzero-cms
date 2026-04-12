@@ -978,6 +978,21 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$category->set('created_by', User::get('id'));
 			$category->set('section_id', $section->get('id'));
+
+			// Default access to match the group's forum access setting
+			switch ($this->group_plugin_acl)
+			{
+				case 'members':
+					$category->set('access', 5);
+					break;
+				case 'registered':
+					$category->set('access', 2);
+					break;
+				case 'anyone':
+				default:
+					$category->set('access', 1);
+					break;
+			}
 		}
 		elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category'))
 		{
@@ -1357,6 +1372,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$post->set('scope', $this->forum->get('scope'));
 			$post->set('created_by', User::get('id'));
+
+			// Default access to match the parent category's access
+			$post->set('access', $category->get('access', 1));
 		}
 		elseif ($post->get('created_by') != User::get('id') && !$this->params->get('access-edit-thread'))
 		{
