@@ -31,6 +31,21 @@ require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . '
 class Ticketsv2_1 extends ApiController
 {
 	/**
+	 * @var  object  ACL instance
+	 */
+	protected $acl;
+
+	/**
+	 * @var  object  Component config
+	 */
+	protected $config;
+
+	/**
+	 * @var  object  Database instance
+	 */
+	protected $database;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void
@@ -640,18 +655,28 @@ class Ticketsv2_1 extends ApiController
 		// Initiate class and bind data to database fields
 		$model = Ticket::oneOrFail($ticket_id);
 
-		if ($status)
+		if (!is_null($status))
 		{
-			//cheap check to see if we got a valid status
-			$status_model = Status::oneOrFail($status);
-
-			if (!$status_model->get('id'))
+			if ($status == 0)
 			{
-				throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_STATUS"), 404);
+				// Status 0 means "close the ticket" — set open=0
+				// and use the ticket model's close method
+				$model->set('status', 0);
+				$model->set('open', 0);
 			}
+			else
+			{
+				//cheap check to see if we got a valid status
+				$status_model = Status::oneOrFail($status);
 
-			$model->set('status', $status);
-			$model->set('open', $status_model->get('open'));
+				if (!$status_model->get('id'))
+				{
+					throw new Exception(Lang::txt("COM_SUPPORT_ERROR_INVALID_STATUS"), 404);
+				}
+
+				$model->set('status', $status);
+				$model->set('open', $status_model->get('open'));
+			}
 		}
 
 		if ($owner)

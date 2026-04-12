@@ -128,7 +128,10 @@ class ACL extends Obj
 					 && $line['aro_foreign_key'] == $ug->gidNumber
 					 && $line['aco_model'] == $aco)
 					{
-						$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+						if (isset($line['action_' . $action]))
+						{
+							$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+						}
 					}
 					// Get the specific aco model permission if specified (overrides aco permission)
 					if ($aco_foreign_key)
@@ -138,7 +141,10 @@ class ACL extends Obj
 						 && $line['aco_model'] == $aco
 						 && $line['aco_foreign_key'] == $aco_foreign_key)
 						{
-							$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+							if (isset($line['action_' . $action]))
+							{
+								$permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+							}
 						}
 					}
 				}

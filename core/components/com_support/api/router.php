@@ -56,9 +56,18 @@ class Router extends Base
 			if (is_numeric($segments[0]))
 			{
 				$vars['id'] = $segments[0];
-				if (\App::get('request')->method() == 'GET')
+				$method = \App::get('request')->method();
+				switch ($method)
 				{
-					$vars['task'] = 'read';
+					case 'GET':
+						$vars['task'] = 'read';
+						break;
+					case 'PUT':
+						$vars['task'] = 'update';
+						break;
+					case 'DELETE':
+						$vars['task'] = 'delete';
+						break;
 				}
 			}
 			else
