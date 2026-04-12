@@ -62,9 +62,10 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 					CONCAT('index.php?option=com_members&id=', a.id) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
+		$viewlevels = User::getAuthorisedViewLevels();
 		$f_from = " FROM #__users AS a
 					LEFT JOIN #__user_profiles AS b ON a.id=b.user_id AND b.profile_key='bio', #__tags_object AS t
-					WHERE a.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")
+					WHERE a.access IN (" . (!empty($viewlevels) ? implode(',', $viewlevels) : '1') . ")
 					AND a.block=0
 					AND a.activation > 0
 					AND a.id=t.objectid

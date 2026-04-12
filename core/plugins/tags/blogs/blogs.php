@@ -92,14 +92,14 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
 			if ($gs)
 			{
-				$gwhere = "OR (e.access IN (5) AND scope='group' and scope_id IN (" . implode(',',$gs) . ") ";
+				$gwhere = "OR (e.access IN (5) AND scope='group' AND scope_id IN (" . implode(',',$gs) . "))";
 			}
 			else
 			{
 				$gwhere = '';
 			}
 
-			$e_where .= " AND ( (e.access IN (1,2)) OR (e.access IN (5) AND scope='member' AND scope_id=" . User::get('id') . ") $gwhere )) ";
+			$e_where .= " AND ((e.access IN (1,2)) OR (e.access IN (5) AND scope='member' AND scope_id=" . User::get('id') . ") $gwhere) ";
 		}
 
 		$e_where .= " AND (e.publish_up IS NULL OR e.publish_up <= " . $database->quote($now) . ") ";

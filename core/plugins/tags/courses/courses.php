@@ -62,7 +62,15 @@ class plgTagsCourses extends \Hubzero\Plugin\Plugin
 					NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM `#__courses` AS e, `#__tags_object` AS t, `#__users` AS u";
 		$e_where  = " WHERE e.created_by=u.id AND e.state=1 AND t.objectid=e.id AND t.tbl='courses' AND t.tagid IN ($ids)";
-		$e_where .= " AND e.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
+		$viewlevels = User::getAuthorisedViewLevels();
+		if (!empty($viewlevels))
+		{
+			$e_where .= " AND e.access IN (" . implode(',', $viewlevels) . ")";
+		}
+		else
+		{
+			$e_where .= " AND e.access = 1";
+		}
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 
 		$order_by  = " ORDER BY ";

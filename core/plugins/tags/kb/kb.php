@@ -64,7 +64,8 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 		$e_from  = " FROM `#__kb_articles` AS e
 					LEFT JOIN `#__categories` AS cc ON cc.id = e.category
 					LEFT JOIN `#__tags_object` AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
-		$e_where  = " WHERE e.state=1 AND e.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
+		$viewlevels = User::getAuthorisedViewLevels();
+		$e_where  = " WHERE e.state=1 AND e.access IN (" . (!empty($viewlevels) ? implode(',', $viewlevels) : '1') . ")";
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
