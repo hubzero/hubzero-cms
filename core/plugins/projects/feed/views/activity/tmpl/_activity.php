@@ -85,7 +85,7 @@ if (!$this->activity->log->get('anonymous'))
 			<div class="activity-details">
 				<?php if ($showProject) { ?>
 					<span class="project-name">
-						<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->model->get('title'), 65); ?></a>
+						<a href="<?php echo Route::url($this->model->link()); ?>" aria-label="<?php echo $this->escape($this->model->get('title')) . ' (' . $this->escape($this->model->get('alias')) . ')'; ?>"><?php echo \Hubzero\Utility\Str::truncate($this->model->get('title'), 65); ?></a>
 					</span>
 				<?php } ?>
 				<span class="activity-actor"><?php echo $name; ?></span>

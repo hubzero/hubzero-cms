@@ -65,7 +65,7 @@ $published = ($group->get('published')) ? true : false;
 				<?php if ($group->get('logo') && is_file($path)): ?>
 					<img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
 				<?php else : ?>
-					<span class="group-img-placeholder"><?php echo $this->escape(stripslashes($group->get('description'))); ?></span>
+					<span class="group-img-placeholder"><span class="sr-only"><?php echo $this->escape(stripslashes($group->get('description'))); ?></span></span>
 				<?php endif; ?>
 				<span class="group-details">
 					<span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
@@ -102,7 +102,7 @@ $published = ($group->get('published')) ? true : false;
 				<?php if ($group->get('logo') && is_file($path)): ?>
 					<img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
 				<?php else : ?>
-					<span><?php echo $this->escape(stripslashes($group->get('description'))); ?></span>
+					<span><span class="sr-only"><?php echo $this->escape(stripslashes($group->get('description'))); ?></span></span>
 				<?php endif; ?>
 			</div>
 			<div class="group-details">
