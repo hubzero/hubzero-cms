@@ -54,7 +54,7 @@ $this->css()
 							</th>
 							<td>
 								<a class="entry-title" href="<?php echo Route::url($row->following()->link()); ?>">
-									<?php echo $this->escape(stripslashes($row->following()->title() ?: '')); ?>
+									<?php echo $this->escape(stripslashes($row->following()->title() ?: Lang::txt('(unknown)'))); ?>
 								</a>
 								<?php if ($row->get('following_type') == 'collection') { ?>
 									<?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name') ?: ''))); ?>

@@ -51,7 +51,7 @@ $this->css()
 						</th>
 						<td>
 							<a class="entry-title" href="<?php echo Route::url($row->follower()->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->follower()->title() == null ? '' : $row->follower()->title())); ?>
+								<?php echo $this->escape(stripslashes($row->follower()->title() ?: Lang::txt('(unknown)'))); ?>
 							</a>
 							<br />
 							<span class="entry-details">
