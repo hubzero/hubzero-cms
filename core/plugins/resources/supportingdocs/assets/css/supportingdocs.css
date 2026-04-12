@@ -22,10 +22,13 @@
 	}
 	.supportingdocs ul {
 		margin: 0;
-		padding: 0;
+		padding: 2em 0 2em 0;
 		list-style: none;
 		border-bottom: 1px solid #e1e1e1;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2em;
 	}
 	.supportingdocs ul li {
 		margin: 0;
@@ -35,6 +38,9 @@
 		list-style: none;
 		border-top: 1px solid #e1e1e1;
 		border-top: 1px solid rgba(0, 0, 0, 0.1);
+  		width: 20em;
+  		overflow: hidden;
+  		padding-top: 2em;
 	}
 	.supportingdocs ul li:before {
 		content: "\f016"; /* \f092 */
@@ -45,7 +51,7 @@
 		height: 1em;
 		line-height: 1;
 		position: absolute;
-		top: 0.6em;
+		top: 1.2em;
 		left: 0;
 		color: #ccc;
 		color: rgba(0, 0, 0, 0.2);
