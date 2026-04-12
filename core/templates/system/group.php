@@ -195,6 +195,7 @@ $membership_control = $params->get('membership_control', 1);
 					<span><?php echo Lang::txt('TPL_SYSTEM_GROUPS_INVITEE_DASHBOARD_DESC'); ?></span>
 				<?php endif; ?>
 			</div>
+			<?php if (!User::isGuest()) : ?>
 			<ul class="links cf">
 
 				<?php if ($isInvitee && $membership_control == 1) : ?>
@@ -260,6 +261,7 @@ $membership_control = $params->get('membership_control', 1);
 					</li>
 				<?php endif; ?>
 			</ul>
+			<?php endif; ?>
 		</div>
 		<?php endif; ?>
 

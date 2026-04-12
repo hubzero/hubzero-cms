@@ -101,7 +101,10 @@ class YoutubeMacro extends WikiMacro
 		// add wmode to url so that lightboxes appear over embedded videos
 		$youtube_url .= '?wmode=transparent';
 
+		// Build a unique title for accessibility (SC 4.1.2)
+		$iframeTitle = 'YouTube video (' . htmlspecialchars($video_id) . ')';
+
 		// return the emdeded youtube video
-		return '<iframe sandbox="allow-scripts allow-same-origin" src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="YouTube video"></iframe>';
+		return '<iframe sandbox="allow-scripts allow-same-origin" src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="' . $iframeTitle . '"></iframe>';
 	}
 }
