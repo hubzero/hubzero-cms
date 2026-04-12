@@ -1721,11 +1721,20 @@ class Members extends AdminController
         $term = trim(Request::getString('term', ''));
 		$term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 		
-		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		$verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
 		
 		if (!empty($verNum))
 		{
-			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($term);
+			$words = preg_split('/\s+/', $term);
+			$words = array_values(array_filter($words, function($w) { return $w !== ''; }));
+			$parts = array();
+			foreach ($words as $i => $word)
+			{
+				$suffix = ($i === count($words) - 1) ? '*' : '';
+				$parts[] = 'names.value:' . $word . $suffix;
+			}
+			$advanced = implode(' AND ', $parts);
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=" . urlencode($advanced);
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $queryURL);
@@ -1777,11 +1786,11 @@ class Members extends AdminController
         $org = trim($organization);
 		$orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 		
-		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		$verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
 		
 		if (!empty($verNum))
 		{
-			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $queryURL);

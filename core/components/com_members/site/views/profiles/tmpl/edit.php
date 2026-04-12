@@ -9,6 +9,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
+$this->js('members.js');
 
 $profiles = $this->profile->profiles()->ordered()->rows();
 
@@ -131,6 +132,10 @@ foreach ($profiles as $profile)
 					<div class="grid">
 						<div class="col span8">
 							<?php
+							if ($field->get('name') == 'organization' && $field->get('type') == 'text' && \Component::params('com_members')->get('rorApi'))
+							{
+								echo "<span class='hidden rorApiAvailable'></span>";
+							}
 							echo $formfield->label;
 							echo $formfield->input;
 							?>

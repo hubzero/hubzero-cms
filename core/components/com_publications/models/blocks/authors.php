@@ -859,11 +859,11 @@ class Authors extends Base
 		$org = trim($organization);
 		$orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
 		
-		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		$verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
 		
 		if (!empty($verNum))
 		{
-			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $queryURL);

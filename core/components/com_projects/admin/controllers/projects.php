@@ -1373,11 +1373,11 @@ class Projects extends AdminController
 		$term = trim(Request::getString('term', ''));
 		$term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 		
-		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		$verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
 		
 		if (!empty($verNum))
 		{
-			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($term);
+			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query=" . urlencode($term);
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $queryURL);
@@ -1432,11 +1432,11 @@ class Projects extends AdminController
 		$agency = trim($grantAgency);
 		$agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 		
-		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		$verNum = \Component::params('com_members')->get('rorApiVersion', 'v2');
 		
 		if (!empty($verNum))
 		{
-			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($agencyQry);
+			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query=" . urlencode($agencyQry);
 					
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $queryURL);

@@ -312,6 +312,8 @@ jQuery(document).on('ajaxLoad', HUB.ProjectTeamSelect.initialize);
 $(function(){
 	if ($(".rorApiAvailable")[0]){
 		$("#organization").autocomplete({
+			delay: 400,
+			minLength: 3,
 			source: function(req, resp){
 				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $("#organization").val();
 

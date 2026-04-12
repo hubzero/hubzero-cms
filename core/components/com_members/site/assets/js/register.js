@@ -155,6 +155,8 @@ jQuery(document).ready(function($){
 $(function(){
 	if ($(".rorApiAvailable")[0]) {
 		$("#profile_organization").autocomplete({
+			delay: 400,
+			minLength: 3,
 			source: function(req, resp){
 				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $("#profile_organization").val();
 	

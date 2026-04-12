@@ -9,6 +9,8 @@
 $(function(){
 	if ($(".rorApiAvailable")[0]){
 		$('[name="organization"]').autocomplete({
+			delay: 400,
+			minLength: 3,
 			source: function(req, resp){
 				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $('[name="organization"]').val();
 
