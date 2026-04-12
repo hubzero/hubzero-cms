@@ -10,13 +10,11 @@ namespace Components\Members\Models;
 use Hubzero\Database\Relational;
 use Components\Members\Models\Quota\Category;
 use Components\Members\Models\Quota\Log;
-use Components\Tools\Helpers\Utils;
 use User;
 use Lang;
 
 include_once __DIR__ . DS . 'quota' . DS . 'category.php';
 include_once __DIR__ . DS . 'member.php';
-include_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
 /**
  * User quota model
@@ -96,11 +94,14 @@ class Quota extends Relational
 
 		if ($result)
 		{
-			$command = "update_quota " . escapeshellarg((int)$this->get('user_id')) . " " . escapeshellarg((int)$this->get('soft_blocks')) . " " . escapeshellarg((int)$this->get('hard_blocks'));
+			$command = "update_quota '" . $this->get('user_id') . "' '" . $this->get('soft_blocks') . "' '" . $this->get('hard_blocks') . "'";
 
-			$status = Utils::middleware($command, $output);
+			$cmd = "/bin/sh " . \Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
 
-			if (!$status)
+			exec($cmd, $results, $status);
+
+			// Check exec status
+			if (!isset($status) || $status != 0)
 			{
 				// Something went wrong
 				$this->addError(Lang::txt('COM_MEMBERS_QUOTA_USER_FAILED_TO_SAVE_TO_FILESYSTEM'));
