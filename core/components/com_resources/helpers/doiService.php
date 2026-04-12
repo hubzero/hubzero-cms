@@ -205,7 +205,7 @@ class DoiService extends Obj
 		// Map license
 		if (isset($pub['license']) && $pub['license'])
 		{
-			$this->set('license', htmlspecialchars($pub['license']));
+			$this->set('license', $pub['license']);
 		}
 
 		// Map related identifier
@@ -427,7 +427,7 @@ class DoiService extends Obj
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -435,21 +435,24 @@ class DoiService extends Obj
 
 		if (!$response)
 		{
+			$this->setError('Failed to register DOI metadata: ' . curl_error($ch));
+			curl_close($ch);
 			return false;
 		}
+
+		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		curl_close($ch);
 
 		$pattern = '/\((.*?)\)/';
 		$ret = preg_match($pattern, $response, $match);
 		if ($ret != 1)
 		{
+			$this->setError('DOI metadata registration returned unexpected response: ' . $response);
 			return false;
 		}
 
 		$doi = $match[1];
-
-		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		curl_close($ch);
 
 		if ($code == 201 || $code == 200)
 		{
@@ -457,6 +460,7 @@ class DoiService extends Obj
 		}
 		else
 		{
+			$this->setError('DOI metadata registration returned HTTP ' . $code);
 			return false;
 		}
 	}
@@ -482,6 +486,8 @@ class DoiService extends Obj
 
 		if (!$response)
 		{
+			$this->setError('Failed to register DOI URL: ' . curl_error($ch));
+			curl_close($ch);
 			return false;
 		}
 
@@ -495,6 +501,7 @@ class DoiService extends Obj
 		}
 		else
 		{
+			$this->setError('DOI URL registration returned HTTP ' . $code);
 			return false;
 		}
 	}
