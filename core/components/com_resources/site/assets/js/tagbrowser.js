@@ -166,7 +166,7 @@ HUB.TagBrowser = {
 		var $ = this.jQuery;
 		$('#level-2').html(
 			'<h3>Resources</h3>' +
-			'<ul id="ulitems" tabindex="0" aria-label="Resources"><li><span>Select a tag to see resources.</span></li></ul>'
+			'<ul id="ulitems" role="listbox" tabindex="0" aria-label="Resources"><li role="option"><span>Select a tag to see resources.</span></li></ul>'
 		);
 		HUB.TagBrowser.resetLevel3();
 	},

@@ -123,7 +123,7 @@ switch ($this->level)
 		}
 		else
 		{
-			$html .= '<li><span>'.Lang::txt('COM_RESOURCES_NO_RESULTS').'</span></li>';
+			$html .= '<li role="option"><span>'.Lang::txt('COM_RESOURCES_NO_RESULTS').'</span></li>';
 		}
 		$html .= '</ul>';
 		if ($type->isForTools() && $params->get('show_ranking'))
