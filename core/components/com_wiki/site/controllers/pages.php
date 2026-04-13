@@ -1149,6 +1149,10 @@ class Pages extends SiteController
 		// Strip elements that TCPDF doesn't handle
 		$html = preg_replace('#</?(?:thead|tbody)(?:\s[^>]*)?>#i', '', $html);
 		$html = preg_replace('#\s+scope="[^"]*"#i', '', $html);
+
+		// Sanitize HTML for TCPDF compatibility
+		$html = self::sanitizeHtmlForPdf($html);
+
 		// Render math formulas as PNG images for PDF (MathJax can't run in TCPDF)
 		$mathTmpDir = PATH_APP . '/site/wiki/tmp';
 		$mathOutDir = PATH_APP . '/site/wiki/math';
@@ -1198,5 +1202,39 @@ class Pages extends SiteController
 		// Force the download of the PDF
 		$pdf->Output($this->page->get('pagename') . '.pdf', 'D');
 		exit();
+	}
+
+	/**
+	 * Sanitize HTML for TCPDF compatibility.
+	 *
+	 * TCPDF does not support HTML5 semantic tags, SVG, or certain
+	 * malformed markup patterns that the wiki parser can produce.
+	 *
+	 * @param   string  $html  Raw HTML
+	 * @return  string  Sanitized HTML
+	 */
+	private static function sanitizeHtmlForPdf($html)
+	{
+		// Replace HTML5 semantic tags with divs (unsupported by TCPDF)
+		$semanticTags = array('header', 'article', 'section', 'nav', 'aside', 'figure', 'figcaption', 'footer', 'main', 'details', 'summary');
+		foreach ($semanticTags as $tag)
+		{
+			$html = preg_replace('/<' . $tag . '\b([^>]*)>/i', '<div$1>', $html);
+			$html = preg_replace('/<\/' . $tag . '>/i', '</div>', $html);
+		}
+
+		// Remove orphaned </li></ul> or </li></ol> sequences from wiki parser
+		$maxPasses = 5;
+		for ($i = 0; $i < $maxPasses; $i++)
+		{
+			$prev = $html;
+			$html = preg_replace('/(<\/[uo]l>)\s*(<!--[^>]*-->\s*)?<\/li>\s*<\/[uo]l>/i', '$1', $html);
+			if ($html === $prev)
+			{
+				break;
+			}
+		}
+
+		return $html;
 	}
 }

@@ -209,6 +209,10 @@ class Newsletters extends SiteController
 		{
 			$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
+		else if (file_exists('/opt/wkhtmltopdf/bin/wkhtmltopdf'))
+		{
+			$cmd = '/opt/wkhtmltopdf/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+		}
 		else if (file_exists('/usr/bin/phantomjs'))
 		{
 			$rasterizeFile = dirname(__DIR__) . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
