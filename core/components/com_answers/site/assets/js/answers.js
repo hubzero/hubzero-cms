@@ -26,7 +26,7 @@ jQuery(document).ready(function(jq){
 		el = $(el);
 		el.addClass('js');
 
-		var select = $("<select />").on('change', function() {
+		var select = $("<select />").attr('aria-label', el.attr('data-label')).on('change', function() {
 			window.location = $(this).find("option:selected").val();
 		});
 
