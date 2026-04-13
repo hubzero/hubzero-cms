@@ -46,7 +46,8 @@ defined('_HZEXEC_') or die();
 				else
 				{
 					$item  = "<li class=\"{$liClass} group-overview-tab\">";
-					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent}>Overview</a>";
+					$_groupTitle = $this->escape($this->group->get('description', $this->group->get('cn')));
+					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} aria-label=\"Overview — {$_groupTitle}\">Overview</a>";
 				}
 
 				// append pages html
@@ -90,7 +91,8 @@ defined('_HZEXEC_') or die();
 
 					//create menu item
 					$item  = "<li class=\"{$liClass} group-{$class}-tab {$cls}\">";
-					$item .= "<a class=\"{$class}\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent}>{$title}</a>";
+					$_groupTitle = $this->escape($this->group->get('description', $this->group->get('cn')));
+					$item .= "<a class=\"{$class}\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} aria-label=\"{$title} — {$_groupTitle}\">{$title}</a>";
 					$item .= '<span class="meta">';
 					if ($meta_count)
 					{

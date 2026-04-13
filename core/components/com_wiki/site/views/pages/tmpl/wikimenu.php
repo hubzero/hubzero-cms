@@ -28,12 +28,12 @@ defined('_HZEXEC_') or die();
 			<h3><?php echo Lang::txt('COM_WIKI'); ?></h3>
 			<ul id="useroptions">
 				<li class="page-main">
-					<a href="<?php echo Route::url($this->page->link('base')); ?>">
+					<a href="<?php echo Route::url($this->page->link('base')); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_WIKI_MAIN_PAGE')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')); ?>">
 						<?php echo Lang::txt('COM_WIKI_MAIN_PAGE'); ?>
 					</a>
 				</li>
 				<li class="page-help">
-					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Help:Index'); ?>">
+					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Help:Index'); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_WIKI_HELP')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')); ?>">
 						<?php echo Lang::txt('COM_WIKI_HELP'); ?>
 					</a>
 				</li>

@@ -20,7 +20,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 	? Lang::txt('COM_PROJECTS_LABEL_REVIEWER')
 	: $role;
 ?>
-<div class="project-card" id="project-<?php echo $this->row->get('id'); ?>" role="group" aria-label="<?php echo $this->escape($this->row->get('title')); ?>">
+<div class="project-card" id="project-<?php echo $this->row->get('id'); ?>" role="group" aria-label="<?php echo $this->escape($this->row->get('alias')) . ' ' . $this->escape($this->row->get('title')); ?>">
 	<div class="project-contents">
 		<?php
 		$canView = ((!$this->row->inSetup() && $this->row->access('view'))
@@ -28,7 +28,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 		?>
 		<?php if ($canView): ?>
 			<a class="project-identity project-link" href="<?php echo Route::url($this->row->link()); ?>">
-				<img src="<?php echo $src; ?>" alt="<?php echo $this->escape($this->row->get('title')); ?>" />
+				<img src="<?php echo $src; ?>" alt="" />
 				<span class="project-details">
 					<span class="project-alias"><?php echo $this->escape($this->row->get('alias')); ?></span>
 					<span class="project-title" data-id="<?php echo $this->row->get('id'); ?>">
@@ -117,8 +117,14 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
 			<?php if ($this->row->groupOwner()): ?>
 				<span class="project-owner owner-group icon-group tooltips" title="<?php echo $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))); ?>">
-					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')); ?>">
-						<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25)); ?>
+					<?php
+						$_ownerTrunc = $this->escape(Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25));
+						$_ownerCn = $this->escape($this->row->groupOwner('cn'));
+						// [a11y] aria-label must contain visible text (SC 2.5.3) and be unique (SC 2.4.4)
+						$_ownerLabel = $_ownerTrunc . ' (' . $_ownerCn . ')';
+					?>
+					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')); ?>" aria-label="<?php echo $_ownerLabel; ?>">
+						<?php echo $_ownerTrunc; ?>
 					</a>
 				</span>
 			<?php else: ?>

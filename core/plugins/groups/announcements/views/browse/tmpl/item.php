@@ -94,7 +94,7 @@ if ($closed == 'closed' && $this->showClose == true)
 			<?php endif; ?>
 		</dl>
 		<?php if ($this->showClose) : ?>
-			<a class="close" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+			<a class="close" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>" aria-label="<?php echo $this->escape(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE')); ?>">
 				<span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
 			</a>
 		<?php endif; ?>

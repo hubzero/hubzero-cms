@@ -376,15 +376,30 @@ foreach ($this->fields as $field)
 							$results = Event::trigger('members.onMemberProfile', array($row));
 							$extras = implode("\n", $results);
 							?>
-							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>" role="group" aria-label="<?php echo $this->escape($name); ?>">
+							<?php
+								// [a11y] unique label with org + member ID to disambiguate same-name members (SC 2.4.4)
+								$_org = '';
+								foreach ($this->fields as $_f) {
+									if (in_array($_f->get('name'), array('org', 'organization'))) {
+										$_org = trim(stripslashes($row->get($_f->get('name'))));
+										break;
+									}
+								}
+								$_uniqueLabel = $this->escape($name);
+								if ($_org) {
+									$_uniqueLabel .= ', ' . $this->escape(Hubzero\Utility\Str::truncate($_org, 40));
+								}
+								$_uniqueLabel .= ' (#' . $id . ')';
+							?>
+							<div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>" role="group" aria-label="<?php echo $_uniqueLabel; ?>">
 								<div class="result-body">
 									<div class="result-img">
-										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
-											<img src="<?php echo $row->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_BROWSE_AVATAR', $this->escape($name)); ?>" />
+										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>" aria-label="<?php echo $_uniqueLabel; ?>">
+											<img src="<?php echo $row->picture(); ?>" alt="" />
 										</a>
 									</div>
 									<div class="result-title">
-										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>">
+										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>" aria-label="<?php echo $_uniqueLabel; ?>">
 											<?php echo $name; ?>
 										</a>
 										<?php foreach ($this->fields as $c) { ?>
