@@ -80,22 +80,25 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 				$modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
 				$createdProfile   = User::getInstance($firstVersion->get('created_by'));
 				$modifiedProfile  = User::getInstance($currentVersion->get('created_by'));
-				$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-				$modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+				$createdBy        = (is_object($createdProfile) && $createdProfile->get('name')) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+				$modifiedBy       = (is_object($modifiedProfile) && $modifiedProfile->get('name')) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
-				$createdLink  = 'javascript:void(0);';
-				$modifiedLink = 'javascript:void(0);';
-				if (is_object($createdProfile))
+				if (is_object($createdProfile) && $createdProfile->get('uidNumber'))
 				{
-					$createdLink      = Route::url('index.php?option=com_members&id='.$createdProfile->get('uidNumber'));
+					$createdLink = '<a href="'.Route::url('index.php?option=com_members&id='.$createdProfile->get('uidNumber')).'">'.$createdBy.'</a>';
 				}
-				if (is_object($modifiedProfile))
+				else
 				{
-					$modifiedLink     = Route::url('index.php?option=com_members&id='.$modifiedProfile->get('uidNumber'));
+					$createdLink = $createdBy;
 				}
-
-				$createdLink      = '<a href="'.$createdLink.'">'.$createdBy.'</a>';
-				$modifiedLink     = '<a href="'.$modifiedLink.'">'.$modifiedBy.'</a>';
+				if (is_object($modifiedProfile) && $modifiedProfile->get('uidNumber'))
+				{
+					$modifiedLink = '<a href="'.Route::url('index.php?option=com_members&id='.$modifiedProfile->get('uidNumber')).'">'.$modifiedBy.'</a>';
+				}
+				else
+				{
+					$modifiedLink = $modifiedBy;
+				}
 
 				$editPageLink     = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id'));
 				$setPageHomeLink  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$this->page->get('id'));
