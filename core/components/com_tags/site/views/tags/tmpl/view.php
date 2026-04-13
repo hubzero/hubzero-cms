@@ -62,7 +62,7 @@ foreach ($cats as $cat)
 	}
 
 	// Build the HTML
-	$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+	$l = "\t".'<li><a' . $a . ' rel="nofollow" href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 
 	// Are there sub-categories?
 	if (isset($cat['children']) && is_array($cat['children']))
@@ -93,7 +93,7 @@ foreach ($cats as $cat)
 				}
 
 				// Build the HTML
-				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . Route::url($here . '&parent=' . $parent . '&area='. stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+				$k[] = "\t\t\t".'<li><a' . $a . ' rel="nofollow" href="' . Route::url($here . '&parent=' . $parent . '&area='. stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 			}
 		}
 		// Do we actually have any links?
@@ -151,12 +151,12 @@ foreach ($cats as $cat)
 				<nav class="entries-filters">
 					<ul class="entries-menu order-options">
 						<li>
-							<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=title&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
+							<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=title&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
 								<?php echo Lang::txt('COM_TAGS_OPT_TITLE'); ?>
 							</a>
 						</li>
 						<li>
-							<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=date&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
+							<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=date&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
 								<?php echo Lang::txt('COM_TAGS_OPT_DATE'); ?>
 							</a>
 						</li>

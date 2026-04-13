@@ -29,7 +29,7 @@ if ($this->group):
 		<p class="group-description"><?php echo Lang::txt('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	<?php } ?>
 	</div>
-	<a class="owner" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></a>
+	<a class="owner" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo $this->escape(stripslashes($this->group->get('description'))); ?><span class="sr-only"> (owner group)</span></a>
 </div>
 <?php endif; ?>
 
