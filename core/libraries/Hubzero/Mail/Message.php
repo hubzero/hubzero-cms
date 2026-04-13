@@ -134,12 +134,9 @@ class Message extends \Symfony\Component\Mime\Email
 						break;
 
 					case 'sendmail':
-						$dsn = "sendmail://default";
-						break;
-
 					case 'mail':
 					case 'native':
-						$dsn = "native://default";
+						$dsn = "sendmail://default";
 						break;
 
 					case 'mandrill+smtp':

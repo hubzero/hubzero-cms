@@ -231,13 +231,11 @@
 			<field
 				name="mailer"
 				type="list"
-				default="mail"
+				default="sendmail"
 				label="COM_CONFIG_FIELD_MAIL_MAILER_LABEL"
 				description="COM_CONFIG_FIELD_MAIL_MAILER_DESC"
 				required="true"
 				filter="word">
-				<option
-					value="mail">COM_CONFIG_FIELD_VALUE_PHP_MAIL</option>
 				<option
 					value="sendmail">COM_CONFIG_FIELD_VALUE_SENDMAIL</option>
 				<option
