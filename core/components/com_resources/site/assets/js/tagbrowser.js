@@ -183,7 +183,7 @@ HUB.TagBrowser = {
 	bindClickHandlers: function(container) {
 		var $ = this.jQuery;
 
-		container.find('a[data-level]').off('click.tagbrowser').on('click.tagbrowser', function(e) {
+		container.find('[data-level]').off('click.tagbrowser').on('click.tagbrowser', function(e) {
 			e.preventDefault();
 			var el = $(this);
 			HUB.TagBrowser.nextLevel(

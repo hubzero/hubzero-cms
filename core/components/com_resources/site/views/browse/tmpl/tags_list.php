@@ -29,12 +29,12 @@ switch ($this->level)
 		$html .= '<ul id="ultags" tabindex="0" aria-label="' . Lang::txt('COM_RESOURCES_TAG') . '">';
 		if (!$tg2)
 		{
-			$html .= '<li><a id="col1_all" class="';
+			$html .= '<li role="option"' . ($tg == '' ? ' aria-selected="true"' : '') . '><span id="col1_all" class="';
 			if ($tg == '')
 			{
 				$html .= 'open';
 			}
-			$html .= '" href="#" data-type="'.$type->get('id').'" data-input="" data-input2="" data-level="2" data-col="col1_all" data-rid="'.$id.'">[ All ]</a></li>';
+			$html .= '" data-type="'.$type->get('id').'" data-input="" data-input2="" data-level="2" data-col="col1_all" data-rid="'.$id.'">[ All ]</span></li>';
 		}
 		$lis = '';
 		$i = 0;
@@ -49,14 +49,14 @@ switch ($this->level)
 				$li .= ' class="supported"';
 				$i = 0;
 			}
-			$li .= '><a id="col1_'.$tag->tag.'" class="';
+			$li .= '><span id="col1_'.$tag->tag.'" class="';
 			if ($isOpen)
 			{
 				$li .= 'open';
 				$d = $i;
 			}
 
-			$li .= '" href="#" data-type="'.$type->get('id').'" data-input="'.$tag->tag.'" data-input2="'.$tg2.'" data-level="2" data-col="col1_'.$tag->tag.'" data-rid="'.$id.'">'.stripslashes($tag->raw_tag).' ('.$tag->ucount.')</a></li>';
+			$li .= '" data-type="'.$type->get('id').'" data-input="'.$tag->tag.'" data-input2="'.$tg2.'" data-level="2" data-col="col1_'.$tag->tag.'" data-rid="'.$id.'">'.stripslashes($tag->raw_tag).' ('.$tag->ucount.')</span></li>';
 
 			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag'])
 			{
@@ -118,7 +118,7 @@ switch ($this->level)
 				{
 					$html .= 'class="supported" ';
 				}
-				$html .= '><a id="col2_'.$tool->id.'" href="#" data-type="'.$type->get('id').'" data-input="'.$tool->id.'" data-input2="" data-level="3" data-col="col2_'.$tool->id.'" data-rid="">'.stripslashes($tool->title).'</a></li>';
+				$html .= '><span id="col2_'.$tool->id.'" data-type="'.$type->get('id').'" data-input="'.$tool->id.'" data-input2="" data-level="3" data-col="col2_'.$tool->id.'" data-rid="">'.stripslashes($tool->title).'</span></li>';
 			}
 		}
 		else
