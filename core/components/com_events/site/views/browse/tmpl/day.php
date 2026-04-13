@@ -37,9 +37,9 @@ $this->css();
 		<?php if (count($this->rows) > 0) { ?>
 			<ul class="events">
 				<li>
-					<dl class="event-details">
-						<dt><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00')->format(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
-					</dl>
+					<div class="event-details">
+						<div class="event-date"><?php echo Date::of($this->year.'-'.$this->month.'-'.$this->day.' 00:00:00')->format(Lang::txt('DATE_FORMAT_HZ1')); ?></div>
+					</div>
 					<div class="ewrap">
 						<ul class="events">
 						<?php

@@ -84,24 +84,24 @@ else
 	$html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
 }
 
-$html .= "\t\t".'<dl class="event-details">'."\n";
+$html .= "\t\t".'<div class="event-details">'."\n";
 if ($start_date == $stop_date) {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt>'.Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<div class="event-date">'.Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</div>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.Date::of($this->row->publish_up, $timezone)->format('g:i A T', true).'&nbsp;' .'</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->format('g:i A T', true).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<div class="event-time starttime">'.Date::of($this->row->publish_up, $timezone)->format('g:i A T', true).'&nbsp;' .'</div>'."\n";
+	$html .= "\t\t\t".'<div class="event-time endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->format('g:i A T', true).'&nbsp;'.'</div>'."\n";
 } else {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="starttime">'.Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<div class="event-date starttime">'.Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</div>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.Date::of($this->row->publish_up, $timezone)->format('g:i A T', true).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<div class="event-time starttime">'.Date::of($this->row->publish_up, $timezone)->format('g:i A T', true).'&nbsp;'.'</div>'."\n";
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</dt>'."\n";
+		$html .= "\t\t\t".'<div class="event-date endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</div>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.Date::of($this->row->publish_down, $timezone)->format('g:i A T', true).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<div class="event-time endtime">'.Date::of($this->row->publish_down, $timezone)->format('g:i A T', true).'&nbsp;'.'</div>'."\n";
 }
-$html .= "\t\t".'</dl><div class="ewrap">'."\n";
+$html .= "\t\t".'</div><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. $this->escape(stripslashes($this->row->title)) .'</a></p>'."\n";
 if (isset($this->categories[$this->row->catid]))
 {

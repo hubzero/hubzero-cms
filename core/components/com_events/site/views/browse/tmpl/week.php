@@ -50,9 +50,9 @@ $this->css();
 				$countprint = 0;
 				?>
 				<li<?php echo $cls; ?>>
-					<dl class="event-details">
-						<dt><?php echo Date::of($rows['week']['year'].'-'.$rows['week']['month'].'-'.$rows['week']['day'].' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
-					</dl>
+					<div class="event-details">
+						<div class="event-date"><?php echo Date::of($rows['week']['year'].'-'.$rows['week']['month'].'-'.$rows['week']['day'].' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></div>
+					</div>
 					<div class="ewrap">
 					<?php
 					if (count($rows['events']) > 0) {
