@@ -49,9 +49,9 @@ defined('_HZEXEC_') or die();
 						}
 						?>
 						<?php if ($calendar->get('color')): ?>
-							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="<?php echo $calendar->get('color'); ?>" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="" />
 						<?php else: ?>
-							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="gray" />
+							<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="" />
 						<?php endif; ?>
 					</td>
 					<td>

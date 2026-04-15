@@ -80,7 +80,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					}
 					$html .= "\t" . '<tfoot>' . "\n";
 					$html .= "\t\t" . '<tr class="summary">' . "\n";
-					$html .= "\t\t\t" . '<td colspan="2" class="numerical-data"><strong>' . $row->name . '</strong></td>' . "\n";
+					$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
 					$html .= "\t\t\t" . '<td class="numerical-data">' . $value . '</td>' . "\n";
 					if ($total)
 					{
@@ -157,9 +157,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			$cls = 'even';
 			$html .= "\t" . '<thead>' . "\n";
 			$html .= "\t\t" . '<tr>' . "\n";
-			$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
-			$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
-			$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Ranking') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th scope="col">' . Lang::txt('Tool') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Ranking') . '</th>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</thead>' . "\n";
 			$html .= "\t" . '<tbody>' . "\n";
@@ -228,7 +228,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t" . '<tfoot>' . "\n";
 			$html .= "\t\t" . '<tr class="summary">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="2" class="numerical-data"><strong>' . Lang::txt('Total Tools Citations') . '</strong></td>' . "\n";
+			$html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
 			$html .= "\t\t\t" . '<td class="numerical-data">' . $result . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</tfoot>' . "\n";

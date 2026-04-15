@@ -55,7 +55,7 @@ h5 {
 	}
 h6 {
 	font-size: 1em;
-	color: #777;
+	color: #595959;
 }
 h1 img, 
 h2 img, 
@@ -78,16 +78,16 @@ p img.right {
 	margin: 1.5em 0 1.5em 1.5em;
 }
 a {
-	color: #0974a0;
+	color: #1a6d87;
 	text-decoration: underline;
 }
-a:focus, 
+a:focus,
 a:hover {
 	color: #000;
 	text-decoration: none;
 }
 a:visited {
-	color: #c23444;
+	color: #8b2530;
 }
 blockquote {
 	margin: 1.5em;
@@ -206,7 +206,7 @@ figure {
 figcaption {
 	font-size: 1em;
 	padding: 5px 0 2px 0;
-	color: #767676;
+	color: #595959;
 	text-align: center;
 }
 
@@ -242,13 +242,13 @@ img {
 .help-footer a.top,
 .help-footer a.index {
 	float: right;
-	color: #0974a0;
+	color: #1a6d87;
 }
 .help-footer a.index {
 	margin-right: 10px;
 }
 .help-footer .modified {
-	color: #767676;
+	color: #595959;
 }
 .help-header .back {
 	float: left;

@@ -92,7 +92,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 		?>
 		<?php if ($allday_event) : ?>
 			<tr>
-				<th class="date"></th>
+				<th scope="row" class="date"><span class="sr-only visually-hidden">Date:</span></th>
 				<td width="50%">
 					<?php
 						// check to see if its a single date all day event
@@ -108,14 +108,14 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 						}
 					?>
 				</td>
-				<th class="time"></th>
+				<th scope="row" class="time"><span class="sr-only visually-hidden">Time:</span></th>
 				<td>
 					<?php echo Lang::txt('All Day Event'); ?>
 				</td>
 			</tr>
 		<?php elseif ($publish_down && $publish_down != '0000-00-00 00:00:00') : ?>
 			<tr>
-				<th class="date"></th>
+				<th scope="row" class="date"><span class="sr-only visually-hidden">Date:</span></th>
 				<td colspan="3">
 					<?php echo $this->event->get('time_zone') ? Date::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
 					&mdash;
@@ -124,11 +124,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 			</tr>
 		<?php else : ?>
 			<tr>
-				<th class="date"></th>
+				<th scope="row" class="date"><span class="sr-only visually-hidden">Date:</span></th>
 				<td width="50%">
 					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('l, F d, Y', true); ?>
 				</td>
-				<th class="time"></th>
+				<th scope="row" class="time"><span class="sr-only visually-hidden">Time:</span></th>
 				<td>
 					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('g:i a T', true); ?>
 				</td>
@@ -137,28 +137,28 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 
 		<?php if ($this->event->get('repeating_rule') != '') : ?>
 			<tr>
-				<th class="repeatig"></th>
+				<th scope="row" class="repeatig"><span class="sr-only visually-hidden">Repeats:</span></th>
 				<td colspan="3"><?php echo $this->event->humanReadableRepeatingRule(); ?></td>
 			</tr>
 		<?php endif; ?>
 
 		<?php if ($this->event->get('adresse_info') != '') : ?>
 			<tr>
-				<th class="location"></th>
+				<th scope="row" class="location"><span class="sr-only visually-hidden">Location:</span></th>
 				<td colspan="3"><?php echo $this->event->get('adresse_info'); ?></td>
 			</tr>
 		<?php endif; ?>
 
 		<?php if ($this->event->get('contact_info') != '') : ?>
 			<tr>
-				<th class="author"></th>
+				<th scope="row" class="author"><span class="sr-only visually-hidden">Contact:</span></th>
 				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText($this->event->get('contact_info')); ?></td>
 			</tr>
 		<?php endif; ?>
 
 		<?php if ($this->event->get('extra_info') != '') : ?>
 			<tr>
-				<th class="url"></th>
+				<th scope="row" class="url"><span class="sr-only visually-hidden">Website:</span></th>
 				<td colspan="3">
 					<a href="<?php echo $this->event->get('extra_info'); ?>" rel="external">
 						<?php echo $this->event->get('extra_info'); ?>
@@ -169,7 +169,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 
 		<?php if ($this->event->get('content') != '') : ?>
 			<tr>
-				<th class="details"></th>
+				<th scope="row" class="details"><span class="sr-only visually-hidden">Details:</span></th>
 				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText(nl2br($this->event->get('content'))); ?></td>
 			</tr>
 		<?php endif; ?>
@@ -178,7 +178,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 			<td colspan="4"></td>
 		</tr>
 		<tr>
-			<th class="download"></th>
+			<th scope="row" class="download"><span class="sr-only visually-hidden">Download:</span></th>
 			<td colspan="4">
 				<a class="btn" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=export&event_id='.$this->event->get('id')); ?>"><?php echo Lang::txt('Export to My Calendar (ics)'); ?></a>
 			</td>
