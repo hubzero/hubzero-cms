@@ -21,7 +21,7 @@ var DEFAULT_SETTINGS = {
 	hintText: "Type in a search term",
 	noResultsText: "No results",
 	searchingText: "Searching...",
-	deleteText: "&times;",
+	deleteText: "",
 	animateDropdown: true,
 
 	// Tokenization settings
@@ -505,6 +505,8 @@ $.TokenList = function (input, url_or_data, settings) {
 		{
 			$("<span>" + settings.deleteText + "</span>")
 				.addClass(settings.classes.tokenDelete)
+				.attr("role", "button")
+				.attr("aria-label", "Remove " + item[settings.propertyToSearch])
 				.appendTo(this_token)
 				.click(function () {
 					delete_token($(this).parent());

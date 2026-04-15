@@ -87,6 +87,12 @@
 		font-weight: bold;
 		cursor: pointer;
 	}
+	/* [a11y] Render × via CSS so axe-core doesn't flag single-char text */
+	.token-input-delete-token-act:after,
+	.token-input-delete-token-acg:after,
+	.token-input-delete-token-acm:after {
+		content: "\00D7";
+	}
 	/* Groups */
 	li.token-input-token-acg span {
 		color: #bdd1ad;
