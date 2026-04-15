@@ -115,7 +115,7 @@ if (!$no_html) {
 							$who = $name;
 							if (in_array($this->post->creator()->get('access'), User::getAuthorisedViewLevels()))
 							{
-								$who = '<a href="' . Route::url($this->post->creator()->link() . '&active=collections') . '">' . $name . '</a>';
+								$who = '<a href="' . Route::url($this->post->creator()->link() . '&active=collections') . '" aria-label="' . Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) . '">' . $name . '</a>';
 							}
 
 							$where = '<a href="' . Route::url($this->collection->link()) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
@@ -285,10 +285,10 @@ if (!$no_html) {
 									<?php } ?>
 								<?php } ?>
 							<?php } else { ?>
-								<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+								<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($this->collection->get('title')); ?>">
 									<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 								</a>
-								<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+								<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($this->collection->get('title')); ?>">
 									<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
 								</a>
 							<?php } ?>
@@ -387,10 +387,10 @@ if (!$no_html) {
 										<?php } ?>
 									<?php } ?>
 								<?php } else { ?>
-									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($collection->get('title')); ?>">
 										<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 									</a>
-									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($collection->get('title')); ?>">
 										<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
 									</a>
 								<?php } ?>
@@ -402,8 +402,8 @@ if (!$no_html) {
 							$name = $this->escape(stripslashes($collection->creator()->get('name')));
 
 							if (in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-								<a href="<?php echo Route::url($collection->creator()->link() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link">
-									<img src="<?php echo $collection->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+								<a href="<?php echo Route::url($collection->creator()->link() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name); ?>">
+									<img src="<?php echo $collection->creator()->picture(); ?>" alt="" />
 								</a>
 							<?php } else { ?>
 								<span class="img-link">
@@ -412,7 +412,7 @@ if (!$no_html) {
 							<?php } ?>
 							<p>
 								<?php if (in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-									<a href="<?php echo Route::url($collection->creator()->link() . '&active=collections'); ?>">
+									<a href="<?php echo Route::url($collection->creator()->link() . '&active=collections'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name); ?>">
 										<?php echo $name; ?>
 									</a>
 								<?php } else { ?>

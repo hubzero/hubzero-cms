@@ -195,8 +195,8 @@ $this->css();
 					$next_week = clone($this_date);
 					$next_week->addDays( +7 );
 					?>
-					<a class="prv" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
-					<a class="nxt" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
+					<a class="prv" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
+					<a class="nxt" href="<?php echo Route::url('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
 					<?php echo $this->startdate.' to '.$this->enddate; ?>
 				</p>
 			</div><!-- / .calendarwrap -->
