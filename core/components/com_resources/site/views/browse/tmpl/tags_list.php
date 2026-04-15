@@ -29,7 +29,7 @@ switch ($this->level)
 		$html .= '<ul id="ultags" tabindex="0" role="listbox" aria-label="' . Lang::txt('COM_RESOURCES_TAG') . '">';
 		if (!$tg2)
 		{
-			$html .= '<li role="option"' . ($tg == '' ? ' aria-selected="true"' : '') . '><span id="col1_all" class="';
+			$html .= '<li' . ($tg == '' ? ' class="selected"' : '') . '><span id="col1_all" class="';
 			if ($tg == '')
 			{
 				$html .= 'open';
