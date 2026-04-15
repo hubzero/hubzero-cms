@@ -220,7 +220,7 @@
 		// do we have an image
 		if (img != '' && img != undefined)
 		{
-			return '<img class="fs-option-image" src="' + img + '" />'
+			return '<img class="fs-option-image" src="' + img + '" alt="" />'
 		}
 		
 		// do we have an image

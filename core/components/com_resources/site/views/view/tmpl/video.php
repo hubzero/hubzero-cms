@@ -72,7 +72,8 @@ $this->css('
 
 			<a href="<?php echo $url; ?>"
 				id="video-flowplayer"
-				data-mediaid="<?php echo $this->resource->id; ?>"></a>
+				data-mediaid="<?php echo $this->resource->id; ?>"
+				aria-label="<?php echo Lang::txt('COM_RESOURCES_DOWNLOAD_VIDEO'); ?>"></a>
 
 			<?php if (count($presentation->subtitles) > 0) : ?>
 				<?php foreach ($presentation->subtitles as $subtitle) : ?>
