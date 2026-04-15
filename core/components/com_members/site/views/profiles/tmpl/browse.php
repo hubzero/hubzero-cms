@@ -147,7 +147,7 @@ foreach ($this->fields as $field)
 						</div>
 					</fieldset><!-- / sort -->
 
-					<p><input class="btn" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_APPLY'); ?>" /></p>
+					<p class="members-filter-apply"><input class="btn" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_APPLY'); ?>" /></p>
 				</fieldset>
 			</div>
 		</aside><!-- / .aside -->
@@ -240,7 +240,20 @@ foreach ($this->fields as $field)
 			<div class="container members-container" id="listOfMembers">
 				<div class="results tiled members">
 					<?php
-					if ($this->rows->count() > 0)
+					if (empty($this->hasFilter))
+					{ ?>
+						<div class="members-search-prompt">
+							<div class="members-search-prompt-icon" aria-hidden="true">
+								<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+									<circle cx="11" cy="11" r="7"></circle>
+									<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+								</svg>
+							</div>
+							<h3 class="members-search-prompt-title"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE'); ?></h3>
+							<p class="members-search-prompt-body"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH'); ?></p>
+						</div>
+					<?php }
+					else if ($this->rows->count() > 0)
 					{
 						$cols = 2;
 
@@ -463,6 +476,7 @@ foreach ($this->fields as $field)
 					<?php } ?>
 				</div>
 				<?php
+				if (!empty($this->hasFilter)):
 				$pageNav = $this->rows->pagination;
 				if ($this->filters['search'])
 				{
@@ -498,6 +512,7 @@ foreach ($this->fields as $field)
 					}
 				}
 				echo $pageNav;
+				endif;
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

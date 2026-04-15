@@ -453,6 +453,23 @@ $option = 'com_groups';
 						</tr>
 						<?php
 							}
+						} else if (!empty($this->prompt_filter)) {
+						?>
+						<tr>
+							<td>
+								<div class="members-search-prompt">
+									<div class="members-search-prompt-icon" aria-hidden="true">
+										<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+											<circle cx="11" cy="11" r="7"></circle>
+											<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+										</svg>
+									</div>
+									<h3 class="members-search-prompt-title"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH_TITLE'); ?></h3>
+									<p class="members-search-prompt-body"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH'); ?></p>
+								</div>
+							</td>
+						</tr>
+						<?php
 						} else {
 						?>
 						<tr>
@@ -464,6 +481,7 @@ $option = 'com_groups';
 					</tbody>
 				</table>
 			<?php
+				if (empty($this->prompt_filter)):
 				// Initiate paging
 				$pageNav = $this->pagination(
 					count($this->groupusers),
@@ -476,6 +494,7 @@ $option = 'com_groups';
 				$pageNav->setAdditionalUrlParam('q', $this->q);
 
 				echo $pageNav->render();
+				endif;
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

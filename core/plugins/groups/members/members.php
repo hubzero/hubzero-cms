@@ -127,9 +127,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			// Check if guest and force login if plugin access is registered or members
-			if (User::isGuest()
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
+			// Group member directories are not available to guests (performance + enumeration risk)
+			if (User::isGuest())
 			{
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
@@ -273,8 +272,26 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					break;
 					case 'members':
 					default:
-						$view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
-						$view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter) : $view->groupusers;
+						// Require a search query or role filter before returning the member list.
+						// Managers/admins see the full list so they can administer membership.
+						if ($view->authorized == 'manager' || $view->authorized == 'admin')
+						{
+							$view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
+							$view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter) : $view->groupusers;
+						}
+						else if ($view->q)
+						{
+							$view->groupusers = $group->search('members', $view->q);
+						}
+						else if ($view->role_filter)
+						{
+							$view->groupusers = \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter);
+						}
+						else
+						{
+							$view->groupusers = array();
+							$view->prompt_filter = true;
+						}
 						$view->managers   = $group->get('managers');
 					break;
 				}

@@ -272,6 +272,16 @@ class Profiles extends SiteController
 	 */
 	public function browseTask()
 	{
+		// Require a logged-in user — member directory is not available to guests
+		if (User::isGuest())
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=browse', false, true)), false),
+				Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
+				'warning'
+			);
+		}
+
 		// Get all the fields we can use on this page
 		$fields = Field::all()
 			->whereIn('action_browse', User::getAuthorisedViewLevels())
@@ -421,6 +431,10 @@ class Profiles extends SiteController
 
 		// Distil down the results to only unique filters
 		$filters['q'] = array_map('unserialize', array_unique(array_map('serialize', $filters['q'])));
+
+		// Require at least one filter before running the query — the members table is too
+		// large to return as an unfiltered browse (performance + enumeration risk).
+		$hasFilter = (bool)$filters['search'] || (bool)$filters['tags'] || !empty($filters['q']);
 
 		// Build query
 		$entries = Member::all();
@@ -578,10 +592,21 @@ class Profiles extends SiteController
 
 		$entries->whereIn($a . '.access', $access);
 
-		$rows = $entries
-			->order($filters['sqlsort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
-			->rows();
+		if ($hasFilter)
+		{
+			$rows = $entries
+				->order($filters['sqlsort'], $filters['sort_Dir'])
+				->paginated('limitstart', 'limit')
+				->rows();
+		}
+		else
+		{
+			// No filter supplied — return an empty result set. View renders a prompt.
+			$rows = $entries
+				->whereEquals($a . '.id', 0)
+				->paginated('limitstart', 'limit')
+				->rows();
+		}
 
 		// Set the page title
 		$title  = Lang::txt('COM_MEMBERS');
@@ -616,6 +641,7 @@ class Profiles extends SiteController
 			->set('config', $this->config)
 			->set('fields', $fields)
 			->set('filters', $filters)
+			->set('hasFilter', $hasFilter)
 			->set('title', $title)
 			->set('rows', $rows)
 			->set('past_day_members', $stats->past_day_members)

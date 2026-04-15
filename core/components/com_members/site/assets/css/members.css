@@ -855,3 +855,40 @@
 		margin-right: 0;
 	}
 }
+
+/* Empty-state search prompt shown on /members/browse when no filter is set */
+.members-search-prompt {
+	max-width: 520px;
+	margin: 4rem auto;
+	padding: 2.5rem 2rem;
+	text-align: center;
+	background: #f5f7fa;
+	border: 1px solid #d7dee6;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+.members-search-prompt-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 96px;
+	height: 96px;
+	margin: 0 auto 1.25rem;
+	background: #e7eef6;
+	color: #326d81;
+	border-radius: 50%;
+}
+.members-search-prompt-icon svg { display: block; }
+.members-search-prompt-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+	color: #2c3e50;
+}
+.members-search-prompt-body {
+	margin: 0;
+	color: #545454;
+	line-height: 1.5;
+}
+
+/* Center the Apply button under the browse filter column */
+.members-filter-apply { text-align: center; }
