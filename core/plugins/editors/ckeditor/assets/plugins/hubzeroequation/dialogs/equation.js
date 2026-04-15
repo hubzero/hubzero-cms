@@ -102,7 +102,7 @@ CKEDITOR.dialog.add( 'hubzeroEquationDialog', function( editor ) {
 			// set attributes and insert
 			equationImage.setAttribute('class', 'hubzeroequation-result');
 			equationImage.setAttribute('data-equation', equation);
-			equationImage.setAttribute('alt', equation);
+			equationImage.setAttribute('alt', 'Equation: ' + equation);
 			equationImage.setAttribute('src', equationPreview.attr('src'));
 			editor.insertElement( equationImage );
 		}

@@ -139,7 +139,7 @@
               header +
               searchbox +
               actionsbox +
-              '<ul class="dropdown-menu inner selectpicker" role="listbox">' +
+              '<ul class="dropdown-menu inner selectpicker" role="listbox" aria-label="' + (this.options.title || 'Select an option') + '">' +
               '</ul>' +
               '</div>' +
               '</div>';
@@ -227,7 +227,7 @@
 
       $.each(_liA, function (i, item) {
         var hide = item === '<a></a>' ? 'class="hide is-hidden"' : '';
-        _liHtml += '<li rel="' + i + '"' + hide + '>' + item + '</li>';
+        _liHtml += '<li rel="' + i + '" role="option"' + hide + '>' + item + '</li>';
       });
 
       //If we are not multiple, and we dont have a selected item, and we dont have a title, select the first element so something is set in the button

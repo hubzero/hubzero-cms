@@ -140,7 +140,15 @@ $maintext = $this->model->description;
 							?>
 							<h3><?php echo $field->label; ?></h3>
 							<div class="resource-content">
-								<?php echo $elements->display($field->type, $data[$field->name]); ?>
+								<?php
+								$fieldContent = $elements->display($field->type, $data[$field->name]);
+								// Wrap orphaned <li> items in <ul> for accessibility
+								if (preg_match('#<li\b#', $fieldContent) && !preg_match('#<[uo]l[\s>]#', $fieldContent))
+								{
+									$fieldContent = '<ul>' . $fieldContent . '</ul>';
+								}
+								echo $fieldContent;
+								?>
 							</div>
 							<?php
 						}

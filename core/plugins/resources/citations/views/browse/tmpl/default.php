@@ -27,8 +27,19 @@ if ($this->citations)
 	// Loop through the citations and build the HTML
 	foreach ($this->citations as $cite)
 	{
+		$formatted = trim($cite->formatted(array('format' => $this->citationFormat)));
+		// Strip outer <p> tags since the citation is already inside <li>
+		$formatted = preg_replace('#^\s*<p>\s*#i', '', $formatted);
+		$formatted = preg_replace('#\s*</p>\s*$#i', '', $formatted);
+
+		// Skip citations with no rendered content (otherwise we emit an empty <li>)
+		if (strip_tags($formatted) === '' || trim($formatted) === '')
+		{
+			continue;
+		}
+
 		$item  = "\t" . '<li>' . "\n";
-		$item .= $cite->formatted(array('format' => $this->citationFormat));
+		$item .= "\t\t" . $formatted . "\n";
 		$item .= "\t\t" . '<p class="details">' . "\n";
 		$item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=bibtex&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_BIBTEX') . '">BibTex</a> <span>|</span> ' . "\n";
 		$item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";

@@ -60,7 +60,7 @@ class FootNoteMacro extends WikiMacro
 
 				$wm->footnotes[$i-1]->refs[] = 'fndef-' . $k;
 
-				return '<sup id="fndef-' . $k . '"><a href="#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+				return '<sup id="fndef-' . $k . '"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
 			}
 
 			$i = count($wm->footnotes) + 1;
@@ -75,7 +75,7 @@ class FootNoteMacro extends WikiMacro
 			$wm->footnotes_notes[] = $note;
 			$wm->footnotes[] = $footnote;
 
-			return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+			return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
 		}
 		else
 		{
