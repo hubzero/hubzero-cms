@@ -100,8 +100,9 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
 						</td>
 						<td>
+							<?php $linkText = trim($row->title ?? '') ?: trim($row->pagename ?? '') ?: Lang::txt('COM_WIKI_UNTITLED'); ?>
 							<a href="<?php echo Route::url($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->title ?: $row->get('pagename', '(untitled)'))); ?>
+								<?php echo $this->escape(stripslashes($linkText)); ?>
 							</a>
 						</td>
 						<td>

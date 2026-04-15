@@ -640,6 +640,11 @@ class WikiParser
 		// Are we jumping to an anchor?
 		else if (substr($href, 0, 1) == '#')
 		{
+			// Fall back to href text (minus the #) if title was stripped to empty
+			if (trim($title) === '')
+			{
+				$title = ltrim($href, '#');
+			}
 			return $this->_dataPush(array(
 				$whole,
 				'anchor',
@@ -796,19 +801,18 @@ class WikiParser
 			'scope_id' => $p->get('id')
 		);
 
-		$linkTitle = $this->glyphs(trim($title));
-
-		// If the link text is empty, don't generate an empty anchor
-		if (!trim(strip_tags($linkTitle)))
+		// Fall back to pagename/href if title was stripped to empty, so links always have text
+		$displayTitle = trim($title);
+		if ($displayTitle === '')
 		{
-			return $whole;
+			$displayTitle = $p->get('pagename') ?: ltrim($href, '/#');
 		}
 
 		return $this->_dataPush(array(
 			$whole,
 			'anchor',
 			$this->_randomString(),
-			'<a class="' . $cls . '" href="' . str_replace(array('\\', '"', "'"), '', $href) . '">' . $linkTitle . '</a>'
+			'<a class="' . $cls . '" href="' . str_replace(array('\\', '"', "'"), '', $href) . '">' . $this->glyphs($displayTitle) . '</a>'
 		));
 	}
 
