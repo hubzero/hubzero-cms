@@ -155,13 +155,13 @@ $revisions = $this->page->versions()
 
 									</td>
 									<td>
-										<label class="sr-only" for="diff-<?php echo $revision->get('version'); ?>">New revision <?php echo $revision->get('version'); ?></label>
-									<input type="radio" name="diff" id="diff-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="New revision <?php echo $revision->get('version'); ?>" checked="checked" />
+										<label class="sr-only" for="diff-<?php echo $revision->get('version'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?></label>
+									<input type="radio" name="diff" id="diff-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?>" checked="checked" />
 									</td>
 								<?php } else { ?>
 									<td>
-										<label class="sr-only" for="oldid-<?php echo $revision->get('version'); ?>">Old revision <?php echo $revision->get('version'); ?></label>
-										<input type="radio" name="oldid" id="oldid-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="Old revision <?php echo $revision->get('version'); ?>"
+										<label class="sr-only" for="oldid-<?php echo $revision->get('version'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?></label>
+										<input type="radio" name="oldid" id="oldid-<?php echo $revision->get('version'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?>"
 										<?php if ($comparefirst == true)
 										{
 											echo ' checked="checked"';
