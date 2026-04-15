@@ -62,10 +62,10 @@ $total = $this->model->entries('count', $this->filters);
 				?>
 				<ul class="entries-menu order-options">
 					<?php if (!empty($this->filters['reviewer']) && (strtolower($this->filters['reviewer']) == 'sponsored')): ?>
-					<li><a<?php echo ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></a></li>
 					<?php endif;?>
-					<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
 				</ul>
 				<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?>">
 					<li>

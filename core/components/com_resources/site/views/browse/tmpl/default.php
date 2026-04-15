@@ -61,7 +61,7 @@ $this->css()
 							{
 								?>
 								<li>
-									<a class="tag" href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+									<a class="tag" rel="nofollow" href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
 										<?php echo $this->escape(stripslashes($tag)); ?>
 										<span class="remove" title="<?php echo Lang::txt('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
 									</a>
@@ -88,7 +88,7 @@ $this->css()
 						{
 							?>
 							<li>
-								<a href="<?php echo Route::url($url . '&tag=' . $tag); ?>">
+								<a rel="nofollow" href="<?php echo Route::url($url . '&tag=' . $tag); ?>">
 									<?php echo $this->escape(stripslashes($tag)); ?>
 								</a>
 							</li>
@@ -108,14 +108,14 @@ $this->css()
 						?>
 						<ul class="entries-menu order-options">
 							<li>
-								<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
+								<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
 							</li>
 							<li>
-								<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+								<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
 							</li>
 							<?php if ($this->config->get('show_ranking')) { ?>
 								<li>
-									<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+									<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
 								</li>
 							<?php } ?>
 						</ul>

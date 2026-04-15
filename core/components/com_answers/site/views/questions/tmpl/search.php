@@ -66,17 +66,17 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						<nav class="entries-filters">
 							<ul class="entries-menu user-options">
 								<li>
-									<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+									<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>" rel="nofollow">
 										<?php echo Lang::txt('COM_ANSWERS_FILTER_EVERYTHING'); ?>
 									</a>
 								</li>
 								<li>
-									<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=mine&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+									<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=mine&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>" rel="nofollow">
 										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_I_ASKED'); ?>
 									</a>
 								</li>
 								<li>
-									<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=assigned&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+									<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=assigned&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>" rel="nofollow">
 										<?php echo Lang::txt('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
 									</a>
 								</li>
@@ -89,7 +89,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 									}
 									?>
 									<li>
-										<a<?php echo ($this->filters['area'] == $opt['value']) ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . $opt['value'] . '&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
+										<a<?php echo ($this->filters['area'] == $opt['value']) ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&area=' . $opt['value'] . '&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>" rel="nofollow">
 											<?php echo $opt['label']; ?>
 										</a>
 									</li>

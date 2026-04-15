@@ -91,10 +91,10 @@ $this->css()
 						$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 						?>
 						<ul class="entries-menu order-options">
-							<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('Sort by title'); ?>">&darr; <?php echo Lang::txt('Title'); ?></a></li>
-							<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('Sort by date published'); ?>">&darr; <?php echo Lang::txt('Published'); ?></a></li>
+							<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('Sort by title'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('Title'); ?></a></li>
+							<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('Sort by date published'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('Published'); ?></a></li>
 							<?php if ($this->config->get('show_ranking')) { ?>
-							<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('Sort by ranking'); ?>">&darr; <?php echo Lang::txt('Ranking'); ?></a></li>
+							<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('Sort by ranking'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('Ranking'); ?></a></li>
 							<?php } ?>
 						</ul>
 						<?php if (count($this->categories) > 0) { ?>
