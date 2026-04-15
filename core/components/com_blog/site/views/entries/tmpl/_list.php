@@ -8,28 +8,17 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
+<?php if (isset($this->comments) && count($this->comments)) : ?>
+<ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
 <?php
-if (isset($this->comments) && count($this->comments))
-{
-	if (is_countable($this->comments))
-	{
-		$hasComments = count($this->comments) > 0;
-	}
-	elseif ($this->comments instanceof \Traversable)
-	{
-		foreach ($this->comments as $_c) { $hasComments = true; break; }
-	}
-}
-if ($hasComments):
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
 		$cls = ($this->cls == 'odd') ? 'even' : 'odd';
 	}
+
 	$this->depth++;
-?>
-<ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
-<?php
+
 	foreach ($this->comments as $comment)
 	{
 		$this->view('_comment')
@@ -43,6 +32,4 @@ if ($hasComments):
 	}
 ?>
 </ol>
-<?php
-}
-?>
+<?php endif; ?>
