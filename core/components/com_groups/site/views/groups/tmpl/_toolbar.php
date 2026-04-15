@@ -74,97 +74,80 @@ if ($this->group->isSuperGroup())
 			<?php endif; ?>
 		<?php endif; ?>
 	<?php else : ?>
-		<?php $isManager = (in_array(User::get("id"), $this->group->get("managers"))) ? true : false; ?>
-		<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array(User::get("id"), $this->group->get("members")))) ? true : false; ?>
+		<?php
+		$isManager = in_array(User::get("id"), $this->group->get("managers"));
+		$canCancel = ($isManager && count($this->group->get("managers")) > 1)
+		          || (!$isManager && in_array(User::get("id"), $this->group->get("members")));
+		$cn = $this->group->get('cn');
+
+		// Build menu items array so we can skip the <ul role="menu"> when empty
+		$menuItems = array();
+
+		if ($this->group->get('published') != 2)
+		{
+			if ($isManager)
+			{
+				if ($membership_control == 1 && $this->group->get('join_policy') != 3)
+				{
+					$menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
+				}
+				$menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
+				$menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
+				if ($membership_control == 1)
+				{
+					$menuItems[] = '<li class="divider" role="separator"></li>';
+				}
+			}
+			else
+			{
+				if ($membership_control == 1 && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite'))
+				{
+					$menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
+				}
+				if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit'))
+				{
+					$menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
+				}
+				if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages'))
+				{
+					$menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
+				}
+			}
+		}
+
+		if ($canCancel && $membership_control == 1)
+		{
+			$menuItems[] = '<li role="none"><a role="menuitem" class="group-cancel cancel_group_membership" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=cancel') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a></li>';
+			if ($isManager)
+			{
+				$menuItems[] = '<li class="divider" role="separator"></li>';
+			}
+		}
+
+		if ($isManager && $membership_control == 1)
+		{
+			$menuItems[] = '<li role="none"><a role="menuitem" class="group-delete" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=delete') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DELETE') . '</a></li>';
+		}
+
+		if ($this->logoutLink)
+		{
+			$menuItems[] = '<li class="divider" role="separator"></li>';
+			$menuItems[] = '<li role="none"><a role="menuitem" class="logout" href="' . $logoutLink . '">' . Lang::txt('COM_GROUPS_TOOLBAR_LOGOUT') . '</a></li>';
+		}
+		?>
 		<li>
 			<div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
 				<button type="button" class="btn dropdown-label" aria-expanded="false" aria-haspopup="true">
 					<?php echo Lang::txt('COM_GROUPS_GROUP'); ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
 				</button>
-				<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?>">
-					<span class="sr-only"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-				<?php if ($this->group->get('published') != 2) : ?>
-					<?php if ($isManager) : ?>
-						<?php if ($membership_control == 1 && $this->group->get('join_policy') != 3) : ?>
-							<li role="none">
-								<a role="menuitem" class="group-invite" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
-									<?php echo Lang::txt('COM_GROUPS_TOOLBAR_INVITE'); ?>
-								</a>
-							</li>
-						<?php endif; ?>
-						<li role="none">
-							<a role="menuitem" class="group-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
-								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_EDIT'); ?>
-							</a>
-						</li>
-						<li role="none">
-							<a role="menuitem" class="group-pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
-								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_PAGES'); ?>
-							</a>
-						</li>
-						<?php if ($membership_control == 1) : ?>
-							<li class="divider" role="separator"></li>
-						<?php endif; ?>
-					<?php endif; ?>
-
-					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
-						<?php if ($membership_control == 1) : ?>
-							<li role="none">
-								<a role="menuitem" class="group-invite" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
-									<?php echo Lang::txt('COM_GROUPS_TOOLBAR_INVITE'); ?>
-								</a>
-							</li>
-						<?php endif; ?>
-					<?php endif; ?>
-
-					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit')) : ?>
-						<li role="none">
-							<a role="menuitem" class="group-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
-								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_EDIT'); ?>
-							</a>
-						</li>
-					<?php endif; ?>
-
-					<?php if (!$isManager && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
-						<li role="none">
-							<a role="menuitem" class="group-pages" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
-								<?php echo Lang::txt('COM_GROUPS_TOOLBAR_PAGES'); ?>
-							</a>
-						</li>
-					<?php endif; ?>
+				<?php if (!empty($menuItems)) : ?>
+					<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?>">
+						<span class="sr-only"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<?php echo implode("\n\t\t\t\t\t", $menuItems); ?>
+					</ul>
 				<?php endif; ?>
-
-					<?php if ($canCancel) : ?>
-						<?php if ($membership_control == 1) : ?>
-							<li role="none">
-								<a role="menuitem" class="group-cancel cancel_group_membership" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
-									<?php echo Lang::txt('COM_GROUPS_TOOLBAR_CANCEL'); ?>
-								</a>
-							</li>
-							<?php if ($isManager): ?>
-								<li class="divider" role="separator"></li>
-							<?php endif; ?>
-						<?php endif; ?>
-					<?php endif; ?>
-					<?php if ($isManager) : ?>
-						<?php if ($membership_control == 1) : ?>
-							<li role="none">
-								<a role="menuitem" class="group-delete" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=delete'); ?>">
-									<?php echo Lang::txt('COM_GROUPS_TOOLBAR_DELETE'); ?>
-								</a>
-							</li>
-						<?php endif; ?>
-					<?php endif; ?>
-
-					<?php if ($this->logoutLink) : ?>
-						<li class="divider" role="separator"></li>
-						<li role="none">
-							<a role="menuitem" class="logout" href="<?php echo $logoutLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGOUT'); ?></a>
-						</li>
-					<?php endif; ?>
-				</ul>
 			</div>
 		</li>
 	<?php endif; ?>

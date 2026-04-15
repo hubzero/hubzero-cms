@@ -49,13 +49,13 @@ $this->css()
 
 			<div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
 				<h3><?php echo Lang::txt('COM_RESOURCES_TAG'); ?></h3>
-				<ul id="ultags" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
+				<ul id="ultags" role="listbox" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
 					<li id="level-1-loading"></li>
 				</ul>
 			</div><!-- / #level-1 -->
 			<div id="level-2" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>" aria-live="polite">
 				<h3><?php echo Lang::txt('COM_RESOURCES'); ?></h3>
-				<ul id="ulitems" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>">
+				<ul id="ulitems" role="listbox" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES'); ?>">
 					<li id="level-2-loading"></li>
 				</ul>
 			</div><!-- / #level-2 -->

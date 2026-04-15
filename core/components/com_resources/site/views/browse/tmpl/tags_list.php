@@ -26,7 +26,7 @@ switch ($this->level)
 		}
 		$html .= '</h3>';
 
-		$html .= '<ul id="ultags" tabindex="0" aria-label="' . Lang::txt('COM_RESOURCES_TAG') . '">';
+		$html .= '<ul id="ultags" role="listbox" tabindex="0" aria-label="' . Lang::txt('COM_RESOURCES_TAG') . '">';
 		if (!$tg2)
 		{
 			$html .= '<li role="option"' . ($tg == '' ? ' aria-selected="true"' : '') . '><span id="col1_all" class="';
@@ -43,7 +43,7 @@ switch ($this->level)
 			$i++;
 			$isOpen = ($tg == $tag->tag);
 
-			$li  = '<li';
+			$li  = '<li role="option"';
 			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag'])
 			{
 				$li .= ' class="supported"';
@@ -97,7 +97,7 @@ switch ($this->level)
 		}
 
 		$html .= '<h3>'.Lang::txt('COM_RESOURCES').' '.\Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $this->bits['sortby'], '" aria-label="' . Lang::txt('COM_RESOURCES_SORT_BY')).'</h3>';
-		$html .= '<ul id="ulitems" tabindex="0" aria-label="' . Lang::txt('COM_RESOURCES') . '">';
+		$html .= '<ul id="ulitems" role="listbox" tabindex="0" aria-label="' . Lang::txt('COM_RESOURCES') . '">';
 		if ($tools && count($tools) > 0)
 		{
 			foreach ($tools as $tool)
@@ -113,7 +113,7 @@ switch ($this->level)
 					}
 				}
 
-				$html .= '<li ';
+				$html .= '<li role="option" ';
 				if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported))
 				{
 					$html .= 'class="supported" ';
