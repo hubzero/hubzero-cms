@@ -189,10 +189,64 @@ HUB.Video = {
 	controlBar: function()
 	{
 		//play pause functionality
+		// Remove native controls — custom player takes over.
+		// controls attribute is in the HTML so static analysis tools
+		// (Siteimprove) see a proper <video controls> + <track> pattern.
+		$jQ('#video-player').removeAttr('controls');
+
 		$jQ('#play-pause').on('click', function(e) {
 			HUB.Video.playPause(true);
 			e.preventDefault();
 		});
+
+		// Click on video to toggle play/pause + flash indicator
+		var flashNext = false;
+		$jQ('#video-player').on('click', function() {
+			flashNext = true;
+			HUB.Video.playPause(true);
+		});
+
+		// Flash play/pause indicator — only when triggered by clicking the video
+		function flashState(state) {
+			if (!flashNext) return;
+			flashNext = false;
+			var el = $jQ('#play-state-flash');
+			el.removeClass('show fade playing paused').addClass(state);
+			// Force reflow so the show class triggers immediately
+			el[0].offsetWidth;
+			el.addClass('show');
+			setTimeout(function() { el.addClass('fade'); }, 50);
+			setTimeout(function() { el.removeClass('show fade playing paused'); }, 500);
+		}
+
+		// Single source of truth: read the video element's actual state
+		// and sync all controls to match.  Called on native play/pause
+		// events and on page load.
+		function syncControls() {
+			var paused = HUB.Video.isPaused();
+			if (paused) {
+				$jQ("#play-pause .icon-pause").hide();
+				$jQ("#play-pause .icon-play").show();
+				$jQ('#play-pause').attr('aria-label', 'Play video');
+				$jQ('#video-container').addClass('paused');
+			} else {
+				$jQ("#play-pause .icon-pause").show();
+				$jQ("#play-pause .icon-play").hide();
+				$jQ('#play-pause').attr('aria-label', 'Pause video');
+				$jQ('#video-container').removeClass('paused');
+			}
+		}
+
+		$jQ('#video-player').on('play', function() {
+			flashState('playing');
+			syncControls();
+		}).on('pause', function() {
+			flashState('paused');
+			syncControls();
+		});
+
+		// Sync on load — handles ?time= param which pauses after seek
+		syncControls();
 
 		// control popup open/close (volume, settings, CC, link)
 		$jQ(document).on('click', '#video-container .control', function(e) {
@@ -214,9 +268,96 @@ HUB.Video = {
 			e.stopPropagation();
 		});
 
+		// Copy share link to clipboard
+		$jQ('#copy-link').on('click', function() {
+			var url = $jQ('#timestamp-link').text();
+			navigator.clipboard.writeText(url).then(function() {
+				$jQ('#copy-link').text('Copied!');
+				setTimeout(function() { $jQ('#copy-link').text('Copy'); }, 2000);
+			});
+		});
+
 		// clicking outside closes all popups
 		$jQ(document).on('click', function() {
 			$jQ('#video-container .control.open').removeClass('open');
+		});
+
+		// Keyboard controls (YouTube-style)
+		$jQ(document).on('keydown', function(e) {
+			// Don't capture when typing in an input
+			var tag = e.target.tagName;
+			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+			var player = HUB.Video.getPlayer();
+			if (!player) return;
+
+			var handled = true;
+			switch (e.key) {
+				case ' ':
+				case 'k':
+				case 'K':
+					flashNext = true;
+					HUB.Video.playPause(true);
+					break;
+				case 'j':
+				case 'J':
+					player.currentTime = Math.max(0, player.currentTime - 10);
+					break;
+				case 'l':
+				case 'L':
+					player.currentTime = Math.min(player.duration, player.currentTime + 10);
+					break;
+				case 'ArrowLeft':
+					player.currentTime = Math.max(0, player.currentTime - 5);
+					break;
+				case 'ArrowRight':
+					player.currentTime = Math.min(player.duration, player.currentTime + 5);
+					break;
+				case 'ArrowUp':
+					player.volume = Math.min(1, player.volume + 0.05);
+					player.muted = false;
+					HUB.Video.syncVolume();
+					break;
+				case 'ArrowDown':
+					player.volume = Math.max(0, player.volume - 0.05);
+					HUB.Video.syncVolume();
+					break;
+				case 'm':
+				case 'M':
+					$jQ('#volume-toggle').click();
+					break;
+				case 't':
+				case 'T':
+					$jQ('#theatre').click();
+					break;
+				case 'f':
+				case 'F':
+					$jQ('#fullscreen').click();
+					break;
+				case 'c':
+				case 'C':
+					// Toggle captions
+					var tracks = player.textTracks;
+					if (tracks.length > 0) {
+						tracks[0].mode = (tracks[0].mode === 'showing') ? 'disabled' : 'showing';
+						$jQ('#subtitle').toggleClass('on');
+					}
+					break;
+				case 'Home':
+					player.currentTime = 0;
+					break;
+				case 'End':
+					player.currentTime = player.duration;
+					break;
+				default:
+					// 0-9: jump to 0%-90%
+					if (e.key >= '0' && e.key <= '9' && !e.ctrlKey && !e.metaKey) {
+						player.currentTime = player.duration * (parseInt(e.key) / 10);
+					} else {
+						handled = false;
+					}
+			}
+			if (handled) e.preventDefault();
 		});
 
 		// close popups when the control bar hides (mouse leaves while playing)
@@ -224,6 +365,21 @@ HUB.Video = {
 			if (!$jQ('#video-container').hasClass('paused')) {
 				$jQ('#video-container .control.open').removeClass('open');
 			}
+		});
+
+		// Click volume icon to toggle mute
+		var savedVolume = 1;
+		$jQ('#volume-toggle').on('click', function(e) {
+			var player = HUB.Video.getPlayer();
+			if (player.muted || player.volume === 0) {
+				player.muted = false;
+				HUB.Video.setVolume(savedVolume || 1);
+			} else {
+				savedVolume = player.volume;
+				player.muted = true;
+				HUB.Video.setVolume(0);
+			}
+			HUB.Video.syncVolume();
 		});
 
 		// update link input when link popup opens
@@ -254,28 +410,17 @@ HUB.Video = {
 	//-----
 	
 	playPause: function(click)
-	{    
-		var paused = HUB.Video.isPaused(),
-			player = HUB.Video.getPlayer();
-	            	
-		if (paused) {
-			$jQ("#play-pause .icon-pause").show();
-			$jQ("#play-pause .icon-play").hide();
-			$jQ('#play-pause').attr('aria-label', 'Pause video').attr('aria-pressed', 'true');
-			$jQ('#video-container').removeClass('paused');
-
-			if(click) {
+	{
+		// Only trigger play/pause — the native play/pause event handlers
+		// update icons, classes, and flash indicator to avoid sync issues.
+		if (click) {
+			var player = HUB.Video.getPlayer();
+			if (HUB.Video.isPaused()) {
 				player.play();
-			}
-		} else {
-			$jQ("#play-pause .icon-pause").hide();
-			$jQ("#play-pause .icon-play").show();
-			$jQ('#play-pause').attr('aria-label', 'Play video').attr('aria-pressed', 'false');
-			$jQ('#video-container').addClass('paused');
-			if(click) {
+			} else {
 				player.pause();
 			}
-		}  
+		}
 	},
 	
 	//-----
@@ -421,7 +566,7 @@ HUB.Video = {
 			step: 0.1,
 			min: 0,
 			max: 1,
-			orientation: 'vertical',
+			orientation: 'horizontal',
 			slide: function( event, ui ) {
 				HUB.Video.volumeIcon( ui.value * 100 );
 				HUB.Video.setVolume( ui.value );
@@ -465,15 +610,15 @@ HUB.Video = {
 	
 	volumeIcon: function( volume )
 	{
-		$jQ('#volume .icon-vol-high, #volume .icon-vol-medium, #volume .icon-vol-low, #volume .icon-vol-mute').hide();
+		$jQ('#volume-toggle .icon-vol-high, #volume-toggle .icon-vol-medium, #volume-toggle .icon-vol-low, #volume-toggle .icon-vol-mute').hide();
 		if (volume === 0) {
-			$jQ('#volume .icon-vol-mute').show();
+			$jQ('#volume-toggle .icon-vol-mute').show();
 		} else if (volume <= 33) {
-			$jQ('#volume .icon-vol-low').show();
+			$jQ('#volume-toggle .icon-vol-low').show();
 		} else if (volume <= 66) {
-			$jQ('#volume .icon-vol-medium').show();
+			$jQ('#volume-toggle .icon-vol-medium').show();
 		} else {
-			$jQ('#volume .icon-vol-high').show();
+			$jQ('#volume-toggle .icon-vol-high').show();
 		}
 	},
 	
@@ -502,13 +647,8 @@ HUB.Video = {
 		url = url.replace(/%3A/g, ':');
 		url = url.replace(/&time=\d{2}:\d{2}:\d{2}/, '');
 		
-		// set val and select
-		$jQ('#timestamp-link')
-			.val(url)
-			.off('click.linkselect')
-			.on('click.linkselect', function() {
-				$jQ(this).select();
-			});
+		// set url text
+		$jQ('#timestamp-link').text(url);
 	},
 
 	//-----
@@ -847,16 +987,74 @@ HUB.Video = {
 	{
 		var auto       = false
 			sub_titles = HUB.Video.getSubtitles();
-		
-		//create elements on page to hold subtitles
+
+		//create elements on page to hold subtitles (SRT path)
 		if(sub_titles.length > 0)
 		{
 			//setup subtitle picker
 			HUB.Video.setupSubtitlePicker( sub_titles );
-			
+
 			//setup transcript viewer
 			HUB.Video.transcriptSetup( sub_titles );
-			
+		}
+
+		// Native <track> elements (VTT path) — show CC toggle button
+		// and let the browser handle caption rendering.
+		var player = $jQ('#video-player').get(0);
+		if (player && player.textTracks && player.textTracks.length > 0 && sub_titles.length === 0)
+		{
+			$jQ('#subtitle').css('display', 'inline-flex');
+
+			// Build transcript from native TextTrack cues
+			HUB.Video.buildNativeTranscript(player);
+
+			if (player.textTracks[0].mode === 'showing') {
+				$jQ('#subtitle').addClass('on');
+			}
+
+			if (player.textTracks.length === 1) {
+				// Single language: simple click toggle, no popup
+				$jQ('#subtitle').removeClass('control'); // prevent popup behavior
+				$jQ('#subtitle .control-container').remove();
+				$jQ('#subtitle').on('click', function(e) {
+					var track = player.textTracks[0];
+					if (track.mode === 'showing') {
+						track.mode = 'disabled';
+						$jQ('#subtitle').removeClass('on');
+					} else {
+						track.mode = 'showing';
+						$jQ('#subtitle').addClass('on');
+					}
+					e.preventDefault();
+					e.stopPropagation();
+				});
+			} else {
+				// Multiple languages: show selector popup
+				$jQ('.options-toggle, .subtitle-settings, #transcript-selector').closest('.grid').hide();
+				$jQ('.options-toggle').hide();
+				$jQ('.subtitle-controls h3').text('Captions');
+				for (var t = 0; t < player.textTracks.length; t++) {
+					var tt = player.textTracks[t];
+					var sel = (tt.mode === 'showing') ? 'selected="selected"' : '';
+					$jQ('#subtitle-selector').append(
+						'<option ' + sel + ' value="' + t + '">' + tt.label + '</option>'
+					);
+				}
+				$jQ('#subtitle-selector').on('change', function() {
+					var val = $jQ(this).val();
+					for (var t = 0; t < player.textTracks.length; t++) {
+						player.textTracks[t].mode = 'disabled';
+					}
+					if (val !== '') {
+						player.textTracks[parseInt(val)].mode = 'showing';
+						$jQ('#subtitle').addClass('on');
+					} else {
+						$jQ('#subtitle').removeClass('on');
+					}
+					// Close popup after selection
+					$jQ('#subtitle').removeClass('open').attr('aria-expanded', 'false');
+				});
+			}
 		}
 	},
 	
@@ -1099,7 +1297,7 @@ HUB.Video = {
 	//-----
 	
 	parseSubtitles: function( subtitle_content )
-	{	
+	{
 		var content = "",
 			srt 	= [],
 			parts	= [],
@@ -1108,51 +1306,61 @@ HUB.Video = {
 			end		= "",
 			text	= ""
 			subtitles = [];
-			
-			
+
+
 		//replace carriage returns
 		content = subtitle_content.replace(/\r\n|\r|\n/g, '\n');
-		
+
 		//strip out empty spaces
 		content = HUB.Video.strip( content );
-		
+
+		// Strip VTT header line if present (supports both SRT and VTT)
+		content = content.replace(/^WEBVTT[^\n]*\n/, '');
+
 		//split up each
 		srt = content.split("\n\n");
-		
+
 		//for each individual subtitle
 		for(n=0; n<srt.length; n++) {
 			parts = srt[n].split("\n");
-			
-			id = parseInt(parts[0]);
-			
+
+			// Find the line containing ' --> ' (timestamp line).
+			// In SRT: line 0 is the cue number, line 1 is the timestamp.
+			// In VTT: cue number is optional, timestamp may be line 0.
+			var tsLine = -1;
+			for (var p = 0; p < parts.length; p++) {
+				if (parts[p].indexOf(' --> ') !== -1) {
+					tsLine = p;
+					break;
+				}
+			}
+			if (tsLine === -1) continue; // skip blocks without timestamps
+
 			//get the sub start time
-			start = parts[1].split(' --> ')[0];
+			start = parts[tsLine].split(' --> ')[0];
 			start = HUB.Video.strip( start );
 			start = HUB.Video.toSeconds( start );
-			
+
 			//get the sub end time
-			end = parts[1].split(' --> ')[1];
+			end = parts[tsLine].split(' --> ')[1];
 			end = HUB.Video.strip( end );
 		 	end = HUB.Video.toSeconds( end );
-			
-			//get the sub text
-			if(parts.length > 3) {
-				for(i=2, text=""; i<parts.length; i++) {
-					text += parts[i] + "\n";
-				}
-			} else {
-				text = parts[2];
+
+			//get the sub text (everything after the timestamp line)
+			text = "";
+			for (i = tsLine + 1; i < parts.length; i++) {
+				text += (text ? "\n" : "") + parts[i];
 			}
-			
+
 			//make sure we have text
-			if(text == undefined)
+			if(text == undefined || text == '')
 			{
 				text = '';
 			}
-			
+
 			//remove extra chars
 			text = text.replace(">>","");
-			
+
 			//create object for each sub
 			subtitle = { "start" : start, "end" : end, "text" : text };
 			subtitles.push(subtitle);
@@ -1451,6 +1659,144 @@ HUB.Video = {
 
 	//-----
 
+	buildNativeTranscript: function(player)
+	{
+		var track = player.textTracks[0];
+		if (!track) return;
+
+		var container = $jQ('#transcripts');
+		var built = false;
+
+		function formatTime(s) {
+			var m = Math.floor(s / 60);
+			var sec = Math.floor(s % 60);
+			return m + ':' + (sec < 10 ? '0' : '') + sec;
+		}
+
+		function build() {
+			if (built || !track.cues || track.cues.length === 0) return;
+			built = true;
+			container.empty();
+			for (var i = 0; i < track.cues.length; i++) {
+				var cue = track.cues[i];
+				var el = $jQ('<div class="cue" data-start="' + cue.startTime + '">' +
+					'<span class="cue-time">' + formatTime(cue.startTime) + '</span>' +
+					'<span class="cue-text">' + cue.text.replace(/\n/g, ' ') + '</span>' +
+					'</div>');
+				container.append(el);
+			}
+
+			// Click to seek
+			container.on('click', '.cue', function() {
+				var t = parseFloat($jQ(this).attr('data-start'));
+				player.currentTime = t;
+				if (player.paused) player.play();
+			});
+
+			// Highlight active cue during playback
+			$jQ(player).on('timeupdate', function() {
+				var t = player.currentTime;
+				container.find('.cue').each(function() {
+					var start = parseFloat($jQ(this).attr('data-start'));
+					var next = $jQ(this).next('.cue');
+					var end = next.length ? parseFloat(next.attr('data-start')) : Infinity;
+					if (t >= start && t < end) {
+						if (!$jQ(this).hasClass('active')) {
+							container.find('.cue.active').removeClass('active');
+							$jQ(this).addClass('active');
+							// Auto-scroll: keep active cue ~25% from the top
+							var containerEl = container.get(0);
+							var cueEl = $jQ(this).get(0);
+							var cueTop = cueEl.offsetTop - containerEl.offsetTop;
+							var target = cueTop - (containerEl.clientHeight * 0.25);
+							containerEl.scrollTo({ top: target, behavior: 'smooth' });
+						}
+					}
+				});
+			});
+
+			// Search
+			$jQ('#transcript-search').on('input', function() {
+				var q = $jQ(this).val().toLowerCase();
+				$jQ('#transcript-search-clear').toggle(q.length > 0);
+				var count = 0;
+				container.find('.cue').each(function() {
+					var text = $jQ(this).text().toLowerCase();
+					var match = !q || text.indexOf(q) !== -1;
+					$jQ(this).toggle(match);
+					if (match && q) count++;
+				});
+				$jQ('#transcript-search-count').text(q ? count + ' matches' : '');
+			});
+			$jQ('#transcript-search-clear').on('click', function() {
+				$jQ('#transcript-search').val('').trigger('input');
+			});
+
+			// Font size controls
+			var fontSize = 18;
+			$jQ('#font-smaller').on('click', function() {
+				fontSize = Math.max(12, fontSize - 1);
+				container.css('font-size', fontSize + 'px');
+			});
+			$jQ('#font-bigger').on('click', function() {
+				fontSize = Math.min(26, fontSize + 1);
+				container.css('font-size', fontSize + 'px');
+			});
+
+			// Match transcript height to video stage, but ensure
+			// a minimum useful height for readability
+			function syncTranscriptHeight() {
+				var stageH = $jQ('#video-stage').outerHeight();
+				var minH = Math.max(400, window.innerHeight * 0.5);
+				var h = Math.max(stageH, minH);
+				$jQ('#transcript-container').css('max-height', h + 'px');
+			}
+			syncTranscriptHeight();
+			$jQ(window).on('resize', syncTranscriptHeight);
+
+			// Show transcript container and enable toggle button
+			$jQ('#transcript-container').show();
+			$jQ('#transcript-toggle')
+				.removeClass('disabled')
+				.attr('aria-disabled', 'false')
+				.addClass('on');
+
+			function toggleTranscript() {
+				var col = $jQ('.video-transcript-col');
+				var isVisible = col.is(':visible');
+				col.toggle(!isVisible);
+				$jQ('#transcript-toggle').toggleClass('on', !isVisible);
+				$jQ('#transcript-toggle').attr('aria-label', isVisible ? 'Show transcript' : 'Hide transcript');
+			}
+
+			$jQ('#transcript-toggle').on('click', function(e) {
+				toggleTranscript();
+				e.preventDefault();
+				e.stopPropagation();
+			});
+
+			$jQ('#transcript-close').on('click', function() {
+				toggleTranscript();
+			});
+		}
+
+		// Cues may not be loaded yet — wait for them
+		if (track.cues && track.cues.length > 0) {
+			build();
+		} else {
+			track.addEventListener('load', build);
+			// Also poll briefly in case the load event already fired
+			var attempts = 0;
+			var poll = setInterval(function() {
+				if (track.cues && track.cues.length > 0) {
+					clearInterval(poll);
+					build();
+				}
+				if (++attempts > 20) clearInterval(poll);
+			}, 250);
+		}
+	},
+
 	popout: function()
 	{
 		if (parent.HUB.Resources)
@@ -1479,10 +1825,35 @@ HUB.Video = {
 				}
 			});
 		}
+
+		// Theatre mode toggle
+		$jQ('#theatre').on('click', function(e) {
+			$jQ('.video-page').toggleClass('theatre');
+			var isTheatre = $jQ('.video-page').hasClass('theatre');
+			$jQ(this).attr('aria-label', isTheatre ? 'Exit theatre mode' : 'Theatre mode');
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
+		// Standalone fullscreen button (Fullscreen API)
+		$jQ('#fullscreen').on('click', function() {
+			var stage = document.getElementById('video-stage');
+			if (!document.fullscreenElement) {
+				(stage.requestFullscreen || stage.webkitRequestFullscreen || stage.msRequestFullscreen).call(stage);
+			} else {
+				(document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document);
+			}
+		});
+		document.addEventListener('fullscreenchange', function() {
+			var isFS = !!document.fullscreenElement;
+			$jQ('#fullscreen .icon-expand').toggle(!isFS);
+			$jQ('#fullscreen .icon-shrink').toggle(isFS);
+			$jQ('#fullscreen').attr('aria-label', isFS ? 'Exit fullscreen' : 'Fullscreen');
+		});
 	},
-	
+
 	//-----
-	
+
 	strip: function( content )
 	{
 		return content.replace(/^\s+|\s+$/g,"");

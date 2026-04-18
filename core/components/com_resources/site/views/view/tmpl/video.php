@@ -33,10 +33,24 @@ $this->css('
 ');
 ?>
 
+<section class="main section video-page">
+	<div class="video-page-header">
+		<h2><?php echo $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title); ?></h2>
+		<?php if (isset($this->parent)) : ?>
+			<p class="video-page-back"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->parent->id); ?>">&larr; Back to resource</a></p>
+		<?php endif; ?>
+	</div>
+
+<div class="video-layout">
+<div class="video-player-col">
 <div id="video-container" class="paused">
 	<div id="video-stage">
+	<div id="play-state-flash" aria-hidden="true">
+		<svg class="flash-play" viewBox="0 0 48 48" fill="none"><path d="M16 10v28l22-14z" fill="#fff"/></svg>
+		<svg class="flash-pause" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="8" height="28" rx="2" fill="#fff"/><rect x="28" y="10" width="8" height="28" rx="2" fill="#fff"/></svg>
+	</div>
 	<?php if (count($presentation->media) > 0) : ?>
-		<video webkit-playsinline playsinline controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
+		<video webkit-playsinline playsinline controls id="video-player" aria-label="<?php echo $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title); ?>" data-mediaid="<?php echo $this->resource->id; ?>">
 			<?php foreach ($presentation->media as $video) : ?>
 				<?php
 					switch ($video->type)
@@ -86,24 +100,39 @@ $this->css('
 						$modified = '123456789';
 						if (substr($subtitle->source, 0, 4) != 'http')
 						{
-							$source   = $base . $source;
-							if (file_exists(PATH_CORE . $source))
+							// Strip PATH_ROOT if the manifest stored an absolute path
+							if (strpos($source, PATH_ROOT) === 0)
 							{
-								$modified = filemtime(PATH_CORE . $source);
+								$source = substr($source, strlen(PATH_ROOT));
+							}
+							else
+							{
+								$source = $base . $source;
+							}
+							if (file_exists(PATH_ROOT . $source))
+							{
+								$modified = filemtime(PATH_ROOT . $source);
 							}
 						}
 					?>
+					<?php if (preg_match('/\.vtt$/i', $source)) : ?>
+					<?php // VTT: use native <track> — browser renders captions with
+					      // user-preferred styles from OS accessibility settings. ?>
+					<track kind="captions" src="<?php echo $source; ?>?v=<?php echo $modified; ?>" srclang="<?php echo isset($subtitle->lang) ? $subtitle->lang : 'en'; ?>" label="<?php echo $subtitle->name; ?>"<?php echo ($auto) ? ' default' : ''; ?> />
+					<?php else : ?>
+					<?php // SRT: use custom JS overlay (browsers don't support native SRT) ?>
 					<div aria-hidden="true"
 						data-autoplay="<?php echo $auto; ?>"
 						data-type="subtitle"
 						data-lang="<?php echo $subtitle->name; ?>"
 						data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</video>
 	<?php endif; ?>
 
-	<div id="control-box" class="no-controls" data-theme="dark">
+	<div id="control-box" class="no-controls" data-theme="dark" role="toolbar" aria-label="Video controls">
 		<div id="progress-bar"></div>
 		<div id="control-buttons">
 			<div id="control-buttons-left">
@@ -117,6 +146,30 @@ $this->css('
 					</svg>
 				</a>
 				<div id="media-progress"></div>
+				<div id="volume-group">
+					<button id="volume-toggle" type="button" aria-label="Mute">
+						<svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+							<path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor"/>
+							<path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor"/>
+						</svg>
+						<svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+							<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+							<path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor"/>
+						</svg>
+						<svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+							<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+							<path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4"/>
+						</svg>
+						<svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+							<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
+							<line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							<line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+						</svg>
+					</button>
+					<label for="volume-bar" class="sr-only">Volume</label>
+					<div id="volume-bar"></div>
+				</div>
 			</div>
 			<div id="control-buttons-right">
 				<a id="subtitle" class="control" href="javascript:void(0);" aria-pressed="false" aria-label="Captions and Transcript settings" aria-haspopup="true" aria-expanded="false">
@@ -204,29 +257,10 @@ $this->css('
 						</div>
 					</div>
 				</a>
-				<a id="volume" class="control" href="javascript:void(0);" aria-label="Volume" aria-haspopup="true" aria-expanded="false">
-					<svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-						<path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor"/>
-						<path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor"/>
+				<a id="transcript-toggle" class="control disabled" href="javascript:void(0);" role="button" aria-label="Transcript" aria-disabled="true">
+					<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4 5h16M4 9h10M4 13h12M4 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 					</svg>
-					<svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
-						<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-						<path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor"/>
-					</svg>
-					<svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
-						<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-						<path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4"/>
-					</svg>
-					<svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
-						<path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
-						<line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-						<line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-					</svg>
-					<div class="control-container volume-controls">
-						<label for="volume-bar" class="sr-only">Volume</label>
-						<div id="volume-bar"></div>
-					</div>
 				</a>
 				<a id="settings" class="control" href="javascript:void(0);" aria-label="Playback settings" aria-haspopup="true" aria-expanded="false">
 					<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,15 +290,25 @@ $this->css('
 						<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 					<div class="control-container link-controls">
-						<h3>Share link <span>at current position</span></h3>
-						<div class="grid">
-							<div class="input">
-								<label for="timestamp-link" class="sr-only">Link at current position</label>
-								<input type="text" id="timestamp-link" value="" aria-label="Link at current position" readonly />
-								<span class="hint">Cmd/Ctrl + C to copy</span>
-							</div>
+						<h3>Share at current time</h3>
+						<div class="link-input-wrap">
+							<span id="timestamp-link" class="share-url" aria-label="Link at current position"></span>
+							<button type="button" id="copy-link" aria-label="Copy link">Copy</button>
 						</div>
 					</div>
+				</a>
+				<a id="theatre" class="control" href="javascript:void(0);" role="button" aria-label="Theatre mode">
+					<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect x="2" y="5" width="20" height="14" rx="1" stroke="currentColor" stroke-width="2"/>
+					</svg>
+				</a>
+				<a id="fullscreen" class="control" href="javascript:void(0);" role="button" aria-label="Fullscreen">
+					<svg class="icon-expand" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<svg class="icon-shrink" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+						<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
 				</a>
 			</div>
 		</div>
@@ -273,7 +317,9 @@ $this->css('
 
 	<div id="video-subtitles"></div>
 </div><!-- /#video-container -->
+</div><!-- /.video-player-col -->
 
+<div class="video-transcript-col">
 <div id="transcript-container" role="region" aria-label="Transcript">
 	<div id="transcript-toolbar" role="toolbar" aria-label="Transcript controls">
 		<div id="transcript-select" aria-live="polite"></div>
@@ -307,11 +353,17 @@ $this->css('
 				</svg>
 			</button>
 		</div>
+		<button type="button" id="transcript-close" aria-label="Close transcript">
+			<svg aria-hidden="true" focusable="false" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<line x1="5" y1="5" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				<line x1="15" y1="5" x2="5" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			</svg>
+		</button>
 	</div>
 	<div id="transcripts" role="log" aria-label="Transcript text" aria-live="off" tabindex="0"></div>
 </div>
-<div class="bottom-controls">
-	<a href="javascript:void(0);" class="btn btn-secondardy icon-popout embed-popout">Pop Out</a>
-</div>
+</div><!-- /.video-transcript-col -->
+</div><!-- /.video-layout -->
+</section><!-- /.video-page -->
 <?php
-Document::setTitle($this->resource->title);
+Document::setTitle(isset($this->parent) ? $this->parent->title : $this->resource->title);

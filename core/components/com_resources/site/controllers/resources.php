@@ -1155,6 +1155,7 @@ class Resources extends SiteController
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
 		$this->view->resource = $activechild;
+		$this->view->parent   = $model;
 		$this->view->manifest = $manifest;
 
 		// Output HTML
@@ -1255,23 +1256,43 @@ class Resources extends SiteController
 			$manifest->presentation->media[] = $media;
 		}
 
-		//get the subs
-		$subtitles = \Filesystem::files($path, '.srt|.SRT');
+		//get the subs (SRT and VTT caption formats)
+		$subtitles = \Filesystem::files($path, '.srt|.SRT|.vtt|.VTT');
+
+		// Map of ISO 639-1 language codes to display names
+		$langNames = array(
+			'en' => 'English', 'es' => 'Spanish', 'fr' => 'French',
+			'de' => 'German', 'pt' => 'Portuguese', 'it' => 'Italian',
+			'zh' => 'Chinese', 'ja' => 'Japanese', 'ko' => 'Korean',
+			'ar' => 'Arabic', 'hi' => 'Hindi', 'ru' => 'Russian',
+		);
 
 		//add each subtitle to manifest
 		foreach ($subtitles as $k => $subtitle)
 		{
-			//get name
-			$info = pathinfo( $subtitle );
+			$info = pathinfo($subtitle);
+
+			// Parse language from filename convention: video.lang.vtt
+			// e.g. "ESI.en.vtt" → lang=en, "Spanish-auto.srt" → lang=Spanish
 			$name = str_replace('-auto', '', $info['filename']);
-			$name = ucfirst( $name );
+			$lang = '';
+			if (preg_match('/\.([a-z]{2,3})$/i', $info['filename'], $m))
+			{
+				$lang = strtolower($m[1]);
+				$name = isset($langNames[$lang]) ? $langNames[$lang] : ucfirst($lang);
+			}
+			else
+			{
+				$name = ucfirst($name);
+			}
 
 			// object to hold subtitle info
 			$sub = new stdClass;
-			$sub->type     = 'SRT';
+			$sub->type     = strtoupper($info['extension']);
 			$sub->name     = $name;
+			$sub->lang     = $lang ?: 'en';
 			$sub->source   = $path . DS . $subtitle;
-			$sub->autoplay = (strstr($subtitle, '-')) ? 1 : 0;
+			$sub->autoplay = (strstr($subtitle, '-auto') !== false || $lang === 'en') ? 1 : 0;
 
 			// add sub object to array of subtitles
 			$manifest->presentation->subtitles[] = $sub;
