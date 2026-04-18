@@ -8,9 +8,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<?php if ($this->comments && count($this->comments) > 0) : ?>
+<?php if ($this->comments && count($this->comments) > 0): ?>
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
 <?php
+{
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -32,6 +33,7 @@ defined('_HZEXEC_') or die();
 		     ->set('base', $this->base)
 		     ->display();
 	}
+}
 ?>
 </ol>
 <?php endif; ?>
