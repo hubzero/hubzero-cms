@@ -85,6 +85,13 @@ HUB.TagBrowser = {
 		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby, {}, function(data) {
 			$('#level-'+level).html(data);
 
+			// Ensure listbox role is present after dynamic HTML injection
+			$('#level-'+level).find('ul[id^="ul"]').each(function() {
+				if (!$(this).attr('role')) {
+					$(this).attr('role', 'listbox');
+				}
+			});
+
 			// Rebind events on new content
 			HUB.TagBrowser.bindClickHandlers($('#level-'+level));
 
@@ -166,7 +173,7 @@ HUB.TagBrowser = {
 		var $ = this.jQuery;
 		$('#level-2').html(
 			'<h3>Resources</h3>' +
-			'<ul id="ulitems" role="listbox" tabindex="0" aria-label="Resources"><li role="option"><span>Select a tag to see resources.</span></li></ul>'
+			'<ul id="ulitems" role="listbox" tabindex="0" aria-label="Resources"><li><span>Select a tag to see resources.</span></li></ul>'
 		);
 		HUB.TagBrowser.resetLevel3();
 	},
@@ -373,10 +380,16 @@ HUB.TagBrowser = {
 
 		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
 			$('#level-1').html(data);
+			$('#level-1').find('ul[id^="ul"]').each(function() {
+				if (!$(this).attr('role')) { $(this).attr('role', 'listbox'); }
+			});
 			HUB.TagBrowser.bindClickHandlers($('#level-1'));
 			HUB.TagBrowser.sc = setTimeout(function() { HUB.TagBrowser.setScroll(); }, 500);
 			$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
 				$('#level-2').html(data);
+				$('#level-2').find('ul[id^="ul"]').each(function() {
+					if (!$(this).attr('role')) { $(this).attr('role', 'listbox'); }
+				});
 				HUB.TagBrowser.bindClickHandlers($('#level-2'));
 			});
 		});
