@@ -121,7 +121,7 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
 		if ($row->ftext)
 		{
-			$html .= "\t\t" . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";

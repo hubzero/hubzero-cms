@@ -2779,6 +2779,12 @@ class WikiParser
 				else
 				{
 					$t = substr($oLine, $prefixLength);
+					// Not a list marker — don't treat leading spaces
+					// as list nesting depth.  Without this, indented
+					// text after a list item opens phantom nested
+					// lists, producing orphan <li> elements.
+					$prefixLength = 0;
+					$pref = $pref2 = '';
 				}
 				$this->mInPre = !empty($preOpenMatch);
 			}

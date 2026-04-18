@@ -152,8 +152,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$this->css('jquery.datepicker.css', 'system')
 			->css('jquery.timepicker.css', 'system');
 
-			//add google js-api
-			Document::addScript('https://www.google.com/jsapi');
+			//add google charts loader (modern API, replaces deprecated jsapi)
+			Document::addScript('https://www.gstatic.com/charts/loader.js');
 
 			//add jquery from google cdn
 			//Document::addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
@@ -443,11 +443,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		$script = "
-			google.load(\"visualization\", \"1\", {
-				packages:[\"corechart\"]
+			google.charts.load('current', {
+				packages:['corechart']
 			});
 
-			google.setOnLoadCallback(drawChart);
+			google.charts.setOnLoadCallback(drawChart);
 
 			function drawChart() {
 				var data = new google.visualization.DataTable();
@@ -480,7 +480,17 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				var chart = new google.visualization.AreaChart(document.getElementById('page_views_chart'));
+				var chartEl = document.getElementById('page_views_chart');
+				var chart = new google.visualization.AreaChart(chartEl);
+				// [a11y] Google Charts adds aria-label on bare div without role;
+				// observe the chart container and add role=img when they appear
+				new MutationObserver(function(mutations, obs) {
+					var divs = chartEl.querySelectorAll('div[aria-label]:not([role])');
+					for (var i = 0; i < divs.length; i++) {
+						divs[i].setAttribute('role', 'img');
+					}
+					if (divs.length) obs.disconnect();
+				}).observe(chartEl, {childList: true, subtree: true, attributes: true});
 				chart.draw(data, options);
 			}";
 
