@@ -110,7 +110,7 @@ $this->css();
 				$this_datetime = new DateTime($this->year . '-01-01');
 				//get a DateTime for the first day of the year and check if there's an event earlier
 				if ($this_datetime > $first_event_time) {
-					$prev = Route::url('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task));
+					$prev = Route::url('index.php?option='.$this->option.'&'.$prev_year->toDateURL('year'));
 					$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
 				} else {
 					$prev = "javascript:void(0);";
@@ -119,7 +119,7 @@ $this->css();
 				//get a DateTime for the first day of the next year and see if there's an event after
 				$this_datetime->add(new DateInterval("P1Y"));
 				if ($this_datetime <= $last_event_time) {
-					$next = Route::url('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task));
+					$next = Route::url('index.php?option='.$this->option.'&'.$next_year->toDateURL('year'));
 					$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
 				} else {
 					$next = "javascript:void(0);";
@@ -137,7 +137,7 @@ $this->css();
 			<?php
 			$this->view('calendar')
 			     ->set('option', $this->option)
-			     ->set('task', $this->task)
+			     ->set('task', 'month')
 			     ->set('year', $this->year)
 			     ->set('month', $this->month)
 			     ->set('day', $this->day)
