@@ -62,7 +62,7 @@
 	}
 	#system-environment p.development {
 		background-color: #ba4a3b;
-		color: #ffd2c3;
+		color: #ffffff; /* WCAG: #ffd2c3 on #ba4a3b = 3.44:1; #fff = 4.67:1 */
 		border-color: #982819;
 	}
 
@@ -209,7 +209,7 @@
 	.error,
 	#system-message dd.error {
 		background-color: #ba4a3b;
-		color: #ffd2c3 !important;
+		color: #ffffff !important; /* WCAG: #ffd2c3 on #ba4a3b = 3.44:1; #fff = 4.67:1 */
 		border-color: #982819;
 	}
 	span.systemmessage-before,
