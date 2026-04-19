@@ -656,10 +656,18 @@ class Format
 			$link .= implode("&", $query);
 
 			// do we have an icon or just using text as the link
-			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
+			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" alt="' . htmlspecialchars($text) . '" />' : $text;
+
+			// WCAG 2.4.4: ensure link always has an accessible name
+			$link_title = $text;
+			if (empty($link_text) && empty($link_title))
+			{
+				$link_title = 'Find via library link resolver';
+				$link_text  = $link_title;
+			}
 
 			// final link
-			$html .= '<a rel="external nofollow" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+			$html .= '<a rel="external nofollow" href="' . $link . '" title="' . htmlspecialchars($link_title) . '">' . $link_text . '</a>';
 		}
 
 		return $html;
