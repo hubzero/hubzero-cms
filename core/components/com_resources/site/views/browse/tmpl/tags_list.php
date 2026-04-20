@@ -43,7 +43,9 @@ switch ($this->level)
 			$i++;
 			$isOpen = ($tg == $tag->tag);
 
-			$li  = '<li';
+			$li  = '<li role="option" aria-selected="';
+			$li .= $isOpen ? 'true' : 'false';
+			$li .= '"';
 			if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag'])
 			{
 				$li .= ' class="supported"';
@@ -113,7 +115,7 @@ switch ($this->level)
 					}
 				}
 
-				$html .= '<li ';
+				$html .= '<li role="option" aria-selected="false" ';
 				if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported))
 				{
 					$html .= 'class="supported" ';
@@ -123,7 +125,7 @@ switch ($this->level)
 		}
 		else
 		{
-			$html .= '<li><span>'.Lang::txt('COM_RESOURCES_NO_RESULTS').'</span></li>';
+			$html .= '<li role="option" aria-selected="false"><span>'.Lang::txt('COM_RESOURCES_NO_RESULTS').'</span></li>';
 		}
 		$html .= '</ul>';
 		if ($type->isForTools() && $params->get('show_ranking'))

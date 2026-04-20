@@ -173,7 +173,7 @@ HUB.TagBrowser = {
 		var $ = this.jQuery;
 		$('#level-2').html(
 			'<h3>Resources</h3>' +
-			'<ul id="ulitems" role="listbox" tabindex="0" aria-label="Resources"><li><span>Select a tag to see resources.</span></li></ul>'
+			'<ul id="ulitems" role="listbox" tabindex="0" aria-label="Resources"><li role="option" aria-selected="false"><span>Select a tag to see resources.</span></li></ul>'
 		);
 		HUB.TagBrowser.resetLevel3();
 	},
@@ -210,9 +210,11 @@ HUB.TagBrowser = {
 
 			// Clear previous selection in this column
 			levelDiv.find('ul a.open').removeClass('open');
+			levelDiv.find('ul li[role="option"]').attr('aria-selected', 'false');
 
 			// Highlight the focused item
 			el.addClass('open');
+			el.closest('li[role="option"]').attr('aria-selected', 'true');
 		});
 
 		// Bind sort select change event
@@ -246,7 +248,9 @@ HUB.TagBrowser = {
 		var moveFocus = function(link) {
 			// Move .open class from previous item to the new one within this column
 			levelDiv.find('ul a.open').removeClass('open');
+			levelDiv.find('ul li[role="option"]').attr('aria-selected', 'false');
 			link.addClass('open');
+			link.closest('li[role="option"]').attr('aria-selected', 'true');
 			link.focus();
 
 			// Auto-activate: load the next column for this item (without moving focus)

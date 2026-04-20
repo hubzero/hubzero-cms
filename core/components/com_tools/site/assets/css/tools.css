@@ -21,10 +21,10 @@
 		margin: 1em 0;
 	}
 	.source-code.open {
-		color: #7AAB69;
+		color: #3a6800; /* WCAG SC 1.4.3: was #7AAB69 on #fff = 2.67:1; #3a6800 = 6.65:1 */
 	}
 	.source-code.closed {
-		color: #CC0000;
+		color: #CC0000; /* 5.89:1 on #fff — passes */
 	}
 /* Columns */
 	.section>h3 {
