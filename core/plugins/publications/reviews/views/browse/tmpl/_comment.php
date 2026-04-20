@@ -155,8 +155,8 @@ defined('_HZEXEC_') or die();
 						?>
 					</label>
 
-					<label id="comment-anonymous-label" for="comment-anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
+					<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+						<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
 						<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 					</label>
 
@@ -171,9 +171,10 @@ defined('_HZEXEC_') or die();
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if (User::get('id') == $this->comment->get('created_by')) { ?>
-					<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE'); ?><!--
-					--></a>
+					<form action="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE'); ?></button>
+					</form>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit' . ($this->comment->get('publication_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('publication_id') ? '#commentform' : '#c' . $this->comment->get('id'))); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT'); ?><!--
 					--></a>
@@ -232,8 +233,8 @@ defined('_HZEXEC_') or die();
 							?>
 						</label>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+						<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_reply_anonymous">
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_reply_anonymous" value="1" />
 							<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 

@@ -164,10 +164,14 @@ class Pages extends SiteController
 		// Does a page exist for the given pagename?
 		if ($this->page->isNew() || $this->page->isDeleted())
 		{
-			/*if (!$this->page->access('create'))
+			if (Request::getWord('format') == 'raw')
 			{
-				App::abort(404, Lang::txt('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST'));
-			}*/
+				ob_clean();
+				header('Content-type: text/plain');
+				header('HTTP/1.0 404 Not Found');
+				echo 'Page does not exist.';
+				exit();
+			}
 
 			$this->view
 				->set('page', $this->page)
@@ -225,6 +229,15 @@ class Pages extends SiteController
 
 		if (!$revision->get('id'))
 		{
+			if (Request::getWord('format') == 'raw')
+			{
+				ob_clean();
+				header('Content-type: text/plain');
+				header('HTTP/1.0 404 Not Found');
+				echo 'No such revision.';
+				exit();
+			}
+
 			$this->view
 				->set('page', $this->page)
 				->set('version', ($version ? $version : $this->page->get('version_id')))

@@ -93,7 +93,7 @@ if (!$tmpl && !$no_html) {
 								</select>
 							</td>
 							<td>
-								<select name="fields[sort_dir]" id="field-sort_dir">
+								<select name="fields[sort_dir]" id="field-sort_dir" aria-label="<?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION'); ?>">
 									<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; } ?>>desc</option>
 									<option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') { echo ' selected="selected"'; } ?>>asc</option>
 								</select>
@@ -161,7 +161,7 @@ if (!$tmpl && !$no_html) {
 
 		<fieldset class="fields sort">
 			<p>
-				<label for="field-sort"><?php echo Lang::txt('In folder'); ?></label>
+				<label for="field-folder_id"><?php echo Lang::txt('In folder'); ?></label>
 				<select name="fields[folder_id]" id="field-folder_id">
 					<?php
 					include_once Component::path('com_support') . DS . 'models' . DS . 'queryfolder.php';
@@ -181,8 +181,8 @@ if (!$tmpl && !$no_html) {
 					?>
 				</select>
 
-				<label for="field-sort"><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
-				<select name="fields[sort]" id="field-sort">
+				<label for="field-sort-inline"><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
+				<select name="fields[sort]" id="field-sort-inline">
 					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
 					<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
 					<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
@@ -198,7 +198,7 @@ if (!$tmpl && !$no_html) {
 					<option value="closed"<?php if ($this->row->sort == 'closed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
 					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 				</select>
-				<select name="fields[sort_dir]" id="field-sort_dir">
+				<select name="fields[sort_dir]" id="field-sort_dir-inline" aria-label="<?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION'); ?>">
 					<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; } ?>>desc</option>
 					<option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') { echo ' selected="selected"'; } ?>>asc</option>
 				</select>

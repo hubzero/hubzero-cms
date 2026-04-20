@@ -53,7 +53,7 @@ $roles = [
 				<span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
 			</label>
 
-			<select id="sync-role-selector" name="syncRole" hidden>
+			<select id="sync-role-selector" name="syncRole" hidden aria-label="<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?>">
 				<?php foreach ($roles as $description => $value): ?>
 					<option value="" selected disabled hidden>
 						<?php echo Lang::txt('PLG_PROJECTS_TEAM_SYNCING_DEFAULT'); ?>
@@ -151,7 +151,10 @@ $roles = [
 			<span><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
 			<span id="team-manage" class="manage-options hidden">
 				<span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
-				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?></a>
+				<form action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" method="post" class="inline-form">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="manage" id="t-delete"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?></button>
+				</form>
 			</span>
 		</p>
 	</div>
@@ -228,7 +231,7 @@ $roles = [
 			?>
 			<tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
 				<td>
-					<input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) { echo 'disabled="disabled"'; } ?> />
+					<input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" aria-label="<?php echo $this->escape($owner->fullname); ?>" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) { echo 'disabled="disabled"'; } ?> />
 				</td>
 				<td class="imagebox">
 					<span class="user-img-wrap">
@@ -260,18 +263,18 @@ $roles = [
 				</td>
 				<td>
 					<?php if ($owner->status == 3): ?>
-						<a id="<?php echo 'form-' . $owner->id;?>"
-							href="<?php echo Route::url('index.php?option=com_projects&alias=' .
-								$this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
-							class="btn btn-success">
-							<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
-						</a>
-						<a id="<?php echo 'form-' . $owner->id;?>"
-							href="<?php echo Route::url('index.php?option=com_projects&alias=' .
-								$this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
-							class="btn btn-danger modal">
-							<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
-						</a>
+						<form method="post" action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid);?>" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
+							</button>
+						</form>
+						<form method="post" action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid);?>" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" id="<?php echo 'form-deny-' . $owner->id;?>" class="btn btn-danger">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
+							</button>
+						</form>
 					<?php endif; ?>
 				</td>
 				<td>

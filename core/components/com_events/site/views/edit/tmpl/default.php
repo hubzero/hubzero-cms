@@ -101,7 +101,7 @@ $this->css()
 				<p>
 					<?php //echo Html::input('calendar', 'publish_up', $start_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 					<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $this->times['start_publish']; ?>" />
-					<input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?php echo $this->times['start_time']; ?>" />
+					<input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?php echo $this->times['start_time']; ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME'); ?>" />
 					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
 					<input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?php if (!$this->times['start_pm']) { echo 'checked="checked"';} ?> /><small>AM</small>
 					<input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php if ($this->times['start_pm']) { echo 'checked="checked"';} ?> /><small>PM</small>
@@ -113,7 +113,7 @@ $this->css()
 				<p>
 					<?php //echo Html::input('calendar', 'publish_down', $stop_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 					<input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?php echo $this->times['stop_publish']; ?>" />
-					<input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?php echo $this->times['end_time']; ?>" />
+					<input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?php echo $this->times['end_time']; ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?>" />
 					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
 					<input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?php if (!$this->times['end_pm']) { echo 'checked="checked"';} ?> /><small>AM</small>
 					<input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) { echo 'checked="checked"';} ?> /><small>PM</small>

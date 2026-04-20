@@ -31,9 +31,17 @@ class Html
 			5 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
 		);
 
+		// Extract field name for aria-label
+		$fieldName = $name;
+		if (preg_match('/\[(\w+)\]/', $name, $m))
+		{
+			$fieldName = ucfirst($m[1]);
+		}
+
 		$html  = '<select name="' . $name . '"';
 		$html .= ($id)    ? ' id="' . $id . '"'       : '';
 		$html .= ($class) ? ' class="' . $class . '"' : '';
+		$html .= ' aria-label="' . Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVACY') . ': ' . $fieldName . '"';
 		$html .= '>' . "\n";
 		foreach ($arr as $k => $v)
 		{
