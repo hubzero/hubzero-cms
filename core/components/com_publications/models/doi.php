@@ -832,7 +832,7 @@ class Doi extends Obj
 		{
 			foreach ($this->get('regTags') as $regTag)
 			{
-				if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim($regTag->description)))
+				if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim(strip_tags($regTag->description))))
 				{
 					$url = substr(trim(strip_tags($regTag->description)), 6);
 					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $regTag->raw_tag . '</subject>';
