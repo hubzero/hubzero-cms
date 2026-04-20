@@ -146,18 +146,19 @@ if (!$this->comment->get('item_id'))
 
 						<?php echo Html::input('token'); ?>
 
+						<?php $formSuffix = $this->depth . '_' . $this->comment->get('id'); ?>
 						<div class="form-group">
-							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+							<label for="comment_<?php echo $formSuffix; ?>_content">
 								<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
 								<?php
-								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $formSuffix . '_content', array('class' => 'form-control minimal no-footer'));
 								?>
 							</label>
 						</div>
 
 						<div class="form-group">
-							<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
+							<label class="comment-anonymous-label" for="comment_<?php echo $formSuffix; ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $formSuffix; ?>_anonymous" value="1" />
 								<?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
 							</label>
 						</div>

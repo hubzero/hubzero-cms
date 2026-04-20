@@ -113,9 +113,10 @@ $this->comment->set('category', 'answercomment');
 
 			<p class="comment-options">
 				<?php if ($this->page->access('delete', 'comment')) { ?>
-					<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
-						--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
-					--></a>
+					<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+					</form>
 				<?php } ?>
 				<?php if ($this->page->access('edit', 'comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
@@ -176,8 +177,8 @@ $this->comment->set('category', 'answercomment');
 						</div>
 
 						<div class="form-group form-check">
-							<label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
-								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+							<label class="comment-anonymous-label form-check-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
 								<?php echo Lang::txt('COM_WIKI_POST_COMMENT_ANONYMOUSLY'); ?>
 							</label>
 						</div>

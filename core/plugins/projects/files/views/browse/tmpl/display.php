@@ -124,7 +124,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 		<thead>
 			<tr>
 				<?php if ($this->model->access('content')) { ?>
-				<th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
+				<th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_SELECT_ALL'); ?>" class="js" /></th>
 				<?php } ?>
 				<th scope="col" class="asset_doc <?php if ($this->params['sortby'] == 'name') { echo ' activesort'; } ?>">
 					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=name&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
@@ -162,8 +162,11 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 			<?php
 				// [a11y] Ensure table headers have data cells when empty
 				if (count($this->items) == 0 && !$this->subdir)
-				{ ?>
-				<tr><td colspan="<?php echo $this->publishing ? 7 - $min : 6 - $min; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?></td></tr>
+				{
+					// Count actual columns: Name+Type+Size+Modified+Options=5, plus conditionals
+					$cols = 5 + ($this->model->access('content') ? 1 : 0) + ($this->repo->getAdapterName() == 'git' ? 1 : 0) + ($this->publishing ? 1 : 0);
+				?>
+				<tr><td colspan="<?php echo $cols; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?></td></tr>
 				<?php }
 				// Display contents
 				if (count($this->items) > 0)

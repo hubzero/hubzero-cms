@@ -39,14 +39,27 @@ if ($this->row->get('login'))
 	}
 	else
 	{
-		$name  = '<a rel="email" href="mailto:' . $this->row->get('email') . '">';
-		$name .= ($this->row->get('login')) ? $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')' : $this->escape(stripslashes($this->row->get('name')));
-		$name .= '</a>';
+		$displayName = ($this->row->get('login')) ? $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')' : $this->escape(stripslashes($this->row->get('name')));
+		if ($this->row->get('email'))
+		{
+			$name = '<a rel="email" href="mailto:' . $this->row->get('email') . '">' . $displayName . '</a>';
+		}
+		else
+		{
+			$name = $displayName;
+		}
 	}
 }
 else
 {
-	$name  = '<a rel="email" href="mailto:' . $this->row->get('email') . '">' . $this->escape(stripslashes($this->row->get('name'))) . '</a>';
+	if ($this->row->get('email'))
+	{
+		$name = '<a rel="email" href="mailto:' . $this->row->get('email') . '">' . $this->escape(stripslashes($this->row->get('name'))) . '</a>';
+	}
+	else
+	{
+		$name = $this->escape(stripslashes($this->row->get('name')));
+	}
 }
 
 $prev = null;
@@ -177,7 +190,7 @@ $cc = array();
 							<tbody>
 								<tr>
 									<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_EMAIL'); ?>:</th>
-									<td><a href="mailto:<?php echo $this->row->get('email'); ?>"><?php echo $this->escape($this->row->get('email')); ?></a></td>
+									<td><?php if ($this->row->get('email')) { ?><a href="mailto:<?php echo $this->row->get('email'); ?>"><?php echo $this->escape($this->row->get('email')); ?></a><?php } else { echo Lang::txt('COM_SUPPORT_UNKNOWN'); } ?></td>
 								</tr>
 								<tr>
 									<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>
@@ -583,8 +596,8 @@ $cc = array();
 					<?php } ?>
 						<?php if ($this->row->access('create', 'comments') > 0) { ?>
 							<div class="form-group">
-								<label for="messages">
-									<select name="messages" id="messages" class="form-control">
+								<label for="messages" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT_MESSAGES'); ?></label>
+									<select name="messages" id="messages" class="form-control" aria-label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_MESSAGES'); ?>">
 										<option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
 										<?php
 										$hi = array();
@@ -597,7 +610,6 @@ $cc = array();
 										}
 										?>
 									</select>
-								</label>
 								<?php echo implode("\n", $hi); ?>
 							</div>
 						<?php } // ACL can create comment (admin) ?>
@@ -614,6 +626,7 @@ $cc = array();
 						<div class="clear"></div>
 					<?php } // ACL can create comments (admin) or private comments ?>
 						<div class="form-group">
+							<label for="comment" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT'); ?></label>
 							<textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
 						</div>
 

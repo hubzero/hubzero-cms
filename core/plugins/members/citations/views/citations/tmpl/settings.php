@@ -127,9 +127,8 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 			<div class="clear"></div>
 
 			<div class="form-group">
-				<label for="format-string">
-					<textarea name="template" rows="10" id="format-string" class="form-control"><?php echo addslashes($this->currentFormat->format); ?></textarea>
-				</label>
+				<label for="format-string" class="sr-only"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING'); ?></label>
+					<textarea name="template" rows="10" id="format-string" class="form-control" aria-label="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING'); ?>"><?php echo addslashes($this->currentFormat->format); ?></textarea>
 			</div>
 
 			<table class="templateTable">

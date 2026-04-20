@@ -387,9 +387,10 @@ $this->css()
 					<h4><?php echo Lang::txt('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 					<p>
 						<span class="say_yes">
-							<a class="btn btn-danger" href="<?php echo Route::url($this->wish->link('delete')); ?>">
-								<?php echo Lang::txt('COM_WISHLIST_YES'); ?>
-							</a>
+							<form action="<?php echo Route::url($this->wish->link('delete')); ?>" method="post" class="inline-form">
+								<?php echo Html::input('token'); ?>
+								<button type="submit" class="btn btn-danger"><?php echo Lang::txt('COM_WISHLIST_YES'); ?></button>
+							</form>
 						</span>
 						<span class="say_no">
 							<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
@@ -559,7 +560,7 @@ $this->css()
 
 								<div class="form-group">
 									<label class="form-check-label" for="acresource">
-										<input class="form-control secondary_option" type="text" name="resource" id="acresource" value="<?php echo ($this->wishlist->get('category')=='resource') ? $this->wishlist->get('referenceid') : ''; ?>" autocomplete="off" />
+										<input class="form-control secondary_option" type="text" name="resource" id="acresource" aria-label="<?php echo Lang::txt('COM_WISHLIST_RESOURCE'); ?>" value="<?php echo ($this->wishlist->get('category')=='resource') ? $this->wishlist->get('referenceid') : ''; ?>" autocomplete="off" />
 									</label>
 								</div>
 
@@ -572,9 +573,8 @@ $this->css()
 								</div>
 
 								<div class="form-group">
-									<label for="acgroup">
-										<input type="text" name="group" value="<?php if ($this->wishlist->get('category')=='group') { echo $this->wishlist->item('alias'); } ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" />
-									</label>
+									<label for="acgroup" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?></label>
+										<input type="text" name="group" value="<?php if ($this->wishlist->get('category')=='group') { echo $this->wishlist->item('alias'); } ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>" />
 								</div>
 							<?php } ?>
 								<fieldset>
@@ -748,7 +748,7 @@ $this->css()
 						</fieldset>
 
 						<div class="form-group form-check">
-							<label id="comment-anonymous-label" for="comment-anonymous" class="form-check-label">
+							<label class="comment-anonymous-label" for="comment-anonymous" class="form-check-label">
 								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" value="1" id="comment-anonymous" />
 								<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 							</label>
