@@ -2656,7 +2656,10 @@ class WikiParser
 		$output = '';
 		foreach ($textLines as $oLine)
 		{
-			if (preg_match('/(.*?)::(\s*)/sU', $oLine))
+			// WCAG fix: only treat as definition list if '::' is at end of line
+			// (prevents ::text in unformatted code from generating spurious <dt> elements)
+			$dlReplaced = preg_replace('/\s*(.*?)::[ \t]*$/', "<dl><dt>\\1</dt>\n", $oLine);
+			if (preg_match('/(.*?)::(\s*)/sU', $oLine) && ($indl || $dlReplaced !== $oLine))
 			{
 				if ($indl)
 				{
@@ -2667,7 +2670,7 @@ class WikiParser
 				else
 				{
 					//$output .= preg_replace('/\s(.*?)::(\s*)/sU', "<dl><dt>\\1</dt>\n", $oLine);
-					$output .= preg_replace('/\s*(.*?)::[ \t]*$/', "<dl><dt>\\1</dt>\n", $oLine);
+					$output .= $dlReplaced;
 				}
 				$indl = true;
 				$indd = false;
@@ -2737,6 +2740,7 @@ class WikiParser
 		$prefixLength = 0;
 		$paragraphStack = false;
 		$openlist = array();
+		$openlistReal = array(); // WCAG fix: tracks which openlist entries have real HTML elements
 		$i = 0;
 		if (!$linestart)
 		{
@@ -2830,7 +2834,14 @@ class WikiParser
 				while ($commonPrefixLength < $lastPrefixLength)
 				{
 					$lastPrefix = $openlist[$i--];
-					$output .= $this->_closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
+					// WCAG fix: only emit closeList HTML for slots that have real HTML
+					// elements; phantom slots (from depth-skip jumps like 1→3) have no
+					// corresponding <ul><li> to close, so emitting </li></ul> for them
+					// would orphan subsequent <li> elements outside any list.
+					if (!empty($openlistReal[$i+1]))
+					{
+						$output .= $this->_closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
+					}
 					--$lastPrefixLength;
 				}
 				if ($prefixLength <= $commonPrefixLength && $commonPrefixLength > 0)
@@ -2842,15 +2853,26 @@ class WikiParser
 				while ($prefixLength > $commonPrefixLength)
 				{
 					$char = trim($pref);
+					$i++;
+					$openlist[$i] = $char;
 					if (!$listOpened)
 					{
 						$output .= $this->_openList($char);
 						$listOpened = true;
+						// WCAG fix: mark this slot as having a real HTML element.
+						// When depth jumps skip levels (e.g., 1→3), _openList is only
+						// called once; further iterations are phantom slots with no
+						// corresponding HTML. See closeList check below.
+						$openlistReal[$i] = true;
+					}
+					else
+					{
+						// Phantom slot: no <ul><li> was actually opened for this depth.
+						$openlistReal[$i] = false;
 					}
 					//if (in_array($char, array('*', '#', ':', ';')) || is_numeric($char))
 					//{
-						$i++;
-						$openlist[$i] = $char;
+					//	(already incremented $i and set $openlist[$i] above)
 					//}
 					/*if (';' == $char)
 					{
