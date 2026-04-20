@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
 
 				<div class="grid">
 					<div class="col span6">
-						<label for="field-closed" id="comment-anonymous-label">
+						<label for="field-closed" class="comment-anonymous-label">
 							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_LOCKED'); ?><br />
 							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>

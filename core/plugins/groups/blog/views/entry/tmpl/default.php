@@ -275,7 +275,7 @@ $first = $this->archive->entries(array(
 								<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
 							</label>
 
-							<label id="comment-anonymous-label">
+							<label class="comment-anonymous-label">
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 								<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
 							</label>

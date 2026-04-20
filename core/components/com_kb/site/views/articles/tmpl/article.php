@@ -232,7 +232,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
 						<?php if (!User::isGuest()) { ?>
 							<div class="form-group">
-								<label id="comment-anonymous-label" for="comment-anonymous">
+								<label class="comment-anonymous-label" for="comment-anonymous">
 									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 									<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
 								</label>

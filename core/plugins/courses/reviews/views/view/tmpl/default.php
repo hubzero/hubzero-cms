@@ -181,7 +181,7 @@ $this->js();
 					</label>
 
 
-					<label id="comment-anonymous-label">
+					<label class="comment-anonymous-label">
 						<?php if ($this->params->get('comments_anon', 1)) { ?>
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
 							<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>

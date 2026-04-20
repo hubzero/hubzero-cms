@@ -94,7 +94,7 @@ else
 				?>
 			</label>
 
-			<label id="comment-anonymous-label">
+			<label class="comment-anonymous-label">
 				<input class="option" type="checkbox" name="review[anonymous]" id="review-anonymous" value="1"<?php if ($this->review->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
 				<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
 			</label>

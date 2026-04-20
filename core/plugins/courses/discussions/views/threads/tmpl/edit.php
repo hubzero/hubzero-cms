@@ -100,7 +100,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			<input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->post->get('category_id'); ?>" />
 		<?php } ?>
 
-			<label for="field-anonymous" id="comment-anonymous-label">
+			<label for="field-anonymous" class="comment-anonymous-label">
 				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 			</label>

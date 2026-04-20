@@ -99,7 +99,7 @@ $this->css()
 							</div>
 							<div class="form-group">
 								<div class="form-check">
-									<label id="comment-anonymous-label" class="form-check-label">
+									<label class="comment-anonymous-label" class="form-check-label">
 										<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
 										<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
 									</label>

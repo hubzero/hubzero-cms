@@ -199,7 +199,7 @@ else
 
 					<?php if ($this->config->get('allow_anonymous')) { ?>
 						<div class="form-group">
-							<label for="field-anonymous" id="comment-anonymous-label">
+							<label for="field-anonymous" class="comment-anonymous-label">
 								<input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
 								<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
 							</label>
