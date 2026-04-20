@@ -218,7 +218,7 @@ if (!$no_html) {
 
 							<?php echo Html::input('token'); ?>
 
-							<label for="comment-anonymous" id="comment-anonymous-label">
+							<label for="comment-anonymous" class="comment-anonymous-label">
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 								<?php echo Lang::txt('COM_COLLECTIONS_FIELD_ANONYMOUS'); ?>
 							</label>

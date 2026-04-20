@@ -39,7 +39,7 @@ $this->css();
 				<div class="grid">
 					<div class="col span6">
 						<div class="form-group">
-							<label for="field-closed" id="comment-anonymous-label">
+							<label for="field-closed" class="comment-anonymous-label">
 								<input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 								<?php echo Lang::txt('COM_FORUM_FIELD_CLOSED'); ?>
 							</label>

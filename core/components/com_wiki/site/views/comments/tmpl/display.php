@@ -200,7 +200,7 @@ if (!$this->sub)
 					<?php } ?>
 
 					<div class="form-group form-check">
-						<label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
+						<label class="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
 							<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
 							<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
 						</label>

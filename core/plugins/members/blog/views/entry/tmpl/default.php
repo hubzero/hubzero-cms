@@ -246,7 +246,7 @@ $this->css()
 					</label>
 
 				<?php if (!User::isGuest()) { ?>
-					<label id="comment-anonymous-label">
+					<label class="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 						<?php echo Lang::txt('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
 					</label>

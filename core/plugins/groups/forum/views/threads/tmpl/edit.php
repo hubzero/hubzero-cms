@@ -227,7 +227,7 @@ $this->css()
 				<?php if ($this->config->get('allow_anonymous')) { ?>
 					<div class="form-group">
 						<div class="form-check">
-							<label for="field-anonymous" id="comment-anonymous-label" class="form-check-label">
+							<label for="field-anonymous" class="comment-anonymous-label" class="form-check-label">
 								<input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 							</label>

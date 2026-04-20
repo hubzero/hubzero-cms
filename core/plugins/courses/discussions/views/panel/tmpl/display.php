@@ -301,7 +301,7 @@ if (count($inst) > 0)
 								</div>
 							</div>
 
-							<label for="field-anonymous" id="comment-anonymous-label">
+							<label for="field-anonymous" class="comment-anonymous-label">
 								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 							</label>

@@ -68,7 +68,7 @@ if ($this->category->get('section_id') == 0)
 				<div class="col span6">
 					<div class="form-group">
 						<div class="form-check">
-							<label for="field-closed" id="comment-anonymous-label" class="form-check-label">
+							<label for="field-closed" class="comment-anonymous-label" class="form-check-label">
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
 								<input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>

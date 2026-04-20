@@ -175,7 +175,7 @@ $now = Date::of('now')->toSql();
 							</fieldset>
 
 							<?php if ($this->config->get('allow_anonymous')) { ?>
-								<label for="field-anonymous" id="comment-anonymous-label">
+								<label for="field-anonymous" class="comment-anonymous-label">
 									<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 									<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
 								</label>
@@ -243,7 +243,7 @@ $now = Date::of('now')->toSql();
 								?>
 								<li>
 									<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
-										<?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+										<?php echo $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('COM_FORUM_ANONYMOUS'); ?>
 									</a>
 								</li>
 								<?php
