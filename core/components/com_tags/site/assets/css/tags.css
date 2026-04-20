@@ -45,7 +45,7 @@
 		font-size: 0.85em;
 	}
 	.entries tbody td span {
-		color: #ccc;
+		color: #767676; /* WCAG SC 1.4.3: was #ccc on #fff = 1.61:1; #767676 = 4.54:1 */
 	}
 
 /* Misc. */
