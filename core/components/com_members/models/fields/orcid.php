@@ -78,15 +78,18 @@ class Orcid extends Text
 			$profile = \Components\Members\Models\Member::oneOrFail($userID);
 		}
 
+		$oauthConfigured = ($srv !== 'public' && !empty($clientID) && !empty($redirectURI));
+		$isSandbox = ($srv === 'sandbox');
+
 		$html[] = '	<div class="orcid-actions">';
 		if ($userID != 0 && !empty($profile->get('orcid')))
 		{
 			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ID_AUTHORIZED') . '</p>';
 		}
-		else
+		elseif ($oauthConfigured)
 		{
 			$html[] = '     <a id="authorize-orcid" class="btn" href="https://';
-			if ($config->get('orcid_service', 'members') == 'sandbox')
+			if ($isSandbox)
 			{
 				$html[] = 'sandbox.';
 			}
@@ -97,14 +100,15 @@ class Orcid extends Text
 
 		// Grant permission to manage ORCID record
 		$permissionURI = $config->get('orcid_' . $srv . '_permission_uri', '');
+		$permissionConfigured = ($oauthConfigured && !empty($permissionURI));
 		if ($userID != 0 && !empty($profile->get('orcid')) && !empty($profile->get('access_token')))
 		{
 			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_PERMISSION_AUTHORIZED') . '</p>';
 		}
-		else
+		elseif ($permissionConfigured)
 		{
 			$html[] = '     <a id="grant-orcid-management-permission" class="btn" href="https://';
-			if ($config->get('orcid_service', 'members') == 'sandbox')
+			if ($isSandbox)
 			{
 				$html[] = 'sandbox.';
 			}
