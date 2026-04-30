@@ -49,7 +49,7 @@
 		</field>
 		<field name="data_publishing_self_assessment_guide" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DATA_PUBLISHING_GUIDE" description="COM_PUBLICATIONS_CONFIG_DATA_PUBLISHING_GUIDE_DESC" />
 		<field name="accessdoc" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_ACCESSIBILITY_DOC" description="COM_PUBLICATIONS_CONFIG_ACCESSIBILITY_DOC_DESC" />
-		<field name="department" type="textarea" rows="5" cols="40" default="" label="COM_PUBLICATIONS_CONFIG_SCHOOL_DEPARTMENT" description="Enter school and department separated by a comma"/>
+		<field name="department" type="textarea" rows="5" cols="40" default="" label="COM_PUBLICATIONS_CONFIG_SCHOOL_DEPARTMENT" description="COM_PUBLICATIONS_CONFIG_SCHOOL_DEPARTMENT_DESC"/>
 	</fieldset>
 	<fieldset name="CURATION">
 		<field name="curatorreplyto" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO" description="COM_PUBLICATIONS_CONFIG_CURATOR_REPLYTO_DESC" />
