@@ -39,6 +39,7 @@ else {
 
 $firstname = $author->firstName ? htmlspecialchars($author->firstName) : $firstname;
 $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
+$department = $author->department;
 
 ?>
 <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/editauthor.js"></script>
@@ -77,6 +78,16 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 					<label class="display_inline">
 						<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME')); ?>*:</span>
 						<input type="text" name="lastName" value="<?php echo $lastname;  ?>" maxlength="255" />
+					</label>
+					<div class="clear"></div>
+					<label class="display_inline">
+						<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT')); ?>*:</span>
+						<input type="text" name="department" value="<?php echo $department; ?>" maxlength="255" />
+						<?php 
+							if (\Component::params('com_publications')->get('department')) { 
+								echo "<div id='autocomplete-department' class='departmentAvailable'></div>";	
+							} 
+						?>
 					</label>
 					<div class="clear"></div>
 					<label for="organization">

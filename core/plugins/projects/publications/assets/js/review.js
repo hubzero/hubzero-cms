@@ -15,30 +15,29 @@ if (!HUB) {
 // Publication review page JS
 //----------------------------------------------------------
 HUB.ProjectPublicationReview = {
-	contactEmailCheck: function()
-	{	
+	contactCheck: function ()
+	{
 		$("input[name='contact[]']").change(function() {
 			var emailID = '#' + $(this).val() + '_email';
-			var msgID = '#' + $(this).val() + '_msg';
+			var deptID = '#' + $(this).val() + '_dept';
+			var orgID = '#' + $(this).val() + '_org';
+			var msgID = '#' + $(this).val() + '_missing_item';
 			
 			if ($(this).prop('checked'))
 			{
-				if ($(this).parents().has(emailID).length == 0)
+				if (($(this).parents().has(emailID).length == 0) || ($(this).parents().has(deptID).length == 0) || ($(this).parents().has(orgID).length == 0))
 				{
 					$(msgID).show();
 				}
 			}
 			else
 			{
-				if ($(this).parents().has(emailID).length == 0)
-				{
-					$(msgID).hide();
-				}
+				$(msgID).hide();
 			}
 		});
 	}
 }
 
 jQuery(document).ready(function($){
-	HUB.ProjectPublicationReview.contactEmailCheck();
+	HUB.ProjectPublicationReview.contactCheck();
 });	

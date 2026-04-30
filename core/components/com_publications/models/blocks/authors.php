@@ -556,6 +556,7 @@ class Authors extends Base
 		$email      = Request::getString('email', '', 'post');
 		$firstName  = Request::getString('firstName', '', 'post');
 		$lastName   = Request::getString('lastName', '', 'post');
+		$dept       = Request::getString('department', '', 'post');
 		$org        = Request::getString('organization', '', 'post');
 		$orcid      = Request::getString('orcid', '', 'post');
 		$credit     = Request::getString('credit', '', 'post');
@@ -579,7 +580,8 @@ class Authors extends Base
 			$orgid = $this->getOrganizationId($org);
 			$row->orgid = $orgid;
 		}
-
+		
+		$row->department    = $dept;
 		$row->organization  = $org;
 		$row->firstName     = $firstName;
 		$row->lastName      = $lastName;

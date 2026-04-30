@@ -225,6 +225,7 @@ class Review extends Base
 		$email      = Request::getString('email', '', 'post');
 		$firstName  = Request::getString('firstName', '', 'post');
 		$lastName   = Request::getString('lastName', '', 'post');
+		$dept       = Request::getString('department', '', 'post');
 		$org        = Request::getString('organization', '', 'post');
 		$credit     = Request::getString('credit', '', 'post');
 		$sendInvite = 0;
@@ -239,7 +240,8 @@ class Review extends Base
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
-
+		
+		$row->department    = $dept;
 		$row->organization  = $org;
 		$row->firstName     = $firstName;
 		$row->lastName      = $lastName;

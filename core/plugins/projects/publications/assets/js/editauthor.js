@@ -50,4 +50,28 @@ $(function(){
 			$('#orcid-message').show();
 		}
 	})
+	
+	if ($(".departmentAvailable")[0]){
+		$('[name="department"]').autocomplete({
+			source: function(req, resp){
+				var deptURL = "index.php?option=com_publications&controller=curation&task=getDepartment&term=" + $('[name="department"]').val();
+
+				$.ajax({
+					url:deptURL,
+					data: null,
+					dataType: "json",
+					success:function(result){
+						resp(result);
+					},
+					error:function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus);
+						console.log(errorThrown);
+						console.log(jqXHR.responseText);
+					}
+				});
+			},
+			
+			appendTo: '#autocomplete-department'
+		});
+	}
 });
