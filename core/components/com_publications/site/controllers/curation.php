@@ -50,6 +50,8 @@ class Curation extends SiteController
 
 		// Get language
 		Lang::load('plg_projects_publications');
+		
+		$this->registerTask('querydepartment', 'getDepartment');
 
 		//continue with parent execute method
 		parent::execute();
@@ -1037,5 +1039,26 @@ class Curation extends SiteController
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 		);
+	}
+	
+	/**
+	 * Query the department of author 
+	 *
+	 * @return  array  department names
+	 */
+	public function getDepartmentTask()
+	{		
+		$departments = Component::params('com_publications')->get('department');
+		$term = trim(Request::getString('term', ''));
+		
+		if (!empty($departments) && !empty($term))
+		{
+			$matchedResults = array_filter(explode(",", $departments), function($item) use ($term) {
+				return stripos($item, $term) !== false;
+			});
+			
+			echo json_encode((array_values($matchedResults)));
+			exit();
+		}
 	}
 }

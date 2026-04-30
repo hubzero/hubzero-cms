@@ -165,6 +165,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
 						<ul class="itemlist" id="author-list">
 						<?php foreach ($this->pub->authors() as $author) {
+							$dept = $author->department;
 							$org = $author->organization ? $author->organization : $author->p_organization;
 							$name = $author->name ? $author->name : $author->p_name;
 							$name = trim($name) ? $name : $author->invited_name;
@@ -173,16 +174,34 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 							?>
 							<li>
 								<span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) { echo ' checked="checked"'; } ?>/></span>
-								<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
-								<?php if(!empty($email)) { ?>
-								<span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-title"><?php echo $email; ?></span>
-								<?php }?>
-								<?php if(empty($email)) { ?>
-								<span style="display:none" id=<?php echo $this->escape($author->id) . "_msg" ?> class="item-msg"><?php echo "The contact is required to have a valid email address. Please " ?>
-								<a href="<?php echo Route::url( $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
-								<?php echo "the author."; ?>
-								</span>
-								<?php }?>
+									<span class="item-title"><?php echo $name; ?> 
+										<?php if(!empty($dept)) {?>
+										<span id=<?php echo $this->escape($author->id) . "_dept" ?> class="item-subtext"><?php echo ' - ' . $dept; ?></span>
+										<?php } ?>
+										
+										<?php if(!empty($org)) {?>
+										<span id=<?php echo $this->escape($author->id) . "_org" ?> class="item-subtext"><?php echo ' - ' . $org; ?></span>
+										<?php } ?>
+										
+										<?php if(!empty($email)) { ?>
+										<span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-subtext"><?php echo ' - ' . $email; ?></span>
+										<?php }?>
+									</span>
+								
+								<?php if(empty($dept) || empty($org) || empty($email)) {?>
+									<?php if(empty($dept) && empty($org) && empty($email)) $missingItem = "affiliated department, affiliated organization and email address";
+									elseif (empty($dept) && empty($org) && !empty($email)) $missingItem = "affiliated department and affiliated organization";
+									elseif (empty($dept) && !empty($org) && empty($email)) $missingItem = "affiliated department and email address";
+									elseif (!empty($dept) && empty($org) && empty($email)) $missingItem = "affiliated organization and email address";
+									elseif (empty($dept) && !empty($org) && !empty($email)) $missingItem = "affiliated department";
+									elseif (!empty($dept) && empty($org) && !empty($email)) $missingItem = "affiliated organization";
+									elseif (!empty($dept) && !empty($org) && empty($email)) $missingItem = "email address";
+									?>
+									<span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?php echo "The contact is required to include $missingItem. Please " ?>
+									<a href="<?php echo Route::url( $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
+									<?php echo "the author."; ?>
+									</span>	
+								<?php } ?>								
 							</li>
 						<?php } ?>
 						</ul>
