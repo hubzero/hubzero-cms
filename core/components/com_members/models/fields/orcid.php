@@ -81,7 +81,6 @@ class Orcid extends Text
 		$oauthConfigured = ($srv !== 'public' && !empty($clientID) && !empty($redirectURI));
 		$isSandbox = ($srv === 'sandbox');
 
-
 		$html[] = '	<div class="orcid-actions">';
 		if ($userID != 0 && !empty($profile->get('orcid')))
 		{
