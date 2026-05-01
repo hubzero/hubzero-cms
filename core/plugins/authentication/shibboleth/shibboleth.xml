@@ -41,7 +41,7 @@
 				<field name="links" type="links" default="[]" />
 			</fieldset>
 			<fieldset name="Institutions">
-				<field name="institutions" type="institutions" default='{"xmlPath": "/etc/shibboleth/shibboleth2.xml", "xmlRead": null, "idps": [], "activeIdps": []}' />
+				<field name="institutions" type="institutions" default='{"xmlPath": "/etc/shibboleth/metadata/federation-metadata.xml", "activeIdps": []}' />
 			</fieldset>
 		</fields>
 	</config>
