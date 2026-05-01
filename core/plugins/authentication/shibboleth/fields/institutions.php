@@ -12,6 +12,28 @@ use Hubzero\Form\Field;
 class Institutions extends Field
 {
 	/**
+	 * Append a debug line to a dedicated log file so we can trace
+	 * the institutions field read/write path without grepping cmsdebug.log.
+	 *
+	 * @param   string  $msg
+	 * @return  void
+	 */
+	private static function shibLog($msg)
+	{
+		$line = '[' . date('Y-m-d H:i:s') . '] [pid ' . getmypid() . '] ' . $msg . "\n";
+		$paths = ['/var/log/hubzero/shib-debug.log', PATH_APP . DS . 'tmp' . DS . 'shib-debug.log'];
+		foreach ($paths as $p)
+		{
+			$dir = dirname($p);
+			if (is_dir($dir) && is_writable($dir) && @file_put_contents($p, $line, FILE_APPEND | LOCK_EX) !== false)
+			{
+				break;
+			}
+		}
+		try { \Log::debug('[shib-field] ' . $msg); } catch (\Exception $e) {}
+	}
+
+	/**
 	 * Get field input
 	 *
 	 * @return  string
@@ -19,123 +41,204 @@ class Institutions extends Field
 	protected function getInput()
 	{
 		Document::addScript('/core/plugins/authentication/shibboleth/assets/js/admin.js');
-		// Commented out due to interfering with admin styles
-		//Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
 		Document::addStyleSheet('/core/plugins/authentication/shibboleth/assets/css/admin.css');
 
-		$html = array();
-		$a = function($str)
-		{
-			return str_replace('"', '&quot;', $str);
-		};
-		$val = is_array($this->value) ? $this->value : json_decode($this->value, true);
+		self::shibLog('getInput called; name=' . $this->name
+			. ' value-type=' . gettype($this->value)
+			. ' value=' . (is_string($this->value) ? $this->value : json_encode($this->value)));
 
-		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(PATH_CORE).'#', '', __FILE__)).'">';
-		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
-		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
-		$html[] = '<p class="info">Save your changes to retry loading ID providers from this file</p>';
-		$html[] = '<input type="hidden" class="serialized" name="' . $this->name . '" value="' . $a(json_encode($val)) . '" />';
+		// Log what's actually stored in the DB row right now, so we can compare
+		// against what just got POSTed (if anything).
+		try
+		{
+			$db = \App::get('db');
+			$db->setQuery("SELECT params FROM `#__extensions` WHERE folder='authentication' AND element='shibboleth' LIMIT 1");
+			$dbParams = $db->loadResult();
+			self::shibLog('DB row params=' . $dbParams);
+		}
+		catch (\Exception $e)
+		{
+			self::shibLog('DB lookup failed: ' . $e->getMessage());
+		}
+
+		// Log what was actually POSTed for this field, if anything (only present
+		// when getInput runs after an "apply" task in the same request).
+		$posted = \Request::getVar('fields', null, 'post', 'array', 2);
+		if (is_array($posted) && isset($posted['params']['institutions']))
+		{
+			self::shibLog('POSTed fields[params][institutions]=' . (is_string($posted['params']['institutions']) ? $posted['params']['institutions'] : json_encode($posted['params']['institutions'])));
+		}
+		else
+		{
+			self::shibLog('no POSTed fields[params][institutions] in this request');
+		}
+
+		$val = is_array($this->value) ? $this->value : json_decode($this->value, true);
+		if (!$val)
+		{
+			self::shibLog('value did not decode, using defaults');
+			$val = ['xmlPath' => '/etc/shibboleth/metadata/federation-metadata.xml', 'activeIdps' => []];
+		}
+		if (!isset($val['activeIdps']))
+		{
+			$val['activeIdps'] = [];
+		}
+		self::shibLog('decoded activeIdps count=' . count($val['activeIdps'])
+			. ' entity_ids=' . json_encode(array_column($val['activeIdps'], 'entity_id')));
+
+		$activeMap = [];
+		foreach ($val['activeIdps'] as $idp)
+		{
+			if (isset($idp['entity_id']))
+			{
+				$activeMap[$idp['entity_id']] = true;
+			}
+		}
+
+		$entities = self::loadFederationEntities($val['xmlPath']);
+
+		// Only store xmlPath and activeIdps — never the full entity list
+		$storedVal = ['xmlPath' => $val['xmlPath'], 'activeIdps' => $val['activeIdps']];
+		$hiddenJson = htmlspecialchars(json_encode($storedVal), ENT_QUOTES, 'UTF-8');
+		$xmlPathEsc = htmlspecialchars($val['xmlPath'], ENT_QUOTES, 'UTF-8');
+		$nameEsc    = htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8');
+
+		$html   = [];
+		$html[] = '<div class="shibboleth">';
+		$html[] = '<p class="xml-source"><label>Federation metadata XML path: <input type="text" id="shib-xmlpath" value="' . $xmlPathEsc . '" /></label></p>';
+		$html[] = '<input type="hidden" class="serialized" name="' . $nameEsc . '" value="' . $hiddenJson . '" />';
+
+		if (is_array($entities))
+		{
+			$html[] = '<p><input type="text" id="shib-idp-search" placeholder="Search institutions…" style="width:100%;box-sizing:border-box;margin-bottom:4px" /></p>';
+			$html[] = '<div class="idp-list" style="height:400px;overflow-y:scroll;border:1px solid #ccc;padding:4px">';
+			foreach ($entities as $entityId => $displayName)
+			{
+				$checked   = isset($activeMap[$entityId]) ? ' checked' : '';
+				$eidEsc    = htmlspecialchars($entityId,   ENT_QUOTES, 'UTF-8');
+				$nameDisp  = htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8');
+				$html[]    = '<label style="display:block"><input type="checkbox" class="shib-idp-checkbox" value="' . $eidEsc . '" data-label="' . $nameDisp . '"' . $checked . '> ' . $nameDisp . '</label>';
+			}
+			$html[] = '</div>';
+		}
+		else
+		{
+			$html[] = '<p class="warning">' . htmlspecialchars((string)$entities, ENT_QUOTES, 'UTF-8') . '</p>';
+		}
+
 		$html[] = '</div>';
-		// rest of the form is managed on the client side
 		return implode("\n", $html);
 	}
 
 	/**
-	 * Get Ipd list
+	 * Stream-parse the federation metadata XML and return [entityId => displayName].
+	 * Results are cached to app/tmp to avoid re-parsing on every page load.
 	 *
-	 * @param   string   $val
-	 * @param   boolean  $alwaysUpdate
-	 * @return  array
+	 * @param   string  $xmlPath  Filesystem path to the federation metadata XML
+	 * @return  array|string  Associative array on success, error string on failure
 	 */
-	private static function getIdpList($val, $alwaysUpdate = true)
+	private static function loadFederationEntities($xmlPath)
 	{
-		// list is up to date
-		if (!file_exists($val['xmlPath']))
+		if (!file_exists($xmlPath))
 		{
-			return array(null, 'Invalid XML path');
+			return 'Federation metadata XML not found: ' . $xmlPath;
 		}
-		if (($mtime = $val['xmlPath'] . ':' . filemtime($val['xmlPath'])) == $val['xmlRead'] && !$alwaysUpdate)
+
+		$tmpDir    = \Config::get('tmp_path', PATH_APP . DS . 'tmp');
+		$cacheFile = $tmpDir . DS . 'shib_entities_' . md5($xmlPath) . '.json';
+
+		if (file_exists($cacheFile) && filemtime($cacheFile) >= filemtime($xmlPath))
 		{
-			return array($mtime, $val['idps']);
-		}
-		if (!($xml = simplexml_load_file($val['xmlPath'])))
-		{
-			return array(null, 'Failed to parse XML from this path');
-		}
-		$xml->registerXPathNamespace('shib', 'urn:mace:shibboleth:2.0:native:sp:config');
-
-		$curl = curl_init();
-		$rv = array();
-		foreach ($xml->xpath('//shib:SSO') as $item)
-		{
-			$entityId = (string)$item->attributes()->entityID;
-
-			curl_setopt($curl, CURLOPT_URL, $entityId);
-			curl_setopt($curl, CURLOPT_HEADER, 0);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-			$item = array(
-				'entity_id' => $entityId,
-				'label'     => null,
-				'host'      => null,
-				'logo'      => null
-			);
-
-			if (!($idp = curl_exec($curl)))
+			$cached = json_decode(file_get_contents($cacheFile), true);
+			if (is_array($cached))
 			{
-				$item['error'] = 'Failed to fetch metadata';
+				return $cached;
 			}
-			else if (!($idp = simplexml_load_string($idp)))
+		}
+
+		$reader = new \XMLReader();
+		if (!$reader->open($xmlPath))
+		{
+			return 'Failed to open federation metadata XML: ' . $xmlPath;
+		}
+
+		$mduiNs        = 'urn:oasis:names:tc:SAML:metadata:ui';
+		$xmlLangNs     = 'http://www.w3.org/XML/1998/namespace';
+		$entities      = [];
+		$currentId     = null;
+		$inIdpSso      = false;
+		$captureNext   = false;
+
+		while (@$reader->read())
+		{
+			$type = $reader->nodeType;
+
+			if ($type === \XMLReader::ELEMENT)
 			{
-				$item['error'] = 'Failed to parse metadata';
-			}
-			else
-			{
-				$idp->registerXPathNamespace('saml', 'urn:oasis:names:tc:SAML:2.0:metadata');
-				// look in a few places for the display name
-				foreach (array(
-					'//mdui:DisplayName',        // most preferred, ui extension offers prefs for this specific use case
-					'//saml:OrganizationDisplayName', // good fallback
-					'//saml:OrganizationName'         // ok fallback
-				) as $xp)
+				$local = $reader->localName;
+
+				if ($local === 'EntityDescriptor')
 				{
-					if (($name = $idp->xpath($xp)))
+					$currentId   = $reader->getAttribute('entityID');
+					$inIdpSso    = false;
+					$captureNext = false;
+				}
+				elseif ($local === 'IDPSSODescriptor')
+				{
+					$inIdpSso = true;
+				}
+				elseif ($local === 'DisplayName'
+					&& $reader->namespaceURI === $mduiNs
+					&& $inIdpSso
+					&& $currentId !== null
+					&& !isset($entities[$currentId]))
+				{
+					$lang = $reader->getAttributeNs('lang', $xmlLangNs);
+					if ($lang === 'en')
 					{
-						$item['label'] = (string)$name[0];
-						break;
+						$captureNext = true;
 					}
 				}
-				if (($orgUrl = $idp->xpath('//saml:OrganizationURL')))
+
+				if ($reader->isEmptyElement)
 				{
-					$item['host'] = preg_replace('/^.*[.]([^.]+[.][^.]+)$/', '$1', parse_url($orgUrl[0], \PHP_URL_HOST));
+					$captureNext = false;
 				}
-				//$item['logo'] = $idp->xpath('//mdui:Logo');
-				//$item['logo'] = $item['logo'] ? (string)$item['logo'][0] : null;
 			}
-			$rv[] = $item;
+			elseif ($type === \XMLReader::TEXT && $captureNext)
+			{
+				$entities[$currentId] = trim($reader->value);
+				$captureNext          = false;
+			}
+			elseif ($type === \XMLReader::END_ELEMENT)
+			{
+				$local = $reader->localName;
+				if ($local === 'DisplayName')
+				{
+					$captureNext = false;
+				}
+				elseif ($local === 'IDPSSODescriptor')
+				{
+					$inIdpSso = false;
+				}
+				elseif ($local === 'EntityDescriptor')
+				{
+					$currentId   = null;
+					$inIdpSso    = false;
+					$captureNext = false;
+				}
+			}
 		}
-		$idps =  self::getResearchAndScholarshipIdps($curl);
 
-		$rv = array_merge($rv, $idps);
-		curl_close($curl);
-		return array($mtime, $rv);
-	}
+		$reader->close();
 
-	/**
-	 * Get a list of research and scholarship IDs
-	 *
-	 * @param   string  $ch
-	 * @return  array
-	 */
-	private static function getResearchAndScholarshipIdps($ch)
-	{
-		$rv = [];
-		exec('php ' . __DIR__ . '/get-rs-entities.php', $out);
-		$result = json_decode(join('', $out));
-		if ($result == null)
+		uasort($entities, 'strcasecmp');
+
+		if (is_writable($tmpDir))
 		{
-			$result = array();
+			file_put_contents($cacheFile, json_encode($entities));
 		}
-		return $result;
+
+		return $entities;
 	}
 }
