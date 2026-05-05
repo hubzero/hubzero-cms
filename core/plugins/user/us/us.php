@@ -29,6 +29,23 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
 	{
 		$ip = $_SERVER['REMOTE_ADDR'];
 
+		$d1 = \Hubzero\User\Group::getInstance('d1_nation');
+
+		if (is_object($d1) && in_array(User::get('id'), $d1->get('members')))
+		{
+			Log::debug('[' . User::get('username') . '] is a member of [d1_nation], removing from group [location_us].');
+
+			$group = \Hubzero\User\Group::getInstance('location_us');
+
+			if (is_object($group))
+			{
+				$group->remove('members', array(User::get('id')));
+				$group->update();
+			}
+
+			return;
+		}
+
 		$gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
 
 		if (!$gdb)
@@ -62,7 +79,15 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			Log::debug($ip . ' is not a US address, leaving [' . User::get('username') . '] membership to group [location_us] unchanged.');
+			Log::debug($ip . ' is not a US address, removing [' . User::get('username') . '] from group [location_us].');
+
+			$group = \Hubzero\User\Group::getInstance('location_us');
+
+			if (is_object($group))
+			{
+				$group->remove('members', array(User::get('id')));
+				$group->update();
+			}
 		}
 	}
 
