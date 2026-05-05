@@ -27,6 +27,23 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogin($user, $options = array())
 	{
+		$approved = \Hubzero\User\Group::getInstance('d1_approved');
+
+		if (is_object($approved) && $approved->isMember(User::get('id')))
+		{
+			Log::debug('plgUserD1: [' . User::get('username') . '] is in d1_approved, removing from d1_nation and skipping geo check.');
+
+			$nation = \Hubzero\User\Group::getInstance('d1_nation');
+
+			if (is_object($nation))
+			{
+				$nation->remove('members', array(User::get('id')));
+				$nation->update();
+			}
+
+			return;
+		}
+
 		$ip = $_SERVER['REMOTE_ADDR'];
 
 		$gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
