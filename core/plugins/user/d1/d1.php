@@ -27,11 +27,11 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogin($user, $options = array())
 	{
-		$approved = \Hubzero\User\Group::getInstance('d1_approved');
+		$approved = \Hubzero\User\Group::getInstance('d1_override');
 
 		if (is_object($approved) && $approved->isMember(User::get('id')))
 		{
-			Log::debug('plgUserD1: [' . User::get('username') . '] is in d1_approved, removing from d1_nation and skipping geo check.');
+			Log::debug('plgUserD1: [' . User::get('username') . '] is in d1_override, removing from d1_nation and skipping geo check.');
 
 			$nation = \Hubzero\User\Group::getInstance('d1_nation');
 
