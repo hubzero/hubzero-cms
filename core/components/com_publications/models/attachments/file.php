@@ -1048,6 +1048,17 @@ class File extends Base
 				foreach ($files as $fpath => $fname)
 				{
 					$zip->addFile($fpath, $fname);
+
+					// Skip deflate for file types that are already
+					// compressed (zip/gz/jpg/png/mp4/etc.). On a pile of
+					// pre-compressed files, default deflate is pure CPU
+					// burn — the resulting archive is essentially the
+					// same size, just much slower to produce, which
+					// matters during a web request.
+					if (self::isAlreadyCompressedExt($fname))
+					{
+						$zip->setCompressionName($fname, ZipArchive::CM_STORE);
+					}
 				}
 				$zip->close();
 			}
@@ -1092,6 +1103,35 @@ class File extends Base
 		}
 
 		return $removed;
+	}
+
+	/**
+	 * Whether a filename's extension belongs to a format that's already
+	 * compressed and so won't benefit from zip deflation. Used by
+	 * bundle() to skip deflate on these entries (CM_STORE) so building
+	 * a 3 GB pile of zips doesn't burn a request worker on CPU for
+	 * minutes producing an archive that's the same size anyway.
+	 *
+	 * @param   string  $name
+	 * @return  boolean
+	 */
+	protected static function isAlreadyCompressedExt($name)
+	{
+		static $exts = [
+			// archives
+			'zip', 'gz', 'bz2', 'xz', 'tgz', '7z', 'rar', 'lz4', 'zst',
+			// images
+			'jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif',
+			// video / audio
+			'mp4', 'm4v', 'mov', 'mkv', 'avi', 'wmv', 'webm', 'flv',
+			'mp3', 'm4a', 'aac', 'ogg', 'opus', 'flac',
+			// documents that internally compress
+			'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'epub',
+			// misc
+			'pdf',
+		];
+		$ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+		return in_array($ext, $exts, true);
 	}
 
 	/**
