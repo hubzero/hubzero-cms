@@ -1309,20 +1309,43 @@ class Repo extends Obj
 		$extracted = Filesystem::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'));
 
-		// check for viruses - scans the directory for efficiency
-		$command = "clamscan -i --no-summary --block-encrypted -r " . $extractPath;
+		// Check for viruses — recursive scan over the extracted dir is
+		// much faster than per-file scans, especially with stand-alone
+		// clamscan (which loads its database every invocation).
+		//
+		// Use the configured virus_scanner so admins can switch between
+		// clamscan and clamdscan without touching code, and append -r so
+		// the scanner walks the directory. Treat any non-zero exit as
+		// unsafe (fail closed): a 1 means a virus was found, 2 means
+		// the scanner errored out (e.g., clamd unreachable), other
+		// values mean the command didn't run; in none of those cases
+		// can we assert the files are clean.
+		$scanner = trim(\App::get('config')->get(
+			'virus_scanner',
+			'clamscan -i --no-summary --block-encrypted'
+		));
+		$command = $scanner . ' -r ' . escapeshellarg($extractPath) . ' 2>&1';
+		$output = [];
+		$virus_status = 0;
 		exec($command, $output, $virus_status);
-		$virusChecked = false;
+		$virusChecked = ($virus_status === 0);
 
-		if ($virus_status == 0)
+		if (!$virusChecked)
 		{
-		  $virusChecked = true;
-		}
-		else
-		{
+			if ($virus_status !== 1)
+			{
+				error_log(sprintf(
+					'%s: virus scanner "%s" exited with status %d while '
+					. 'scanning extracted archive (rejecting upload). Output: %s',
+					__METHOD__,
+					$scanner,
+					$virus_status,
+					implode(' | ', $output)
+				));
+			}
 			Filesystem::deleteDirectory($extractPath);
-		  $this->setError('The antivirus software has rejected your files.');
-		  return false;
+			$this->setError('The antivirus software has rejected your files.');
+			return false;
 		}
 
 		$z = 0;
