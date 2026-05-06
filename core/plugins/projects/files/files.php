@@ -689,6 +689,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->props     = $props;
 		$view->filter    = $filter;
 		$view->sizelimit = $this->params->get('maxUpload', '104857600');
+		// Hard server-side ceiling for non-chunked POST uploads. PHP
+		// rejects multipart POSTs over post_max_size before any handler
+		// runs, so the basic-upload form needs to know this value to
+		// validate client-side and surface a useful error.
+		$view->postLimit = self::iniBytes('post_max_size');
 		$view->showCons  = ($this->params->get('default_action', 'browse') == 'connections') ? true : false;
 		$view->min = $min;
 		$view->max = $max;
@@ -822,6 +827,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->ajax      = $ajax;
 		$view->config    = $this->model->config();
 		$view->sizelimit = $this->params->get('maxUpload', '104857600');
+		// Hard server-side ceiling for non-chunked POST uploads. PHP
+		// rejects multipart POSTs over post_max_size before any handler
+		// runs, so the basic-upload form needs to know this value to
+		// validate client-side and surface a useful error.
+		$view->postLimit = self::iniBytes('post_max_size');
 		$view->title     = $this->_area['title'];
 		$view->params    = $this->params;
 
@@ -3643,5 +3653,30 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		return $combined;
+	}
+
+	/**
+	 * Convert a php.ini size string (e.g. "5G", "100M", "8192K") into
+	 * a byte count. Returns 0 when the directive is unset or "0".
+	 *
+	 * @param   string  $name
+	 * @return  int
+	 */
+	protected static function iniBytes($name)
+	{
+		$value = trim((string) ini_get($name));
+		if ($value === '' || $value === '0')
+		{
+			return 0;
+		}
+		$last = strtolower(substr($value, -1));
+		$num  = (int) $value;
+		switch ($last)
+		{
+			case 'g': $num *= 1024;
+			case 'm': $num *= 1024;
+			case 'k': $num *= 1024;
+		}
+		return $num;
 	}
 }

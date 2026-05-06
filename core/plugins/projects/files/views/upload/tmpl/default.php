@@ -71,11 +71,46 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 						if (file_exists($acceptedFormatsJS)): ?>
 						<script src="<?php echo rtrim(Request::base(true), '/'); ?>/app/site/acceptedFormats.js">"></script>
 					<?php endif; ?>
-		<?php } else { ?>
+		<?php } else {
+			// Basic (non-chunked) upload submits the file as a single
+			// multipart POST, so the real ceiling is post_max_size, not
+			// the chunked uploader's per-chunk maxUpload. Show the real
+			// limit and validate client-side; otherwise PHP silently
+			// returns 400 from "POST Content-Length exceeds the limit".
+			$basicLimit = isset($this->postLimit) && $this->postLimit > 0
+				? $this->postLimit
+				: $this->sizelimit;
+		?>
 				<label class="addnew">
-					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-					<p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
+					<input name="upload[]" type="file" class="option uploader" id="uploader"
+					       data-max-bytes="<?php echo (int) $basicLimit; ?>"
+					       multiple="multiple" />
+					<p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($basicLimit); ?></p>
 				</label>
+				<p class="hint mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_LARGE_HINT'); ?></p>
+				<script>
+				(function () {
+					var input = document.getElementById('uploader');
+					if (!input) return;
+					var maxBytes = parseInt(input.getAttribute('data-max-bytes'), 10) || 0;
+					var form = input.form;
+					if (!form || !maxBytes) return;
+					form.addEventListener('submit', function (e) {
+						var oversized = [];
+						for (var i = 0; i < input.files.length; i++) {
+							if (input.files[i].size > maxBytes) {
+								oversized.push(input.files[i].name + ' (' + (input.files[i].size / (1024*1024*1024)).toFixed(2) + ' GB)');
+							}
+						}
+						if (oversized.length) {
+							e.preventDefault();
+							alert(<?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_TOO_LARGE')); ?>
+								+ '\n\n' + oversized.join('\n')
+								+ '\n\n' + <?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_USE_CHUNKED')); ?>);
+						}
+					});
+				})();
+				</script>
 		<?php } ?>
 			</div>
 		</div>
