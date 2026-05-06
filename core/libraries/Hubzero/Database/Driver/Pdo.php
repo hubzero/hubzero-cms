@@ -708,12 +708,37 @@ class Pdo extends Driver
 	 */
 	public function connected()
 	{
-		if (is_object($this->connection))
+		if (!is_object($this->connection))
 		{
-			return $this->connection->query("SELECT 1")->fetchAll()[0][1];
+			return false;
 		}
 
-		return false;
+		// "SELECT 1" throws PDOException when the underlying server has
+		// gone away (e.g., mysql wait_timeout reached while the PHP
+		// process held the connection). Catch it so connected() can
+		// honestly answer "no" instead of letting the exception bubble
+		// out as an unhandled fatal — which is what was filling the
+		// error log every time session_write_close() ran on an idle
+		// request.
+		try
+		{
+			$result = $this->connection->query("SELECT 1");
+		}
+		catch (\PDOException $e)
+		{
+			return false;
+		}
+
+		if ($result === false)
+		{
+			return false;
+		}
+
+		// SELECT 1 returns one column; the previous code read [0][1]
+		// (which is always undefined) and so always returned a falsy
+		// value, defeating the point of the check.
+		$row = $result->fetch(\PDO::FETCH_NUM);
+		return $row !== false && isset($row[0]) && (int) $row[0] === 1;
 	}
 
 	/**
