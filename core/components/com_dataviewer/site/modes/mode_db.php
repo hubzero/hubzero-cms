@@ -27,7 +27,15 @@ function get_conf($db_id)
 	}
 
 	$db_conf_file = "{$dv_conf['db_base_dir']}/$db_name/database.json";
-	$db_conf = json_decode(file_get_contents($db_conf_file), true);
+	if (!is_file($db_conf_file))
+	{
+		return array();
+	}
+	$db_conf = json_decode((string) file_get_contents($db_conf_file), true);
+	if (!is_array($db_conf) || !isset($db_conf['database_ro']))
+	{
+		return array();
+	}
 	$dv_conf['db'] = array_merge($dv_conf['db'], $db_conf['database_ro']);
 
 	$dv_conf_file = "{$dv_conf['db_base_dir']}/$db_name/applications/$com_name/config.json";
