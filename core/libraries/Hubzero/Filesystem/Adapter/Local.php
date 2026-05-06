@@ -320,30 +320,60 @@ class Local implements AdapterInterface
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * Returns true only when the configured virus scanner exits 0
+	 * (clean). Any non-zero exit — virus found (1), scanner error
+	 * (2), command-not-found (127), signal kill — is treated as
+	 * unsafe so a broken or unreachable scanner can't silently let
+	 * uploads through.
+	 *
+	 * Previously this method only failed on exit code 1 (virus
+	 * found per clamscan's convention), which meant an unreachable
+	 * clamd (clamdscan exit 2) silently passed every upload.
 	 */
 	public function isSafe($file)
 	{
-		if ($this->command)
+		if (!$this->command)
 		{
-			$command = trim($this->command);
-			if (strstr($command, '%s'))
-			{
-				$command = sprintf($command, $file);
-			}
-			else
-			{
-				$command .= ' ' . str_replace(' ', '\ ', $file);
-			}
-
-			exec($command, $output, $status);
-
-			if ($status == 1)
-			{
-				return false;
-			}
+			return true;
 		}
 
-		return true;
+		$command = trim($this->command);
+		if (strstr($command, '%s'))
+		{
+			$command = sprintf($command, escapeshellarg($file));
+		}
+		else
+		{
+			$command .= ' ' . escapeshellarg($file);
+		}
+
+		$output = [];
+		$status = 0;
+		exec($command . ' 2>&1', $output, $status);
+
+		if ($status === 0)
+		{
+			return true;
+		}
+
+		// Anything other than 0 is "we can't confirm this is safe":
+		// virus found, scanner error, daemon down, command missing,
+		// killed by signal, etc. Log so admins can see the scanner
+		// is broken rather than discover it from missed-virus reports.
+		if ($status !== 1)
+		{
+			error_log(sprintf(
+				'Hubzero\\Filesystem\\Adapter\\Local::isSafe: virus '
+				. 'scanner "%s" exited with status %d (rejecting file). '
+				. 'Output: %s',
+				$this->command,
+				$status,
+				implode(' | ', $output)
+			));
+		}
+
+		return false;
 	}
 
 	/**
