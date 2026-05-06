@@ -426,6 +426,17 @@ class Publications extends SiteController
 			'tag_ignored' => []
 		];
 
+		// Hard cap on per-page size. Each rendered item runs an authors
+		// lookup with N+1 Member model loads (see _list.php), so a
+		// limit=1000 request blew through the 128 MB request heap and
+		// crashed in View::render. Beyond ~100 the page is also useless
+		// to users — they can't realistically scan that many thumbs.
+		$maxLimit = 100;
+		if ($filters['limit'] <= 0 || $filters['limit'] > $maxLimit)
+		{
+			$filters['limit'] = $maxLimit;
+		}
+
 		if (!in_array($filters['sortby'], ['date', 'title', 'id', 'rating', 'ranking', 'popularity']))
 		{
 			$filters['sortby'] = $default_sort;
