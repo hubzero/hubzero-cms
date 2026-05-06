@@ -106,6 +106,38 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->
 				<?php echo $this->manifest->label; ?> <?php if ((count($this->attachments ? $this->attachments : []))) { echo '(' . (count($this->attachments ? $this->attachments : [])) . ')'; }?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
+			<?php
+			// If this is an imageviewer (gallery) element with images but no
+			// default thumbnail set, surface a one-click "set first image as
+			// cover" affordance. Without an explicit default the publication
+			// shows a generic placeholder on browse/listing pages even though
+			// it has images uploaded.
+			if (is_object($handler) && $handler->getName() == 'imageviewer'
+				&& count($this->attachments ? $this->attachments : []) > 0)
+			{
+				$_currentDefault = new \Components\Publications\Tables\Attachment($this->database);
+				if (!$_currentDefault->getDefault($this->pub->version_id))
+				{
+					$_firstAtt = reset($this->attachments);
+					if ($_firstAtt && $_firstAtt->id)
+					{
+						$_setDefaultUrl = Route::url(
+							$this->pub->link('editversion')
+							. '&action=saveitem&aid=' . $_firstAtt->id
+							. '&p=' . $props . '&makedefault=1'
+						);
+						?>
+						<p class="warning no-cover-set">
+							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_COVER_IMAGE_SET'); ?>
+							<a href="<?php echo $_setDefaultUrl; ?>" class="btn btn-small">
+								<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_USE_FIRST_AS_COVER'); ?>
+							</a>
+						</p>
+						<?php
+					}
+				}
+			}
+			?>
 			<div class="list-wrapper">
 				<ul class="itemlist">
 					<?php
