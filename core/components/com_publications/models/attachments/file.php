@@ -13,6 +13,7 @@ use Hubzero\Filesystem\Entity;
 use Components\Projects\Models\Orm\Connection;
 use stdClass;
 use ZipArchive;
+use Component;
 use Filesystem;
 use Route;
 use Lang;
@@ -891,6 +892,27 @@ class File extends Base
 	}
 
 	/**
+	 * Maximum total source size (in bytes) for on-demand bundle creation.
+	 * Above this, bundle() bails out instead of trying to zip during a
+	 * web request — the resulting archive would take longer to build than
+	 * the request timeout, leaving orphan ZipArchive .part files on disk
+	 * (PHP's ZipArchive temp file pattern is "<archive>.<hex>.part").
+	 * Default 4 GB. Override with the 'bundle_max_bytes' component config.
+	 */
+	const BUNDLE_DEFAULT_MAX_BYTES = 4294967296;
+
+	/**
+	 * How long an in-progress bundle build may run before its temp .part
+	 * files are considered stale and eligible for cleanup. Seconds.
+	 */
+	const BUNDLE_PART_STALE_SECONDS = 1800;
+
+	/**
+	 * Lock duration: a fresh lock file blocks new bundle attempts. Seconds.
+	 */
+	const BUNDLE_LOCK_FRESH_SECONDS = 600;
+
+	/**
 	 * Bundle files together
 	 *
 	 * @param   array    $attachments
@@ -932,7 +954,16 @@ class File extends Base
 			return $bundle;
 		}
 
+		// Clean up stale ZipArchive temp files (orphaned .part files left
+		// behind when a previous bundle build was killed by a request
+		// timeout). Without this, repeated page loads of a publication
+		// whose bundle won't fit inside the timeout fill the disk with
+		// abandoned partials.
+		$this->cleanupStaleBundleParts($path);
+
+		// Resolve source files and total size before doing any zip work.
 		$files = array();
+		$totalBytes = 0;
 		foreach ($attachments as $attach)
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
@@ -945,6 +976,7 @@ class File extends Base
 			if (is_file($fpath))
 			{
 				$files[$fpath] = $fname;
+				$totalBytes += @filesize($fpath);
 			}
 		}
 
@@ -954,19 +986,112 @@ class File extends Base
 			return false;
 		}
 
-		$zip = new ZipArchive;
-		if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
+		// Size guard: skip on-demand bundling for datasets too large to
+		// finish before request timeout. Callers handle a false return
+		// by showing "unavailable" / falling back to per-file downloads.
+		$maxBytes = (int) Component::params('com_publications')->get(
+			'bundle_max_bytes',
+			self::BUNDLE_DEFAULT_MAX_BYTES
+		);
+		if ($maxBytes > 0 && $totalBytes > $maxBytes)
 		{
-			$i = 0;
-			foreach ($files as $fpath => $fname)
+			$this->setError(Lang::txt(
+				'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_BUNDLE_TOO_LARGE'
+			));
+			return false;
+		}
+
+		// Lock to prevent concurrent bundle builds (which each spawn their
+		// own ZipArchive temp .part). Non-blocking: if another worker is
+		// already building this bundle, bail rather than queue up.
+		$lockPath = $bundle . '.lock';
+		$lockHandle = @fopen($lockPath, 'c');
+		if ($lockHandle === false)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_FILES_FOUND'));
+			return false;
+		}
+		if (!@flock($lockHandle, LOCK_EX | LOCK_NB))
+		{
+			// Another process holds the lock and it's still fresh — bail
+			// out without trying. If the lock is stale (process died
+			// without releasing it), fall through and take it.
+			fclose($lockHandle);
+			if (file_exists($lockPath)
+				&& (time() - @filemtime($lockPath)) < self::BUNDLE_LOCK_FRESH_SECONDS)
 			{
-				$zip->addFile($fpath, $fname);
-				$i++;
+				return false;
 			}
-			$zip->close();
+			// Stale lock — try once more, blocking briefly.
+			$lockHandle = @fopen($lockPath, 'c');
+			if ($lockHandle === false || !@flock($lockHandle, LOCK_EX | LOCK_NB))
+			{
+				if ($lockHandle !== false) { fclose($lockHandle); }
+				return false;
+			}
+		}
+		// Refresh the lock mtime so concurrent attempts see it as fresh.
+		@touch($lockPath);
+
+		try
+		{
+			// Re-check existence under the lock — another worker may have
+			// completed the bundle while we were waiting.
+			if (is_file($bundle) && $overwrite == false)
+			{
+				return $bundle;
+			}
+
+			$zip = new ZipArchive;
+			if ($zip->open($bundle, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true)
+			{
+				foreach ($files as $fpath => $fname)
+				{
+					$zip->addFile($fpath, $fname);
+				}
+				$zip->close();
+			}
+		}
+		finally
+		{
+			@flock($lockHandle, LOCK_UN);
+			fclose($lockHandle);
+			@unlink($lockPath);
 		}
 
 		return $bundle;
+	}
+
+	/**
+	 * Remove ZipArchive .part files older than BUNDLE_PART_STALE_SECONDS.
+	 * These are temp files left when a bundle build is killed mid-write.
+	 *
+	 * @param   string   $bundlesDir
+	 * @return  integer  Number of files removed
+	 */
+	protected function cleanupStaleBundleParts($bundlesDir)
+	{
+		if (!is_dir($bundlesDir))
+		{
+			return 0;
+		}
+
+		$threshold = time() - self::BUNDLE_PART_STALE_SECONDS;
+		$removed = 0;
+
+		foreach ((array) glob($bundlesDir . DS . '*.part') as $partFile)
+		{
+			$mtime = @filemtime($partFile);
+			if ($mtime !== false && $mtime < $threshold)
+			{
+				if (@unlink($partFile))
+				{
+					$removed++;
+				}
+			}
+		}
+
+		return $removed;
 	}
 
 	/**
