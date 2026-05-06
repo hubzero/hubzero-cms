@@ -1269,7 +1269,7 @@ class Groups extends Base
 		{
 			foreach ($rows as $row)
 			{
-				$name = str_replace("\n", '', stripslashes(trim($row->description)));
+				$name = str_replace("\n", '', stripslashes(trim((string) $row->description)));
 				$name = str_replace("\r", '', $name);
 
 				$item = array(

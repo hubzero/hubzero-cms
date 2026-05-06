@@ -715,11 +715,11 @@ class Events extends SiteController
 			$row->content = trim($row->content == null ? '' : $row->content);
 		}
 
-		$bits = explode('-', $row->publish_up);
-		$eyear = $bits[0];
-		$emonth = $bits[1];
-		$edbits = explode(' ', $bits[2]);
-		$eday = $edbits[0];
+		$bits   = explode('-', (string) $row->publish_up);
+		$eyear  = $bits[0] ?? '';
+		$emonth = $bits[1] ?? '';
+		$edbits = explode(' ', $bits[2] ?? '');
+		$eday   = $edbits[0] ?? '';
 
 		// Everyone has access unless restricted to admins in the configuration
 		$authorized = true;

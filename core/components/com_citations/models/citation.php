@@ -291,6 +291,13 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				$queryBindings = array();
 				foreach ($refKeys as $reftype)
 				{
+					// Skip filter values not in the known reference types
+					// (callers can pass arbitrary keys via the request).
+					if (!isset($refTypes[$reftype]))
+					{
+						continue;
+					}
+
 					$combination = false;
 					$excludes = array();
 					switch ($reftype)

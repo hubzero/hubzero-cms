@@ -1270,9 +1270,9 @@ class Repo extends Obj
 			***/
 			$matches = [];
 			$firstArchiveEntry = shell_exec("unzip -qql " .  $tmp_name . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
-			preg_match("/(^.*?\/)/", $firstArchiveEntry, $matches);
+			preg_match("/(^.*?\/)/", (string) $firstArchiveEntry, $matches);
 
-			$topLevelDirectory = isset($matches[0]) ? $matches[0] : $firstArchiveEntry;
+			$topLevelDirectory = $matches[0] ?? (string) $firstArchiveEntry;
 
 			if (strpos($topLevelDirectory, '.') !== false)
 			{

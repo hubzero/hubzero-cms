@@ -1969,8 +1969,8 @@ class Curation extends Obj
 		// Insert incoming data
 		foreach ($data as $field => $value)
 		{
-			$field = trim($field);
-			$this->_tbl->$field = trim($value);
+			$field = trim((string) $field);
+			$this->_tbl->$field = trim((string) $value);
 		}
 
 		if ($this->_tbl->store())

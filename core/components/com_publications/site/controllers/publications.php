@@ -1132,9 +1132,7 @@ class Publications extends SiteController
 	 */
 	protected function _serveup($inline, $p, $f, $mime)
 	{
-		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
-					? $_SERVER["HTTP_USER_AGENT"]
-					: $HTTP_USER_AGENT;
+		$user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
 		// Clean all output buffers (needs PHP > 4.2.0)
 		while (ob_get_level())

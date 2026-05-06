@@ -62,7 +62,7 @@ class EventsDate
 	 */
 	public function __construct($datetime='')
 	{
-		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $datetime, $regs))
+		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", (string) $datetime, $regs))
 		{
 			$this->setDate($regs[1], $regs[2], $regs[3]);
 			$this->hour   = intval($regs[4]);

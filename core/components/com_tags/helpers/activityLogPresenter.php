@@ -20,7 +20,7 @@ class ActivityLogPresenter
 		$activityDescription = null;
 		$class = null;
 
-		$actor = stripslashes($log->actor->get('name'));
+		$actor = stripslashes((string) $log->actor->get('name'));
 		$actor = $actor ?: Lang::txt('JUNKNOWN');
 
 		if ($comments)
