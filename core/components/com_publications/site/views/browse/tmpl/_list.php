@@ -23,8 +23,21 @@ switch ($this->filters['sortby']):
 		break;
 endswitch;
 
-// Get version authors
+// Pre-load authors for every visible publication in one round trip
+// (one SQL for the join + one SQL for the deduped #__xprofiles fetch),
+// keyed by version_id. The per-row getAuthors() call this replaces was
+// running a separate query plus ~k Member::oneOrNew() loads per row,
+// which is the N+1 that crashed limit=1000 with OOM.
 $pa = new \Components\Publications\Tables\Author($database);
+$_versionIds = array();
+foreach ($this->results as $line)
+{
+	if ($line->version_id)
+	{
+		$_versionIds[] = $line->version_id;
+	}
+}
+$authorsByVersion = $pa->getAuthorsForVersions($_versionIds);
 ?>
 
 <ol class="results" id="publications">
@@ -51,7 +64,9 @@ $pa = new \Components\Publications\Tables\Author($database);
 				break;
 		endswitch;
 
-		$authors = $pa->getAuthors($line->version_id);
+		$authors = isset($authorsByVersion[(int) $line->version_id])
+			? $authorsByVersion[(int) $line->version_id]
+			: array();
 
 		// Display List of items
 		$this->view('item')

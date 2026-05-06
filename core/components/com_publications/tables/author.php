@@ -356,6 +356,157 @@ class Author extends Table
 	}
 
 	/**
+	 * Batched version of getAuthors() for many publication versions at once.
+	 *
+	 * The per-version getAuthors() above is fine on a single-publication
+	 * page, but on a list view it triggers an N+1: one author query per
+	 * row, each followed by ~k Member::oneOrNew() loads. On a 100-row
+	 * page that's ~500 model instantiations and as many SQL round-trips.
+	 *
+	 * This variant runs:
+	 *   - 1 SQL for #__publication_authors + #__project_owners filtered
+	 *     by version_id IN (...)
+	 *   - 1 SQL against #__xprofiles for the deduped user_ids
+	 * and returns a map: [version_id => [enrichedAuthorRow, ...]].
+	 *
+	 * Mirrors the field shape produced by getAuthors() so list-view
+	 * templates ($contributor->p_name, ->username, ->p_organization,
+	 * ->open, ->givenName/middleName/surname, ->p_email, ->orcid, etc.)
+	 * keep working unchanged. The pictureResolver call is intentionally
+	 * skipped — list views don't read $author->picture, and resolvers
+	 * touch the filesystem.
+	 *
+	 * @param   array    $vids          Publication version IDs
+	 * @param   integer  $active        Only status=1 authors
+	 * @param   boolean  $incSubmitter  Include role='submitter' rows
+	 * @return  array                   [vid => array of author rows]
+	 */
+	public function getAuthorsForVersions(array $vids, $active = 1, $incSubmitter = false)
+	{
+		$vids = array_values(array_unique(array_map('intval', $vids)));
+		$vids = array_filter($vids, function ($v) { return $v > 0; });
+		if (empty($vids))
+		{
+			return [];
+		}
+		$vidList = implode(',', $vids);
+
+		$query  = "SELECT A.*, PO.invited_name, PO.invited_email ";
+		$query .= " FROM $this->_tbl as A ";
+		$query .= " JOIN #__project_owners as PO ON PO.id = A.project_owner_id ";
+		$query .= " WHERE A.publication_version_id IN ($vidList) ";
+		if ($active)
+		{
+			$query .= " AND A.status = 1 ";
+		}
+		if (!$incSubmitter)
+		{
+			$query .= " AND (A.role != 'submitter' OR A.role IS NULL) ";
+		}
+		$query .= " ORDER BY A.publication_version_id ASC, A.ordering ASC ";
+
+		$this->_db->setQuery($query);
+		$authors = $this->_db->loadObjectList();
+		if (!$authors)
+		{
+			return [];
+		}
+
+		// Bulk-load member profile rows for every distinct user_id in
+		// the result set. Single SELECT against the same table the
+		// Member ORM model reads from (#__xprofiles).
+		$userIds = array();
+		foreach ($authors as $a)
+		{
+			if (!empty($a->user_id))
+			{
+				$userIds[(int) $a->user_id] = true;
+			}
+		}
+
+		// Bulk-load Member models for the deduped user_ids. Member's
+		// fields are spread across #__users, #__xprofiles, and ROR
+		// relation tables, so reading from the model is more robust
+		// than hand-rolling a join here. One IN-query replaces N
+		// per-row Member::oneOrNew() calls.
+		$memberMap = array();
+		if (!empty($userIds))
+		{
+			$members = \Components\Members\Models\Member::all()
+				->whereIn('id', array_keys($userIds))
+				->rows();
+			if ($members)
+			{
+				foreach ($members as $m)
+				{
+					$mid = (int) $m->get('id');
+					if ($mid)
+					{
+						$memberMap[$mid] = $m;
+					}
+				}
+			}
+		}
+
+		// Enrich each author row with member fields (matching the field
+		// names the per-version getAuthors() applies) and group by vid.
+		// Default the member-derived properties to empty strings up front
+		// so views that read them don't trip "Undefined property" notices
+		// when a row's user_id has no matching member record (the per-row
+		// getAuthors() got the same effect because Member::oneOrNew()
+		// returned a blank model with empty fields).
+		$byVersion = array();
+		foreach ($authors as $a)
+		{
+			$a->p_name         = '';
+			$a->username       = '';
+			$a->p_organization = '';
+			$a->open           = 0;
+			$a->givenName      = '';
+			$a->middleName     = '';
+			$a->surname        = '';
+			$a->p_email        = '';
+
+			$uid = (int) ($a->user_id ?? 0);
+			if ($uid && isset($memberMap[$uid]))
+			{
+				$m = $memberMap[$uid];
+				$a->p_name         = $m->get('name');
+				$a->username       = $m->get('username');
+				$a->p_organization = $m->get('organization');
+				$a->open           = $m->get('access');
+				$a->givenName      = $m->get('givenName');
+				$a->middleName     = $m->get('middleName');
+				$a->surname        = $m->get('surname');
+				$a->p_email        = $m->get('email');
+				$mOrcid = $m->get('orcid');
+				if (!empty($mOrcid))
+				{
+					$a->orcid = $mOrcid;
+				}
+				$mOrg = $m->get('organization');
+				if (empty($a->organization) && !empty($mOrg))
+				{
+					$a->organization = $mOrg;
+				}
+				$mOrgid = $m->get('orgid');
+				if (empty($a->orgid) && !empty($mOrgid))
+				{
+					$a->orgid = $mOrgid;
+				}
+			}
+			$vid = (int) $a->publication_version_id;
+			if (!isset($byVersion[$vid]))
+			{
+				$byVersion[$vid] = array();
+			}
+			$byVersion[$vid][] = $a;
+		}
+
+		return $byVersion;
+	}
+
+	/**
 	 * Get publication submitter
 	 *
 	 * @param   integer  $vid  Pub version ID
