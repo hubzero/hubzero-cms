@@ -2429,6 +2429,12 @@ class Curation extends Obj
 
 			if (is_dir($galleryPath))
 			{
+				// Track first transferred image so we can mark it as the
+				// version's default thumbnail. publishAttachment() doesn't
+				// do this on its own (only addAttachment() does), so without
+				// this we'd leave the version with no thumb.gif/master.png.
+				$firstImageAttach = null;
+
 				foreach ($shots as $shot)
 				{
 					$objPA = new Tables\Attachment($this->_db);
@@ -2469,6 +2475,24 @@ class Curation extends Obj
 						{
 							$objPA->delete();
 						}
+						elseif ($firstImageAttach === null)
+						{
+							$firstImageAttach = $objPA;
+						}
+					}
+				}
+
+				// Set the version's default thumbnail from the first
+				// transferred gallery image, mirroring addAttachment()'s
+				// behavior. The handler must be 'imageviewer' (set in the
+				// gallery element manifest).
+				if ($firstImageAttach !== null && $configs->handler
+					&& $configs->handler->getName() == 'imageviewer')
+				{
+					$currentDefault = new Tables\Attachment($this->_db);
+					if (!$currentDefault->getDefault($pub->version_id))
+					{
+						$configs->handler->makeDefault($firstImageAttach, $pub, $configs);
 					}
 				}
 			}

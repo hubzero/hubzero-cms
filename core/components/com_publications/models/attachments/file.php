@@ -664,6 +664,14 @@ class File extends Base
 			Filesystem::makeDirectory($newPath, 0755, true, true);
 		}
 
+		// Track the first successfully transferred imageviewer attachment
+		// so we can set it as the new version's default thumbnail. The
+		// addAttachment() path does this, but transferData() between
+		// versions previously bypassed it, leaving v2+ pubs with no
+		// version-level thumb.gif/master.png.
+		$firstImageAttach = null;
+		$newVersionConfigs = null;
+
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
@@ -714,7 +722,40 @@ class File extends Base
 				if ($configs->handler && $configs->handler->getName() == 'imageviewer')
 				{
 					$configs->handler->makeThumbnail($pAttach, $pub, $newConfigs);
+
+					if ($firstImageAttach === null)
+					{
+						$firstImageAttach = $pAttach;
+
+						// makeDefault writes thumb.gif/master.png at
+						// $configs->pubBase, so resolve that for the new version.
+						$newVersionConfigs = clone $newConfigs;
+						$newVersionConfigs->pubBase = \Components\Publications\Helpers\Html::buildPubPath(
+							$pub->id,
+							$newVersion->id,
+							'',
+							'',
+							1
+						);
+					}
 				}
+			}
+		}
+
+		// Set the new version's default thumbnail from the first transferred
+		// gallery image, mirroring addAttachment()'s behavior.
+		if ($firstImageAttach !== null && $configs->handler
+			&& $configs->handler->getName() == 'imageviewer')
+		{
+			$currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+			if (!$currentDefault->getDefault($newVersion->id))
+			{
+				// makeDefault uses $pub->version_id internally for some lookups
+				// (saveParam on Attachment), so set it to the new version.
+				$savedVersionId = isset($pub->version_id) ? $pub->version_id : null;
+				$pub->version_id = $newVersion->id;
+				$configs->handler->makeDefault($firstImageAttach, $pub, $newVersionConfigs);
+				$pub->version_id = $savedVersionId;
 			}
 		}
 
