@@ -57,7 +57,7 @@ $this->css('introduction.css', 'system')
 					foreach ($this->apps as $project)
 					{
 						//if ($project->state == 1 || $project->state == 3) {
-						if ($project->tool_state != 8)
+						if ($project->tool_state == 7)
 						{
 							$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
 							?>
