@@ -348,8 +348,21 @@ class Items extends AdminController
 		if (!empty($this->view->author->user_id))
 		{
 			$user = \Components\Members\Models\Member::oneOrNew($this->view->author->user_id);
-			$this->view->author->orcid = $user->get('orcid');
-			$this->view->author->organization = $user->get('organization');
+			
+			if (empty($this->view->author->organization) && !empty($user->get('organization')))
+			{
+				$this->view->author->organization = $user->get('organization');
+			}
+			
+			if (empty($this->view->author->orgid) && !empty($user->get('orgid')))
+			{
+				$this->view->author->orgid = $user->get('orgid');
+			}
+			
+			if (empty($this->view->author->orcid) && !empty($user->get('orcid')))
+			{
+				$this->view->author->orcid = $user->get('orcid');
+			}
 		}
 
 		// Version ID

@@ -342,9 +342,10 @@ class Authors extends Base
 		$config = Component::params('com_publications');
 
 		$emailConfig = $config->get('email');
-		$email      = Request::getString('email', '', 'post');
+		$email      = trim(Request::getString('email', '', 'post'));
 		$firstName  = trim(Request::getString('firstName', '', 'post'));
 		$lastName   = trim(Request::getString('lastName', '', 'post'));
+		$dept       = trim(Request::getString('department', '', 'post'));
 		$org        = trim(Request::getString('organization', '', 'post'));
 		$orcid      = trim(Request::getString('orcid', '', 'post'));
 		$credit     = trim(Request::getString('credit', '', 'post'));
@@ -465,6 +466,7 @@ class Authors extends Base
 		$pAuthor->name         = $name;
 		$pAuthor->firstName    = $firstName;
 		$pAuthor->lastName     = $lastName;
+		$pAuthor->department   = $dept;
 		$pAuthor->organization = $org;
 		$pAuthor->orcid        = $orcid;
 

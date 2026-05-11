@@ -83,6 +83,10 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 				<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS'); ?></a></span>
 			</div>
 		</div>
+		
+		<?php if (count($this->pub->authors()) > 0) { ?>
+		<p class="hint">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_AS_CONTACT'); ?></p>
+		<?php } ?>
 
 		<?php if (count($this->pub->authors()) > 1) { ?>
 		<p class="hint">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>

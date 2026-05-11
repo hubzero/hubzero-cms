@@ -312,7 +312,7 @@ class Author extends Table
 					$res->surname = $user->get('surname');
 					$res->p_email = $user->get('email');
 					
-					if (!empty($user->get('orcid')))
+					if (empty($res->orcid) && !empty($user->get('orcid')))
 					{
 						$res->orcid = $user->get('orcid');
 					}
@@ -688,16 +688,28 @@ class Author extends Table
 		if (!empty($result->user_id))
 		{
 			$user = \Components\Members\Models\Member::oneOrNew($result->user_id);
-			$result->p_name = $user->get('name');
 			$result->username = $user->get('username');
-			$result->p_organization = $user->get('organization');
-			$result->picture = $user->picture(0, false);
+			$result->p_name = $user->get('name');
 			$result->givenName = $user->get('givenName');
 			$result->surname = $user->get('surname');
-			$result->orcid = $user->get('orcid');
 			$result->p_email = $user->get('email');
-			$result->organization = $user->get('organization');
-			$result->orgid = $user->get('orgid');
+			$result->p_organization = $user->get('organization');
+			$result->picture = $user->picture(0, false);
+			
+			if (empty($result->orcid) && !empty($user->get('orcid')))
+			{
+				$result->orcid = $user->get('orcid');
+			}
+			
+			if (empty($result->organization) && !empty($user->get('organization')))
+			{
+				$result->organization = $user->get('organization');
+			}
+			
+			if (empty($result->orgid) && !empty($user->get('orgid')))
+			{
+				$result->orgid = $user->get('orgid');
+			}
 		}
 		else
 		{

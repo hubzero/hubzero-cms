@@ -101,6 +101,12 @@ $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName)
 					</td>
 				</tr>
 				<tr>
+					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_DEPARTMENT'); ?>:</label></td>
+					<td>
+						<input type="text" name="department" value="<?php echo $this->escape($this->author->department); ?>" size="25" />
+					</td>
+				</tr>
+				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:</label></td>
 					<td>
 						<input type="text" name="organization" value="<?php echo $this->escape($this->author->organization); ?>" size="25" />
