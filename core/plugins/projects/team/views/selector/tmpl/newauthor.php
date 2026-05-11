@@ -103,19 +103,34 @@ if (count($this->authors) > 0)
 					<label for="firstName">
 						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME')); ?>*:</span>
 						<input type="text" name="firstName" id="firstName" class="long" value="" maxlength="255" />
+						<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME_REQUIRED'); ?></p>
 					</label>
 				</div>
 				<div class="block-liner">
 					<label for="lastName">
 						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME')); ?>*:</span>
 						<input type="text" name="lastName" id="lastName" class="long" value="" maxlength="255" />
+						<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME_REQUIRED'); ?></p>
+					</label>
+				</div>
+			</div>
+			<div class="block">
+				<div class="block-liner">
+					<label for="department">
+						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_DEPARTMENT')); ?>:</span>
+						<input type="text" class="long" name="department" id="department" value="" maxlength="255" />
+						<?php
+                            if (\Component::params('com_publications')->get('department')) {
+                                echo "<div id='autocomplete-department' class='departmentAvailable'></div>";
+                            }
+                        ?>
 					</label>
 				</div>
 			</div>
 			<div class="block">
 				<div class="block-liner">
 					<label for="organization">
-						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
+						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>:</span>
 						<input type="text" class="long" name="organization" id="organization" value="" maxlength="255" />
 						<?php
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
@@ -123,7 +138,6 @@ if (count($this->authors) > 0)
                                 echo "<div id='autocomplete-organization' class='rorApiAvailable'></div>";
                             }
                         ?>
-						<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
 					</label>
 				</div>
 			</div>
