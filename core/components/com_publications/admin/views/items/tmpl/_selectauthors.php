@@ -20,16 +20,25 @@ if ($this->authNames != null)
 	{
 		$authIDs[] = $authname->id;
 		$name = $authname->name;
-
-		$org = ($authname->organization)
-			? $this->escape($authname->organization) : '';
+		$dept = $authname->department;
+		$org = $authname->organization ? $authname->organization : $authname->p_organization;
+		$email = $authname->p_email ? $authname->p_email : $authname->invited_email;
 		$credit = ($authname->credit)
 			? $this->escape($authname->credit) : '';
 		$userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
 		$html .= "\t".'<li id="author_'.$authname->id.'" class="pick reorder">'
 			. '<span class="ordernum">' . $i . '</span>. ' . $name . ' (' . $userid . ')';
-		$html .= $org ? ' - <span class="org">' . $org . '</span>' : '';
+		
+		if ($authname->repository_contact == 1 && !empty($dept) && !empty($org) && !empty($email))
+		{
+			$html .= ' - <span class="org">' . $dept . ' - ' . $org . ' - ' . $email . '</span>';
+		}
+		else
+		{
+			$html .= $org ? ' - <span class="org">' . $org . '</span>' : '';
+		}
+		
 		$html .= ' <a class="editauthor" href="' . Route::url('index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id) . '" >' . Lang::txt('COM_PUBLICATIONS_EDIT') . '</a> ';
 		$html .= ' <a class="editauthor" href="' . Route::url('index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id) .'"  > ' . Lang::txt('COM_PUBLICATIONS_DELETE') . '</a> ';
 		if ($credit)

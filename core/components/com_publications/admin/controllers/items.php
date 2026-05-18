@@ -334,35 +334,17 @@ class Items extends AdminController
 	public function editauthorTask()
 	{
 		// Incoming
-		$author = Request::getInt('author', 0);
+		$author_id = Request::getInt('author', 0);
 
 		$this->view->setLayout('editauthor');
 
-		$this->view->author = new Tables\Author($this->database);
-		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
+		$authorTblObj = new Tables\Author($this->database);
+		$this->view->author = $authorTblObj->getAuthorById($author_id);
+		
+		if ($this->_task == 'editauthor' && !$this->view->author)
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
 			return;
-		}
-		
-		if (!empty($this->view->author->user_id))
-		{
-			$user = \Components\Members\Models\Member::oneOrNew($this->view->author->user_id);
-			
-			if (empty($this->view->author->organization) && !empty($user->get('organization')))
-			{
-				$this->view->author->organization = $user->get('organization');
-			}
-			
-			if (empty($this->view->author->orgid) && !empty($user->get('orgid')))
-			{
-				$this->view->author->orgid = $user->get('orgid');
-			}
-			
-			if (empty($this->view->author->orcid) && !empty($user->get('orcid')))
-			{
-				$this->view->author->orcid = $user->get('orcid');
-			}
 		}
 
 		// Version ID

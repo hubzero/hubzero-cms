@@ -27,7 +27,9 @@ $elName = "authorList";
 				$i= 1;
 				foreach ($this->pub->_authors as $author)
 				{
+					$dept = $author->department;
 					$org = $author->organization ? $author->organization : $author->p_organization;
+					$email = $author->p_email ? $author->p_email : $author->invited_email;
 					$name = $author->name ? $author->name : $author->p_name;
 					$name = trim($name) ? $name : $author->invited_name;
 					$name = trim($name) ? $name : $author->invited_email;
@@ -39,7 +41,13 @@ $elName = "authorList";
 					?>
 					<li>
 						<span class="item-order"><?php echo $i; ?></span>
-						<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
+						<span class="item-title"><?php echo $name; ?> 
+							<?php if ($author->repository_contact == 1 && !empty($dept) && !empty($org) && !empty($email)) { ?>
+							<span class="item-subtext"><?php echo ' - ' . $dept . ' - ' . $org . ' - ' . $email; ?></span>
+							<?php } else {?>
+							<span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span>
+							<?php }?>
+						</span>
 						<span class="item-details"><?php echo $details; ?></span>
 					</li>
 					<?php
