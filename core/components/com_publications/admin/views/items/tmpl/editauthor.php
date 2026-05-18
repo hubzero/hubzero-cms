@@ -34,6 +34,7 @@ if (trim($name))
 
 $firstname = $this->author->firstName ? htmlspecialchars($this->author->firstName) : $firstname;
 $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
+$email = $this->author->p_email ? $this->author->p_email : $this->author->invited_email;
 
 ?>
 
@@ -110,6 +111,12 @@ $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName)
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:</label></td>
 					<td>
 						<input type="text" name="organization" value="<?php echo $this->escape($this->author->organization); ?>" size="25" />
+					</td>
+				</tr>
+				<tr>
+					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_EMAIL'); ?>:</label></td>
+					<td>
+						<input type="text" name="email" value="<?php echo $this->escape($email); ?>" size="25" />
 					</td>
 				</tr>
 				<tr>

@@ -718,6 +718,63 @@ class Author extends Table
 		
 		return $result;
 	}
+	
+	/**
+	 * Get record by author ID
+	 *
+	 * @param   integer  $id  Author ID
+	 * @return  mixed    False if error, Object on success
+	 */
+	public function getAuthorById($id = 0)
+	{
+		if (!$id)
+		{
+			return false;
+		}
+		$query  = "SELECT  A.*, po.invited_email, po.invited_name";
+		$query .= " FROM #__project_owners as po  ";
+		$query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id";
+		$query .= " AND A.status=1 ";
+		$query .= " WHERE A.id=" . $this->_db->quote($id);
+		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
+		$query .= " LIMIT 1 ";
+
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObject();
+		
+		if (!empty($result->user_id))
+		{
+			$user = \Components\Members\Models\Member::oneOrNew($result->user_id);
+			$result->username = $user->get('username');
+			$result->p_name = $user->get('name');
+			$result->givenName = $user->get('givenName');
+			$result->surname = $user->get('surname');
+			$result->p_email = $user->get('email');
+			$result->p_organization = $user->get('organization');
+			$result->picture = $user->picture(0, false);
+			
+			if (empty($result->orcid) && !empty($user->get('orcid')))
+			{
+				$result->orcid = $user->get('orcid');
+			}
+			
+			if (empty($result->organization) && !empty($user->get('organization')))
+			{
+				$result->organization = $user->get('organization');
+			}
+			
+			if (empty($result->orgid) && !empty($user->get('orgid')))
+			{
+				$result->orgid = $user->get('orgid');
+			}
+		}
+		else
+		{
+			$result->p_name = $result->username = $result->p_organization = $result->picture = $result->givenName = $result->surname = $result->p_email = null;
+		}
+		
+		return $result;
+	}
 
 	/**
 	 * Delete records
