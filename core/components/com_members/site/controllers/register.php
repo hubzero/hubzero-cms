@@ -412,6 +412,17 @@ class Register extends SiteController
 				}
 			}
 
+			// An "@invalid" placeholder email means the third-party authenticator
+			// (e.g. ORCID) supplied no real address. Present an empty, required email
+			// field so the user can provide and verify one; username and name remain
+			// locked to the values from the identity provider.
+			if (substr((string) $xregistration->get('email'), -8) === '@invalid')
+			{
+				$xregistration->set('email', '');
+				$xregistration->set('confirmEmail', '');
+				$force = true;
+			}
+
 			// Profile info
 			$member = Member::oneOrNew(User::get('id'));
 			$entries = $member->profiles();
