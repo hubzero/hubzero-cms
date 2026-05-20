@@ -177,7 +177,7 @@ $this->js();
 
 					<label>
 						<?php echo Lang::txt('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
-						<?php echo $this->editor('comment[content]', $this->escape(stripslashes($comment->get('content'))), 35, 20, 'commentcontent', array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('comment[content]', $this->escape(stripslashes((string) $comment->get('content'))), 35, 20, 'commentcontent', array('class' => 'minimal no-footer')); ?>
 					</label>
 
 

@@ -69,7 +69,7 @@ class Calendar extends Field
 		}
 
 		// Handle the special case for "now".
-		if (strtoupper($this->value) == 'NOW')
+		if (strtoupper((string) $this->value) == 'NOW')
 		{
 			$this->value = date($format);
 		}

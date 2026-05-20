@@ -188,11 +188,11 @@ class Registration
 			$this->_registration['surname'] = $name['last'];
 		}
 
-		$this->_registration['login'] = strtolower(Request::getString('login', null, 'post'));
-		$this->_registration['email'] = Request::getString('email', null, 'post');
-		$this->_registration['confirmEmail'] = Request::getString('email2', null, 'post');
-		$this->_registration['password'] = Request::getString('password', null, 'post');
-		$this->_registration['confirmPassword'] = Request::getString('password2', null, 'post');
+		$this->_registration['login'] = strtolower((string) Request::getString('login', null, 'post'));
+		$this->_registration['email'] = (string) Request::getString('email', null, 'post');
+		$this->_registration['confirmEmail'] = (string) Request::getString('email2', null, 'post');
+		$this->_registration['password'] = (string) Request::getString('password', null, 'post');
+		$this->_registration['confirmPassword'] = (string) Request::getString('password2', null, 'post');
 		$this->_registration['usageAgreement'] = Request::getInt('usageAgreement', 0, 'post');
 		$this->_registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
 
