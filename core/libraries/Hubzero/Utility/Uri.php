@@ -137,6 +137,8 @@ class Uri
 	 */
 	public static function getInstance($uri = 'SERVER')
 	{
+		$theURI = '';
+
 		if (empty(self::$instances[$uri]))
 		{
 			// Are we obtaining the URI from the server?
@@ -156,13 +158,13 @@ class Uri
 				// to determine if we are running on apache or IIS.  If PHP_SELF and REQUEST_URI
 				// are present, we will assume we are running on apache.
 
-				if (!empty($_SERVER['PHP_SELF']) && !empty($_SERVER['REQUEST_URI']))
+				if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['PHP_SELF']) && !empty($_SERVER['REQUEST_URI']))
 				{
 					// To build the entire URI we need to prepend the protocol, and the http host
 					// to the URI string.
 					$theURI = 'http' . $https . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 				}
-				else
+				else if (!empty($_SERVER['HTTP_HOST']))
 				{
 					// Since we do not have REQUEST_URI to work with, we will assume we are
 					// running on IIS and will therefore need to work some magic with the SCRIPT_NAME and
