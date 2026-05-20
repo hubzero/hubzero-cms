@@ -319,7 +319,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="first-name"<?php echo $fieldclass; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_FIRST_NAME'); ?> <?php echo $required; ?>
-									<input type="text" class="form-control" name="name[first]" id="first-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($givenName)); ?>"<?php echo ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo !empty($this->xregistration->_invalid['name']) ? ' aria-invalid="true"' : ''; ?> />
+									<input type="text" class="form-control" name="name[first]" id="first-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($givenName)); ?>"<?php echo ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : ''; ?><?php echo !empty($this->xregistration->_invalid['name']) ? ' aria-invalid="true"' : ''; ?> />
 								</label>
 							</div>
 						</div>
@@ -327,7 +327,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="middle-name">
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>
-									<input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($middleName)); ?>" />
+									<input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($middleName)); ?>"<?php echo ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : ''; ?> />
 								</label>
 							</div>
 						</div>
@@ -335,7 +335,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="last-name"<?php echo $fieldclass; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?> <?php echo $required; ?>
-									<input type="text" class="form-control" name="name[last]" id="last-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)); ?>"<?php echo ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo !empty($this->xregistration->_invalid['name']) ? ' aria-invalid="true"' : ''; ?> />
+									<input type="text" class="form-control" name="name[last]" id="last-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)); ?>"<?php echo ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : ''; ?><?php echo !empty($this->xregistration->_invalid['name']) ? ' aria-invalid="true"' : ''; ?> />
 								</label>
 							</div>
 						</div>
