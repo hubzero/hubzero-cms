@@ -49,49 +49,39 @@ class RateLimitService extends Middleware
 		// Get response
 		$response = $this->next($request);
 
-		// Get authentication
+		// Rate limiting is keyed on the OAuth2 token's (application_id, uidNumber).
+		// Session-cookie and unauthenticated API requests carry no token, so the
+		// historical code (commit 17f1b3b743, "[PHP7] setup default ratelimit
+		// token values") lumped every one of them into a single shared
+		// application_id=0/user_id=0 bucket. One busy user could then exhaust the
+		// shared short-window limit and return HTTP 429 to everyone else -- a
+		// self-inflicted DoS that surfaced as intermittent grading errors after
+		// the ~Apr-2025 site upgrade (support ticket #293).
+		//
+		// So skip tokenless requests entirely: only requests authenticated by a
+		// registered API application are rate limited (per-application limiting is
+		// unchanged). If session/IP abuse protection is ever needed, apply it at
+		// the web-server/proxy layer, not in this per-application middleware.
 		$token = $this->app['auth']->token();
 
-		/* @FIXME This makes PHP 7.4 have same result as PHP 5.6.
-		   However ultimately this may not be what we intended.
-		   All session cookie authenticated users get lumped into
-		   the same RateLimit bucket for application_id=0, user_id=0.
-		*/
-
-		if (!isset($token))
+		if (empty($token['application_id']))
 		{
-			$token['application_id'] = 0;
-			$token['uidNumber'] = 0;
+			return $response;
 		}
 
-		// Rate limit application/user id and get data
+		// Rate limit by application/user and fetch the current counters
 		$rateLimitData = $this->app['ratelimiter']->rateLimit($token['application_id'], $token['uidNumber']);
 
-		// Calculate header values
-		$limit     = $rateLimitData->limit_short;
-		$remaining = $rateLimitData->limit_short - $rateLimitData->count_short;
-		$reset     = with(new Date($rateLimitData->expires_short))->toUnix();
-
-		// If we exceeded out rate limit lets respond accordingly
+		// If over either the short or long limit, reject with HTTP 429
 		if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short)
 		{
 			throw new \Exception('You have exceeded your rate limit allowance. Please see rate limit headers for details.', 429);
-
-			// Use different values for long
-			if ($rateLimitData->exceeded_long)
-			{
-				$limit = $rateLimitData->limit_long;
-				$reset = with(new Date($rateLimitData->expires_long))->toUnix();
-			}
-
-			// Always 0 if exceeded
-			$remaining = 0;
 		}
 
-		// Add rate limit headers
-		$response->headers->set('X-RateLimit-Limit', $limit);
-		$response->headers->set('X-RateLimit-Remaining', $remaining);
-		$response->headers->set('X-RateLimit-Reset', $reset);
+		// Otherwise annotate the response with rate limit headers
+		$response->headers->set('X-RateLimit-Limit', $rateLimitData->limit_short);
+		$response->headers->set('X-RateLimit-Remaining', $rateLimitData->limit_short - $rateLimitData->count_short);
+		$response->headers->set('X-RateLimit-Reset', with(new Date($rateLimitData->expires_short))->toUnix());
 
 		// Return response
 		return $response;
