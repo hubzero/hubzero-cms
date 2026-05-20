@@ -18,6 +18,11 @@ if ($data->get('viewer') != 'freeze')
 	$details.= !$data->exists() ? ' | ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE') : '';
 }
 
+if (!empty($data->get('attribs')))
+{
+	$details.= ' | ' . $data->get('attribs');
+}
+
 // Get settings
 $suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix
 		? $this->config->params->thumbSuffix : '-tn';

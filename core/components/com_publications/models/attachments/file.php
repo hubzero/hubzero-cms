@@ -243,6 +243,11 @@ class File extends Base
 				if ($zip->addFile($filePath, $where))
 				{
 					$readme .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+					
+					if (!empty($attach->attribs))
+					{
+						$readme .= '>>> ' . $attach->attribs . "\n";
+					}
 				}
 			}
 		}
@@ -1818,6 +1823,7 @@ class File extends Base
 		$data->set('pubPath', $configs->pubPath);
 		$data->set('props', $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId);
 		$data->set('downloadUrl', Route::url($view->pub->link('serve') . '&el=' . $view->elementId . '&a=' . $att->id . '&download=1'));
+		$data->set('attribs', $att->attribs);
 
 		// Is attachment (image) also publication thumbnail
 		$params = new \Hubzero\Config\Registry($att->params);
