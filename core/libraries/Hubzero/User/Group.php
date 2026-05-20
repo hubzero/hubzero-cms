@@ -557,15 +557,7 @@ class Group extends Obj
 				$db->setQuery($query);
 
 				// compile current list of members in this group
-				$aExistingUserMembership = array();
-
-				if (($results = $db->loadAssoc()))
-				{
-					foreach ($results as $uid)
-					{
-						$aExistingUserMembership[] = $uid;
-					}
-				}
+				$aExistingUserMembership = $db->loadColumn() ?: array();
 
 				// see who is new, merge with previous additions so we have a complete list after we are done
 				$aNewUserGroupEnrollments = array_merge($aNewUserGroupEnrollments, array_diff($list, $aExistingUserMembership));
