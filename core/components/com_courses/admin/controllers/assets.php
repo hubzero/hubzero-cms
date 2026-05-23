@@ -385,26 +385,18 @@ class Assets extends AdminController
 			{
 				if (strtolower($ext) == 'zip')
 				{
-					require_once PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php';
+					$zip = new \ZipArchive();
 
-					if (!extension_loaded('zlib'))
+					if ($zip->open($path . DS . $file['name']) !== true)
 					{
-						$this->setError(Lang::txt('ZLIB_PACKAGE_REQUIRED'));
+						$this->setError(Lang::txt('UNABLE_TO_EXTRACT_PACKAGE'));
 					}
 					else
 					{
-						$zip = new PclZip($path . DS . $file['name']);
-
-						// unzip the file
-						if (!($do = $zip->extract($path)))
-						{
-							$this->setError(Lang::txt('UNABLE_TO_EXTRACT_PACKAGE'));
-						}
-						else
-						{
-							@unlink($path . DS . $file['name']);
-							$file['name'] = 'presentation.json';
-						}
+						$zip->extractTo($path);
+						$zip->close();
+						@unlink($path . DS . $file['name']);
+						$file['name'] = 'presentation.json';
 					}
 				}
 

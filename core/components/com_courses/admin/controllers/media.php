@@ -308,26 +308,6 @@ class Media extends AdminController
 				$batch = Request::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					/*require_once PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php';
-
-					if (!extension_loaded('zlib'))
-					{
-						$this->setError(Lang::txt('ZLIB_PACKAGE_REQUIRED'));
-					}
-					else
-					{
-						$zip = new PclZip($path . DS . $file['name']);
-
-						// unzip the file
-						if (!($do = $zip->extract($path)))
-						{
-							$this->setError(Lang::txt('UNABLE_TO_EXTRACT_PACKAGE'));
-						}
-						else
-						{
-							@unlink($path . DS . $file['name']);
-						}
-					}*/
 					if (!$this->getError() && $ext == 'zip')
 					{
 						set_time_limit(60);
