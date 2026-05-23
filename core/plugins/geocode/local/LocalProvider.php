@@ -280,7 +280,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
 	{
 		if (!in_array($this->type, array('countries', 'country', 'continent')))
 		{
-			throw new \Geocoder\Exception\UnsupportedException(\Lang::txt('The LocalProvider does not support "%s".', $this->type));
+			throw new \Geocoder\Exception\UnsupportedOperation(\Lang::txt('The LocalProvider does not support "%s".', $this->type));
 		}
 
 		$retriever = '_get' . ucfirst($this->type);
@@ -406,7 +406,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
 	 */
 	public function getReversedData(array $coordinates)
 	{
-		throw new \Geocoder\Exception\UnsupportedException('The LocalProvider is not able to do reverse geocoding.');
+		throw new \Geocoder\Exception\UnsupportedOperation('The LocalProvider is not able to do reverse geocoding.');
 	}
 
 	/**
