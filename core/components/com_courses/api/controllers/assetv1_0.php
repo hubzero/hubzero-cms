@@ -644,7 +644,7 @@ class Assetv1_0 extends base
 		// If the path exists, delete it!
 		if (Filesystem::exists($path))
 		{
-			$deleted = Filesystem::listFolderTree($path);
+			$deleted = Filesystem::directoryTree($path);
 			Filesystem::deleteDirectory($path);
 		}
 
