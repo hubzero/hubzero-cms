@@ -862,6 +862,13 @@ class Pdo extends Driver
 	 */
 	public function getNumRows()
 	{
+		// After loadObjectList() frees the result set, the statement is null.
+		// Guard so callers that invoke getNumRows() afterward don't fatal.
+		if ($this->statement === null)
+		{
+			return 0;
+		}
+
 		// @FIXME: this isn't guaranteed to work on select statements in mysql
 		return $this->statement->rowCount();
 	}
