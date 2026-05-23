@@ -21,13 +21,6 @@ class ReplacementArray
 	var $data = false;
 	/*mostly private*/
 
-	/**
-	 * Description for 'fss'
-	 *
-	 * @var boolean
-	 */
-	var $fss = false;
-
 	// Create an object with the specified replacement array
 	// The array should have the same form as the replacement array for strtr()
 
@@ -65,7 +58,6 @@ class ReplacementArray
 	 */
 	function __wakeup()
 	{
-		$this->fss = false;
 	}
 
 	// Set the whole replacement array at once
@@ -81,7 +73,6 @@ class ReplacementArray
 	function setArray($data)
 	{
 		$this->data = $data;
-		$this->fss = false;
 	}
 
 	/**
@@ -110,7 +101,6 @@ class ReplacementArray
 	function setPair($from, $to)
 	{
 		$this->data[$from] = $to;
-		$this->fss = false;
 	}
 
 	/**
@@ -124,7 +114,6 @@ class ReplacementArray
 	function mergeArray($data)
 	{
 		$this->data = array_merge($this->data, $data);
-		$this->fss = false;
 	}
 
 	/**
@@ -138,7 +127,6 @@ class ReplacementArray
 	function merge($other)
 	{
 		$this->data = array_merge($this->data, $other->data);
-		$this->fss = false;
 	}
 
 	/**
@@ -151,18 +139,6 @@ class ReplacementArray
 	 */
 	function replace($subject)
 	{
-		if (function_exists('fss_prep_replace'))
-		{
-			if ($this->fss === false)
-			{
-				$this->fss = fss_prep_replace($this->data);
-			}
-			$result = fss_exec_replace($this->fss, $subject);
-		}
-		else
-		{
-			$result = strtr($subject, $this->data);
-		}
-		return $result;
+		return strtr($subject, $this->data);
 	}
 }
