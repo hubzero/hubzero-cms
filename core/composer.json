@@ -18,6 +18,7 @@
         "source": "http://hubzero.org/download"
     },
     "require": {
+        "alek13/slack": "^2.3",
         "apereo/phpcas": "1.6.*",
         "bordoni/phpass": "0.3.*",
         "bshaffer/oauth2-server-php": "1.11.*",
@@ -64,9 +65,9 @@
         "predis/predis": "1.1.*",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "scrivo/highlight.php": "^9.18",
-        "smolblog/oauth2-twitter": "^1.2",
         "simplepie/simplepie": "1.7.*",
         "simshaun/recurr": "4.0.*",
+        "smolblog/oauth2-twitter": "^1.2",
         "solarium/solarium": "6.2.*",
         "splitbrain/lesserphp": "0.10.*",
         "srmklive/flysystem-dropbox-v2": "1.0.*",
