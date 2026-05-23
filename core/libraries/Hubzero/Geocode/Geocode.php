@@ -258,11 +258,16 @@ class Geocode
 		$longitude = isset($coordinates['longitude']) ? $coordinates['longitude'] : $coordinates[1];
 
 		// Instantiate the Geocoder service and pass it the list of providers
-		$geocoder = new \Geocoder\Geocoder();
-		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
+		$geocoder = new \Geocoder\ProviderAggregator();
+
+		$chain = new \Geocoder\Provider\Chain\Chain($p);
+
+		$geocoder->registerProvider($chain);
 
 		// Try to get some data...
-		return $geocoder->reverse($latitude, $longitude);
+		$query = \Geocoder\Query\ReverseQuery::fromCoordinates($latitude, $longitude);
+
+		return $geocoder->reverseQuery($query);
 	}
 
 	/**
