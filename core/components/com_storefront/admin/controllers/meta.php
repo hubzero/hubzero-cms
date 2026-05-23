@@ -26,25 +26,25 @@ class Meta extends AdminController
 		$this->view->filters = array(
 			'access' => -1
 		);
-		$this->view->filters['sort'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort'] = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sort',
 			'filter_order',
 			'title'
 		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
 
 		// Get paging variables
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
