@@ -7,7 +7,9 @@
 
 namespace Components\Resources\Helpers;
 
-class RecommendedTags 
+use Wamania\Snowball\Stemmer\English as EnglishStemmer;
+
+class RecommendedTags
 {
 	private $tags = array(), $existing_tags = array(), $existing_map = array(), $focus_areas = array(), $focus_areas_map = array(), $fa_properties = array(), $existing_fa_map = array();
 
@@ -92,6 +94,7 @@ class RecommendedTags
 			--$word_count;
 		}
 
+		$stemmer = new EnglishStemmer();
 		$freq = array();
 		$last = array();
 		foreach ($words as $idx => $word)
@@ -100,15 +103,15 @@ class RecommendedTags
 			{
 				continue;
 			}
-			$stems = array(array(stem($word), strtolower($word)));
+			$stems = array(array($stemmer->stem($word), strtolower($word)));
 			if (isset($words[$idx + 1]) && !self::is_stop_word($words[$idx + 1], $opts['min_len']))
 			{
-				$stems[] = array($stems[0][0].' '.stem($words[$idx + 1]), strtolower($word).' '.strtolower($words[$idx + 1]));
+				$stems[] = array($stems[0][0].' '.$stemmer->stem($words[$idx + 1]), strtolower($word).' '.strtolower($words[$idx + 1]));
 			}
 			if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len']))
 			{
 				$stems[] = array(
-					$stems[0][0].' '.stem($words[$idx + 1]).' '.stem($words[$idx + 2]),
+					$stems[0][0].' '.$stemmer->stem($words[$idx + 1]).' '.$stemmer->stem($words[$idx + 2]),
 					\Hubzero\Utility\Inflector::singularize(strtolower($word)).' '.strtolower($words[$idx + 1]).' '.strtolower($words[$idx + 2])
 				);
 			}

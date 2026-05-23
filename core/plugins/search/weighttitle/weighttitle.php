@@ -78,12 +78,17 @@ class plgSearchWeightTitle extends \Hubzero\Plugin\Plugin
 	 */
 	private static function stem_list($str)
 	{
+		static $stemmer;
+		if (!$stemmer)
+		{
+			$stemmer = new \Wamania\Snowball\Stemmer\English();
+		}
 		$stems = array();
 		foreach (array_unique(preg_split('/\s+/', trim($str))) as $word)
 		{
 			if (!\Components\Search\Models\Basic\DocumentMetadata::is_stop_word($word))
 			{
-				$stems[] = stem(preg_replace('/[^[:alnum:]]/', '', $word));
+				$stems[] = $stemmer->stem(preg_replace('/[^[:alnum:]]/', '', $word));
 			}
 		}
 		return $stems;

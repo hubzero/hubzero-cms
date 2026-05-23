@@ -80,6 +80,7 @@
         "symfony/yaml": "4.*",
         "tecnickcom/tcpdf": "6.8.*",
         "theiconic/name-parser": "0.1.*",
+        "wamania/php-stemmer": "^4.0",
         "willdurand/geocoder": "4.6.*"
     },
     "require-dev": {
