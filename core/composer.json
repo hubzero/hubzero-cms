@@ -30,7 +30,7 @@
         "tecnickcom/tcpdf": "6.8.*",
         "splitbrain/lesserphp": "0.10.*",
         "monolog/monolog": "1.27.*",
-        "symfony/mailer": "v5.2.*",
+        "symfony/mailer": "v5.4.*",
         "symfony/console": "v5.4.*",
         "symfony/event-dispatcher": "v5.0.11",
         "php-http/curl-client":"2.3.*",
