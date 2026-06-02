@@ -262,7 +262,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function setBody(...$params)
+	public function setBody(...$params): static
 	{
 		if (isset($params[1]))
 		{
@@ -357,7 +357,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function addFrom(...$address)
+	public function addFrom(...$address): static
 	{
 		if (isset($address[1]))
 		{
@@ -439,7 +439,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function addTo(...$address)
+	public function addTo(...$address): static
 	{
 		if (isset($address[1]))
 		{
@@ -518,7 +518,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function addReplyTo(...$address)
+	public function addReplyTo(...$address): static
 	{
 		if (isset($address[1]))
 		{
@@ -599,7 +599,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function addBcc(...$address)
+	public function addBcc(...$address): static
 	{
 		if (isset($address[1]))
 		{
@@ -622,7 +622,7 @@ class Message extends \Symfony\Component\Mime\Email
 	 *
 	 * @return $this
 	 */
-	public function addPart($body, $contentType = null, $charset = '')
+	public function addPart($body, $contentType = null, $charset = ''): static
 	{
 		if ($contentType == "text/html")
 		{
