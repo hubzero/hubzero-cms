@@ -39,7 +39,7 @@
         "geocoder-php/chain-provider": "4.5.*",
         "geocoder-php/ipstack-provider": "0.4.*",
         "predis/predis": "1.1.*",
-        "symfony/yaml": "3.4.*",
+        "symfony/yaml": "5.4.*",
         "symfony/http-foundation": "5.4.*",
         "simshaun/recurr": "4.0.*",
         "pelago/emogrifier": "7.0.*",
