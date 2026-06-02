@@ -556,6 +556,8 @@ class Attachments extends Obj
 			return false;
 		}
 
+		$success = true;
+
 		foreach ($elements as $element)
 		{
 			// Load attachment type
@@ -570,7 +572,10 @@ class Attachments extends Obj
 			$attachments = isset($attachments['elements'][$element->id])
 						 ? $attachments['elements'][$element->id] : null;
 
-			// Add to bundle
+			// Add to bundle. Note: a falsey return is normal for element
+			// types that contribute no files (links, notes, etc.), so it is
+			// NOT treated as a failure. A type signals a real failure (e.g.
+			// primary data that could not be bundled) by setting an error.
 			$type->addToBundle(
 				$zip,
 				$attachments,
@@ -581,8 +586,15 @@ class Attachments extends Obj
 				$readme,
 				$bundleDir
 			);
+
+			if ($type->getError())
+			{
+				$this->setError($type->getError());
+				$success = false;
+			}
 		}
-		return;
+
+		return $success;
 	}
 
 	/**

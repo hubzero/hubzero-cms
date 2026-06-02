@@ -813,7 +813,17 @@ class Publications extends SiteController
 			}
 			else
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
+				// The bundle could not be produced (e.g. the dataset is too
+				// large to package on demand and has not been pre-built). Don't
+				// dead-end on a bare 404 — send the user back to the publication
+				// page with an explanation so they can download files
+				// individually.
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->get('id')),
+					Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE'),
+					'warning'
+				);
+				return;
 			}
 		}
 

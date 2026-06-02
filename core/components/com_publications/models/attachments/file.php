@@ -196,6 +196,17 @@ class File extends Base
 				$readme .= "\n" . $element->label . ': ' . "\n";
 				$readme .= '>>> ' . str_replace($bPath . DS, '', $filePath) . "\n";
 			}
+			else
+			{
+				// The sub-bundle could not be produced (e.g. it exceeds the
+				// bundle_max_bytes guard, or no source files were found). The
+				// primary data would be silently omitted from the package, so
+				// flag it: bundleItems()/package() turn this into an honest
+				// failure rather than finalising a data-less bundle. Pre-build
+				// the bundle out-of-band (app/bin/rebuild-publication-bundle)
+				// to deliver these large datasets.
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_BUNDLE_NOT_BUILT'));
+			}
 		}
 		elseif ($attachments)
 		{
