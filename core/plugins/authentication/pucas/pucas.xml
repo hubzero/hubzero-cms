@@ -34,6 +34,10 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				<field name="passive_sso" type="radio" default="0" label="PLG_AUTHENTICATION_PUCAS_PARAM_PASSIVE_SSO_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_PASSIVE_SSO_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 			</fieldset>
 			<fieldset name="profile">
 				<field name="profile_i2a2" type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_I2A2_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_PROFILE_DESC">

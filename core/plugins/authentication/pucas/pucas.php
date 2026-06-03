@@ -54,7 +54,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 			$return = '/' . ltrim($return, '/');
 		}
 
-		if (phpCAS::checkAuthentication())
+		if ($this->casAuthenticated())
 		{
 			phpCAS::logout(array('service'=>$service . $return, 'url'=>$service . $return));
 		}
@@ -71,7 +71,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 
 		$this->initialize();
 
-		if (phpCAS::checkAuthentication())
+		if ($this->casAuthenticated())
 		{
 			$status['username'] = phpCAS::getUser();
 		}
@@ -348,12 +348,41 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Check whether the visitor has a CAS session, honoring the
+	 * "passive_sso" plugin option.
+	 *
+	 * When passive_sso is OFF (default), this uses phpCAS::isAuthenticated(),
+	 * which only reports an already-established session (or validates a ticket
+	 * the user just returned with) and never redirects when there is no
+	 * session. This is the safe behavior for IdPs that mishandle passive
+	 * checks — notably Purdue's Entra ID, which renders a "Stale Request"
+	 * error page for a CAS gateway (SAML IsPassive="true") request instead of
+	 * silently returning, breaking login on every page that probes status.
+	 *
+	 * When passive_sso is ON, this uses phpCAS::checkAuthentication(), which
+	 * performs a transparent CAS gateway request to detect an existing SSO
+	 * session without prompting (redirecting the browser to the IdP and back).
+	 * Enable this only if/when the IdP handles gateway/IsPassive correctly.
+	 *
+	 * @return  bool  true if the user has an authenticated CAS session
+	 **/
+	private function casAuthenticated()
+	{
+		if ($this->params->get('passive_sso', 0))
+		{
+			return phpCAS::checkAuthentication();
+		}
+
+		return phpCAS::isAuthenticated();
+	}
+
+	/**
 	 * Initializes the PHP CAS client
 	 *
 	 * @return void
 	 **/
 	private function initialize()
-	{ 
+	{
 		if (!phpCAS::isInitialized())
 		{
 			if (Config::get('debug'))
