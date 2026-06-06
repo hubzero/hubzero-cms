@@ -271,35 +271,45 @@ class Jobs extends AdminController
 		{
 			$job = Job::oneOrFail(intval($id));
 
-			if (!$job->get('id') || $job->get('active'))
+			if (!$job->get('id'))
+			{
+				continue;
+			}
+
+			// Atomically take ownership so this manual run can't execute the
+			// same job concurrently with the scheduled tick (and so a dead run
+			// gets reclaimed). claim() skips a job whose process is still alive.
+			if (!$job->claim())
 			{
 				continue;
 			}
 
 			$job->mark('start_run');
 
-			// Show related content
-			$results = Event::trigger('cron.' . $job->get('event'), array($job));
-
-			if ($results && is_array($results))
+			try
 			{
-				// Set it as active in case there were multiple plugins called on
-				// the event. This is to ensure ALL processes finished.
-				$job->set('active', 1);
-
-				foreach ($results as $result)
-				{
-					if ($result)
-					{
-						$job->set('active', 0);
-					}
-				}
+				Event::trigger('cron.' . $job->get('event'), array($job));
 			}
+			catch (\Throwable $e)
+			{
+				// One job's failure shouldn't abort the batch; released below.
+			}
+			finally
+			{
+				$job->mark('end_run');
 
-			$job->mark('end_run');
-			$job->set('last_run', Date::toSql());
-			$job->set('next_run', $job->nextRun());
-			$job->save();
+				$next = null;
+				try
+				{
+					$next = $job->nextRun();
+				}
+				catch (\Throwable $e2)
+				{
+					// leave next_run as-is on an unparseable recurrence
+				}
+
+				$job->release(Date::toSql(), $next);
+			}
 
 			$output->jobs[] = $job->toArray();
 		}

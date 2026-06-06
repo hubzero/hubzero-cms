@@ -51,11 +51,14 @@ class Jobs extends SiteController
 
 			if (!in_array($ip, $ips))
 			{
-				$ips = gethostbynamel($_SERVER['SERVER_NAME']);
+				// gethostbynamel() returns false on resolver failure; cast to
+				// array so a DNS hiccup can't turn in_array() into a TypeError
+				// (which would 500 the tick and stall all cron).
+				$ips = (array) gethostbynamel($_SERVER['SERVER_NAME'] ?? '');
 
 				if (!in_array($ip, $ips))
 				{
-					$ips = gethostbynamel('localhost');
+					$ips = (array) gethostbynamel('localhost');
 
 					if (!in_array($ip, $ips))
 					{
@@ -85,38 +88,108 @@ class Jobs extends SiteController
 		$output = new stdClass;
 		$output->jobs = array();
 
+		// A fatal (OOM, max_execution_time, or a plugin exit()) inside a job's
+		// event bypasses the finally below, leaving the row active with THIS
+		// php-fpm worker's pid — which stays alive across requests, so the recovery
+		// sweep reads it as a live owner and can't reclaim it before the cutoff
+		// (the job is effectively wedged until then / a worker recycle). Track the
+		// in-flight job and release it on shutdown so a fatal can't wedge it;
+		// cleared in the finally on normal completion (then this is a no-op).
+		$inFlight = new \stdClass;
+		$inFlight->job = null;
+
+		register_shutdown_function(function () use ($inFlight)
+		{
+			if (!$inFlight->job)
+			{
+				return;
+			}
+
+			$next = null;
+			try
+			{
+				$next = $inFlight->job->nextRun();
+			}
+			catch (\Throwable $e)
+			{
+				// leave next_run as-is if the recurrence can't be parsed
+			}
+
+			try
+			{
+				$inFlight->job->release(gmdate('Y-m-d H:i:s'), $next);
+			}
+			catch (\Throwable $e)
+			{
+				// best-effort: nothing more can be done at shutdown
+			}
+		});
+
 		foreach ($results as $job)
 		{
-			if ($job->get('active') || !$job->isAvailable())
+			if (!$job->isAvailable())
 			{
 				continue;
 			}
 
-			// Set it as active in case there were multiple plugins called on
-			// the event. This is to ensure ALL processes finished.
-			$job->set('active', 1);
-			$job->save();
-
-			// Show related content
-			$job->mark('start_run');
-
-			$res = Event::trigger('cron.' . $job->get('event'), array($job));
-
-			if ($res && is_array($res))
+			// Atomically take ownership. claim() skips a job whose process is
+			// still alive (genuinely running elsewhere) and atomically reclaims
+			// one left active by a process that died, was killed, or timed out
+			// (pid gone, or reused with a different start time) — otherwise a
+			// crashed run would keep the job active forever. If another runner
+			// won the race, skip; one active job never blocks the others.
+			if (!$job->claim())
 			{
-				foreach ($res as $result)
-				{
-					if ($result)
-					{
-						$job->set('active', 0);
-					}
-				}
+				continue;
 			}
 
-			$job->mark('end_run');
-			$job->set('last_run', Date::toSql());
-			$job->set('next_run', $job->nextRun());
-			$job->save();
+			// Re-confirm still due after claiming: a concurrent runner (e.g. a
+			// manual `muse cron:jobs run`) may have finished this job and
+			// advanced next_run since this tick's list was built.
+			if (!$job->stillDue())
+			{
+				$job->release();
+				continue;
+			}
+
+			// Mark in-flight so the shutdown handler can release this job if a
+			// fatal bypasses the finally below.
+			$inFlight->job = $job;
+
+			$job->mark('start_run');
+
+			try
+			{
+				Event::trigger('cron.' . $job->get('event'), array($job));
+			}
+			catch (\Throwable $e)
+			{
+				// Don't let one failing job abort the tick and block the jobs
+				// after it. The job is released below regardless.
+			}
+			finally
+			{
+				$job->mark('end_run');
+
+				$next = null;
+				try
+				{
+					$next = $job->nextRun();
+				}
+				catch (\Throwable $e2)
+				{
+					// Leave next_run as-is if the recurrence can't be parsed;
+					// the job stays due and is retried rather than wedging.
+				}
+
+				// Always clear active + pid ownership and persist run times,
+				// whether the event succeeded, threw, or fataled.
+				$job->release(Date::toSql(), $next);
+
+				// Completed (or threw catchably) — clear in-flight so the
+				// shutdown handler registered above is a no-op for this job.
+				$inFlight->job = null;
+			}
 
 			$output->jobs[] = $job->toArray();
 		}

@@ -65,15 +65,43 @@ class Jobs extends Base implements CommandInterface
 
 		$processed = array();
 
+		// A specific --job is force-run regardless of its schedule.
+		$forced = (bool) $id;
+
 		if ($jobs->count())
 		{
 			$this->output->addLine(Lang::txt('[%s] Starting scheduled jobs ...', $now), 'info');
 
 			foreach ($jobs as $job)
 			{
-				if ($job->get('active') || !$job->isAvailable())
+				if (!$job->isAvailable())
 				{
 					continue;
+				}
+
+				$wasActive = $job->get('active');
+
+				// Atomically take ownership. claim() skips a job whose process
+				// is still alive and atomically reclaims one left active by a
+				// dead/killed/timed-out process (pid gone or reused). If another
+				// runner won the race, skip.
+				if (!$job->claim())
+				{
+					continue;
+				}
+
+				// Re-confirm still due after claiming (a concurrent runner may
+				// have finished it and advanced next_run since our list was
+				// built). Forced --job runs ignore the schedule.
+				if (!$forced && !$job->stillDue())
+				{
+					$job->release();
+					continue;
+				}
+
+				if ($wasActive)
+				{
+					$this->output->addLine(Lang::txt('[%s] Reclaimed job "%s" left active by a dead process.', with(new Date('now'))->toLocal(), $job->get('event')), 'warning');
 				}
 
 				$now = with(new Date('now'))->toLocal();
@@ -84,28 +112,38 @@ class Jobs extends Base implements CommandInterface
 
 				try
 				{
-					$res = Event::trigger('cron.' . $job->get('event'), array($job));
+					Event::trigger('cron.' . $job->get('event'), array($job));
 
-					$now = with(new Date('now'))->toLocal();
-
-					$this->output->addLine(Lang::txt('[%s] Finished event "%s".', $now, $job->get('event')), 'info');
-
-					$job->mark('end_run');
-					$job->set('last_run', $now);
-					$job->set('next_run', $job->nextRun());
-					$job->save();
-
-					$processed[] = $job->toArray();
+					$this->output->addLine(Lang::txt('[%s] Finished event "%s".', with(new Date('now'))->toLocal(), $job->get('event')), 'info');
 				}
-				catch (\Exception $e)
+				catch (\Throwable $e)
 				{
-					$now = with(new Date('now'))->toLocal();
-
-					$this->output->addLine(Lang::txt('[%s] Event "%s" generated an error. Skipping...', $now, $job->get('event')), 'error');
+					$this->output->addLine(Lang::txt('[%s] Event "%s" generated an error: %s', with(new Date('now'))->toLocal(), $job->get('event'), $e->getMessage()), 'error');
 				}
+				finally
+				{
+					$job->mark('end_run');
+
+					$next = null;
+					try
+					{
+						$next = $job->nextRun();
+					}
+					catch (\Throwable $e2)
+					{
+						// Leave next_run as-is if the recurrence can't be parsed;
+						// the job stays due and is retried rather than wedging.
+					}
+
+					// Always clear active + pid ownership and persist run times,
+					// whether the event succeeded, threw, or fataled.
+					$job->release(with(new Date('now'))->toLocal(), $next);
+				}
+
+				$processed[] = $job->toArray();
 			}
 
-			$this->output->addLine(Lang::txt('[%s] Finished scheduled jobs.', $now), 'success');
+			$this->output->addLine(Lang::txt('[%s] Finished scheduled jobs.', with(new Date('now'))->toLocal()), 'success');
 		}
 		else
 		{
@@ -189,6 +227,9 @@ class Jobs extends Base implements CommandInterface
 		}
 
 		$job->set('active', 0);
+		$job->set('pid', null);
+		$job->set('pid_started', null);
+		$job->set('pid_host', null);
 
 		if (!$job->save())
 		{
