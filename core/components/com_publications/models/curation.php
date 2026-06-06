@@ -2221,6 +2221,71 @@ class Curation extends Obj
 	}
 
 	/**
+	 * File attachments in this version whose source no longer exists at its
+	 * recorded path in the project repository — i.e. the file was moved (e.g.
+	 * organized into a folder), renamed, or removed in the project after it was
+	 * selected for the publication. Such a selection is stale: the served bundle
+	 * would not reflect the project's current file/folder layout (the cause of
+	 * "bundles have no folders" when a submitter organizes into folders only
+	 * after selecting). Used as a publish-time gate (see
+	 * plg_projects_publications::publishDraft) so a draft cannot be published
+	 * against a selection that has drifted from the project; the curator re-selects
+	 * the files (which captures their current paths) or removes the stale ones.
+	 *
+	 * Read-only — stat only, never matches or moves anything. Returns an empty
+	 * array for publications with no local file attachments (Databases, Series),
+	 * for connection-sourced files, and when the repo path cannot be resolved.
+	 *
+	 * @return  array  stale attachment rows (each carries path, title, element_id)
+	 */
+	public function movedSourceAttachments()
+	{
+		if (empty($this->_pub) || empty($this->_pub->_project) || empty($this->_pub->version_id))
+		{
+			return array();
+		}
+
+		$repo = $this->_pub->_project->repo();
+		if (!$repo)
+		{
+			return array();
+		}
+
+		$repoPath = $repo->get('path');
+		if (!$repoPath || !is_dir($repoPath))
+		{
+			return array();
+		}
+
+		$objPA = new Tables\Attachment($this->_db);
+		$files = $objPA->getAttachments($this->_pub->version_id, array('type' => 'file'));
+
+		$moved = array();
+
+		if ($files)
+		{
+			foreach ($files as $file)
+			{
+				$path = (string) $file->path;
+
+				// Skip connection-sourced files (path begins "<id>://"): their
+				// source is a remote/connection entity, not a local repo path.
+				if ($path === '' || preg_match('/^[0-9]*:\/\//', $path))
+				{
+					continue;
+				}
+
+				if (!is_file($repoPath . DS . $path))
+				{
+					$moved[] = $file;
+				}
+			}
+		}
+
+		return $moved;
+	}
+
+	/**
 	 * Produce publication package
 	 *
 	 * @return  boolean
