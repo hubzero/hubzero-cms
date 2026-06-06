@@ -90,6 +90,37 @@ class BundleQueue extends Relational
 	}
 
 	/**
+	 * Whether a version can be built off-request by BundleBuilder — i.e. it is a
+	 * file bundle, having at least one role-1 file attachment. Versions without
+	 * one are not file bundles (a Databases version's primary is a CSV generated
+	 * from a stored database; a Series links other publications); BundleBuilder
+	 * cannot produce them, so they must stay on the synchronous packager. This is
+	 * the single rule that BOTH the enqueue and the serve-time async router gate
+	 * on, so a non-buildable version is never queued and never routed to async
+	 * (which would otherwise loop forever "preparing").
+	 *
+	 * @param   integer  $versionId
+	 * @return  boolean
+	 */
+	public static function isAsyncBuildable($versionId)
+	{
+		$versionId = (int) $versionId;
+
+		if (!$versionId)
+		{
+			return false;
+		}
+
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT COUNT(*) FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . $versionId . " AND `type` = 'file' AND `role` = 1"
+		);
+
+		return ((int) $db->loadResult() >= 1);
+	}
+
+	/**
 	 * Queue a version for (re)building. New version -> queued. A previously
 	 * ready/failed bundle -> re-queued (the repair path). A row already
 	 * queued/building is left alone. Race-safe via the unique version key.
@@ -106,23 +137,16 @@ class BundleQueue extends Relational
 			return false;
 		}
 
-		$db = \App::get('db');
-
-		// Only file-based publications are (re)built off-request here. A version
-		// with no role-1 file attachment is not a file bundle — e.g. a Database
-		// (its primary is a CSV generated on the fly from a stored database) or a
-		// Series (which links other publications). Those are produced by the
-		// standard packager; enqueuing one would only have the worker fail with
-		// "no primary files" and dead-letter it. Leave them out of the queue.
-		$db->setQuery(
-			"SELECT COUNT(*) FROM `#__publication_attachments`
-			 WHERE `publication_version_id` = " . $versionId . " AND `type` = 'file' AND `role` = 1"
-		);
-		if ((int) $db->loadResult() < 1)
+		// Only file-based publications are (re)built off-request; enqueuing a
+		// non-buildable one would just have the worker fail "no primary files"
+		// and dead-letter it. The serve path applies the SAME test before routing
+		// to async (see isAsyncBuildable), so the two never disagree.
+		if (!self::isAsyncBuildable($versionId))
 		{
 			return false;
 		}
 
+		$db   = \App::get('db');
 		$now  = $db->quote(\Date::toSql());
 		$done = "`status` IN ('" . self::STATUS_READY . "','" . self::STATUS_FAILED . "')";
 

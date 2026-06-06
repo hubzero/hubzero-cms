@@ -970,11 +970,6 @@ class Publications extends SiteController
 	 */
 	protected function bundleAsyncActive($versionId)
 	{
-		if ((int) \Component::params('com_publications')->get('bundle_async', 0))
-		{
-			return true;
-		}
-
 		$versionId = (int) $versionId;
 
 		if (!$versionId)
@@ -982,12 +977,44 @@ class Publications extends SiteController
 			return false;
 		}
 
+		$active = false;
+
+		if ((int) \Component::params('com_publications')->get('bundle_async', 0))
+		{
+			$active = true;
+		}
+		else
+		{
+			// Per-version canary: a queue row activates the path even with the
+			// flag off (so a version queued before the flag flips is served async).
+			try
+			{
+				$db = \App::get('db');
+				$db->setQuery("SELECT 1 FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $versionId . " LIMIT 1");
+				$active = (bool) $db->loadResult();
+			}
+			catch (\Throwable $e)
+			{
+				return false;
+			}
+		}
+
+		if (!$active)
+		{
+			return false;
+		}
+
+		// The async path only applies to file-based versions. A version with no
+		// role-1 file attachment (a Databases CSV, a Series of linked pubs) is not
+		// built off-request, so it must fall through to the synchronous packager
+		// — otherwise its archive download would loop forever "preparing", since
+		// the queue would never accept (and the worker never build) it. This is
+		// the same test BundleQueue::enqueueVersion gates on.
 		try
 		{
-			$db = \App::get('db');
-			$db->setQuery("SELECT 1 FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $versionId . " LIMIT 1");
+			require_once \Component::path('com_publications') . '/models/bundlequeue.php';
 
-			return (bool) $db->loadResult();
+			return \Components\Publications\Models\BundleQueue::isAsyncBuildable($versionId);
 		}
 		catch (\Throwable $e)
 		{
