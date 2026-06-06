@@ -90,18 +90,18 @@ class BundleQueue extends Relational
 	}
 
 	/**
-	 * Whether a version is built off-request by BundleBuilder — i.e. it has a
-	 * real download payload: any file attachment (role-1 primary, role-2
-	 * supporting, or role-3 gallery) or a data element (a Databases version,
-	 * built from its data dir + a generated CSV). BundleBuilder now produces all
-	 * of these (file bundle / Databases bundle / metadata-only-with-gallery).
+	 * Whether a version is built off-request by BundleBuilder. Mirrors exactly
+	 * what curation::package() produces a bundle for: any version whose master
+	 * type carries a curation manifest. BundleBuilder covers every such case —
+	 * a file bundle (role-1 files), a Databases bundle (data element + data dir),
+	 * or the metadata-only bundle (README + LICENSE + gallery + role>=2
+	 * supporting) a Series or tool-backed Application gets, down to a README-only
+	 * version. Master types with no manifest (links / notes / gallery) have no
+	 * downloadable bundle — package() returns false for them — so they stay out.
 	 *
-	 * Versions with no file or data attachment — a Series of only linked
-	 * publications, a publication/tool/link-only pub — have at most a tiny
-	 * README-only bundle the packager builds instantly on request, so they are
-	 * left synchronous (no point queueing, and never routed to async — which
-	 * would otherwise loop "preparing"). This is the single rule BOTH the enqueue
-	 * and the serve-time async router gate on, so the two never disagree.
+	 * This is the single rule BOTH the enqueue and the serve-time async router
+	 * gate on, so they never disagree and, once async is on, the synchronous
+	 * packager is not needed at serve time for anything.
 	 *
 	 * @param   integer  $versionId
 	 * @return  boolean
@@ -117,12 +117,14 @@ class BundleQueue extends Relational
 
 		$db = \App::get('db');
 		$db->setQuery(
-			"SELECT COUNT(*) FROM `#__publication_attachments`
-			 WHERE `publication_version_id` = " . $versionId . "
-			   AND (`type` = 'file' OR `type` = 'data')"
+			"SELECT mt.`curation`
+			 FROM `#__publication_versions` v
+			 JOIN `#__publications` p ON p.`id` = v.`publication_id`
+			 JOIN `#__publication_master_types` mt ON mt.`id` = p.`master_type`
+			 WHERE v.`id` = " . $versionId . " LIMIT 1"
 		);
 
-		return ((int) $db->loadResult() >= 1);
+		return trim((string) $db->loadResult()) !== '';
 	}
 
 	/**
