@@ -14,7 +14,6 @@ use Lang;
 use Date;
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'process.php';
 
 /**
  * Cron model for a job
@@ -431,7 +430,7 @@ class Job extends Relational
 	 */
 	public static function procStartTime($pid)
 	{
-		return \Components\Cron\Helpers\Process::startTime($pid);
+		return \Hubzero\Utility\Process::startTime($pid);
 	}
 
 	/**
@@ -445,7 +444,7 @@ class Job extends Relational
 	 */
 	public function ownerIsAlive()
 	{
-		return \Components\Cron\Helpers\Process::isAlive($this->get('pid'), $this->get('pid_started'));
+		return \Hubzero\Utility\Process::isAlive($this->get('pid'), $this->get('pid_started'));
 	}
 
 	/**
@@ -462,7 +461,7 @@ class Job extends Relational
 	 */
 	public function isStale()
 	{
-		return \Components\Cron\Helpers\Process::isStale(
+		return \Hubzero\Utility\Process::isStale(
 			$this->get('active'),
 			$this->get('pid'),
 			$this->get('pid_started'),
@@ -490,7 +489,7 @@ class Job extends Relational
 	 */
 	public static function thisHost()
 	{
-		return \Components\Cron\Helpers\Process::host();
+		return \Hubzero\Utility\Process::host();
 	}
 
 	/**

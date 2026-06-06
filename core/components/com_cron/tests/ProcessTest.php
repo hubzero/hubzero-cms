@@ -7,9 +7,7 @@
 
 namespace Components\Cron\Tests;
 
-require_once dirname(__DIR__) . '/helpers/process.php';
-
-use Components\Cron\Helpers\Process;
+use Hubzero\Utility\Process;
 use Hubzero\Test\Basic;
 
 /**
@@ -30,7 +28,7 @@ class ProcessTest extends Basic
 	/**
 	 * parseStartTime() pulls field 22 out of a normal stat line.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::parseStartTime
+	 * @covers  Hubzero\Utility\Process::parseStartTime
 	 * @return  void
 	 */
 	public function testParseStartTimeSimpleComm()
@@ -45,7 +43,7 @@ class ProcessTest extends Basic
 	 * containing spaces and parentheses must not shift the field offsets.
 	 * This is the case a naive explode() would get wrong.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::parseStartTime
+	 * @covers  Hubzero\Utility\Process::parseStartTime
 	 * @return  void
 	 */
 	public function testParseStartTimeCommWithSpacesAndParens()
@@ -58,7 +56,7 @@ class ProcessTest extends Basic
 	/**
 	 * parseStartTime() rejects empty/garbage input.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::parseStartTime
+	 * @covers  Hubzero\Utility\Process::parseStartTime
 	 * @return  void
 	 */
 	public function testParseStartTimeRejectsMalformed()
@@ -71,7 +69,7 @@ class ProcessTest extends Basic
 	/**
 	 * startTime() of the running process matches what /proc reports directly.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::startTime
+	 * @covers  Hubzero\Utility\Process::startTime
 	 * @return  void
 	 */
 	public function testStartTimeForSelfMatchesProc()
@@ -92,7 +90,7 @@ class ProcessTest extends Basic
 	/**
 	 * startTime() of a pid that cannot exist returns false.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::startTime
+	 * @covers  Hubzero\Utility\Process::startTime
 	 * @return  void
 	 */
 	public function testStartTimeNonexistentPid()
@@ -105,7 +103,7 @@ class ProcessTest extends Basic
 	/**
 	 * isAlive() is true only for the live process with the matching start time.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isAlive
+	 * @covers  Hubzero\Utility\Process::isAlive
 	 * @return  void
 	 */
 	public function testIsAliveForSelf()
@@ -125,7 +123,7 @@ class ProcessTest extends Basic
 	 * isAlive() guards against pid reuse: a live pid with the wrong start time
 	 * is treated as a different (gone) process.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isAlive
+	 * @covers  Hubzero\Utility\Process::isAlive
 	 * @return  void
 	 */
 	public function testIsAlivePidReuseGuard()
@@ -136,7 +134,7 @@ class ProcessTest extends Basic
 	/**
 	 * isAlive() is false for a dead pid and for empty inputs.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isAlive
+	 * @covers  Hubzero\Utility\Process::isAlive
 	 * @return  void
 	 */
 	public function testIsAliveRejectsDeadAndEmpty()
@@ -150,7 +148,7 @@ class ProcessTest extends Basic
 	/**
 	 * host() returns the current hostname.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::host
+	 * @covers  Hubzero\Utility\Process::host
 	 * @return  void
 	 */
 	public function testHost()
@@ -162,7 +160,7 @@ class ProcessTest extends Basic
 	/**
 	 * A job that is not active is never stale.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isStale
+	 * @covers  Hubzero\Utility\Process::isStale
 	 * @return  void
 	 */
 	public function testIsStaleInactiveIsNeverStale()
@@ -175,7 +173,7 @@ class ProcessTest extends Basic
 	 * An active job with no recorded ownership is treated as stale so it can
 	 * recover (e.g. rows from before pid tracking shipped).
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isStale
+	 * @covers  Hubzero\Utility\Process::isStale
 	 * @return  void
 	 */
 	public function testIsStaleMissingOwnershipIsStale()
@@ -189,7 +187,7 @@ class ProcessTest extends Basic
 	 * An active job owned by another host is never reclaimed (we can't verify
 	 * the process from here, so we never steal it).
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isStale
+	 * @covers  Hubzero\Utility\Process::isStale
 	 * @return  void
 	 */
 	public function testIsStaleOtherHostIsNotStale()
@@ -201,7 +199,7 @@ class ProcessTest extends Basic
 	 * An active job on this host whose process is gone is stale; one whose
 	 * process is still alive is not.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isStale
+	 * @covers  Hubzero\Utility\Process::isStale
 	 * @return  void
 	 */
 	public function testIsStaleByLivenessOnThisHost()
@@ -224,7 +222,7 @@ class ProcessTest extends Basic
 	 * On another host (unverifiable), the time fallback only reclaims once the
 	 * run is older than the cutoff, and never when no cutoff is given.
 	 *
-	 * @covers  Components\Cron\Helpers\Process::isStale
+	 * @covers  Hubzero\Utility\Process::isStale
 	 * @return  void
 	 */
 	public function testIsStaleOtherHostTimeFallback()
@@ -244,5 +242,98 @@ class ProcessTest extends Basic
 
 		// Past cutoff but no timestamp -> can't tell, don't steal.
 		$this->assertFalse(Process::isStale(1, 123, '456', $other, null, 3600));
+	}
+
+	/**
+	 * On this host with NO recorded start time (couldn't be read when claimed),
+	 * a still-live pid must NOT be reclaimed within the cutoff — otherwise a live
+	 * worker's run gets double-executed. This is the regression guard.
+	 *
+	 * @covers  Hubzero\Utility\Process::isStale
+	 * @return  void
+	 */
+	public function testIsStaleSameHostNoStartTimeLivePidNotStale()
+	{
+		$fresh = gmdate('Y-m-d H:i:s', time() - 60);
+
+		// Our own (live) pid, same host, started unrecorded, within cutoff.
+		$this->assertFalse(Process::isStale(1, getmypid(), null, Process::host(), $fresh, 3600));
+		$this->assertFalse(Process::isStale(1, getmypid(), '', Process::host(), $fresh, 3600));
+	}
+
+	/**
+	 * On this host with no recorded start time, a pid that is provably gone is
+	 * still reclaimed (no false "alive").
+	 *
+	 * @covers  Hubzero\Utility\Process::isStale
+	 * @return  void
+	 */
+	public function testIsStaleSameHostNoStartTimeGonePidIsStale()
+	{
+		if (!@is_dir('/proc/self') && !function_exists('posix_kill'))
+		{
+			$this->markTestSkipped('cannot determine pid existence on this platform');
+		}
+
+		$this->assertTrue(Process::isStale(1, 4000000, null, Process::host(), gmdate('Y-m-d H:i:s'), 3600));
+	}
+
+	/**
+	 * On this host with no recorded start time and a pid we can't disprove, the
+	 * run is reclaimed once it is past the cutoff (bounded wedge).
+	 *
+	 * @covers  Hubzero\Utility\Process::isStale
+	 * @return  void
+	 */
+	public function testIsStaleSameHostNoStartTimePastCutoffIsStale()
+	{
+		$old = gmdate('Y-m-d H:i:s', time() - 7200); // 2h ago
+
+		$this->assertTrue(Process::isStale(1, getmypid(), null, Process::host(), $old, 3600));
+	}
+
+	/**
+	 * pidExists(): never false for a live process, false for impossible pids.
+	 *
+	 * @covers  Hubzero\Utility\Process::pidExists
+	 * @return  void
+	 */
+	public function testPidExists()
+	{
+		$this->assertFalse(Process::pidExists(0));
+		$this->assertFalse(Process::pidExists(-5));
+		// Our own pid is alive: true on a /proc or posix host, null only if
+		// neither is available — but never false.
+		$this->assertNotSame(false, Process::pidExists(getmypid()));
+	}
+
+	/**
+	 * A same-host owner that is ALIVE but has been active past the cutoff is
+	 * reclaimed (a hung/wedged run must not block work forever); within the
+	 * cutoff, or with no cutoff, a live owner is left alone.
+	 *
+	 * @covers  Hubzero\Utility\Process::isStale
+	 * @return  void
+	 */
+	public function testIsStaleSameHostAliveButPastCutoffIsStale()
+	{
+		$started = Process::startTime(getmypid());
+
+		if ($started === false)
+		{
+			$this->markTestSkipped('/proc not available on this platform');
+		}
+
+		$old   = gmdate('Y-m-d H:i:s', time() - 7200); // 2h ago
+		$fresh = gmdate('Y-m-d H:i:s', time() - 60);   // 1m ago
+
+		// Live owner, but running 2h with a 1h cutoff -> hung -> reclaim.
+		$this->assertTrue(Process::isStale(1, getmypid(), $started, Process::host(), $old, 3600));
+
+		// Live owner within the cutoff -> healthy, not stale.
+		$this->assertFalse(Process::isStale(1, getmypid(), $started, Process::host(), $fresh, 3600));
+
+		// Live owner, no cutoff -> never reclaimed.
+		$this->assertFalse(Process::isStale(1, getmypid(), $started, Process::host(), $old, 0));
 	}
 }
