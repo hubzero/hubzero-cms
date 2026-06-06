@@ -1459,16 +1459,62 @@ class BundleBuilder
 			}
 		}
 
-		// Gallery images (publish stores them at <base>/gallery).
-		foreach ((array) glob($base . DS . 'gallery' . DS . '*') as $img)
+		// Gallery — the role-3 file attachments resolved against <base>/gallery,
+		// NOT a directory glob: the gallery dir also holds thumbnails (_tn.png),
+		// .hash sidecars and stale re-upload revisions that the packager does not
+		// bundle. Matching the registered attachments includes exactly the images
+		// the packager would.
+		foreach ($this->galleryFiles($versionId, $base, $name) as $abs => $entry)
 		{
-			if (is_file($img))
-			{
-				$meta[$img] = array('gallery', $name . '/gallery/' . basename($img));
-			}
+			$meta[$abs] = array('gallery', $entry);
 		}
 
 		return $meta;
+	}
+
+	/**
+	 * A version's gallery (role-3) image attachments as abs => <name>/gallery/<file>.
+	 * Resolved the same way the packager names them (getFilePath against the
+	 * gallery dir, dirHierarchy 0 = basename-<id>), so thumbnails, .hash sidecars
+	 * and stale revisions left in the dir are excluded.
+	 *
+	 * @param   integer  $versionId
+	 * @param   string   $base
+	 * @param   string   $name
+	 * @return  array
+	 */
+	protected function galleryFiles($versionId, $base, $name)
+	{
+		$galDir = $base . DS . 'gallery';
+		if (!is_dir($galDir))
+		{
+			return array();
+		}
+
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT `path`, `id`, `params` FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . (int) $versionId . "
+			   AND `type` = 'file' AND `role` = 3 ORDER BY `ordering`, `id`"
+		);
+		$rows = $db->loadObjectList();
+
+		$out = array();
+		foreach ((array) $rows as $row)
+		{
+			$rel = str_replace('./', '', ltrim(str_replace('\\', '/', (string) $row->path), '/'));
+			if ($rel === '')
+			{
+				continue;
+			}
+			$resolved = $this->resolveName($galDir, $rel, (int) $row->id, (string) $row->params);
+			if ($resolved !== null)
+			{
+				$out[$galDir . DS . $resolved] = $name . '/gallery/' . basename($resolved);
+			}
+		}
+
+		return $out;
 	}
 
 	/**
