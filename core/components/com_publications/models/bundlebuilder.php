@@ -166,6 +166,31 @@ class BundleBuilder
 	}
 
 	/**
+	 * The current source signature for a version (resolves its primary files
+	 * and hashes them). Used at serve time to detect that a ready bundle is
+	 * stale and needs rebuilding.
+	 *
+	 * @param   integer  $versionId
+	 * @return  string   the hash, or '' if the version/files can't be resolved
+	 */
+	public function currentSourceHash($versionId)
+	{
+		$version = $this->versionRow((int) $versionId);
+		if (!$version)
+		{
+			return '';
+		}
+
+		$webpath = trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/');
+		$content = PATH_APP . DS . $webpath . DS . Str::pad((int) $version['publication_id'])
+			. DS . Str::pad((int) $versionId) . DS . $version['secret'];
+
+		$files = $this->primaryFiles((int) $versionId, $content);
+
+		return count($files) ? $this->sourceHash($files) : '';
+	}
+
+	/**
 	 * Load the version row fields we need.
 	 *
 	 * @param   integer  $versionId

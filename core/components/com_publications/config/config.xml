@@ -32,6 +32,11 @@
 		<field name="masterimage" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE_DESC" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
 		<field name="bundle_max_bytes" type="text" menu="hide" default="4294967296" label="COM_PUBLICATIONS_CONFIG_BUNDLE_MAX_BYTES" description="COM_PUBLICATIONS_CONFIG_BUNDLE_MAX_BYTES_DESC" />
+		<field name="bundle_async" type="radio" menu="hide" default="0" label="COM_PUBLICATIONS_CONFIG_BUNDLE_ASYNC" description="COM_PUBLICATIONS_CONFIG_BUNDLE_ASYNC_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="bundle_max_concurrent" type="text" menu="hide" default="1" label="COM_PUBLICATIONS_CONFIG_BUNDLE_MAX_CONCURRENT" description="COM_PUBLICATIONS_CONFIG_BUNDLE_MAX_CONCURRENT_DESC" />
 		<field name="sftppath" type="text" menu="hide" default="/site/publications/ftp" label="COM_PUBLICATIONS_CONFIG_SFTP_PATH" description="COM_PUBLICATIONS_CONFIG_SFTP_PATH_DESC" />
 		<field name="sftpsize" type="text" menu="hide" default="5000" label="COM_PUBLICATIONS_CONFIG_SFTP_SIZE" description="COM_PUBLICATIONS_CONFIG_SFTP_SIZE_DESC" />
 		<field name="ftpdoc" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_FTP_DOC" description="COM_PUBLICATIONS_CONFIG_FTP_DOC_DESC" />

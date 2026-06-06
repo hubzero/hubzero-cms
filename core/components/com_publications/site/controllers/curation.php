@@ -560,6 +560,15 @@ class Curation extends SiteController
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 		}
 
+		// Async: pre-warm the download-bundle build so it is ready before a
+		// user asks for it (gated; when async is off the synchronous bundle
+		// produced during curation is used as before).
+		if ((int) $this->config->get('bundle_async', 0))
+		{
+			require_once \Component::path('com_publications') . '/models/bundlequeue.php';
+			\Components\Publications\Models\BundleQueue::enqueueVersion($this->_pub->version->get('id'));
+		}
+
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi($this->_pub);
 
