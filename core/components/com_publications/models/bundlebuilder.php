@@ -687,6 +687,12 @@ class BundleBuilder
 	 */
 	protected function resolveFiles($versionId, $content, $role = null)
 	{
+		// Resolve the includeInPackage-excluded element ids FIRST: it issues its
+		// own query, which would otherwise clobber the pending attachments query
+		// below before loadObjectList() reads it (leaving the rows without the
+		// path/element_id columns, so nothing resolves).
+		$excluded = $this->includeInPackageExcludedIds($versionId);
+
 		$db = \App::get('db');
 		$db->setQuery(
 			"SELECT `path`, `id`, `params`, `element_id` FROM `#__publication_attachments`
@@ -694,11 +700,10 @@ class BundleBuilder
 			   AND `type` = 'file'" . ($role !== null ? " AND `role` = " . (int) $role : "") . "
 			 ORDER BY `ordering`, `id`"
 		);
-
-		$excluded = $this->includeInPackageExcludedIds($versionId);
+		$rows = $db->loadObjectList();
 
 		$files = array();
-		foreach ((array) $db->loadObjectList() as $row)
+		foreach ((array) $rows as $row)
 		{
 			// Files of an element marked includeInPackage=0 are excluded from
 			// the package by the original packager — drop them here too.
