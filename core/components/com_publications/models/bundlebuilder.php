@@ -1711,8 +1711,8 @@ class BundleBuilder
 	{
 		$meta = array();
 
-		// README — prefer the on-disk copy under its real name; regenerate to
-		// hubREADME.txt only when neither name is present.
+		// README — content from the on-disk copy (legacy README.txt or modern
+		// hubREADME.txt); regenerate to hubREADME.txt when neither is present.
 		$readme = null;
 		foreach (array('hubREADME.txt', 'README.txt') as $rn)
 		{
@@ -1734,7 +1734,14 @@ class BundleBuilder
 		}
 		if ($readme !== null)
 		{
-			$meta[$base . DS . $readme] = array('readme', $name . '/' . $readme);
+			// Always place the archival readme at hubREADME.txt — the modern
+			// canonical name current package() uses — even if the on-disk copy is
+			// the legacy README.txt. An author may have uploaded a supporting file
+			// literally named README.txt (bundled at <DOI>/README.txt); naming the
+			// archival readme README.txt too made one silently overwrite the other
+			// (the v1770 collision). hubREADME.txt never collides with it, so a
+			// rebuild keeps BOTH the archival readme and the author's README.txt.
+			$meta[$base . DS . $readme] = array('readme', $name . '/hubREADME.txt');
 		}
 
 		// LICENSE.txt — on disk if present; else regenerate only when the version
