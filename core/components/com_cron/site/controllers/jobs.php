@@ -132,6 +132,28 @@ class Jobs extends SiteController
 				continue;
 			}
 
+			// PROTOTYPE: jobs flagged "detach" in their params run in a detached
+			// CLI worker instead of inline, so a long/multi-hour job doesn't tie
+			// up an fpm worker or hold the tick open.
+			//
+			// CAUTION: a CLI worker has NO web request, so (with live_site empty)
+			// it generates broken absolute URLs — only flag URL-independent batch
+			// jobs (archival, bundle builds), never jobs that email links.
+			if ($this->jobWantsDetach($job))
+			{
+				// A live detached worker already running it? leave it be.
+				if ($job->get('active') && !$job->isStale())
+				{
+					continue;
+				}
+
+				// Free, or the previous worker died (stale): (re)launch. The
+				// worker claim()s atomically, so overlapping launches across
+				// ticks can never double-run the job.
+				$this->spawnDetachedRunner($job->get('id'));
+				continue;
+			}
+
 			// Atomically take ownership. claim() skips a job whose process is
 			// still alive (genuinely running elsewhere) and atomically reclaims
 			// one left active by a process that died, was killed, or timed out
@@ -200,5 +222,64 @@ class Jobs extends SiteController
 			->set('no_html', Request::getInt('no_html', 0))
 			->set('output', $output)
 			->display();
+	}
+
+	/**
+	 * Whether a job opts into out-of-process execution via a "detach" param.
+	 *
+	 * @param   object   $job
+	 * @return  boolean
+	 */
+	private function jobWantsDetach($job)
+	{
+		$params = $job->get('params');
+
+		if (!is_object($params))
+		{
+			$params = new \Hubzero\Config\Registry($params);
+		}
+
+		return ((int) $params->get('detach', 0) === 1);
+	}
+
+	/**
+	 * PROTOTYPE: launch a detached CLI worker to run a single job out of the
+	 * fpm worker's lifecycle.
+	 *
+	 * setsid gives the worker its own session (reparented to init) so an fpm
+	 * reload/worker recycle can't kill it; stdio is detached to a log and the
+	 * command is backgrounded so this tick request returns immediately. The
+	 * worker (`muse cron:jobs run --job=N`) claim()s the job atomically, so a
+	 * race between this launch and another tick/worker can't double-run it.
+	 *
+	 * @param   integer  $jobId
+	 * @return  boolean
+	 */
+	private function spawnDetachedRunner($jobId)
+	{
+		$jobId = (int) $jobId;
+
+		if (!$jobId)
+		{
+			return false;
+		}
+
+		// The CLI php — NOT PHP_BINARY, which under php-fpm is the fpm binary.
+		$php  = is_executable('/usr/bin/php') ? '/usr/bin/php' : 'php';
+		$muse = PATH_CORE . DS . 'bin' . DS . 'muse';
+		$log  = PATH_APP . DS . 'logs' . DS . 'cron-detached.log';
+
+		if (!is_file($muse))
+		{
+			return false;
+		}
+
+		$cmd = 'setsid ' . escapeshellarg($php) . ' ' . escapeshellarg($muse)
+			. ' cron:jobs run --job=' . $jobId
+			. ' < /dev/null >> ' . escapeshellarg($log) . ' 2>&1 &';
+
+		@exec($cmd);
+
+		return true;
 	}
 }
