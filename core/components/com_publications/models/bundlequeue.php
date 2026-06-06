@@ -106,7 +106,23 @@ class BundleQueue extends Relational
 			return false;
 		}
 
-		$db   = \App::get('db');
+		$db = \App::get('db');
+
+		// Only file-based publications are (re)built off-request here. A version
+		// with no role-1 file attachment is not a file bundle — e.g. a Database
+		// (its primary is a CSV generated on the fly from a stored database) or a
+		// Series (which links other publications). Those are produced by the
+		// standard packager; enqueuing one would only have the worker fail with
+		// "no primary files" and dead-letter it. Leave them out of the queue.
+		$db->setQuery(
+			"SELECT COUNT(*) FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . $versionId . " AND `type` = 'file' AND `role` = 1"
+		);
+		if ((int) $db->loadResult() < 1)
+		{
+			return false;
+		}
+
 		$now  = $db->quote(\Date::toSql());
 		$done = "`status` IN ('" . self::STATUS_READY . "','" . self::STATUS_FAILED . "')";
 
