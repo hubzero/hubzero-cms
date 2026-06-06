@@ -90,14 +90,18 @@ class BundleQueue extends Relational
 	}
 
 	/**
-	 * Whether a version can be built off-request by BundleBuilder — i.e. it is a
-	 * file bundle, having at least one role-1 file attachment. Versions without
-	 * one are not file bundles (a Databases version's primary is a CSV generated
-	 * from a stored database; a Series links other publications); BundleBuilder
-	 * cannot produce them, so they must stay on the synchronous packager. This is
-	 * the single rule that BOTH the enqueue and the serve-time async router gate
-	 * on, so a non-buildable version is never queued and never routed to async
-	 * (which would otherwise loop forever "preparing").
+	 * Whether a version is built off-request by BundleBuilder — i.e. it has a
+	 * real download payload: any file attachment (role-1 primary, role-2
+	 * supporting, or role-3 gallery) or a data element (a Databases version,
+	 * built from its data dir + a generated CSV). BundleBuilder now produces all
+	 * of these (file bundle / Databases bundle / metadata-only-with-gallery).
+	 *
+	 * Versions with no file or data attachment — a Series of only linked
+	 * publications, a publication/tool/link-only pub — have at most a tiny
+	 * README-only bundle the packager builds instantly on request, so they are
+	 * left synchronous (no point queueing, and never routed to async — which
+	 * would otherwise loop "preparing"). This is the single rule BOTH the enqueue
+	 * and the serve-time async router gate on, so the two never disagree.
 	 *
 	 * @param   integer  $versionId
 	 * @return  boolean
@@ -114,7 +118,8 @@ class BundleQueue extends Relational
 		$db = \App::get('db');
 		$db->setQuery(
 			"SELECT COUNT(*) FROM `#__publication_attachments`
-			 WHERE `publication_version_id` = " . $versionId . " AND `type` = 'file' AND `role` = 1"
+			 WHERE `publication_version_id` = " . $versionId . "
+			   AND (`type` = 'file' OR `type` = 'data')"
 		);
 
 		return ((int) $db->loadResult() >= 1);
