@@ -84,6 +84,34 @@ class BundleBuilderTest extends Basic
 	}
 
 	/**
+	 * Call the protected stripWrapper().
+	 *
+	 * @param   string  $entry
+	 * @param   string  $name
+	 * @return  string
+	 */
+	protected function stripWrapper($entry, $name)
+	{
+		$m = new \ReflectionMethod($this->builder, 'stripWrapper');
+		$m->setAccessible(true);
+		return $m->invoke($this->builder, $entry, $name);
+	}
+
+	/**
+	 * Call the protected hasFreeSpace().
+	 *
+	 * @param   string   $dir
+	 * @param   integer  $need
+	 * @return  boolean
+	 */
+	protected function hasFreeSpace($dir, $need)
+	{
+		$m = new \ReflectionMethod($this->builder, 'hasFreeSpace');
+		$m->setAccessible(true);
+		return $m->invoke($this->builder, $dir, $need);
+	}
+
+	/**
 	 * Test-local recursive remove (does not follow symlinks).
 	 *
 	 * @param   string  $dir
@@ -244,5 +272,42 @@ class BundleBuilderTest extends Basic
 	public function testVerifyZipRejectsMissingFile()
 	{
 		$this->assertFalse($this->verifyZip($this->root . DIRECTORY_SEPARATOR . 'nope.zip', 1));
+	}
+
+	/**
+	 * stripWrapper removes the "<DOI>/" prefix only when present — so modern
+	 * wrapped bundles and legacy no-wrapper bundles both yield the correct
+	 * relative path for the audit to match against the source set.
+	 *
+	 * @return  void
+	 */
+	public function testStripWrapperRemovesPrefixOnlyWhenPresent()
+	{
+		$name = '10_4231_R7FB513S';
+
+		// Modern wrapped entry -> wrapper removed.
+		$this->assertSame('data/x.csv', $this->stripWrapper($name . '/data/x.csv', $name));
+		$this->assertSame('README.txt', $this->stripWrapper($name . '/README.txt', $name));
+
+		// Legacy no-wrapper entries -> left intact (NOT first-segment-stripped).
+		$this->assertSame('data/x.csv', $this->stripWrapper('data/x.csv', $name));
+		$this->assertSame('media/121984_media.zip', $this->stripWrapper('media/121984_media.zip', $name));
+		$this->assertSame('README.txt', $this->stripWrapper('README.txt', $name));
+
+		// A different top dir that merely shares a prefix is not stripped.
+		$this->assertSame('10_4231_R7FB513S_extra/x', $this->stripWrapper('10_4231_R7FB513S_extra/x', $name));
+	}
+
+	/**
+	 * hasFreeSpace: a need of 0 fits; an impossible need does not; an
+	 * unstattable path does not block the build (returns true).
+	 *
+	 * @return  void
+	 */
+	public function testHasFreeSpace()
+	{
+		$this->assertTrue($this->hasFreeSpace($this->root, 0), 'zero need fits');
+		$this->assertFalse($this->hasFreeSpace($this->root, PHP_INT_MAX), 'impossible need rejected');
+		$this->assertTrue($this->hasFreeSpace($this->root . DIRECTORY_SEPARATOR . 'no-such-dir', 1 << 20), 'unknowable free space does not block');
 	}
 }
