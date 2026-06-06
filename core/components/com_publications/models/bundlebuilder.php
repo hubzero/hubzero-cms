@@ -88,7 +88,12 @@ class BundleBuilder
 		$base    = PATH_APP . DS . $webpath . DS . Str::pad($pubId) . DS . Str::pad($versionId);
 		$content = $base . DS . $secret;
 
-		if (!is_dir($base) || !is_dir($content))
+		// The base dir must exist. The secret content dir holds role-1/2 file
+		// attachments; a metadata-only publication (a Series, whose gallery lives
+		// in <base>/gallery and which has no content files) legitimately has none,
+		// so its absence is only fatal when the version actually records files
+		// there (guarded below).
+		if (!is_dir($base))
 		{
 			return $fail('Publication storage not found: ' . $base);
 		}
@@ -96,10 +101,35 @@ class BundleBuilder
 		// Primary (role-1) files decide the layout; the full file set (all
 		// roles) is what a flat outer must carry. (resolveFiles honors each
 		// element's includeInPackage, so excluded files never reach the bundle.)
+		// Returns empty if the content dir is absent.
 		$primary = $this->primaryFiles($versionId, $content);
 		if (count($primary) < 1)
 		{
-			return $fail('No primary (role 1) files found for version ' . $versionId . '.');
+			// A file publication that records primary (role-1) file attachments but
+			// resolved NONE on disk has lost its source (files deleted/moved, or a
+			// missing content dir). Fail loudly — never fall through to the
+			// metadata-only / Databases path below, which on a forced rebuild would
+			// write a payload-less bundle over the live served one (data loss).
+			// verifyZip can't catch this: the downgraded bundle is internally valid.
+			if ($this->expectsPrimaryFiles($versionId))
+			{
+				return $fail('Primary files not found for version ' . $versionId
+					. ' (content dir: ' . $content . ')');
+			}
+
+			// Not a file bundle. A Databases version (its primary is a data
+			// element — a CSV generated from a stored database, plus the data
+			// dir) is built here. Everything else with no role-1 file (a Series
+			// of linked publications, a tool-backed Application) still gets the
+			// metadata-only bundle the packager produces: README + LICENSE +
+			// gallery, no payload. Mirrors curation::package(), which always
+			// writes a README and bundles whatever elements exist.
+			if ($this->dataAttachments($versionId))
+			{
+				return $this->buildDatabase($versionId, $version, $base, $content, $force, $level, $log);
+			}
+
+			return $this->buildMetadataOnly($versionId, $version, $base, $content, $force, $level, $log);
 		}
 		$allFiles = $this->attachmentFiles($versionId, $content);
 
@@ -415,7 +445,9 @@ class BundleBuilder
 		// not fooled by good compression, an expanded archive, or a swapped file.
 		if ($r['primary_count'] == 0)
 		{
-			// No primary data files: nothing to bundle, so not a build failure.
+			// No role-1 files: verify the Databases (data element) or
+			// metadata-only (Series) payload instead of treating it as nothing.
+			$this->auditNonFile($versionId, $version, $base, $content, $name, $outer, $r, $deep);
 		}
 		else if (!$r['outer_exists'])
 		{
@@ -545,6 +577,167 @@ class BundleBuilder
 	}
 
 	/**
+	 * Audit a version with no role-1 files: a Databases (data element) or a
+	 * metadata-only publication (Series / tool app). Verifies the served outer
+	 * carries the same payload its build path would produce, and records
+	 * primary_count (expected payload entries) + source_hash on $r, mirroring the
+	 * build's signature so staleness lines up.
+	 *
+	 * Databases: the data-dir files, role>=2 supporting files and each datastore
+	 * CSV must be present (name + uncompressed size, + CRC under $deep); a missing
+	 * outer is missing_bundle (a multi-GB datastore can't be built on demand).
+	 * Metadata-only: only the gallery is verified; a missing outer is NOT flagged
+	 * (it is a few KB the packager builds instantly on request — no truncation
+	 * risk).
+	 *
+	 * @param   integer     $versionId
+	 * @param   array       $version
+	 * @param   string      $base
+	 * @param   string      $content
+	 * @param   string      $name
+	 * @param   string      $outer
+	 * @param   array       $r       audit result (by reference)
+	 * @param   boolean     $deep
+	 * @return  void
+	 */
+	protected function auditNonFile($versionId, $version, $base, $content, $name, $outer, &$r, $deep)
+	{
+		$dataAtts = $this->dataAttachments($versionId);
+
+		// Full outer entry map: rel (minus "<name>/") => array(size, crc).
+		$entries = array();
+		if ($r['outer_exists'])
+		{
+			$zip = new ZipArchive();
+			if ($zip->open($outer) !== true)
+			{
+				$r['issues'][] = 'outer_unreadable';
+				return;
+			}
+			for ($i = 0; $i < $zip->numFiles; $i++)
+			{
+				$s = $zip->statIndex($i);
+				if ($s === false || substr($s['name'], -1) === '/')
+				{
+					continue;
+				}
+				$entries[preg_replace('#^[^/]+/#', '', (string) $s['name'])] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+			}
+			$zip->close();
+		}
+
+		$byBase = array();
+		foreach ($entries as $n => $m)
+		{
+			$byBase[basename($n)][] = $m;
+		}
+		$has = function ($rel, $size, $crc) use ($entries, $byBase)
+		{
+			if (isset($entries[$rel]) && $entries[$rel]['size'] === $size
+				&& ($crc === null || $entries[$rel]['crc'] === $crc))
+			{
+				return true;
+			}
+			if (isset($byBase[basename($rel)]))
+			{
+				foreach ($byBase[basename($rel)] as $m)
+				{
+					if ($m['size'] === $size && ($crc === null || $m['crc'] === $crc))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		};
+
+		// Expected payload (rel-without-prefix => abs on disk) and the matching
+		// source signature for staleness (same inputs the build hashes).
+		$expected = array();
+		$sigMap   = array();
+
+		if ($dataAtts)
+		{
+			foreach ($this->attachmentFiles($versionId, $content) as $abs => $rel)
+			{
+				$expected[$rel] = $abs;
+				$sigMap[$abs]   = $rel;
+			}
+			foreach ($this->databaseDataFiles($base . DS . 'data') as $abs => $rel)
+			{
+				$expected['data/' . $rel] = $abs;
+				$sigMap[$abs]             = 'data/' . $rel;
+			}
+			foreach ($dataAtts as $da)
+			{
+				$title  = ($da->title !== '' && $da->title !== null) ? $da->title : $da->object_name;
+				$csvAbs = $base . DS . 'data' . DS . $title . '-' . $da->object_revision . '.csv';
+				if (is_file($csvAbs))
+				{
+					$expected[$title . '-' . $da->object_revision . '.csv'] = $csvAbs;
+				}
+			}
+		}
+		else
+		{
+			foreach ($this->attachmentFiles($versionId, $content) as $abs => $rel)
+			{
+				$expected[$rel] = $abs;
+				$sigMap[$abs]   = $rel;
+			}
+			foreach ($this->galleryFiles($versionId, $base, $name) as $abs => $entry)
+			{
+				$expected[preg_replace('#^[^/]+/#', '', $entry)] = $abs;
+				$sigMap[$abs] = $entry;
+			}
+		}
+
+		$r['primary_count'] = count($expected);
+		$r['source_hash']   = $sigMap ? $this->sourceHash($sigMap) : '';
+
+		if (!$r['outer_exists'])
+		{
+			// A Databases outer is expensive to build and must be pre-built; a
+			// metadata-only outer is trivial and built on demand, so only flag
+			// the former.
+			if ($dataAtts)
+			{
+				$r['issues'][] = 'missing_bundle';
+			}
+			return;
+		}
+
+		$missing = 0;
+		$crcBad  = 0;
+		foreach ($expected as $rel => $abs)
+		{
+			$size = (int) @filesize($abs);
+			if ($has($rel, $size, null))
+			{
+				if ($deep)
+				{
+					$c = @hash_file('crc32b', $abs);
+					if ($c === false || !$has($rel, $size, hexdec($c)))
+					{
+						$crcBad++;
+					}
+				}
+				continue;
+			}
+			$missing++;
+		}
+
+		if ($missing > 0)
+		{
+			$r['issues'][] = 'incomplete:' . ($r['primary_count'] - $missing) . '/' . $r['primary_count'];
+		}
+		if ($crcBad > 0)
+		{
+			$r['issues'][] = 'crc_mismatch:' . $crcBad . '/' . $r['primary_count'];
+		}
+	}
+
+	/**
 	 * The set of element ids (manifest element keys) that the master type marks
 	 * includeInPackage=0 — i.e. file elements deliberately excluded from the
 	 * download. Attachments link to elements via element_id, and that id is the
@@ -660,6 +853,47 @@ class BundleBuilder
 		$row = $db->loadAssoc();
 
 		return $row ?: false;
+	}
+
+	/**
+	 * Whether the version records primary (role-1) file attachments the package
+	 * should include — independent of whether they currently exist on disk. Lets
+	 * build() distinguish a genuine no-primary publication (Series / metadata-only
+	 * / Databases) from a file publication whose primary source files have
+	 * vanished, so the latter fails instead of being silently rebuilt as a
+	 * payload-less metadata-only bundle over the live served one. Mirrors
+	 * resolveFiles()'s includeInPackage filtering (minus the on-disk resolution).
+	 *
+	 * @param   integer  $versionId
+	 * @return  boolean
+	 */
+	protected function expectsPrimaryFiles($versionId)
+	{
+		// Resolve excluded element ids FIRST (it issues its own query, which would
+		// otherwise clobber the pending attachments query before loadObjectList()).
+		$excluded = $this->includeInPackageExcludedIds($versionId);
+
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT `path`, `element_id` FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . (int) $versionId . "
+			   AND `type` = 'file' AND `role` = 1"
+		);
+		$rows = $db->loadObjectList();
+
+		foreach ((array) $rows as $row)
+		{
+			if (isset($excluded[(int) $row->element_id]))
+			{
+				continue;
+			}
+			if (trim((string) $row->path) !== '')
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -1018,6 +1252,24 @@ class BundleBuilder
 			return array('ok' => false, 'error' => 'The system "zip" binary is not available.');
 		}
 
+		// Preflight: the inner is at most the sum of the primary files; bail
+		// before zipping if there isn't room (plus the existing inner, which
+		// stays until the rename).
+		$need = 0;
+		foreach ($files as $abs => $rel)
+		{
+			$need += (int) @filesize($abs);
+		}
+		if (is_file($innerPath))
+		{
+			$need += filesize($innerPath);
+		}
+		if (!$this->hasFreeSpace(dirname($innerPath), $need))
+		{
+			return array('ok' => false, 'error' => 'Insufficient free space to build ' . basename($innerPath)
+				. ' (need ~' . number_format($need) . ' bytes).');
+		}
+
 		$tmp = $innerPath . '.build.' . getmypid();
 		@unlink($tmp);
 
@@ -1033,6 +1285,14 @@ class BundleBuilder
 		{
 			@unlink($tmp);
 			return array('ok' => false, 'error' => 'zip exited with status ' . $rc);
+		}
+
+		// Verify before replacing the live inner: every primary file must be
+		// present and the central directory intact (catches a truncated build).
+		if (!$this->verifyZip($tmp, count($files)))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Built inner bundle failed verification (incomplete); kept the existing ' . basename($innerPath) . '.');
 		}
 
 		@chgrp($tmp, 'access-content');
@@ -1125,6 +1385,13 @@ class BundleBuilder
 		{
 			@unlink($tmp);
 			return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+		}
+
+		// Verify intact before it replaces the live outer.
+		if (!$this->verifyZip($tmp, 1))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
 		}
 
 		@chgrp($tmp, 'access-content');
@@ -1258,6 +1525,13 @@ class BundleBuilder
 		{
 			@unlink($tmp);
 			return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+		}
+
+		// Verify intact before it replaces the live outer.
+		if (!$this->verifyZip($tmp, 1))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
 		}
 
 		@chgrp($tmp, 'access-content');
@@ -1767,6 +2041,589 @@ class BundleBuilder
 		}
 
 		return $out;
+	}
+
+	/**
+	 * A version's data (Datastore Lite) attachments — the elements whose primary
+	 * content is a CSV generated from a stored database. Empty for ordinary file
+	 * publications.
+	 *
+	 * @param   integer  $versionId
+	 * @return  array  objects with object_name, object_revision, title
+	 */
+	protected function dataAttachments($versionId)
+	{
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT `object_name`, `object_revision`, `title` FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . (int) $versionId . "
+			   AND `type` = 'data' AND `object_name` <> '' ORDER BY `ordering`, `id`"
+		);
+
+		return (array) $db->loadObjectList();
+	}
+
+	/**
+	 * Does the version record any file attachment that lives in the secret
+	 * content dir (role 1 primary or role 2 supporting)? Gallery (role 3) lives
+	 * in <base>/gallery and data files in <base>/data, so they don't count. Used
+	 * to decide whether a missing content dir is a real fault.
+	 *
+	 * @param   integer  $versionId
+	 * @return  boolean
+	 */
+	protected function hasContentFileAttachments($versionId)
+	{
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT COUNT(*) FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . (int) $versionId . "
+			   AND `type` = 'file' AND `role` IN (1, 2)"
+		);
+
+		return (int) $db->loadResult() > 0;
+	}
+
+	/**
+	 * Files under a version's data dir to carry in the bundle, as abs => name
+	 * relative to that dir. Mirrors data.php::addToBundle's scan: every file
+	 * recursively, minus the dataviewer thumbnails (_tn.gif / _medium.gif) and
+	 * the raw data.csv.
+	 *
+	 * @param   string  $dataDir
+	 * @return  array
+	 */
+	protected function databaseDataFiles($dataDir)
+	{
+		$out = array();
+		if (!is_dir($dataDir))
+		{
+			return $out;
+		}
+
+		$it = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($dataDir, \FilesystemIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::LEAVES_ONLY
+		);
+		foreach ($it as $f)
+		{
+			if (!$f->isFile())
+			{
+				continue;
+			}
+			$abs = $f->getPathname();
+			// Same exclusions as data.php::addToBundle.
+			if (preg_match('/_tn.gif/', $abs) || preg_match('/_medium.gif/', $abs) || preg_match('/data.csv/', $abs))
+			{
+				continue;
+			}
+			$rel = ltrim(str_replace('\\', '/', substr($abs, strlen($dataDir))), '/');
+			if ($rel !== '')
+			{
+				$out[$abs] = $rel;
+			}
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Build the served outer for a Databases version. Reproduces what the
+	 * synchronous packager assembles for a data element (curation::package via
+	 * data.php::addToBundle) plus the shared supporting-file/gallery/README
+	 * handling: for each data attachment a CSV generated from the stored database
+	 * is placed at <DOI>/<title>-<rev>.csv, the data dir is carried under
+	 * <DOI>/data/, role>=2 file attachments sit flat at <DOI>/<path>, and the
+	 * gallery/README/LICENSE come from outerMetadata(). Flat layout, no inner
+	 * bundle. Atomic via a temp file + rename.
+	 *
+	 * The data dir can run to many GB, so the archive is built with the system
+	 * zip(1) (buildOuterViaZip) as file bundles are — ZIP64 and stored for
+	 * already-compressed members — falling back to PHP ZipArchive only when zip
+	 * is unavailable.
+	 *
+	 * @param   integer   $versionId
+	 * @param   array     $version
+	 * @param   string    $base     version base dir
+	 * @param   string    $content  secret content dir
+	 * @param   boolean   $force
+	 * @param   integer   $level    zip compression level
+	 * @param   callable  $log
+	 * @return  array
+	 */
+	protected function buildDatabase($versionId, $version, $base, $content, $force, $level, $log)
+	{
+		$fail = function ($msg) {
+			return array('ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null);
+		};
+
+		$name      = $this->bundleName($version);
+		$outerPath = $base . DS . $name . '.zip';
+		$dataDir   = $base . DS . 'data';
+
+		// Source signature: supporting (role>=2) files + the data dir (stat only)
+		// + the datastore revisions (the CSV is deterministic per revision).
+		$supporting = $this->attachmentFiles($versionId, $content);
+		$dataAtts   = $this->dataAttachments($versionId);
+
+		$sigMap = $supporting;
+		foreach ($this->databaseDataFiles($dataDir) as $abs => $rel)
+		{
+			$sigMap[$abs] = 'data/' . $rel;
+		}
+		$sourceHash = $this->sourceHash($sigMap);
+
+		if (is_file($outerPath) && !$force)
+		{
+			return array(
+				'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
+				'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+			);
+		}
+
+		// Entry list as [abs, entry] pairs — a file can appear twice (a CSV is
+		// placed at the root AND, via the data-dir scan, under data/).
+		$entries = array();
+
+		// role>=2 supporting files (in the content dir) sit flat at <name>/<rel>.
+		foreach ($supporting as $abs => $rel)
+		{
+			$entries[] = array($abs, $name . '/' . $rel);
+		}
+
+		// Generate each datastore CSV into the data dir (where the packager
+		// writes it) and place it at the bundle root, mirroring data.php.
+		if (!is_dir($dataDir) && @mkdir($dataDir, 0775, true))
+		{
+			@chgrp($dataDir, 'access-content');
+		}
+		require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'datastore.php';
+		foreach ($dataAtts as $da)
+		{
+			$title   = ($da->title !== '' && $da->title !== null) ? $da->title : $da->object_name;
+			$csvName = $title . '-' . $da->object_revision . '.csv';
+			$csvAbs  = $dataDir . DS . $csvName;
+
+			$ok = \Components\Publications\Helpers\Datastore::generateCsv($da->object_name, $da->object_revision, $csvAbs);
+			if (!$ok || !is_file($csvAbs))
+			{
+				return $fail('Could not generate datastore CSV for ' . $da->object_name . ' rev ' . $da->object_revision);
+			}
+			@chgrp($csvAbs, 'access-content');
+			@chmod($csvAbs, 0664);
+			$entries[] = array($csvAbs, $name . '/' . $csvName);
+		}
+
+		// The whole data dir (now including the freshly written CSVs), minus the
+		// excluded files, under <name>/data/.
+		foreach ($this->databaseDataFiles($dataDir) as $abs => $rel)
+		{
+			$entries[] = array($abs, $name . '/data/' . $rel);
+		}
+
+		$metadata = $this->outerMetadata($versionId, $version, $base, $name);
+
+		$log(sprintf('Building Databases outer %s: %d datastore(s), %d entr(ies)...',
+			basename($outerPath), count($dataAtts), count($entries)));
+
+		$res = $this->buildOuterViaZip($entries, $metadata, $outerPath, $name, $level);
+		if (!$res['ok'])
+		{
+			return $fail($res['error']);
+		}
+
+		return array(
+			'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
+			'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+		);
+	}
+
+	/**
+	 * Assemble a flat outer from an explicit [abs, entry] list plus metadata.
+	 * Builds a fresh archive (CREATE|OVERWRITE), stores already-compressed
+	 * members, skips entries that escape the root or duplicate one already added,
+	 * and finishes atomically via a temp file + rename. Used by the Databases
+	 * build path (where files come from several source dirs and one file may be
+	 * placed at two paths).
+	 *
+	 * @param   array   $entries   list of array(abs, entry)
+	 * @param   array   $metadata  abs => array(kind, entry)  (readme/license/gallery)
+	 * @param   string  $outerPath
+	 * @param   string  $name
+	 * @return  array   ok, error
+	 */
+	protected function buildFlatFromEntries($entries, $metadata, $outerPath, $name)
+	{
+		$tmp = $outerPath . '.build.' . getmypid();
+		@unlink($tmp);
+
+		$zip = new ZipArchive();
+		if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true)
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
+		}
+
+		foreach ($entries as $pair)
+		{
+			list($abs, $entry) = $pair;
+
+			if (!is_file($abs) || $entry === '' || $entry[0] === '/' || preg_match('#(^|/)\.\.(/|$)#', $entry))
+			{
+				continue;
+			}
+			if ($zip->locateName($entry) !== false)
+			{
+				continue;
+			}
+			if (!$zip->addFile($abs, $entry))
+			{
+				$zip->close();
+				@unlink($tmp);
+				return array('ok' => false, 'error' => 'Could not add ' . $entry);
+			}
+			$ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
+			if (in_array($ext, self::compressedExtList(), true))
+			{
+				$zip->setCompressionName($entry, ZipArchive::CM_STORE);
+			}
+		}
+
+		$this->ensureMetadata($zip, $name, $metadata);
+
+		if (!$zip->close())
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+		}
+
+		// Verify intact before it replaces the live outer.
+		if (!$this->verifyZip($tmp, 1))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
+		}
+
+		@chgrp($tmp, 'access-content');
+		@chmod($tmp, 0664);
+
+		if (!rename($tmp, $outerPath))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+		}
+
+		return array('ok' => true, 'error' => null);
+	}
+
+	/**
+	 * Assemble a flat outer from an [abs, entry] list plus metadata with the
+	 * system zip(1) — the fast path for large payloads (a Databases data dir can
+	 * be many GB): ZIP64, and already-compressed members stored. Files come from
+	 * several source dirs and one file may map to two entries, so a staging tree
+	 * of symlinks is built to give zip the exact entry names; zip dereferences
+	 * the links and stores the real bytes (no large copy). -D omits directory
+	 * entries, matching the packager. Falls back to the PHP ZipArchive assembler
+	 * when zip is unavailable. Atomic via a temp file + rename.
+	 *
+	 * @param   array    $entries   list of array(abs, entry)
+	 * @param   array    $metadata  abs => array(kind, entry)  (readme/license/gallery)
+	 * @param   string   $outerPath
+	 * @param   string   $name
+	 * @param   integer  $level
+	 * @return  array    ok, error
+	 */
+	protected function buildOuterViaZip($entries, $metadata, $outerPath, $name, $level)
+	{
+		if (!$this->systemZipAvailable())
+		{
+			return $this->buildFlatFromEntries($entries, $metadata, $outerPath, $name);
+		}
+
+		// Data entries + metadata as one (abs, entry) list.
+		$all = $entries;
+		foreach ($metadata as $abs => $info)
+		{
+			$all[] = array($abs, $info[1]);
+		}
+
+		// Preflight: the archive is at most the sum of its sources, and the live
+		// outer still sits on disk until the final rename. Bail before writing
+		// anything if the filesystem can't hold both.
+		$need = 0;
+		foreach ($all as $pair)
+		{
+			$need += (int) @filesize($pair[0]);
+		}
+		if (is_file($outerPath))
+		{
+			$need += filesize($outerPath);
+		}
+		if (!$this->hasFreeSpace(dirname($outerPath), $need))
+		{
+			return array('ok' => false, 'error' => 'Insufficient free space to build ' . basename($outerPath)
+				. ' (need ~' . number_format($need) . ' bytes).');
+		}
+
+		// Stage a symlink tree mirroring the entry layout. Every staged directory
+		// is one we create and every leaf is a symlink, so the tree is torn down
+		// with removeStage() — which unlinks symlinks (never their targets) and
+		// rmdir()s the dirs it descends, never an `rm -rf` on a built-up path and
+		// never following a link — so it cannot reach a source file.
+		$stage = $outerPath . '.stage.' . getmypid();
+		$this->removeStage($stage);
+		if (!@mkdir($stage, 0775, true))
+		{
+			return array('ok' => false, 'error' => 'Could not create staging dir ' . $stage);
+		}
+
+		$seen = array();
+		foreach ($all as $pair)
+		{
+			list($abs, $entry) = $pair;
+
+			if (!is_file($abs) || $entry === '' || $entry[0] === '/' || preg_match('#(^|/)\.\.(/|$)#', $entry))
+			{
+				continue;
+			}
+			if (isset($seen[$entry]))
+			{
+				continue;
+			}
+			$seen[$entry] = true;
+
+			$link = $stage . DS . $entry;
+			$dir  = dirname($link);
+			if ((!is_dir($dir) && !@mkdir($dir, 0775, true)) || !@symlink($abs, $link))
+			{
+				$this->removeStage($stage);
+				return array('ok' => false, 'error' => 'Could not stage ' . $entry);
+			}
+		}
+
+		if (empty($seen))
+		{
+			$this->removeStage($stage);
+			return array('ok' => false, 'error' => 'Nothing to bundle for ' . basename($outerPath));
+		}
+
+		$tmp = $outerPath . '.build.' . getmypid();
+		@unlink($tmp);
+
+		// -D: no directory entries (the packager adds none). No -y, so file
+		// symlinks are dereferenced and their content stored. -n: store
+		// already-compressed extensions instead of wasting CPU deflating them.
+		$cmd = array('zip', '-' . max(0, min(9, (int) $level)), '-X', '-D', '-q', '-r',
+			'-n', '.' . implode(':.', self::compressedExtList()), $tmp, $name);
+		$rc = $this->runQuiet($cmd, $stage);
+
+		$this->removeStage($stage);
+
+		if ($rc !== 0 || !is_file($tmp))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'zip exited with status ' . $rc);
+		}
+
+		// Verify the built archive is sound (all staged entries present, central
+		// directory intact) BEFORE it replaces the live bundle. A truncated or
+		// out-of-space build is discarded with the served outer left untouched.
+		if (!$this->verifyZip($tmp, count($seen)))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Built archive failed verification (incomplete); kept the existing ' . basename($outerPath) . '.');
+		}
+
+		@chgrp($tmp, 'access-content');
+		@chmod($tmp, 0664);
+
+		if (!rename($tmp, $outerPath))
+		{
+			@unlink($tmp);
+			return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+		}
+
+		return array('ok' => true, 'error' => null);
+	}
+
+	/**
+	 * Recursively remove a build staging tree, safely. A staging tree is dirs we
+	 * created holding symlinks to real source files, so this must NEVER follow a
+	 * link or it could delete a source. It therefore checks is_link() BEFORE
+	 * is_dir() (a symlink to a directory reports is_dir() true) and:
+	 *   - unlinks any symlink (removes the link, never its target),
+	 *   - recurses only into real directories, then rmdir()s them,
+	 *   - unlinks a stray real file (not expected in a staging tree).
+	 * No `rm -rf` on a constructed path; nothing outside the tree is reachable,
+	 * and a source file (a symlink target) can never be removed. A missing path
+	 * is a no-op (so it doubles as the pre-build cleanup). See BundleBuilderTest.
+	 *
+	 * @param   string  $dir
+	 * @return  void
+	 */
+	protected function removeStage($dir)
+	{
+		// A symlink (even one that points at a directory) is unlinked, not
+		// descended — this is the guarantee that a source file is never reached.
+		if (is_link($dir))
+		{
+			@unlink($dir);
+			return;
+		}
+		if (!is_dir($dir))
+		{
+			return;
+		}
+
+		$items = @scandir($dir);
+		if ($items !== false)
+		{
+			foreach ($items as $item)
+			{
+				if ($item === '.' || $item === '..')
+				{
+					continue;
+				}
+				$path = $dir . DS . $item;
+
+				if (is_link($path))
+				{
+					@unlink($path);
+				}
+				else if (is_dir($path))
+				{
+					$this->removeStage($path);
+				}
+				else
+				{
+					@unlink($path);
+				}
+			}
+		}
+
+		@rmdir($dir);
+	}
+
+	/**
+	 * Build the served outer for a version with no role-1 primary and no data
+	 * element — a Series of linked publications, a tool-backed Application — i.e.
+	 * the bundle the packager produces from whatever non-primary content exists:
+	 * README (regenerated to match package() when no on-disk copy survives) +
+	 * LICENSE (custom-license only) + gallery + any role>=2 supporting files. No
+	 * inner bundle. Usually just README (+ gallery for a Series).
+	 *
+	 * @param   integer   $versionId
+	 * @param   array     $version
+	 * @param   string    $base
+	 * @param   string    $content  secret content dir (role>=2 files; may be absent)
+	 * @param   boolean   $force
+	 * @param   integer   $level
+	 * @param   callable  $log
+	 * @return  array
+	 */
+	protected function buildMetadataOnly($versionId, $version, $base, $content, $force, $level, $log)
+	{
+		$fail = function ($msg) {
+			return array('ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null);
+		};
+
+		$name      = $this->bundleName($version);
+		$outerPath = $base . DS . $name . '.zip';
+
+		// Payload (if any): role>=2 supporting files (flat) + the gallery. Hash
+		// both (stat only) for staleness.
+		$supporting = $this->attachmentFiles($versionId, $content);
+		$gallery    = $this->galleryFiles($versionId, $base, $name);
+
+		$sigMap = $supporting;
+		foreach ($gallery as $abs => $entry)
+		{
+			$sigMap[$abs] = $entry;
+		}
+		$sourceHash = $sigMap ? $this->sourceHash($sigMap) : $this->sourceHash($gallery);
+
+		if (is_file($outerPath) && !$force)
+		{
+			return array(
+				'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
+				'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+			);
+		}
+
+		$entries = array();
+		foreach ($supporting as $abs => $rel)
+		{
+			$entries[] = array($abs, $name . '/' . $rel);
+		}
+
+		$metadata = $this->outerMetadata($versionId, $version, $base, $name);
+
+		$log(sprintf('Building metadata-only outer %s (README + %d supporting + %d gallery image(s))...',
+			basename($outerPath), count($supporting), count($gallery)));
+
+		$res = $this->buildOuterViaZip($entries, $metadata, $outerPath, $name, $level);
+		if (!$res['ok'])
+		{
+			return $fail($res['error']);
+		}
+
+		return array(
+			'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
+			'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+		);
+	}
+
+	/**
+	 * Build preflight: does $dir's filesystem have room for an artifact of about
+	 * $need bytes (plus headroom)? Lets a build bail out cleanly up front instead
+	 * of running a source out of space part-way and leaving a truncated temp.
+	 * Unknowable free space (disk_free_space false) does not block the build.
+	 *
+	 * @param   string   $dir
+	 * @param   integer  $need   estimated bytes the build will write
+	 * @return  boolean
+	 */
+	protected function hasFreeSpace($dir, $need)
+	{
+		$free = @disk_free_space($dir);
+		if ($free === false)
+		{
+			return true;
+		}
+
+		// 5% headroom, floored at 64 MB for zip's central directory / scratch.
+		$margin = max((int) ($need * 0.05), 64 * 1024 * 1024);
+
+		return $free > ((float) $need + $margin);
+	}
+
+	/**
+	 * Verify a freshly built archive before it is allowed to replace the live
+	 * bundle: its central directory must open cleanly and hold at least
+	 * $minEntries members. zip writes the central directory last, so this catches
+	 * a truncated / interrupted / out-of-space build — the guarantee that a good
+	 * served bundle is never overwritten with a broken one.
+	 *
+	 * @param   string   $path
+	 * @param   integer  $minEntries
+	 * @return  boolean
+	 */
+	protected function verifyZip($path, $minEntries = 1)
+	{
+		if (!is_file($path))
+		{
+			return false;
+		}
+
+		$zip = new ZipArchive();
+		if ($zip->open($path) !== true)
+		{
+			return false;
+		}
+		$n = $zip->numFiles;
+		$zip->close();
+
+		return $n >= (int) $minEntries;
 	}
 
 	/**

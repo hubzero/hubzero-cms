@@ -832,43 +832,11 @@ class Data extends Base
 	 */
 	public function getCsvData($db_name = '', $version = '', $tmpFile = '')
 	{
-		if (!$db_name || !$version)
-		{
-			return false;
-		}
+		// Delegated to a shared helper so the off-request bundle builder produces
+		// the datastore CSV exactly the same way this in-request packager does.
+		require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'datastore.php';
 
-		mb_internal_encoding('UTF-8');
-
-		// component path for "com_dataviewer"
-		$dv_com_path = \Component::path('com_dataviewer') . DS . 'site';
-
-		require_once $dv_com_path . DS . 'dv_config.php';
-		require_once $dv_com_path . DS . 'lib' . DS . 'db.php';
-		require_once $dv_com_path . DS . 'modes' . DS . 'mode_dsl.php';
-		require_once $dv_com_path . DS . 'filter' . DS . 'csv.php';
-
-		$dv_conf = get_conf(null);
-		$dd = get_dd(null, $db_name, $version);
-		$dd['serverside'] = false;
-
-		$sql = query_gen($dd);
-		$result = get_results($sql, $dd);
-
-		ob_start();
-		filter($result, $dd, true);
-		$csv = ob_get_contents();
-		ob_end_clean();
-
-		if ($csv && $tmpFile)
-		{
-			$handle = fopen($tmpFile, 'w');
-			fwrite($handle, $csv);
-			fclose($handle);
-
-			return true;
-		}
-
-		return $csv;
+		return \Components\Publications\Helpers\Datastore::generateCsv($db_name, $version, $tmpFile);
 	}
 
 	/**
