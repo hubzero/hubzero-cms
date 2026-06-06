@@ -414,7 +414,7 @@ class BundleBuilder
 				{
 					$s = $zip->statIndex($i);
 					if ($s === false) { continue; }
-					$rel = preg_replace('#^[^/]+/#', '', (string) $s['name']); // strip "<name>/"
+					$rel = $this->stripWrapper((string) $s['name'], $name); // strip "<DOI>/" if present
 					if ($rel === '' || substr($rel, -1) === '/'
 						|| strpos($rel, 'gallery/') === 0
 						|| substr($rel, -5) === '.hash'
@@ -621,7 +621,7 @@ class BundleBuilder
 				{
 					continue;
 				}
-				$entries[preg_replace('#^[^/]+/#', '', (string) $s['name'])] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+				$entries[$this->stripWrapper((string) $s['name'], $name)] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
 			}
 			$zip->close();
 		}
@@ -687,7 +687,7 @@ class BundleBuilder
 			}
 			foreach ($this->galleryFiles($versionId, $base, $name) as $abs => $entry)
 			{
-				$expected[preg_replace('#^[^/]+/#', '', $entry)] = $abs;
+				$expected[$this->stripWrapper($entry, $name)] = $abs;
 				$sigMap[$abs] = $entry;
 			}
 		}
@@ -1233,6 +1233,27 @@ class BundleBuilder
 		}
 
 		return 'Publication_' . (int) $version['publication_id'];
+	}
+
+	/**
+	 * Strip the served bundle's "<DOI>/" wrapper directory from an entry name,
+	 * but ONLY when present. Modern bundles wrap every entry in <DOI>/; a handful
+	 * of legacy ones (old packager era) have no wrapper and store entries at the
+	 * archive root (data/..., media/...). Blindly removing the first path segment
+	 * would strip a real directory from those and make the audit mis-compare
+	 * (a false "incomplete"), so match the actual wrapper instead.
+	 *
+	 * @param   string  $entry
+	 * @param   string  $name   the version's bundle (DOI) name
+	 * @return  string
+	 */
+	protected function stripWrapper($entry, $name)
+	{
+		$prefix = $name . '/';
+
+		return (strncmp($entry, $prefix, strlen($prefix)) === 0)
+			? substr($entry, strlen($prefix))
+			: $entry;
 	}
 
 	/**
