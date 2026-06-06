@@ -55,6 +55,42 @@ class BundleBuilder
 	}
 
 	/**
+	 * Build a version's served <DOI>.zip and, on success, refresh the
+	 * large-bundle FTP download hard link so it points at the freshly built
+	 * bundle. The build itself is buildInternal(); this wrapper exists so the
+	 * FTP link is maintained no matter which path commits the outer (file,
+	 * Databases, or metadata-only) and for every caller (the queue worker, a
+	 * manual `muse publications:bundle build`, the serve path).
+	 *
+	 * The FTP link is otherwise a publish-time-only concern (curation::createLink()
+	 * links once and only if absent), so without this an off-request rebuild would
+	 * leave the FTP copy pointing at the pre-rebuild bundle — a stale or truncated
+	 * download for exactly the large datasets the FTP path exists to serve. See
+	 * refreshDownloadLink().
+	 *
+	 * @param   integer   $versionId
+	 * @param   array     $opts  force(bool), level(int|null), log(callable|null)
+	 * @return  array     ok, file, size, source_hash, inner, error
+	 */
+	public function build($versionId, $opts = array())
+	{
+		$log = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : function ($m) {};
+
+		$res = $this->buildInternal($versionId, $opts);
+
+		// A successful (re)build created or replaced the served outer; point the
+		// FTP download link at it. Best-effort — a failure here never fails the
+		// build (the bundle still serves over HTTP, and the launcher only routes
+		// to the FTP link for bundles over the size threshold).
+		if (!empty($res['ok']) && !empty($res['file']))
+		{
+			$this->refreshDownloadLink((int) $versionId, $res['file'], $log);
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Build a version's served <DOI>.zip. Multi-file multiZip publications get a
 	 * nested inner bundle (bundle.zip / <title>.zip); single-file and
 	 * non-multiZip publications get their files placed flat in the outer. The
@@ -64,7 +100,7 @@ class BundleBuilder
 	 * @param   array     $opts  force(bool), level(int|null), log(callable|null)
 	 * @return  array     ok, file, size, source_hash, inner, error
 	 */
-	public function build($versionId, $opts = array())
+	protected function buildInternal($versionId, $opts = array())
 	{
 		$versionId = (int) $versionId;
 		$force     = !empty($opts['force']);
@@ -234,6 +270,143 @@ class BundleBuilder
 			'inner' => $innerPath,
 			'error' => null,
 		);
+	}
+
+	/**
+	 * Point the large-bundle FTP download link at a version's served bundle,
+	 * refreshing it when stale (a rebuild gave the served file a new inode) or
+	 * creating it when missing — the upkeep curation::createLink() never does (it
+	 * links once, and only if the link is absent).
+	 *
+	 * The link is a POSIX hard link in the configured sftppath, named exactly as
+	 * curation::getBundleName(true) so it matches what publish created and what
+	 * file.php::drawLauncher builds the ftp:// URL from. A hard link adds no disk
+	 * and shares the bundle's ownership/mode (it is the same inode). The swap is
+	 * atomic — link to a temp name, verify it shares the served inode, rename over
+	 * any existing link — so the FTP path is never momentarily absent. Best-effort
+	 * throughout: no sftppath, a cross-device link, or a permission error is
+	 * logged and returns false, never disturbing the just-built bundle.
+	 *
+	 * @param   integer   $versionId
+	 * @param   string    $servedPath  abs path to the served outer <DOI>.zip
+	 * @param   callable  $log
+	 * @return  boolean   true if the link now points at $servedPath
+	 */
+	protected function refreshDownloadLink($versionId, $servedPath, $log = null)
+	{
+		$log = is_callable($log) ? $log : function ($m) {};
+
+		if (!is_file($servedPath))
+		{
+			return false;
+		}
+
+		$sftp = trim((string) \Component::params('com_publications')->get('sftppath', ''));
+		if ($sftp === '')
+		{
+			// FTP delivery not configured for this hub — nothing to maintain.
+			return false;
+		}
+
+		$dir = PATH_APP . DS . trim($sftp, '/');
+		if (!is_dir($dir))
+		{
+			$log('FTP link skipped: ' . $dir . ' is not a directory');
+			return false;
+		}
+
+		$version = $this->versionRow((int) $versionId);
+		if (!$version)
+		{
+			return false;
+		}
+
+		return $this->linkInto($servedPath, $dir . DS . $this->downloadLinkName($version), $log);
+	}
+
+	/**
+	 * Atomically (re)point a hard link at a target file. A no-op when $link
+	 * already shares $target's inode (so it is safe to call on every build);
+	 * otherwise it hard-links $target to a temp name in $link's directory,
+	 * verifies the temp shares $target's inode, and renames it over any existing
+	 * $link — so $link is never momentarily absent and a half-made link never
+	 * replaces a good one. Never follows or removes $target. Returns false
+	 * (leaving any existing $link untouched) on any error.
+	 *
+	 * @param   string    $target  abs path of the file to point at (must exist)
+	 * @param   string    $link    abs path of the hard link to create/refresh
+	 * @param   callable  $log
+	 * @return  boolean
+	 */
+	protected function linkInto($target, $link, $log = null)
+	{
+		$log = is_callable($log) ? $log : function ($m) {};
+
+		if (!is_file($target))
+		{
+			return false;
+		}
+
+		// A just-renamed target: drop any cached stat so inodes compare true.
+		clearstatcache();
+
+		// Already the same hard link? Nothing to do.
+		if (is_file($link) && @fileinode($link) !== false
+			&& @fileinode($link) === @fileinode($target))
+		{
+			return true;
+		}
+
+		$tmp = $link . '.relink.' . getmypid();
+		@unlink($tmp);
+
+		if (!@link($target, $tmp))
+		{
+			$log('FTP link failed: could not hard-link ' . basename($target)
+				. ' into ' . dirname($link) . ' (cross-device or permission?)');
+			return false;
+		}
+
+		if (@fileinode($tmp) !== @fileinode($target))
+		{
+			@unlink($tmp);
+			$log('FTP link failed: temp link did not share the target inode');
+			return false;
+		}
+
+		if (!@rename($tmp, $link))
+		{
+			@unlink($tmp);
+			$log('FTP link failed: could not place ' . basename($link));
+			return false;
+		}
+
+		$log('FTP link refreshed: ' . basename($link) . ' -> ' . basename($target));
+
+		return true;
+	}
+
+	/**
+	 * The FTP link's file name for a version, identical to
+	 * curation::getBundleName(true): the DOI (dots/slashes -> _) when the version
+	 * has one, else Publication_<pubId>_<versionNumber> (the version number keeps
+	 * a DOI-less publication's per-version links distinct). bundleName() gives the
+	 * served outer's name; this is the link name, which differs only for the
+	 * DOI-less case (the served name omits the version number).
+	 *
+	 * @param   array   $version
+	 * @return  string
+	 */
+	protected function downloadLinkName($version)
+	{
+		$doi = isset($version['doi']) ? trim((string) $version['doi']) : '';
+		if ($doi !== '')
+		{
+			return str_replace(array('.', '/'), '_', $doi) . '.zip';
+		}
+
+		return 'Publication_' . (int) $version['publication_id']
+			. '_' . (int) $version['version_number'] . '.zip';
 	}
 
 	/**

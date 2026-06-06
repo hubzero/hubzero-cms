@@ -112,6 +112,33 @@ class BundleBuilderTest extends Basic
 	}
 
 	/**
+	 * Call the protected linkInto().
+	 *
+	 * @param   string  $target
+	 * @param   string  $link
+	 * @return  boolean
+	 */
+	protected function linkInto($target, $link)
+	{
+		$m = new \ReflectionMethod($this->builder, 'linkInto');
+		$m->setAccessible(true);
+		return $m->invoke($this->builder, $target, $link, null);
+	}
+
+	/**
+	 * Call the protected downloadLinkName().
+	 *
+	 * @param   array  $version
+	 * @return  string
+	 */
+	protected function downloadLinkName($version)
+	{
+		$m = new \ReflectionMethod($this->builder, 'downloadLinkName');
+		$m->setAccessible(true);
+		return $m->invoke($this->builder, $version);
+	}
+
+	/**
 	 * Test-local recursive remove (does not follow symlinks).
 	 *
 	 * @param   string  $dir
@@ -309,5 +336,120 @@ class BundleBuilderTest extends Basic
 		$this->assertTrue($this->hasFreeSpace($this->root, 0), 'zero need fits');
 		$this->assertFalse($this->hasFreeSpace($this->root, PHP_INT_MAX), 'impossible need rejected');
 		$this->assertTrue($this->hasFreeSpace($this->root . DIRECTORY_SEPARATOR . 'no-such-dir', 1 << 20), 'unknowable free space does not block');
+	}
+
+	/**
+	 * downloadLinkName matches curation::getBundleName(true): the DOI with dots
+	 * and slashes turned to underscores when present, else
+	 * Publication_<pubId>_<versionNumber> for a DOI-less version (the served name
+	 * omits the version number; the link name keeps it so per-version links stay
+	 * distinct).
+	 *
+	 * @return  void
+	 */
+	public function testDownloadLinkNameMatchesGetBundleNameTrue()
+	{
+		$this->assertSame(
+			'10_4231_KPMA-CN98.zip',
+			$this->downloadLinkName(array('doi' => '10.4231/KPMA-CN98', 'publication_id' => 5081, 'version_number' => 1))
+		);
+
+		$this->assertSame(
+			'Publication_5081_3.zip',
+			$this->downloadLinkName(array('doi' => '', 'publication_id' => 5081, 'version_number' => 3))
+		);
+
+		// A missing doi key behaves like an empty one.
+		$this->assertSame(
+			'Publication_42_1.zip',
+			$this->downloadLinkName(array('publication_id' => 42, 'version_number' => 1))
+		);
+	}
+
+	/**
+	 * linkInto creates a hard link sharing the target's inode when none exists
+	 * (the create-on-rebuild case for a bundle that had no FTP link yet).
+	 *
+	 * @return  void
+	 */
+	public function testLinkIntoCreatesHardLinkWhenMissing()
+	{
+		$ds     = DIRECTORY_SEPARATOR;
+		$target = $this->root . $ds . 'served.zip';
+		$link   = $this->root . $ds . 'ftp' . $ds . 'DOI.zip';
+		mkdir(dirname($link), 0775, true);
+		file_put_contents($target, 'BUNDLE');
+
+		$this->assertTrue($this->linkInto($target, $link));
+		$this->assertFileExists($link);
+		$this->assertSame(fileinode($target), fileinode($link), 'link shares the target inode');
+		$this->assertSame('BUNDLE', file_get_contents($link));
+	}
+
+	/**
+	 * linkInto repoints a STALE link (one still pointing at a previous, different
+	 * bundle) at the current target — the core fix — and leaves the old file on
+	 * disk untouched (never follows or removes the target it replaces).
+	 *
+	 * @return  void
+	 */
+	public function testLinkIntoRefreshesStaleLink()
+	{
+		$ds   = DIRECTORY_SEPARATOR;
+		$old  = $this->root . $ds . 'old.zip';
+		$new  = $this->root . $ds . 'new.zip';
+		$link = $this->root . $ds . 'DOI.zip';
+		file_put_contents($old, 'OLD-SMALL');
+		file_put_contents($new, 'NEW-COMPLETE-BUNDLE');
+
+		// Stale: the link currently points at the old bundle.
+		link($old, $link);
+		$this->assertSame(fileinode($old), fileinode($link));
+
+		$this->assertTrue($this->linkInto($new, $link));
+		$this->assertSame(fileinode($new), fileinode($link), 'link now points at the new bundle');
+		$this->assertSame('NEW-COMPLETE-BUNDLE', file_get_contents($link));
+
+		// The old bundle survives, unchanged.
+		$this->assertFileExists($old);
+		$this->assertSame('OLD-SMALL', file_get_contents($old));
+
+		// No temp relink artifact left behind.
+		$this->assertCount(0, glob($this->root . $ds . '*.relink.*'));
+	}
+
+	/**
+	 * linkInto is a no-op when the link already shares the target inode, so it is
+	 * safe to call on every build, and it leaves no temp artifact.
+	 *
+	 * @return  void
+	 */
+	public function testLinkIntoNoopWhenAlreadyLinked()
+	{
+		$ds     = DIRECTORY_SEPARATOR;
+		$target = $this->root . $ds . 'served.zip';
+		$link   = $this->root . $ds . 'DOI.zip';
+		file_put_contents($target, 'BUNDLE');
+		link($target, $link);
+		$ino = fileinode($target);
+
+		$this->assertTrue($this->linkInto($target, $link));
+		$this->assertSame($ino, fileinode($link), 'still the same inode');
+		$this->assertCount(0, glob($this->root . $ds . '*.relink.*'), 'no temp created for a no-op');
+	}
+
+	/**
+	 * A missing target is rejected and creates nothing — the FTP link is only
+	 * ever pointed at a bundle that actually exists.
+	 *
+	 * @return  void
+	 */
+	public function testLinkIntoMissingTargetFails()
+	{
+		$ds   = DIRECTORY_SEPARATOR;
+		$link = $this->root . $ds . 'DOI.zip';
+
+		$this->assertFalse($this->linkInto($this->root . $ds . 'nope.zip', $link));
+		$this->assertFileDoesNotExist($link);
 	}
 }

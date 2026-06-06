@@ -2129,31 +2129,74 @@ class Curation extends Obj
 	}
 
 	/**
-	 * Generate link for publication package
+	 * Generate (or refresh) the FTP download hard link for this publication's
+	 * served bundle. The link is a POSIX hard link in the configured sftppath,
+	 * named getBundleName(true); file.php::drawLauncher builds the ftp:// download
+	 * URL from that name for bundles over the size threshold.
 	 *
-	 * @return boolean
+	 * Idempotent and refresh-capable: a no-op when the link already shares the
+	 * served bundle's inode, otherwise it (re)points the link atomically — link
+	 * to a temp name, verify it shares the served inode, then rename over any
+	 * existing (possibly stale) link. This is what keeps the link valid after a
+	 * rebuild: a fresh package() build gives the served bundle a NEW inode
+	 * (ZipArchive rewrites the file on close()), which orphans a link created the
+	 * old "only if absent" way. A hard link adds no disk and shares the bundle's
+	 * ownership/mode. Best-effort — returns false on any problem (no sftp
+	 * configured, cross-device, permissions) without disturbing an existing link.
+	 *
+	 * @return  boolean
 	 */
 	public function createLink()
 	{
-		$tarname = $this->getBundleName();
-		$tarpath = $this->_pub->path('relative') . DS . $tarname;
-		$link = $this->_linkPath();
-		if ($link !== false)
-		{
-			chdir(dirname($link));
-		}
-
-		if (empty($this->_pub) || $link == false || !is_file($tarpath))
+		if (empty($this->_pub))
 		{
 			return false;
 		}
-		if (!is_file($link))
+
+		$link = $this->_linkPath();
+		if ($link === false)
 		{
-			if (!link($tarpath, $link))
-			{
-				return false;
-			}
+			return false;
 		}
+
+		$tarpath = $this->_pub->path('base', true) . DS . $this->getBundleName();
+		if (!is_file($tarpath))
+		{
+			return false;
+		}
+
+		// A just-rebuilt bundle: drop any cached stat so inodes compare true.
+		clearstatcache();
+
+		// Already the right hard link (same inode)? Nothing to do.
+		if (is_file($link) && @fileinode($link) !== false
+			&& @fileinode($link) === @fileinode($tarpath))
+		{
+			return true;
+		}
+
+		// Atomic refresh-or-create: link to a temp name, confirm it shares the
+		// served inode, then rename over any existing (possibly stale) link.
+		$tmp = $link . '.relink.' . getmypid();
+		@unlink($tmp);
+
+		if (!@link($tarpath, $tmp))
+		{
+			return false;
+		}
+
+		if (@fileinode($tmp) !== @fileinode($tarpath))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
+		if (!@rename($tmp, $link))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
 		return true;
 	}
 
@@ -2348,6 +2391,20 @@ class Curation extends Obj
 		{
 			return false;
 		}
+
+		// A fresh build gives the served bundle a NEW inode (ZipArchive rewrites
+		// the file on close()), orphaning any FTP download hard link created at
+		// publish; refresh it so the ftp:// download keeps serving the current
+		// bundle. Best-effort — never blocks returning the successful build.
+		// Gate to published, non-embargoed versions (the same condition the
+		// publish-time createLink callers use): package() also runs on-demand for
+		// unpublished/embargoed versions, and their bundle must never be linked
+		// into the anonymously-served FTP directory.
+		if ($this->_pub->isPublished() && !$this->_pub->isEmbargoed())
+		{
+			$this->createLink();
+		}
+
 		return true;
 	}
 
