@@ -135,6 +135,14 @@ class BundleBuilder
 			);
 		}
 
+		// The served outer also carries the publish-time metadata: hubREADME.txt/
+		// README.txt, LICENSE.txt (custom-license pubs) and the gallery. Normally
+		// these already live in the outer and are preserved untouched; this set is
+		// what lets a *missing or incomplete* outer be reassembled (from the copies
+		// publish left in the version base dir, or — if even those are gone —
+		// regenerated to match the original packager). See outerMetadata().
+		$metadata = $this->outerMetadata($versionId, $version, $base, $name);
+
 		// A multiZip publication with >1 primary file is served as a nested
 		// bundle.zip; a single primary file (or a non-multiZip publication) is
 		// served with its files flat in the outer. Match whichever layout the
@@ -142,7 +150,7 @@ class BundleBuilder
 		if ($this->servedLayout($outerPath, $primary, $allFiles) === 'flat')
 		{
 			$log(sprintf('Rebuilding %s with %d file(s), flat...', basename($outerPath), count($allFiles)));
-			$res = $this->buildOuterFlat($allFiles, $outerPath, $name, $this->hasNonFileAttachments($versionId));
+			$res = $this->buildOuterFlat($allFiles, $outerPath, $name, $this->hasNonFileAttachments($versionId), $metadata);
 			if (!$res['ok'])
 			{
 				return $fail($res['error']);
@@ -171,7 +179,11 @@ class BundleBuilder
 		$log(sprintf('%s: %d bytes', $innerName, filesize($innerPath)));
 
 		// --- served outer <DOI>.zip --------------------------------------
-		$res = $this->buildOuter($innerPath, $outerPath, $name);
+		// Supporting (role >= 2) files sit flat in the outer alongside the nested
+		// inner. They are already there in an existing outer (and preserved); the
+		// map lets a reassembled outer carry them too.
+		$supporting = array_diff_key($allFiles, $primary);
+		$res = $this->buildOuter($innerPath, $outerPath, $name, $supporting, $metadata);
 		if (!$res['ok'])
 		{
 			return $fail($res['error']);
@@ -640,7 +652,8 @@ class BundleBuilder
 	{
 		$db = \App::get('db');
 		$db->setQuery(
-			"SELECT `publication_id`, `secret`, `version_number`, `doi`
+			"SELECT `publication_id`, `secret`, `version_number`, `doi`,
+			        `title`, `version_label`, `license_type`, `license_text`
 			 FROM `#__publication_versions` WHERE `id` = " . (int) $versionId . " LIMIT 1"
 		);
 
@@ -1036,39 +1049,49 @@ class BundleBuilder
 
 	/**
 	 * Assemble the served <name>.zip by adding the (already built) inner bundle
-	 * as a stored <name>/<inner> entry to the publish-time gallery+README outer
-	 * (replacing any prior entry of that name, and dropping a stray bundle.zip
-	 * from an earlier hardcoded-name build). Atomic via a temp copy + rename.
+	 * as a stored <name>/<inner> entry to the gallery+README outer (replacing any
+	 * prior entry of that name, and dropping a stray bundle.zip from an earlier
+	 * hardcoded-name build). Atomic via a temp copy + rename.
+	 *
+	 * An existing outer is updated in place and its metadata preserved untouched.
+	 * If the outer is *missing* (a build that timed out before package() could
+	 * write it — large datasets hit the same guard async exists to bypass) it is
+	 * assembled from scratch: the inner, the supporting (role >= 2) files, and the
+	 * publish-time metadata (README/LICENSE/gallery). $metadata/$supporting are
+	 * also used to backfill any of those that a present-but-incomplete outer lost.
 	 *
 	 * @param   string  $innerPath
 	 * @param   string  $outerPath
 	 * @param   string  $name
+	 * @param   array   $supporting  abs => name-relative-to-content (role >= 2)
+	 * @param   array   $metadata    abs => array(kind, entry)  (readme/license/gallery)
 	 * @return  array   ok, error
 	 */
-	protected function buildOuter($innerPath, $outerPath, $name)
+	protected function buildOuter($innerPath, $outerPath, $name, $supporting = array(), $metadata = array())
 	{
 		$entry = $name . '/' . basename($innerPath);
 		$tmp   = $outerPath . '.build.' . getmypid();
 		@unlink($tmp);
 
-		if (!is_file($outerPath))
-		{
-			// The gallery+README outer is produced at publish time; without it
-			// we'd have to re-synthesise package()'s structure. Require it.
-			return array('ok' => false, 'error' => 'No existing ' . basename($outerPath)
-				. ' to update; run publish/package first to produce the gallery+README bundle.');
-		}
-
-		if (!copy($outerPath, $tmp))
-		{
-			return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
-		}
+		$exists = is_file($outerPath);
 
 		$zip = new ZipArchive();
-		if ($zip->open($tmp) !== true)
+		if ($exists)
+		{
+			if (!copy($outerPath, $tmp))
+			{
+				return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
+			}
+			if ($zip->open($tmp) !== true)
+			{
+				@unlink($tmp);
+				return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+			}
+		}
+		else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true)
 		{
 			@unlink($tmp);
-			return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+			return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
 		}
 
 		if ($zip->locateName($entry) !== false)
@@ -1091,6 +1114,12 @@ class BundleBuilder
 			return array('ok' => false, 'error' => 'Could not add ' . $entry . ' to the bundle.');
 		}
 		$zip->setCompressionName($entry, ZipArchive::CM_STORE);
+
+		// Backfill the supporting files and metadata the outer should carry. On a
+		// complete existing outer every one is already present, so nothing is
+		// added (behaviour unchanged); a fresh or incomplete outer gets them.
+		$this->ensureFiles($zip, $name, $supporting);
+		$this->ensureMetadata($zip, $name, $metadata);
 
 		if (!$zip->close())
 		{
@@ -1117,31 +1146,42 @@ class BundleBuilder
 	 * package() assembles for a non-multiZip / single-file publication).
 	 * Already-compressed members are stored. Atomic via a temp copy + rename.
 	 *
+	 * An existing outer is updated in place (metadata preserved); a *missing* one
+	 * is assembled from scratch — the flat files plus the publish-time metadata
+	 * (README/LICENSE/gallery from $metadata), so a build that timed out before
+	 * package() wrote the outer can still be produced off-request.
+	 *
 	 * @param   array   $files   abs => name-relative-to-content (all roles)
 	 * @param   string  $outerPath
 	 * @param   string  $name
+	 * @param   boolean $preserveExtra
+	 * @param   array   $metadata  abs => array(kind, entry)  (readme/license/gallery)
 	 * @return  array   ok, error
 	 */
-	protected function buildOuterFlat($files, $outerPath, $name, $preserveExtra = false)
+	protected function buildOuterFlat($files, $outerPath, $name, $preserveExtra = false, $metadata = array())
 	{
 		$tmp = $outerPath . '.build.' . getmypid();
 		@unlink($tmp);
 
-		if (!is_file($outerPath))
-		{
-			return array('ok' => false, 'error' => 'No existing ' . basename($outerPath)
-				. ' to update; run publish/package first to produce the gallery+README outer.');
-		}
-		if (!copy($outerPath, $tmp))
-		{
-			return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
-		}
+		$exists = is_file($outerPath);
 
 		$zip = new ZipArchive();
-		if ($zip->open($tmp) !== true)
+		if ($exists)
+		{
+			if (!copy($outerPath, $tmp))
+			{
+				return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
+			}
+			if ($zip->open($tmp) !== true)
+			{
+				@unlink($tmp);
+				return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+			}
+		}
+		else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true)
 		{
 			@unlink($tmp);
-			return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+			return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
 		}
 
 		// Record where each existing data entry sits (its path relative to the
@@ -1209,6 +1249,11 @@ class BundleBuilder
 			}
 		}
 
+		// Backfill README/LICENSE/gallery — a no-op on a complete existing outer
+		// (they are already present and kept above), the metadata source for a
+		// fresh or incomplete one.
+		$this->ensureMetadata($zip, $name, $metadata);
+
 		if (!$zip->close())
 		{
 			@unlink($tmp);
@@ -1256,6 +1301,426 @@ class BundleBuilder
 		}
 
 		return $name . '/' . $rel;
+	}
+
+	/**
+	 * Add each file to the open archive at <name>/<rel> if it is not already
+	 * there. Backfills the supporting (role >= 2) files a reassembled nested
+	 * outer must carry; a no-op when the outer already holds them.
+	 *
+	 * @param   ZipArchive  $zip
+	 * @param   string      $name   the outer's "<DOI>" top dir
+	 * @param   array       $files  abs => name-relative-to-content
+	 * @return  void
+	 */
+	protected function ensureFiles($zip, $name, $files)
+	{
+		foreach ((array) $files as $abs => $rel)
+		{
+			$entry = $name . '/' . $rel;
+			if ($zip->locateName($entry) !== false || !is_file($abs))
+			{
+				continue;
+			}
+			if ($zip->addFile($abs, $entry))
+			{
+				$ext = strtolower(pathinfo($rel, PATHINFO_EXTENSION));
+				if (in_array($ext, self::compressedExtList(), true))
+				{
+					$zip->setCompressionName($entry, ZipArchive::CM_STORE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Ensure the archive carries the publish-time metadata (README/LICENSE/
+	 * gallery). Each item is added only if its KIND is absent — a readme of
+	 * either name (README.txt / hubREADME.txt), a LICENSE.txt, or any gallery
+	 * image — so a complete outer is left exactly as-is while a fresh or
+	 * incomplete one is filled in without ever duplicating what's there.
+	 *
+	 * @param   ZipArchive  $zip
+	 * @param   string      $name      the outer's "<DOI>" top dir
+	 * @param   array       $metadata  abs => array(kind, entry)
+	 * @return  void
+	 */
+	protected function ensureMetadata($zip, $name, $metadata)
+	{
+		if (empty($metadata))
+		{
+			return;
+		}
+
+		$hasReadme  = ($zip->locateName($name . '/README.txt') !== false)
+				   || ($zip->locateName($name . '/hubREADME.txt') !== false);
+		$hasLicense = ($zip->locateName($name . '/LICENSE.txt') !== false);
+
+		$hasGallery = false;
+		$gpfx       = $name . '/gallery/';
+		for ($i = 0; $i < $zip->numFiles; $i++)
+		{
+			if (strpos((string) $zip->getNameIndex($i), $gpfx) === 0)
+			{
+				$hasGallery = true;
+				break;
+			}
+		}
+
+		foreach ($metadata as $abs => $info)
+		{
+			list($kind, $entry) = $info;
+
+			if (($kind === 'readme' && $hasReadme)
+				|| ($kind === 'license' && $hasLicense)
+				|| ($kind === 'gallery' && $hasGallery))
+			{
+				continue;
+			}
+			if ($zip->locateName($entry) !== false || !is_file($abs))
+			{
+				continue;
+			}
+			if ($zip->addFile($abs, $entry))
+			{
+				$ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
+				if (in_array($ext, self::compressedExtList(), true))
+				{
+					$zip->setCompressionName($entry, ZipArchive::CM_STORE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * The metadata the served outer carries besides its data — the README
+	 * (hubREADME.txt or README.txt), LICENSE.txt (custom-license pubs only) and
+	 * the gallery — as abs => array(kind, entry) for ensureMetadata().
+	 *
+	 * Normally these already live in the outer and are preserved; this set is
+	 * what lets a missing or incomplete outer be reassembled. README/LICENSE are
+	 * taken from the copies publish left in the version base dir. If no README
+	 * survives there at all (a version that never packaged), it is regenerated to
+	 * match the original packager and written back to the base dir; LICENSE.txt
+	 * is likewise regenerated only when the version carries custom license text,
+	 * exactly the condition under which package() writes it. The gallery lives at
+	 * <base>/gallery and is placed at <name>/gallery/<file>, as package() does.
+	 *
+	 * @param   integer  $versionId
+	 * @param   array    $version
+	 * @param   string   $base   the version base dir
+	 * @param   string   $name   the outer's "<DOI>" top dir
+	 * @return  array
+	 */
+	protected function outerMetadata($versionId, $version, $base, $name)
+	{
+		$meta = array();
+
+		// README — prefer the on-disk copy under its real name; regenerate to
+		// hubREADME.txt only when neither name is present.
+		$readme = null;
+		foreach (array('hubREADME.txt', 'README.txt') as $rn)
+		{
+			if (is_file($base . DS . $rn))
+			{
+				$readme = $rn;
+				break;
+			}
+		}
+		if ($readme === null)
+		{
+			$text = $this->generateReadme($versionId, $version);
+			if ($text !== '' && @file_put_contents($base . DS . 'hubREADME.txt', $text) !== false)
+			{
+				@chgrp($base . DS . 'hubREADME.txt', 'access-content');
+				@chmod($base . DS . 'hubREADME.txt', 0664);
+				$readme = 'hubREADME.txt';
+			}
+		}
+		if ($readme !== null)
+		{
+			$meta[$base . DS . $readme] = array('readme', $name . '/' . $readme);
+		}
+
+		// LICENSE.txt — on disk if present; else regenerate only when the version
+		// carries custom license text (the only case package() writes one).
+		if (is_file($base . DS . 'LICENSE.txt'))
+		{
+			$meta[$base . DS . 'LICENSE.txt'] = array('license', $name . '/LICENSE.txt');
+		}
+		else
+		{
+			$licText = isset($version['license_text']) ? trim((string) $version['license_text']) : '';
+			if ($licText !== '' && @file_put_contents($base . DS . 'LICENSE.txt', $licText) !== false)
+			{
+				@chgrp($base . DS . 'LICENSE.txt', 'access-content');
+				@chmod($base . DS . 'LICENSE.txt', 0664);
+				$meta[$base . DS . 'LICENSE.txt'] = array('license', $name . '/LICENSE.txt');
+			}
+		}
+
+		// Gallery images (publish stores them at <base>/gallery).
+		foreach ((array) glob($base . DS . 'gallery' . DS . '*') as $img)
+		{
+			if (is_file($img))
+			{
+				$meta[$img] = array('gallery', $name . '/gallery/' . basename($img));
+			}
+		}
+
+		return $meta;
+	}
+
+	/**
+	 * Regenerate a version's hubREADME.txt text, mirroring curation::package().
+	 * Last resort only — used when no README survives in the base dir. The header
+	 * (title, version, authors, DOI, license title + text) is reproduced exactly;
+	 * the materials listing is reconstructed from the version's file attachments
+	 * grouped by their element's role label.
+	 *
+	 * @param   integer  $versionId
+	 * @param   array    $version
+	 * @return  string
+	 */
+	protected function generateReadme($versionId, $version)
+	{
+		$db = \App::get('db');
+
+		$title   = isset($version['title']) ? (string) $version['title'] : '';
+		$vlabel  = isset($version['version_label']) ? (string) $version['version_label'] : '';
+		$doi     = isset($version['doi']) ? trim((string) $version['doi']) : '';
+		$licText = isset($version['license_text']) ? (string) $version['license_text'] : '';
+		$lt      = isset($version['license_type']) ? (int) $version['license_type'] : 0;
+
+		$readme  = $title . "\n ";
+		$readme .= 'Version ' . $vlabel . "\n ";
+
+		$authors = $this->versionAuthors($versionId);
+		if ($authors)
+		{
+			$readme .= 'Authors: ' . "\n ";
+			foreach ($authors as $a)
+			{
+				$readme .= $a['name'];
+				if ($a['org'] !== '')
+				{
+					$readme .= ', ' . $a['org'];
+				}
+				$readme .= "\n ";
+			}
+		}
+
+		if ($doi !== '')
+		{
+			$readme .= 'doi:' . $doi . "\n ";
+		}
+
+		// License title + text (custom text wins, else the license's own text) —
+		// and note whether a LICENSE.txt will accompany it (custom text only).
+		$hasLicFile = false;
+		if ($lt)
+		{
+			$db->setQuery("SELECT `title`, `text` FROM `#__publication_licenses` WHERE `id` = " . $lt . " LIMIT 1");
+			$L = $db->loadAssoc();
+			if ($L && isset($L['title']) && $L['title'] !== '')
+			{
+				$readme .= "\n " . "\n ";
+				$readme .= 'License: ' . "\n ";
+				$readme .= $L['title'] . "\n ";
+
+				if (trim($licText) !== '')
+				{
+					$readme .= $licText . "\n ";
+					$hasLicFile = true;
+				}
+				else if (trim((string) $L['text']) !== '')
+				{
+					$readme .= $L['text'] . "\n ";
+				}
+			}
+		}
+
+		$readme .= "\n ";
+		$readme .= '#####################################' . "\n ";
+		$readme .= 'Included Publication Materials:' . "\n ";
+		$readme .= '#####################################' . "\n ";
+
+		$readme .= $this->materialsListing($versionId);
+
+		if ($hasLicFile)
+		{
+			$readme .= "\n" . 'License File: ' . "\n";
+			$readme .= '>>> LICENSE.txt' . "\n";
+		}
+
+		$readme .= "\n" . 'Archival Info:' . "\n";
+		$readme .= '>>> hubREADME.txt' . "\n";
+		$readme .= "\n ";
+		$readme .= "\n ";
+		$readme .= '--------------------------------------------' . "\n ";
+
+		try
+		{
+			$when = \Date::toSql();
+		}
+		catch (\Exception $e)
+		{
+			$when = gmdate('Y-m-d H:i:s');
+		}
+		$readme .= 'Archival package produced ' . $when;
+
+		return $readme;
+	}
+
+	/**
+	 * The "Included Publication Materials" body for a regenerated README: the
+	 * version's file attachments grouped by their element's role label, listed as
+	 * ">>> <path>" — a nested multi-file primary is shown as ">>> bundle.zip", a
+	 * gallery image under gallery/, mirroring how package()/bundleItems lists them.
+	 *
+	 * @param   integer  $versionId
+	 * @return  string
+	 */
+	protected function materialsListing($versionId)
+	{
+		$elemByRole = $this->fileElementsByRole($versionId);
+
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT `path`, `role` FROM `#__publication_attachments`
+			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` = 'file'
+			 ORDER BY `role`, `ordering`, `id`"
+		);
+
+		$byRole = array();
+		foreach ((array) $db->loadObjectList() as $a)
+		{
+			$byRole[(int) $a->role][] = (string) $a->path;
+		}
+
+		$out = '';
+		foreach ($byRole as $role => $paths)
+		{
+			$label    = isset($elemByRole[$role]['label']) && $elemByRole[$role]['label'] !== ''
+					  ? $elemByRole[$role]['label'] : ('Role ' . $role);
+			$multiZip = isset($elemByRole[$role]['multiZip']) ? (int) $elemByRole[$role]['multiZip'] : 1;
+
+			$out .= "\n" . $label . ': ' . "\n";
+
+			if ($role == 1 && $multiZip == 1 && count($paths) > 1)
+			{
+				$out .= '>>> bundle.zip' . "\n";
+				continue;
+			}
+			foreach ($paths as $p)
+			{
+				$rel = str_replace('./', '', ltrim(str_replace('\\', '/', $p), '/'));
+				$out .= '>>> ' . ($role == 3 ? 'gallery/' . basename($rel) : $rel) . "\n";
+			}
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Map role => array(label, multiZip) for the master type's file/attachment
+	 * elements (first element of each role wins). Used to label the regenerated
+	 * README's materials listing.
+	 *
+	 * @param   integer  $versionId
+	 * @return  array
+	 */
+	protected function fileElementsByRole($versionId)
+	{
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT mt.`curation`
+			 FROM `#__publication_versions` v
+			 JOIN `#__publications` p ON p.`id` = v.`publication_id`
+			 JOIN `#__publication_master_types` mt ON mt.`id` = p.`master_type`
+			 WHERE v.`id` = " . (int) $versionId . " LIMIT 1"
+		);
+		$man = json_decode((string) $db->loadResult(), true);
+
+		$byRole = array();
+		if (is_array($man) && !empty($man['blocks']) && is_array($man['blocks']))
+		{
+			foreach ($man['blocks'] as $blk)
+			{
+				if (empty($blk['elements']) || !is_array($blk['elements']))
+				{
+					continue;
+				}
+				foreach ($blk['elements'] as $el)
+				{
+					$params = isset($el['params']) ? $el['params'] : null;
+					if (is_string($params))
+					{
+						$params = json_decode($params, true);
+					}
+					if (!is_array($params))
+					{
+						continue;
+					}
+					$type = isset($params['type']) ? $params['type'] : (isset($el['type']) ? $el['type'] : '');
+					if ($type !== 'file' && $type !== 'attachment')
+					{
+						continue;
+					}
+					$role = isset($params['role']) ? (int) $params['role'] : 0;
+					if (isset($byRole[$role]))
+					{
+						continue;
+					}
+					$tp = isset($params['typeParams']) ? $params['typeParams'] : array();
+					if (is_string($tp))
+					{
+						$tp = json_decode($tp, true);
+					}
+					$byRole[$role] = array(
+						'label'    => isset($el['label']) ? (string) $el['label'] : '',
+						'multiZip' => (is_array($tp) && isset($tp['multiZip'])) ? (int) $tp['multiZip'] : 1,
+					);
+				}
+			}
+		}
+
+		return $byRole;
+	}
+
+	/**
+	 * A version's authors as array(name, org), resolving each to the stored
+	 * name/organization or, failing that, the linked profile's (the
+	 * p_name/p_organization the publication author loader joins from
+	 * #__xprofiles). Submitters and inactive authors are excluded, ordered as
+	 * package() lists them.
+	 *
+	 * @param   integer  $versionId
+	 * @return  array
+	 */
+	protected function versionAuthors($versionId)
+	{
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT A.`name`, A.`organization`, x.`name` AS p_name, x.`organization` AS p_organization
+			 FROM `#__publication_authors` A
+			 JOIN `#__project_owners` PO ON PO.`id` = A.`project_owner_id`
+			 LEFT JOIN `#__xprofiles` x ON x.`uidNumber` = PO.`userid`
+			 WHERE A.`publication_version_id` = " . (int) $versionId . "
+			   AND A.`status` = 1
+			   AND (A.`role` != 'submitter' OR A.`role` IS NULL)
+			 ORDER BY A.`ordering` ASC"
+		);
+
+		$out = array();
+		foreach ((array) $db->loadObjectList() as $a)
+		{
+			$name = ($a->name !== null && $a->name !== '') ? $a->name : (string) $a->p_name;
+			$org  = ($a->organization !== null && $a->organization !== '') ? $a->organization : (string) $a->p_organization;
+			$out[] = array('name' => (string) $name, 'org' => trim((string) $org));
+		}
+
+		return $out;
 	}
 
 	/**
