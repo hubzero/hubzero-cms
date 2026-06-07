@@ -21,6 +21,14 @@ use Hubzero\Database\Exception\UnsupportedEngineException;
 class Pdo extends Driver
 {
 	/**
+	 * The connection options the driver was constructed with, retained so a
+	 * dropped connection can be re-established (see reconnect()).
+	 *
+	 * @var  array
+	 */
+	protected $options = array();
+
+	/**
 	 * Constructs a new database object based on the given params
 	 *
 	 * @param   array  $options  The database connection params
@@ -34,6 +42,10 @@ class Pdo extends Driver
 		{
 			throw new ConnectionFailedException('PDO does not appear to be installed or enabled.', 500);
 		}
+
+		// Retain the params so the connection can be rebuilt if the server drops
+		// it (e.g. MySQL wait_timeout reached while a long task idles the link).
+		$this->options = $options;
 
 		// Try to connect
 		try
@@ -81,6 +93,39 @@ class Pdo extends Driver
 	public function throwExceptions()
 	{
 		$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+		return $this;
+	}
+
+	/**
+	 * Re-establish the connection from the options it was created with.
+	 *
+	 * Recovers from a server-side disconnect — most often MySQL closing an idle
+	 * connection once wait_timeout is reached while a long CPU/IO task (e.g.
+	 * zipping a multi-GB publication bundle) runs between queries. Callers detect
+	 * the dead link with connected() and call this before their next query.
+	 *
+	 * @return  $this
+	 * @since   2.0.0
+	 **/
+	public function reconnect()
+	{
+		if (empty($this->options['dsn']))
+		{
+			return $this;
+		}
+
+		$this->disconnect();
+
+		$this->setConnection(new \PDO(
+			(string) $this->options['dsn'],
+			(string) (isset($this->options['user']) ? $this->options['user'] : ''),
+			(string) (isset($this->options['password']) ? $this->options['password'] : ''),
+			(array) (isset($this->options['extras']) ? $this->options['extras'] : array())
+		));
+
+		$this->throwExceptions();
+		$this->setUTF();
 
 		return $this;
 	}
