@@ -78,13 +78,33 @@ class BundleBuilder
 
 		$res = $this->buildInternal($versionId, $opts);
 
+		// Building a multi-GB bundle can take minutes with no DB activity — long
+		// enough for MySQL to drop the idle connection (wait_timeout). Re-establish
+		// it before any post-build query (the FTP link refresh below, and the
+		// caller's markReady()/markFailed()) so "server has gone away" can't fatal
+		// the run — which would also leave the queue row wedged in 'building'.
+		$db = \App::get('db');
+		if (is_object($db) && is_callable(array($db, 'connected')) && !$db->connected()
+			&& is_callable(array($db, 'reconnect')))
+		{
+			$log('DB connection dropped during build; reconnecting.');
+			$db->reconnect();
+		}
+
 		// A successful (re)build created or replaced the served outer; point the
 		// FTP download link at it. Best-effort — a failure here never fails the
 		// build (the bundle still serves over HTTP, and the launcher only routes
 		// to the FTP link for bundles over the size threshold).
 		if (!empty($res['ok']) && !empty($res['file']))
 		{
-			$this->refreshDownloadLink((int) $versionId, $res['file'], $log);
+			try
+			{
+				$this->refreshDownloadLink((int) $versionId, $res['file'], $log);
+			}
+			catch (\Throwable $e)
+			{
+				$log('FTP link refresh skipped: ' . $e->getMessage());
+			}
 		}
 
 		return $res;
