@@ -2165,6 +2165,19 @@ class Curation extends Obj
 			return false;
 		}
 
+		// Only bundles actually served over FTP get a link. drawLauncher routes to
+		// the ftp:// download only when the served bundle is at least sftpsize MB
+		// (see attachments/file.php); a smaller bundle serves over HTTP, so a link
+		// would be unused clutter in the anon-FTP dir. Drop any that exists (e.g.
+		// the bundle shrank under the threshold on rebuild) so the FTP directory
+		// mirrors exactly the set of FTP-served bundles.
+		$thresholdMb = (int) Component::params('com_publications')->get('sftpsize', 5000);
+		if ((filesize($tarpath) / 1024 / 1024) < $thresholdMb)
+		{
+			$this->removeLink();
+			return false;
+		}
+
 		// A just-rebuilt bundle: drop any cached stat so inodes compare true.
 		clearstatcache();
 

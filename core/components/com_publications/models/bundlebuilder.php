@@ -321,7 +321,8 @@ class BundleBuilder
 			return false;
 		}
 
-		$sftp = trim((string) \Component::params('com_publications')->get('sftppath', ''));
+		$params = \Component::params('com_publications');
+		$sftp   = trim((string) $params->get('sftppath', ''));
 		if ($sftp === '')
 		{
 			// FTP delivery not configured for this hub — nothing to maintain.
@@ -341,7 +342,27 @@ class BundleBuilder
 			return false;
 		}
 
-		return $this->linkInto($servedPath, $dir . DS . $this->downloadLinkName($version), $log);
+		$link = $dir . DS . $this->downloadLinkName($version);
+
+		// Only bundles actually served over FTP get a link. The launcher routes to
+		// the ftp:// download only when the served bundle is at least sftpsize MB
+		// (the same test as attachments/file.php::drawLauncher); a smaller bundle
+		// serves over HTTP, so a link would be unused clutter in the anon-FTP dir.
+		// If one already exists from a larger prior build (the bundle shrank under
+		// the threshold on rebuild), drop it — so the FTP directory mirrors exactly
+		// the set of FTP-served bundles.
+		$thresholdMb = (int) $params->get('sftpsize', 5000);
+		if ((filesize($servedPath) / 1024 / 1024) < $thresholdMb)
+		{
+			if (is_file($link))
+			{
+				@unlink($link);
+				$log('FTP link removed (bundle under ' . $thresholdMb . ' MB): ' . basename($link));
+			}
+			return false;
+		}
+
+		return $this->linkInto($servedPath, $link, $log);
 	}
 
 	/**
