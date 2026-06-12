@@ -320,145 +320,167 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		<div id="control-box" class="no-controls" data-theme="dark">
 			<div id="progress-bar"></div>
 			<div id="control-buttons">
-				<div id="control-buttons-left" class="cf">
-					<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
-					<div id="media-progress"></div>
-				</div>
-				<div id="control-buttons-right" class="cf">
-					<a id="subtitle" class="control" href="javascript:void(0);">
-						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
-						<div class="control-container subtitle-controls">
-							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
-							<div class="grid">
-								<div class="col span4 label">
-									<label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
-								</div>
-								<div class="col span8 omega input">
-									<select id="subtitle-selector">
-										<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
-									</select>
-								</div>
-							</div>
-							<div class="grid">
-								<div class="col span4 label">
-									<label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
-								</div>
-								<div class="col span8 omega input">
-									<select class="transcript-selector">
-										<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
-									</select>
-								</div>
-							</div>
-
-							<span class="options-toggle"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
-							<div class="subtitle-settings hide">
-								<div class="grid">
-									<div class="col span6 label">
-										<label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
-									</div>
-									<div class="col span6 omega input">
-										<select id="font-selector">
-											<option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-											<option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-											<option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-											<option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-											<option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-											<option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
-										</select>
-									</div>
-								</div>
-								<div class="grid">
-									<div class="col span6 label">
-										<label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
-									</div>
-									<div class="col span6 omega input">
-										<select id="font-size-selector">
-											<option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-											<option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-											<option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
-										</select>
-									</div>
-								</div>
-								<div class="grid">
-									<div class="col span6 label">
-										<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
-									</div>
-									<div class="col span6 omega input">
-										<div id="font-color" data-color="FFF"></div>
-									</div>
-								</div>
-								<div class="grid">
-									<div class="col span6 label">
-										<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
-									</div>
-									<div class="col span6 omega input">
-										<div id="background-color" data-color="000"></div>
-									</div>
-								</div>
-								<div class="grid">
-									<div class="col span12 omega subtitle-settings-preview-container">
-										<div class="subtitle-settings-preview">
-											<div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
-										</div>
-									</div>
-								</div>
-								<div class="actions">
-									<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
-								</div>
-							</div>
-						</div>
-					</a>
-					<a id="volume" class="control " href="javascript:void(0);">
-						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
-						<div class="control-container volume-controls">
-							<div id="volume-bar"></div>
-						</div>
-					</a>
-					<a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
-						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
-						<div class="control-container settings-controls">
-							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
-							<div class="grid">
-								<div class="col span6 label">
-									<label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
-								</div>
-								<div class="col span6 omega input">
-									<select id="speed">
-										<option value=".25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
-										<option value=".5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
-										<option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
-										<option value="1.25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
-										<option value="1.5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
-										<option value="2"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
-									</select>
-								</div>
-							</div>
-							<!-- <div class="grid">
-								<div class="col span6 label">
-									<label for="theme">Player Theme:</label>
-								</div>
-								<div class="col span6 omega input">
-									<select id="theme">
-										<option value="dark">Dark (default)</option>
-									</select>
-								</div>
-							</div> -->
-						</div>
-					</a>
-					<a id="link" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
-						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
-						<div class="control-container link-controls">
-							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
-							<div class="grid">
-								<div class="col span12 omega">
-									<input type="text" value="ss" />
-									<span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
-								</div>
-							</div>
-						</div>
-					</a>
-					<a id="full-screen" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?>"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?></a>
-				</div>
+	            <div id="control-buttons-left">
+	                <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="Play video" aria-pressed="false">
+	                    <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                        <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
+	                        <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
+	                    </svg>
+	                    <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+	                        <path d="M7 5L19 12L7 19V5Z" fill="currentColor" />
+	                    </svg>
+	                </a>
+	                <div id="media-progress"></div>
+	            </div>
+	            <div id="control-buttons-right">
+	                <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="Captions and Transcript settings" aria-haspopup="true" aria-expanded="false">
+	                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                        <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
+	                        <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
+	                    </svg>
+	                    <div class="control-container subtitle-controls">
+	                        <h3>Captions/Transcript</h3>
+	                        <div class="grid">
+	                            <div class="col span4 label">
+	                                <label for="subtitle-selector">Captions:</label>
+	                            </div>
+	                            <div class="col span8 omega input">
+	                                <select id="subtitle-selector">
+	                                    <option value="">None/Off</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <div class="grid">
+	                            <div class="col span4 label">
+	                                <label for="transcript-selector">Transcript:</label>
+	                            </div>
+	                            <div class="col span8 omega input">
+	                                <select id="transcript-selector" class="transcript-selector">
+	                                    <option value="">None/Off</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options">Options</button>
+	                        <div class="subtitle-settings hide" id="subtitle-options">
+	                            <div class="grid">
+	                                <div class="col span6 label">
+	                                    <label for="font-selector">Font:</label>
+	                                </div>
+	                                <div class="col span6 omega input">
+	                                    <select id="font-selector">
+	                                        <option value="Arial" selected>Arial</option>
+	                                        <option value="Times New Roman">Times New Roman</option>
+	                                        <option value="Tahoma">Tahoma</option>
+	                                        <option value="Trebuchet MS">Trebuchet MS</option>
+	                                        <option value="Verdana">Verdana</option>
+	                                        <option value="Courier New">Courier New</option>
+	                                    </select>
+	                                </div>
+	                            </div>
+	                            <div class="grid">
+	                                <div class="col span6 label">
+	                                    <label for="font-size-selector">Font Size:</label>
+	                                </div>
+	                                <div class="col span6 omega input">
+	                                    <select id="font-size-selector">
+	                                        <option value="12">Small</option>
+	                                        <option value="18" selected>Medium</option>
+	                                        <option value="24">Large</option>
+	                                    </select>
+	                                </div>
+	                            </div>
+	                            <div class="grid">
+	                                <div class="col span6 label">
+	                                    <span id="font-color-label">Font Color:</span>
+	                                </div>
+	                                <div class="col span6 omega input">
+	                                    <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="Font color picker"></div>
+	                                </div>
+	                            </div>
+	                            <div class="grid">
+	                                <div class="col span6 label">
+	                                    <span id="background-color-label">Background:</span>
+	                                </div>
+	                                <div class="col span6 omega input">
+	                                    <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="Background color picker"></div>
+	                                </div>
+	                            </div>
+	                            <div class="grid">
+	                                <div class="col span12 omega subtitle-settings-preview-container">
+	                                    <div class="subtitle-settings-preview">
+	                                        <div class="test">This is an Example</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="actions">
+	                                <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </a>
+	                <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="Volume" aria-haspopup="true" aria-expanded="false">
+	                    <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+	                        <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+	                        <path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor" />
+	                    </svg>
+	                    <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+	                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+	                        <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+	                    </svg>
+	                    <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+	                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+	                        <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4" />
+	                    </svg>
+	                    <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+	                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+	                        <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+	                        <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+	                    </svg>
+	                    <div class="control-container volume-controls">
+	                        <label for="volume-bar" class="sr-only">Volume</label>
+	                        <div id="volume-bar" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+	                    </div>
+	                </a>
+	                <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="Playback settings" aria-haspopup="true" aria-expanded="false">
+	                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
+	                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
+	                    </svg>
+	                    <div class="control-container settings-controls">
+	                        <h3>Settings</h3>
+	                        <div class="grid">
+	                            <div class="label"><label for="speed">Speed:</label></div>
+	                            <div class="input">
+	                                <select id="speed">
+	                                    <option value=".25">.25×</option>
+	                                    <option value=".5">.5×</option>
+	                                    <option selected value="1">Normal</option>
+	                                    <option value="1.25">1.25×</option>
+	                                    <option value="1.5">1.5×</option>
+	                                    <option value="2">2×</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </a>
+	                <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="Share link at current time" aria-haspopup="true" aria-expanded="false">
+	                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+	                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+	                    </svg>
+	                    <div class="control-container link-controls">
+	                        <h3>Share link <span>at current position</span></h3>
+	                        <div class="grid">
+	                            <div class="input">
+	                                <label for="timestamp-link" class="sr-only">Link at current position</label>
+	                                <input type="text" id="timestamp-link" value="" aria-label="Link at current position" readonly />
+	                                <span class="hint">Cmd/Ctrl + C to copy</span>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </a>
+	            </div>				
 			</div>
 		</div><!-- /#control-box -->
 		<div id="video-subtitles"></div>
@@ -474,6 +496,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		<div id="transcripts"></div>
 	</div>
 <?php elseif ($type == 'hubpresenter') : ?>
+	<?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
 	<div id="presenter-container">
 		<div id="presenter-header">
 			<div id="title"><?php echo $this->asset->get('title'); ?></div>
@@ -506,147 +529,167 @@ if ($type == 'hubpresenter' || $type == 'html5')
 				<div id="control-box" class="no-controls" data-theme="dark">
 					<div id="progress-bar"></div>
 					<div id="control-buttons">
-						<div id="control-buttons-left" class="cf">
-							<a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PREV'); ?></a>
-							<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
-							<a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_NEXT'); ?></a>
-							<div id="media-progress"></div>
-						</div>
-						<div id="control-buttons-right" class="cf">
-							<a id="subtitle" class="control" href="javascript:void(0);">
-								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
-								<div class="control-container subtitle-controls">
-									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
-									<div class="grid">
-										<div class="col span4 label">
-											<label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
-										</div>
-										<div class="col span8 omega input">
-											<select id="subtitle-selector">
-												<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
-											</select>
-										</div>
-									</div>
-									<div class="grid">
-										<div class="col span4 label">
-											<label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
-										</div>
-										<div class="col span8 omega input">
-											<select class="transcript-selector">
-												<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
-											</select>
-										</div>
-									</div>
-
-									<span class="options-toggle"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
-									<div class="subtitle-settings hide">
-										<div class="grid">
-											<div class="col span6 label">
-												<label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
-											</div>
-											<div class="col span6 omega input">
-												<select id="font-selector">
-													<option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-													<option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-													<option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-													<option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-													<option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-													<option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
-												</select>
-											</div>
-										</div>
-										<div class="grid">
-											<div class="col span6 label">
-												<label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
-											</div>
-											<div class="col span6 omega input">
-												<select id="font-size-selector">
-													<option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-													<option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-													<option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
-												</select>
-											</div>
-										</div>
-										<div class="grid">
-											<div class="col span6 label">
-												<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
-											</div>
-											<div class="col span6 omega input">
-												<div id="font-color"></div>
-											</div>
-										</div>
-										<div class="grid">
-											<div class="col span6 label">
-												<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
-											</div>
-											<div class="col span6 omega input">
-												<div id="background-color" data-color="000"></div>
-											</div>
-										</div>
-										<div class="grid">
-											<div class="col span12 omega subtitle-settings-preview-container">
-												<div class="subtitle-settings-preview">
-													<div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
-												</div>
-											</div>
-										</div>
-										<div class="actions">
-											<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
-										</div>
-									</div>
-								</div>
-							</a>
-							<a id="volume" class="control " href="javascript:void(0);">
-								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
-								<div class="control-container volume-controls">
-									<div id="volume-bar"></div>
-								</div>
-							</a>
-							<a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
-								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
-								<div class="control-container settings-controls">
-									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
-									<div class="grid">
-										<div class="col span6 label">
-											<label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
-										</div>
-										<div class="col span6 omega input">
-											<select id="speed">
-												<option value=".25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
-												<option value=".5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
-												<option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
-												<option value="1.25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
-												<option value="1.5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
-												<option value="2"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
-											</select>
-										</div>
-									</div>
-									<!-- <div class="grid">
-										<div class="col span6 label">
-											<label for="theme">Player Theme:</label>
-										</div>
-										<div class="col span6 omega input">
-											<select id="theme">
-												<option value="dark">Dark (default)</option>
-											</select>
-										</div>
-									</div> -->
-								</div>
-							</a>
-							<a id="link" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
-								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
-								<div class="control-container link-controls">
-									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
-									<div class="grid">
-										<div class="col span12 omega">
-											<input type="text" value="ss" />
-											<span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
-										</div>
-									</div>
-								</div>
-							</a>
-							<a id="switch" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SWITCH_VIDEO_SLIDES'); ?>"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SWITCH'); ?></a>
-						</div>
+			            <div id="control-buttons-left">
+			                <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="Play video" aria-pressed="false">
+			                    <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			                        <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
+			                        <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
+			                    </svg>
+			                    <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+			                        <path d="M7 5L19 12L7 19V5Z" fill="currentColor" />
+			                    </svg>
+			                </a>
+			                <div id="media-progress"></div>
+			            </div>
+			            <div id="control-buttons-right">
+			                <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="Captions and Transcript settings" aria-haspopup="true" aria-expanded="false">
+			                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			                        <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
+			                        <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
+			                    </svg>
+			                    <div class="control-container subtitle-controls">
+			                        <h3>Captions/Transcript</h3>
+			                        <div class="grid">
+			                            <div class="col span4 label">
+			                                <label for="subtitle-selector">Captions:</label>
+			                            </div>
+			                            <div class="col span8 omega input">
+			                                <select id="subtitle-selector">
+			                                    <option value="">None/Off</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                        <div class="grid">
+			                            <div class="col span4 label">
+			                                <label for="transcript-selector">Transcript:</label>
+			                            </div>
+			                            <div class="col span8 omega input">
+			                                <select id="transcript-selector" class="transcript-selector">
+			                                    <option value="">None/Off</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                        <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options">Options</button>
+			                        <div class="subtitle-settings hide" id="subtitle-options">
+			                            <div class="grid">
+			                                <div class="col span6 label">
+			                                    <label for="font-selector">Font:</label>
+			                                </div>
+			                                <div class="col span6 omega input">
+			                                    <select id="font-selector">
+			                                        <option value="Arial" selected>Arial</option>
+			                                        <option value="Times New Roman">Times New Roman</option>
+			                                        <option value="Tahoma">Tahoma</option>
+			                                        <option value="Trebuchet MS">Trebuchet MS</option>
+			                                        <option value="Verdana">Verdana</option>
+			                                        <option value="Courier New">Courier New</option>
+			                                    </select>
+			                                </div>
+			                            </div>
+			                            <div class="grid">
+			                                <div class="col span6 label">
+			                                    <label for="font-size-selector">Font Size:</label>
+			                                </div>
+			                                <div class="col span6 omega input">
+			                                    <select id="font-size-selector">
+			                                        <option value="12">Small</option>
+			                                        <option value="18" selected>Medium</option>
+			                                        <option value="24">Large</option>
+			                                    </select>
+			                                </div>
+			                            </div>
+			                            <div class="grid">
+			                                <div class="col span6 label">
+			                                    <span id="font-color-label">Font Color:</span>
+			                                </div>
+			                                <div class="col span6 omega input">
+			                                    <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="Font color picker"></div>
+			                                </div>
+			                            </div>
+			                            <div class="grid">
+			                                <div class="col span6 label">
+			                                    <span id="background-color-label">Background:</span>
+			                                </div>
+			                                <div class="col span6 omega input">
+			                                    <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="Background color picker"></div>
+			                                </div>
+			                            </div>
+			                            <div class="grid">
+			                                <div class="col span12 omega subtitle-settings-preview-container">
+			                                    <div class="subtitle-settings-preview">
+			                                        <div class="test">This is an Example</div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="actions">
+			                                <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save">Save</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </a>
+			                <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="Volume" aria-haspopup="true" aria-expanded="false">
+			                    <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+			                        <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+			                        <path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor" />
+			                    </svg>
+			                    <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+			                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+			                        <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+			                    </svg>
+			                    <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+			                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+			                        <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4" />
+			                    </svg>
+			                    <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+			                        <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
+			                        <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+			                        <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+			                    </svg>
+			                    <div class="control-container volume-controls">
+			                        <label for="volume-bar" class="sr-only">Volume</label>
+			                        <div id="volume-bar" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+			                    </div>
+			                </a>
+			                <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="Playback settings" aria-haspopup="true" aria-expanded="false">
+			                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
+			                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
+			                    </svg>
+			                    <div class="control-container settings-controls">
+			                        <h3>Settings</h3>
+			                        <div class="grid">
+			                            <div class="label"><label for="speed">Speed:</label></div>
+			                            <div class="input">
+			                                <select id="speed">
+			                                    <option value=".25">.25×</option>
+			                                    <option value=".5">.5×</option>
+			                                    <option selected value="1">Normal</option>
+			                                    <option value="1.25">1.25×</option>
+			                                    <option value="1.5">1.5×</option>
+			                                    <option value="2">2×</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </a>
+			                <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="Share link at current time" aria-haspopup="true" aria-expanded="false">
+			                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+			                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+			                    </svg>
+			                    <div class="control-container link-controls">
+			                        <h3>Share link <span>at current position</span></h3>
+			                        <div class="grid">
+			                            <div class="input">
+			                                <label for="timestamp-link" class="sr-only">Link at current position</label>
+			                                <input type="text" id="timestamp-link" value="" aria-label="Link at current position" readonly />
+			                                <span class="hint">Cmd/Ctrl + C to copy</span>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </a>
+			            </div>
 					</div>
 				</div><!-- /#control-box -->
 			</div><!-- /#left -->
