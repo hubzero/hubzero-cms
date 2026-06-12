@@ -294,6 +294,7 @@ video {
 	width: 130px;
 	float: left;
 	margin-right: 10px;
+	margin-bottom: 10px;
 	border: 1px solid #aaa;
 }
 #list ul li .time {
@@ -770,11 +771,11 @@ a.ui-slider-handle {
 }
 
 /*---------------------------------------------------------------
-	List Item Slider/Progress Bar
+        List Item Slider/Progress Bar
 ---------------------------------------------------------------*/
 .list-progress {
 	position: absolute;
-	top: 70px;
+	bottom: 15px;
 	right: 11px;
 	color: #444;
 	font-size: 10px;
@@ -783,9 +784,10 @@ a.ui-slider-handle {
 }
 .list-slider {
 	position: absolute;
-	top: 36px;
-	left: 70px;
-	width: 170px;
+	bottom: 2px;
+	left: 5%;
+	width: 90%;
+	border-radius:5px;
 	display: none;
 }
 .list-slider.ui-slider {
@@ -800,6 +802,7 @@ a.ui-slider-handle {
 	width: 10px;
 	height: 10px;
 	outline: none;
+	border-radius : 50%;
 }
 .list-slider .ui-slider-handle:hover {
 	top: -1px;
@@ -810,6 +813,7 @@ a.ui-slider-handle {
 }
 .list-slider .ui-slider-range {
 	background: #888;
+	border-radius:5px;
 }
 
 /*---------------------------------------------------------------
