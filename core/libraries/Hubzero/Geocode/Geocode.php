@@ -469,8 +469,10 @@ class Geocode
 
 			// Convert the dotted quad IP address to long:
 			$n_ip = ip2long($ip);
-
-			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry WHERE ipFROM <= " .  $gdb->quote($n_ip) . " AND ipTO >= " . $gdb->quote($n_ip);
+			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry"
+				. " INNER JOIN (SELECT MAX(ipFROM) AS start FROM ipcountry"
+				. " WHERE ipFROM <= " . $gdb->quote($n_ip) . ") s ON (ipFROM = s.start)"
+				. " WHERE ipTO >= " . $gdb->quote($n_ip);
 			$gdb->setQuery($sql);
 			$country = stripslashes($gdb->loadResult());
 		}
