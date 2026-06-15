@@ -413,7 +413,7 @@ class Publications extends SiteController
 
 			if (Request::getString('tag', '', 'request') || preg_match('/(?:^|[&;])(?:amp;)?tag=/i', $query))
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_SEARCH_LOGIN_REQUIRED'), 404);
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_SEARCH_LOGIN_REQUIRED'), 410);
 			}
 
 			$return = base64_encode(Request::current(true));
