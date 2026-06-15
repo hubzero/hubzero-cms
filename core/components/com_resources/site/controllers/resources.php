@@ -195,6 +195,18 @@ class Resources extends SiteController
 	 */
 	public function browseTask()
 	{
+		if (!$this->config->get('allow_public_search', 1) && User::isGuest())
+		{
+			$return = base64_encode(Request::current(true));
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+				Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'),
+				'warning'
+			);
+			return;
+		}
+
 		// Set the default sort
 		$default_sort = 'date';
 
