@@ -112,6 +112,20 @@ class Groups
 		$times = self::$dbh->loadResult();
 		if ($times > 0)
 		{
+			// If configured to stop prompting once the recurrence list is
+			// exhausted (repeat_type = 1), and this attempt is past the end of
+			// the list (no delay defined for idx = times - 1), stop showing the
+			// popover entirely instead of repeating with the last delay.
+			self::$dbh->setQuery('SELECT coalesce((SELECT repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1), 0)');
+			if ((int) self::$dbh->loadResult() === 1)
+			{
+				self::$dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = ' . ($times - 1));
+				if (self::$dbh->loadResult() === null)
+				{
+					return array();
+				}
+			}
+
 			self::$dbh->setQuery('SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = ' . ($times - 1) . '), (SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx DESC LIMIT 1))) FROM `#__profile_completion_awards` WHERE user_id = ' . $uid);
 			// opt-out period is in effect
 			if (!self::$dbh->loadResult())

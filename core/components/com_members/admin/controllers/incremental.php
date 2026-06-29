@@ -79,13 +79,14 @@ class Incremental extends AdminController
 			$popoverText = stripslashes($_POST['popover']);
 			$awardPer    = (int)$_POST['award-per'];
 			$testGroup   = (int)$_POST['test-group'];
+			$repeatType  = (isset($_POST['repeat-type']) && (int)$_POST['repeat-type'] === 1) ? 1 : 0;
 
-			$this->database->setQuery('SELECT popover_text, award_per, test_group FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
-			list($exPopover, $exAward, $exGroup) = $row = $this->database->loadRow();
+			$this->database->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
+			list($exPopover, $exAward, $exGroup, $exRepeat) = $row = $this->database->loadRow();
 
-			if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup)
+			if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup || $repeatType != (int)$exRepeat)
 			{
-				$this->database->setQuery('INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ')');
+				$this->database->setQuery('INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, repeat_type) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ', ' . $repeatType . ')');
 				$this->database->execute();
 			}
 		}
