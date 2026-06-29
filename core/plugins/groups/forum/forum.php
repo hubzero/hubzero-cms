@@ -595,6 +595,27 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Instantiate a new table row and bind the incoming data
 		$section = \Components\Forum\Models\Section::oneOrNew($fields['id'])->set($fields);
 
+		// Default a new section's access to match the group's forum access
+		// setting, matching how new categories and threads inherit. Without
+		// this a manually-created section falls back to the global default
+		// (typically public), even in a private group forum.
+		if ($section->isNew() && !isset($fields['access']))
+		{
+			switch ($this->group_plugin_acl)
+			{
+				case 'members':
+					$section->set('access', 5);
+					break;
+				case 'registered':
+					$section->set('access', 2);
+					break;
+				case 'anyone':
+				default:
+					$section->set('access', 1);
+					break;
+			}
+		}
+
 		if (in_array($section->get('alias'), array('new', 'settings', 'savesettings')))
 		{
 			App::redirect(
