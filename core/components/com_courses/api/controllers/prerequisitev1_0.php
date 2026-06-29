@@ -107,6 +107,11 @@ class Prerequisitev1_0 extends base
 		$tbl->load($id);
 		$tbl->delete();
 
-		$this->send('Item successfully deleted');
+		// Send an array so the response is encoded as valid JSON.
+		// The outline JS requests this endpoint with dataType:'json' and only
+		// updates the UI from its success handler; a bare string is passed
+		// through unquoted (invalid JSON) and silently routes to jQuery's
+		// error handler, leaving the deleted prerequisite visible in the list.
+		$this->send(['success' => true, 'message' => 'Item successfully deleted']);
 	}
 }
