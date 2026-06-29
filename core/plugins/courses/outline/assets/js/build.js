@@ -913,6 +913,11 @@ HUB.CoursesOutline = {
 
 			$(this).fileupload({
 				dropZone: $(this),
+				// Disable paste-to-upload. It defaults to the whole document, so
+				// pasting a URL copied from Excel/a browser (whose clipboard also
+				// carries an image) into the link field uploaded that image as an
+				// image.png asset instead of using the URL (ticket #449642).
+				pasteZone: null,
 				dataType: 'json',
 				progressInterval: 500,
 				add: function ( e, data ) {
