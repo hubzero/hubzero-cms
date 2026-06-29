@@ -168,6 +168,17 @@ class Prerequisite extends Base
 					{
 						$asset = new Asset($prerequisite['scope_id']);
 
+						// A prerequisite pointing at an asset that no longer
+						// exists (e.g. the requisite asset was deleted or
+						// re-versioned without cleaning up this row) can never
+						// be fulfilled and would otherwise block the item
+						// permanently. Treat a dangling requisite as not
+						// applicable rather than as an unmet requirement.
+						if (!$asset->exists())
+						{
+							continue;
+						}
+
 						if ($asset->get('type') == 'form')
 						{
 							if (!isset($this->grades[$prerequisite['scope_id']]))
