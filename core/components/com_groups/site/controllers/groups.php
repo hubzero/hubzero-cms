@@ -604,7 +604,11 @@ class Groups extends Base
 		{
 			$group = Group::getInstance($g_gidNumber);
 			$this->_task = 'edit';
-			$before = Group::getInstance($g_gidNumber);
+			// Snapshot the pre-save state for groups.onGroupAfterSave listeners.
+			// Group::getInstance() is a singleton cache, so a second call would
+			// return the *same* instance as $group and reflect the post-save
+			// values; clone it instead, matching the admin controllers.
+			$before = clone $group;
 		}
 		else
 		{
