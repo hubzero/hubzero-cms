@@ -904,8 +904,16 @@ class Page extends Relational
 						default:
 							if (!$this->isLocked())
 							{
+								// A page's creator can edit their own page,
+								// mirroring 'knol' mode above. Without this an
+								// author is locked out of a page they created
+								// unless they hold the global core.edit
+								// permission, even when granted core.edit.own.
+								$isOwner = (!User::isGuest() && $this->get('created_by') && $this->get('created_by') == User::get('id'));
+
 								$this->config()->set('access-page-delete', User::authorise('core.delete', $option));
-								$this->config()->set('access-page-edit', User::authorise('core.edit', $option));
+								$this->config()->set('access-page-edit', User::authorise('core.edit', $option)
+									|| ($isOwner && User::authorise('core.edit.own', $option)));
 								$this->config()->set('access-page-modify', true);
 							}
 
