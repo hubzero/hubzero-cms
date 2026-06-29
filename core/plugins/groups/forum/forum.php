@@ -1890,6 +1890,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	{
 		$categoryId = $category->get('id');
 
+		// Default to not emailing; only the branches below opt a user in. Without
+		// this, neither branch running (category subs off and the memberoptions
+		// model unavailable) would return an undefined variable.
+		$sendEmail = 0;
+
 		if ($categorySubscriptionsEnabled)
 		{
 			$usersCategory = $category->usersCategories()
