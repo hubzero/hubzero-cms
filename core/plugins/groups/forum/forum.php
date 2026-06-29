@@ -520,19 +520,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		 && $this->params->get('access-create-section')
 		 && Request::getWord('action') == 'populate')
 		{
-			switch ($this->group_plugin_acl)
-			{
-				case 'members':
-					$access = 5;
-					break;
-				case 'registered':
-					$access = 2;
-					break;
-				case 'anyone':
-				default:
-					$access = 1;
-					break;
-			}
+			$access = $this->defaultContentAccess();
 			if (!$this->forum->setup($access))
 			{
 				$this->setError($this->forum->getError());
@@ -578,6 +566,47 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Determine the default forum access level for new content (sections,
+	 * categories, threads).
+	 *
+	 * Takes the more restrictive of the group's forum access setting
+	 * (group_plugin_acl) and the group's overall privacy, so private group
+	 * content is never published more openly than either control allows. A
+	 * group counts as private when it isn't an open, visible group.
+	 *
+	 * @return  integer  Forum access level (1=anyone, 2=registered, 5=members)
+	 */
+	protected function defaultContentAccess()
+	{
+		// Group is private unless it is both open to join and discoverable
+		$groupPrivate = ($this->group->get('join_policy') != 0
+			|| $this->group->get('discoverability') == 1);
+
+		// Rank ACL levels from least to most restrictive
+		$rank = array('anyone' => 1, 'registered' => 2, 'members' => 3, 'nobody' => 4);
+
+		$forumAcl = $this->group_plugin_acl;
+		$groupAcl = $groupPrivate ? 'members' : 'anyone';
+
+		$forumRank = isset($rank[$forumAcl]) ? $rank[$forumAcl] : 1;
+
+		// Use whichever of the two is more restrictive
+		$acl = ($rank[$groupAcl] > $forumRank) ? $groupAcl : $forumAcl;
+
+		switch ($acl)
+		{
+			case 'nobody':
+			case 'members':
+				return 5;
+			case 'registered':
+				return 2;
+			case 'anyone':
+			default:
+				return 1;
+		}
+	}
+
+	/**
 	 * Saves a section and redirects to main page afterward
 	 *
 	 * @return  void
@@ -601,19 +630,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// (typically public), even in a private group forum.
 		if ($section->isNew() && !isset($fields['access']))
 		{
-			switch ($this->group_plugin_acl)
-			{
-				case 'members':
-					$section->set('access', 5);
-					break;
-				case 'registered':
-					$section->set('access', 2);
-					break;
-				case 'anyone':
-				default:
-					$section->set('access', 1);
-					break;
-			}
+			$section->set('access', $this->defaultContentAccess());
 		}
 
 		if (in_array($section->get('alias'), array('new', 'settings', 'savesettings')))
@@ -1001,19 +1018,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$category->set('section_id', $section->get('id'));
 
 			// Default access to match the group's forum access setting
-			switch ($this->group_plugin_acl)
-			{
-				case 'members':
-					$category->set('access', 5);
-					break;
-				case 'registered':
-					$category->set('access', 2);
-					break;
-				case 'anyone':
-				default:
-					$category->set('access', 1);
-					break;
-			}
+			$category->set('access', $this->defaultContentAccess());
 		}
 		elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category'))
 		{
