@@ -157,7 +157,6 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		// Build query
 		$filters = array(
 			'author'        => $uidNumber,
-			'notauthorrole' => 'submitter',
 			'sortby'        => $sort,
 			'usergroups'    => array(),
 			'standalone'    => 1,
@@ -189,8 +188,19 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 		// If the visiting user is NOT the same as the member
 		// we want to restrict what they can see
-		if (User::get('id') != $member->get('id'))
+		// On your own profile, also include resources you submitted/uploaded
+		// (created_by), not just ones you are credited as an author of.
+		if (User::get('id') == $member->get('id'))
 		{
+			$filters['authororsubmitter'] = $uidNumber;
+		}
+		else
+		{
+			// Other viewers: only resources the member is credited as an author
+			// of -- hide ones they merely submitted (author role 'submitter') --
+			// and restrict to what they're allowed to see.
+			$filters['notauthorrole'] = 'submitter';
+
 			//$filters['published'] = 1;
 			$filters['access'] = array(0, 3);
 			if (!\User::isGuest())
@@ -373,14 +383,27 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 		if (isset($filters['author']))
 		{
-			$query
-				->join($a, $a . '.subid', $r . '.id', 'left')
-				->whereEquals($a . '.subtable', 'resources')
-				->whereEquals($a . '.authorid', $filters['author']);
-
-			if (isset($filters['notauthorrole']))
+			if (isset($filters['authororsubmitter']) && $filters['authororsubmitter'])
 			{
-				$query->where($a . '.role', '!=', $filters['notauthorrole']);
+				// Resources the member authored OR submitted/uploaded
+				// (created_by). A submitted-only resource has no author_assoc
+				// row, so match created_by directly and use a subquery for
+				// authorship rather than the join below.
+				$uid = (int) $filters['authororsubmitter'];
+				$query->whereRaw('(' . $r . '.created_by = ' . $uid
+					. ' OR ' . $r . '.id IN (SELECT subid FROM ' . $a . ' WHERE authorid = ' . $uid . " AND subtable = 'resources'))");
+			}
+			else
+			{
+				$query
+					->join($a, $a . '.subid', $r . '.id', 'left')
+					->whereEquals($a . '.subtable', 'resources')
+					->whereEquals($a . '.authorid', $filters['author']);
+
+				if (isset($filters['notauthorrole']))
+				{
+					$query->where($a . '.role', '!=', $filters['notauthorrole']);
+				}
 			}
 		}
 
