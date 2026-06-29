@@ -738,6 +738,33 @@ class Groups extends Base
 		$gParams = new Registry($group->get('params'));
 		$gParams->merge($params);
 
+		// Snapshot the pre-change values so the manager notification email can
+		// highlight what changed. These must be read here, before the setters
+		// below mutate the group. ($before is the same cached instance as
+		// $group via Group::getInstance(), so it cannot be relied on to hold
+		// the old values.) Only meaningful for an edit; a new group has no
+		// "before", so the email shows no change markers.
+		$before_vals = array();
+		if ($this->_task != 'new')
+		{
+			$beforeTags   = new Tags($group->get('gidNumber'));
+			$beforeParams = new Registry($group->get('params'));
+			$before_vals  = array(
+				'description'                    => $group->get('description'),
+				'tags'                           => $beforeTags->render('string'),
+				'public_desc'                    => $group->get('public_desc'),
+				'private_desc'                   => $group->get('private_desc'),
+				'logo'                           => $group->get('logo'),
+				'join_policy'                    => $group->get('join_policy'),
+				'restrict_msg'                   => $group->get('restrict_msg'),
+				'discoverability'                => $group->get('discoverability'),
+				'discussion_email_autosubscribe' => $group->get('discussion_email_autosubscribe'),
+				'access'                         => \Hubzero\User\Group\Helper::getPluginAccess($group),
+				'page_comments'                  => $beforeParams->get('page_comments'),
+				'page_author'                    => $beforeParams->get('page_author')
+			);
+		}
+
 		// Set group vars & Save group
 		$group->set('description', $g_description);
 		$group->set('public_desc', $g_public_desc);
@@ -811,6 +838,7 @@ class Groups extends Base
 		$eview->option = $this->_option;
 		$eview->user   = User::getInstance();
 		$eview->group  = $group;
+		$eview->before = $before_vals;
 		$message['plaintext'] = $eview->loadTemplate(false);
 		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 

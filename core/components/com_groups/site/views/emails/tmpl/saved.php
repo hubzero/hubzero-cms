@@ -11,6 +11,67 @@ defined('_HZEXEC_') or die();
 // build urls
 $base      = rtrim(str_replace('administrator', '', Request::base()), '/');
 $groupLink = $base . '/groups/' . $this->group->get('cn');
+
+// Pre-change values (keyed) for highlighting what changed. Empty for a new
+// group, in which case no change markers are shown.
+$before = (isset($this->before) && is_array($this->before)) ? $this->before : array();
+
+// Return a red "(was: <old>)" marker when a field's display value changed.
+// $oldDisplay is the already-formatted previous value; pass null when there
+// is no snapshot for the field (e.g. new group) to suppress the marker.
+$wasMarker = function($key, $newDisplay, $oldDisplay) use ($before)
+{
+	if (!array_key_exists($key, $before))
+	{
+		return '';
+	}
+	if ((string) $newDisplay === (string) $oldDisplay)
+	{
+		return '';
+	}
+	$old = ($oldDisplay === '' || $oldDisplay === null)
+		? '&lt;Empty&gt;'
+		: htmlspecialchars((string) $oldDisplay);
+	return ' <span style="color: #cc0000; font-weight: bold;">(' . Lang::txt('COM_GROUPS_EMAIL_WAS', $old) . ')</span>';
+};
+
+// Shared value->label formatters so the old and new sides render identically
+$joinPolicyLabel = function($v)
+{
+	switch ($v)
+	{
+		case 3:  return Lang::txt('Closed');
+		case 2:  return Lang::txt('Invite Only');
+		case 1:  return Lang::txt('Restricted');
+		default: return Lang::txt('Open');
+	}
+};
+$discoverabilityLabel = function($v)
+{
+	return ($v == 1) ? Lang::txt('Hidden') : Lang::txt('Visible');
+};
+$pageCommentsLabel = function($v)
+{
+	if ($v == 2)
+	{
+		return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
+	}
+	if ($v == 1)
+	{
+		return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES');
+	}
+	return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO');
+};
+$pageAuthorLabel = function($v)
+{
+	return ($v == 1)
+		? Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES')
+		: Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO');
+};
+$onOffLabel = function($v)
+{
+	return $v ? Lang::txt('On') : Lang::txt('Off');
+};
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -137,7 +198,11 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 							</tr>
 							<tr>
 								<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
-									<?php echo $this->group->get('description'); ?>
+									<?php
+										$new = $this->group->get('description');
+										echo $new;
+										echo $wasMarker('description', $new, isset($before['description']) ? $before['description'] : null);
+									?>
 								</td>
 							</tr>
 
@@ -160,6 +225,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 									<?php else : ?>
 										&#60;Empty&#62;
 									<?php endif; ?>
+									<?php echo $wasMarker('tags', $tags, isset($before['tags']) ? $before['tags'] : null); ?>
 								</td>
 							</tr>
 
@@ -178,6 +244,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 									<?php else : ?>
 										&#60;Empty&#62;
 									<?php endif; ?>
+									<?php echo $wasMarker('public_desc', $this->group->get('public_desc'), isset($before['public_desc']) ? $before['public_desc'] : null); ?>
 								</td>
 							</tr>
 
@@ -196,6 +263,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 									<?php else : ?>
 										&#60;Empty&#62;
 									<?php endif; ?>
+									<?php echo $wasMarker('private_desc', $this->group->get('private_desc'), isset($before['private_desc']) ? $before['private_desc'] : null); ?>
 								</td>
 							</tr>
 
@@ -214,6 +282,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 									<?php else : ?>
 										&#60;Not Set&#62;
 									<?php endif; ?>
+									<?php echo $wasMarker('logo', $this->group->get('logo'), isset($before['logo']) ? $before['logo'] : null); ?>
 								</td>
 							</tr>
 
@@ -229,27 +298,14 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 								<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 									<?php
 									// Determine the join policy
-									switch ($this->group->get('join_policy'))
-									{
-										case 3:
-											$policy = Lang::txt('Closed');
-											break;
-										case 2:
-											$policy = Lang::txt('Invite Only');
-											break;
-										case 1:
-											$policy = Lang::txt('Restricted');
-											break;
-										case 0:
-										default:
-											$policy = Lang::txt('Open');
-											break;
-									}
+									$policy = $joinPolicyLabel($this->group->get('join_policy'));
 									echo $policy;
+									echo $wasMarker('join_policy', $policy, isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null);
 
 									if ($this->group->get('join_policy') == 1)
 									{
 										echo '<br /><em>' . $this->group->get('restrict_msg') . '</em>';
+										echo $wasMarker('restrict_msg', $this->group->get('restrict_msg'), isset($before['restrict_msg']) ? $before['restrict_msg'] : null);
 									}
 									?>
 								</td>
@@ -268,15 +324,9 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 								<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 									<?php
 									// Determine the discoverability
-									switch ($this->group->get('discoverability'))
-									{
-										case 1:  $discoverability = Lang::txt('Hidden');
-break;
-										case 0:
-										default: $discoverability = Lang::txt('Visible');
-break;
-									}
+									$discoverability = $discoverabilityLabel($this->group->get('discoverability'));
 									echo $discoverability;
+									echo $wasMarker('discoverability', $discoverability, isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null);
 									?>
 								</td>
 							</tr>
@@ -311,6 +361,7 @@ break;
 									));
 
 									$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
+									$oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;
 
 									foreach ($group_plugins as $plugin)
 									{
@@ -318,7 +369,14 @@ break;
 										{
 											$title  = $plugin['title'];
 											$perm = $access[$plugin['name']];
-											echo $title . ' => ' . $levels[$perm] . '<br />';
+											echo $title . ' => ' . $levels[$perm];
+											if ($oldAccess !== null && isset($oldAccess[$plugin['name']]) && $oldAccess[$plugin['name']] != $perm)
+											{
+												$oldPerm  = $oldAccess[$plugin['name']];
+												$oldLabel = isset($levels[$oldPerm]) ? $levels[$oldPerm] : $oldPerm;
+												echo ' <span style="color: #cc0000; font-weight: bold;">(' . Lang::txt('COM_GROUPS_EMAIL_WAS', htmlspecialchars($oldLabel)) . ')</span>';
+											}
+											echo '<br />';
 										}
 									}
 									?>
@@ -338,14 +396,9 @@ break;
 								<tr>
 									<td style="text-align:left; padding:1em; line-height:18px;" align="left">
 										<?php
-										if ($this->group->get('discussion_email_autosubscribe'))
-										{
-											echo Lang::txt('On');
-										}
-										else
-										{
-											echo Lang::txt('Off');
-										}
+										$autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
+										echo $autosub;
+										echo $wasMarker('discussion_email_autosubscribe', $autosub, isset($before['discussion_email_autosubscribe']) ? $onOffLabel($before['discussion_email_autosubscribe']) : null);
 										?>
 									</td>
 								</tr>
@@ -363,18 +416,9 @@ break;
 								<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 									<?php
 										$gparams = new \Hubzero\Config\Registry($this->group->get('params'));
-										if ($gparams->get('page_comments') == 2)
-										{
-											echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
-										}
-										elseif ($gparams->get('page_comments') == 1)
-										{
-											echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES');
-										}
-										else
-										{
-											echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO');
-										}
+										$pageComments = $pageCommentsLabel($gparams->get('page_comments'));
+										echo $pageComments;
+										echo $wasMarker('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null);
 									?>
 								</td>
 							</tr>
@@ -391,14 +435,9 @@ break;
 								<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 									<?php
 										$gparams = new \Hubzero\Config\Registry($this->group->get('params'));
-										if ($gparams->get('page_author') == 1)
-										{
-											echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES');
-										}
-										else
-										{
-											echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO');
-										}
+										$pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
+										echo $pageAuthor;
+										echo $wasMarker('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null);
 									?>
 								</td>
 							</tr>
