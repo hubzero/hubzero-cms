@@ -40,6 +40,12 @@ switch ($this->params->get('defaultDataset', 'cumulative'))
 		break;
 }
 
+// The headline total is a cumulative running total for the cumulative dataset
+// ("X through Jun 2026"), but a per-period total for monthly/yearly ("X in Jun 2026").
+$periodWord = ($this->params->get('defaultDataset', 'cumulative') == 'cumulative')
+	? Lang::txt('PLG_RESOURCES_USAGE_THROUGH')
+	: Lang::txt('PLG_RESOURCES_USAGE_IN');
+
 if (intval($this->params->get('cache', 1)))
 {
 	if (!($results = Cache::get('resources.usage' . $this->resource->id . 'overview')))
@@ -140,12 +146,17 @@ $bars = array();
 					</a>
 				</li>
 			</ul>
+			<p class="usage-download">
+				<a href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=download&amp;period=<?php echo $prd; ?>">
+					<?php echo Lang::txt('PLG_RESOURCES_USAGE_DOWNLOAD_CSV'); ?>
+				</a>
+			</p>
 			<div class="grid">
 			<div class="col span3">
 				<h4 id="sim-users-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 			<p class="total" role="group" aria-labelledby="sim-users-heading">
 					<span class="total-value" id="users-overview-total"><?php echo number_format($current->users); ?></span>
-					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+					<span><?php echo $periodWord; ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
@@ -624,7 +635,7 @@ $bars = array();
 					<h4 id="sim-runs-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 				<p class="total" role="group" aria-labelledby="sim-runs-heading">
 						<span class="total-value" id="runs-overview-total"><?php echo number_format($current->jobs); ?></span>
-						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+						<span><?php echo $periodWord; ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 					</p>
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
@@ -833,7 +844,7 @@ $bars = array();
 							},
 							tickDecimals: 0
 						},
-						yaxis: { min: 0, labelWidth: 25 }
+						yaxis: { min: 0, labelWidth: 25, tickDecimals: 0, minTickSize: 1 }
 					};
 
 
@@ -905,7 +916,7 @@ $bars = array();
 									return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
 								}
 							},
-							yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
+							yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25, tickDecimals: 0, minTickSize: 1 },
 							selection: {
 								mode: "x",
 								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>',
