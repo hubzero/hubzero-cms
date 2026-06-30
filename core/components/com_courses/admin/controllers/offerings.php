@@ -29,6 +29,8 @@ class Offerings extends AdminController
 		$this->registerTask('apply', 'save');
 		$this->registerTask('publish', 'state');
 		$this->registerTask('unpublish', 'state');
+		$this->registerTask('orderup', 'order');
+		$this->registerTask('orderdown', 'order');
 
 		parent::execute();
 	}
@@ -335,6 +337,18 @@ class Offerings extends AdminController
 
 				//set the course to be published and update
 				$model->set('state', $state);
+
+				// Record when the offering was first published, so the public
+				// course page can order offerings by their publish date.
+				if ($state == 1)
+				{
+					$pub = $model->get('publish_up');
+					if (!$pub || $pub == '0000-00-00 00:00:00')
+					{
+						$model->set('publish_up', \Date::toSql());
+					}
+				}
+
 				if (!$model->store())
 				{
 					$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_SET_STATE', $id));
@@ -364,6 +378,62 @@ class Offerings extends AdminController
 				($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
+	}
+
+	/**
+	 * Move an offering up or down in the custom ordering
+	 *
+	 * Offerings start out unordered (ordering = 0) and are sorted on the public
+	 * course page by publish date. The first time an offering is moved, the
+	 * whole course's offerings are normalised to a 1..N sequence in their
+	 * current display order, then the target is swapped with its neighbour.
+	 *
+	 * @return  void
+	 */
+	public function orderTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		$id     = Request::getInt('id', 0);
+		$course = Request::getInt('course', 0);
+		$dir    = ($this->_task == 'orderup') ? -1 : 1;
+
+		// Pull the course's offerings in their current effective display order
+		$this->database->setQuery(
+			"SELECT id FROM `#__courses_offerings`
+			 WHERE course_id = " . $this->database->quote($course) . "
+			 ORDER BY CASE WHEN ordering = 0 THEN 1 ELSE 0 END ASC, ordering ASC,
+			          COALESCE(NULLIF(publish_up, '0000-00-00 00:00:00'), created) DESC, id DESC"
+		);
+		$ids = $this->database->loadColumn();
+
+		// Swap the target with its neighbour
+		$pos = array_search($id, $ids);
+		if ($pos !== false)
+		{
+			$swap = $pos + $dir;
+			if ($swap >= 0 && $swap < count($ids))
+			{
+				$tmp         = $ids[$pos];
+				$ids[$pos]   = $ids[$swap];
+				$ids[$swap]  = $tmp;
+			}
+		}
+
+		// Persist a normalised 1..N ordering
+		foreach ($ids as $i => $oid)
+		{
+			$this->database->setQuery(
+				"UPDATE `#__courses_offerings` SET ordering = " . ($i + 1)
+				. " WHERE id = " . $this->database->quote($oid)
+			);
+			$this->database->query();
+		}
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $course, false)
+		);
 	}
 
 	/**

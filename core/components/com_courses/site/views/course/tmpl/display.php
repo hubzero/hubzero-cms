@@ -16,7 +16,7 @@ if ($this->course->isManager())
 	$filters = array(
 		'available' => false,
 		'state'     => array(0, 1, 3),
-		'sort'      => 'publish_up',
+		'sort'      => 'created',
 		'sort_Dir'  => 'DESC'
 	);
 }
@@ -25,7 +25,7 @@ else
 	$filters = array(
 		'available' => true,
 		'state'     => 1,
-		'sort'      => 'publish_up',
+		'sort'      => 'available',
 		'sort_Dir'  => 'DESC'/*,
 		'limit'     => ($this->course->isStudent() ? 0 : 1)*/
 	);

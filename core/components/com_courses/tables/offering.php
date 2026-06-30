@@ -242,15 +242,27 @@ class Offering extends Table
 		$query  = "SELECT ci.*, c.alias AS course_alias";
 		$query .= $this->_buildquery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort'])
+		// Sort direction (whitelisted to ASC/DESC)
+		$sortDir = (isset($filters['sort_Dir']) && strtoupper($filters['sort_Dir']) == 'ASC') ? 'ASC' : 'DESC';
+
+		if (isset($filters['sort']) && $filters['sort'] == 'available')
 		{
-			$filters['sort'] = 'publish_up';
+			// Public/end-user ordering: any manually-assigned order wins, then
+			// most recently published first, falling back to the created date
+			// for legacy offerings that have no publish date recorded.
+			$orderby = "CASE WHEN ci.ordering = 0 THEN 1 ELSE 0 END ASC, ci.ordering ASC, "
+				. "COALESCE(NULLIF(ci.publish_up, '0000-00-00 00:00:00'), ci.created) DESC";
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+		else
 		{
-			$filters['sort_Dir'] = 'DESC';
+			// Whitelist sortable columns so $filters['sort'] never reaches SQL raw
+			$sortable = array('id', 'title', 'alias', 'state', 'publish_up', 'publish_down', 'created', 'ordering');
+			$sort = (isset($filters['sort']) && in_array($filters['sort'], $sortable, true)) ? $filters['sort'] : 'created';
+
+			$orderby = "ci." . $sort . " " . $sortDir;
 		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+		$query .= " ORDER BY " . $orderby;
 
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{

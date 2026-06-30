@@ -65,7 +65,8 @@ Html::behavior('tooltip');
 					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
 					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
-				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COURSES_COL_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+					<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -78,7 +79,7 @@ Html::behavior('tooltip');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10">
+				<td colspan="11">
 					<?php
 					// Initiate paging
 					echo $this->pagination(
@@ -122,6 +123,11 @@ Html::behavior('tooltip');
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+				</td>
+				<td class="order nowrap">
+					<?php $otoken = Session::getFormToken(); ?>
+					<a class="state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1'); ?>" title="<?php echo Lang::txt('Move up'); ?>" aria-label="<?php echo Lang::txt('Move up'); ?>">&uarr;</a>
+					<a class="state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1'); ?>" title="<?php echo Lang::txt('Move down'); ?>" aria-label="<?php echo Lang::txt('Move down'); ?>">&darr;</a>
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
