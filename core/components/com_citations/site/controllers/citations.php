@@ -115,6 +115,7 @@ class Citations extends SiteController
 			// Search/filtering params
 			'id'              => Request::getInt('id', 0),
 			'tag'             => Request::getString('tag', '', 'request', 'none', 2),
+			'keyword'         => Request::getString('keyword', ''),
 			'limit'           => Request::getInt('limit', 50, 'request'),
 			'limitstart'      => Request::getInt('limitstart', 0, 'get'),
 			'search'          => Request::getString('search', ''),

@@ -291,6 +291,10 @@ if ($label == 'none') {
 							<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 						<?php endif; ?>
 				</label>
+				<label for="ackeywords">
+					<?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?>:
+					<input type="text" name="keyword" id="ackeywords" value="<?php echo $this->escape($this->filters['keyword']); ?>" />
+				</label>
 				<label for="author">
 					<?php echo Lang::txt('COM_CITATIONS_AUTHORED_BY'); ?>
 					<input type="text" name="author" id="author" value="<?php echo $this->escape($this->filters['author']); ?>" />
