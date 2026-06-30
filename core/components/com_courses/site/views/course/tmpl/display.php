@@ -16,7 +16,9 @@ if ($this->course->isManager())
 	$filters = array(
 		'available' => false,
 		'state'     => array(0, 1, 3),
-		'sort'      => 'created',
+		// Same publish-date ordering the public sees (managers just also see
+		// unpublished offerings, which fall back to created within that sort).
+		'sort'      => 'available',
 		'sort_Dir'  => 'DESC'
 	);
 }
