@@ -207,7 +207,7 @@ class Editor extends Obj
 
 		foreach ($results as $result)
 		{
-			if (trim($result))
+			if (trim((string) $result))
 			{
 				$return .= $result;
 			}
@@ -236,7 +236,7 @@ class Editor extends Obj
 
 		foreach ($results as $result)
 		{
-			if (trim($result))
+			if (trim((string) $result))
 			{
 				$return .= $result;
 			}
@@ -260,7 +260,7 @@ class Editor extends Obj
 
 		foreach ($results as $result)
 		{
-			if (trim($result))
+			if (trim((string) $result))
 			{
 				$return .= $result;
 			}
@@ -285,7 +285,7 @@ class Editor extends Obj
 
 		foreach ($results as $result)
 		{
-			if (trim($result))
+			if (trim((string) $result))
 			{
 				$return .= $result;
 			}

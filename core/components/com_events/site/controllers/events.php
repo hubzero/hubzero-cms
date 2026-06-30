@@ -922,7 +922,7 @@ class Events extends SiteController
 		$pages = $page->loadPages($event->id);
 
 		// Check if registration is still open
-		$registerby = strtotime($event->registerby);
+		$registerby = $event->registerby ? strtotime($event->registerby) : 0;
 		$now = time();
 
 		$register = array();

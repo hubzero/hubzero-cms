@@ -630,6 +630,11 @@ class Register extends SiteController
 					$suri = Route::url('index.php?option=' . $this->_option . '&task=myaccount');
 				}
 
+				if (!$suri)
+				{
+					$suri = rtrim(Request::base(true), '/') . '/';
+				}
+
 				App::redirect(
 					$suri
 				);

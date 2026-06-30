@@ -931,7 +931,7 @@ class Articles extends SiteController
 		}
 
 		// Add feed links
-		if ($params->get('show_feed_link', 1))
+		if ($params->get('show_feed_link', 1) && Document::getType() == 'html')
 		{
 			$link = '&format=feed&limitstart=';
 
@@ -1480,7 +1480,7 @@ class Articles extends SiteController
 		}
 
 		// Add feed links
-		if ($params->get('show_feed_link', 1))
+		if ($params->get('show_feed_link', 1) && Document::getType() == 'html')
 		{
 			$link = '&format=feed&limitstart=';
 

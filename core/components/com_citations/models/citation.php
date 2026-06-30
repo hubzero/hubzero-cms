@@ -285,7 +285,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 			if (!empty($filters['reftype']) && count($filters['reftype']) < 4)
 			{
-				$refKeys = array_keys($filters['reftype']);
+				$refKeys = array_values(array_intersect(
+					array_keys($filters['reftype']),
+					array_keys($refTypes)
+				));
+				if (empty($refKeys))
+				{
+					return $this;
+				}
 				$firstQuery = $refKeys[0];
 				$query = '(';
 				$queryBindings = array();
@@ -307,6 +314,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							break;
 						case 'cyberinfrastructure':
 							$excludes = array_merge($refTypes['research'], $refTypes['education']);
+							break;
 						case 'education':
 							$excludes = $refTypes['research'];
 							break;
