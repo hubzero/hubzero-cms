@@ -423,18 +423,22 @@ class Assetv1_0 extends base
 				{
 					$param_path = $tool_path . $asset->get('id') . DS . $file[0];
 
-					// See if the file exists, and if not, copy the file there
-					if (!is_dir(dirname($param_path)))
+					// See if the file exists, and if not, copy the file there.
+					// Set deterministic, group-writable permissions (setgid keeps
+					// the access-data group) so course tools can read the staged
+					// files without an admin having to re-chmod them each time.
+					$param_dir = dirname($param_path);
+
+					if (!is_dir($param_dir))
 					{
-						mkdir(dirname($param_path));
-						copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
+						mkdir($param_dir, 0775, true);
+						chmod($param_dir, 02775);
 					}
-					else
+
+					if (!is_file($param_path))
 					{
-						if (!is_file($param_path))
-						{
-							copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
-						}
+						copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
+						chmod($param_path, 0664);
 					}
 
 					// Set the type and build the invoke url with file param
