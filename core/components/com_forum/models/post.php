@@ -719,56 +719,85 @@ class Post extends Relational
 			$this->set('rgt', 1);
 		}
 
-		if ($this->isNew() && $this->get('parent'))
+		if ($isNew && $this->get('parent'))
 		{
 			$parent = $this->parent();
 
-			if (!$parent)
+			// parent() returns false (or a blank model) when the id does not
+			// resolve, so guard against both before using it as a tree anchor.
+			if (!$parent || !$parent->get('id'))
 			{
 				$this->addError(Lang::txt('Parent node does not exist.'));
 				return false;
 			}
 
-			// Get the reposition data for shifting the tree and re-inserting the node.
-			if (!($reposition = $this->getTreeRepositionData($parent, 2, 'last-child')))
-			{
-				// Error message set in getNode method.
-				return false;
-			}
+			// The forum tables are MyISAM, which supports neither transactions
+			// nor row-level locking, so concurrent replies to the same thread
+			// (e.g. a double-submit) would interleave the nested-set shifts
+			// below and corrupt the lft/rgt values -- leaving orphaned rows at
+			// lft/rgt = 0 or overlapping ranges (support ticket #2159).
+			// Serialize them with an advisory, thread-scoped named lock.
+			$db   = \App::get('db');
+			$lock = 'com_forum.thread.' . (int) $parent->get('thread');
+			$db->setQuery('SELECT GET_LOCK(' . $db->quote($lock) . ', 10)');
+			$db->loadResult();
 
-			// Shift left values.
-			$query = $this->getQuery()
-				->update($this->getTableName())
-				->set(['lft' => new Raw('lft + 2')])
-				->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
-				->whereEquals('scope', $parent->get('scope'))
-				->whereEquals('scope_id', $parent->get('scope_id'))
-				->whereEquals('thread', $parent->get('thread'));
-			if (!$query->execute())
+			try
 			{
-				$this->addError($query->getError());
-				return false;
-			}
+				// Re-read the parent inside the lock: a concurrent reply may
+				// have shifted the tree since it was first loaded above.
+				$parent = $this->parent();
 
-			// Shift right values.
-			$query = $this->getQuery()
-				->update($this->getTableName())
-				->set(['rgt' => new Raw('rgt + 2')])
-				->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
-				->whereEquals('scope', $parent->get('scope'))
-				->whereEquals('scope_id', $parent->get('scope_id'))
-				->whereEquals('thread', $parent->get('thread'));
-			if (!$query->execute())
+				// Get the reposition data for shifting the tree and re-inserting the node.
+				if (!($reposition = $this->getTreeRepositionData($parent, 2, 'last-child')))
+				{
+					// Error message set in getNode method.
+					return false;
+				}
+
+				// Shift left values.
+				$query = $this->getQuery()
+					->update($this->getTableName())
+					->set(['lft' => new Raw('lft + 2')])
+					->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
+					->whereEquals('scope', $parent->get('scope'))
+					->whereEquals('scope_id', $parent->get('scope_id'))
+					->whereEquals('thread', $parent->get('thread'));
+				if (!$query->execute())
+				{
+					$this->addError($query->getError());
+					return false;
+				}
+
+				// Shift right values.
+				$query = $this->getQuery()
+					->update($this->getTableName())
+					->set(['rgt' => new Raw('rgt + 2')])
+					->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
+					->whereEquals('scope', $parent->get('scope'))
+					->whereEquals('scope_id', $parent->get('scope_id'))
+					->whereEquals('thread', $parent->get('thread'));
+				if (!$query->execute())
+				{
+					$this->addError($query->getError());
+					return false;
+				}
+
+				$this->set('lft', $reposition->new_lft);
+				$this->set('rgt', $reposition->new_rgt);
+
+				$result = parent::save();
+			}
+			finally
 			{
-				$this->addError($query->getError());
-				return false;
+				$db->setQuery('SELECT RELEASE_LOCK(' . $db->quote($lock) . ')');
+				$db->loadResult();
 			}
-
-			$this->set('lft', $reposition->new_lft);
-			$this->set('rgt', $reposition->new_rgt);
 		}
-
-		$result = parent::save();
+		else
+		{
+			$result = parent::save();
+		}
 
 		if ($result)
 		{
@@ -839,8 +868,8 @@ class Post extends Relational
 	 */
 	protected function getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
 	{
-		// Make sure the reference an object with a left and right id.
-		if (!is_object($referenceNode) && isset($referenceNode->lft) && isset($referenceNode->rgt))
+		// Make sure the reference is an object with a left and right id.
+		if (!is_object($referenceNode) || !isset($referenceNode->lft) || !isset($referenceNode->rgt))
 		{
 			return false;
 		}
