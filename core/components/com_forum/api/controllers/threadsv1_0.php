@@ -746,8 +746,16 @@ class Threadsv1_0 extends ApiController
 		if ($row->get('parent'))
 		{
 			$thread = Post::oneOrFail($row->get('thread'));
-			$thread->set('last_activity', ($fields['id'] ? $row->get('modified') : $row->get('created')));
-			$thread->save();
+
+			// Only bump the thread's last-activity timestamp for NEW replies.
+			// Editing an existing post must not re-sort the thread to the top
+			// of the activity-ordered listing or misrepresent the most recent
+			// post (see support ticket #2145).
+			if (!$fields['id'])
+			{
+				$thread->set('last_activity', $row->get('created'));
+				$thread->save();
+			}
 
 			$type = 'post';
 			$desc = Lang::txt(
