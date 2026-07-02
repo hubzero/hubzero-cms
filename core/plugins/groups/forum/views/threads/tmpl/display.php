@@ -39,18 +39,53 @@ $this->css()
 		<?php
 		$threading = $this->config->get('threading', 'list');
 
-		$total = $this->thread->thread()
-			->whereIn('state', $this->filters['state'])
-			->whereIn('access', $this->filters['access'])
-			->total();
+		if ($threading == 'tree')
+		{
+			// Tree mode: the entire thread must be loaded so the nested-set
+			// tree can be built from its root. Paginating the flat post list
+			// would orphan every reply whose ancestors land on another page,
+			// producing blank pages and "lost" posts (support ticket #2159).
+			// Instead, build the full tree and paginate the top-level replies,
+			// each of which carries its complete sub-thread.
+			$all = $this->thread->thread()
+				->whereIn('state', $this->filters['state'])
+				->whereIn('access', $this->filters['access'])
+				->order('lft', 'asc')
+				->rows();
 
-		$posts = $this->thread->thread()
-			->whereIn('state', $this->filters['state'])
-			->whereIn('access', $this->filters['access'])
-			->order(($threading == 'tree' ? 'lft' : 'id'), 'asc')
-			->limit($this->filters['limit'])
-			->start($this->filters['start'])
-			->rows();
+			$tree     = $this->thread->toTree($all);
+			$root     = isset($tree[0]) ? $tree[0] : null;
+			$branches = $root ? $root->get('replies') : array();
+			$total    = count($branches);
+
+			if ($root)
+			{
+				$root->set('replies', array_slice($branches, $this->filters['start'], $this->filters['limit']));
+				$posts = array($root);
+			}
+			else
+			{
+				$posts = array();
+			}
+			$count = count($posts);
+		}
+		else
+		{
+			$total = $this->thread->thread()
+				->whereIn('state', $this->filters['state'])
+				->whereIn('access', $this->filters['access'])
+				->total();
+
+			$posts = $this->thread->thread()
+				->whereIn('state', $this->filters['state'])
+				->whereIn('access', $this->filters['access'])
+				->order('id', 'asc')
+				->limit($this->filters['limit'])
+				->start($this->filters['start'])
+				->rows();
+
+			$count = $posts->count();
+		}
 
 		$pageNav = new Hubzero\Pagination\Paginator(
 			$total,
@@ -58,13 +93,8 @@ $this->css()
 			$this->filters['limit']
 		);
 
-		if ($posts->count() > 0)
+		if ($count > 0)
 		{
-			if ($threading == 'tree')
-			{
-				$posts = $this->thread->toTree($posts);
-			}
-
 			$this->view('_list')
 				 ->set('option', $this->option)
 				 ->set('group', $this->group)
