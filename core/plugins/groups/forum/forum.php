@@ -1586,8 +1586,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$post->set('section', $section->get('alias'));
 			$post->set('category', $category->get('alias'));
 
-			// Figure out who should be notified about this comment (all group members for now)
-			$userIDsToEmail = $this->_getEmailRecipientIds($category);
+			// Figure out who should be notified about this comment. Only members
+			// authorised to view the content (section/category/thread/post
+			// access levels) are emailed (ticket 307).
+			$userIDsToEmail = $this->_getEmailRecipientIds($category, array(
+				$section->get('access'),
+				$category->get('access'),
+				$thread->get('access'),
+				$post->get('access')
+			));
 
 			$allowEmailResponses = true;
 
@@ -1809,19 +1816,46 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get email recipient IDs
 	 *
-	 * @param   object  $category
+	 * @param   object  $category       Category the post belongs to
+	 * @param   array   $accessLevels   View levels the content is gated behind
+	 *                                  (section/category/thread/post access).
+	 *                                  A recipient is only notified if they are
+	 *                                  authorised to view every one of them.
 	 * @return  array
 	 */
-	protected function _getEmailRecipientIds($category)
+	protected function _getEmailRecipientIds($category, $accessLevels = array())
 	{
 		$userIDsToEmail = array();
 		$memberoptions = $this->_loadMemberOptions();
 		$categorySubscriptionsEnabled = Component::params('com_groups')->get('enable_forum_email_categories', 0);
 		$users = $this->_loadExistingUsers($this->members);
 
+		// Normalize the content's access levels to a unique list of ints
+		$accessLevels = array_unique(array_filter(array_map('intval', (array) $accessLevels)));
+
 		foreach ($users as $user)
 		{
 			$userId = $user->get('id');
+
+			// Don't notify members who can't actually view the content. This
+			// mirrors the sections() listing logic: a group member can see a
+			// view level if it is one of the membership-implied levels
+			// (2=Registered, 4=Protected, 5=Private) or is among the user's
+			// own authorised view levels. Without this, restricted discussions
+			// (e.g. a "Group Managers" category) were emailed to every member
+			// regardless of access level (ticket 307).
+			if (!empty($accessLevels))
+			{
+				$viewable = array_merge(
+					array(1, 2, 4, 5),
+					\Hubzero\Access\Access::getAuthorisedViewLevels($userId)
+				);
+
+				if (array_diff($accessLevels, $viewable))
+				{
+					continue;
+				}
+			}
 
 			$sendEmail = $this->_shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category);
 
