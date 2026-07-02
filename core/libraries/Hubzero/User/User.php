@@ -418,11 +418,13 @@ class User extends \Hubzero\Database\Relational
 			$key = 'id';
 		}
 
-		// If the givenName, middleName, or surname isn't set, try to determine it from the name
-		if (($key == 'givenName' || $key == 'middleName' || $key == 'surname') && parent::get($key, null) == null)
-		{
-			return $this->parseName($key);
-		}
+		// Name parts (givenName/middleName/surname) are split from the full
+		// name once at account creation/registration and persisted. They are
+		// authoritative thereafter — we do NOT re-derive them from the full
+		// name on read. Doing so fabricated a middle name out of multi-word
+		// given/surname values whenever the middle was legitimately blank,
+		// producing doubled names like "Maria Clara Clara Faria Faria Chaves"
+		// (ticket 381).
 
 		// Legacy code expects get('id') to always
 		// return an integer, even if user is logged out
@@ -1019,63 +1021,4 @@ class User extends \Hubzero\Database\Relational
 		return $result;
 	}
 
-	/**
-	 * Parse a users name and set the name parts on the instance
-	 *
-	 * @return void
-	 */
-	private function parseName($key=null)
-	{
-		$name = $this->get('name');
-		if ($name)
-		{
-			$firstname  = "";
-			$middlename = "";
-			$lastname   = "";
-
-			$words = array_map('trim', explode(' ', $this->get('name')));
-			$count = count($words);
-
-			if ($count == 1)
-			{
-				$firstname = $words[0];
-			}
-			else if ($count == 2)
-			{
-				$firstname = $words[0];
-				$lastname  = $words[1];
-			}
-			else if ($count == 3)
-			{
-				$firstname  = $words[0];
-				$middlename = $words[1];
-				$lastname   = $words[2];
-			}
-			else
-			{
-				$firstname  = $words[0];
-				$lastname   = $words[$count-1];
-				$middlename = $words[1];
-
-				for ($i = 2; $i < $count-1; $i++)
-				{
-					$middlename .= ' ' . $words[$i];
-				}
-			}
-			switch ($key)
-			{
-				case 'givenName':
-					return trim($firstname);
-					break;
-				case 'middleName':
-					return trim($middlename);
-					break;
-				case 'surname':
-					return trim($lastname);
-					break;
-				default:
-					return '';
-			}
-		}
-	}
 }
