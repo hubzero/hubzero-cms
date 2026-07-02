@@ -452,8 +452,17 @@ class Threads extends SiteController
 		if ($post->get('parent'))
 		{
 			$thread = isset($thread) ? $thread : Post::oneOrFail($post->get('thread'));
-			$thread->set('last_activity', ($fields['id'] ? $post->get('modified') : $post->get('created')));
-			$thread->save();
+
+			// Only bump the thread's last-activity timestamp for NEW replies.
+			// Editing an existing post must not make the thread appear as
+			// though a new reply was made -- doing so re-sorts the thread to
+			// the top of the activity-ordered listing and misrepresents the
+			// most recent post (see support ticket #2145).
+			if (!$fields['id'])
+			{
+				$thread->set('last_activity', $post->get('created'));
+				$thread->save();
+			}
 
 			$type = 'post';
 			$desc = Lang::txt(
