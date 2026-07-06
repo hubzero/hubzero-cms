@@ -87,7 +87,9 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	public function __construct($repository, $token = null, $reference = 'HEAD', $branch = 'master', Client $client = null)
 	{
-		if (!is_string($repository)
+		$repository = $this->normalizeRepository($repository);
+
+		if ($repository === ''
 			|| substr_count($repository, '/') !== 1
 			|| substr($repository, 0, 1) === '/'
 			|| substr($repository, -1, 1) === '/')
@@ -104,6 +106,34 @@ class GithubAdapter extends AbstractAdapter
 		$this->reference = (string) $reference;
 		$this->branch    = (string) $branch;
 		$this->client    = $client ?: new Client();
+	}
+
+	/**
+	 * Reduce a variety of accepted repository inputs to the "owner/repo" form
+	 * the GitHub API needs.
+	 *
+	 * Users routinely paste a full clone URL into the connection's repository
+	 * field (e.g. "https://github.com/owner/repo.git" or
+	 * "git@github.com:owner/repo.git"); the previous adapter rejected those
+	 * outright, which is one of the failures behind support ticket 4965.
+	 *
+	 * @param   mixed  $repository
+	 * @return  string
+	 **/
+	private function normalizeRepository($repository)
+	{
+		$repository = trim((string) $repository);
+
+		// Pull "owner/repo" out of a full GitHub URL (https or scp-style).
+		if (preg_match('#github\.com[:/]+([^/]+/[^/]+)#i', $repository, $matches))
+		{
+			$repository = $matches[1];
+		}
+
+		// Drop a trailing ".git" and any surrounding slashes.
+		$repository = preg_replace('#\.git$#i', '', $repository);
+
+		return trim($repository, '/');
 	}
 
 	/**
