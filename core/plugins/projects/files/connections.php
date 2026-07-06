@@ -388,7 +388,13 @@ class connections
 	{
 		$canManage = $this->connectionManageableByUser();
 
-		if ($canManage)
+		if ($this->isRateLimited($error))
+		{
+			$message = $canManage
+				? Lang::txt('GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to authenticate it, which raises the limit.')
+				: Lang::txt('This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. A project manager needs to authenticate it with GitHub.');
+		}
+		elseif ($canManage)
 		{
 			$message = Lang::txt('This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.');
 		}
@@ -409,6 +415,31 @@ class connections
 		$html .= '</div>';
 
 		return $html;
+	}
+
+	/**
+	 * Whether a browse failure was caused by GitHub's request rate limit --
+	 * typically the low (60/hour) anonymous limit used for public repositories.
+	 * Walks the exception chain so a wrapped cause is still detected.
+	 *
+	 * @param   \Throwable  $error
+	 * @return  bool
+	 */
+	private function isRateLimited($error)
+	{
+		while ($error instanceof \Throwable)
+		{
+			if ($error instanceof \Github\Exception\ApiLimitExceedException
+				|| stripos($error->getMessage(), 'rate limit') !== false
+				|| stripos($error->getMessage(), 'hourly limit') !== false)
+			{
+				return true;
+			}
+
+			$error = $error->getPrevious();
+		}
+
+		return false;
 	}
 
 	/**
