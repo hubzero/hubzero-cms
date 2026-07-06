@@ -223,9 +223,12 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	public function has($path)
 	{
-		return $this->readCall(function () use ($path) {
-			return $this->contents()->exists($this->vendor, $this->package, $path, $this->reference);
-		});
+		// Route through showMetadata() rather than knplabs' exists(): exists()
+		// swallows a rejected-credential error and returns false, which would
+		// bypass the anonymous retry in readCall() and make a public file look
+		// missing whenever a stale token is stored. show() throws instead, so
+		// the fallback applies; a genuinely absent path returns false.
+		return $this->showMetadata($path) !== false;
 	}
 
 	/**
