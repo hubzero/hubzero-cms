@@ -52,4 +52,23 @@ class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
 		// Return the adapter (read-only; backed by knplabs/github-api directly)
 		return new GithubAdapter($repository, $params['access_token']);
 	}
+
+	/**
+	 * Whether a connection still needs an interactive OAuth authorization.
+	 *
+	 * The GitHub access token is a single shared per-connection credential, so
+	 * the OAuth handshake is a one-time setup step performed by a project
+	 * manager -- not something every viewer supplies. Callers use this to avoid
+	 * bouncing read-only members (who may not even have a GitHub account) into
+	 * the OAuth flow when a connection has no token yet.
+	 *
+	 * @param   array  $params  The stored connection params
+	 * @return  bool
+	 **/
+	public static function requiresAuthorization($params = [])
+	{
+		$params = (array) $params;
+
+		return empty($params['access_token']);
+	}
 }
