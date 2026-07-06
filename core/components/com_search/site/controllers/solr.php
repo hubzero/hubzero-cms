@@ -145,11 +145,18 @@ class Solr extends SiteController
 		{
 			$query = $query->sortBy($sortBy, $sortDir);
 		}
+		// A bogus/stale type id resolves to false (no such SearchComponent), so
+		// normalize it to null and fall through to an all-types search rather
+		// than reading ->filters on a boolean.
 		$typeComponent = null;
 		if ($type != null)
 		{
-			$typeComponent = SearchComponent::one($type);
-			foreach ($typeComponent->filters as $filter)
+			$loaded = SearchComponent::one($type);
+			$typeComponent = is_object($loaded) ? $loaded : null;
+		}
+		if ($typeComponent)
+		{
+			foreach (($typeComponent->filters ?? []) as $filter)
 			{
 				if (method_exists($filter, 'addCounts'))
 				{
