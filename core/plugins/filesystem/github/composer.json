@@ -16,9 +16,9 @@
 		"issues": "https://help.hubzero.org"
 	},
 	"require": {
-		"php" : "^5.4",
-		"league/flysystem": "1.0.*",
-		"hubzero/flysystem-github": "dev-develop"
+		"php" : "^8.2",
+		"league/flysystem": "1.1.*",
+		"knplabs/github-api": "^3.16"
 	},
 	"extra": {
 		"install-directory": "/plugins/filesystem/github/"
