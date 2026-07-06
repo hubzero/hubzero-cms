@@ -20,55 +20,59 @@ class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
 	/**
 	 * Initializes the github connection
 	 *
+	 * Builds the read-only adapter directly. Public repositories are readable
+	 * anonymously, so we deliberately do NOT force an OAuth handshake here: it
+	 * is wrong to ask a user to grant account-wide access just to read a public
+	 * repo that may not even be theirs. A token is used only if one has already
+	 * been stored (for private repos). Establishing that token is an explicit,
+	 * manager-initiated step -- see authorize().
+	 *
 	 * @param   array   $params  Any connection params needed
 	 * @return  object
 	 **/
 	public static function init($params = [])
 	{
-		// Get the params
-		$pparams = Plugin::params('filesystem', 'github');
+		$repository = isset($params['repository']) ? $params['repository'] : '';
+		$token      = isset($params['access_token']) ? $params['access_token'] : null;
 
-		$app_key    = $pparams['app_key'];
-		$app_secret = $pparams['app_secret'];
-		$repository = $params['repository'];
-
-		if (!isset($params['access_token']))
-		{
-			$base  = 'https://github.com/login/oauth/authorize';
-			$query = '?client_id=' . $app_key;
-			$scope = '&scope=user,repo';
-
-			$return = (Request::getString('return')) ? Request::getString('return') : Request::current(true);
-			$return = base64_encode($return);
-			$state  = '&state=' . $return;
-
-			Session::set('github.state', $return);
-			Session::set('github.connection_to_set_up', Request::getInt('connection', 0));
-			Session::set('github.repo', $repository);
-
-			App::redirect($base . $query . $scope . $state);
-		}
-
-		// Return the adapter (read-only; backed by knplabs/github-api directly)
-		return new GithubAdapter($repository, $params['access_token']);
+		return new GithubAdapter($repository, $token);
 	}
 
 	/**
-	 * Whether a connection still needs an interactive OAuth authorization.
+	 * Begin the GitHub OAuth handshake for a connection (redirects to GitHub).
 	 *
-	 * The GitHub access token is a single shared per-connection credential, so
-	 * the OAuth handshake is a one-time setup step performed by a project
-	 * manager -- not something every viewer supplies. Callers use this to avoid
-	 * bouncing read-only members (who may not even have a GitHub account) into
-	 * the OAuth flow when a connection has no token yet.
+	 * This must only ever be reached from a manager-gated action: it mints a
+	 * token bound to the authorizing user's own GitHub account, so it is never
+	 * triggered implicitly by browsing. Public repositories never reach this
+	 * path -- they are read anonymously by init().
 	 *
 	 * @param   array  $params  The stored connection params
-	 * @return  bool
+	 * @return  void
 	 **/
-	public static function requiresAuthorization($params = [])
+	public static function authorize($params = [])
 	{
-		$params = (array) $params;
+		$pparams = Plugin::params('filesystem', 'github');
+		$app_key = $pparams['app_key'];
 
-		return empty($params['access_token']);
+		$repository = isset($params['repository']) ? $params['repository'] : '';
+
+		$base  = 'https://github.com/login/oauth/authorize';
+		$query = '?client_id=' . $app_key;
+
+		// This is a read-only connector, and this path is reached only for
+		// private repositories. In classic GitHub OAuth, 'repo' is the sole
+		// scope that grants read access to private repos (it unavoidably also
+		// covers write). We drop the previous 'user' scope, which was never used.
+		$scope = '&scope=repo';
+
+		$return = (Request::getString('return')) ? Request::getString('return') : Request::current(true);
+		$return = base64_encode($return);
+		$state  = '&state=' . $return;
+
+		Session::set('github.state', $return);
+		Session::set('github.connection_to_set_up', Request::getInt('connection', 0));
+		Session::set('github.repo', $repository);
+
+		App::redirect($base . $query . $scope . $state);
 	}
 }

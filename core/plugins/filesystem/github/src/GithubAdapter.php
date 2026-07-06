@@ -167,6 +167,55 @@ class GithubAdapter extends AbstractAdapter
 	}
 
 	/**
+	 * Run a read against the API, transparently retrying anonymously if GitHub
+	 * rejects the stored credential.
+	 *
+	 * A public repository is readable without any credential, so an expired or
+	 * revoked token must never block reading one. If the authenticated call
+	 * fails with an auth error we drop the credential and try again as an
+	 * anonymous client; a genuinely private repo will still fail (as "Not
+	 * Found"), which callers handle.
+	 *
+	 * @param   callable  $fn
+	 * @return  mixed
+	 **/
+	private function readCall(callable $fn)
+	{
+		try
+		{
+			return $fn();
+		}
+		catch (RuntimeException $e)
+		{
+			if (!empty($this->token) && $this->isAuthFailure($e))
+			{
+				$this->token         = null;
+				$this->authenticated = false;
+				$this->client        = new Client();
+
+				return $fn();
+			}
+
+			throw $e;
+		}
+	}
+
+	/**
+	 * Whether an API exception indicates the credential was rejected.
+	 *
+	 * @param   RuntimeException  $e
+	 * @return  bool
+	 **/
+	private function isAuthFailure(RuntimeException $e)
+	{
+		$message = strtolower($e->getMessage());
+
+		return $e->getCode() == 401
+			|| strpos($message, 'bad credentials') !== false
+			|| strpos($message, 'requires authentication') !== false;
+	}
+
+	/**
 	 * Check that a file or directory exists in the repository
 	 *
 	 * @param   string  $path
@@ -174,7 +223,9 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	public function has($path)
 	{
-		return $this->contents()->exists($this->vendor, $this->package, $path, $this->reference);
+		return $this->readCall(function () use ($path) {
+			return $this->contents()->exists($this->vendor, $this->package, $path, $this->reference);
+		});
 	}
 
 	/**
@@ -185,7 +236,9 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	public function read($path)
 	{
-		return [self::KEY_CONTENTS => $this->contents()->download($this->vendor, $this->package, $path, $this->reference)];
+		return [self::KEY_CONTENTS => $this->readCall(function () use ($path) {
+			return $this->contents()->download($this->vendor, $this->package, $path, $this->reference);
+		})];
 	}
 
 	/**
@@ -267,12 +320,26 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	public function getTimestamp($path)
 	{
-		$commits = $this->commitsForFile($path);
-		$updated = array_shift($commits);
+		// Display-only metadata: a commit lookup can legitimately fail (e.g. the
+		// default branch is not "master"), and that must never break browsing.
+		try
+		{
+			$commits = $this->commitsForFile($path);
+			$updated = array_shift($commits);
 
-		$time = new \DateTime($updated['commit']['committer']['date']);
+			if (isset($updated['commit']['committer']['date']))
+			{
+				$time = new \DateTime($updated['commit']['committer']['date']);
 
-		return [self::KEY_TIMESTAMP => $time->getTimestamp()];
+				return [self::KEY_TIMESTAMP => $time->getTimestamp()];
+			}
+		}
+		catch (\Throwable $e)
+		{
+			// fall through to a safe default
+		}
+
+		return [self::KEY_TIMESTAMP => 0];
 	}
 
 	/**
@@ -343,7 +410,9 @@ class GithubAdapter extends AbstractAdapter
 	{
 		try
 		{
-			return $this->contents()->show($this->vendor, $this->package, $path, $this->reference);
+			return $this->readCall(function () use ($path) {
+				return $this->contents()->show($this->vendor, $this->package, $path, $this->reference);
+			});
 		}
 		catch (RuntimeException $exception)
 		{
@@ -366,16 +435,17 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	private function recursiveMetadata($path, $recursive)
 	{
-		$this->authenticate();
-
 		// If the response is truncated the tree exceeded GitHub's limit and
 		// additional calls would be needed to page through it.
-		$info = $this->client->api('git')->trees()->show(
-			$this->vendor,
-			$this->package,
-			$this->reference,
-			$recursive
-		);
+		$info = $this->readCall(function () use ($recursive) {
+			$this->authenticate();
+			return $this->client->api('git')->trees()->show(
+				$this->vendor,
+				$this->package,
+				$this->reference,
+				$recursive
+			);
+		});
 
 		$tree = isset($info[self::KEY_TREE]) ? $info[self::KEY_TREE] : [];
 
@@ -460,13 +530,16 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	private function commitsForFile($path)
 	{
-		$this->authenticate();
-
-		return $this->client->api('repo')->commits()->all(
-			$this->vendor,
-			$this->package,
-			['sha' => $this->branch, 'path' => $path]
-		);
+		return $this->readCall(function () use ($path) {
+			$this->authenticate();
+			// Omit 'sha' so GitHub uses the repository's actual default branch
+			// (which may be "main", not the legacy "master").
+			return $this->client->api('repo')->commits()->all(
+				$this->vendor,
+				$this->package,
+				['path' => $path]
+			);
+		});
 	}
 
 	/**

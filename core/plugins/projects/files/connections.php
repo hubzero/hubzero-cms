@@ -318,31 +318,37 @@ class connections
 	}
 
 	/**
-	 * Whether this connection's provider still needs an interactive (OAuth)
-	 * authorization before it can be browsed -- i.e. it is an OAuth-based
-	 * provider that has no stored token yet.
+	 * Begin an OAuth handshake to authorize this connection's provider.
 	 *
-	 * Only OAuth providers (currently GitHub) opt in via a static
-	 * requiresAuthorization() method, so other providers (S3, local, ...) are
-	 * unaffected.
+	 * Manager-gated: only a genuine project manager may grant provider access,
+	 * because it binds their own account to the shared connection. Public
+	 * repositories never need this -- they are read anonymously -- so this is
+	 * reached only for private repositories, and only via an explicit click.
 	 *
-	 * @return  bool
+	 * @return  void
 	 */
-	private function connectionNeedsAuthorization()
+	public function authorize()
 	{
+		if (!$this->connection || !$this->connectionManageableByUser())
+		{
+			App::redirect(Route::url($this->model->link('files')));
+		}
+
 		\Plugin::import('filesystem');
 
 		$alias  = $this->connection->provider ? $this->connection->provider->alias : '';
 		$plugin = 'plgFilesystem' . ucfirst($alias);
 
-		if (!$alias || !method_exists($plugin, 'requiresAuthorization'))
+		if (method_exists($plugin, 'authorize'))
 		{
-			return false;
+			// Make the connection id available to the provider's OAuth setup.
+			Request::setVar('connection', $this->connection->get('id'));
+
+			$params = json_decode($this->connection->params ? $this->connection->params : '{}', true);
+			$plugin::authorize(is_array($params) ? $params : []); // redirects away
 		}
 
-		$params = json_decode($this->connection->params ? $this->connection->params : '{}', true);
-
-		return $plugin::requiresAuthorization(is_array($params) ? $params : []);
+		App::redirect(Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->get('id')));
 	}
 
 	/**
@@ -384,7 +390,7 @@ class connections
 
 		if ($canManage)
 		{
-			$message = Lang::txt('This connection could not be reached. Its access may have expired — reconnect to sign in to the provider again.');
+			$message = Lang::txt('This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.');
 		}
 		else
 		{
@@ -396,8 +402,8 @@ class connections
 
 		if ($canManage)
 		{
-			$reconnect = Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $this->connection->id);
-			$html .= '<p><a class="btn" href="' . $reconnect . '">' . Lang::txt('Reconnect') . '</a></p>';
+			$authorize = Route::url($this->model->link('files') . '&action=authorize&connection=' . $this->connection->id);
+			$html .= '<p><a class="btn" href="' . $authorize . '">' . Lang::txt('Connect with GitHub') . '</a></p>';
 		}
 
 		$html .= '</div>';
@@ -417,13 +423,6 @@ class connections
 		if (!isset($connection_params->path))
 		{
 			return $this->setup_base_dir();
-		}
-
-		// Only project managers may (re)authorize an OAuth connection; a
-		// read-only member must never be bounced into the provider's OAuth flow.
-		if ($this->connectionNeedsAuthorization() && !$this->connectionManageableByUser())
-		{
-			return $this->connectionUnavailable();
 		}
 
 		$view = new \Hubzero\Plugin\View([
@@ -475,13 +474,6 @@ class connections
 	 */
 	public function setup_base_dir()
 	{
-		// Only project managers may (re)authorize an OAuth connection; a
-		// read-only member must never be bounced into the provider's OAuth flow.
-		if ($this->connectionNeedsAuthorization() && !$this->connectionManageableByUser())
-		{
-			return $this->connectionUnavailable();
-		}
-
 		$view = new \Hubzero\Plugin\View([
 			'folder'	=> 'projects',
 			'element'	=> 'files',
