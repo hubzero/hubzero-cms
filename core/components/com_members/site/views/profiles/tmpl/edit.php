@@ -176,7 +176,7 @@ foreach ($profiles as $profile)
 
 		<fieldset id="memberpicture">
 			<legend><?php echo Lang::txt('MEMBER_PICTURE'); ?></legend>
-			<iframe width="100%" height="350" border="0" name="filer" id="filer" src="<?php echo Route::url('index.php?option='.$this->option.'&controller=media&tmpl=component&file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('id')); ?>"></iframe>
+			<iframe width="100%" height="350" border="0" name="filer" id="filer" src="<?php echo Route::url('index.php?option='.$this->option.'&controller=media&tmpl=component&file='.stripslashes($this->profile->get('picture') ?? '').'&amp;id='.$this->profile->get('id')); ?>"></iframe>
 		</fieldset><div class="clear"></div>
 
 		<?php echo Html::input('token'); ?>
