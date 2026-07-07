@@ -89,4 +89,59 @@ class MailLog
 
 		return $count;
 	}
+
+	/**
+	 * External deliveries in each of the last 60 minutes, computed live from the
+	 * log tail. Returns 60 buckets oldest-first: [['label' => 'HH:MM', 'value' => n], ...].
+	 *
+	 * @return  array
+	 */
+	public static function sentLastHourByMinute()
+	{
+		$now    = time();
+		$counts = array();  // "Mon dd HH:MM" => count
+		$order  = array();  // preserves oldest -> newest ordering
+		for ($i = 59; $i >= 0; $i--)
+		{
+			$t   = $now - ($i * 60);
+			$key = date('M', $t) . ' ' . sprintf('%2d', (int) date('j', $t)) . ' ' . date('H:i', $t);
+			$counts[$key] = 0;
+			$order[] = array('key' => $key, 'label' => date('H:i', $t));
+		}
+
+		$path = self::path();
+		if ($path && is_readable($path) && ($fh = @fopen($path, 'r')))
+		{
+			$size = @filesize($path);
+			if ($size !== false && $size > 4194304)
+			{
+				@fseek($fh, $size - 4194304);
+				@fgets($fh);
+			}
+			while (($line = fgets($fh)) !== false)
+			{
+				if (strpos($line, 'status=sent') === false)
+				{
+					continue;
+				}
+				if (strpos($line, 'relay=local') !== false || strpos($line, 'relay=virtual') !== false)
+				{
+					continue;
+				}
+				$pfx = substr($line, 0, 12);
+				if (isset($counts[$pfx]))
+				{
+					$counts[$pfx]++;
+				}
+			}
+			fclose($fh);
+		}
+
+		$series = array();
+		foreach ($order as $o)
+		{
+			$series[] = array('label' => $o['label'], 'value' => $counts[$o['key']]);
+		}
+		return $series;
+	}
 }

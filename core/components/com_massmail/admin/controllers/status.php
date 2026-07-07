@@ -137,6 +137,9 @@ class Status extends AdminController
 			$hourlyVolume[] = array('label' => date('H', $t), 'value' => isset($hmap[$k]) ? $hmap[$k] : 0);
 		}
 
+		// Last 60 minutes, by minute -- computed live from the log tail.
+		$lastHourVolume = MailLog::sentLastHourByMinute();
+
 		$db->setQuery("SELECT sent FROM `#__massmail_postfix_daily` WHERE `day` = CURDATE()");
 		$sentToday = (int) $db->loadResult();
 		$db->setQuery("SELECT COALESCE(SUM(sent),0) FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 6 DAY)");
@@ -175,6 +178,7 @@ class Status extends AdminController
 			->set('queuePeak24h', $queuePeak24h)
 			->set('dailyVolume', $dailyVolume)
 			->set('hourlyVolume', $hourlyVolume)
+			->set('lastHourVolume', $lastHourVolume)
 			->set('sentToday', $sentToday)
 			->set('sent7d', $sent7d)
 			->set('collectorRun', $collectorRun)
