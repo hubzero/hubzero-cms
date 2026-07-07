@@ -7,6 +7,8 @@
 
 namespace Components\Massmail\Helpers;
 
+require_once __DIR__ . DS . 'queue.php';
+
 /**
  * Collects Postfix outbound volume (messages that left the host) from the mail
  * log into hourly and daily rollups for the dashboard's volume chart.
@@ -262,10 +264,25 @@ class PostfixCollector
 		);
 		$db->execute();
 
-		// Retention: keep fine-grained data only while useful; keep daily long.
+		// Sample the current Postfix queue depth (a gauge) for the recent-trend
+		// chart, since the always-on collector -- not the (often-disabled)
+		// sender -- is what should keep this fresh.
+		$depth = Queue::size();
+		if ($depth >= 0)
+		{
+			$db->setQuery(
+				"INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES (" . $db->quote(\Date::toSql()) . ", " . (int) $depth . ")"
+			);
+			$db->execute();
+			$result['queue_depth'] = $depth;
+		}
+
+		// Retention: fine-grained data only while useful; keep daily long.
 		$db->setQuery("DELETE FROM `#__massmail_postfix_hourly` WHERE `hour` < (NOW() - INTERVAL 45 DAY)");
 		$db->execute();
 		$db->setQuery("DELETE FROM `#__massmail_postfix_daily` WHERE `day` < (CURDATE() - INTERVAL 730 DAY)");
+		$db->execute();
+		$db->setQuery("DELETE FROM `#__massmail_queue_samples` WHERE `recorded` < (UTC_TIMESTAMP() - INTERVAL 3 DAY)");
 		$db->execute();
 
 		return $result;

@@ -37,7 +37,7 @@ $bars = function ($series, $everyN, $color) {
 	{
 		return '<p class="mm-legend">' . Lang::txt('COM_MASSMAIL_CHART_NO_DATA') . '</p>';
 	}
-	$W = 900; $H = 200; $padL = 34; $padB = 22; $padT = 14;
+	$W = 520; $H = 200; $padL = 34; $padB = 22; $padT = 14;
 	$plotW = $W - $padL; $plotH = $H - $padB - $padT;
 	$n = count($series); $slot = $plotW / $n; $bw = max(2, $slot - 3); $base = $padT + $plotH;
 	$svg  = '<figure><svg viewBox="0 0 ' . $W . ' ' . $H . '" width="100%" role="img" preserveAspectRatio="xMidYMid meet">';
@@ -129,22 +129,23 @@ $bars = function ($series, $everyN, $color) {
 		</div>
 	</div>
 
-	<div class="mm-card" style="margin-bottom:16px;">
-		<h3>
-			<?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?>
-			<span style="font-weight:400;color:#718096;font-size:12px;">
-				&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_TODAY', number_format($this->sentToday)); ?>
-				&middot; <?php echo Lang::txt('COM_MASSMAIL_DASH_7DAYS', number_format($this->sent7d)); ?>
-			</span>
-		</h3>
-		<?php echo $bars($this->dailyVolume, 5, '#2b6cb0'); ?>
-		<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LEGEND'); ?></p>
-	</div>
-
-	<div class="mm-card" style="margin-bottom:16px;">
-		<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
-		<?php echo $bars($this->hourlyVolume, 6, '#3182ce'); ?>
-		<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_HOUR_LOCAL'); ?></p>
+	<div class="mm-cards" style="margin-bottom:16px;">
+		<div class="mm-card">
+			<h3>
+				<?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?>
+				<span style="font-weight:400;color:#718096;font-size:12px;">
+					&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_TODAY', number_format($this->sentToday)); ?>
+					&middot; <?php echo Lang::txt('COM_MASSMAIL_DASH_7DAYS', number_format($this->sent7d)); ?>
+				</span>
+			</h3>
+			<?php echo $bars($this->dailyVolume, 5, '#2b6cb0'); ?>
+			<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LEGEND'); ?></p>
+		</div>
+		<div class="mm-card">
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
+			<?php echo $bars($this->hourlyVolume, 6, '#3182ce'); ?>
+			<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_HOUR_LOCAL'); ?></p>
+		</div>
 	</div>
 
 	<div class="mm-cards">
@@ -185,9 +186,12 @@ $bars = function ($series, $everyN, $color) {
 		</div>
 
 		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_24H'); ?></h3>
+			<h3>
+				<?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_RECENT'); ?>
+				<span style="font-weight:400;color:#718096;font-size:12px;">&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_PEAK_24H', number_format($this->queuePeak24h)); ?></span>
+			</h3>
 			<?php
-			$qs = $this->queueSeries;
+			$qs = $this->queueRecent;
 			if (count($qs) < 2) { ?>
 				<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_COLLECTING'); ?></p>
 			<?php } else {
@@ -195,20 +199,20 @@ $bars = function ($series, $everyN, $color) {
 				$plotW = $W - $padL; $plotH = $H - $padB - $padT;
 				$base = $padT + $plotH;
 				$qvals = array();
-				foreach ($qs as $p) { $qvals[] = (int) $p->queue_size; }
+				foreach ($qs as $p) { $qvals[] = (int) $p->depth; }
 				$qmax = max(1, max($qvals), (int) $this->watermark);
 				$n = count($qs); $step = $n > 1 ? $plotW / ($n - 1) : $plotW;
 				$pts = array();
 				foreach ($qs as $i => $p) {
 					$x = $padL + $i * $step;
-					$y = $base - ((int) $p->queue_size / $qmax) * $plotH;
+					$y = $base - ((int) $p->depth / $qmax) * $plotH;
 					$pts[] = round($x, 1) . ',' . round($y, 1);
 				}
 				$line = implode(' ', $pts);
 				$area = $padL . ',' . $base . ' ' . $line . ' ' . ($padL + ($n - 1) * $step) . ',' . $base;
 				$wy = $base - ((int) $this->watermark / $qmax) * $plotH;
 				?>
-				<figure><svg viewBox="0 0 <?php echo $W; ?> <?php echo $H; ?>" width="100%" role="img" aria-label="<?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_24H'); ?>" preserveAspectRatio="xMidYMid meet">
+				<figure><svg viewBox="0 0 <?php echo $W; ?> <?php echo $H; ?>" width="100%" role="img" aria-label="<?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_RECENT'); ?>" preserveAspectRatio="xMidYMid meet">
 					<line x1="<?php echo $padL; ?>" y1="<?php echo $base; ?>" x2="<?php echo $W; ?>" y2="<?php echo $base; ?>" stroke="#e2e8f0" stroke-width="1" />
 					<polygon points="<?php echo $area; ?>" fill="#2b6cb0" fill-opacity="0.12" />
 					<polyline points="<?php echo $line; ?>" fill="none" stroke="#2b6cb0" stroke-width="2" stroke-linejoin="round" />

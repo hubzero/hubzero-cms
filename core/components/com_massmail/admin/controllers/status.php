@@ -106,11 +106,14 @@ class Status extends AdminController
 
 		// --- Queue depth over time (last 24h of cron snapshots) --------------
 		$db->setQuery(
-			"SELECT recorded, queue_size FROM `#__massmail_stats`
-			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 24 HOUR)
+			"SELECT recorded, depth FROM `#__massmail_queue_samples`
+			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)
 			 ORDER BY recorded ASC"
 		);
-		$queueSeries = $db->loadObjectList();
+		$queueRecent = $db->loadObjectList();
+
+		$db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 24 HOUR)");
+		$queuePeak24h = (int) $db->loadResult();
 
 		// --- Postfix outbound volume (all senders, from the log collector) ---
 		$db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY) ORDER BY `day`");
@@ -168,7 +171,8 @@ class Status extends AdminController
 			->set('messagesPending', $messagesPending)
 			->set('byStatus', $byStatus)
 			->set('hourlySeries', $hourlySeries)
-			->set('queueSeries', $queueSeries)
+			->set('queueRecent', $queueRecent)
+			->set('queuePeak24h', $queuePeak24h)
 			->set('dailyVolume', $dailyVolume)
 			->set('hourlyVolume', $hourlyVolume)
 			->set('sentToday', $sentToday)
