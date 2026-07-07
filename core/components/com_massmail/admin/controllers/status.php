@@ -40,6 +40,8 @@ class Status extends AdminController
 		// --- Live rate signals ------------------------------------------------
 		$queue          = Queue::status();
 		$queueSize      = $queue['available'] ? $queue['size'] : -1;
+		$pfRunning      = Queue::isRunning();
+		$pfConfig       = Queue::config();
 		$ourLastHour    = Sender::sentLastHour();
 		$systemLastHour = MailLog::sentLastHour();
 		$effectiveSent  = ($systemLastHour >= 0) ? max($systemLastHour, $ourLastHour) : $ourLastHour;
@@ -80,29 +82,10 @@ class Status extends AdminController
 			$byStatus[$r->status] = (int) $r->c;
 		}
 
-		// --- Sends per hour, last 24h (bucketed by UTC hour of send) ---------
-		$db->setQuery(
-			"SELECT DATE_FORMAT(sent_on, '%Y-%m-%d %H') AS hk, COUNT(*) c
-			 FROM `#__massmail_recipients`
-			 WHERE status = " . Recipient::SENT . " AND sent_on IS NOT NULL
-			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL 24 HOUR)
-			 GROUP BY hk"
-		);
-		$map = array();
-		foreach ($db->loadObjectList() as $r)
-		{
-			$map[$r->hk] = (int) $r->c;
-		}
-		$hourlySeries = array();
-		for ($i = 23; $i >= 0; $i--)
-		{
-			$t = time() - ($i * 3600);
-			$key = gmdate('Y-m-d H', $t);
-			$hourlySeries[] = array(
-				'label' => date('H', $t),
-				'value' => isset($map[$key]) ? $map[$key] : 0
-			);
-		}
+		// --- Mass mail actually sent (from our own recipient records) --------
+		$mmLastHour = $this->series($this->sentMap('%Y-%m-%d %H:%i', '1 HOUR'), 60, 60, 'Y-m-d H:i', 'H:i');
+		$mmHourly   = $this->series($this->sentMap('%Y-%m-%d %H', '48 HOUR'), 48, 3600, 'Y-m-d H', 'H');
+		$mmDaily    = $this->series($this->sentMap('%Y-%m-%d', '29 DAY'), 30, 86400, 'Y-m-d', 'n/j');
 
 		// --- Queue depth over time (last 24h of cron snapshots) --------------
 		$db->setQuery(
@@ -140,13 +123,10 @@ class Status extends AdminController
 		// Last 60 minutes, by minute -- computed live from the log tail.
 		$lastHourVolume = MailLog::sentLastHourByMinute();
 
-		$db->setQuery("SELECT sent FROM `#__massmail_postfix_daily` WHERE `day` = CURDATE()");
-		$sentToday = (int) $db->loadResult();
-		$db->setQuery("SELECT COALESCE(SUM(sent),0) FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 6 DAY)");
-		$sent7d = (int) $db->loadResult();
-
-		$db->setQuery("SELECT last_run FROM `#__massmail_postfix_state` WHERE id = 1");
-		$collectorRun = $db->loadResult();
+		$db->setQuery("SELECT last_run, last_sent FROM `#__massmail_postfix_state` WHERE id = 1");
+		$pfState = $db->loadObject();
+		$collectorRun = $pfState ? $pfState->last_run : null;
+		$lastSent     = $pfState ? $pfState->last_sent : null;
 
 		// --- Cron ------------------------------------------------------------
 		$db->setQuery("SELECT state, last_run FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
@@ -160,6 +140,9 @@ class Status extends AdminController
 			->set('snapshot', StatusModel::instance())
 			->set('queue', $queue)
 			->set('queueSize', $queueSize)
+			->set('pfRunning', $pfRunning)
+			->set('pfConfig', $pfConfig)
+			->set('lastSent', $lastSent)
 			->set('ourLastHour', $ourLastHour)
 			->set('systemLastHour', $systemLastHour)
 			->set('effectiveSent', $effectiveSent)
@@ -173,17 +156,68 @@ class Status extends AdminController
 			->set('messagesFailed', $messagesFailed)
 			->set('messagesPending', $messagesPending)
 			->set('byStatus', $byStatus)
-			->set('hourlySeries', $hourlySeries)
+			->set('mmLastHour', $mmLastHour)
+			->set('mmHourly', $mmHourly)
+			->set('mmDaily', $mmDaily)
 			->set('queueRecent', $queueRecent)
 			->set('queuePeak24h', $queuePeak24h)
 			->set('dailyVolume', $dailyVolume)
 			->set('hourlyVolume', $hourlyVolume)
 			->set('lastHourVolume', $lastHourVolume)
-			->set('sentToday', $sentToday)
-			->set('sent7d', $sent7d)
 			->set('collectorRun', $collectorRun)
 			->set('recent', $recent)
 			->set('cron', $cron)
 			->display();
+	}
+
+	/**
+	 * Map of "sent" recipient counts keyed by a DATE_FORMAT of sent_on (UTC),
+	 * over a trailing interval.
+	 *
+	 * @param   string  $fmt       MySQL DATE_FORMAT string
+	 * @param   string  $interval  e.g. '48 HOUR', '29 DAY'
+	 * @return  array
+	 */
+	protected function sentMap($fmt, $interval)
+	{
+		$db = App::get('db');
+		$db->setQuery(
+			"SELECT DATE_FORMAT(sent_on, '" . $fmt . "') AS k, COUNT(*) c
+			 FROM `#__massmail_recipients`
+			 WHERE status = " . Recipient::SENT . " AND sent_on IS NOT NULL
+			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL " . $interval . ")
+			 GROUP BY k"
+		);
+		$map = array();
+		foreach ($db->loadObjectList() as $r)
+		{
+			$map[$r->k] = (int) $r->c;
+		}
+		return $map;
+	}
+
+	/**
+	 * Build a gap-filled chart series ending now.
+	 *
+	 * @param   array    $map       counts keyed by gmdate($keyFmt)
+	 * @param   integer  $count     number of buckets
+	 * @param   integer  $step      seconds per bucket
+	 * @param   string   $keyFmt    gmdate() format matching the map keys (UTC)
+	 * @param   string   $labelFmt  date() format for the (local) label
+	 * @return  array
+	 */
+	protected function series($map, $count, $step, $keyFmt, $labelFmt)
+	{
+		$out = array();
+		for ($i = $count - 1; $i >= 0; $i--)
+		{
+			$t = time() - ($i * $step);
+			$k = gmdate($keyFmt, $t);
+			$out[] = array(
+				'label' => date($labelFmt, $t),
+				'value' => isset($map[$k]) ? $map[$k] : 0
+			);
+		}
+		return $out;
 	}
 }

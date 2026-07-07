@@ -18,61 +18,54 @@ if ($canDo->get('core.admin'))
 
 $sendingOn = (int) $this->params->get('sending_enabled', 0);
 $cronOn    = ($this->cron && (int) $this->cron->state == 1);
-$sys       = $this->systemLastHour;    // -1 if log unreadable
 $queueTxt  = $this->queueSize < 0 ? Lang::txt('COM_MASSMAIL_DASH_QUEUE_UNREADABLE') : number_format($this->queueSize);
 
-// ---- helpers for tiny inline SVG charts --------------------------------------
-$Mailing = '\Components\Massmail\Models\Mailing';
 $statusColors = array(
 	'draft' => '#94a3b8', 'pending_approval' => '#dd6b20', 'preparing' => '#3182ce',
 	'sending' => '#2b6cb0', 'paused' => '#b7791f', 'sent' => '#2f855a', 'cancelled' => '#a0aec0'
 );
 
-// Reusable bar-chart renderer (single series). Returns an SVG string.
+// Reusable single-series bar-chart renderer. Empty data draws just the axis.
 $bars = function ($series, $everyN, $color) {
 	$vals = array();
 	foreach ($series as $h) { $vals[] = $h['value']; }
 	$peak  = $vals ? max($vals) : 0;
-	$scale = $peak > 0 ? $peak : 1; // avoid div-by-zero; empty charts just draw the axis
+	$scale = $peak > 0 ? $peak : 1;
 	$W = 520; $H = 200; $padL = 34; $padB = 22; $padT = 14;
 	$plotW = $W - $padL; $plotH = $H - $padB - $padT;
-	$n = count($series); $slot = $plotW / $n; $bw = max(2, $slot - 3); $base = $padT + $plotH;
+	$n = count($series); $slot = $plotW / max(1, $n); $bw = max(2, $slot - 3); $base = $padT + $plotH;
 	$svg  = '<figure><svg viewBox="0 0 ' . $W . ' ' . $H . '" width="100%" role="img" preserveAspectRatio="xMidYMid meet">';
 	$svg .= '<line x1="' . $padL . '" y1="' . $padT . '" x2="' . $W . '" y2="' . $padT . '" stroke="#edf2f7"/>';
 	$svg .= '<line x1="' . $padL . '" y1="' . $base . '" x2="' . $W . '" y2="' . $base . '" stroke="#e2e8f0"/>';
-	if ($peak > 0)
-	{
-		$svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 4) . '" text-anchor="end" font-size="10" fill="#a0aec0">' . $peak . '</text>';
-	}
+	if ($peak > 0) { $svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 4) . '" text-anchor="end" font-size="10" fill="#a0aec0">' . $peak . '</text>'; }
 	$svg .= '<text x="' . ($padL - 6) . '" y="' . $base . '" text-anchor="end" font-size="10" fill="#a0aec0">0</text>';
-	foreach ($series as $i => $h)
-	{
+	foreach ($series as $i => $h) {
 		$x = $padL + $i * $slot + ($slot - $bw) / 2;
 		$bh = ($h['value'] / $scale) * $plotH;
 		$y = $base - $bh;
-		if ($h['value'] > 0)
-		{
+		if ($h['value'] > 0) {
 			$svg .= '<rect x="' . round($x, 1) . '" y="' . round($y, 1) . '" width="' . round($bw, 1) . '" height="' . round($bh, 1) . '" rx="3" fill="' . $color . '"><title>' . $h['label'] . ' — ' . $h['value'] . '</title></rect>';
 		}
-		if ($i % $everyN == 0)
-		{
+		if ($i % $everyN == 0) {
 			$svg .= '<text x="' . round($x + $bw / 2, 1) . '" y="' . ($H - 6) . '" text-anchor="middle" font-size="9" fill="#a0aec0">' . $h['label'] . '</text>';
 		}
 	}
 	$svg .= '</svg></figure>';
 	return $svg;
 };
+
+$sum = function ($s) { return array_sum(array_column($s, 'value')); };
 ?>
 <style>
 .mm-dash { max-width: 1100px; }
 .mm-dash .mm-alert { padding:10px 14px; border-radius:6px; margin:0 0 10px; font-weight:600; }
 .mm-dash .mm-alert.warn { background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; }
-.mm-tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:14px 0 22px; }
-.mm-tile { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; }
-.mm-tile .n { font-size:26px; font-weight:700; line-height:1.1; color:#1a202c; }
-.mm-tile .l { font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:#718096; margin-top:4px; }
-.mm-tile .s { font-size:12px; color:#a0aec0; margin-top:2px; }
-.mm-tile.on  .n { color:#2f855a; } .mm-tile.off .n { color:#c53030; }
+.mm-section { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:#718096; font-weight:700; margin:18px 0 8px; }
+.mm-section:first-of-type { margin-top:6px; }
+.mm-statusline { display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:11px 16px; margin-bottom:12px; font-size:13px; color:#4a5568; }
+.mm-statusline .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.mm-statusline .ok { background:#2f855a; } .mm-statusline .bad { background:#c53030; }
+.mm-statusline strong { color:#1a202c; font-weight:700; }
 .mm-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media (max-width:800px){ .mm-cards{ grid-template-columns:1fr; } }
 .mm-cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
@@ -82,6 +75,7 @@ $bars = function ($series, $everyN, $color) {
 .mm-card figure { margin:0; }
 .mm-legend { font-size:11px; color:#718096; margin-top:6px; }
 .mm-pill { display:inline-block; padding:2px 8px; border-radius:10px; color:#fff; font-size:11px; font-weight:600; }
+.mm-count { display:inline-block; padding:0 7px; border-radius:5px; background:#2f855a; color:#fff; font-size:11px; font-weight:700; line-height:1.6; margin-left:8px; vertical-align:middle; }
 .mm-sbar { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:13px; }
 .mm-sbar .bar { height:10px; border-radius:5px; }
 .mm-recent { width:100%; border-collapse:collapse; margin-top:6px; }
@@ -93,107 +87,59 @@ $bars = function ($series, $everyN, $color) {
 	<?php if (!$sendingOn) { ?><div class="mm-alert warn"><?php echo Lang::txt('COM_MASSMAIL_DASH_SENDING_DISABLED'); ?></div><?php } ?>
 	<?php if (!$cronOn) { ?><div class="mm-alert warn"><?php echo Lang::txt('COM_MASSMAIL_DASH_CRON_WARNING'); ?></div><?php } ?>
 
-	<div class="mm-tiles">
-		<div class="mm-tile <?php echo $sendingOn ? 'on' : 'off'; ?>">
-			<div class="n"><?php echo $sendingOn ? Lang::txt('JYES') : Lang::txt('JNO'); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_SENDING_ENABLED'); ?></div>
+	<!-- Mass Mail -->
+	<div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_MASSMAIL'); ?></div>
+	<div class="mm-statusline">
+		<span><span class="dot <?php echo $sendingOn ? 'ok' : 'bad'; ?>"></span><?php echo Lang::txt('COM_MASSMAIL_DASH_SENDING_ENABLED'); ?>: <strong><?php echo $sendingOn ? Lang::txt('JYES') : Lang::txt('JNO'); ?></strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT'); ?>: <strong><?php echo number_format($this->hourly); ?>/hr</strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR'); ?>: <strong><?php echo number_format($this->ourLastHour); ?></strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_REMAINING'); ?>: <strong><?php echo number_format($this->hourlyRemaining); ?></strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING'); ?>: <strong><?php echo number_format($this->messagesPending); ?></strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_FAILED'); ?>: <strong><?php echo number_format($this->messagesFailed); ?></strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_SENT'); ?>: <strong><?php echo number_format($this->messagesSent); ?></strong></span>
+	</div>
+	<div class="mm-cards-3" style="margin-bottom:4px;">
+		<div class="mm-card">
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_LASTHOUR'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmLastHour))); ?></span></h3>
+			<?php echo $bars($this->mmLastHour, 10, '#4299e1'); ?>
 		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo number_format($this->hourly); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT'); ?></div>
+		<div class="mm-card">
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_HOURLY'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmHourly))); ?></span></h3>
+			<?php echo $bars($this->mmHourly, 6, '#3182ce'); ?>
 		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo $sys < 0 ? number_format($this->ourLastHour) : number_format($sys); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR'); ?></div>
-			<div class="s"><?php echo $sys < 0 ? Lang::txt('COM_MASSMAIL_DASH_OURS_ONLY') : Lang::txt('COM_MASSMAIL_DASH_INCL_ALL', number_format($this->ourLastHour)); ?></div>
-		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo number_format($this->hourlyRemaining); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_REMAINING'); ?></div>
-			<div class="s"><?php echo Lang::txt('COM_MASSMAIL_DASH_NEXT_RUN', number_format($this->nextRunBudget)); ?></div>
-		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo $queueTxt; ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_QUEUE_SIZE'); ?></div>
-			<div class="s"><?php echo Lang::txt('COM_MASSMAIL_DASH_WATERMARK') . ': ' . number_format($this->watermark); ?></div>
-		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo number_format($this->messagesPending); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING'); ?></div>
-		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo number_format($this->messagesSent); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_SENT'); ?></div>
-		</div>
-		<div class="mm-tile">
-			<div class="n"><?php echo number_format($this->messagesFailed); ?></div>
-			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_FAILED'); ?></div>
+		<div class="mm-card">
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENT_DAILY'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->mmDaily))); ?></span></h3>
+			<?php echo $bars($this->mmDaily, 5, '#2b6cb0'); ?>
 		</div>
 	</div>
 
-	<div class="mm-cards-3" style="margin-bottom:16px;">
+	<!-- Postfix Outbound -->
+	<div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_POSTFIX'); ?></div>
+	<div class="mm-statusline">
+		<span><span class="dot <?php echo $this->pfRunning ? 'ok' : 'bad'; ?>"></span><?php echo Lang::txt('COM_MASSMAIL_PF_SERVICE'); ?>: <strong><?php echo Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED'); ?></strong></span>
+		<span><span class="dot <?php echo $this->pfConfig['configured'] ? 'ok' : 'bad'; ?>"></span><strong><?php echo Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED'); ?></strong><?php if ($this->pfConfig['configured'] && $this->pfConfig['version']) { echo ' <span style="color:#a0aec0;">' . $this->escape($this->pfConfig['version']) . '</span>'; } ?></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong> <span style="color:#a0aec0;">(<?php echo Lang::txt('COM_MASSMAIL_DASH_WATERMARK'); ?> <?php echo number_format($this->watermark); ?>)</span></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_LAST_SENT'); ?>: <strong><?php echo $this->lastSent ? $this->escape($this->lastSent) : '&mdash;'; ?></strong></span>
+	</div>
+	<div class="mm-cards-3" style="margin-bottom:4px;">
 		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LASTHOUR'); ?></h3>
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LASTHOUR'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->lastHourVolume))); ?></span></h3>
 			<?php echo $bars($this->lastHourVolume, 10, '#4299e1'); ?>
-			<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_LASTHOUR_LEGEND'); ?></p>
 		</div>
 		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->hourlyVolume))); ?></span></h3>
 			<?php echo $bars($this->hourlyVolume, 6, '#3182ce'); ?>
-			<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_HOUR_LOCAL'); ?></p>
 		</div>
 		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?></h3>
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?><span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->dailyVolume))); ?></span></h3>
 			<?php echo $bars($this->dailyVolume, 5, '#2b6cb0'); ?>
-			<p class="mm-legend">
-				<?php echo Lang::txt('COM_MASSMAIL_DASH_TODAY', number_format($this->sentToday)); ?>
-				&middot; <?php echo Lang::txt('COM_MASSMAIL_DASH_7DAYS', number_format($this->sent7d)); ?>
-			</p>
 		</div>
 	</div>
 
-	<div class="mm-cards">
+	<!-- Queue depth trend + mailings by status -->
+	<div class="mm-cards" style="margin-top:14px;">
 		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_SENDS_24H'); ?></h3>
-			<?php
-			$series = $this->hourlySeries;
-			$vals = array();
-			foreach ($series as $h) { $vals[] = $h['value']; }
-			$peak = $vals ? max($vals) : 0;
-			if ($peak <= 0) { ?>
-				<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_NO_SENDS'); ?></p>
-			<?php } else {
-				$W = 720; $H = 190; $padL = 30; $padB = 22; $padT = 14;
-				$plotW = $W - $padL; $plotH = $H - $padB - $padT;
-				$n = count($series); $slot = $plotW / $n; $bw = max(3, $slot - 3);
-				$base = $padT + $plotH;
-				?>
-				<figure><svg viewBox="0 0 <?php echo $W; ?> <?php echo $H; ?>" width="100%" role="img" aria-label="<?php echo Lang::txt('COM_MASSMAIL_CHART_SENDS_24H'); ?>" preserveAspectRatio="xMidYMid meet">
-					<line x1="<?php echo $padL; ?>" y1="<?php echo $padT; ?>" x2="<?php echo $W; ?>" y2="<?php echo $padT; ?>" stroke="#edf2f7" stroke-width="1" />
-					<line x1="<?php echo $padL; ?>" y1="<?php echo $base; ?>" x2="<?php echo $W; ?>" y2="<?php echo $base; ?>" stroke="#e2e8f0" stroke-width="1" />
-					<text x="<?php echo $padL - 6; ?>" y="<?php echo $padT + 4; ?>" text-anchor="end" font-size="10" fill="#a0aec0"><?php echo $peak; ?></text>
-					<text x="<?php echo $padL - 6; ?>" y="<?php echo $base; ?>" text-anchor="end" font-size="10" fill="#a0aec0">0</text>
-					<?php foreach ($series as $i => $h) {
-						$x = $padL + $i * $slot + ($slot - $bw) / 2;
-						$bh = $peak > 0 ? ($h['value'] / $peak) * $plotH : 0;
-						$y = $base - $bh;
-						if ($h['value'] > 0) { ?>
-							<rect x="<?php echo round($x, 1); ?>" y="<?php echo round($y, 1); ?>" width="<?php echo round($bw, 1); ?>" height="<?php echo round($bh, 1); ?>" rx="3" fill="#2b6cb0"><title><?php echo $h['label'] . ':00 — ' . $h['value']; ?></title></rect>
-						<?php }
-						if ($i % 4 == 0) { ?>
-							<text x="<?php echo round($x + $bw / 2, 1); ?>" y="<?php echo $H - 6; ?>" text-anchor="middle" font-size="9" fill="#a0aec0"><?php echo $h['label']; ?></text>
-						<?php }
-					} ?>
-				</svg></figure>
-				<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_HOUR_LOCAL'); ?></p>
-			<?php } ?>
-		</div>
-
-		<div class="mm-card">
-			<h3>
-				<?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_RECENT'); ?>
-				<span style="font-weight:400;color:#718096;font-size:12px;">&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_PEAK_24H', number_format($this->queuePeak24h)); ?></span>
-			</h3>
+			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_RECENT'); ?> <span style="font-weight:400;color:#718096;font-size:12px;">&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_PEAK_24H', number_format($this->queuePeak24h)); ?></span></h3>
 			<?php
 			$qs = $this->queueRecent;
 			if (count($qs) < 2) { ?>
@@ -216,7 +162,7 @@ $bars = function ($series, $everyN, $color) {
 				$area = $padL . ',' . $base . ' ' . $line . ' ' . ($padL + ($n - 1) * $step) . ',' . $base;
 				$wy = $base - ((int) $this->watermark / $qmax) * $plotH;
 				?>
-				<figure><svg viewBox="0 0 <?php echo $W; ?> <?php echo $H; ?>" width="100%" role="img" aria-label="<?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_RECENT'); ?>" preserveAspectRatio="xMidYMid meet">
+				<figure><svg viewBox="0 0 <?php echo $W; ?> <?php echo $H; ?>" width="100%" role="img" preserveAspectRatio="xMidYMid meet">
 					<line x1="<?php echo $padL; ?>" y1="<?php echo $base; ?>" x2="<?php echo $W; ?>" y2="<?php echo $base; ?>" stroke="#e2e8f0" stroke-width="1" />
 					<polygon points="<?php echo $area; ?>" fill="#2b6cb0" fill-opacity="0.12" />
 					<polyline points="<?php echo $line; ?>" fill="none" stroke="#2b6cb0" stroke-width="2" stroke-linejoin="round" />
@@ -224,12 +170,9 @@ $bars = function ($series, $everyN, $color) {
 					<text x="<?php echo $W - 4; ?>" y="<?php echo round($wy - 3, 1); ?>" text-anchor="end" font-size="9" fill="#dd6b20"><?php echo Lang::txt('COM_MASSMAIL_DASH_WATERMARK') . ' ' . (int) $this->watermark; ?></text>
 					<text x="<?php echo $padL - 6; ?>" y="<?php echo $padT + 4; ?>" text-anchor="end" font-size="10" fill="#a0aec0"><?php echo $qmax; ?></text>
 				</svg></figure>
-				<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_LEGEND'); ?></p>
 			<?php } ?>
 		</div>
-	</div>
 
-	<div class="mm-cards" style="margin-top:16px;">
 		<div class="mm-card">
 			<h3><?php echo Lang::txt('COM_MASSMAIL_DASH_BY_STATUS'); ?></h3>
 			<?php
@@ -252,28 +195,27 @@ $bars = function ($series, $everyN, $color) {
 				<?php }
 			} ?>
 		</div>
+	</div>
 
-		<div class="mm-card">
-			<h3><?php echo Lang::txt('COM_MASSMAIL_DASH_RECENT'); ?></h3>
-			<?php if (!$this->recent->count()) { ?>
-				<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_NO_MAILINGS'); ?></p>
-			<?php } else { ?>
-				<table class="mm-recent">
-					<tbody>
-					<?php foreach ($this->recent as $m) {
-						$col = isset($statusColors[$m->get('status')]) ? $statusColors[$m->get('status')] : '#718096';
-						?>
-						<tr>
-							<td>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailings&task=show&id=' . $m->get('id')); ?>"><?php echo $this->escape(stripslashes($m->get('subject'))); ?></a>
-							</td>
-							<td><span class="mm-pill" style="background:<?php echo $col; ?>;"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($m->get('status'))); ?></span></td>
-							<td><?php echo (int) $m->get('sent_count') . ' / ' . (int) $m->get('total_recipients'); ?></td>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
-			<?php } ?>
-		</div>
+	<!-- Recent mailings -->
+	<div class="mm-card" style="margin-top:16px;">
+		<h3><?php echo Lang::txt('COM_MASSMAIL_DASH_RECENT'); ?></h3>
+		<?php if (!$this->recent->count()) { ?>
+			<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_NO_MAILINGS'); ?></p>
+		<?php } else { ?>
+			<table class="mm-recent">
+				<tbody>
+				<?php foreach ($this->recent as $m) {
+					$col = isset($statusColors[$m->get('status')]) ? $statusColors[$m->get('status')] : '#718096';
+					?>
+					<tr>
+						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=mailings&task=show&id=' . $m->get('id')); ?>"><?php echo $this->escape(stripslashes($m->get('subject'))); ?></a></td>
+						<td><span class="mm-pill" style="background:<?php echo $col; ?>;"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($m->get('status'))); ?></span></td>
+						<td><?php echo (int) $m->get('sent_count') . ' / ' . (int) $m->get('total_recipients'); ?></td>
+					</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+		<?php } ?>
 	</div>
 </div>

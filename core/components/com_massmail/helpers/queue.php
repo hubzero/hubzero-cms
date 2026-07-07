@@ -85,4 +85,40 @@ class Queue
 		$s = self::status();
 		return $s['available'] ? $s['size'] : -1;
 	}
+
+	/**
+	 * Is the Postfix master (the daemon that runs the outbound delivery
+	 * services) currently running? `postfix status` needs root, so we look for
+	 * the master process directly, which any user can see.
+	 *
+	 * @return  boolean
+	 */
+	public static function isRunning()
+	{
+		$out = array();
+		$rc  = 1;
+		@exec("pgrep -f 'postfix/master' 2>/dev/null", $out, $rc);
+		return ($rc === 0 && !empty($out));
+	}
+
+	/**
+	 * Is Postfix installed and configured on this host?
+	 *
+	 * @return  array  ['configured' => bool, 'version' => string]
+	 */
+	public static function config()
+	{
+		$out = array();
+		$rc  = 1;
+		@exec('postconf -h mail_version 2>/dev/null', $out, $rc);
+		if ($rc === 0 && !empty($out))
+		{
+			return array('configured' => true, 'version' => trim($out[0]));
+		}
+		if (is_readable('/etc/postfix/main.cf'))
+		{
+			return array('configured' => true, 'version' => '');
+		}
+		return array('configured' => false, 'version' => '');
+	}
 }

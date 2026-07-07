@@ -21,6 +21,9 @@ require_once __DIR__ . DS . 'queue.php';
  */
 class PostfixCollector
 {
+	/** Newest external-send timestamp seen during the current pass. */
+	protected static $maxTs = 0;
+
 	protected static $months = array(
 		'Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'May' => 5, 'Jun' => 6,
 		'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12
@@ -117,6 +120,10 @@ class PostfixCollector
 			$dk = date('Y-m-d', $ts);
 			$hours[$hk] = isset($hours[$hk]) ? $hours[$hk] + 1 : 1;
 			$days[$dk]  = isset($days[$dk])  ? $days[$dk] + 1  : 1;
+			if ($ts > self::$maxTs)
+			{
+				self::$maxTs = $ts;
+			}
 			$n++;
 		}
 		return $n;
@@ -158,6 +165,7 @@ class PostfixCollector
 
 		$hours = array();
 		$days  = array();
+		self::$maxTs = 0;
 
 		if (!$state || $lastInode === 0)
 		{
@@ -264,6 +272,28 @@ class PostfixCollector
 		);
 		$db->execute();
 
+		// Record the newest external-send timestamp for "last message sent".
+		// If we've never recorded one (e.g. first run predated this feature),
+		// scan history once to backfill it.
+		if (self::$maxTs <= 0)
+		{
+			$db->setQuery("SELECT last_sent FROM `#__massmail_postfix_state` WHERE id = 1");
+			if (!$db->loadResult())
+			{
+				self::$maxTs = self::maxExternalSendTs();
+			}
+		}
+		if (self::$maxTs > 0)
+		{
+			$ls = date('Y-m-d H:i:s', self::$maxTs);
+			$db->setQuery(
+				"UPDATE `#__massmail_postfix_state` SET last_sent = " . $db->quote($ls) . "
+				 WHERE id = 1 AND (last_sent IS NULL OR last_sent < " . $db->quote($ls) . ")"
+			);
+			$db->execute();
+			$result['last_sent'] = $ls;
+		}
+
 		// Sample the current Postfix queue depth (a gauge) for the recent-trend
 		// chart, since the always-on collector -- not the (often-disabled)
 		// sender -- is what should keep this fresh.
@@ -286,5 +316,55 @@ class PostfixCollector
 		$db->execute();
 
 		return $result;
+	}
+
+	/**
+	 * Scan all readable log files for the newest external-send timestamp
+	 * (read-only; used to backfill "last message sent" the first time).
+	 *
+	 * @return  integer  unix ts, or 0 if none found
+	 */
+	protected static function maxExternalSendTs()
+	{
+		$path = self::logPath();
+		if (!$path)
+		{
+			return 0;
+		}
+		$files = glob(dirname($path) . '/' . basename($path) . '*');
+		if (!$files)
+		{
+			$files = array($path);
+		}
+		$max = 0;
+		$now = time();
+		foreach ($files as $f)
+		{
+			if (!is_file($f) || !is_readable($f))
+			{
+				continue;
+			}
+			$ref = @filemtime($f) ?: $now;
+			$gz  = (substr($f, -3) === '.gz');
+			$fh  = $gz ? @gzopen($f, 'rb') : @fopen($f, 'rb');
+			if (!$fh)
+			{
+				continue;
+			}
+			while (($line = ($gz ? gzgets($fh) : fgets($fh))) !== false)
+			{
+				if (!self::isExternalSent($line))
+				{
+					continue;
+				}
+				$ts = self::parseTs($line, $ref);
+				if ($ts !== false && $ts > $max)
+				{
+					$max = $ts;
+				}
+			}
+			$gz ? gzclose($fh) : fclose($fh);
+		}
+		return $max;
 	}
 }
