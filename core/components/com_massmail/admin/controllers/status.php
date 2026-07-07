@@ -53,13 +53,7 @@ class Status extends AdminController
 		$hourlyRemaining = max(0, $hourly - $effectiveSent);
 		$nextRunBudget   = Rate::budget($hourly, $effectiveSent, $watermark, $queueSize, $perRun);
 
-		// --- Totals -----------------------------------------------------------
-		$totalMailings  = Mailing::all()->total();
-		$activeMailings = Mailing::all()->whereIn('status', array(
-			Mailing::STATUS_PREPARING, Mailing::STATUS_SENDING,
-			Mailing::STATUS_PAUSED, Mailing::STATUS_PENDING_APPROVAL
-		))->total();
-
+		// --- Message counts ---------------------------------------------------
 		$db->setQuery("SELECT COUNT(*) FROM `#__massmail_recipients` WHERE status = " . Recipient::SENT);
 		$messagesSent = (int) $db->loadResult();
 
@@ -74,29 +68,33 @@ class Status extends AdminController
 		);
 		$messagesPending = (int) $db->loadResult();
 
-		// --- Mailings by status ----------------------------------------------
-		$db->setQuery("SELECT status, COUNT(*) c FROM `#__massmail_mailings` GROUP BY status");
-		$byStatus = array();
-		foreach ($db->loadObjectList() as $r)
-		{
-			$byStatus[$r->status] = (int) $r->c;
-		}
-
 		// --- Mass mail actually sent (from our own recipient records) --------
 		$mmLastHour = $this->series($this->sentMap('%Y-%m-%d %H:%i', '1 HOUR'), 60, 60, 'Y-m-d H:i', 'H:i');
 		$mmHourly   = $this->series($this->sentMap('%Y-%m-%d %H', '48 HOUR'), 48, 3600, 'Y-m-d H', 'H');
 		$mmDaily    = $this->series($this->sentMap('%Y-%m-%d', '29 DAY'), 30, 86400, 'Y-m-d', 'n/j');
 
 		// --- Queue depth over time (last 24h of cron snapshots) --------------
-		$db->setQuery(
-			"SELECT recorded, depth FROM `#__massmail_queue_samples`
-			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)
-			 ORDER BY recorded ASC"
-		);
-		$queueRecent = $db->loadObjectList();
+		// Peak queue depth over each postfix chart's window (for the pill).
+		$db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)");
+		$qPeakLastHour = (int) $db->loadResult();
+		$db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)");
+		$qPeak48h = (int) $db->loadResult();
 
-		$db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 24 HOUR)");
-		$queuePeak24h = (int) $db->loadResult();
+		// Queue-depth lines aligned to the postfix chart buckets (for overlay).
+		$qLastHour = $this->queueLine(60, 60, '%Y-%m-%d %H:%i', 'Y-m-d H:i');
+		$qHourly   = $this->queueLine(48, 3600, '%Y-%m-%d %H', 'Y-m-d H');
+
+		// Daily queue peak (30d) for the 30-day chart overlay + pill.
+		$db->setQuery("SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY)");
+		$qdmap = array();
+		foreach ($db->loadObjectList() as $r) { $qdmap[$r->day] = (int) $r->max; }
+		$q30 = array();
+		for ($i = 29; $i >= 0; $i--)
+		{
+			$d = date('Y-m-d', strtotime("-$i day"));
+			$q30[] = isset($qdmap[$d]) ? $qdmap[$d] : 0;
+		}
+		$qPeak30d = $q30 ? max($q30) : 0;
 
 		// --- Postfix outbound volume (all senders, from the log collector) ---
 		$db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY) ORDER BY `day`");
@@ -132,9 +130,6 @@ class Status extends AdminController
 		$db->setQuery("SELECT state, last_run FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
 		$cron = $db->loadObject();
 
-		// --- Recent mailings -------------------------------------------------
-		$recent = Mailing::all()->order('created', 'desc')->limit(5)->rows();
-
 		$this->view
 			->set('params', $params)
 			->set('snapshot', StatusModel::instance())
@@ -150,22 +145,22 @@ class Status extends AdminController
 			->set('watermark', $watermark)
 			->set('hourlyRemaining', $hourlyRemaining)
 			->set('nextRunBudget', $nextRunBudget)
-			->set('totalMailings', $totalMailings)
-			->set('activeMailings', $activeMailings)
 			->set('messagesSent', $messagesSent)
 			->set('messagesFailed', $messagesFailed)
 			->set('messagesPending', $messagesPending)
-			->set('byStatus', $byStatus)
 			->set('mmLastHour', $mmLastHour)
 			->set('mmHourly', $mmHourly)
 			->set('mmDaily', $mmDaily)
-			->set('queueRecent', $queueRecent)
-			->set('queuePeak24h', $queuePeak24h)
+			->set('qPeakLastHour', $qPeakLastHour)
+			->set('qPeak48h', $qPeak48h)
 			->set('dailyVolume', $dailyVolume)
 			->set('hourlyVolume', $hourlyVolume)
 			->set('lastHourVolume', $lastHourVolume)
+			->set('qLastHour', $qLastHour)
+			->set('qHourly', $qHourly)
+			->set('q30', $q30)
+			->set('qPeak30d', $qPeak30d)
 			->set('collectorRun', $collectorRun)
-			->set('recent', $recent)
 			->set('cron', $cron)
 			->display();
 	}
@@ -217,6 +212,48 @@ class Status extends AdminController
 				'label' => date($labelFmt, $t),
 				'value' => isset($map[$k]) ? $map[$k] : 0
 			);
+		}
+		return $out;
+	}
+
+	/**
+	 * Forward-filled queue-depth values aligned to a chart's buckets, for the
+	 * line overlaid on the outbound charts. Returns a flat array of depths.
+	 *
+	 * @param   integer  $count   number of buckets
+	 * @param   integer  $step    seconds per bucket
+	 * @param   string   $sqlFmt  MySQL DATE_FORMAT for bucketing recorded
+	 * @param   string   $keyFmt  matching gmdate() format
+	 * @return  array
+	 */
+	protected function queueLine($count, $step, $sqlFmt, $keyFmt)
+	{
+		$db   = App::get('db');
+		$secs = $count * $step;
+		$db->setQuery(
+			"SELECT DATE_FORMAT(recorded, '" . $sqlFmt . "') k, AVG(depth) d
+			 FROM `#__massmail_queue_samples`
+			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL " . (int) $secs . " SECOND)
+			 GROUP BY k"
+		);
+		$map = array();
+		foreach ($db->loadObjectList() as $r)
+		{
+			$map[$r->k] = (float) $r->d;
+		}
+
+		$out  = array();
+		$last = 0;
+		$have = false;
+		for ($i = $count - 1; $i >= 0; $i--)
+		{
+			$k = gmdate($keyFmt, time() - ($i * $step));
+			if (isset($map[$k]))
+			{
+				$last = $map[$k];
+				$have = true;
+			}
+			$out[] = $have ? $last : 0;
 		}
 		return $out;
 	}

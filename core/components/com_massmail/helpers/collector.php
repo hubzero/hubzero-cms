@@ -304,6 +304,15 @@ class PostfixCollector
 				"INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES (" . $db->quote(\Date::toSql()) . ", " . (int) $depth . ")"
 			);
 			$db->execute();
+
+			// Daily rollup (peak + running average) for the 30-day overlay.
+			$db->setQuery(
+				"INSERT INTO `#__massmail_queue_daily` (`day`, `samples`, `total`, `max`)
+				 VALUES (" . $db->quote(date('Y-m-d')) . ", 1, " . (int) $depth . ", " . (int) $depth . ")
+				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = GREATEST(`max`, " . (int) $depth . ")"
+			);
+			$db->execute();
+
 			$result['queue_depth'] = $depth;
 		}
 
@@ -313,6 +322,8 @@ class PostfixCollector
 		$db->setQuery("DELETE FROM `#__massmail_postfix_daily` WHERE `day` < (CURDATE() - INTERVAL 730 DAY)");
 		$db->execute();
 		$db->setQuery("DELETE FROM `#__massmail_queue_samples` WHERE `recorded` < (UTC_TIMESTAMP() - INTERVAL 3 DAY)");
+		$db->execute();
+		$db->setQuery("DELETE FROM `#__massmail_queue_daily` WHERE `day` < (CURDATE() - INTERVAL 90 DAY)");
 		$db->execute();
 
 		return $result;
