@@ -196,8 +196,9 @@ class Sender
 		);
 		$db->execute();
 
-		// Keep two weeks of history.
-		$db->setQuery("DELETE FROM `#__massmail_stats` WHERE recorded < (UTC_TIMESTAMP() - INTERVAL 14 DAY)");
+		// 5-minute snapshots are only used for the recent (24-48h) charts, so
+		// purge them quickly; hourly/daily volume is rolled up separately.
+		$db->setQuery("DELETE FROM `#__massmail_stats` WHERE recorded < (UTC_TIMESTAMP() - INTERVAL 3 DAY)");
 		$db->execute();
 	}
 

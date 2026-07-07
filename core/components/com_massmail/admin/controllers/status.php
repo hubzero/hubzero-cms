@@ -112,6 +112,36 @@ class Status extends AdminController
 		);
 		$queueSeries = $db->loadObjectList();
 
+		// --- Postfix outbound volume (all senders, from the log collector) ---
+		$db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY) ORDER BY `day`");
+		$dmap = array();
+		foreach ($db->loadObjectList() as $r) { $dmap[$r->day] = (int) $r->sent; }
+		$dailyVolume = array();
+		for ($i = 29; $i >= 0; $i--)
+		{
+			$d = date('Y-m-d', strtotime("-$i day"));
+			$dailyVolume[] = array('label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0);
+		}
+
+		$db->setQuery("SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (NOW() - INTERVAL 48 HOUR) ORDER BY `hour`");
+		$hmap = array();
+		foreach ($db->loadObjectList() as $r) { $hmap[$r->hour] = (int) $r->sent; }
+		$hourlyVolume = array();
+		for ($i = 47; $i >= 0; $i--)
+		{
+			$t = time() - ($i * 3600);
+			$k = date('Y-m-d H:00:00', $t);
+			$hourlyVolume[] = array('label' => date('H', $t), 'value' => isset($hmap[$k]) ? $hmap[$k] : 0);
+		}
+
+		$db->setQuery("SELECT sent FROM `#__massmail_postfix_daily` WHERE `day` = CURDATE()");
+		$sentToday = (int) $db->loadResult();
+		$db->setQuery("SELECT COALESCE(SUM(sent),0) FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 6 DAY)");
+		$sent7d = (int) $db->loadResult();
+
+		$db->setQuery("SELECT last_run FROM `#__massmail_postfix_state` WHERE id = 1");
+		$collectorRun = $db->loadResult();
+
 		// --- Cron ------------------------------------------------------------
 		$db->setQuery("SELECT state, last_run FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
 		$cron = $db->loadObject();
@@ -139,6 +169,11 @@ class Status extends AdminController
 			->set('byStatus', $byStatus)
 			->set('hourlySeries', $hourlySeries)
 			->set('queueSeries', $queueSeries)
+			->set('dailyVolume', $dailyVolume)
+			->set('hourlyVolume', $hourlyVolume)
+			->set('sentToday', $sentToday)
+			->set('sent7d', $sent7d)
+			->set('collectorRun', $collectorRun)
 			->set('recent', $recent)
 			->set('cron', $cron)
 			->display();

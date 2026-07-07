@@ -31,10 +31,31 @@ class plgCronMassmail extends \Hubzero\Plugin\Plugin
 				'name'   => 'processMassmailQueue',
 				'label'  => Lang::txt('PLG_CRON_MASSMAIL_PROCESS_QUEUE'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'collectPostfixVolume',
+				'label'  => Lang::txt('PLG_CRON_MASSMAIL_COLLECT'),
+				'params' => ''
 			)
 		);
 
 		return $obj;
+	}
+
+	/**
+	 * Collect Postfix outbound volume into hourly/daily rollups for the
+	 * dashboard. Read-only monitoring -- runs regardless of the send switch.
+	 *
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
+	 */
+	public function collectPostfixVolume(\Components\Cron\Models\Job $job)
+	{
+		require_once Component::path('com_massmail') . DS . 'helpers' . DS . 'collector.php';
+
+		\Components\Massmail\Helpers\PostfixCollector::collect();
+
+		return true;
 	}
 
 	/**

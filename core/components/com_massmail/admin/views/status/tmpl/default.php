@@ -27,6 +27,41 @@ $statusColors = array(
 	'draft' => '#94a3b8', 'pending_approval' => '#dd6b20', 'preparing' => '#3182ce',
 	'sending' => '#2b6cb0', 'paused' => '#b7791f', 'sent' => '#2f855a', 'cancelled' => '#a0aec0'
 );
+
+// Reusable bar-chart renderer (single series). Returns an SVG string.
+$bars = function ($series, $everyN, $color) {
+	$vals = array();
+	foreach ($series as $h) { $vals[] = $h['value']; }
+	$peak = $vals ? max($vals) : 0;
+	if ($peak <= 0)
+	{
+		return '<p class="mm-legend">' . Lang::txt('COM_MASSMAIL_CHART_NO_DATA') . '</p>';
+	}
+	$W = 900; $H = 200; $padL = 34; $padB = 22; $padT = 14;
+	$plotW = $W - $padL; $plotH = $H - $padB - $padT;
+	$n = count($series); $slot = $plotW / $n; $bw = max(2, $slot - 3); $base = $padT + $plotH;
+	$svg  = '<figure><svg viewBox="0 0 ' . $W . ' ' . $H . '" width="100%" role="img" preserveAspectRatio="xMidYMid meet">';
+	$svg .= '<line x1="' . $padL . '" y1="' . $padT . '" x2="' . $W . '" y2="' . $padT . '" stroke="#edf2f7"/>';
+	$svg .= '<line x1="' . $padL . '" y1="' . $base . '" x2="' . $W . '" y2="' . $base . '" stroke="#e2e8f0"/>';
+	$svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 4) . '" text-anchor="end" font-size="10" fill="#a0aec0">' . $peak . '</text>';
+	$svg .= '<text x="' . ($padL - 6) . '" y="' . $base . '" text-anchor="end" font-size="10" fill="#a0aec0">0</text>';
+	foreach ($series as $i => $h)
+	{
+		$x = $padL + $i * $slot + ($slot - $bw) / 2;
+		$bh = ($h['value'] / $peak) * $plotH;
+		$y = $base - $bh;
+		if ($h['value'] > 0)
+		{
+			$svg .= '<rect x="' . round($x, 1) . '" y="' . round($y, 1) . '" width="' . round($bw, 1) . '" height="' . round($bh, 1) . '" rx="3" fill="' . $color . '"><title>' . $h['label'] . ' — ' . $h['value'] . '</title></rect>';
+		}
+		if ($i % $everyN == 0)
+		{
+			$svg .= '<text x="' . round($x + $bw / 2, 1) . '" y="' . ($H - 6) . '" text-anchor="middle" font-size="9" fill="#a0aec0">' . $h['label'] . '</text>';
+		}
+	}
+	$svg .= '</svg></figure>';
+	return $svg;
+};
 ?>
 <style>
 .mm-dash { max-width: 1100px; }
@@ -92,6 +127,24 @@ $statusColors = array(
 			<div class="n"><?php echo number_format($this->messagesFailed); ?></div>
 			<div class="l"><?php echo Lang::txt('COM_MASSMAIL_FAILED'); ?></div>
 		</div>
+	</div>
+
+	<div class="mm-card" style="margin-bottom:16px;">
+		<h3>
+			<?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?>
+			<span style="font-weight:400;color:#718096;font-size:12px;">
+				&mdash; <?php echo Lang::txt('COM_MASSMAIL_DASH_TODAY', number_format($this->sentToday)); ?>
+				&middot; <?php echo Lang::txt('COM_MASSMAIL_DASH_7DAYS', number_format($this->sent7d)); ?>
+			</span>
+		</h3>
+		<?php echo $bars($this->dailyVolume, 5, '#2b6cb0'); ?>
+		<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LEGEND'); ?></p>
+	</div>
+
+	<div class="mm-card" style="margin-bottom:16px;">
+		<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
+		<?php echo $bars($this->hourlyVolume, 6, '#3182ce'); ?>
+		<p class="mm-legend"><?php echo Lang::txt('COM_MASSMAIL_CHART_HOUR_LOCAL'); ?></p>
 	</div>
 
 	<div class="mm-cards">
