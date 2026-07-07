@@ -13,6 +13,7 @@ use Components\Massmail\Models\Status;
 
 require_once __DIR__ . DS . 'rate.php';
 require_once __DIR__ . DS . 'queue.php';
+require_once __DIR__ . DS . 'log.php';
 require_once __DIR__ . DS . 'token.php';
 require_once __DIR__ . DS . 'formatter.php';
 require_once __DIR__ . DS . 'recipients.php';
@@ -44,7 +45,8 @@ class Sender
 			'budget'      => 0,
 			'sent'        => 0,
 			'failed'      => 0,
-			'queue'       => -1
+			'queue'       => -1,
+			'system_sent_last_hour' => -1
 		);
 
 		// One sender at a time.
@@ -60,18 +62,25 @@ class Sender
 			// 1. Expand any mailings that were just launched.
 			$stats['prepared'] = self::prepare();
 
-			// 2. Work out this run's budget.
-			$sentLastHour = self::sentLastHour();
-			$queue        = Queue::size();
-			$budget       = Rate::budget(
+			// 2. Work out this run's budget against the TRUE system-wide send
+			//    rate -- every sender sharing this host's egress (newsletters,
+			//    mailman, system mail), not just our own messages -- read from
+			//    the Postfix log. Falls back to our own counter (plus the queue
+			//    watermark) when the log can't be read.
+			$sentLastHour   = self::sentLastHour();
+			$systemLastHour = MailLog::sentLastHour();
+			$effectiveSent  = ($systemLastHour >= 0) ? max($systemLastHour, $sentLastHour) : $sentLastHour;
+			$queue          = Queue::size();
+			$budget         = Rate::budget(
 				(int) $params->get('hourly_limit', 300),
-				$sentLastHour,
+				$effectiveSent,
 				(int) $params->get('queue_watermark', 150),
 				$queue,
 				(int) $params->get('per_run_cap', 50)
 			);
 			$stats['queue']  = $queue;
 			$stats['budget'] = $budget;
+			$stats['system_sent_last_hour'] = $systemLastHour;
 
 			// 3. Feed that many messages from the oldest active mailing.
 			if ($budget > 0)
@@ -85,13 +94,15 @@ class Sender
 				}
 			}
 
-			// 4. Record a snapshot for the status dashboard.
+			// 4. Record snapshots: the single-row status + the time series.
 			$status = Status::instance();
 			$status->set('queue_size', max(0, $queue));
 			$status->set('sent_last_hour', $sentLastHour + $stats['sent']);
 			$status->set('last_checked', \Date::toSql());
 			$status->set('last_run', \Date::toSql());
 			$status->save();
+
+			self::recordHistory($queue, $sentLastHour + $stats['sent'], $systemLastHour, $stats['sent']);
 		}
 		finally
 		{
@@ -145,6 +156,49 @@ class Sender
 			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)"
 		);
 		return (int) $db->loadResult();
+	}
+
+	/**
+	 * Append a time-series snapshot for the dashboard charts and prune old rows.
+	 *
+	 * @param   integer  $queue        current Postfix queue size (-1 if unknown)
+	 * @param   integer  $ourSent      our messages sent in the last hour
+	 * @param   integer  $systemSent   all senders' messages last hour (-1 if unknown)
+	 * @param   integer  $sentThisRun  messages sent on this tick
+	 * @return  void
+	 */
+	protected static function recordHistory($queue, $ourSent, $systemSent, $sentThisRun)
+	{
+		$db = \App::get('db');
+
+		$db->setQuery("SELECT COUNT(*) FROM `#__massmail_recipients` WHERE status = " . Recipient::SENT);
+		$cumulative = (int) $db->loadResult();
+
+		$db->setQuery(
+			"SELECT COUNT(*) FROM `#__massmail_recipients` r
+			 JOIN `#__massmail_mailings` m ON m.id = r.mailing_id
+			 WHERE r.status = " . Recipient::PENDING . "
+			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")"
+		);
+		$pending = (int) $db->loadResult();
+
+		$db->setQuery(
+			"INSERT INTO `#__massmail_stats`
+				(recorded, queue_size, sent_last_hour, system_sent_last_hour, sent_this_run, pending, cumulative_sent)
+			 VALUES ("
+				. $db->quote(\Date::toSql()) . ", "
+				. (int) max(0, $queue) . ", "
+				. (int) $ourSent . ", "
+				. (int) $systemSent . ", "
+				. (int) $sentThisRun . ", "
+				. (int) $pending . ", "
+				. $cumulative . ")"
+		);
+		$db->execute();
+
+		// Keep two weeks of history.
+		$db->setQuery("DELETE FROM `#__massmail_stats` WHERE recorded < (UTC_TIMESTAMP() - INTERVAL 14 DAY)");
+		$db->execute();
 	}
 
 	/**
