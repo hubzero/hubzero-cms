@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="cron">
+	<name>Cron - Mass Mail</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright © 2026 Purdue University. All Rights Reserved.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_CRON_MASSMAIL_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="massmail">massmail.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_cron_massmail.ini</language>
+	</languages>
+</extension>
