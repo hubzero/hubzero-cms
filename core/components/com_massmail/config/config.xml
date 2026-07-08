@@ -17,9 +17,6 @@
 		<field name="hourly_limit" type="text" default="300"
 			label="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_LABEL"
 			description="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_DESC" />
-		<field name="max_attempts" type="text" default="3"
-			label="COM_MASSMAIL_CONFIG_MAX_ATTEMPTS_LABEL"
-			description="COM_MASSMAIL_CONFIG_MAX_ATTEMPTS_DESC" />
 		<field name="maillog_path" type="text" default="/var/log/maillog"
 			label="COM_MASSMAIL_CONFIG_MAILLOG_LABEL"
 			description="COM_MASSMAIL_CONFIG_MAILLOG_DESC" />

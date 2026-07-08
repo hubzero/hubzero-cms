@@ -29,6 +29,14 @@ class Sender
 	const LOCK = 'com_massmail.send';
 
 	/**
+	 * How many times we'll try to hand a single recipient's message to the local
+	 * mail system before marking it failed. This counts handoff attempts to
+	 * Postfix, not downstream delivery -- once Postfix accepts a message, its own
+	 * retry/bounce handling takes over. Fixed internally; not worth exposing.
+	 */
+	const MAX_ATTEMPTS = 3;
+
+	/**
 	 * Run one tick.
 	 *
 	 * @param   boolean  $dryRun  mark recipients sent WITHOUT emitting mail (testing)
@@ -268,7 +276,7 @@ class Sender
 	public static function sendBatch(Mailing $mailing, $limit, $dryRun = false)
 	{
 		$params      = \Component::params('com_massmail');
-		$maxAttempts = max(1, (int) $params->get('max_attempts', 3));
+		$maxAttempts = self::MAX_ATTEMPTS;
 
 		$subject   = $mailing->get('subject');
 		$bodyText  = (string) $mailing->get('body_text');
