@@ -340,7 +340,7 @@ class Html
 		if (!$tzselected)
 		{
 			$hub = (string) \Config::get('offset');
-			$tzselected = isset($offsets[$hub]) ? $offsets[$hub] : 'US/Eastern';
+			$tzselected = isset($offsets[$hub]) ? $offsets[$hub] : ($hub ? $hub : 'US/Eastern');
 		}
 
 		// Full IANA list, labeled with the current UTC offset and abbreviation.

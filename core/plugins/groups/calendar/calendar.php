@@ -600,7 +600,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$timezone = 'UTC';
 		}
 
-		$view->timezone = $timezone ? $timezone : 'US/Eastern';
+		$view->timezone = $timezone ? $timezone : \Config::get('offset');
 
 		//push some vars to the view
 		$view->month      = $this->month;

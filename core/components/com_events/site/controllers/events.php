@@ -1450,7 +1450,7 @@ class Events extends SiteController
 				$start_time = "08:00";
 				$end_time = "17:00";
 				$registerby_time = "08:00";
-				$time_zone = 'US/Eastern';
+				$time_zone = \Config::get('offset');
 			}
 
 			// If user hits refresh, try to maintain event form state
@@ -1750,7 +1750,7 @@ class Events extends SiteController
 		$end_time   = Request::getString('end_time', '17:00', 'post');
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = Request::getInt('end_pm', 0, 'post');
-		$time_zone  = Request::getString('time_zone', 'US/Eastern', 'post');
+		$time_zone  = Request::getString('time_zone', \Config::get('offset'), 'post');
 		$tags       = Request::getString('tags', '', 'post');
 
 		// Bind the posted data to an event object
