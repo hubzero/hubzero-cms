@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright © 2026 Purdue University. All Rights Reserved.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<config>
+	<fieldset name="basic" label="COM_MASSMAIL_CONFIG_BASIC">
+		<field name="sending_enabled" type="radio" default="0" class="btn-group"
+			label="COM_MASSMAIL_CONFIG_SENDING_ENABLED_LABEL"
+			description="COM_MASSMAIL_CONFIG_SENDING_ENABLED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="hourly_limit" type="text" default="300"
+			label="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_LABEL"
+			description="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_DESC" />
+		<field name="max_attempts" type="text" default="3"
+			label="COM_MASSMAIL_CONFIG_MAX_ATTEMPTS_LABEL"
+			description="COM_MASSMAIL_CONFIG_MAX_ATTEMPTS_DESC" />
+		<field name="maillog_path" type="text" default="/var/log/maillog"
+			label="COM_MASSMAIL_CONFIG_MAILLOG_LABEL"
+			description="COM_MASSMAIL_CONFIG_MAILLOG_DESC" />
+	</fieldset>
+	<fieldset name="recipients" label="COM_MASSMAIL_CONFIG_RECIPIENTS">
+		<field name="no_preference_sendable" type="radio" default="1" class="btn-group"
+			label="COM_MASSMAIL_CONFIG_NOPREF_LABEL"
+			description="COM_MASSMAIL_CONFIG_NOPREF_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="require_email_confirmed" type="radio" default="0" class="btn-group"
+			label="COM_MASSMAIL_CONFIG_REQCONF_LABEL"
+			description="COM_MASSMAIL_CONFIG_REQCONF_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
+	<fieldset name="message" label="COM_MASSMAIL_CONFIG_MESSAGE">
+		<field name="from_name" type="text" default=""
+			label="COM_MASSMAIL_CONFIG_FROM_NAME_LABEL"
+			description="COM_MASSMAIL_CONFIG_FROM_NAME_DESC" />
+		<field name="from_email" type="text" default=""
+			label="COM_MASSMAIL_CONFIG_FROM_EMAIL_LABEL"
+			description="COM_MASSMAIL_CONFIG_FROM_EMAIL_DESC" />
+		<field name="footer_text" type="textarea" rows="5" default=""
+			label="COM_MASSMAIL_CONFIG_FOOTER_TEXT_LABEL"
+			description="COM_MASSMAIL_CONFIG_FOOTER_TEXT_DESC" />
+		<field name="max_attachment_size" type="text" default="10485760"
+			label="COM_MASSMAIL_CONFIG_MAX_ATTACH_LABEL"
+			description="COM_MASSMAIL_CONFIG_MAX_ATTACH_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox"
+			validate="rules" filter="rules" component="com_massmail" section="component" />
+	</fieldset>
+</config>

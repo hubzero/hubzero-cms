@@ -62,22 +62,37 @@ class Sender
 			// 1. Expand any mailings that were just launched.
 			$stats['prepared'] = self::prepare();
 
-			// 2. Work out this run's budget against the TRUE system-wide send
-			//    rate -- every sender sharing this host's egress (newsletters,
-			//    mailman, system mail), not just our own messages -- read from
-			//    the Postfix log. Falls back to our own counter (plus the queue
-			//    watermark) when the log can't be read.
-			$sentLastHour   = self::sentLastHour();
+			// 2. Work out this run's budget. The rolling-hour ceiling is measured
+			//    against the TRUE system-wide send rate -- every sender sharing
+			//    this host's egress (newsletters, mailman, system mail), not just
+			//    our own -- read from the Postfix log, with the current queue
+			//    counted as committed egress. Pace is the hourly limit spread over
+			//    the send job's cron cadence.
+			$hourlyLimit    = (int) $params->get('hourly_limit', 300);
+			$ourLastHour    = self::sentLastHour();
 			$systemLastHour = MailLog::sentLastHour();
-			$effectiveSent  = ($systemLastHour >= 0) ? max($systemLastHour, $sentLastHour) : $sentLastHour;
 			$queue          = Queue::size();
-			$budget         = Rate::budget(
-				(int) $params->get('hourly_limit', 300),
-				$effectiveSent,
-				(int) $params->get('queue_watermark', 150),
-				$queue,
-				(int) $params->get('per_run_cap', 50)
-			);
+
+			if ($systemLastHour >= 0)
+			{
+				// Log readable: the delivered count includes our own sends and is
+				// disjoint from the still-queued set, so both may be subtracted
+				// without double counting.
+				$deliveredLastHour = $systemLastHour;
+				$queueForBudget    = $queue;
+			}
+			else
+			{
+				// Log unreadable: fall back to our own injected count, which
+				// already includes anything of ours still sitting in the queue --
+				// so don't subtract the queue again. Pace on $perTick alone.
+				$deliveredLastHour = $ourLastHour;
+				$queueForBudget    = -1;
+			}
+
+			$perTick = Rate::perTick($hourlyLimit, self::ticksPerHour());
+			$budget  = Rate::budget($hourlyLimit, $deliveredLastHour, $queueForBudget, $perTick);
+
 			$stats['queue']  = $queue;
 			$stats['budget'] = $budget;
 			$stats['system_sent_last_hour'] = $systemLastHour;
@@ -97,12 +112,12 @@ class Sender
 			// 4. Record snapshots: the single-row status + the time series.
 			$status = Status::instance();
 			$status->set('queue_size', max(0, $queue));
-			$status->set('sent_last_hour', $sentLastHour + $stats['sent']);
+			$status->set('sent_last_hour', $ourLastHour + $stats['sent']);
 			$status->set('last_checked', \Date::toSql());
 			$status->set('last_run', \Date::toSql());
 			$status->save();
 
-			self::recordHistory($queue, $sentLastHour + $stats['sent'], $systemLastHour, $stats['sent']);
+			self::recordHistory($queue, $ourLastHour + $stats['sent'], $systemLastHour, $stats['sent']);
 		}
 		finally
 		{
@@ -156,6 +171,24 @@ class Sender
 			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)"
 		);
 		return (int) $db->loadResult();
+	}
+
+	/**
+	 * How many times the send job runs per hour, from its own cron schedule, so
+	 * the per-run pace tracks the configured cadence. Defaults to 12 (every five
+	 * minutes -- the seeded schedule) if the recurrence can't be read or parsed.
+	 *
+	 * @return  integer
+	 */
+	public static function ticksPerHour()
+	{
+		$db = \App::get('db');
+		$db->setQuery(
+			"SELECT recurrence FROM `#__cron_jobs`
+			 WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1"
+		);
+		$n = Rate::firingsPerHour((string) $db->loadResult());
+		return $n > 0 ? $n : 12;
 	}
 
 	/**

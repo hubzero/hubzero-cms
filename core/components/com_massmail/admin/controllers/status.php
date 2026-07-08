@@ -44,14 +44,33 @@ class Status extends AdminController
 		$pfConfig       = Queue::config();
 		$ourLastHour    = Sender::sentLastHour();
 		$systemLastHour = MailLog::sentLastHour();
-		$effectiveSent  = ($systemLastHour >= 0) ? max($systemLastHour, $ourLastHour) : $ourLastHour;
 
-		$hourly    = (int) $params->get('hourly_limit', 300);
-		$watermark = (int) $params->get('queue_watermark', 150);
-		$perRun    = (int) $params->get('per_run_cap', 50);
+		$hourly = (int) $params->get('hourly_limit', 300);
 
-		$hourlyRemaining = max(0, $hourly - $effectiveSent);
-		$nextRunBudget   = Rate::budget($hourly, $effectiveSent, $watermark, $queueSize, $perRun);
+		// Cron cadence -> per-run pace (mirrors Sender::run()).
+		$db->setQuery("SELECT state, last_run, recurrence FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
+		$cron         = $db->loadObject();
+		$ticksPerHour = $cron ? Rate::firingsPerHour($cron->recurrence) : 0;
+		if ($ticksPerHour < 1) { $ticksPerHour = 12; }
+		$perRun = Rate::perTick($hourly, $ticksPerHour);
+
+		// Rolling-hour headroom, same accounting the sender uses: the queue is
+		// committed egress and counts against the limit.
+		if ($systemLastHour >= 0)
+		{
+			$deliveredLastHour = $systemLastHour;
+			$queueForBudget    = $queueSize;
+			$effectiveSent     = $systemLastHour;
+		}
+		else
+		{
+			$deliveredLastHour = $ourLastHour;
+			$queueForBudget    = -1;
+			$effectiveSent     = $ourLastHour;
+		}
+		$queuedNow       = ($queueForBudget < 0) ? 0 : $queueForBudget;
+		$hourlyRemaining = max(0, $hourly - $effectiveSent - $queuedNow);
+		$nextRunBudget   = Rate::budget($hourly, $deliveredLastHour, $queueForBudget, $perRun);
 
 		// --- Message counts ---------------------------------------------------
 		$db->setQuery("SELECT COUNT(*) FROM `#__massmail_recipients` WHERE status = " . Recipient::SENT);
@@ -126,10 +145,6 @@ class Status extends AdminController
 		$collectorRun = $pfState ? $pfState->last_run : null;
 		$lastSent     = $pfState ? $pfState->last_sent : null;
 
-		// --- Cron ------------------------------------------------------------
-		$db->setQuery("SELECT state, last_run FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
-		$cron = $db->loadObject();
-
 		$this->view
 			->set('params', $params)
 			->set('snapshot', StatusModel::instance())
@@ -142,7 +157,8 @@ class Status extends AdminController
 			->set('systemLastHour', $systemLastHour)
 			->set('effectiveSent', $effectiveSent)
 			->set('hourly', $hourly)
-			->set('watermark', $watermark)
+			->set('perRun', $perRun)
+			->set('ticksPerHour', $ticksPerHour)
 			->set('hourlyRemaining', $hourlyRemaining)
 			->set('nextRunBudget', $nextRunBudget)
 			->set('messagesSent', $messagesSent)

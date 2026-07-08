@@ -63,7 +63,7 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
 $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 ?>
 <style>
-.mm-dash { max-width: 1100px; }
+.mm-dash { max-width: 1100px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
 .mm-dash .mm-alert { padding:10px 14px; border-radius:6px; margin:0 0 10px; font-weight:600; }
 .mm-dash .mm-alert.warn { background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; }
 .mm-section { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:#718096; font-weight:700; margin:18px 0 8px; }
@@ -74,6 +74,8 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 .mm-statusline strong { color:#1a202c; font-weight:700; }
 .mm-sending { padding:3px 12px; border-radius:6px; font-weight:700; font-size:13px; color:#fff; }
 .mm-sending.on { background:#2f855a; } .mm-sending.off { background:#c53030; }
+/* The admin template injects a dim ⊘ before any .off element; make it crisp black on our red pill. */
+.mm-dash .mm-sending.off:before { color:#000; }
 .mm-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media (max-width:800px){ .mm-cards{ grid-template-columns:1fr; } }
 .mm-cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
@@ -109,6 +111,7 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 		<span class="mm-sending <?php echo $sendingOn ? 'on' : 'off'; ?>"><?php echo $sendingOn ? Lang::txt('COM_MASSMAIL_SENDING_ON') : Lang::txt('COM_MASSMAIL_SENDING_OFF'); ?></span>
 		<span class="mm-sending <?php echo $cronOn ? 'on' : 'off'; ?>"><?php echo $cronOn ? Lang::txt('COM_MASSMAIL_CRON_ON') : Lang::txt('COM_MASSMAIL_CRON_OFF'); ?></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT'); ?>: <strong><?php echo number_format($this->hourly); ?>/hr</strong></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN'); ?>: <strong><?php echo number_format($this->perRun); ?></strong> <span style="color:#a0aec0;"><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)); ?></span></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR'); ?>: <strong><?php echo number_format($this->ourLastHour); ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_REMAINING'); ?>: <strong><?php echo number_format($this->hourlyRemaining); ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING'); ?>: <strong><?php echo number_format($this->messagesPending); ?></strong></span>
@@ -138,13 +141,13 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 	<div class="mm-statusline">
 		<span><span class="dot <?php echo $this->pfRunning ? 'ok' : 'bad'; ?>"></span><?php echo Lang::txt('COM_MASSMAIL_PF_SERVICE'); ?>: <strong><?php echo Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED'); ?></strong></span>
 		<span><span class="dot <?php echo $this->pfConfig['configured'] ? 'ok' : 'bad'; ?>"></span><strong><?php echo Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED'); ?></strong><?php if ($this->pfConfig['configured'] && $this->pfConfig['version']) { echo ' <span style="color:#a0aec0;">' . $this->escape($this->pfConfig['version']) . '</span>'; } ?></span>
-		<span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong> <span style="color:#a0aec0;">(<?php echo Lang::txt('COM_MASSMAIL_DASH_WATERMARK'); ?> <?php echo number_format($this->watermark); ?>)</span></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_LAST_SENT'); ?>: <strong><?php echo $this->lastSent ? $this->escape($this->lastSent) : '&mdash;'; ?></strong></span>
 	</div>
 	<div class="mm-cards-3">
 		<div class="mm-card">
 			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_LASTHOUR'); ?></h3>
-			<?php echo $bars($this->lastHourVolume, 10, '#4299e1', $this->qLastHour, (int) $this->watermark); ?>
+			<?php echo $bars($this->lastHourVolume, 10, '#4299e1', $this->qLastHour, (int) $this->hourly); ?>
 			<div class="mm-pills">
 				<span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->lastHourVolume))); ?></span>
 				<span class="mm-count mm-count-queue"><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeakLastHour)); ?></span>
@@ -152,7 +155,7 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 		</div>
 		<div class="mm-card">
 			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_HOURLY'); ?></h3>
-			<?php echo $bars($this->hourlyVolume, 6, '#3182ce', $this->qHourly, (int) $this->watermark); ?>
+			<?php echo $bars($this->hourlyVolume, 6, '#3182ce', $this->qHourly, (int) $this->hourly); ?>
 			<div class="mm-pills">
 				<span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->hourlyVolume))); ?></span>
 				<span class="mm-count mm-count-queue"><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak48h)); ?></span>
@@ -160,14 +163,14 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 		</div>
 		<div class="mm-card">
 			<h3><?php echo Lang::txt('COM_MASSMAIL_CHART_OUTBOUND_DAILY'); ?></h3>
-			<?php echo $bars($this->dailyVolume, 5, '#2b6cb0', $this->q30, (int) $this->watermark); ?>
+			<?php echo $bars($this->dailyVolume, 5, '#2b6cb0', $this->q30, (int) $this->hourly); ?>
 			<div class="mm-pills">
 				<span class="mm-count"><?php echo Lang::txt('COM_MASSMAIL_CHART_TOTAL', number_format($sum($this->dailyVolume))); ?></span>
 				<span class="mm-count mm-count-queue"><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_PEAK', number_format($this->qPeak30d)); ?></span>
 			</div>
 		</div>
 	</div>
-	<p class="mm-legend"><span style="display:inline-block;width:14px;height:0;border-top:2px solid #dd6b20;vertical-align:middle;margin-right:5px;"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->watermark)); ?></p>
+	<p class="mm-legend"><span style="display:inline-block;width:14px;height:0;border-top:2px solid #dd6b20;vertical-align:middle;margin-right:5px;"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly)); ?></p>
 </div>
 
 <div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>">
