@@ -223,11 +223,8 @@ class Video extends Macro
 		{
 			$ext = strtolower(\Filesystem::extension($video_url));
 
-			\Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-			\Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
-
-			$html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
-			$html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
+			// Use the browser's native HTML5 player (no external dependency)
+			$html = '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
 			switch ($ext)
 			{
 				case 'mov':
@@ -246,12 +243,31 @@ class Video extends Macro
 				break;
 			}
 			$html .= '</video>';
-			$html .= '</div>';
 		}
 		// External
 		else
 		{
-			$title = isset($this->attr['title']) ? $this->attr['title'] : ucfirst($type) . ' video';
+			// Compose a unique-per-embed title so pages with multiple videos don't
+			// repeat the same iframe title (axe frame-title-unique / WCAG 4.1.2).
+			if (isset($this->attr['title']) && $this->attr['title'] !== '')
+			{
+				$title = $this->attr['title'];
+			}
+			else
+			{
+				$title = ucfirst($type) . ' video';
+
+				// Append an id fragment from the URL path when available
+				$path = parse_url($video_url, PHP_URL_PATH) ?: '';
+				if ($path !== '')
+				{
+					$seg = rtrim(basename($path), '/');
+					if ($seg !== '' && $seg !== 'embed')
+					{
+						$title .= ' ' . $seg;
+					}
+				}
+			}
 			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title) . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 
