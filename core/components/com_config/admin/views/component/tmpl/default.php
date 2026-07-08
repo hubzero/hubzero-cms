@@ -32,6 +32,10 @@ body#component-body.contentpane > form#component-form { flex: 1 1 auto; min-heig
 /* overflow-y:auto alone makes overflow-x compute to auto too, which adds a
    spurious horizontal bar on short tabs; pin it to hidden. */
 #component-body.contentpane #component-form > .current { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+/* Radio/checkbox groups emit a screen-reader legend duplicating the field label;
+   a template legend style overrides .sr-only and renders it as a stray uppercase
+   heading. Restore proper visually-hidden clipping (kept for accessibility). */
+#component-body.contentpane #component-form legend.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 </style>
 
 <script>
