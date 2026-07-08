@@ -225,8 +225,10 @@ class Event extends Model
 		// ----------------------------------------------------------------------------------
 		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
 		// adjust date/time display according to that timezone and their systems timezone setting
-		$publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
-		$publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
+		// Emit times in UTC (see DTSTART/DTEND below): unambiguous, and every
+		// calendar client converts to the viewer's own zone.
+		$publishUp->setTimezone(new DateTimezone('UTC'));
+		$publishDown->setTimezone(new DateTimezone('UTC'));
 
 		//event vars
 		$id       = $this->get('id');
@@ -276,14 +278,14 @@ class Event extends Model
 		$output .= "BEGIN:VEVENT\r\n";
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";
-		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+		$output .= "DTSTART:" . $publishUp->format('Ymd\THis\Z') . "\r\n";
 		if ($this->get('publish_down') != '' && $this->get('publish_down') != '0000-00-00 00:00:00')
 		{
-			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
+			$output .= "DTEND:" . $publishDown->format('Ymd\THis\Z') . "\r\n";
 		}
 		else
 		{
-			$output .= "DTEND;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
+			$output .= "DTEND:" . $publishUp->format('Ymd\THis\Z') . "\r\n";
 		}
 
 		// repeating rule

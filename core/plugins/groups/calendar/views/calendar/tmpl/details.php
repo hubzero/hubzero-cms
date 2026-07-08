@@ -74,7 +74,8 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 <table class="group-event-details" role="presentation">
 	<tbody>
 		<?php
-			$timezone     = timezone_name_from_abbr('', $this->event->get('time_zone')*3600);
+			$ignoreDst    = false;
+			$timezone     = $this->event->get('time_zone') ? $this->event->get('time_zone') : \Config::get('offset');
 			$publish_up   = $this->event->get('publish_up');
 			$publish_down = $this->event->get('publish_down');
 			$allday_event = $this->event->get('allday');
@@ -126,11 +127,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 			<tr>
 				<th scope="row" class="date"><span class="sr-only visually-hidden">Date:</span></th>
 				<td width="50%">
-					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('l, F d, Y', true); ?>
+					<?php echo Date::of($publish_up)->toTimezone($timezone, 'l, F d, Y'); ?>
 				</td>
 				<th scope="row" class="time"><span class="sr-only visually-hidden">Time:</span></th>
 				<td>
-					<?php echo Date::of($publish_up, $this->event->get('time_zone'))->format('g:i a T', true); ?>
+					<?php echo Date::of($publish_up)->toTimezone($timezone, 'g:i a T'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
