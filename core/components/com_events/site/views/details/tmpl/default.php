@@ -14,7 +14,7 @@ $this->css()
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<?php if ($this->auth) { ?>
+	<?php if ($this->authorized) { ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=add'); ?>"><?php echo Lang::txt('EVENTS_ADD_EVENT'); ?></a></li>
@@ -38,7 +38,7 @@ $this->css()
 		<?php
 		if ($this->row) {
 			$html  = '<h3>'. $this->escape(stripslashes($this->row->title));
-			if ($this->auth && $this->row->created_by == User::get('id'))
+			if ($this->auth)
 			{
 				$html .= '&nbsp;&nbsp;';
 				$html .= '<a class="edit" href="'. Route::url('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.Lang::txt('JACTION_EDIT').'">'.strtolower(Lang::txt('JACTION_EDIT')).'</a>'."\n";
