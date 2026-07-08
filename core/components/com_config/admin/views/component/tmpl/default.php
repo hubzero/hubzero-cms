@@ -36,6 +36,15 @@ body#component-body.contentpane > form#component-form { flex: 1 1 auto; min-heig
    a template legend style overrides .sr-only and renders it as a stray uppercase
    heading. Restore proper visually-hidden clipping (kept for accessibility). */
 #component-body.contentpane #component-form legend.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* Lay each option row out as label + control on one line, vertically centered.
+   Radio/checkbox groups label with a <span> (no <label for>), so on their own
+   they miss the label column text fields get and their control drops to its own
+   line; a flex row fixes that and also centers single-line labels against the
+   control (floated labels would top-align and sit too high). The label column
+   is a fixed width with right padding so long labels don't butt the control. */
+#component-body.contentpane #component-form .config-option-list > li { display: flex; align-items: center; }
+#component-body.contentpane #component-form .config-option-list > li > .hasTip { box-sizing: border-box; flex: 0 0 150px; padding-right: 14px; }
+#component-body.contentpane #component-form .config-option-list > li > fieldset.radio { width: auto; }
 </style>
 
 <script>
