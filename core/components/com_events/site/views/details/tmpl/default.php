@@ -117,37 +117,25 @@ $this->css()
 					$this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>'.Lang::txt('EVENTS_NOON').'</small>' : ' <small>AM</small>';
 				}
 
-				// get publish up/down & timezone
+				// Times are stored in UTC. Display in the event's own time zone,
+				// always labeled with the zone abbreviation (T).
 				$publish_up   = $this->row->publish_up;
 				$publish_down = $this->row->publish_down;
+				$event_tz     = (isset($this->row->time_zone) && $this->row->time_zone != '') ? $this->row->time_zone : \Config::get('offset');
 
-				if (date("Y-m-d", strtotime($publish_up)) == date("Y-m-d", strtotime($publish_down)))
+				$startDay = Date::of($publish_up)->toTimeZone($event_tz, 'Y-m-d');
+				$endDay   = Date::of($publish_down)->toTimeZone($event_tz, 'Y-m-d');
+
+				if ($startDay == $endDay)
 				{
-					$html .= Date::of($publish_up)->format('l d F, Y') . ', ';
-					$html .= Date::of($publish_up)->format('g:i a ') . ' - ' . Date::of($publish_down)->format('g:i a ');
-					$html .= Date::of($publish_down, $this->row->time_zone)->format('T', true);
+					$html .= Date::of($publish_up)->toTimeZone($event_tz, 'l d F, Y') . ', ';
+					$html .= Date::of($publish_up)->toTimeZone($event_tz, 'g:i a') . ' - ';
+					$html .= Date::of($publish_down)->toTimeZone($event_tz, 'g:i a T');
 				}
 				else
 				{
-					if (!isset($this->row->time_zone) || $this->row->time_zone == '')
-					{
-						// Get the timezone preferred by the USER, if not use HUB's
-						$event_timezone = \Config::get('offset');
-
-						// Case if spanning across two days that are on different DST or ST
-						$event_timezone_start = Date::of($publish_up, $event_timezone)->format('T', true);
-						$event_timezone_end = Date::of($publish_down, $event_timezone)->format('T', true);
-
-					}
-					else
-					{
-						$event_timezone = Date::of($publish_down, $this->row->time_zone)->format('T', true);
-						$event_timezone_start = Date::of($publish_up, $this->row->time_zone)->format('T', true);
-						$event_timezone_end = Date::of($publish_down, $this->row->time_zone)->format('T', true);
-					}
-
-					$html .= Date::of($publish_up, $this->row->time_zone)->toLocal('l d F, Y g:i a ') . $event_timezone_start . ' - ';
-					$html .= Date::of($publish_down, $this->row->time_zone)->toLocal('l d F, Y g:i a ') . $event_timezone_end;
+					$html .= Date::of($publish_up)->toTimeZone($event_tz, 'l d F, Y g:i a T') . ' - ';
+					$html .= Date::of($publish_down)->toTimeZone($event_tz, 'l d F, Y g:i a T');
 				}
 
 				$html .= '   </td>'."\n";
