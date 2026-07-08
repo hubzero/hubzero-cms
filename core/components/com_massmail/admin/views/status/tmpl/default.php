@@ -90,6 +90,15 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 .mm-sbar .bar { height:10px; border-radius:5px; }
 .mm-recent { width:100%; border-collapse:collapse; margin-top:6px; }
 .mm-recent th, .mm-recent td { text-align:left; padding:6px 8px; border-bottom:1px solid #edf2f7; font-size:13px; }
+.mm-card.mm-clickable { cursor:pointer; }
+.mm-card.mm-clickable:hover { border-color:#94a3b8; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+.mm-modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,.6); display:none; z-index:10000; align-items:center; justify-content:center; padding:24px; }
+.mm-modal.open { display:flex; }
+.mm-modal-inner { background:#fff; border-radius:10px; padding:24px 28px; width:100%; max-width:1500px; max-height:92vh; overflow:auto; position:relative; box-shadow:0 10px 40px rgba(0,0,0,.3); }
+.mm-modal-close { position:absolute; top:6px; right:14px; font-size:28px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
+.mm-modal-body h3 { font-size:18px; }
+.mm-modal-body figure svg { width:100%; height:auto; }
+.mm-modal-body .mm-pills { margin-top:14px; }
 </style>
 
 <div class="mm-dash">
@@ -160,3 +169,40 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 	</div>
 	<p class="mm-legend"><span style="display:inline-block;width:14px;height:0;border-top:2px solid #dd6b20;vertical-align:middle;margin-right:5px;"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->watermark)); ?></p>
 </div>
+
+<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>">
+	<div class="mm-modal-inner">
+		<button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
+		<div class="mm-modal-body"></div>
+	</div>
+</div>
+<script type="text/javascript">
+(function () {
+	var modal = document.getElementById('mm-modal');
+	if (!modal) { return; }
+	var body  = modal.querySelector('.mm-modal-body');
+	var hint  = <?php echo json_encode(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>;
+
+	function closeModal() { modal.classList.remove('open'); body.innerHTML = ''; }
+
+	var cards = document.querySelectorAll('.mm-dash .mm-card');
+	for (var i = 0; i < cards.length; i++) {
+		(function (card) {
+			if (!card.querySelector('svg')) { return; }
+			card.classList.add('mm-clickable');
+			card.setAttribute('title', hint);
+			card.addEventListener('click', function () {
+				body.innerHTML = card.innerHTML;
+				modal.classList.add('open');
+			});
+		})(cards[i]);
+	}
+
+	modal.addEventListener('click', function (e) {
+		if (e.target === modal || e.target.classList.contains('mm-modal-close')) { closeModal(); }
+	});
+	document.addEventListener('keydown', function (e) {
+		if (e.key === 'Escape' || e.keyCode === 27) { closeModal(); }
+	});
+})();
+</script>
