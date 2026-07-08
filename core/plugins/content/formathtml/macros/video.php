@@ -100,10 +100,10 @@ class Video extends Macro
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$width  = (isset($this->attr['width']) && $this->attr['width'] != '')   ? $this->attr['width']  : $default_width;
 		$height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
@@ -223,8 +223,16 @@ class Video extends Macro
 		{
 			$ext = strtolower(\Filesystem::extension($video_url));
 
-			// Use the browser's native HTML5 player (no external dependency)
-			$html = '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
+			// Shared HUBzero player: native <video> + accessible control bar
+			// (no external dependency, multi-instance safe)
+			\Document::addStyleSheet('/core/assets/css/hz-video-player.css');
+			\Document::addScript('/core/assets/js/hz-video-player.js');
+
+			$transcript = (isset($this->attr['transcript']) && $this->attr['transcript']) ? ' data-transcript="1"' : '';
+
+			$html  = '<div class="hz-video"' . $transcript . '>';
+			// `controls` is a no-JS fallback; the player removes it once enhanced
+			$html .= '<video width="' . $width . '" height="' . $height . '" preload="metadata" playsinline controls>';
 			switch ($ext)
 			{
 				case 'mov':
@@ -242,7 +250,19 @@ class Video extends Macro
 					$html .= '<source src="' . $this->_link($url) . '" type="video/webm" />';
 				break;
 			}
+
+			// Optional WebVTT captions: [[Video(clip.mp4, captions="clip.en.vtt")]]
+			if (isset($this->attr['captions']) && $this->attr['captions'] != '')
+			{
+				$capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '') ? $this->attr['captionlang'] : 'en';
+				$capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '') ? $this->attr['captionlabel'] : 'Captions';
+				$html .= '<track kind="captions" src="' . $this->_link($this->attr['captions']) . '"'
+					. ' srclang="' . htmlspecialchars($capLang, ENT_QUOTES, 'UTF-8') . '"'
+					. ' label="' . htmlspecialchars($capLabel, ENT_QUOTES, 'UTF-8') . '" default />';
+			}
+
 			$html .= '</video>';
+			$html .= '</div>';
 		}
 		// External
 		else
