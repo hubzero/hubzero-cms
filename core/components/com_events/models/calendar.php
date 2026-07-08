@@ -142,10 +142,18 @@ class Calendar extends Model
 
 					// capture publish up/down
 					// remove for now as we want all events that have a repeating rule
-					$start = Date::of($filters['publish_up']);
-					$end   = Date::of($filters['publish_down']);
+					$publish_up   = Date::of($filters['publish_up']);
+					$publish_down = Date::of($filters['publish_down']);
 					unset($filters['publish_up']);
 					unset($filters['publish_down']);
+
+					// optional upper bound for generated occurrences
+					$until = null;
+					if (isset($filters['until']))
+					{
+						$until = Date::of($filters['until']);
+						unset($filters['until']);
+					}
 
 					// find any events that match our filters
 					$tbl = new Tables\Event($this->_db);
@@ -158,9 +166,17 @@ class Calendar extends Model
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
+							// bound the recurrence set to the requested window end
+							if (isset($until))
+							{
+								$rule->setUntil($until);
+							}
+
 							// create transformmer & generate occurences
 							$transformer = new \Recurr\Transformer\ArrayTransformer();
-							$occurrences = $transformer->transform($rule, null);
+							$occurrences = $transformer->transform($rule, null)
+							                           ->startsAfter($publish_up, true)
+							                           ->endsAfter($publish_up, true);
 
 							// calculate diff so we can create down
 							$diff = new DateInterval('P0Y0DT0H0M');
