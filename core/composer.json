@@ -38,7 +38,7 @@
         "simshaun/recurr": "4.0.*",
         "pelago/emogrifier": "7.0.*",
         "google/apiclient": "2.14.*",
-        "guzzlehttp/guzzle": "7.9.*",
+        "guzzlehttp/guzzle": "7.12.*",
         "symfony/mailchimp-mailer": "v5.4.*",
         "phpdocumentor/reflection-docblock": "5.2.*",
         "bshaffer/oauth2-server-php": "1.11.*",
