@@ -345,6 +345,64 @@
 		padding: 0 1em;
 	}
 
+/* Collapsible table of contents (group wikis) */
+	.group_wiki .toc-item {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+
+	.group_wiki .toc-item .toggle-button {
+		position: absolute;
+		left: -2em;
+		top: 0.45em;
+		color: #000;
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 1em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.3s ease;
+	}
+
+	.super-group-content.group_wiki .toc-item .toggle-button {
+		left: -1.3em;
+		top: 0.35em;
+	}
+
+	.group_wiki .wikipage .macro-toc .toggle-button {
+		top: -0.4em;
+	}
+
+	.super-group-content.group_wiki .wikipage .macro-toc .toggle-button {
+		top: 0.35em;
+	}
+
+	.group_wiki .toc-item .toggle-button::before {
+		font-family: 'Fontcons';
+		content: '\f0da'; /* caret; rotates when expanded */
+		display: inline-block;
+		transition: transform 0.2s ease;
+	}
+
+	.group_wiki .toc-item .toggle-button[aria-expanded="true"]::before {
+		transform: rotate(90deg);
+	}
+
+	.group_wiki .toc-item .tocnumber {
+		display: none;
+	}
+
+	.group_wiki .wikipage .macro-toc .toc-list {
+		padding: 0 0 0.25em 1em;
+	}
+
+	.group_wiki .wikipage .macro-toc > .toc-list {
+		padding-left: 1em;
+	}
+
 /* Diffs */
 	.diff-versions {
 		margin: 0;
