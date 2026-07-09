@@ -108,16 +108,77 @@ class Parser extends Obj
 	/**
 	 * Build a standalone table of contents for already-parsed page HTML
 	 *
-	 * @param   string  $text    The parsed page HTML to extract headings from
-	 * @param   array   $config  Params for the parser (scope, domain, url, etc.)
-	 * @return  string  Rendered table-of-contents markup
+	 * @param   string   $text    The parsed page HTML to extract headings from
+	 * @param   array    $config  Params for the parser (scope, domain, url, etc.)
+	 * @param   integer  $depth   Limit the TOC to this many heading levels (0 = no limit)
+	 * @return  string   Rendered table-of-contents markup
 	 */
-	public function toc($text, $config)
+	public function toc($text, $config, $depth = 0)
 	{
 		$this->load(array(), $config, true);
 		$parser = $this->parser->onGetWikiParser($config, true);
 
-		return $parser->toc($text, true);
+		return $parser->toc($text, true, $depth);
+	}
+
+	/**
+	 * Parse the positional arguments of a [[TableOfContents(...)]] macro.
+	 *
+	 * Args are type-dispatched and order-independent: an integer sets the
+	 * depth, a keyword (here|inline|sidebar|off) sets the placement mode.
+	 * Last value of each type wins. Unrecognized tokens are ignored.
+	 *
+	 * @param   string  $args  Raw argument string (contents of the parentheses)
+	 * @return  array   array('mode' => string, 'depth' => int)
+	 */
+	public static function parseTocArgs($args)
+	{
+		$mode  = 'here';   // default: render at the macro's own position
+		$depth = 0;        // 0 = no depth limit
+
+		if ($args !== null && $args !== '')
+		{
+			foreach (explode(',', $args) as $arg)
+			{
+				$arg = trim($arg);
+				if ($arg === '')
+				{
+					continue;
+				}
+				if (ctype_digit($arg))
+				{
+					$depth = (int) $arg;
+				}
+				elseif (in_array(strtolower($arg), array('here', 'inline', 'sidebar', 'off'), true))
+				{
+					$mode = strtolower($arg);
+				}
+			}
+		}
+
+		return array('mode' => $mode, 'depth' => $depth);
+	}
+
+	/**
+	 * Detect an explicit [[TableOfContents(...)]] macro in raw wiki text and
+	 * return its resolved mode/depth, or null when the page has no such macro.
+	 *
+	 * @param   string  $pagetext  Raw wiki markup
+	 * @return  array|null  array('mode' => string, 'depth' => int) or null
+	 */
+	public static function tocDirective($pagetext)
+	{
+		if ($pagetext === null || $pagetext === '')
+		{
+			return null;
+		}
+
+		if (preg_match('/\[\[\s*TableOfContents\s*(?:\(([^)]*)\))?\s*\]\]/i', $pagetext, $m))
+		{
+			return self::parseTocArgs(isset($m[1]) ? $m[1] : '');
+		}
+
+		return null;
 	}
 
 	/**

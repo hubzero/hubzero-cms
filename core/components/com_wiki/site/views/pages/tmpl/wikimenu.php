@@ -10,31 +10,55 @@ defined('_HZEXEC_') or die();
 
 use Components\Wiki\Helpers\Parser;
 
-// Build a table of contents for the current page (display view only)
-$showtoc = ($this->controller == 'pages' && $this->task == 'display');
+// Build the sidebar table of contents for the current page (display view only).
+// Only one TOC renders per page: an explicit [[TableOfContents]] macro decides
+// (a "sidebar" macro puts it here; here/inline/off keep it out of the sidebar);
+// without a macro we render it in the sidebar by default.
+$showtoc = ($this->controller == 'pages' && $this->task == 'display'
+	&& $this->page->getNamespace() != 'special');
 $toc = '';
 
 if ($showtoc)
 {
-	// Make sure the base URL is correct for the TOC so anchor links don't reload the page
-	$url = $this->page->link();
-	if ($this->page->get('pagename') == 'MainPage')
-	{
-		$path = explode('/', rtrim($_SERVER['REQUEST_URI'], '/'));
-		if (end($path) != 'MainPage')
-		{
-			$url = $this->page->link('base');
-		}
-	}
+	$directive = Parser::tocDirective($this->page->version->get('pagetext'));
 
-	$parser = Parser::getInstance();
-	$toc = $parser->toc($this->page->version->get('pagehtml'), array(
-		'option'    => ($this->option ?: \Request::getCmd('option')),
-		'scope'     => $this->page->get('path'),
-		'domain'    => $this->page->get('scope'),
-		'domain_id' => $this->page->get('scope_id'),
-		'url'       => $url,
-	));
+	$render = false;
+	$depth  = 0;
+	if ($directive === null)
+	{
+		// No macro: automatic sidebar TOC
+		$render = true;
+	}
+	elseif ($directive['mode'] == 'sidebar')
+	{
+		// Macro explicitly asks for the sidebar
+		$render = true;
+		$depth  = $directive['depth'];
+	}
+	// here / inline / off => the sidebar stays empty
+
+	if ($render)
+	{
+		// Make sure the base URL is correct for the TOC so anchor links don't reload the page
+		$url = $this->page->link();
+		if ($this->page->get('pagename') == 'MainPage')
+		{
+			$path = explode('/', rtrim($_SERVER['REQUEST_URI'], '/'));
+			if (end($path) != 'MainPage')
+			{
+				$url = $this->page->link('base');
+			}
+		}
+
+		$parser = Parser::getInstance();
+		$toc = $parser->toc($this->page->version->get('pagehtml'), array(
+			'option'    => ($this->option ?: \Request::getCmd('option')),
+			'scope'     => $this->page->get('path'),
+			'domain'    => $this->page->get('scope'),
+			'domain_id' => $this->page->get('scope_id'),
+			'url'       => $url,
+		), $depth);
+	}
 }
 
 ?>
@@ -53,7 +77,7 @@ if ($showtoc)
 			</form>
 		</div>
 
-		<?php if ($showtoc && trim($toc) != '' && $this->page->getNamespace() != 'special') { ?>
+		<?php if (trim($toc) != '') { ?>
 		<div class="container">
 			<?php echo $toc; ?>
 		</div>

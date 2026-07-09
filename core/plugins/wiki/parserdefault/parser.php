@@ -3003,15 +3003,37 @@ class WikiParser
 	 * @param   string  $text  Text to build TOC from
 	 * @return  string
 	 */
-	public function toc($text, $standalone = false)
+	public function toc($text, $standalone = false, $depth = 0)
 	{
 		$isMain              = true;
-		$maxTocLevel         = 15;
 		$showEditLink        = true;
 		$doNumberHeadings    = false;
 		$doTocNumberHeadings = true;
 		$forceTocPosition    = true;
 		//$mShowToc            = true;
+
+		// Placement of the inline TOC. Only meaningful when not standalone (i.e.
+		// when substituting a [[TableOfContents]] macro): 'none' means the page has
+		// no macro, so we only anchor headings; otherwise the macro's mode
+		// (here|inline|sidebar|off) decides where the TOC lands. A depth given in
+		// the macro overrides any passed-in default.
+		$tocMode     = 'sidebar';
+		$placeholder = '';
+		if (!$standalone)
+		{
+			$tocMode = 'none';
+			if (preg_match('/<p>MACRO' . preg_quote($this->token(), '/') . '\[\[TableOfContents(?:\(([^)]*)\))?\]\]' . "\n" . '<\/p>/', $text ?: '', $mm))
+			{
+				$directive   = \Components\Wiki\Helpers\Parser::parseTocArgs(isset($mm[1]) ? $mm[1] : '');
+				$tocMode     = $directive['mode'];
+				$depth       = $directive['depth'];
+				$placeholder = $mm[0];
+			}
+		}
+
+		// Limit heading levels when a depth was requested. Level checks below are
+		// "toclevel < maxTocLevel", so add one; 0 means no limit.
+		$maxTocLevel = ($depth > 0) ? $depth + 1 : 15;
 
 		// Anchor for the "(Top)" link. Super groups render their own header, so
 		// point at that; regular groups sit under the sub-content header.
@@ -3264,9 +3286,37 @@ class WikiParser
 		$output .= $toc . "\n";
 		$output .= '</div>' . "\n";
 
-		// Standalone: return just the TOC (for placement in a sidebar/aside);
-		// otherwise substitute it in place of the [[TableOfContents]] macro.
-		return ($standalone ? $output : str_replace('<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>', $output, $full));
+		// Standalone: return just the TOC (for placement in a sidebar/aside).
+		if ($standalone)
+		{
+			return $output;
+		}
+
+		// No explicit macro: headings in $full are already anchored and there is
+		// no inline TOC to place.
+		if ($tocMode == 'none' || $placeholder == '')
+		{
+			return $full;
+		}
+
+		// Place the inline TOC per the macro's mode. Only one TOC renders per page;
+		// the view suppresses the sidebar when the macro is here/inline/off.
+		switch ($tocMode)
+		{
+			case 'here':
+				// At the macro's own position
+				return str_replace($placeholder, $output, $full);
+
+			case 'inline':
+				// At the top of the content
+				return $output . "\n" . str_replace($placeholder, '', $full);
+
+			case 'sidebar':
+			case 'off':
+			default:
+				// Rendered in the sidebar by the view, or not at all
+				return str_replace($placeholder, '', $full);
+		}
 	}
 
 	/**
