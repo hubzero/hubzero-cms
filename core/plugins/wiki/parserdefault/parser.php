@@ -374,8 +374,13 @@ class WikiParser
 		$text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
 		$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
 
-		// Format headings and build a table of contents
-		if ($this->get('fullparse') && strstr($text, '<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>'))
+		// Anchor every heading (and substitute an inline [[TableOfContents]] macro if one
+		// is present). This runs on every full parse -- not only when the macro appears --
+		// so that heading id anchors exist on all pages and any table of contents (inline,
+		// sidebar, or the explicit macro) can link to them. When no macro placeholder is
+		// present, toc()'s closing str_replace is a no-op and it returns the body with the
+		// headings anchored.
+		if ($this->get('fullparse'))
 		{
 			$text = $this->toc($text);
 		}
