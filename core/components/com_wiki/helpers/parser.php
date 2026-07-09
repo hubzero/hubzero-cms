@@ -106,6 +106,21 @@ class Parser extends Obj
 	}
 
 	/**
+	 * Build a standalone table of contents for already-parsed page HTML
+	 *
+	 * @param   string  $text    The parsed page HTML to extract headings from
+	 * @param   array   $config  Params for the parser (scope, domain, url, etc.)
+	 * @return  string  Rendered table-of-contents markup
+	 */
+	public function toc($text, $config)
+	{
+		$this->load(array(), $config, true);
+		$parser = $this->parser->onGetWikiParser($config, true);
+
+		return $parser->toc($text, true);
+	}
+
+	/**
 	 * Parse the text
 	 *
 	 * @param   string  $text       The content to be parsed

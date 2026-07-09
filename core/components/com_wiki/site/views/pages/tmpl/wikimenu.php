@@ -8,6 +8,35 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+use Components\Wiki\Helpers\Parser;
+
+// Build a table of contents for the current page (display view only)
+$showtoc = ($this->controller == 'pages' && $this->task == 'display');
+$toc = '';
+
+if ($showtoc)
+{
+	// Make sure the base URL is correct for the TOC so anchor links don't reload the page
+	$url = $this->page->link();
+	if ($this->page->get('pagename') == 'MainPage')
+	{
+		$path = explode('/', rtrim($_SERVER['REQUEST_URI'], '/'));
+		if (end($path) != 'MainPage')
+		{
+			$url = $this->page->link('base');
+		}
+	}
+
+	$parser = Parser::getInstance();
+	$toc = $parser->toc($this->page->version->get('pagehtml'), array(
+		'option'    => ($this->option ?: \Request::getCmd('option')),
+		'scope'     => $this->page->get('path'),
+		'domain'    => $this->page->get('scope'),
+		'domain_id' => $this->page->get('scope_id'),
+		'url'       => $url,
+	));
+}
+
 ?>
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></h3>
@@ -23,6 +52,12 @@ defined('_HZEXEC_') or die();
 				</fieldset>
 			</form>
 		</div>
+
+		<?php if ($showtoc && trim($toc) != '' && $this->page->getNamespace() != 'special') { ?>
+		<div class="container">
+			<?php echo $toc; ?>
+		</div>
+		<?php } ?>
 
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_WIKI'); ?></h3>

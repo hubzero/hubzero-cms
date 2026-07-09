@@ -2998,7 +2998,7 @@ class WikiParser
 	 * @param   string  $text  Text to build TOC from
 	 * @return  string
 	 */
-	public function toc($text)
+	public function toc($text, $standalone = false)
 	{
 		$isMain              = true;
 		$maxTocLevel         = 15;
@@ -3007,6 +3007,18 @@ class WikiParser
 		$doTocNumberHeadings = true;
 		$forceTocPosition    = true;
 		//$mShowToc            = true;
+
+		// Anchor for the "(Top)" link. Super groups render their own header, so
+		// point at that; regular groups sit under the sub-content header.
+		$toc_title_anchor = 'content-header';
+		if ($this->get('domain') == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($this->get('domain_id'));
+			if ($group && !$group->isSuperGroup())
+			{
+				$toc_title_anchor = 'sub-content-header';
+			}
+		}
 
 		// Get all headlines for numbering them and adding funky stuff like [edit]
 		// links - this is for later, but we need the number of headlines right now
@@ -3062,7 +3074,15 @@ class WikiParser
 					if ($toclevel < $maxTocLevel)
 					{
 						$prevtoclevel = $toclevel;
-						$toc .= $this->_tocIndent();
+						if ($toc == '')
+						{
+							$toc .= $this->_tocIndent($toclevel);
+							$toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+						}
+						else
+						{
+							$toc .= $this->_tocIndent($toclevel);
+						}
 						$numVisible++;
 					}
 				}
@@ -3227,12 +3247,21 @@ class WikiParser
 			$i++;
 		}
 
-		$output  = '<div class="article-toc">' . "\n";
+		// Ensure at least a "(Top)" entry when there were no sub-headings
+		if ($toc == '')
+		{
+			$toc .= $this->_tocIndent($toclevel);
+			$toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+		}
+
+		$output  = '<div class="article-toc' . (!$standalone ? ' macro-toc' : '') . '">' . "\n";
 		$output .= '<h3 class="article-toc-heading">Contents</h3>' . "\n";
 		$output .= $toc . "\n";
 		$output .= '</div>' . "\n";
 
-		return str_replace('<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>', $output, $full);
+		// Standalone: return just the TOC (for placement in a sidebar/aside);
+		// otherwise substitute it in place of the [[TableOfContents]] macro.
+		return ($standalone ? $output : str_replace('<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>', $output, $full));
 	}
 
 	/**
@@ -3255,9 +3284,9 @@ class WikiParser
 	 *
 	 * @return  string
 	 */
-	private function _tocIndent()
+	private function _tocIndent($toclevel)
 	{
-		return "\n<ul>";
+		return "\n<ul class='toc-list'" . ($toclevel > 1 ? " style='display: none;'" : "") . ">";
 	}
 
 	/**
@@ -3285,11 +3314,14 @@ class WikiParser
 		$url = $this->get('url');
 		$url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
 
-		return "\n" . '<li class="toclevel-' . $level . '">' .
-						'<a href="' . Route::url($url) . '#' . $anchor . '">' .
-							'<span class="tocnumber">' . $tocnumber . ' </span>' .
-							'<span class="toctext">' . $tocLine . '</span>' .
-						'</a>';
+		return "\n" . '<li class="toclevel toclevel-' . $level . '">' .
+						'<div class="toc-item">' .
+							'<button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button>' .
+							'<a href="' . Route::url($url) . '#' . $anchor . '">' .
+								'<span class="tocnumber">' . $tocnumber . ' </span>' .
+								'<span class="toctext">' . $tocLine . '</span>' .
+							'</a>' .
+						'</div>';
 	}
 
 	/**
