@@ -112,6 +112,23 @@ if ($showtoc)
 						<?php echo Lang::txt('COM_WIKI_SPECIAL_RECENT_CHANGES'); ?>
 					</a>
 				</li>
+				<?php
+				// Group managers get a link to the group wiki settings (TOC behavior)
+				if ($this->page->get('scope') == 'group')
+				{
+					$grp = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
+					if ($grp && !User::isGuest() && in_array(User::get('id'), (array) $grp->get('managers')))
+					{
+						?>
+						<li class="page-settings">
+							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $grp->get('cn') . '&active=wiki&action=settings'); ?>">
+								<?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
+							</a>
+						</li>
+						<?php
+					}
+				}
+				?>
 			</ul>
 		</div>
 

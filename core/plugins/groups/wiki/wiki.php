@@ -179,6 +179,48 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				Request::setVar('scope', $group->get('cn') . DS . $active);
 			}*/
 
+			// Group wiki settings (managers only): automatic table-of-contents behavior
+			if ($action == 'settings' || $action == 'savesettings')
+			{
+				if (User::isGuest() || ($authorized != 'manager' && $authorized != 'admin'))
+				{
+					$arr['html'] = '<p class="warning">' . Lang::txt('PLG_GROUPS_WIKI_SETTINGS_NOT_AUTHORIZED') . '</p>';
+					return $arr;
+				}
+
+				$params = new \Hubzero\Config\Registry($group->get('params'));
+
+				if ($action == 'savesettings')
+				{
+					Request::checkToken();
+
+					// Empty string means "use the site default"
+					$mode = Request::getWord('automatic_toc', '');
+					$params->set('automatic_toc', in_array($mode, array('inline', 'sidebar', 'off'), true) ? $mode : '');
+
+					$threshold = Request::getString('toc_threshold', '');
+					$params->set('toc_threshold', ($threshold !== '' && ctype_digit($threshold)) ? (int) $threshold : '');
+
+					$group->set('params', $params->toString());
+					$group->update();
+
+					App::redirect(
+						Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=wiki&action=settings'),
+						Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVED')
+					);
+					return;
+				}
+
+				$view = $this->view('default', 'settings')
+					->set('option', $option)
+					->set('group', $group)
+					->set('params', $params)
+					->set('defaults', \Component::params('com_wiki'));
+				$this->css()->js();
+				$arr['html'] = $view->loadTemplate();
+				return $arr;
+			}
+
 			// Import some needed libraries
 			switch ($action)
 			{
