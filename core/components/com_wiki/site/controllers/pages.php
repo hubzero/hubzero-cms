@@ -427,6 +427,17 @@ class Pages extends SiteController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
+		// Include the page's ancestors in the trail (matches the display view)
+		if ($this->page->get('parent'))
+		{
+			foreach ($this->page->ancestors() as $p)
+			{
+				Pathway::append(
+					$p->get('title'),
+					$p->link()
+				);
+			}
+		}
 		Pathway::append(
 			$this->page->title,
 			$this->page->link()
