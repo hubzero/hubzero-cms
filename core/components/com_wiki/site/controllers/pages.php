@@ -886,13 +886,24 @@ class Pages extends SiteController
 			);
 		}
 
-		// Make sure they're authorized to delete
+		// Make sure they're authorized
 		if (!$this->page->access('edit'))
 		{
 			App::redirect(
 				Route::url($this->page->link('base')),
 				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
+			);
+		}
+
+		// The wiki home page cannot be renamed (change the homepage setting first)
+		if ($this->page->get('pagename') == $this->book->config('homepage', 'MainPage')
+			&& !$this->page->get('path'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
+				'warning'
 			);
 		}
 
@@ -973,6 +984,27 @@ class Pages extends SiteController
 
 		// Load the page
 		$this->page = Page::oneByPath($oldpagename, $this->book->get('scope'), $this->book->get('scope_id'));
+
+		// Must be authorized to edit the page being renamed
+		if (!$this->page->access('edit') && !$this->page->access('manage'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
+				'error'
+			);
+		}
+
+		// The wiki home page cannot be renamed (change the homepage setting first)
+		if ($this->page->get('pagename') == $this->book->config('homepage', 'MainPage')
+			&& !$this->page->get('path'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
+				'warning'
+			);
+		}
 
 		$newpagename = $this->page->normalize($newpagename);
 

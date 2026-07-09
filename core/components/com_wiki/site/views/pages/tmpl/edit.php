@@ -17,6 +17,10 @@ $this->js('wiki.js', 'com_wiki')
 
 $tags = $this->page->tags('string');
 
+// The wiki home page cannot be renamed
+$isHome = ($this->page->get('pagename') == $this->book->config('homepage', 'MainPage')
+	&& !$this->page->get('path'));
+
 if ($this->page->exists())
 {
 	$lid = $this->page->get('id');
@@ -129,7 +133,7 @@ $authors = implode(', ', $authors);
 			<div id="file-uploader-list"></div>
 		</div>
 	<?php } else {*/ ?>
-					<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
+					<?php if ($this->page->exists() && $this->page->access('edit') && !$isHome) { ?>
                         <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
 					<?php } ?>
 					<?php //} ?>
