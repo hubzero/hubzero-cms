@@ -230,7 +230,11 @@ class Video extends Macro
 
 			$transcript = (isset($this->attr['transcript']) && $this->attr['transcript']) ? ' data-transcript="1"' : '';
 
-			$html  = '<div class="hz-video"' . $transcript . '>';
+			// Cap the player at the requested width (default 640) but let it shrink
+			// responsively on narrow screens.
+			$cssWidth = is_numeric($width) ? $width . 'px' : $width;
+
+			$html  = '<div class="hz-video" style="max-width:' . htmlspecialchars($cssWidth, ENT_QUOTES, 'UTF-8') . '"' . $transcript . '>';
 			// `controls` is a no-JS fallback; the player removes it once enhanced
 			$html .= '<video width="' . $width . '" height="' . $height . '" preload="metadata" playsinline controls>';
 			switch ($ext)
