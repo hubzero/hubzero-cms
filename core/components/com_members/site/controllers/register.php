@@ -1477,8 +1477,8 @@ class Register extends SiteController
 			$code = Request::getString('code', false);
 		}
 
-		// Get the return value if it was requested
-		$return = Request::getString('return', false);
+		// Get the return value if it was requested (validated as internal)
+		$return = ReturnUrl::sanitize(Request::getString('return', false));
 
 		// Check if the user is logged in
 		if (User::isGuest())
@@ -1559,21 +1559,14 @@ class Register extends SiteController
 		}
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code)
 		{
-			//var to hold return path
-			$return = '';
+			// Where to send them after confirming: the return stored at
+			// registration, else the configured default. Both are validated as
+			// internal, so a stored value can never become an open redirect.
+			$return = ReturnUrl::resolve('', $xprofile, $this->config->get('ConfirmationReturn'));
 
-			// get return path
-			$cReturn = $this->config->get('ConfirmationReturn');
-			if ($cReturn)
+			// Consume the stored return
+			if ($xprofile->getParam('return'))
 			{
-				$return = $cReturn;
-			}
-
-			//check to see if we have a return param
-			$pReturn = base64_decode(urldecode($xprofile->getParam('return','')));
-			if ($pReturn)
-			{
-				$return = $pReturn;
 				$xprofile->setParam('return', '');
 			}
 
@@ -1598,18 +1591,17 @@ class Register extends SiteController
 
 			Event::trigger('onUserAfterConfirmEmail', array($xprofile->toArray()));
 
-			// Redirect
-			if (empty($return))
+			// Fall back to a pre-registration action stored in a cookie, then to
+			// the account page. The cookie value is validated as internal too.
+			if (!$return && isset($_COOKIE['return']))
 			{
-				$r = $this->config->get('ConfirmationReturn');
-				$return = ($r) ? $r : Route::url('index.php?option=com_members&task=myaccount');
+				$return = ReturnUrl::sanitize($_COOKIE['return']);
+				setcookie('return', '', time() - 3600);
+			}
 
-				// consume cookie (yum) if available to return to whatever action prompted registration
-				if (isset($_COOKIE['return']))
-				{
-					$return = $_COOKIE['return'];
-					setcookie('return', '', time() - 3600);
-				}
+			if (!$return)
+			{
+				$return = Route::url('index.php?option=com_members&task=myaccount');
 			}
 
 			App::redirect($return, '', 'message', true);
