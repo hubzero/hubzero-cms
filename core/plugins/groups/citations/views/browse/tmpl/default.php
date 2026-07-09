@@ -84,7 +84,7 @@ if (isset($this->messages))
 						<thead>
 							<tr>
 								<th class="batch">
-									<input type="checkbox" class="checkall-download" />
+									<input type="checkbox" class="checkall-download" aria-label="<?php echo $this->escape(Lang::txt('PLG_GROUPS_CITATIONS_SELECT_ALL') ?: 'Select all citations'); ?>" />
 								</th>
 								<th colspan="6"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 							</tr>
@@ -108,7 +108,7 @@ if (isset($this->messages))
 								<?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) { continue; } ?> 
 								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : ''; ?>">
 									<td class="batch">
-										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" aria-label="<?php echo $this->escape(Lang::txt('PLG_GROUPS_CITATIONS_SELECT_CITATION') ?: 'Select citation') . ' ' . (int) $cite->id; ?>" />
 									</td>
 									<?php if ($this->label != "none") : ?>
 										<td class="citation-label <?php echo $this->citations_label_class; ?>">
