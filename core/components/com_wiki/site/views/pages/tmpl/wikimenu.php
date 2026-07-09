@@ -142,7 +142,7 @@ if ($showtoc)
 					</a>
 				</li>
 				<li class="page-cite">
-					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id')); ?>">
+					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id') . '&path=' . $this->page->get('path')); ?>">
 						<?php echo Lang::txt('COM_WIKI_SPECIAL_CITE'); ?>
 					</a>
 				</li>

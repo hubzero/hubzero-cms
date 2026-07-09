@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 $page = $this->book->pages()
 	->whereEquals('pagename', Request::getString('page', ''))
-	->whereEquals('path', Request::getString('scope', ''))
+	->whereEquals('path', Request::getString('path', ''))
 	->row();
 
 if ($v = Request::getInt('version', 0))
