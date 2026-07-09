@@ -319,9 +319,9 @@ class Pages extends SiteController
 			);
 		}
 
-		// Check if the page can be edited
-		if ((!$this->page->access('edit') || ($this->page->created_by && $this->page->created_by != User::get('id')))
-			&& !$this->page->access('manage'))
+		// Check if the page can be edited. access('edit') already encodes
+		// ownership (core.edit, or the creator via core.edit.own).
+		if (!$this->page->access('edit') && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),
@@ -756,9 +756,9 @@ class Pages extends SiteController
 				'error'
 			);
 		}
-		// Make sure they're authorized to delete
-		if ((!$this->page->access('delete') || ($this->page->created_by && $this->page->created_by != User::get('id')))
-			&& !$this->page->access('manage'))
+		// Make sure they're authorized to delete. access('delete') already
+		// encodes ownership via the ACL.
+		if (!$this->page->access('delete') && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),

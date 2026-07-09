@@ -60,7 +60,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 	</li>
 	<?php if ($tmpl != 'component') { ?>
 		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
-			<?php if ((($this->page->isLocked() && $this->page->access('manage')) || ((!$this->page->isLocked() && $this->page->access('edit') && $this->page->created_by == User::get('id')) || $this->page->access('manage'))) && $this->page->getNamespace() != 'help') { ?>
+			<?php if ((($this->page->isLocked() && $this->page->access('manage')) || ((!$this->page->isLocked() && $this->page->access('edit')) || $this->page->access('manage'))) && $this->page->getNamespace() != 'help') { ?>
 				<li class="page-edit<?php if ($this->controller == 'pages' && in_array($this->task, array('edit', 'preview', 'save'))) { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('edit')); ?>">
 						<span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
@@ -88,7 +88,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 			<?php } ?>
 			<?php
 				if (($this->page->isLocked() && $this->page->access('manage', 'page'))
-					|| ((!$this->page->isLocked() && $this->page->access('delete', 'page') && $this->page->created_by == User::get('id')) || $this->page->access('manage'))) { ?>
+					|| ((!$this->page->isLocked() && $this->page->access('delete', 'page')) || $this->page->access('manage'))) { ?>
 				<li class="page-delete<?php if ($this->controller == 'pages' && $this->task == 'delete') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('delete')); ?>">
 						<span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
