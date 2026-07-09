@@ -177,7 +177,7 @@ $authors = implode(', ', $authors);
 
 											$tplate = strtolower(Request::getString('tplate', ''));
 
-											foreach ($this->book->templates()->rows() as $template)
+											foreach ($this->book->templates(['state' => \Components\Wiki\Models\Page::STATE_PUBLISHED])->rows() as $template)
 											{
 												$tmpltags = $template->tags('string');
 												if ($tplate == strtolower($template->get('pagename')))
