@@ -195,8 +195,24 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$bits = explode(':', $file);
 			if (isset($bits[1]))
 			{
-				$page = \Components\Wiki\Models\Page::oneByTitle($bits[0]);
-				if (!$page)
+				// Constrain the lookup to the CURRENT wiki's scope. A bare title
+				// like "Main Page" exists on hundreds of pages across groups, so
+				// an unscoped match would be non-deterministic and could reach
+				// another group's files. Prefer the stored page's own scope.
+				$current = \Components\Wiki\Models\Page::oneOrNew($this->pageid);
+				if ($current->get('id'))
+				{
+					$scope    = $current->get('scope');
+					$scope_id = $current->get('scope_id');
+				}
+				else
+				{
+					$scope    = $this->scope;
+					$scope_id = $this->domain_id;
+				}
+
+				$page = \Components\Wiki\Models\Page::oneByTitle($bits[0], $scope, $scope_id);
+				if (!$page || !$page->get('id'))
 				{
 					return '(Image failed - Wiki page not found)';
 				}

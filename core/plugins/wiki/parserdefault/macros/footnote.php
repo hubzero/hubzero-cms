@@ -52,7 +52,6 @@ Examples:
 		{
 			$wm = new stdClass();
 			$wm->footnotes = array();
-			$wm->footnotes_notes = array();
 			$wm->footnotes_stubs = array();
 			$wm->footnotes_count = 0;
 		}
@@ -64,13 +63,16 @@ Examples:
 			// Args are either "note" or "label | note". The label (stub) lets a
 			// later [[Footnote(label)]] reference the same footnote. When no label
 			// is given the note text itself acts as the stub.
-			$args = explode('|', $this->args);
+			// Split on the FIRST pipe only so footnote text may contain '|'.
+			$args = explode('|', $this->args, 2);
 			$stub = trim(array_shift($args));
 			$note = (isset($args[0]) ? trim($args[0]) : $stub);
 
 			$wm->footnotes_count++;
 
-			if (in_array($stub, $wm->footnotes_stubs))
+			// Only labelled (non-empty stub) footnotes are de-duplicated;
+			// otherwise distinct footnotes with empty stubs would collide.
+			if ($stub !== '' && in_array($stub, $wm->footnotes_stubs))
 			{
 				$i = array_search($stub, $wm->footnotes_stubs) + 1;
 				$k = $wm->footnotes_count;
@@ -91,7 +93,6 @@ Examples:
 				'fndef-' . $i
 			);
 
-			$wm->footnotes_notes[] = $note;
 			$wm->footnotes_stubs[] = $stub;
 			$wm->footnotes[] = $footnote;
 
