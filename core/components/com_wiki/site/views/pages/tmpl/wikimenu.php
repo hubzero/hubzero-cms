@@ -26,16 +26,22 @@ if ($showtoc)
 	$depth  = 0;
 	if ($directive === null)
 	{
-		// No macro: automatic sidebar TOC
-		$render = true;
+		// No macro: honor the automatic-TOC setting. Only 'sidebar' renders here,
+		// and only once the page meets the configured heading threshold.
+		$settings = Parser::tocSettings($this->page->get('scope'), $this->page->get('scope_id'));
+		if ($settings['mode'] == 'sidebar')
+		{
+			$headings = preg_match_all('/<h[1-6][\s>]/i', (string) $this->page->version->get('pagehtml'));
+			$render = ($headings >= $settings['threshold']);
+		}
 	}
 	elseif ($directive['mode'] == 'sidebar')
 	{
-		// Macro explicitly asks for the sidebar
+		// Macro explicitly asks for the sidebar (forced, no threshold)
 		$render = true;
 		$depth  = $directive['depth'];
 	}
-	// here / inline / off => the sidebar stays empty
+	// automatic inline/off, or macro here/inline/off => the sidebar stays empty
 
 	if ($render)
 	{

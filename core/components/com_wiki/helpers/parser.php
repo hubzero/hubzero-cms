@@ -182,6 +182,54 @@ class Parser extends Obj
 	}
 
 	/**
+	 * Resolve the effective automatic table-of-contents settings for a wiki.
+	 *
+	 * These govern pages that have no explicit [[TableOfContents]] macro. The
+	 * component configuration provides the defaults; a group may override them
+	 * via its own params (layered in by the group wiki plugin).
+	 *
+	 * @param   string   $domain     Scope type (e.g. 'group')
+	 * @param   integer  $domain_id  Scope id (e.g. group gidNumber)
+	 * @return  array    array('mode' => inline|sidebar|off, 'threshold' => int)
+	 */
+	public static function tocSettings($domain = null, $domain_id = null)
+	{
+		$params = \Component::params('com_wiki');
+
+		$mode      = $params->get('automatic_toc', 'inline');
+		$threshold = (int) $params->get('toc_threshold', 4);
+
+		// Group-level override
+		if ($domain == 'group' && $domain_id)
+		{
+			$group = \Hubzero\User\Group::getInstance($domain_id);
+			if ($group)
+			{
+				$gparams = new Registry($group->get('params'));
+
+				$gmode = $gparams->get('automatic_toc', '');
+				if (in_array($gmode, array('inline', 'sidebar', 'off'), true))
+				{
+					$mode = $gmode;
+				}
+
+				$gthreshold = $gparams->get('toc_threshold', '');
+				if ($gthreshold !== '' && $gthreshold !== null)
+				{
+					$threshold = (int) $gthreshold;
+				}
+			}
+		}
+
+		if (!in_array($mode, array('inline', 'sidebar', 'off'), true))
+		{
+			$mode = 'inline';
+		}
+
+		return array('mode' => $mode, 'threshold' => max(1, $threshold));
+	}
+
+	/**
 	 * Parse the text
 	 *
 	 * @param   string  $text       The content to be parsed

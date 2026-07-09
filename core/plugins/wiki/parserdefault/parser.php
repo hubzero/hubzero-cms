@@ -3292,10 +3292,20 @@ class WikiParser
 			return $output;
 		}
 
-		// No explicit macro: headings in $full are already anchored and there is
-		// no inline TOC to place.
+		// No explicit macro: headings in $full are already anchored. Apply the
+		// automatic-TOC setting -- only 'inline' places anything in the body
+		// (sidebar is handled by the view, off does nothing), and only once the
+		// page meets the heading threshold.
 		if ($tocMode == 'none' || $placeholder == '')
 		{
+			$autoMode      = $this->get('automatic_toc', 'off');
+			$autoThreshold = (int) $this->get('toc_threshold', 4);
+
+			if ($autoMode == 'inline' && $numVisible > 0 && $numMatches >= $autoThreshold)
+			{
+				return $output . "\n" . $full;
+			}
+
 			return $full;
 		}
 

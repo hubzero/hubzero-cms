@@ -19,6 +19,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="automatic_toc" type="list" default="inline" label="COM_WIKI_CONFIG_AUTOMATIC_TOC_LABEL" description="COM_WIKI_CONFIG_AUTOMATIC_TOC_DESC">
+			<option value="inline">COM_WIKI_CONFIG_AUTOMATIC_TOC_INLINE</option>
+			<option value="sidebar">COM_WIKI_CONFIG_AUTOMATIC_TOC_SIDEBAR</option>
+			<option value="off">COM_WIKI_CONFIG_AUTOMATIC_TOC_OFF</option>
+		</field>
+		<field name="toc_threshold" type="text" default="4" label="COM_WIKI_CONFIG_TOC_THRESHOLD_LABEL" description="COM_WIKI_CONFIG_TOC_THRESHOLD_DESC" />
 	</fieldset>
 	<fieldset name="files">
 		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="COM_WIKI_CONFIG_FILE_UPLOAD_LABEL" description="COM_WIKI_CONFIG_FILE_UPLOAD_DESC" />
