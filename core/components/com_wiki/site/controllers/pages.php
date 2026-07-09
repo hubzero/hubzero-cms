@@ -330,8 +330,8 @@ class Pages extends SiteController
 			);
 		}
 
-		// make help pages noneditable
-		if ($this->page->getNamespace() == 'help')
+		// Help pages are shipped documentation; only wiki managers may edit them
+		if ($this->page->getNamespace() == 'help' && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),
