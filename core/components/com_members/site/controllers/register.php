@@ -22,6 +22,9 @@ use User;
 use Date;
 use App;
 
+use Components\Members\Helpers\Ajax;
+use Components\Members\Helpers\ReturnUrl;
+
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
@@ -30,6 +33,30 @@ include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
  */
 class Register extends SiteController
 {
+	/**
+	 * Render the current view, or -- when the caller requested format=json --
+	 * return it as the message of a JSON envelope so an XHR front-end can swap
+	 * it in without a page reload. Inert unless format=json is requested.
+	 *
+	 * @param   boolean  $success  Force the success flag; null derives it from
+	 *                             whether the view carries validation errors
+	 * @return  void
+	 */
+	protected function respondView($success = null)
+	{
+		if (Ajax::wanted())
+		{
+			if ($success === null)
+			{
+				$success = (count($this->getErrors()) == 0);
+			}
+
+			Ajax::send($success, $this->view->loadTemplate());
+		}
+
+		$this->view->display();
+	}
+
 	/**
 	 * Determine task and execute it
 	 *
@@ -889,8 +916,9 @@ class Register extends SiteController
 					$user->set('password', \Hubzero\User\Password::getPasshash($xregistration->get('password')));
 				}
 
-				// Do we have a return URL?
-				$regReturn = Request::getString('return', '');
+				// Do we have a return URL? Sanitize to an internal target so it
+				// can never be used as an open redirect at confirmation time.
+				$regReturn = ReturnUrl::sanitize(Request::getString('return', ''));
 
 				if ($regReturn)
 				{
@@ -967,8 +995,9 @@ class Register extends SiteController
 						->set('sitename', Config::get('sitename'))
 						->set('xprofile', $user)
 						->setErrors($this->getErrors())
-						->setLayout('create')
-						->display();
+						->setLayout('create');
+
+					$this->respondView(true);
 
 					if (is_object($hzal))
 					{
@@ -1111,8 +1140,9 @@ class Register extends SiteController
 			->set('xregistration', $xregistration)
 			->set('registration', $xregistration->_registration)
 			->setLayout('default')
-			->setErrors($this->getErrors())
-			->display();
+			->setErrors($this->getErrors());
+
+		$this->respondView();
 	}
 
 	/**
