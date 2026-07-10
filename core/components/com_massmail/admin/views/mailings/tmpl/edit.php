@@ -214,12 +214,22 @@ Toolbar::cancel();
 								<ul class="mm-ac-list" id="mm-group-ac" hidden></ul>
 							</div>
 						</div>
+						<?php $peopleChips = \Components\Massmail\Helpers\Recipients::describeUsers($spec['users']); ?>
 						<div class="input-wrap">
-							<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
+							<label for="field-people-search"><?php echo Lang::txt('COM_MASSMAIL_PEOPLE'); ?></label>
+							<ul class="mm-chips" id="mm-people-chips">
+								<?php foreach ($peopleChips as $p) { ?>
+									<li class="mm-chip" data-token="<?php echo (int) $p['token']; ?>">
+										<span><?php echo $this->escape($p['label']); ?></span>
+										<button type="button" class="mm-chip-x" aria-label="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>">&times;</button>
+									</li>
+								<?php } ?>
+							</ul>
 							<div class="mm-ac-wrap">
-								<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(', ', (array) $spec['users'])); ?>" placeholder="e.g. jdoe, 1002" autocomplete="off" />
-								<ul class="mm-ac-list" id="mm-user-ac" hidden></ul>
+								<input type="text" id="field-people-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PEOPLE_SEARCH')); ?>" autocomplete="off" />
+								<ul class="mm-ac-list" id="mm-people-ac" hidden></ul>
 							</div>
+							<input type="hidden" name="users" id="field-users" value="<?php echo $this->escape(implode(',', array_map(function ($p) { return $p['token']; }, $peopleChips))); ?>" />
 						</div>
 					</div>
 
@@ -411,7 +421,75 @@ Toolbar::cancel();
 		gi.addEventListener('blur', function () { setTimeout(hideAc, 150); });
 	}
 	attachAutocomplete('field-groups', 'mm-group-ac', 'grouplookup');
-	attachAutocomplete('field-users', 'mm-user-ac', 'userlookup');
+
+	// People chip picker: search by name or username, add each as a chip stored
+	// by user id (names aren't unique, so the id is the token).
+	(function () {
+		var search = document.getElementById('field-people-search');
+		var ac     = document.getElementById('mm-people-ac');
+		var chips  = document.getElementById('mm-people-chips');
+		var hidden = document.getElementById('field-users');
+		if (!search || !ac || !chips || !hidden) { return; }
+		var acTimer = null, acItems = [], acActive = -1;
+
+		function syncHidden() {
+			var toks = [];
+			chips.querySelectorAll('.mm-chip').forEach(function (li) { toks.push(li.getAttribute('data-token')); });
+			hidden.value = toks.join(',');
+			schedule();
+		}
+		function wireRemove(x) {
+			x.addEventListener('click', function () { var li = x.closest('.mm-chip'); if (li) { li.remove(); syncHidden(); } });
+		}
+		function addChip(id, label) {
+			if (chips.querySelector('.mm-chip[data-token="' + id + '"]')) { return; }
+			var li = document.createElement('li');
+			li.className = 'mm-chip'; li.setAttribute('data-token', id);
+			var s = document.createElement('span'); s.textContent = label;
+			var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
+			li.appendChild(s); li.appendChild(x); chips.appendChild(li);
+			wireRemove(x);
+			syncHidden();
+		}
+		function label(u) { return u.title ? (u.title + ' (' + u.cn + ')') : u.cn; }
+		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
+		function renderAc(list) {
+			acItems = list; acActive = -1;
+			if (!list || !list.length) { hideAc(); return; }
+			ac.innerHTML = '';
+			list.forEach(function (u) {
+				var li = document.createElement('li');
+				var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = u.title || u.cn;
+				var un = document.createElement('span'); un.className = 'mm-ac-title'; un.textContent = u.title ? (' — ' + u.cn) : '';
+				li.appendChild(nm); li.appendChild(un);
+				li.addEventListener('mousedown', function (e) { e.preventDefault(); addChip(u.id, label(u)); search.value = ''; hideAc(); search.focus(); });
+				ac.appendChild(li);
+			});
+			ac.hidden = false;
+		}
+		function lookup() {
+			var q = search.value.trim();
+			if (q.length < 2) { hideAc(); return; }
+			fetch(form.getAttribute('action') + '&task=userlookup&q=' + encodeURIComponent(q), {
+				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
+			}).then(function (r) { return r.json(); }).then(renderAc).catch(hideAc);
+		}
+		search.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 200); });
+		search.addEventListener('keydown', function (e) {
+			if (ac.hidden) { return; }
+			var lis = ac.querySelectorAll('li');
+			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
+			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
+			else if (e.key === 'Enter' && acActive >= 0) { e.preventDefault(); addChip(acItems[acActive].id, label(acItems[acActive])); search.value = ''; hideAc(); return; }
+			else if (e.key === 'Escape') { hideAc(); return; }
+			else { return; }
+			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
+		});
+		search.addEventListener('blur', function () { setTimeout(hideAc, 150); });
+
+		// Wire removal on any server-rendered chips.
+		chips.querySelectorAll('.mm-chip-x').forEach(wireRemove);
+	})();
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
 	var fileInput = document.getElementById('field-attachment');

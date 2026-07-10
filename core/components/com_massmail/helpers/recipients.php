@@ -338,4 +338,31 @@ class Recipients
 		$db->setQuery("SELECT id FROM `#__users` WHERE " . implode(' OR ', $where));
 		return array_map('intval', (array) $db->loadColumn());
 	}
+
+	/**
+	 * Describe a list of user tokens (IDs and/or usernames) for display as chips:
+	 * one entry per resolved user with a friendly label and its ID as the token.
+	 *
+	 * @param   array  $tokens
+	 * @return  array  [['token' => id, 'label' => 'Name (username)'], ...]
+	 */
+	public static function describeUsers($tokens)
+	{
+		$ids = self::resolveUsers($tokens);
+		if (!$ids)
+		{
+			return array();
+		}
+
+		$db = \App::get('db');
+		$db->setQuery("SELECT id, username, name FROM `#__users` WHERE id IN (" . implode(',', $ids) . ") ORDER BY name ASC");
+		$out = array();
+		foreach ((array) $db->loadObjectList() as $u)
+		{
+			$name  = trim((string) $u->name);
+			$label = $name !== '' ? ($name . ' (' . $u->username . ')') : $u->username;
+			$out[] = array('token' => (int) $u->id, 'label' => $label);
+		}
+		return $out;
+	}
 }
