@@ -211,10 +211,10 @@ class Mailings extends AdminController
 
 		$spec = array('type' => $type);
 
-		// groups arrive as a single comma/space separated text field (groups[]);
-		// flatten and split so more than the first id is honored.
+		// groups arrive as a single comma/space separated text field (groups[]) of
+		// group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
 		$groupsRaw = implode(',', (array) Request::getArray('groups', array()));
-		$spec['groups'] = array_filter(array_map('intval', preg_split('/[\s,]+/', $groupsRaw)));
+		$spec['groups'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $groupsRaw)), 'strlen'));
 
 		// users: accept a comma/space separated list of ids
 		$usersRaw = Request::getString('users', '');
@@ -291,6 +291,37 @@ class Mailings extends AdminController
 	protected function scheduledLocal($row)
 	{
 		return Date::of($row->get('scheduled_at'))->toLocal('D, M j, Y g:i a T');
+	}
+
+	/**
+	 * AJAX: autocomplete groups by cn alias or title for the recipient picker.
+	 * Returns JSON [{cn, id, title}].
+	 *
+	 * @return  void
+	 */
+	public function grouplookupTask()
+	{
+		$q   = trim(Request::getString('q', ''));
+		$out = array();
+
+		if (strlen($q) >= 2)
+		{
+			$db   = \App::get('db');
+			$like = $db->quote('%' . $q . '%');
+			$db->setQuery(
+				"SELECT gidNumber, cn, description FROM `#__xgroups`
+				 WHERE published = 1 AND (cn LIKE $like OR description LIKE $like)
+				 ORDER BY cn ASC LIMIT 15"
+			);
+			foreach ((array) $db->loadObjectList() as $g)
+			{
+				$out[] = array('cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description);
+			}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($out);
+		exit;
 	}
 
 	/**

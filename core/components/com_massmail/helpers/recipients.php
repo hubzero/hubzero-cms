@@ -111,7 +111,7 @@ class Recipients
 		}
 
 		// --- Members of one or more groups -----------------------------------
-		$gids = isset($spec['groups']) ? array_filter(array_map('intval', (array) $spec['groups'])) : array();
+		$gids = isset($spec['groups']) ? self::resolveGroups($spec['groups']) : array();
 		if ($gids)
 		{
 			$in = implode(',', $gids);
@@ -186,7 +186,7 @@ class Recipients
 			return (int) $db->loadResult();
 		}
 
-		$gids = isset($spec['groups']) ? array_filter(array_map('intval', (array) $spec['groups'])) : array();
+		$gids = isset($spec['groups']) ? self::resolveGroups($spec['groups']) : array();
 		if ($gids)
 		{
 			$in = implode(',', $gids);
@@ -221,5 +221,41 @@ class Recipients
 			}
 		}
 		return $n;
+	}
+
+	/**
+	 * Resolve a list of group tokens -- numeric group IDs and/or cn aliases --
+	 * to group IDs. Lets the picker accept human-friendly aliases.
+	 *
+	 * @param   array  $tokens
+	 * @return  array  group IDs
+	 */
+	public static function resolveGroups($tokens)
+	{
+		$tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
+		if (!$tokens)
+		{
+			return array();
+		}
+
+		$db    = \App::get('db');
+		$ids   = array();
+		$names = array();
+		foreach ($tokens as $t)
+		{
+			if (ctype_digit((string) $t)) { $ids[] = (int) $t; }
+			else { $names[] = $db->quote($t); }
+		}
+
+		$where = array();
+		if ($ids)   { $where[] = 'gidNumber IN (' . implode(',', $ids) . ')'; }
+		if ($names) { $where[] = 'cn IN (' . implode(',', $names) . ')'; }
+		if (!$where)
+		{
+			return array();
+		}
+
+		$db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE " . implode(' OR ', $where));
+		return array_map('intval', (array) $db->loadColumn());
 	}
 }

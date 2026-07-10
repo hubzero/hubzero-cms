@@ -80,6 +80,15 @@ Toolbar::cancel();
 .mm-optout-label { display:block; margin-bottom:14px; }
 .mm-optout-note { margin-top:0; }
 
+/* Group alias autocomplete */
+.mm-ac-wrap { position:relative; }
+.mm-ac-list { position:absolute; z-index:60; left:0; right:0; top:100%; margin:2px 0 0; padding:0; list-style:none; background:#fff; border:1px solid #cbd5e0; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.14); max-height:220px; overflow:auto; }
+.mm-ac-list li { padding:6px 10px; cursor:pointer; font-size:13px; border-bottom:1px solid #f1f5f9; }
+.mm-ac-list li:last-child { border-bottom:none; }
+.mm-ac-list li:hover, .mm-ac-list li.active { background:#ebf4ff; }
+.mm-ac-cn { font-weight:600; color:#2d3748; }
+.mm-ac-title { color:#718096; font-size:12px; }
+
 /* Framed editor. */
 #adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
 #adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
@@ -180,7 +189,10 @@ Toolbar::cancel();
 
 					<div class="input-wrap" data-rcpt="group">
 						<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
-						<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(',', isset($spec['groups']) ? (array) $spec['groups'] : array())); ?>" placeholder="e.g. 3041, 3042" />
+						<div class="mm-ac-wrap">
+							<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(', ', isset($spec['groups']) ? (array) $spec['groups'] : array())); ?>" placeholder="e.g. composites-team, 3042" autocomplete="off" />
+							<ul class="mm-ac-list" id="mm-group-ac" hidden></ul>
+						</div>
 					</div>
 					<div class="input-wrap" data-rcpt="user">
 						<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
@@ -280,6 +292,52 @@ Toolbar::cancel();
 		}
 		ign.addEventListener('change', syncNote);
 		syncNote();
+	}
+
+	// --- Group alias autocomplete --------------------------------------------
+	var gi = document.getElementById('field-groups');
+	var ac = document.getElementById('mm-group-ac');
+	if (gi && ac) {
+		var acTimer = null, acItems = [], acActive = -1;
+		function curToken() { var v = gi.value; return v.slice(v.lastIndexOf(',') + 1).trim(); }
+		function setToken(cn) {
+			var v = gi.value, i = v.lastIndexOf(',');
+			gi.value = (i >= 0 ? v.slice(0, i + 1) + ' ' : '') + cn + ', ';
+		}
+		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
+		function renderAc(list) {
+			acItems = list; acActive = -1;
+			if (!list || !list.length) { hideAc(); return; }
+			ac.innerHTML = '';
+			list.forEach(function (g) {
+				var li = document.createElement('li');
+				var cn = document.createElement('span'); cn.className = 'mm-ac-cn'; cn.textContent = g.cn;
+				var ti = document.createElement('span'); ti.className = 'mm-ac-title'; ti.textContent = g.title ? (' — ' + g.title) : '';
+				li.appendChild(cn); li.appendChild(ti);
+				li.addEventListener('mousedown', function (e) { e.preventDefault(); setToken(g.cn); hideAc(); gi.focus(); schedule(); });
+				ac.appendChild(li);
+			});
+			ac.hidden = false;
+		}
+		function lookup() {
+			var tok = curToken();
+			if (tok.length < 2) { hideAc(); return; }
+			fetch(form.getAttribute('action') + '&task=grouplookup&q=' + encodeURIComponent(tok), {
+				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
+			}).then(function (r) { return r.json(); }).then(renderAc).catch(hideAc);
+		}
+		gi.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 200); });
+		gi.addEventListener('keydown', function (e) {
+			if (ac.hidden) { return; }
+			var lis = ac.querySelectorAll('li');
+			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
+			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
+			else if (e.key === 'Enter' && acActive >= 0) { e.preventDefault(); setToken(acItems[acActive].cn); hideAc(); schedule(); return; }
+			else if (e.key === 'Escape') { hideAc(); return; }
+			else { return; }
+			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
+		});
+		gi.addEventListener('blur', function () { setTimeout(hideAc, 150); });
 	}
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
