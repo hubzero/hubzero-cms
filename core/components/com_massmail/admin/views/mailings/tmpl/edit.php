@@ -16,6 +16,7 @@ $type  = isset($spec['type']) ? $spec['type'] : 'all';
 $spec['type'] = $type; // a new mailing has no saved type; preview the default selection, not 0
 $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
+$atts = $this->row->attachments()->rows();
 
 // Live audience preview
 $preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
@@ -30,17 +31,55 @@ if (!$isNew && $canDo->get('core.send'))
 }
 Toolbar::cancel();
 ?>
+<style>
+.mm-sending-off { margin:0 0 14px; padding:10px 16px; border-radius:6px; background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; font-weight:600; }
+
+/* Collapsible sender / reply-to header, email-client style. */
+.mm-headers { margin:0 0 16px; max-width:680px; }
+.mm-headers-toggle { display:inline-flex; align-items:center; gap:6px; background:none; border:none; padding:4px 0; color:#3182ce; font-size:13px; font-weight:600; cursor:pointer; }
+.mm-headers-toggle .mm-caret { display:inline-block; transition:transform .15s ease; }
+.mm-headers-toggle[aria-expanded="true"] .mm-caret { transform:rotate(90deg); }
+.mm-header-fields { display:grid; grid-template-columns:110px 1fr; gap:8px 12px; align-items:center; margin-top:8px; padding:12px 14px; background:#f7f8fa; border:1px solid #e2e8f0; border-radius:6px; }
+.mm-header-fields[hidden] { display:none; }
+.mm-header-fields label { color:#4a5568; font-size:13px; margin:0; }
+.mm-header-fields input { width:100%; }
+
+/* Framed plain-text editor. */
+#adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
+#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
+#adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
+.mm-attach-btn { cursor:pointer; }
+.mm-attach-btn svg { pointer-events:none; }
+
+/* Attachment chips. */
+.mm-chips { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+.mm-chips:empty { margin:0; }
+.mm-chip { display:inline-flex; align-items:center; gap:6px; background:#edf2f7; border:1px solid #e2e8f0; border-radius:14px; padding:3px 6px 3px 10px; font-size:12px; color:#2d3748; }
+.mm-chip .mm-kb { color:#a0aec0; }
+.mm-chip-x { background:none; border:none; color:#718096; cursor:pointer; font-size:15px; line-height:1; padding:0 2px; text-decoration:none; }
+.mm-chip-x:hover { color:#c53030; }
+</style>
+
 <?php if (!$sendingOn) { ?>
 <p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
-<style>.mm-sending-off{margin:0 0 14px;padding:10px 16px;border-radius:6px;background:#fffaf0;border:1px solid #f6ad55;color:#9c4221;font-weight:600;}</style>
 <?php } ?>
-<style>
-/* Give the plain-text editor a tidy framed look that matches the form inputs. */
-#adminForm .ck.ck-toolbar { border-radius: 5px 5px 0 0; border-color: #ccc; background: #f7f8fa; }
-#adminForm .ck.ck-editor__editable { border-color: #ccc; border-radius: 0 0 5px 5px; }
-#adminForm .ck.ck-editor__editable.ck-focused { border-color: #4299e1; box-shadow: none; }
-</style>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
+
+	<div class="mm-headers">
+		<button type="button" class="mm-headers-toggle" id="mm-headers-toggle" aria-expanded="false" aria-controls="mm-header-fields">
+			<span class="mm-caret">&#9656;</span> <?php echo Lang::txt('COM_MASSMAIL_SENDER_HEADER'); ?>
+		</button>
+		<div class="mm-header-fields" id="mm-header-fields" hidden>
+			<label for="field-from-name"><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></label>
+			<input type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($this->row->get('from_name')); ?>" />
+			<label for="field-from-email"><?php echo Lang::txt('COM_MASSMAIL_FROM_EMAIL'); ?></label>
+			<input type="text" name="fields[from_email]" id="field-from-email" value="<?php echo $this->escape($this->row->get('from_email')); ?>" />
+			<label for="field-reply-to"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></label>
+			<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($this->row->get('reply_to')); ?>" />
+		</div>
+	</div>
+
 	<div class="grid">
 		<div class="col span8">
 			<fieldset class="adminform">
@@ -63,33 +102,24 @@ Toolbar::cancel();
 						array(
 							// Keep it plain text, but give the editor a real (minimal)
 							// toolbar so it reads as an editor rather than a bare box.
+							// The attach paperclip is injected into this toolbar by JS.
 							'toolbar' => array('undo', 'redo'),
 							'removePlugins' => array('Heading', 'Bold', 'Italic', 'Strikethrough', 'Code', 'Link', 'List', 'BlockQuote', 'BulletedList', 'NumberedList')
 						)
 					);
 					?>
-				</div>
-			</fieldset>
-
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MASSMAIL_ATTACHMENTS'); ?></legend>
-				<?php $atts = $this->row->attachments()->rows(); ?>
-				<?php if (count($atts)) { ?>
-					<ul class="mm-attachments">
-					<?php foreach ($atts as $att) { ?>
-						<li>
-							<?php echo $this->escape($att->get('filename')); ?>
-							(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)
-							<?php if (!$isNew) { ?>
-								<a class="mm-remove" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeattachment&attachment=' . $att->get('id') . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
-							<?php } ?>
-						</li>
-					<?php } ?>
+					<input type="file" name="attachment[]" id="field-attachment" multiple="multiple" hidden />
+					<ul class="mm-chips" id="mm-chips">
+						<?php foreach ($atts as $att) { ?>
+							<li class="mm-chip">
+								<span class="mm-clip">&#128206;</span> <?php echo $this->escape($att->get('filename')); ?>
+								<span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span>
+								<?php if (!$isNew) { ?>
+									<a class="mm-chip-x" title="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeattachment&attachment=' . $att->get('id') . '&' . Session::getFormToken() . '=1'); ?>">&times;</a>
+								<?php } ?>
+							</li>
+						<?php } ?>
 					</ul>
-				<?php } ?>
-				<div class="input-wrap">
-					<label for="field-attachment"><?php echo Lang::txt('COM_MASSMAIL_ADD_ATTACHMENT'); ?></label>
-					<input type="file" name="attachment[]" id="field-attachment" multiple="multiple" />
 				</div>
 			</fieldset>
 		</div>
@@ -122,22 +152,6 @@ Toolbar::cancel();
 			</fieldset>
 
 			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MASSMAIL_SENDER'); ?></legend>
-				<div class="input-wrap">
-					<label for="field-from-name"><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></label>
-					<input type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($this->row->get('from_name')); ?>" />
-				</div>
-				<div class="input-wrap">
-					<label for="field-from-email"><?php echo Lang::txt('COM_MASSMAIL_FROM_EMAIL'); ?></label>
-					<input type="text" name="fields[from_email]" id="field-from-email" value="<?php echo $this->escape($this->row->get('from_email')); ?>" />
-				</div>
-				<div class="input-wrap">
-					<label for="field-reply-to"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></label>
-					<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($this->row->get('reply_to')); ?>" />
-				</div>
-			</fieldset>
-
-			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></legend>
 				<div class="input-wrap">
 					<label class="mm-warn">
@@ -159,6 +173,7 @@ Toolbar::cancel();
 
 <script type="text/javascript">
 (function () {
+	// --- Recipient picker: show the relevant input for the chosen type --------
 	function sync() {
 		var t = document.querySelector('input[name="recipient_type"]:checked');
 		var val = t ? t.value : 'all';
@@ -171,11 +186,10 @@ Toolbar::cancel();
 	for (var i = 0; i < radios.length; i++) { radios[i].addEventListener('change', sync); }
 	sync();
 
-	// Live audience prediction: recompute the "will reach N" count from the
-	// current picker selection whenever it changes.
-	var form    = document.getElementById('adminForm');
-	var out     = document.querySelector('.mm-preview strong');
-	var timer   = null;
+	// --- Live audience prediction --------------------------------------------
+	var form  = document.getElementById('adminForm');
+	var out   = document.querySelector('.mm-preview strong');
+	var timer = null;
 	function collect() {
 		var fd = new FormData();
 		var t = document.querySelector('input[name="recipient_type"]:checked');
@@ -198,7 +212,6 @@ Toolbar::cancel();
 		.catch(function () {});
 	}
 	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
-
 	for (var j = 0; j < radios.length; j++) { radios[j].addEventListener('change', schedule); }
 	['field-groups', 'field-users', 'field-emails'].forEach(function (id) {
 		var el = document.getElementById(id);
@@ -206,5 +219,64 @@ Toolbar::cancel();
 	});
 	var ign = document.querySelector('input[name="ignore_optout"]');
 	if (ign) { ign.addEventListener('change', schedule); }
+
+	// --- Collapsible sender / reply-to header --------------------------------
+	var ht = document.getElementById('mm-headers-toggle');
+	var hf = document.getElementById('mm-header-fields');
+	if (ht && hf) {
+		ht.addEventListener('click', function () {
+			if (hf.hasAttribute('hidden')) { hf.removeAttribute('hidden'); ht.setAttribute('aria-expanded', 'true'); }
+			else { hf.setAttribute('hidden', ''); ht.setAttribute('aria-expanded', 'false'); }
+		});
+	}
+
+	// --- Paperclip attach in the editor toolbar ------------------------------
+	var fileInput = document.getElementById('field-attachment');
+	var chips = document.getElementById('mm-chips');
+	if (fileInput && chips && window.DataTransfer) {
+		var bag = new DataTransfer();
+		function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+		function renderPicked() {
+			var old = chips.querySelectorAll('.mm-chip-new');
+			for (var k = 0; k < old.length; k++) { old[k].remove(); }
+			Array.prototype.forEach.call(bag.files, function (f, idx) {
+				var li = document.createElement('li');
+				li.className = 'mm-chip mm-chip-new';
+				li.innerHTML = '<span class="mm-clip">📎</span> ' + esc(f.name) + ' <span class="mm-kb">(' + Math.round(f.size / 1024) + ' KB)</span>';
+				var x = document.createElement('button');
+				x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
+				x.addEventListener('click', function () {
+					var nb = new DataTransfer();
+					Array.prototype.forEach.call(bag.files, function (g, m) { if (m !== idx) { nb.items.add(g); } });
+					bag = nb; fileInput.files = bag.files; renderPicked();
+				});
+				li.appendChild(x);
+				chips.appendChild(li);
+			});
+		}
+		fileInput.addEventListener('change', function () {
+			Array.prototype.forEach.call(fileInput.files, function (f) { bag.items.add(f); });
+			fileInput.files = bag.files;
+			renderPicked();
+		});
+
+		// Wait for CKEditor to build its toolbar, then drop a paperclip button in.
+		var tries = 0;
+		var iv = setInterval(function () {
+			var items = document.querySelector('#adminForm .ck-toolbar__items') || document.querySelector('#adminForm .ck-toolbar');
+			if (items && !document.getElementById('mm-attach-btn')) {
+				var b = document.createElement('button');
+				b.type = 'button'; b.id = 'mm-attach-btn';
+				b.className = 'ck ck-button ck-off mm-attach-btn';
+				b.title = <?php echo json_encode(Lang::txt('COM_MASSMAIL_ADD_ATTACHMENT')); ?>;
+				b.setAttribute('aria-label', b.title);
+				b.innerHTML = '<svg class="ck ck-icon ck-button__icon" viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>';
+				b.addEventListener('click', function (e) { e.preventDefault(); fileInput.click(); });
+				items.appendChild(b);
+				clearInterval(iv);
+			}
+			if (++tries > 40) { clearInterval(iv); }
+		}, 250);
+	}
 })();
 </script>
