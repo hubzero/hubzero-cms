@@ -77,6 +77,8 @@ Toolbar::cancel();
 .mm-preview { margin:0 0 12px; }
 .mm-rcpt-types { margin-bottom:8px; }
 .mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
+.mm-optout-label { display:block; margin-bottom:14px; }
+.mm-optout-note { margin-top:0; }
 
 /* Framed editor. */
 #adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
@@ -202,11 +204,11 @@ Toolbar::cancel();
 				<?php if ($canDo->get('core.override')) { ?>
 				<div class="mm-card">
 					<h4><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h4>
-					<label class="mm-warn">
-						<input type="checkbox" name="ignore_optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> />
+					<label class="mm-warn mm-optout-label">
+						<input type="checkbox" name="ignore_optout" id="field-optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> />
 						<?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?>
 					</label>
-					<p class="hint warning"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
+					<p class="<?php echo $ignore ? 'warning' : 'info'; ?> mm-optout-note" id="mm-optout-note"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
 				</div>
 				<?php } ?>
 			</div>
@@ -268,6 +270,17 @@ Toolbar::cancel();
 	});
 	var ign = document.querySelector('input[name="ignore_optout"]');
 	if (ign) { ign.addEventListener('change', schedule); }
+
+	// --- Opt-out note: informational until the override is actually enabled ---
+	var note = document.getElementById('mm-optout-note');
+	if (ign && note) {
+		function syncNote() {
+			note.classList.toggle('warning', ign.checked);
+			note.classList.toggle('info', !ign.checked);
+		}
+		ign.addEventListener('change', syncNote);
+		syncNote();
+	}
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
 	var fileInput = document.getElementById('field-attachment');
