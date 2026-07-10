@@ -79,6 +79,18 @@ Toolbar::cancel();
 .mm-preview { margin:0 0 12px; }
 .mm-compose .input-datetime { display:block; }
 .mm-compose .calendar-field { width:100%; box-sizing:border-box; }
+
+/* Delivery-mode toggle (as-soon-as-possible vs scheduled) */
+.mm-delivery-toggle { display:flex; flex-direction:column; gap:8px; }
+.mm-dopt { display:flex; align-items:flex-start; gap:10px; margin:0; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; transition:border-color .12s ease, background .12s ease; }
+.mm-dopt:hover { border-color:#cbd5e0; }
+.mm-dopt.is-active { border-color:#4299e1; background:#ebf4ff; }
+.mm-dopt input { margin:2px 0 0; flex:0 0 auto; }
+.mm-dopt-body { display:flex; flex-direction:column; line-height:1.3; }
+.mm-dopt-title { font-weight:600; color:#2d3748; font-size:13px; }
+.mm-dopt-sub { color:#a0aec0; font-size:12px; }
+.mm-schedule-field { margin-top:10px; }
+.mm-schedule-field[hidden] { display:none; }
 .mm-rcpt-types { margin-bottom:8px; }
 .mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
 .mm-optout-label { display:block; margin-bottom:14px; }
@@ -211,12 +223,27 @@ Toolbar::cancel();
 					</div>
 				</div>
 
+				<?php $isScheduled = ($scheduledLocal !== ''); ?>
 				<div class="mm-card">
 					<h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
-					<div class="input-wrap">
-						<label for="field-schedule"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE'); ?></label>
+					<div class="mm-delivery-toggle">
+						<label class="mm-dopt<?php echo $isScheduled ? '' : ' is-active'; ?>">
+							<input type="radio" name="delivery_mode" value="now"<?php echo $isScheduled ? '' : ' checked="checked"'; ?> />
+							<span class="mm-dopt-body">
+								<span class="mm-dopt-title"><?php echo Lang::txt('COM_MASSMAIL_DELIVER_NOW'); ?></span>
+								<span class="mm-dopt-sub"><?php echo Lang::txt('COM_MASSMAIL_DELIVER_NOW_SUB'); ?></span>
+							</span>
+						</label>
+						<label class="mm-dopt<?php echo $isScheduled ? ' is-active' : ''; ?>">
+							<input type="radio" name="delivery_mode" value="schedule"<?php echo $isScheduled ? ' checked="checked"' : ''; ?> />
+							<span class="mm-dopt-body">
+								<span class="mm-dopt-title"><?php echo Lang::txt('COM_MASSMAIL_DELIVER_SCHEDULE'); ?></span>
+								<span class="mm-dopt-sub"><?php echo Lang::txt('COM_MASSMAIL_DELIVER_SCHEDULE_SUB'); ?></span>
+							</span>
+						</label>
+					</div>
+					<div class="mm-schedule-field"<?php echo $isScheduled ? '' : ' hidden'; ?>>
 						<?php echo Html::input('calendar', 'scheduled_at', $scheduledLocal, array('id' => 'field-schedule', 'format' => 'Y-m-d H:i:s')); ?>
-						<p class="hint"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE_HINT'); ?></p>
 					</div>
 				</div>
 
@@ -299,6 +326,43 @@ Toolbar::cancel();
 		}
 		ign.addEventListener('change', syncNote);
 		syncNote();
+	}
+
+	// --- Delivery mode: as-soon-as-possible vs scheduled ---------------------
+	var dModes = document.querySelectorAll('input[name="delivery_mode"]');
+	var schedWrap = document.querySelector('.mm-schedule-field');
+	var schedInput = document.getElementById('field-schedule');
+	if (dModes.length && schedWrap) {
+		function reflectDelivery() {
+			var m = document.querySelector('input[name="delivery_mode"]:checked');
+			var isSched = !!m && m.value === 'schedule';
+			schedWrap.hidden = !isSched;
+			if (!isSched && schedInput) { schedInput.value = ''; }
+			var opts = document.querySelectorAll('.mm-dopt');
+			for (var i = 0; i < opts.length; i++) {
+				var r = opts[i].querySelector('input');
+				opts[i].classList.toggle('is-active', !!r && r.checked);
+			}
+			return isSched;
+		}
+		for (var d = 0; d < dModes.length; d++) {
+			dModes[d].addEventListener('change', function () {
+				if (reflectDelivery() && schedInput) { schedInput.focus(); }
+			});
+		}
+		reflectDelivery();
+	}
+	// Open the picker when the calendar icon (not just the text) is clicked.
+	if (schedInput) {
+		var idt = schedInput.closest('.input-datetime');
+		if (idt) {
+			idt.addEventListener('click', function (e) {
+				if (e.target !== schedInput) {
+					schedInput.focus();
+					if (window.jQuery) { try { window.jQuery(schedInput).datepicker('show'); } catch (err) {} }
+				}
+			});
+		}
 	}
 
 	// --- Autocomplete for the group / user pickers ---------------------------
