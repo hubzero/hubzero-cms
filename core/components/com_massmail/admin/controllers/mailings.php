@@ -139,6 +139,14 @@ class Mailings extends AdminController
 
 		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
+		// The From/Reply-to address must match what the mail server is configured
+		// to send as, so only a Super Administrator may set it; ignore any sender
+		// fields submitted by anyone else (the form shows them read-only).
+		if (!User::authorise('core.admin'))
+		{
+			unset($fields['from_name'], $fields['from_email'], $fields['reply_to']);
+		}
+
 		$row = Mailing::oneOrNew($fields['id'])->set($fields);
 
 		// Never let a save move a mailing out of draft.

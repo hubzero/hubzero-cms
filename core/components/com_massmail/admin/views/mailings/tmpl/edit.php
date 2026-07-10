@@ -18,6 +18,10 @@ $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 $atts = $this->row->attachments()->rows();
 
+// The mail server must be configured to send as the From address, so only a
+// Super Administrator may edit the sender; everyone else sees it read-only.
+$isSuper = User::authorise('core.admin');
+
 // Live audience preview
 $preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
 
@@ -34,15 +38,17 @@ Toolbar::cancel();
 <style>
 .mm-sending-off { margin:0 0 14px; padding:10px 16px; border-radius:6px; background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; font-weight:600; }
 
-/* Collapsible sender / reply-to header, email-client style. */
-.mm-headers { margin:0 0 16px; max-width:680px; }
-.mm-headers-toggle { display:inline-flex; align-items:center; gap:6px; background:none; border:none; padding:4px 0; color:#3182ce; font-size:13px; font-weight:600; cursor:pointer; }
-.mm-headers-toggle .mm-caret { display:inline-block; transition:transform .15s ease; }
-.mm-headers-toggle[aria-expanded="true"] .mm-caret { transform:rotate(90deg); }
-.mm-header-fields { display:grid; grid-template-columns:110px 1fr; gap:8px 12px; align-items:center; margin-top:8px; padding:12px 14px; background:#f7f8fa; border:1px solid #e2e8f0; border-radius:6px; }
-.mm-header-fields[hidden] { display:none; }
+/* Sender / reply-to header, email-client style. */
+.mm-headers { margin:0 0 16px; max-width:680px; padding:12px 14px; background:#f7f8fa; border:1px solid #e2e8f0; border-radius:6px; }
+.mm-header-fields { display:grid; grid-template-columns:110px 1fr; gap:8px 12px; align-items:center; }
 .mm-header-fields label { color:#4a5568; font-size:13px; margin:0; }
 .mm-header-fields input { width:100%; }
+.mm-header-readonly { display:grid; grid-template-columns:110px 1fr; gap:6px 12px; margin:0; }
+.mm-header-readonly dt { color:#718096; font-size:13px; }
+.mm-header-readonly dd { margin:0; color:#1a202c; font-size:13px; font-weight:600; }
+.mm-header-hint { margin:10px 0 0; color:#a0aec0; font-size:12px; }
+/* Vertical recipient-type radios */
+.mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
 
 /* Framed plain-text editor. */
 #adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
@@ -67,10 +73,8 @@ Toolbar::cancel();
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
 
 	<div class="mm-headers">
-		<button type="button" class="mm-headers-toggle" id="mm-headers-toggle" aria-expanded="false" aria-controls="mm-header-fields">
-			<span class="mm-caret">&#9656;</span> <?php echo Lang::txt('COM_MASSMAIL_SENDER_HEADER'); ?>
-		</button>
-		<div class="mm-header-fields" id="mm-header-fields" hidden>
+		<?php if ($isSuper) { ?>
+		<div class="mm-header-fields">
 			<label for="field-from-name"><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></label>
 			<input type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($this->row->get('from_name')); ?>" />
 			<label for="field-from-email"><?php echo Lang::txt('COM_MASSMAIL_FROM_EMAIL'); ?></label>
@@ -78,6 +82,23 @@ Toolbar::cancel();
 			<label for="field-reply-to"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></label>
 			<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($this->row->get('reply_to')); ?>" />
 		</div>
+		<?php
+		} else {
+			$fromName  = trim((string) $this->row->get('from_name'));
+			$fromEmail = trim((string) $this->row->get('from_email'));
+			$replyTo   = trim((string) $this->row->get('reply_to'));
+			$fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
+		?>
+		<dl class="mm-header-readonly">
+			<dt><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></dt>
+			<dd><?php echo $this->escape($fromShown); ?></dd>
+			<?php if ($replyTo) { ?>
+			<dt><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></dt>
+			<dd><?php echo $this->escape($replyTo); ?></dd>
+			<?php } ?>
+		</dl>
+		<p class="mm-header-hint"><?php echo Lang::txt('COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
+		<?php } ?>
 	</div>
 
 	<div class="grid">
@@ -130,7 +151,7 @@ Toolbar::cancel();
 
 				<p class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
 
-				<div class="input-wrap">
+				<div class="input-wrap mm-rcpt-types">
 					<label><input type="radio" name="recipient_type" value="all"<?php echo ($type == 'all' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?></label>
 					<label><input type="radio" name="recipient_type" value="group"<?php echo ($type == 'group' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUP'); ?></label>
 					<label><input type="radio" name="recipient_type" value="user"<?php echo ($type == 'user' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_USER'); ?></label>
@@ -221,16 +242,6 @@ Toolbar::cancel();
 	});
 	var ign = document.querySelector('input[name="ignore_optout"]');
 	if (ign) { ign.addEventListener('change', schedule); }
-
-	// --- Collapsible sender / reply-to header --------------------------------
-	var ht = document.getElementById('mm-headers-toggle');
-	var hf = document.getElementById('mm-header-fields');
-	if (ht && hf) {
-		ht.addEventListener('click', function () {
-			if (hf.hasAttribute('hidden')) { hf.removeAttribute('hidden'); ht.setAttribute('aria-expanded', 'true'); }
-			else { hf.setAttribute('hidden', ''); ht.setAttribute('aria-expanded', 'false'); }
-		});
-	}
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
 	var fileInput = document.getElementById('field-attachment');
