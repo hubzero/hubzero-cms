@@ -205,6 +205,16 @@ class Mailings extends AdminController
 	}
 
 	/**
+	 * Is the mass-mail master switch on?
+	 *
+	 * @return  boolean
+	 */
+	protected function sendingEnabled()
+	{
+		return (bool) (int) \Component::params('com_massmail')->get('sending_enabled', 0);
+	}
+
+	/**
 	 * AJAX: predict how many recipients the current picker selection reaches,
 	 * so the compose form can show a live audience count. Returns JSON.
 	 *
@@ -404,6 +414,14 @@ class Mailings extends AdminController
 			$row->save();
 			Notify::warning(Lang::txt('COM_MASSMAIL_QUEUED_FOR_APPROVAL'));
 		}
+		elseif (!$this->sendingEnabled())
+		{
+			// Sending is off: hold rather than queue, so a backlog can't flood
+			// out the moment sending is re-enabled. Requires a manual release.
+			$row->set('status', Mailing::STATUS_HELD);
+			$row->save();
+			Notify::warning(Lang::txt('COM_MASSMAIL_HELD_ON_LAUNCH'));
+		}
 		else
 		{
 			$row->set('status', Mailing::STATUS_PREPARING);
@@ -438,10 +456,58 @@ class Mailings extends AdminController
 
 		$row->set('approved_by', User::get('id'));
 		$row->set('approved_on', Date::toSql());
+
+		if (!$this->sendingEnabled())
+		{
+			// Approved, but sending is off -- hold for manual release.
+			$row->set('status', Mailing::STATUS_HELD);
+			$row->save();
+			Notify::warning(Lang::txt('COM_MASSMAIL_APPROVED_HELD'));
+		}
+		else
+		{
+			$row->set('status', Mailing::STATUS_PREPARING);
+			$row->save();
+			Notify::success(Lang::txt('COM_MASSMAIL_APPROVED'));
+		}
+		$this->cancelTask();
+	}
+
+	/**
+	 * Release a held mailing into the delivery queue (requires core.send).
+	 * Holds only ever leave this state by an explicit human action, so a
+	 * backlog accumulated while sending was off never auto-sends.
+	 *
+	 * @return  void
+	 */
+	public function releaseTask()
+	{
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.send', $this->_option))
+		{
+			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
+		}
+
+		$row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+		if ($row->get('status') != Mailing::STATUS_HELD)
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_HELD'));
+			return $this->cancelTask();
+		}
+
 		$row->set('status', Mailing::STATUS_PREPARING);
 		$row->save();
 
-		Notify::success(Lang::txt('COM_MASSMAIL_APPROVED'));
+		if (!$this->sendingEnabled())
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_RELEASED_SENDING_OFF'));
+		}
+		else
+		{
+			Notify::success(Lang::txt('COM_MASSMAIL_RELEASED'));
+		}
 		$this->cancelTask();
 	}
 

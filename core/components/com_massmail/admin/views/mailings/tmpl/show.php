@@ -38,13 +38,16 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 		<?php if ($status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')) { ?>
 			<a class="btn btn-success" href="<?php echo Route::url($base . '&task=approve&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_APPROVE'); ?></a>
 		<?php } ?>
+		<?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.send')) { ?>
+			<a class="btn btn-success" href="<?php echo Route::url($base . '&task=release&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_RELEASE'); ?></a>
+		<?php } ?>
 		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'))) && $canDo->get('core.edit.state')) { ?>
 			<a class="btn" href="<?php echo Route::url($base . '&task=pause&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_PAUSE'); ?></a>
 		<?php } ?>
 		<?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
 			<a class="btn" href="<?php echo Route::url($base . '&task=resume&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_RESUME'); ?></a>
 		<?php } ?>
-		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'))) && $canDo->get('core.edit.state')) { ?>
+		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'))) && $canDo->get('core.edit.state')) { ?>
 			<a class="btn btn-danger" href="<?php echo Route::url($base . '&task=stop&id=' . $row->get('id') . '&' . $token . '=1'); ?>" onclick="return confirm('<?php echo Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL'); ?>');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></a>
 		<?php } ?>
 	</div>

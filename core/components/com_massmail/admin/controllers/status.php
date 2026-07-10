@@ -87,6 +87,11 @@ class Status extends AdminController
 		);
 		$messagesPending = (int) $db->loadResult();
 
+		// Mailings held because sending was off when launched/approved -- they
+		// never auto-send and need a manual release.
+		$db->setQuery("SELECT COUNT(*) FROM `#__massmail_mailings` WHERE status = " . $db->quote(Mailing::STATUS_HELD));
+		$heldMailings = (int) $db->loadResult();
+
 		// --- Mass mail actually sent (from our own recipient records) --------
 		$mmLastHour = $this->series($this->sentMap('%Y-%m-%d %H:%i', '1 HOUR'), 60, 60, 'Y-m-d H:i', 'H:i');
 		$mmHourly   = $this->series($this->sentMap('%Y-%m-%d %H', '48 HOUR'), 48, 3600, 'Y-m-d H', 'H');
@@ -164,6 +169,7 @@ class Status extends AdminController
 			->set('messagesSent', $messagesSent)
 			->set('messagesFailed', $messagesFailed)
 			->set('messagesPending', $messagesPending)
+			->set('heldMailings', $heldMailings)
 			->set('mmLastHour', $mmLastHour)
 			->set('mmHourly', $mmHourly)
 			->set('mmDaily', $mmDaily)

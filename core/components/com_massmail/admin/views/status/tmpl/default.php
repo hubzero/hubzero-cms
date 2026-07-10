@@ -74,6 +74,8 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 .mm-statusline strong { color:#1a202c; font-weight:700; }
 .mm-sending { padding:3px 12px; border-radius:6px; font-weight:700; font-size:13px; color:#fff; }
 .mm-sending.on { background:#2f855a; } .mm-sending.off { background:#c53030; }
+.mm-sending.held { background:#c05621; text-decoration:none; }
+.mm-sending.held:hover { background:#9c4221; color:#fff; }
 /* The admin template injects a dim ⊘ before any .off element; make it crisp black on our red pill. */
 .mm-dash .mm-sending.off:before { color:#000; }
 .mm-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
@@ -110,6 +112,9 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 	<div class="mm-statusline">
 		<span class="mm-sending <?php echo $sendingOn ? 'on' : 'off'; ?>"><?php echo $sendingOn ? Lang::txt('COM_MASSMAIL_SENDING_ON') : Lang::txt('COM_MASSMAIL_SENDING_OFF'); ?></span>
 		<span class="mm-sending <?php echo $cronOn ? 'on' : 'off'; ?>"><?php echo $cronOn ? Lang::txt('COM_MASSMAIL_CRON_ON') : Lang::txt('COM_MASSMAIL_CRON_OFF'); ?></span>
+		<?php if ($this->heldMailings > 0) { ?>
+			<a class="mm-sending held" href="<?php echo Route::url('index.php?option=com_massmail&controller=mailings&status=' . \Components\Massmail\Models\Mailing::STATUS_HELD); ?>"><?php echo Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)); ?></a>
+		<?php } ?>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT'); ?>: <strong><?php echo number_format($this->hourly); ?>/hr</strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN'); ?>: <strong><?php echo number_format($this->perRun); ?></strong> <span style="color:#a0aec0;"><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)); ?></span></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR'); ?>: <strong><?php echo number_format($this->ourLastHour); ?></strong></span>

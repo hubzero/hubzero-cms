@@ -15,6 +15,7 @@ $spec  = json_decode((string) $this->row->get('recipient_spec'), true) ?: array(
 $type  = isset($spec['type']) ? $spec['type'] : 'all';
 $spec['type'] = $type; // a new mailing has no saved type; preview the default selection, not 0
 $ignore = (int) $this->row->get('ignore_optout');
+$sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 
 // Live audience preview
 $preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
@@ -29,6 +30,10 @@ if (!$isNew && $canDo->get('core.send'))
 }
 Toolbar::cancel();
 ?>
+<?php if (!$sendingOn) { ?>
+<p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
+<style>.mm-sending-off{margin:0 0 14px;padding:10px 16px;border-radius:6px;background:#fffaf0;border:1px solid #f6ad55;color:#9c4221;font-weight:600;}</style>
+<?php } ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
 	<div class="grid">
 		<div class="col span8">
