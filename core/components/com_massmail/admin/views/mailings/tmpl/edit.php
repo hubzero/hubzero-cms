@@ -94,16 +94,27 @@ Toolbar::cancel();
 .mm-mail-body { padding:14px 18px 18px; }
 .mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
 
-/* To: recipient chip field. */
-.mm-to-field { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
-.mm-to-chips { display:contents; list-style:none; margin:0; padding:0; }
-.mm-to-inp { position:relative; flex:1 1 140px; min-width:140px; }
-.mm-to-inp input { border:none; background:transparent; width:100%; padding:3px 0; margin:0; font-size:14px; }
-.mm-to-inp input:focus { outline:none; }
-.mm-to-hint { padding:6px 0 0 80px; font-size:12px; color:#a0aec0; }
+/* To: read-only summary + edit button. */
+.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
+.mm-to-chips { display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0; }
+.mm-to-edit { background:none; border:1px dashed #cbd5e0; border-radius:14px; color:#3182ce; font-size:12px; padding:3px 12px; cursor:pointer; }
+.mm-to-edit:hover { border-color:#3182ce; background:#ebf4ff; }
+.mm-to-none { color:#a0aec0; font-size:13px; }
 .mm-count { color:#718096; font-size:12px; padding:4px 0 2px 80px; }
-.mm-count .mm-mail-label { display:none; }
 .mm-count strong { color:#2d3748; }
+
+/* Recipient builder modal. */
+.mm-modal { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; z-index:10000; align-items:flex-start; justify-content:center; padding:40px 20px; overflow:auto; }
+.mm-modal.open { display:flex; }
+.mm-modal-inner { background:#fff; border-radius:10px; padding:22px 24px; width:100%; max-width:520px; position:relative; box-shadow:0 12px 40px rgba(0,0,0,.3); }
+.mm-modal-close { position:absolute; top:8px; right:14px; font-size:26px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
+.mm-rcpt-inner h3 { margin:0 0 4px; font-size:18px; }
+.mm-modal-count { margin:0 0 16px; color:#718096; }
+.mm-rcpt-section { padding:14px 0; border-top:1px solid #edf2f7; }
+.mm-rcpt-section:first-of-type { border-top:none; padding-top:2px; }
+.mm-rcpt-section h5 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
+.mm-rcpt-section textarea { width:100%; box-sizing:border-box; }
+.mm-modal-actions { margin-top:18px; text-align:right; }
 
 /* Chips (To: and attachments). */
 .mm-chip { display:inline-flex; align-items:center; gap:6px; background:#edf2f7; border:1px solid #e2e8f0; border-radius:14px; padding:2px 6px 2px 9px; font-size:12px; color:#2d3748; }
@@ -168,24 +179,12 @@ Toolbar::cancel();
 					<div class="mm-mail-headers">
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_TO'); ?></span>
-							<div class="mm-to-field" id="mm-to">
-								<ul class="mm-to-chips" id="mm-to-chips">
-									<?php foreach ($toChips as $c) { ?>
-										<li class="mm-chip mm-chip-<?php echo $c['kind']; ?>" data-kind="<?php echo $c['kind']; ?>" data-token="<?php echo $this->escape($c['token']); ?>">
-											<span class="mm-chip-ic"><?php echo $chipIcon[$c['kind']]; ?></span>
-											<span><?php echo $this->escape($c['label']); ?></span>
-											<button type="button" class="mm-chip-x" aria-label="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>">&times;</button>
-										</li>
-									<?php } ?>
-								</ul>
-								<div class="mm-ac-wrap mm-to-inp">
-									<input type="text" id="field-to-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_TO_PLACEHOLDER')); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly />
-									<ul class="mm-ac-list" id="mm-to-ac" hidden></ul>
-								</div>
+							<div class="mm-to-display" id="mm-to-display">
+								<ul class="mm-to-chips" id="mm-to-summary"></ul>
+								<button type="button" class="mm-to-edit" id="mm-to-edit"><?php echo Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'); ?></button>
 							</div>
 						</div>
-						<div class="mm-to-hint"><?php echo Lang::txt('COM_MASSMAIL_TO_HINT'); ?></div>
-						<div class="mm-count"><span class="mm-mail-label" style="flex-basis:68px;"></span><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
+						<div class="mm-count"><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
 
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
@@ -291,14 +290,56 @@ Toolbar::cancel();
 		<input type="hidden" name="task" value="" />
 		<?php echo Html::input('token'); ?>
 	</form>
+
+	<div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_RECIPIENTS')); ?>">
+		<div class="mm-modal-inner mm-rcpt-inner">
+			<button type="button" class="mm-modal-close" id="mm-rcpt-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
+			<h3><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h3>
+			<p class="mm-preview mm-modal-count"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
+
+			<div class="mm-rcpt-section">
+				<label class="mm-everyone"><input type="checkbox" id="mb-all" /> <?php echo Lang::txt('COM_MASSMAIL_EVERYONE'); ?></label>
+			</div>
+			<div class="mm-rcpt-section">
+				<h5><?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUPS'); ?></h5>
+				<ul class="mm-chips" id="mb-group-chips"></ul>
+				<div class="mm-ac-wrap">
+					<input type="text" id="mb-group-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_GROUP_SEARCH')); ?>" autocomplete="off" spellcheck="false" readonly />
+					<ul class="mm-ac-list" id="mb-group-ac" hidden></ul>
+				</div>
+			</div>
+			<div class="mm-rcpt-section">
+				<h5><?php echo Lang::txt('COM_MASSMAIL_RCPT_PEOPLE'); ?></h5>
+				<ul class="mm-chips" id="mb-user-chips"></ul>
+				<div class="mm-ac-wrap">
+					<input type="text" id="mb-user-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PEOPLE_SEARCH')); ?>" autocomplete="off" spellcheck="false" readonly />
+					<ul class="mm-ac-list" id="mb-user-ac" hidden></ul>
+				</div>
+			</div>
+			<div class="mm-rcpt-section">
+				<h5><?php echo Lang::txt('COM_MASSMAIL_RCPT_EMAILS'); ?></h5>
+				<textarea id="mb-emails" rows="3" placeholder="one per line"></textarea>
+			</div>
+
+			<div class="mm-modal-actions">
+				<button type="button" class="btn btn-primary" id="mb-done"><?php echo Lang::txt('COM_MASSMAIL_DONE'); ?></button>
+			</div>
+		</div>
+	</div>
 </div>
+<?php $rcptState = array(
+	'all'    => !empty($spec['all']),
+	'groups' => array_map(function ($g) { return array('token' => (string) $g['token'], 'label' => $g['label']); }, $gChips),
+	'users'  => array_map(function ($u) { return array('token' => (string) $u['token'], 'label' => $u['label']); }, $uChips),
+	'emails' => array_values($emails),
+); ?>
 
 <script type="text/javascript">
 (function () {
 	var form = document.getElementById('adminForm');
 
 	// --- Live audience prediction (reads the hidden recipient fields) --------
-	var out   = document.querySelector('.mm-preview strong');
+	var outs  = document.querySelectorAll('.mm-preview strong');
 	var timer = null;
 	function collect() {
 		var fd = new FormData();
@@ -311,108 +352,145 @@ Toolbar::cancel();
 		return fd;
 	}
 	function update() {
-		if (!form || !out) { return; }
+		if (!form || !outs.length) { return; }
 		fetch(form.getAttribute('action') + '&task=preview', {
 			method: 'POST', body: collect(), credentials: 'same-origin',
 			headers: { 'X-Requested-With': 'XMLHttpRequest' }
 		})
 		.then(function (r) { return r.json(); })
-		.then(function (d) { if (d && typeof d.text === 'string') { out.textContent = d.text; } })
+		.then(function (d) { if (d && typeof d.text === 'string') { for (var oi = 0; oi < outs.length; oi++) { outs[oi].textContent = d.text; } } })
 		.catch(function () {});
 	}
 	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
 
-	// --- To: unified recipient chip picker -----------------------------------
+	// --- Recipient builder modal ---------------------------------------------
 	(function () {
-		var boxEl   = document.getElementById('mm-to');
-		var chipsEl = document.getElementById('mm-to-chips');
-		var search  = document.getElementById('field-to-search');
-		var ac      = document.getElementById('mm-to-ac');
-		if (!boxEl || !chipsEl || !search || !ac) { return; }
-		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
+		var modal   = document.getElementById('mm-rcpt-modal');
+		var summary = document.getElementById('mm-to-summary');
+		if (!modal || !summary) { return; }
 		var ICON = { all: '★', group: '👥', user: '👤', email: '✉' };
-		var acTimer = null, acItems = [], acActive = -1;
+		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
+		var NONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET')); ?>;
+		var state = <?php echo json_encode($rcptState); ?>;
 
-		function isEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
-		function everyoneMatch(q) { q = q.toLowerCase(); return q === '' || 'everyone'.indexOf(q) === 0 || 'all active users'.indexOf(q) === 0; }
-		function hasAll() { return !!chipsEl.querySelector('.mm-chip[data-kind="all"]'); }
+		var fAll = document.getElementById('field-all');
+		var fGroups = document.getElementById('field-groups');
+		var fUsers = document.getElementById('field-users');
+		var fEmails = document.getElementById('field-emails');
 
 		function serialize() {
-			var all = '0', groups = [], users = [], emails = [];
-			chipsEl.querySelectorAll('.mm-chip').forEach(function (li) {
-				var k = li.getAttribute('data-kind'), t = li.getAttribute('data-token');
-				if (k === 'all') { all = '1'; }
-				else if (k === 'group') { groups.push(t); }
-				else if (k === 'user') { users.push(t); }
-				else if (k === 'email') { emails.push(t); }
-			});
-			document.getElementById('field-all').value = all;
-			document.getElementById('field-groups').value = groups.join(',');
-			document.getElementById('field-users').value = users.join(',');
-			document.getElementById('field-emails').value = emails.join(',');
+			fAll.value = state.all ? '1' : '0';
+			fGroups.value = state.groups.map(function (g) { return g.token; }).join(',');
+			fUsers.value  = state.users.map(function (u) { return u.token; }).join(',');
+			fEmails.value = state.emails.join(',');
 			schedule();
 		}
-		function wireRemove(x) { x.addEventListener('click', function () { var li = x.closest('.mm-chip'); if (li) { li.remove(); serialize(); } }); }
-		function addChip(kind, token, label) {
-			if (kind === 'all') { if (hasAll()) { return; } }
-			else if (chipsEl.querySelector('.mm-chip[data-kind="' + kind + '"][data-token="' + ('' + token).replace(/"/g, '') + '"]')) { return; }
+		function makeChip(kind, label, onRemove) {
 			var li = document.createElement('li');
 			li.className = 'mm-chip mm-chip-' + kind;
-			li.setAttribute('data-kind', kind); li.setAttribute('data-token', token);
 			var ic = document.createElement('span'); ic.className = 'mm-chip-ic'; ic.textContent = ICON[kind];
 			var s = document.createElement('span'); s.textContent = label;
-			var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
-			li.appendChild(ic); li.appendChild(s); li.appendChild(x);
-			chipsEl.appendChild(li); wireRemove(x); serialize();
-		}
-		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
-		function pick(it) { addChip(it.kind, it.token, (it.kind === 'email' ? it.token : it.label)); search.value = ''; hideAc(); search.focus(); }
-		function render(remote) {
-			var q = search.value.trim();
-			var list = [];
-			if (everyoneMatch(q) && !hasAll()) { list.push({ kind: 'all', token: '1', label: EVERYONE }); }
-			(remote || []).forEach(function (r) { list.push(r); });
-			if (isEmail(q)) { list.push({ kind: 'email', token: q.toLowerCase(), label: 'Add ' + q }); }
-			acItems = list; acActive = -1;
-			if (!list.length) { hideAc(); return; }
-			ac.innerHTML = '';
-			list.forEach(function (it) {
-				var li = document.createElement('li');
-				var ic = document.createElement('span'); ic.className = 'mm-ac-ic'; ic.textContent = ICON[it.kind];
-				var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = it.label;
-				var sub = document.createElement('span'); sub.className = 'mm-ac-title'; sub.textContent = it.sub ? (' — ' + it.sub) : '';
-				li.appendChild(ic); li.appendChild(nm); li.appendChild(sub);
-				li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it); });
-				ac.appendChild(li);
-			});
-			ac.hidden = false;
-		}
-		function lookup() {
-			var q = search.value.trim();
-			if (q.length < 2) { render([]); return; }
-			fetch(form.getAttribute('action') + '&task=recipientlookup&q=' + encodeURIComponent(q), {
-				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
-			}).then(function (r) { return r.json(); }).then(render).catch(function () { render([]); });
-		}
-		search.addEventListener('focus', function () { search.removeAttribute('readonly'); if (search.value.trim() === '') { render([]); } });
-		search.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 180); });
-		search.addEventListener('keydown', function (e) {
-			if (e.key === 'Enter') {
-				if (!ac.hidden && acActive >= 0) { e.preventDefault(); pick(acItems[acActive]); return; }
-				var v = search.value.trim();
-				if (isEmail(v)) { e.preventDefault(); addChip('email', v.toLowerCase(), v.toLowerCase()); search.value = ''; hideAc(); return; }
+			li.appendChild(ic); li.appendChild(s);
+			if (onRemove) {
+				var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
+				x.addEventListener('click', onRemove); li.appendChild(x);
 			}
-			if (ac.hidden) { return; }
-			var lis = ac.querySelectorAll('li');
-			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
-			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
-			else if (e.key === 'Escape') { hideAc(); return; }
-			else { return; }
-			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
+			return li;
+		}
+		function renderSummary() {
+			summary.innerHTML = '';
+			var any = false;
+			if (state.all) { summary.appendChild(makeChip('all', EVERYONE)); any = true; }
+			state.groups.forEach(function (g) { summary.appendChild(makeChip('group', g.label)); any = true; });
+			state.users.forEach(function (u) { summary.appendChild(makeChip('user', u.label)); any = true; });
+			state.emails.forEach(function (e) { summary.appendChild(makeChip('email', e)); any = true; });
+			if (!any) { var none = document.createElement('li'); none.className = 'mm-to-none'; none.textContent = NONE; summary.appendChild(none); }
+		}
+
+		var mbAll = document.getElementById('mb-all');
+		var mbGroupChips = document.getElementById('mb-group-chips');
+		var mbUserChips = document.getElementById('mb-user-chips');
+		var mbEmails = document.getElementById('mb-emails');
+
+		function renderModal() {
+			mbAll.checked = !!state.all;
+			mbGroupChips.innerHTML = '';
+			state.groups.forEach(function (g, i) { mbGroupChips.appendChild(makeChip('group', g.label, function () { state.groups.splice(i, 1); changed(); })); });
+			mbUserChips.innerHTML = '';
+			state.users.forEach(function (u, i) { mbUserChips.appendChild(makeChip('user', u.label, function () { state.users.splice(i, 1); changed(); })); });
+			if (document.activeElement !== mbEmails) { mbEmails.value = state.emails.join('\n'); }
+		}
+		function changed() { serialize(); renderSummary(); renderModal(); }
+
+		function sectionPicker(searchId, acId, task, listKey, tokenIsId) {
+			var search = document.getElementById(searchId);
+			var ac = document.getElementById(acId);
+			if (!search || !ac) { return; }
+			var t = null, items = [], active = -1;
+			function hide() { ac.hidden = true; ac.innerHTML = ''; items = []; active = -1; }
+			function has(token) { return state[listKey].some(function (e) { return e.token === ('' + token); }); }
+			function render(list) {
+				items = list; active = -1;
+				if (!list.length) { hide(); return; }
+				ac.innerHTML = '';
+				list.forEach(function (it) {
+					var li = document.createElement('li');
+					var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = (it.title || it.cn);
+					var subv = it.cn || '';
+					var sub = document.createElement('span'); sub.className = 'mm-ac-title'; sub.textContent = subv ? (' — ' + subv) : '';
+					li.appendChild(nm); li.appendChild(sub);
+					li.addEventListener('mousedown', function (e) { e.preventDefault(); addOne(it); });
+					ac.appendChild(li);
+				});
+				ac.hidden = false;
+			}
+			function addOne(it) {
+				var token = '' + (tokenIsId ? it.id : it.cn);
+				if (!has(token)) { state[listKey].push({ token: token, label: (it.title || it.cn) }); changed(); }
+				search.value = ''; hide(); search.focus();
+			}
+			function lookup() {
+				var q = search.value.trim();
+				if (q.length < 2) { hide(); return; }
+				fetch(form.getAttribute('action') + '&task=' + task + '&q=' + encodeURIComponent(q), { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+					.then(function (r) { return r.json(); }).then(render).catch(hide);
+			}
+			search.addEventListener('focus', function () { search.removeAttribute('readonly'); });
+			search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(lookup, 180); });
+			search.addEventListener('keydown', function (e) {
+				if (ac.hidden) { return; }
+				var lis = ac.querySelectorAll('li');
+				if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, lis.length - 1); }
+				else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); }
+				else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); addOne(items[active]); return; }
+				else if (e.key === 'Escape') { hide(); return; }
+				else { return; }
+				for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === active); }
+			});
+			search.addEventListener('blur', function () { setTimeout(hide, 150); });
+		}
+		sectionPicker('mb-group-search', 'mb-group-ac', 'grouplookup', 'groups', false);
+		sectionPicker('mb-user-search', 'mb-user-ac', 'userlookup', 'users', true);
+
+		mbAll.addEventListener('change', function () { state.all = mbAll.checked; changed(); });
+		mbEmails.addEventListener('input', function () {
+			var arr = [];
+			mbEmails.value.split(/[\s,;]+/).forEach(function (e) { e = e.trim(); if (e !== '') { arr.push(e); } });
+			state.emails = arr; serialize(); renderSummary();
 		});
-		search.addEventListener('blur', function () { setTimeout(hideAc, 150); });
-		boxEl.addEventListener('click', function (e) { if (e.target === boxEl || e.target === chipsEl) { search.focus(); } });
-		chipsEl.querySelectorAll('.mm-chip-x').forEach(wireRemove);
+
+		var editBtn = document.getElementById('mm-to-edit');
+		var closeBtn = document.getElementById('mm-rcpt-close');
+		var doneBtn = document.getElementById('mb-done');
+		function openModal() { renderModal(); modal.classList.add('open'); }
+		function closeModal() { modal.classList.remove('open'); }
+		if (editBtn) { editBtn.addEventListener('click', openModal); }
+		if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
+		if (doneBtn) { doneBtn.addEventListener('click', closeModal); }
+		modal.addEventListener('click', function (e) { if (e.target === modal) { closeModal(); } });
+		document.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.keyCode === 27) && modal.classList.contains('open')) { closeModal(); } });
+
+		serialize(); renderSummary();
 	})();
 
 	// --- Opt-out note: informational until the override is actually enabled ---
