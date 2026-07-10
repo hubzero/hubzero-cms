@@ -8,15 +8,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Massmail\Helpers\Recipients;
+
 $canDo = \Components\Massmail\Admin\Helpers\Permissions::getActions();
 
 $isNew = $this->row->isNew();
-$spec  = \Components\Massmail\Helpers\Recipients::normalizeSpec(json_decode((string) $this->row->get('recipient_spec'), true));
-// A brand-new mailing defaults to "everyone" so the preview isn't 0 on open.
-if ($isNew && empty($spec['groups']) && empty($spec['users']) && empty($spec['emails']))
-{
-	$spec['all'] = true;
-}
+$spec  = Recipients::normalizeSpec(json_decode((string) $this->row->get('recipient_spec'), true));
 $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 $atts = $this->row->attachments()->rows();
@@ -37,9 +34,31 @@ if ($schedSaved !== '' && $schedSaved !== '0000-00-00 00:00:00')
 {
 	$scheduledLocal = Date::of($schedSaved)->toLocal('Y-m-d H:i:s');
 }
+$isScheduled = ($scheduledLocal !== '');
+
+// --- Build the To: chips + the hidden field values they serialize back to ----
+$gChips = Recipients::describeGroups($spec['groups']);
+$uChips = Recipients::describeUsers($spec['users']);
+$emails = array_values(array_filter(array_map('trim', (array) $spec['emails']), 'strlen'));
+
+$toChips = array();
+if (!empty($spec['all']))
+{
+	$toChips[] = array('kind' => 'all', 'token' => '1', 'label' => Lang::txt('COM_MASSMAIL_EVERYONE'));
+}
+foreach ($gChips as $g) { $toChips[] = array('kind' => 'group', 'token' => $g['token'], 'label' => $g['label']); }
+foreach ($uChips as $u) { $toChips[] = array('kind' => 'user',  'token' => $u['token'], 'label' => $u['label']); }
+foreach ($emails as $em) { $toChips[] = array('kind' => 'email', 'token' => $em, 'label' => $em); }
+
+$hidAll    = !empty($spec['all']) ? '1' : '0';
+$hidGroups = implode(',', array_map(function ($g) { return $g['token']; }, $gChips));
+$hidUsers  = implode(',', array_map(function ($u) { return $u['token']; }, $uChips));
+$hidEmails = implode(',', $emails);
+
+$chipIcon = array('all' => '★', 'group' => '👥', 'user' => '👤', 'email' => '✉');
 
 // Live audience preview
-$preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
+$preview = Recipients::previewCount($spec, $ignore ? true : false);
 
 Toolbar::title(Lang::txt($isNew ? 'COM_MASSMAIL_NEW_MAILING' : 'COM_MASSMAIL_EDIT_MAILING'), 'massmail');
 Toolbar::apply();
@@ -54,36 +73,74 @@ Toolbar::cancel();
 <style>
 /* Compose page: bounded width, centered, with gutters. */
 .mm-compose { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
-.mm-compose input::placeholder, .mm-compose textarea::placeholder { color:#b7c0cb; opacity:1; }
-.mm-compose .hint { color:#a7b0bd; }
-.mm-compose p.warning { margin:0 0 16px; }
 .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
 @media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
+.mm-compose input::placeholder, .mm-compose textarea::placeholder { color:#b7c0cb; opacity:1; }
+.mm-compose .hint { color:#a7b0bd; }
 
 .mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; }
 
 /* Webmail-style message card. */
-.mm-mail { overflow:hidden; }
+.mm-mail { overflow:visible; }
 .mm-mail-headers { padding:2px 18px; }
-.mm-mail-row { display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf2f7; padding:10px 0; }
-.mm-mail-label { flex:0 0 68px; color:#718096; font-size:13px; }
+.mm-mail-row { display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid #edf2f7; padding:10px 0; }
+.mm-mail-label { flex:0 0 68px; color:#718096; font-size:13px; padding-top:3px; }
 .mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
-.mm-mail-row input { flex:1; border:none; background:transparent; box-shadow:none; padding:2px 0; margin:0; font-size:14px; color:#1a202c; min-width:0; }
-.mm-mail-row input:focus { outline:none; box-shadow:none; }
+.mm-mail-row > input { flex:1; border:none; background:transparent; box-shadow:none; padding:2px 0; margin:0; font-size:14px; color:#1a202c; min-width:0; }
+.mm-mail-row > input:focus { outline:none; box-shadow:none; }
 .mm-mail-subject { font-weight:600; }
 .mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
 .mm-mail-from input.mm-from-name { flex:0 0 38%; }
 .mm-mail-body { padding:14px 18px 18px; }
 .mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
 
+/* To: recipient chip field. */
+.mm-to-field { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
+.mm-to-chips { display:contents; list-style:none; margin:0; padding:0; }
+.mm-to-inp { position:relative; flex:1 1 140px; min-width:140px; }
+.mm-to-inp input { border:none; background:transparent; width:100%; padding:3px 0; margin:0; font-size:14px; }
+.mm-to-inp input:focus { outline:none; }
+.mm-count { color:#718096; font-size:12px; padding:8px 0 2px; }
+.mm-count strong { color:#2d3748; }
+
+/* Chips (To: and attachments). */
+.mm-chip { display:inline-flex; align-items:center; gap:6px; background:#edf2f7; border:1px solid #e2e8f0; border-radius:14px; padding:2px 6px 2px 9px; font-size:12px; color:#2d3748; }
+.mm-chip .mm-chip-ic { font-size:11px; line-height:1; }
+.mm-chip-all { background:#fef3c7; border-color:#fcd34d; }
+.mm-chip-group { background:#e0e7ff; border-color:#c7d2fe; }
+.mm-chip-user { background:#dcfce7; border-color:#bbf7d0; }
+.mm-chip .mm-kb { color:#a0aec0; }
+.mm-chip-x { background:none; border:none; color:#718096; cursor:pointer; font-size:15px; line-height:1; padding:0 2px; text-decoration:none; }
+.mm-chip-x:hover { color:#c53030; }
+
+/* Autocomplete dropdown. */
+.mm-ac-wrap { position:relative; }
+.mm-ac-list { position:absolute; z-index:60; left:0; right:0; top:100%; margin:2px 0 0; padding:0; list-style:none; background:#fff; border:1px solid #cbd5e0; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.14); max-height:240px; overflow:auto; min-width:240px; }
+.mm-ac-list li { display:flex; align-items:baseline; gap:6px; padding:6px 10px; cursor:pointer; font-size:13px; border-bottom:1px solid #f1f5f9; }
+.mm-ac-list li:last-child { border-bottom:none; }
+.mm-ac-list li:hover, .mm-ac-list li.active { background:#ebf4ff; }
+.mm-ac-ic { font-size:11px; }
+.mm-ac-cn { font-weight:600; color:#2d3748; }
+.mm-ac-title { color:#718096; font-size:12px; }
+
+/* Framed editor. */
+#adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
+#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
+#adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
+.mm-attach-btn { cursor:pointer; }
+.mm-attach-btn svg { pointer-events:none; }
+.mm-chips { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+.mm-chips:empty { margin:0; }
+
 /* Sidebar cards. */
 .mm-side .mm-card { padding:16px; margin-bottom:16px; }
 .mm-side h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
-.mm-preview { margin:0 0 12px; }
+.mm-optout-label { display:block; margin-bottom:14px; }
+.mm-optout-note { margin-top:0; }
 .mm-compose .input-datetime { display:block; }
 .mm-compose .calendar-field { width:100%; box-sizing:border-box; }
 
-/* Delivery-mode toggle (as-soon-as-possible vs scheduled) */
+/* Delivery-mode toggle (as-soon-as-possible vs scheduled). */
 .mm-delivery-toggle { display:flex; flex-direction:column; gap:8px; }
 .mm-dopt { display:flex; align-items:flex-start; gap:10px; margin:0; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; transition:border-color .12s ease, background .12s ease; }
 .mm-dopt:hover { border-color:#cbd5e0; }
@@ -94,35 +151,6 @@ Toolbar::cancel();
 .mm-dopt-sub { color:#a0aec0; font-size:12px; }
 .mm-schedule-field { margin-top:10px; }
 .mm-schedule-field[hidden] { display:none; }
-.mm-everyone { display:flex; align-items:center; gap:8px; margin:0 0 12px; font-weight:600; color:#2d3748; }
-.mm-rcpt-hint { margin:0 0 12px; }
-.mm-rcpt-sources.is-dim { opacity:.4; pointer-events:none; }
-.mm-optout-label { display:block; margin-bottom:14px; }
-.mm-optout-note { margin-top:0; }
-
-/* Group alias autocomplete */
-.mm-ac-wrap { position:relative; }
-.mm-ac-list { position:absolute; z-index:60; left:0; right:0; top:100%; margin:2px 0 0; padding:0; list-style:none; background:#fff; border:1px solid #cbd5e0; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.14); max-height:220px; overflow:auto; }
-.mm-ac-list li { padding:6px 10px; cursor:pointer; font-size:13px; border-bottom:1px solid #f1f5f9; }
-.mm-ac-list li:last-child { border-bottom:none; }
-.mm-ac-list li:hover, .mm-ac-list li.active { background:#ebf4ff; }
-.mm-ac-cn { font-weight:600; color:#2d3748; }
-.mm-ac-title { color:#718096; font-size:12px; }
-
-/* Framed editor. */
-#adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
-#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
-#adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
-.mm-attach-btn { cursor:pointer; }
-.mm-attach-btn svg { pointer-events:none; }
-
-/* Attachment chips. */
-.mm-chips { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
-.mm-chips:empty { margin:0; }
-.mm-chip { display:inline-flex; align-items:center; gap:6px; background:#edf2f7; border:1px solid #e2e8f0; border-radius:14px; padding:3px 6px 3px 10px; font-size:12px; color:#2d3748; }
-.mm-chip .mm-kb { color:#a0aec0; }
-.mm-chip-x { background:none; border:none; color:#718096; cursor:pointer; font-size:15px; line-height:1; padding:0 2px; text-decoration:none; }
-.mm-chip-x:hover { color:#c53030; }
 </style>
 
 <div class="mm-compose">
@@ -136,6 +164,26 @@ Toolbar::cancel();
 			<div class="mm-main">
 				<div class="mm-card mm-mail">
 					<div class="mm-mail-headers">
+						<div class="mm-mail-row">
+							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_TO'); ?></span>
+							<div class="mm-to-field" id="mm-to">
+								<ul class="mm-to-chips" id="mm-to-chips">
+									<?php foreach ($toChips as $c) { ?>
+										<li class="mm-chip mm-chip-<?php echo $c['kind']; ?>" data-kind="<?php echo $c['kind']; ?>" data-token="<?php echo $this->escape($c['token']); ?>">
+											<span class="mm-chip-ic"><?php echo $chipIcon[$c['kind']]; ?></span>
+											<span><?php echo $this->escape($c['label']); ?></span>
+											<button type="button" class="mm-chip-x" aria-label="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>">&times;</button>
+										</li>
+									<?php } ?>
+								</ul>
+								<div class="mm-ac-wrap mm-to-inp">
+									<input type="text" id="field-to-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_TO_PLACEHOLDER')); ?>" autocomplete="off" />
+									<ul class="mm-ac-list" id="mm-to-ac" hidden></ul>
+								</div>
+							</div>
+						</div>
+						<div class="mm-count"><span class="mm-mail-label" style="flex-basis:68px;"></span><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
+
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
 							<?php if ($isSuper) { ?>
@@ -169,7 +217,6 @@ Toolbar::cancel();
 							$this->row->get('body'),
 							'100%', '350', 35, 12, false, 'field-body', null, null,
 							array(
-								// Basic HTML formatting; the paperclip is injected after these.
 								'toolbar' => array('bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo')
 							)
 						);
@@ -195,51 +242,6 @@ Toolbar::cancel();
 			</div>
 
 			<div class="mm-side">
-				<div class="mm-card">
-					<h4><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h4>
-
-					<p class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
-					<p class="hint mm-rcpt-hint"><?php echo Lang::txt('COM_MASSMAIL_RCPT_COMBINE_HINT'); ?></p>
-
-					<label class="mm-everyone">
-						<input type="checkbox" name="rcpt_all" id="field-all" value="1"<?php echo !empty($spec['all']) ? ' checked="checked"' : ''; ?> />
-						<?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?>
-					</label>
-
-					<div class="mm-rcpt-sources" id="mm-rcpt-sources">
-						<div class="input-wrap">
-							<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
-							<div class="mm-ac-wrap">
-								<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(', ', (array) $spec['groups'])); ?>" placeholder="e.g. composites-team, 3042" autocomplete="off" />
-								<ul class="mm-ac-list" id="mm-group-ac" hidden></ul>
-							</div>
-						</div>
-						<?php $peopleChips = \Components\Massmail\Helpers\Recipients::describeUsers($spec['users']); ?>
-						<div class="input-wrap">
-							<label for="field-people-search"><?php echo Lang::txt('COM_MASSMAIL_PEOPLE'); ?></label>
-							<ul class="mm-chips" id="mm-people-chips">
-								<?php foreach ($peopleChips as $p) { ?>
-									<li class="mm-chip" data-token="<?php echo (int) $p['token']; ?>">
-										<span><?php echo $this->escape($p['label']); ?></span>
-										<button type="button" class="mm-chip-x" aria-label="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>">&times;</button>
-									</li>
-								<?php } ?>
-							</ul>
-							<div class="mm-ac-wrap">
-								<input type="text" id="field-people-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PEOPLE_SEARCH')); ?>" autocomplete="off" />
-								<ul class="mm-ac-list" id="mm-people-ac" hidden></ul>
-							</div>
-							<input type="hidden" name="users" id="field-users" value="<?php echo $this->escape(implode(',', array_map(function ($p) { return $p['token']; }, $peopleChips))); ?>" />
-						</div>
-					</div>
-
-					<div class="input-wrap">
-						<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
-						<textarea name="emails" id="field-emails" rows="4" placeholder="one per line"><?php echo $this->escape(implode("\n", (array) $spec['emails'])); ?></textarea>
-					</div>
-				</div>
-
-				<?php $isScheduled = ($scheduledLocal !== ''); ?>
 				<div class="mm-card">
 					<h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
 					<div class="mm-delivery-toggle">
@@ -276,6 +278,10 @@ Toolbar::cancel();
 			</div>
 		</div>
 
+		<input type="hidden" name="rcpt_all" id="field-all" value="<?php echo $hidAll; ?>" />
+		<input type="hidden" name="groups[]" id="field-groups" value="<?php echo $this->escape($hidGroups); ?>" />
+		<input type="hidden" name="users" id="field-users" value="<?php echo $this->escape($hidUsers); ?>" />
+		<input type="hidden" name="emails" id="field-emails" value="<?php echo $this->escape($hidEmails); ?>" />
 		<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -286,17 +292,17 @@ Toolbar::cancel();
 
 <script type="text/javascript">
 (function () {
-	// --- Live audience prediction (additive recipient list) ------------------
-	var form  = document.getElementById('adminForm');
+	var form = document.getElementById('adminForm');
+
+	// --- Live audience prediction (reads the hidden recipient fields) --------
 	var out   = document.querySelector('.mm-preview strong');
 	var timer = null;
 	function collect() {
 		var fd = new FormData();
-		var all = document.getElementById('field-all');
-		if (all && all.checked) { fd.append('rcpt_all', '1'); }
-		var g = document.getElementById('field-groups'); if (g) { fd.append('groups[]', g.value); }
-		var u = document.getElementById('field-users');  if (u) { fd.append('users', u.value); }
-		var e = document.getElementById('field-emails'); if (e) { fd.append('emails', e.value); }
+		if (document.getElementById('field-all').value === '1') { fd.append('rcpt_all', '1'); }
+		fd.append('groups[]', document.getElementById('field-groups').value);
+		fd.append('users', document.getElementById('field-users').value);
+		fd.append('emails', document.getElementById('field-emails').value);
 		var ig = document.querySelector('input[name="ignore_optout"]');
 		if (ig && ig.checked) { fd.append('ignore_optout', '1'); }
 		return fd;
@@ -313,20 +319,102 @@ Toolbar::cancel();
 	}
 	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
 
-	// "Everyone" subsumes groups/people; dim them (emails stay additive).
-	var allChk  = document.getElementById('field-all');
-	var sources = document.getElementById('mm-rcpt-sources');
-	function reflectAll() { if (sources) { sources.classList.toggle('is-dim', !!(allChk && allChk.checked)); } }
-	if (allChk) { allChk.addEventListener('change', function () { reflectAll(); schedule(); }); reflectAll(); }
+	// --- To: unified recipient chip picker -----------------------------------
+	(function () {
+		var boxEl   = document.getElementById('mm-to');
+		var chipsEl = document.getElementById('mm-to-chips');
+		var search  = document.getElementById('field-to-search');
+		var ac      = document.getElementById('mm-to-ac');
+		if (!boxEl || !chipsEl || !search || !ac) { return; }
+		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
+		var ICON = { all: '★', group: '👥', user: '👤', email: '✉' };
+		var acTimer = null, acItems = [], acActive = -1;
 
-	['field-groups', 'field-users', 'field-emails'].forEach(function (id) {
-		var el = document.getElementById(id);
-		if (el) { el.addEventListener('input', schedule); }
-	});
-	var ign = document.querySelector('input[name="ignore_optout"]');
-	if (ign) { ign.addEventListener('change', schedule); }
+		function isEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+		function everyoneMatch(q) { q = q.toLowerCase(); return q === '' || 'everyone'.indexOf(q) === 0 || 'all active users'.indexOf(q) === 0; }
+		function hasAll() { return !!chipsEl.querySelector('.mm-chip[data-kind="all"]'); }
+
+		function serialize() {
+			var all = '0', groups = [], users = [], emails = [];
+			chipsEl.querySelectorAll('.mm-chip').forEach(function (li) {
+				var k = li.getAttribute('data-kind'), t = li.getAttribute('data-token');
+				if (k === 'all') { all = '1'; }
+				else if (k === 'group') { groups.push(t); }
+				else if (k === 'user') { users.push(t); }
+				else if (k === 'email') { emails.push(t); }
+			});
+			document.getElementById('field-all').value = all;
+			document.getElementById('field-groups').value = groups.join(',');
+			document.getElementById('field-users').value = users.join(',');
+			document.getElementById('field-emails').value = emails.join(',');
+			schedule();
+		}
+		function wireRemove(x) { x.addEventListener('click', function () { var li = x.closest('.mm-chip'); if (li) { li.remove(); serialize(); } }); }
+		function addChip(kind, token, label) {
+			if (kind === 'all') { if (hasAll()) { return; } }
+			else if (chipsEl.querySelector('.mm-chip[data-kind="' + kind + '"][data-token="' + ('' + token).replace(/"/g, '') + '"]')) { return; }
+			var li = document.createElement('li');
+			li.className = 'mm-chip mm-chip-' + kind;
+			li.setAttribute('data-kind', kind); li.setAttribute('data-token', token);
+			var ic = document.createElement('span'); ic.className = 'mm-chip-ic'; ic.textContent = ICON[kind];
+			var s = document.createElement('span'); s.textContent = label;
+			var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
+			li.appendChild(ic); li.appendChild(s); li.appendChild(x);
+			chipsEl.appendChild(li); wireRemove(x); serialize();
+		}
+		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
+		function pick(it) { addChip(it.kind, it.token, (it.kind === 'email' ? it.token : it.label)); search.value = ''; hideAc(); search.focus(); }
+		function render(remote) {
+			var q = search.value.trim();
+			var list = [];
+			if (everyoneMatch(q) && !hasAll()) { list.push({ kind: 'all', token: '1', label: EVERYONE }); }
+			(remote || []).forEach(function (r) { list.push(r); });
+			if (isEmail(q)) { list.push({ kind: 'email', token: q.toLowerCase(), label: 'Add ' + q }); }
+			acItems = list; acActive = -1;
+			if (!list.length) { hideAc(); return; }
+			ac.innerHTML = '';
+			list.forEach(function (it) {
+				var li = document.createElement('li');
+				var ic = document.createElement('span'); ic.className = 'mm-ac-ic'; ic.textContent = ICON[it.kind];
+				var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = it.label;
+				var sub = document.createElement('span'); sub.className = 'mm-ac-title'; sub.textContent = it.sub ? (' — ' + it.sub) : '';
+				li.appendChild(ic); li.appendChild(nm); li.appendChild(sub);
+				li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it); });
+				ac.appendChild(li);
+			});
+			ac.hidden = false;
+		}
+		function lookup() {
+			var q = search.value.trim();
+			if (q.length < 2) { render([]); return; }
+			fetch(form.getAttribute('action') + '&task=recipientlookup&q=' + encodeURIComponent(q), {
+				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
+			}).then(function (r) { return r.json(); }).then(render).catch(function () { render([]); });
+		}
+		search.addEventListener('focus', function () { if (search.value.trim() === '') { render([]); } });
+		search.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 180); });
+		search.addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') {
+				if (!ac.hidden && acActive >= 0) { e.preventDefault(); pick(acItems[acActive]); return; }
+				var v = search.value.trim();
+				if (isEmail(v)) { e.preventDefault(); addChip('email', v.toLowerCase(), v.toLowerCase()); search.value = ''; hideAc(); return; }
+			}
+			if (ac.hidden) { return; }
+			var lis = ac.querySelectorAll('li');
+			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
+			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
+			else if (e.key === 'Escape') { hideAc(); return; }
+			else { return; }
+			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
+		});
+		search.addEventListener('blur', function () { setTimeout(hideAc, 150); });
+		boxEl.addEventListener('click', function (e) { if (e.target === boxEl || e.target === chipsEl) { search.focus(); } });
+		chipsEl.querySelectorAll('.mm-chip-x').forEach(wireRemove);
+	})();
 
 	// --- Opt-out note: informational until the override is actually enabled ---
+	var ign = document.querySelector('input[name="ignore_optout"]');
+	if (ign) { ign.addEventListener('change', schedule); }
 	var note = document.getElementById('mm-optout-note');
 	if (ign && note) {
 		function syncNote() {
@@ -361,7 +449,6 @@ Toolbar::cancel();
 		}
 		reflectDelivery();
 	}
-	// Open the picker when the calendar icon (not just the text) is clicked.
 	if (schedInput) {
 		var idt = schedInput.closest('.input-datetime');
 		if (idt) {
@@ -373,123 +460,6 @@ Toolbar::cancel();
 			});
 		}
 	}
-
-	// --- Autocomplete for the group / user pickers ---------------------------
-	function attachAutocomplete(inputId, listId, task) {
-		var gi = document.getElementById(inputId);
-		var ac = document.getElementById(listId);
-		if (!gi || !ac) { return; }
-		var acTimer = null, acItems = [], acActive = -1;
-		function curToken() { var v = gi.value; return v.slice(v.lastIndexOf(',') + 1).trim(); }
-		function setToken(cn) {
-			var v = gi.value, i = v.lastIndexOf(',');
-			gi.value = (i >= 0 ? v.slice(0, i + 1) + ' ' : '') + cn + ', ';
-		}
-		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
-		function renderAc(list) {
-			acItems = list; acActive = -1;
-			if (!list || !list.length) { hideAc(); return; }
-			ac.innerHTML = '';
-			list.forEach(function (g) {
-				var li = document.createElement('li');
-				var cn = document.createElement('span'); cn.className = 'mm-ac-cn'; cn.textContent = g.cn;
-				var ti = document.createElement('span'); ti.className = 'mm-ac-title'; ti.textContent = g.title ? (' — ' + g.title) : '';
-				li.appendChild(cn); li.appendChild(ti);
-				li.addEventListener('mousedown', function (e) { e.preventDefault(); setToken(g.cn); hideAc(); gi.focus(); schedule(); });
-				ac.appendChild(li);
-			});
-			ac.hidden = false;
-		}
-		function lookup() {
-			var tok = curToken();
-			if (tok.length < 2) { hideAc(); return; }
-			fetch(form.getAttribute('action') + '&task=' + task + '&q=' + encodeURIComponent(tok), {
-				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
-			}).then(function (r) { return r.json(); }).then(renderAc).catch(hideAc);
-		}
-		gi.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 200); });
-		gi.addEventListener('keydown', function (e) {
-			if (ac.hidden) { return; }
-			var lis = ac.querySelectorAll('li');
-			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
-			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
-			else if (e.key === 'Enter' && acActive >= 0) { e.preventDefault(); setToken(acItems[acActive].cn); hideAc(); schedule(); return; }
-			else if (e.key === 'Escape') { hideAc(); return; }
-			else { return; }
-			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
-		});
-		gi.addEventListener('blur', function () { setTimeout(hideAc, 150); });
-	}
-	attachAutocomplete('field-groups', 'mm-group-ac', 'grouplookup');
-
-	// People chip picker: search by name or username, add each as a chip stored
-	// by user id (names aren't unique, so the id is the token).
-	(function () {
-		var search = document.getElementById('field-people-search');
-		var ac     = document.getElementById('mm-people-ac');
-		var chips  = document.getElementById('mm-people-chips');
-		var hidden = document.getElementById('field-users');
-		if (!search || !ac || !chips || !hidden) { return; }
-		var acTimer = null, acItems = [], acActive = -1;
-
-		function syncHidden() {
-			var toks = [];
-			chips.querySelectorAll('.mm-chip').forEach(function (li) { toks.push(li.getAttribute('data-token')); });
-			hidden.value = toks.join(',');
-			schedule();
-		}
-		function wireRemove(x) {
-			x.addEventListener('click', function () { var li = x.closest('.mm-chip'); if (li) { li.remove(); syncHidden(); } });
-		}
-		function addChip(id, label) {
-			if (chips.querySelector('.mm-chip[data-token="' + id + '"]')) { return; }
-			var li = document.createElement('li');
-			li.className = 'mm-chip'; li.setAttribute('data-token', id);
-			var s = document.createElement('span'); s.textContent = label;
-			var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
-			li.appendChild(s); li.appendChild(x); chips.appendChild(li);
-			wireRemove(x);
-			syncHidden();
-		}
-		function label(u) { return u.title ? (u.title + ' (' + u.cn + ')') : u.cn; }
-		function hideAc() { ac.hidden = true; ac.innerHTML = ''; acItems = []; acActive = -1; }
-		function renderAc(list) {
-			acItems = list; acActive = -1;
-			if (!list || !list.length) { hideAc(); return; }
-			ac.innerHTML = '';
-			list.forEach(function (u) {
-				var li = document.createElement('li');
-				var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = u.title || u.cn;
-				var un = document.createElement('span'); un.className = 'mm-ac-title'; un.textContent = u.title ? (' — ' + u.cn) : '';
-				li.appendChild(nm); li.appendChild(un);
-				li.addEventListener('mousedown', function (e) { e.preventDefault(); addChip(u.id, label(u)); search.value = ''; hideAc(); search.focus(); });
-				ac.appendChild(li);
-			});
-			ac.hidden = false;
-		}
-		function lookup() {
-			var q = search.value.trim();
-			if (q.length < 2) { hideAc(); return; }
-			fetch(form.getAttribute('action') + '&task=userlookup&q=' + encodeURIComponent(q), {
-				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
-			}).then(function (r) { return r.json(); }).then(renderAc).catch(hideAc);
-		}
-		search.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 200); });
-		search.addEventListener('keydown', function (e) {
-			if (ac.hidden) { return; }
-			var lis = ac.querySelectorAll('li');
-			if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, lis.length - 1); }
-			else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); }
-			else if (e.key === 'Enter' && acActive >= 0) { e.preventDefault(); addChip(acItems[acActive].id, label(acItems[acActive])); search.value = ''; hideAc(); return; }
-			else if (e.key === 'Escape') { hideAc(); return; }
-			else { return; }
-			for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === acActive); }
-		});
-		search.addEventListener('blur', function () { setTimeout(hideAc, 150); });
-
-		// Wire removal on any server-rendered chips.
-		chips.querySelectorAll('.mm-chip-x').forEach(wireRemove);
-	})();
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
 	var fileInput = document.getElementById('field-attachment');

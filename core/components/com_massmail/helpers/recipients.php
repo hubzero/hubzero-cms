@@ -340,6 +340,32 @@ class Recipients
 	}
 
 	/**
+	 * Describe a list of group tokens (IDs and/or cn aliases) for display as
+	 * chips: one entry per resolved group with a friendly label and its cn alias
+	 * as the token.
+	 *
+	 * @param   array  $tokens
+	 * @return  array  [['token' => cn, 'label' => 'Title'], ...]
+	 */
+	public static function describeGroups($tokens)
+	{
+		$gids = self::resolveGroups($tokens);
+		if (!$gids)
+		{
+			return array();
+		}
+
+		$db = \App::get('db');
+		$db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE gidNumber IN (" . implode(',', $gids) . ") ORDER BY cn ASC");
+		$out = array();
+		foreach ((array) $db->loadObjectList() as $g)
+		{
+			$out[] = array('token' => $g->cn, 'label' => (trim((string) $g->description) !== '' ? $g->description : $g->cn));
+		}
+		return $out;
+	}
+
+	/**
 	 * Describe a list of user tokens (IDs and/or usernames) for display as chips:
 	 * one entry per resolved user with a friendly label and its ID as the token.
 	 *

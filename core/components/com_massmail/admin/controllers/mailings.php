@@ -361,6 +361,44 @@ class Mailings extends AdminController
 	}
 
 	/**
+	 * AJAX: unified recipient autocomplete for the To: field -- groups and users
+	 * together, each tagged with its kind. Returns JSON
+	 * [{kind:'group'|'user', token, label, sub}].
+	 *
+	 * @return  void
+	 */
+	public function recipientlookupTask()
+	{
+		$q   = trim(Request::getString('q', ''));
+		$out = array();
+
+		if (strlen($q) >= 2)
+		{
+			$db      = \App::get('db');
+			$like    = $db->quote('%' . $q . '%');
+			$numeric = ctype_digit($q);
+
+			$gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
+			$db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8");
+			foreach ((array) $db->loadObjectList() as $g)
+			{
+				$out[] = array('kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn);
+			}
+
+			$uw = "username LIKE $like OR name LIKE $like" . ($numeric ? ' OR id = ' . (int) $q : '');
+			$db->setQuery("SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8");
+			foreach ((array) $db->loadObjectList() as $u)
+			{
+				$out[] = array('kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username);
+			}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($out);
+		exit;
+	}
+
+	/**
 	 * AJAX: predict how many recipients the current picker selection reaches,
 	 * so the compose form can show a live audience count. Returns JSON.
 	 *
