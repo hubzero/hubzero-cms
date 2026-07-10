@@ -77,6 +77,9 @@ Toolbar::cancel();
 .mm-side .mm-card { padding:16px; margin-bottom:16px; }
 .mm-side h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
 .mm-preview { margin:0 0 12px; }
+/* datetime-local blends into the card without an explicit border */
+#field-schedule { border:1px solid #cbd5e0; border-radius:6px; padding:6px 8px; background:#fff; width:100%; box-sizing:border-box; }
+#field-schedule:focus { border-color:#4299e1; outline:none; }
 .mm-rcpt-types { margin-bottom:8px; }
 .mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
 .mm-optout-label { display:block; margin-bottom:14px; }
