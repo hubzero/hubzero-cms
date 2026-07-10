@@ -42,7 +42,7 @@ Toolbar::cancel();
 ?>
 <style>
 /* Compose page: bounded width, centered, with gutters. */
-.mm-compose { max-width:1080px; margin:0 auto; padding:0 20px; box-sizing:border-box; }
+.mm-compose { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
 .mm-compose p.warning { margin:0 0 16px; }
 .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
 @media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
