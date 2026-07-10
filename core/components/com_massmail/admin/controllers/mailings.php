@@ -309,9 +309,11 @@ class Mailings extends AdminController
 		{
 			$db   = \App::get('db');
 			$like = $db->quote('%' . $q . '%');
+			$where = "cn LIKE $like OR description LIKE $like";
+			if (ctype_digit($q)) { $where .= ' OR gidNumber = ' . (int) $q; }
 			$db->setQuery(
 				"SELECT gidNumber, cn, description FROM `#__xgroups`
-				 WHERE published = 1 AND (cn LIKE $like OR description LIKE $like)
+				 WHERE published = 1 AND ($where)
 				 ORDER BY cn ASC LIMIT 15"
 			);
 			foreach ((array) $db->loadObjectList() as $g)
@@ -340,9 +342,11 @@ class Mailings extends AdminController
 		{
 			$db   = \App::get('db');
 			$like = $db->quote('%' . $q . '%');
+			$where = "username LIKE $like OR name LIKE $like";
+			if (ctype_digit($q)) { $where .= ' OR id = ' . (int) $q; }
 			$db->setQuery(
 				"SELECT id, username, name FROM `#__users`
-				 WHERE block = 0 AND (username LIKE $like OR name LIKE $like)
+				 WHERE block = 0 AND ($where)
 				 ORDER BY username ASC LIMIT 15"
 			);
 			foreach ((array) $db->loadObjectList() as $u)
