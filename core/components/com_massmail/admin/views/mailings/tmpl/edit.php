@@ -151,6 +151,7 @@ Toolbar::cancel();
 				</div>
 			</fieldset>
 
+			<?php if ($canDo->get('core.override')) { ?>
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></legend>
 				<div class="input-wrap">
@@ -161,6 +162,7 @@ Toolbar::cancel();
 					<p class="hint warning"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
 				</div>
 			</fieldset>
+			<?php } ?>
 		</div>
 	</div>
 

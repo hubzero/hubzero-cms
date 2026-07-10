@@ -149,7 +149,12 @@ class Mailings extends AdminController
 
 		// Assemble the recipient spec from the picker.
 		$row->set('recipient_spec', json_encode($this->recipientSpec()));
-		$row->set('ignore_optout', Request::getInt('ignore_optout', 0));
+
+		// Only honor the opt-out override for users allowed to request it; it
+		// still needs separate approval before it can send.
+		$override = Request::getInt('ignore_optout', 0)
+			&& User::authorise('core.override', $this->_option);
+		$row->set('ignore_optout', $override ? 1 : 0);
 
 		if (!$row->save())
 		{
@@ -474,7 +479,7 @@ class Mailings extends AdminController
 	}
 
 	/**
-	 * Release a held mailing into the delivery queue (requires core.send).
+	 * Release a held mailing into the delivery queue (requires core.release).
 	 * Holds only ever leave this state by an explicit human action, so a
 	 * backlog accumulated while sending was off never auto-sends.
 	 *
@@ -484,9 +489,9 @@ class Mailings extends AdminController
 	{
 		Request::checkToken(['get', 'post']);
 
-		// Releasing a held backlog is a Super Administrator decision, not a
-		// routine send permission.
-		if (!User::authorise('core.admin'))
+		// Releasing a held backlog is its own permission (defaults to nobody but
+		// Super Administrators until explicitly granted).
+		if (!User::authorise('core.release', $this->_option))
 		{
 			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_RELEASE'));
 		}

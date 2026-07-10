@@ -16,7 +16,9 @@
 		<action name="core.edit.own"   title="JACTION_EDITOWN"   description="JACTION_EDITOWN_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.delete"     title="JACTION_DELETE"    description="JACTION_DELETE_COMPONENT_DESC" />
-		<action name="core.send"       title="COM_MASSMAIL_ACTION_SEND"    description="COM_MASSMAIL_ACTION_SEND_DESC" />
-		<action name="core.approve"    title="COM_MASSMAIL_ACTION_APPROVE" description="COM_MASSMAIL_ACTION_APPROVE_DESC" />
+		<action name="core.send"       title="COM_MASSMAIL_ACTION_SEND"     description="COM_MASSMAIL_ACTION_SEND_DESC" />
+		<action name="core.override"   title="COM_MASSMAIL_ACTION_OVERRIDE" description="COM_MASSMAIL_ACTION_OVERRIDE_DESC" />
+		<action name="core.approve"    title="COM_MASSMAIL_ACTION_APPROVE"  description="COM_MASSMAIL_ACTION_APPROVE_DESC" />
+		<action name="core.release"    title="COM_MASSMAIL_ACTION_RELEASE"  description="COM_MASSMAIL_ACTION_RELEASE_DESC" />
 	</section>
 </access>

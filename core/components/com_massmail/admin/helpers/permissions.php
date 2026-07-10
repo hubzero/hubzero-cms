@@ -49,7 +49,9 @@ class Permissions
 			'core.edit.state',
 			'core.delete',
 			'core.send',
-			'core.approve'
+			'core.override',
+			'core.approve',
+			'core.release'
 		);
 
 		foreach ($actions as $action)
