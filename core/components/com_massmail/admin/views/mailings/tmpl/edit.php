@@ -142,7 +142,7 @@ Toolbar::cancel();
 
 /* Framed editor. */
 #adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
-#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
+#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; height:auto; min-height:300px; resize:vertical; overflow-y:auto; }
 #adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
 .mm-attach-btn { cursor:pointer; }
 .mm-attach-btn svg { pointer-events:none; }
