@@ -100,7 +100,9 @@ Toolbar::cancel();
 .mm-to-inp { position:relative; flex:1 1 140px; min-width:140px; }
 .mm-to-inp input { border:none; background:transparent; width:100%; padding:3px 0; margin:0; font-size:14px; }
 .mm-to-inp input:focus { outline:none; }
-.mm-count { color:#718096; font-size:12px; padding:8px 0 2px; }
+.mm-to-hint { padding:6px 0 0 80px; font-size:12px; color:#a0aec0; }
+.mm-count { color:#718096; font-size:12px; padding:4px 0 2px 80px; }
+.mm-count .mm-mail-label { display:none; }
 .mm-count strong { color:#2d3748; }
 
 /* Chips (To: and attachments). */
@@ -177,11 +179,12 @@ Toolbar::cancel();
 									<?php } ?>
 								</ul>
 								<div class="mm-ac-wrap mm-to-inp">
-									<input type="text" id="field-to-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_TO_PLACEHOLDER')); ?>" autocomplete="off" />
+									<input type="text" id="field-to-search" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_TO_PLACEHOLDER')); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly />
 									<ul class="mm-ac-list" id="mm-to-ac" hidden></ul>
 								</div>
 							</div>
 						</div>
+						<div class="mm-to-hint"><?php echo Lang::txt('COM_MASSMAIL_TO_HINT'); ?></div>
 						<div class="mm-count"><span class="mm-mail-label" style="flex-basis:68px;"></span><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
 
 						<div class="mm-mail-row">
@@ -391,7 +394,7 @@ Toolbar::cancel();
 				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
 			}).then(function (r) { return r.json(); }).then(render).catch(function () { render([]); });
 		}
-		search.addEventListener('focus', function () { if (search.value.trim() === '') { render([]); } });
+		search.addEventListener('focus', function () { search.removeAttribute('readonly'); if (search.value.trim() === '') { render([]); } });
 		search.addEventListener('input', function () { clearTimeout(acTimer); acTimer = setTimeout(lookup, 180); });
 		search.addEventListener('keydown', function (e) {
 			if (e.key === 'Enter') {
