@@ -179,8 +179,10 @@ class Mailings extends AdminController
 
 		$spec = array('type' => $type);
 
-		$groups = Request::getArray('groups', array());
-		$spec['groups'] = array_filter(array_map('intval', (array) $groups));
+		// groups arrive as a single comma/space separated text field (groups[]);
+		// flatten and split so more than the first id is honored.
+		$groupsRaw = implode(',', (array) Request::getArray('groups', array()));
+		$spec['groups'] = array_filter(array_map('intval', preg_split('/[\s,]+/', $groupsRaw)));
 
 		// users: accept a comma/space separated list of ids
 		$usersRaw = Request::getString('users', '');
@@ -200,6 +202,26 @@ class Mailings extends AdminController
 		$spec['emails'] = $emails;
 
 		return $spec;
+	}
+
+	/**
+	 * AJAX: predict how many recipients the current picker selection reaches,
+	 * so the compose form can show a live audience count. Returns JSON.
+	 *
+	 * @return  void
+	 */
+	public function previewTask()
+	{
+		$spec   = $this->recipientSpec();
+		$ignore = Request::getInt('ignore_optout', 0) ? true : false;
+		$count  = Recipients::previewCount($spec, $ignore);
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'count' => $count,
+			'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count))
+		));
+		exit;
 	}
 
 	/**

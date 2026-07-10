@@ -13,6 +13,7 @@ $canDo = \Components\Massmail\Admin\Helpers\Permissions::getActions();
 $isNew = $this->row->isNew();
 $spec  = json_decode((string) $this->row->get('recipient_spec'), true) ?: array();
 $type  = isset($spec['type']) ? $spec['type'] : 'all';
+$spec['type'] = $type; // a new mailing has no saved type; preview the default selection, not 0
 $ignore = (int) $this->row->get('ignore_optout');
 
 // Live audience preview
@@ -156,5 +157,41 @@ Toolbar::cancel();
 	var radios = document.querySelectorAll('input[name="recipient_type"]');
 	for (var i = 0; i < radios.length; i++) { radios[i].addEventListener('change', sync); }
 	sync();
+
+	// Live audience prediction: recompute the "will reach N" count from the
+	// current picker selection whenever it changes.
+	var form    = document.getElementById('adminForm');
+	var out     = document.querySelector('.mm-preview strong');
+	var timer   = null;
+	function collect() {
+		var fd = new FormData();
+		var t = document.querySelector('input[name="recipient_type"]:checked');
+		fd.append('recipient_type', t ? t.value : 'all');
+		var g = document.getElementById('field-groups'); if (g) { fd.append('groups[]', g.value); }
+		var u = document.getElementById('field-users');  if (u) { fd.append('users', u.value); }
+		var e = document.getElementById('field-emails'); if (e) { fd.append('emails', e.value); }
+		var ig = document.querySelector('input[name="ignore_optout"]');
+		if (ig && ig.checked) { fd.append('ignore_optout', '1'); }
+		return fd;
+	}
+	function update() {
+		if (!form || !out) { return; }
+		fetch(form.getAttribute('action') + '&task=preview', {
+			method: 'POST', body: collect(), credentials: 'same-origin',
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		})
+		.then(function (r) { return r.json(); })
+		.then(function (d) { if (d && typeof d.text === 'string') { out.textContent = d.text; } })
+		.catch(function () {});
+	}
+	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
+
+	for (var j = 0; j < radios.length; j++) { radios[j].addEventListener('change', schedule); }
+	['field-groups', 'field-users', 'field-emails'].forEach(function (id) {
+		var el = document.getElementById(id);
+		if (el) { el.addEventListener('input', schedule); }
+	});
+	var ign = document.querySelector('input[name="ignore_optout"]');
+	if (ign) { ign.addEventListener('change', schedule); }
 })();
 </script>
