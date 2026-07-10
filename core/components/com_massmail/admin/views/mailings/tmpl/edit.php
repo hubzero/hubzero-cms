@@ -32,7 +32,7 @@ $scheduledLocal = '';
 $schedSaved = (string) $this->row->get('scheduled_at');
 if ($schedSaved !== '' && $schedSaved !== '0000-00-00 00:00:00')
 {
-	$scheduledLocal = Date::of($schedSaved)->toLocal('Y-m-d\TH:i');
+	$scheduledLocal = Date::of($schedSaved)->toLocal('Y-m-d H:i:s');
 }
 
 // Live audience preview
@@ -77,9 +77,8 @@ Toolbar::cancel();
 .mm-side .mm-card { padding:16px; margin-bottom:16px; }
 .mm-side h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
 .mm-preview { margin:0 0 12px; }
-/* datetime-local blends into the card without an explicit border */
-#field-schedule { border:1px solid #cbd5e0; border-radius:6px; padding:6px 8px; background:#fff; width:100%; box-sizing:border-box; }
-#field-schedule:focus { border-color:#4299e1; outline:none; }
+.mm-compose .input-datetime { display:block; }
+.mm-compose .calendar-field { width:100%; box-sizing:border-box; }
 .mm-rcpt-types { margin-bottom:8px; }
 .mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
 .mm-optout-label { display:block; margin-bottom:14px; }
@@ -216,7 +215,7 @@ Toolbar::cancel();
 					<h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
 					<div class="input-wrap">
 						<label for="field-schedule"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE'); ?></label>
-						<input type="datetime-local" name="scheduled_at" id="field-schedule" value="<?php echo $this->escape($scheduledLocal); ?>" />
+						<?php echo Html::input('calendar', 'scheduled_at', $scheduledLocal, array('id' => 'field-schedule', 'format' => 'Y-m-d H:i:s')); ?>
 						<p class="hint"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE_HINT'); ?></p>
 					</div>
 				</div>
