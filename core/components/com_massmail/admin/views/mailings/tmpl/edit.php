@@ -11,9 +11,12 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Massmail\Admin\Helpers\Permissions::getActions();
 
 $isNew = $this->row->isNew();
-$spec  = json_decode((string) $this->row->get('recipient_spec'), true) ?: array();
-$type  = isset($spec['type']) ? $spec['type'] : 'all';
-$spec['type'] = $type; // a new mailing has no saved type; preview the default selection, not 0
+$spec  = \Components\Massmail\Helpers\Recipients::normalizeSpec(json_decode((string) $this->row->get('recipient_spec'), true));
+// A brand-new mailing defaults to "everyone" so the preview isn't 0 on open.
+if ($isNew && empty($spec['groups']) && empty($spec['users']) && empty($spec['emails']))
+{
+	$spec['all'] = true;
+}
 $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 $atts = $this->row->attachments()->rows();
@@ -91,8 +94,9 @@ Toolbar::cancel();
 .mm-dopt-sub { color:#a0aec0; font-size:12px; }
 .mm-schedule-field { margin-top:10px; }
 .mm-schedule-field[hidden] { display:none; }
-.mm-rcpt-types { margin-bottom:8px; }
-.mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
+.mm-everyone { display:flex; align-items:center; gap:8px; margin:0 0 12px; font-weight:600; color:#2d3748; }
+.mm-rcpt-hint { margin:0 0 12px; }
+.mm-rcpt-sources.is-dim { opacity:.4; pointer-events:none; }
 .mm-optout-label { display:block; margin-bottom:14px; }
 .mm-optout-note { margin-top:0; }
 
@@ -195,31 +199,33 @@ Toolbar::cancel();
 					<h4><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h4>
 
 					<p class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
+					<p class="hint mm-rcpt-hint"><?php echo Lang::txt('COM_MASSMAIL_RCPT_COMBINE_HINT'); ?></p>
 
-					<div class="input-wrap mm-rcpt-types">
-						<label><input type="radio" name="recipient_type" value="all"<?php echo ($type == 'all' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?></label>
-						<label><input type="radio" name="recipient_type" value="group"<?php echo ($type == 'group' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUP'); ?></label>
-						<label><input type="radio" name="recipient_type" value="user"<?php echo ($type == 'user' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_USER'); ?></label>
-						<label><input type="radio" name="recipient_type" value="email"<?php echo ($type == 'email' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_EMAIL'); ?></label>
-					</div>
+					<label class="mm-everyone">
+						<input type="checkbox" name="rcpt_all" id="field-all" value="1"<?php echo !empty($spec['all']) ? ' checked="checked"' : ''; ?> />
+						<?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?>
+					</label>
 
-					<div class="input-wrap" data-rcpt="group">
-						<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
-						<div class="mm-ac-wrap">
-							<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(', ', isset($spec['groups']) ? (array) $spec['groups'] : array())); ?>" placeholder="e.g. composites-team, 3042" autocomplete="off" />
-							<ul class="mm-ac-list" id="mm-group-ac" hidden></ul>
+					<div class="mm-rcpt-sources" id="mm-rcpt-sources">
+						<div class="input-wrap">
+							<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
+							<div class="mm-ac-wrap">
+								<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(', ', (array) $spec['groups'])); ?>" placeholder="e.g. composites-team, 3042" autocomplete="off" />
+								<ul class="mm-ac-list" id="mm-group-ac" hidden></ul>
+							</div>
+						</div>
+						<div class="input-wrap">
+							<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
+							<div class="mm-ac-wrap">
+								<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(', ', (array) $spec['users'])); ?>" placeholder="e.g. jdoe, 1002" autocomplete="off" />
+								<ul class="mm-ac-list" id="mm-user-ac" hidden></ul>
+							</div>
 						</div>
 					</div>
-					<div class="input-wrap" data-rcpt="user">
-						<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
-						<div class="mm-ac-wrap">
-							<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(', ', isset($spec['users']) ? (array) $spec['users'] : array())); ?>" placeholder="e.g. jdoe, 1002" autocomplete="off" />
-							<ul class="mm-ac-list" id="mm-user-ac" hidden></ul>
-						</div>
-					</div>
-					<div class="input-wrap" data-rcpt="email">
+
+					<div class="input-wrap">
 						<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
-						<textarea name="emails" id="field-emails" rows="5" placeholder="one per line"><?php echo $this->escape(implode("\n", isset($spec['emails']) ? (array) $spec['emails'] : array())); ?></textarea>
+						<textarea name="emails" id="field-emails" rows="4" placeholder="one per line"><?php echo $this->escape(implode("\n", (array) $spec['emails'])); ?></textarea>
 					</div>
 				</div>
 
@@ -270,27 +276,14 @@ Toolbar::cancel();
 
 <script type="text/javascript">
 (function () {
-	// --- Recipient picker: show the relevant input for the chosen type --------
-	function sync() {
-		var t = document.querySelector('input[name="recipient_type"]:checked');
-		var val = t ? t.value : 'all';
-		var blocks = document.querySelectorAll('[data-rcpt]');
-		for (var i = 0; i < blocks.length; i++) {
-			blocks[i].style.display = (blocks[i].getAttribute('data-rcpt') === val) ? '' : 'none';
-		}
-	}
-	var radios = document.querySelectorAll('input[name="recipient_type"]');
-	for (var i = 0; i < radios.length; i++) { radios[i].addEventListener('change', sync); }
-	sync();
-
-	// --- Live audience prediction --------------------------------------------
+	// --- Live audience prediction (additive recipient list) ------------------
 	var form  = document.getElementById('adminForm');
 	var out   = document.querySelector('.mm-preview strong');
 	var timer = null;
 	function collect() {
 		var fd = new FormData();
-		var t = document.querySelector('input[name="recipient_type"]:checked');
-		fd.append('recipient_type', t ? t.value : 'all');
+		var all = document.getElementById('field-all');
+		if (all && all.checked) { fd.append('rcpt_all', '1'); }
 		var g = document.getElementById('field-groups'); if (g) { fd.append('groups[]', g.value); }
 		var u = document.getElementById('field-users');  if (u) { fd.append('users', u.value); }
 		var e = document.getElementById('field-emails'); if (e) { fd.append('emails', e.value); }
@@ -309,7 +302,13 @@ Toolbar::cancel();
 		.catch(function () {});
 	}
 	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
-	for (var j = 0; j < radios.length; j++) { radios[j].addEventListener('change', schedule); }
+
+	// "Everyone" subsumes groups/people; dim them (emails stay additive).
+	var allChk  = document.getElementById('field-all');
+	var sources = document.getElementById('mm-rcpt-sources');
+	function reflectAll() { if (sources) { sources.classList.toggle('is-dim', !!(allChk && allChk.checked)); } }
+	if (allChk) { allChk.addEventListener('change', function () { reflectAll(); schedule(); }); reflectAll(); }
+
 	['field-groups', 'field-users', 'field-emails'].forEach(function (id) {
 		var el = document.getElementById(id);
 		if (el) { el.addEventListener('input', schedule); }

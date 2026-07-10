@@ -85,20 +85,17 @@ class Recipients
 		$db  = \App::get('db');
 		$mid = (int) $mailing->get('id');
 
-		$spec = json_decode((string) $mailing->get('recipient_spec'), true);
-		if (!is_array($spec))
-		{
-			$spec = array();
-		}
+		$spec = self::normalizeSpec(json_decode((string) $mailing->get('recipient_spec'), true));
 
 		$ignoreOptout = (int) $mailing->get('ignore_optout') ? true : false;
 		$hard = self::hardFilter();
 		$pref = self::preferenceFilter($ignoreOptout);
 
-		$type = isset($spec['type']) ? $spec['type'] : '';
+		// Every populated source is queued; the UNIQUE (mailing_id, email) key +
+		// INSERT IGNORE dedupe overlaps across all of them automatically.
 
 		// --- All active users -------------------------------------------------
-		if ($type == 'all' || !empty($spec['all']))
+		if (!empty($spec['all']))
 		{
 			$db->setQuery(
 				"INSERT IGNORE INTO `#__massmail_recipients` (mailing_id, uid, email, name, status)
@@ -171,56 +168,103 @@ class Recipients
 	 */
 	public static function previewCount($spec, $ignoreOptout = false)
 	{
+		$spec = self::normalizeSpec($spec);
 		$db   = \App::get('db');
 		$hard = self::hardFilter();
 		$pref = self::preferenceFilter($ignoreOptout);
-		$type = isset($spec['type']) ? $spec['type'] : '';
 
-		if ($type == 'all' || !empty($spec['all']))
+		// Condition that selects the account-based recipients (all, groups, and
+		// specific users combined). Counted as DISTINCT emails so overlaps between
+		// the sources collapse -- matching what expand() actually queues.
+		$conds = array();
+		if (!empty($spec['all']))
 		{
-			$db->setQuery(
-				"SELECT COUNT(*) FROM `#__users` u
-				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE $hard $pref"
-			);
-			return (int) $db->loadResult();
+			$conds[] = '1=1';
 		}
-
-		$gids = isset($spec['groups']) ? self::resolveGroups($spec['groups']) : array();
-		if ($gids)
+		else
 		{
-			$in = implode(',', $gids);
-			$db->setQuery(
-				"SELECT COUNT(DISTINCT u.id) FROM `#__users` u
-				 JOIN `#__xgroups_members` gm ON gm.uidNumber = u.id
-				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE gm.gidNumber IN ($in) AND $hard $pref"
-			);
-			return (int) $db->loadResult();
-		}
-
-		$uids = isset($spec['users']) ? self::resolveUsers($spec['users']) : array();
-		if ($uids)
-		{
-			$in = implode(',', $uids);
-			$db->setQuery(
-				"SELECT COUNT(*) FROM `#__users` u
-				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE u.id IN ($in) AND $hard $pref"
-			);
-			return (int) $db->loadResult();
-		}
-
-		$emails = isset($spec['emails']) ? (array) $spec['emails'] : array();
-		$n = 0;
-		foreach ($emails as $em)
-		{
-			if (filter_var(trim($em), FILTER_VALIDATE_EMAIL))
+			$gids = self::resolveGroups($spec['groups']);
+			if ($gids)
 			{
-				$n++;
+				$conds[] = 'u.id IN (SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber IN (' . implode(',', $gids) . '))';
+			}
+			$uids = self::resolveUsers($spec['users']);
+			if ($uids)
+			{
+				$conds[] = 'u.id IN (' . implode(',', $uids) . ')';
 			}
 		}
-		return $n;
+
+		$cond      = $conds ? '(' . implode(' OR ', $conds) . ')' : '';
+		$userCount = 0;
+		if ($cond)
+		{
+			$db->setQuery(
+				"SELECT COUNT(DISTINCT u.email) FROM `#__users` u
+				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
+				 WHERE $cond AND $hard $pref"
+			);
+			$userCount = (int) $db->loadResult();
+		}
+
+		// Raw emails: valid, self-deduped, minus any that a selected account
+		// would already cover (so they aren't double counted).
+		$raw = array();
+		foreach ($spec['emails'] as $em)
+		{
+			$em = strtolower(trim($em));
+			if ($em !== '' && filter_var($em, FILTER_VALIDATE_EMAIL))
+			{
+				$raw[$em] = true;
+			}
+		}
+		$rawCount = count($raw);
+		if ($rawCount && $cond)
+		{
+			$in = implode(',', array_map(array($db, 'quote'), array_keys($raw)));
+			$db->setQuery(
+				"SELECT COUNT(DISTINCT LOWER(u.email)) FROM `#__users` u
+				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
+				 WHERE $cond AND $hard $pref AND LOWER(u.email) IN ($in)"
+			);
+			$rawCount = max(0, $rawCount - (int) $db->loadResult());
+		}
+
+		return $userCount + $rawCount;
+	}
+
+	/**
+	 * Normalize a recipient spec to the additive form
+	 * {all, groups, users, emails}, migrating the legacy single-"type" spec.
+	 *
+	 * @param   array  $spec
+	 * @return  array
+	 */
+	public static function normalizeSpec($spec)
+	{
+		if (!is_array($spec))
+		{
+			return array('all' => false, 'groups' => array(), 'users' => array(), 'emails' => array());
+		}
+
+		// Legacy: one selected type carried the meaning.
+		if (isset($spec['type']))
+		{
+			$t = $spec['type'];
+			return array(
+				'all'    => ($t === 'all'),
+				'groups' => ($t === 'group') ? (array) (isset($spec['groups']) ? $spec['groups'] : array()) : array(),
+				'users'  => ($t === 'user')  ? (array) (isset($spec['users'])  ? $spec['users']  : array()) : array(),
+				'emails' => ($t === 'email') ? (array) (isset($spec['emails']) ? $spec['emails'] : array()) : array(),
+			);
+		}
+
+		return array(
+			'all'    => !empty($spec['all']),
+			'groups' => isset($spec['groups']) ? (array) $spec['groups'] : array(),
+			'users'  => isset($spec['users'])  ? (array) $spec['users']  : array(),
+			'emails' => isset($spec['emails']) ? (array) $spec['emails'] : array(),
+		);
 	}
 
 	/**

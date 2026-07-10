@@ -207,9 +207,9 @@ class Mailings extends AdminController
 	 */
 	protected function recipientSpec()
 	{
-		$type = Request::getWord('recipient_type', 'all');
-
-		$spec = array('type' => $type);
+		// Additive recipient list: any combination of everyone, groups, specific
+		// users, and raw emails. Overlaps dedupe at expansion.
+		$spec = array('all' => Request::getInt('rcpt_all', 0) ? true : false);
 
 		// groups arrive as a single comma/space separated text field (groups[]) of
 		// group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
