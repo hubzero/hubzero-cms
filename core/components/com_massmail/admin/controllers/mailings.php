@@ -216,9 +216,10 @@ class Mailings extends AdminController
 		$groupsRaw = implode(',', (array) Request::getArray('groups', array()));
 		$spec['groups'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $groupsRaw)), 'strlen'));
 
-		// users: accept a comma/space separated list of ids
+		// users: comma/space separated list of user IDs and/or usernames
+		// (resolved at send time).
 		$usersRaw = Request::getString('users', '');
-		$spec['users'] = array_filter(array_map('intval', preg_split('/[\s,]+/', $usersRaw)));
+		$spec['users'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $usersRaw)), 'strlen'));
 
 		// emails: one per line
 		$emailsRaw = Request::getString('emails', '');
@@ -316,6 +317,37 @@ class Mailings extends AdminController
 			foreach ((array) $db->loadObjectList() as $g)
 			{
 				$out[] = array('cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description);
+			}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($out);
+		exit;
+	}
+
+	/**
+	 * AJAX: autocomplete users by username or name for the recipient picker.
+	 * Returns JSON [{cn, id, title}] (cn = username).
+	 *
+	 * @return  void
+	 */
+	public function userlookupTask()
+	{
+		$q   = trim(Request::getString('q', ''));
+		$out = array();
+
+		if (strlen($q) >= 2)
+		{
+			$db   = \App::get('db');
+			$like = $db->quote('%' . $q . '%');
+			$db->setQuery(
+				"SELECT id, username, name FROM `#__users`
+				 WHERE block = 0 AND (username LIKE $like OR name LIKE $like)
+				 ORDER BY username ASC LIMIT 15"
+			);
+			foreach ((array) $db->loadObjectList() as $u)
+			{
+				$out[] = array('cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name);
 			}
 		}
 

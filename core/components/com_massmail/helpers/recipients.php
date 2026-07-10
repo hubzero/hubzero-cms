@@ -127,7 +127,7 @@ class Recipients
 		}
 
 		// --- Specific users ---------------------------------------------------
-		$uids = isset($spec['users']) ? array_filter(array_map('intval', (array) $spec['users'])) : array();
+		$uids = isset($spec['users']) ? self::resolveUsers($spec['users']) : array();
 		if ($uids)
 		{
 			$in = implode(',', $uids);
@@ -199,7 +199,7 @@ class Recipients
 			return (int) $db->loadResult();
 		}
 
-		$uids = isset($spec['users']) ? array_filter(array_map('intval', (array) $spec['users'])) : array();
+		$uids = isset($spec['users']) ? self::resolveUsers($spec['users']) : array();
 		if ($uids)
 		{
 			$in = implode(',', $uids);
@@ -256,6 +256,42 @@ class Recipients
 		}
 
 		$db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE " . implode(' OR ', $where));
+		return array_map('intval', (array) $db->loadColumn());
+	}
+
+	/**
+	 * Resolve a list of user tokens -- numeric user IDs and/or usernames -- to
+	 * user IDs. Lets the picker accept usernames.
+	 *
+	 * @param   array  $tokens
+	 * @return  array  user IDs
+	 */
+	public static function resolveUsers($tokens)
+	{
+		$tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
+		if (!$tokens)
+		{
+			return array();
+		}
+
+		$db    = \App::get('db');
+		$ids   = array();
+		$names = array();
+		foreach ($tokens as $t)
+		{
+			if (ctype_digit((string) $t)) { $ids[] = (int) $t; }
+			else { $names[] = $db->quote($t); }
+		}
+
+		$where = array();
+		if ($ids)   { $where[] = 'id IN (' . implode(',', $ids) . ')'; }
+		if ($names) { $where[] = 'username IN (' . implode(',', $names) . ')'; }
+		if (!$where)
+		{
+			return array();
+		}
+
+		$db->setQuery("SELECT id FROM `#__users` WHERE " . implode(' OR ', $where));
 		return array_map('intval', (array) $db->loadColumn());
 	}
 }

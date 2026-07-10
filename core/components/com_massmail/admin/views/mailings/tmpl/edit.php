@@ -51,6 +51,8 @@ Toolbar::cancel();
 <style>
 /* Compose page: bounded width, centered, with gutters. */
 .mm-compose { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
+.mm-compose input::placeholder, .mm-compose textarea::placeholder { color:#b7c0cb; opacity:1; }
+.mm-compose .hint { color:#a7b0bd; }
 .mm-compose p.warning { margin:0 0 16px; }
 .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
 @media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
@@ -196,7 +198,10 @@ Toolbar::cancel();
 					</div>
 					<div class="input-wrap" data-rcpt="user">
 						<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
-						<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(',', isset($spec['users']) ? (array) $spec['users'] : array())); ?>" placeholder="e.g. 1002, 1230" />
+						<div class="mm-ac-wrap">
+							<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(', ', isset($spec['users']) ? (array) $spec['users'] : array())); ?>" placeholder="e.g. jdoe, 1002" autocomplete="off" />
+							<ul class="mm-ac-list" id="mm-user-ac" hidden></ul>
+						</div>
 					</div>
 					<div class="input-wrap" data-rcpt="email">
 						<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
@@ -294,10 +299,11 @@ Toolbar::cancel();
 		syncNote();
 	}
 
-	// --- Group alias autocomplete --------------------------------------------
-	var gi = document.getElementById('field-groups');
-	var ac = document.getElementById('mm-group-ac');
-	if (gi && ac) {
+	// --- Autocomplete for the group / user pickers ---------------------------
+	function attachAutocomplete(inputId, listId, task) {
+		var gi = document.getElementById(inputId);
+		var ac = document.getElementById(listId);
+		if (!gi || !ac) { return; }
 		var acTimer = null, acItems = [], acActive = -1;
 		function curToken() { var v = gi.value; return v.slice(v.lastIndexOf(',') + 1).trim(); }
 		function setToken(cn) {
@@ -322,7 +328,7 @@ Toolbar::cancel();
 		function lookup() {
 			var tok = curToken();
 			if (tok.length < 2) { hideAc(); return; }
-			fetch(form.getAttribute('action') + '&task=grouplookup&q=' + encodeURIComponent(tok), {
+			fetch(form.getAttribute('action') + '&task=' + task + '&q=' + encodeURIComponent(tok), {
 				credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }
 			}).then(function (r) { return r.json(); }).then(renderAc).catch(hideAc);
 		}
@@ -339,6 +345,8 @@ Toolbar::cancel();
 		});
 		gi.addEventListener('blur', function () { setTimeout(hideAc, 150); });
 	}
+	attachAutocomplete('field-groups', 'mm-group-ac', 'grouplookup');
+	attachAutocomplete('field-users', 'mm-user-ac', 'userlookup');
 
 	// --- Paperclip attach in the editor toolbar ------------------------------
 	var fileInput = document.getElementById('field-attachment');
