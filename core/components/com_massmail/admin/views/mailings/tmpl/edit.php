@@ -43,7 +43,7 @@ Toolbar::cancel();
 <style>
 /* Compose page: bounded width, centered, with gutters. */
 .mm-compose { max-width:1080px; margin:0 auto; padding:0 20px; box-sizing:border-box; }
-.mm-compose .mm-sending-off { margin:0 0 16px; padding:10px 16px; border-radius:6px; background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; font-weight:600; }
+.mm-compose p.warning { margin:0 0 16px; }
 .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
 @media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
 
@@ -89,7 +89,7 @@ Toolbar::cancel();
 <div class="mm-compose">
 
 	<?php if (!$sendingOn) { ?>
-	<p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
 	<?php } ?>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
