@@ -164,6 +164,25 @@ class Mailings extends AdminController
 			&& User::authorise('core.override', $this->_option);
 		$row->set('ignore_optout', $override ? 1 : 0);
 
+		// Optional scheduled delivery time: entered in the site's timezone,
+		// stored as UTC. Empty clears any schedule (send as soon as launched).
+		$sched = trim(Request::getString('scheduled_at', ''));
+		if ($sched !== '')
+		{
+			try
+			{
+				$row->set('scheduled_at', Date::of($sched, Config::get('offset', 'UTC'))->toSql());
+			}
+			catch (\Exception $e)
+			{
+				$row->set('scheduled_at', null);
+			}
+		}
+		else
+		{
+			$row->set('scheduled_at', null);
+		}
+
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
@@ -225,6 +244,53 @@ class Mailings extends AdminController
 	protected function sendingEnabled()
 	{
 		return (bool) (int) \Component::params('com_massmail')->get('sending_enabled', 0);
+	}
+
+	/**
+	 * Does this mailing carry a scheduled send time still in the future?
+	 *
+	 * @param   Mailing  $row
+	 * @return  boolean
+	 */
+	protected function isScheduledFuture($row)
+	{
+		$s = (string) $row->get('scheduled_at');
+		if ($s === '' || $s === '0000-00-00 00:00:00')
+		{
+			return false;
+		}
+		return strtotime($s . ' UTC') > time();
+	}
+
+	/**
+	 * The status a launched/approved/released mailing should take: held when
+	 * sending is off, scheduled when a future time is set, otherwise preparing.
+	 *
+	 * @param   Mailing  $row
+	 * @return  string
+	 */
+	protected function dispatchStatus($row)
+	{
+		if (!$this->sendingEnabled())
+		{
+			return Mailing::STATUS_HELD;
+		}
+		if ($this->isScheduledFuture($row))
+		{
+			return Mailing::STATUS_SCHEDULED;
+		}
+		return Mailing::STATUS_PREPARING;
+	}
+
+	/**
+	 * The scheduled time formatted in the viewer's local timezone.
+	 *
+	 * @param   Mailing  $row
+	 * @return  string
+	 */
+	protected function scheduledLocal($row)
+	{
+		return Date::of($row->get('scheduled_at'))->toLocal('D, M j, Y g:i a T');
 	}
 
 	/**
@@ -427,19 +493,25 @@ class Mailings extends AdminController
 			$row->save();
 			Notify::warning(Lang::txt('COM_MASSMAIL_QUEUED_FOR_APPROVAL'));
 		}
-		elseif (!$this->sendingEnabled())
-		{
-			// Sending is off: hold rather than queue, so a backlog can't flood
-			// out the moment sending is re-enabled. Requires a manual release.
-			$row->set('status', Mailing::STATUS_HELD);
-			$row->save();
-			Notify::warning(Lang::txt('COM_MASSMAIL_HELD_ON_LAUNCH'));
-		}
 		else
 		{
-			$row->set('status', Mailing::STATUS_PREPARING);
+			// Hold (sending off), schedule (future time set), or send now.
+			$status = $this->dispatchStatus($row);
+			$row->set('status', $status);
 			$row->save();
-			Notify::success(Lang::txt('COM_MASSMAIL_LAUNCHED', $preview));
+
+			if ($status == Mailing::STATUS_HELD)
+			{
+				Notify::warning(Lang::txt('COM_MASSMAIL_HELD_ON_LAUNCH'));
+			}
+			elseif ($status == Mailing::STATUS_SCHEDULED)
+			{
+				Notify::success(Lang::txt('COM_MASSMAIL_SCHEDULED_FOR', $this->scheduledLocal($row)));
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_MASSMAIL_LAUNCHED', $preview));
+			}
 		}
 
 		$this->cancelTask();
@@ -470,17 +542,20 @@ class Mailings extends AdminController
 		$row->set('approved_by', User::get('id'));
 		$row->set('approved_on', Date::toSql());
 
-		if (!$this->sendingEnabled())
+		$status = $this->dispatchStatus($row);
+		$row->set('status', $status);
+		$row->save();
+
+		if ($status == Mailing::STATUS_HELD)
 		{
-			// Approved, but sending is off -- hold for manual release.
-			$row->set('status', Mailing::STATUS_HELD);
-			$row->save();
 			Notify::warning(Lang::txt('COM_MASSMAIL_APPROVED_HELD'));
+		}
+		elseif ($status == Mailing::STATUS_SCHEDULED)
+		{
+			Notify::success(Lang::txt('COM_MASSMAIL_APPROVED_SCHEDULED', $this->scheduledLocal($row)));
 		}
 		else
 		{
-			$row->set('status', Mailing::STATUS_PREPARING);
-			$row->save();
 			Notify::success(Lang::txt('COM_MASSMAIL_APPROVED'));
 		}
 		$this->cancelTask();
@@ -512,16 +587,25 @@ class Mailings extends AdminController
 			return $this->cancelTask();
 		}
 
-		$row->set('status', Mailing::STATUS_PREPARING);
-		$row->save();
-
-		if (!$this->sendingEnabled())
+		// A release respects any still-future schedule rather than sending now.
+		if ($this->isScheduledFuture($row))
 		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_RELEASED_SENDING_OFF'));
+			$row->set('status', Mailing::STATUS_SCHEDULED);
+			$row->save();
+			Notify::success(Lang::txt('COM_MASSMAIL_RELEASED_SCHEDULED', $this->scheduledLocal($row)));
 		}
 		else
 		{
-			Notify::success(Lang::txt('COM_MASSMAIL_RELEASED'));
+			$row->set('status', Mailing::STATUS_PREPARING);
+			$row->save();
+			if (!$this->sendingEnabled())
+			{
+				Notify::warning(Lang::txt('COM_MASSMAIL_RELEASED_SENDING_OFF'));
+			}
+			else
+			{
+				Notify::success(Lang::txt('COM_MASSMAIL_RELEASED'));
+			}
 		}
 		$this->cancelTask();
 	}

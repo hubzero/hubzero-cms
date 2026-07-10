@@ -144,6 +144,21 @@ class Sender
 	 */
 	public static function prepare()
 	{
+		$db = \App::get('db');
+
+		// Promote any scheduled mailings whose time has arrived so they expand
+		// and send on this tick. (The cron only runs while sending is enabled,
+		// so scheduled mail never fires during a disabled window.)
+		$db->setQuery(
+			"UPDATE `#__massmail_mailings`
+			 SET `status` = " . $db->quote(Mailing::STATUS_PREPARING) . "
+			 WHERE `status` = " . $db->quote(Mailing::STATUS_SCHEDULED) . "
+			 AND `scheduled_at` IS NOT NULL
+			 AND `scheduled_at` <> '0000-00-00 00:00:00'
+			 AND `scheduled_at` <= UTC_TIMESTAMP()"
+		);
+		$db->execute();
+
 		$n = 0;
 		$rows = Mailing::all()
 			->whereEquals('status', Mailing::STATUS_PREPARING)

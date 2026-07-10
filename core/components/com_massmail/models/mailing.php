@@ -20,6 +20,7 @@ class Mailing extends Relational
 	const STATUS_DRAFT            = 'draft';
 	const STATUS_PENDING_APPROVAL = 'pending_approval';
 	const STATUS_HELD             = 'held';
+	const STATUS_SCHEDULED        = 'scheduled';
 	const STATUS_PREPARING        = 'preparing';
 	const STATUS_SENDING          = 'sending';
 	const STATUS_PAUSED           = 'paused';
@@ -136,6 +137,7 @@ class Mailing extends Relational
 			self::STATUS_DRAFT,
 			self::STATUS_PENDING_APPROVAL,
 			self::STATUS_HELD,
+			self::STATUS_SCHEDULED,
 			self::STATUS_PREPARING,
 			self::STATUS_SENDING,
 			self::STATUS_PAUSED,

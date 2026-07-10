@@ -47,7 +47,7 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 		<?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
 			<a class="btn" href="<?php echo Route::url($base . '&task=resume&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_RESUME'); ?></a>
 		<?php } ?>
-		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'))) && $canDo->get('core.edit.state')) { ?>
+		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED'))) && $canDo->get('core.edit.state')) { ?>
 			<a class="btn btn-danger" href="<?php echo Route::url($base . '&task=stop&id=' . $row->get('id') . '&' . $token . '=1'); ?>" onclick="return confirm('<?php echo Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL'); ?>');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></a>
 		<?php } ?>
 	</div>
@@ -62,6 +62,9 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 			<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_SENT'); ?></th><td><?php echo number_format($sent); ?></td></tr>
 			<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_PENDING'); ?></th><td><?php echo number_format($pending); ?></td></tr>
 			<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FAILED'); ?></th><td><?php echo number_format($failed); ?></td></tr>
+			<?php if ($status == constant($Mailing . '::STATUS_SCHEDULED') && $row->get('scheduled_at')) { ?>
+				<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULED_AT'); ?></th><td><?php echo Date::of($row->get('scheduled_at'))->toLocal('D, M j, Y g:i a T'); ?></td></tr>
+			<?php } ?>
 			<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STARTED'); ?></th><td><?php echo $row->get('started_on') ? Date::of($row->get('started_on'))->toLocal() : '&mdash;'; ?></td></tr>
 			<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_COMPLETED'); ?></th><td><?php echo $row->get('completed_on') ? Date::of($row->get('completed_on'))->toLocal() : '&mdash;'; ?></td></tr>
 			<?php if ((int) $row->get('ignore_optout') && $row->get('approved_by')) { ?>

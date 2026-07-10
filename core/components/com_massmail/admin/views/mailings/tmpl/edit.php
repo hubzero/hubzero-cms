@@ -27,6 +27,14 @@ $fromEmail = trim((string) $this->row->get('from_email'));
 $replyTo   = trim((string) $this->row->get('reply_to'));
 $fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
 
+// Scheduled time (stored UTC) shown back in the viewer's local zone for the picker.
+$scheduledLocal = '';
+$schedSaved = (string) $this->row->get('scheduled_at');
+if ($schedSaved !== '' && $schedSaved !== '0000-00-00 00:00:00')
+{
+	$scheduledLocal = Date::of($schedSaved)->toLocal('Y-m-d\TH:i');
+}
+
 // Live audience preview
 $preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
 
@@ -179,6 +187,15 @@ Toolbar::cancel();
 					<div class="input-wrap" data-rcpt="email">
 						<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
 						<textarea name="emails" id="field-emails" rows="5" placeholder="one per line"><?php echo $this->escape(implode("\n", isset($spec['emails']) ? (array) $spec['emails'] : array())); ?></textarea>
+					</div>
+				</div>
+
+				<div class="mm-card">
+					<h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
+					<div class="input-wrap">
+						<label for="field-schedule"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE'); ?></label>
+						<input type="datetime-local" name="scheduled_at" id="field-schedule" value="<?php echo $this->escape($scheduledLocal); ?>" />
+						<p class="hint"><?php echo Lang::txt('COM_MASSMAIL_SCHEDULE_HINT'); ?></p>
 					</div>
 				</div>
 
