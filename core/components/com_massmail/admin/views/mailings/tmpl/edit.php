@@ -86,8 +86,8 @@ Toolbar::cancel();
 .mm-mail-row { display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid #edf2f7; padding:10px 0; }
 .mm-mail-label { flex:0 0 68px; color:#718096; font-size:13px; padding-top:3px; }
 .mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
-.mm-mail-row > input { flex:1; border:none; background:transparent; box-shadow:none; padding:2px 0; margin:0; font-size:14px; color:#1a202c; min-width:0; }
-.mm-mail-row > input:focus { outline:none; box-shadow:none; }
+.mm-mail-row input { flex:1; border:1px solid #e2e8f0; background:#f8fafc; box-shadow:none; padding:5px 9px; margin:0; font-size:14px; color:#1a202c; min-width:0; border-radius:6px; }
+.mm-mail-row input:focus { outline:none; box-shadow:none; border-color:#90cdf4; background:#fff; }
 .mm-mail-subject { font-weight:600; }
 .mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
 .mm-mail-from input.mm-from-name { flex:0 0 38%; }
@@ -95,7 +95,8 @@ Toolbar::cancel();
 .mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
 
 /* To: read-only summary + edit button. */
-.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
+.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; cursor:pointer; }
+.mm-chip-optout { background:#fed7d7; border-color:#fc8181; }
 .mm-to-chips { display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0; }
 .mm-to-edit { background:none; border:1px dashed #cbd5e0; border-radius:14px; color:#3182ce; font-size:12px; padding:3px 12px; cursor:pointer; }
 .mm-to-edit:hover { border-color:#3182ce; background:#ebf4ff; }
@@ -116,6 +117,7 @@ Toolbar::cancel();
 .mm-rcpt-section textarea { width:100%; box-sizing:border-box; }
 .mm-rcpt-section .mm-chips { margin:0; }
 .mm-rcpt-section .mm-chips:not(:empty) { margin:0 0 10px; }
+.mm-rcpt-section.is-disabled { opacity:.45; pointer-events:none; }
 .mm-modal-actions { margin-top:18px; text-align:right; }
 
 /* Chips (To: and attachments). */
@@ -209,7 +211,7 @@ Toolbar::cancel();
 						</div>
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span>
-							<input class="mm-mail-subject" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_SUBJECT')); ?>" />
+							<input class="mm-mail-subject" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
 						</div>
 					</div>
 
@@ -367,12 +369,14 @@ Toolbar::cancel();
 		var modal   = document.getElementById('mm-rcpt-modal');
 		var summary = document.getElementById('mm-to-summary');
 		if (!modal || !summary) { return; }
-		var ICON = { all: '★', group: '👥', user: '👤', email: '✉' };
+		var ICON = { all: '★', group: '👥', user: '👤', email: '✉', optout: '⚠' };
 		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
 		var NONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET')); ?>;
 		var EDIT_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS')); ?>;
 		var ADD_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_ADD_RECIPIENTS')); ?>;
+		var OPTOUT_PILL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_OPTOUT_PILL')); ?>;
 		var state = <?php echo json_encode($rcptState); ?>;
+		var ignEl = document.getElementById('field-optout');
 
 		var fAll = document.getElementById('field-all');
 		var fGroups = document.getElementById('field-groups');
@@ -394,17 +398,21 @@ Toolbar::cancel();
 			li.appendChild(ic); li.appendChild(s);
 			if (onRemove) {
 				var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
-				x.addEventListener('click', onRemove); li.appendChild(x);
+				x.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); onRemove(); });
+				li.appendChild(x);
 			}
 			return li;
 		}
 		function renderSummary() {
 			summary.innerHTML = '';
 			var any = false;
-			if (state.all) { summary.appendChild(makeChip('all', EVERYONE)); any = true; }
-			state.groups.forEach(function (g) { summary.appendChild(makeChip('group', g.label)); any = true; });
-			state.users.forEach(function (u) { summary.appendChild(makeChip('user', u.label)); any = true; });
-			state.emails.forEach(function (e) { summary.appendChild(makeChip('email', e)); any = true; });
+			if (state.all) { summary.appendChild(makeChip('all', EVERYONE, function () { state.all = false; changed(); })); any = true; }
+			state.groups.forEach(function (g, i) { summary.appendChild(makeChip('group', g.label, function () { state.groups.splice(i, 1); changed(); })); any = true; });
+			state.users.forEach(function (u, i) { summary.appendChild(makeChip('user', u.label, function () { state.users.splice(i, 1); changed(); })); any = true; });
+			state.emails.forEach(function (e, i) { summary.appendChild(makeChip('email', e, function () { state.emails.splice(i, 1); changed(); })); any = true; });
+			if (ignEl && ignEl.checked) {
+				summary.appendChild(makeChip('optout', OPTOUT_PILL, function () { ignEl.checked = false; ignEl.dispatchEvent(new Event('change')); }));
+			}
 			if (!any) { var none = document.createElement('li'); none.className = 'mm-to-none'; none.textContent = NONE; summary.appendChild(none); }
 			var eb = document.getElementById('mm-to-edit'); if (eb) { eb.textContent = any ? EDIT_LABEL : ADD_LABEL; }
 		}
@@ -414,8 +422,18 @@ Toolbar::cancel();
 		var mbUserChips = document.getElementById('mb-user-chips');
 		var mbEmails = document.getElementById('mb-emails');
 
+		function setSectionDisabled(searchId, off) {
+			var s = document.getElementById(searchId);
+			if (!s) { return; }
+			var sec = s.closest('.mm-rcpt-section');
+			if (sec) { sec.classList.toggle('is-disabled', off); }
+			s.disabled = off;
+		}
 		function renderModal() {
 			mbAll.checked = !!state.all;
+			// Everyone supersedes group/individual targeting, so lock those sections.
+			setSectionDisabled('mb-group-search', !!state.all);
+			setSectionDisabled('mb-user-search', !!state.all);
 			mbGroupChips.innerHTML = '';
 			state.groups.forEach(function (g, i) { mbGroupChips.appendChild(makeChip('group', g.label, function () { state.groups.splice(i, 1); changed(); })); });
 			mbUserChips.innerHTML = '';
@@ -484,9 +502,12 @@ Toolbar::cancel();
 		var editBtn = document.getElementById('mm-to-edit');
 		var closeBtn = document.getElementById('mm-rcpt-close');
 		var doneBtn = document.getElementById('mb-done');
+		var display = document.getElementById('mm-to-display');
 		function openModal() { renderModal(); modal.classList.add('open'); }
 		function closeModal() { modal.classList.remove('open'); }
-		if (editBtn) { editBtn.addEventListener('click', openModal); }
+		if (editBtn) { editBtn.addEventListener('click', function (e) { e.stopPropagation(); openModal(); }); }
+		if (display) { display.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.mm-chip-x')) { return; } openModal(); }); }
+		if (ignEl) { ignEl.addEventListener('change', renderSummary); }
 		if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
 		if (doneBtn) { doneBtn.addEventListener('click', closeModal); }
 		modal.addEventListener('click', function (e) { if (e.target === modal) { closeModal(); } });
