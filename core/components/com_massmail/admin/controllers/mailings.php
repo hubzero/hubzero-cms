@@ -484,9 +484,11 @@ class Mailings extends AdminController
 	{
 		Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.send', $this->_option))
+		// Releasing a held backlog is a Super Administrator decision, not a
+		// routine send permission.
+		if (!User::authorise('core.admin'))
 		{
-			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
+			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_RELEASE'));
 		}
 
 		$row = Mailing::oneOrFail(Request::getInt('id', 0));

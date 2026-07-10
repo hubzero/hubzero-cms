@@ -38,7 +38,7 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 		<?php if ($status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')) { ?>
 			<a class="btn btn-success" href="<?php echo Route::url($base . '&task=approve&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_APPROVE'); ?></a>
 		<?php } ?>
-		<?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.send')) { ?>
+		<?php if ($status == constant($Mailing . '::STATUS_HELD') && User::authorise('core.admin')) { ?>
 			<a class="btn btn-success" href="<?php echo Route::url($base . '&task=release&id=' . $row->get('id') . '&' . $token . '=1'); ?>"><?php echo Lang::txt('COM_MASSMAIL_RELEASE'); ?></a>
 		<?php } ?>
 		<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'))) && $canDo->get('core.edit.state')) { ?>
