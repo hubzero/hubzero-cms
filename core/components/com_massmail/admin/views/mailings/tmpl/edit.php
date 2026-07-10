@@ -34,6 +34,12 @@ Toolbar::cancel();
 <p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
 <style>.mm-sending-off{margin:0 0 14px;padding:10px 16px;border-radius:6px;background:#fffaf0;border:1px solid #f6ad55;color:#9c4221;font-weight:600;}</style>
 <?php } ?>
+<style>
+/* Give the plain-text editor a tidy framed look that matches the form inputs. */
+#adminForm .ck.ck-toolbar { border-radius: 5px 5px 0 0; border-color: #ccc; background: #f7f8fa; }
+#adminForm .ck.ck-editor__editable { border-color: #ccc; border-radius: 0 0 5px 5px; }
+#adminForm .ck.ck-editor__editable.ck-focused { border-color: #4299e1; box-shadow: none; }
+</style>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
 	<div class="grid">
 		<div class="col span8">
@@ -55,7 +61,9 @@ Toolbar::cancel();
 						$this->row->get('body'),
 						'100%', '350', 35, 12, false, 'field-body', null, null,
 						array(
-							'toolbar' => array(),
+							// Keep it plain text, but give the editor a real (minimal)
+							// toolbar so it reads as an editor rather than a bare box.
+							'toolbar' => array('undo', 'redo'),
 							'removePlugins' => array('Heading', 'Bold', 'Italic', 'Strikethrough', 'Code', 'Link', 'List', 'BlockQuote', 'BulletedList', 'NumberedList')
 						)
 					);
