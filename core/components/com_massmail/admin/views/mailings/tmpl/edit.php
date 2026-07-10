@@ -22,6 +22,11 @@ $atts = $this->row->attachments()->rows();
 // Super Administrator may edit the sender; everyone else sees it read-only.
 $isSuper = User::authorise('core.admin');
 
+$fromName  = trim((string) $this->row->get('from_name'));
+$fromEmail = trim((string) $this->row->get('from_email'));
+$replyTo   = trim((string) $this->row->get('reply_to'));
+$fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
+
 // Live audience preview
 $preview = \Components\Massmail\Helpers\Recipients::previewCount($spec, $ignore ? true : false);
 
@@ -36,21 +41,36 @@ if (!$isNew && $canDo->get('core.send'))
 Toolbar::cancel();
 ?>
 <style>
-.mm-sending-off { margin:0 0 14px; padding:10px 16px; border-radius:6px; background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; font-weight:600; }
+/* Compose page: bounded width, centered, with gutters. */
+.mm-compose { max-width:1080px; margin:0 auto; padding:0 20px; box-sizing:border-box; }
+.mm-compose .mm-sending-off { margin:0 0 16px; padding:10px 16px; border-radius:6px; background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; font-weight:600; }
+.mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
+@media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
 
-/* Sender / reply-to header, email-client style. */
-.mm-headers { margin:0 0 16px; max-width:680px; padding:12px 14px; background:#f7f8fa; border:1px solid #e2e8f0; border-radius:6px; }
-.mm-header-fields { display:grid; grid-template-columns:110px 1fr; gap:8px 12px; align-items:center; }
-.mm-header-fields label { color:#4a5568; font-size:13px; margin:0; }
-.mm-header-fields input { width:100%; }
-.mm-header-readonly { display:grid; grid-template-columns:110px 1fr; gap:6px 12px; margin:0; }
-.mm-header-readonly dt { color:#718096; font-size:13px; }
-.mm-header-readonly dd { margin:0; color:#1a202c; font-size:13px; font-weight:600; }
-.mm-header-hint { margin:10px 0 0; color:#a0aec0; font-size:12px; }
-/* Vertical recipient-type radios */
+.mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; }
+
+/* Webmail-style message card. */
+.mm-mail { overflow:hidden; }
+.mm-mail-headers { padding:2px 18px; }
+.mm-mail-row { display:flex; align-items:center; gap:12px; border-bottom:1px solid #edf2f7; padding:10px 0; }
+.mm-mail-label { flex:0 0 68px; color:#718096; font-size:13px; }
+.mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
+.mm-mail-row input { flex:1; border:none; background:transparent; box-shadow:none; padding:2px 0; margin:0; font-size:14px; color:#1a202c; min-width:0; }
+.mm-mail-row input:focus { outline:none; box-shadow:none; }
+.mm-mail-subject { font-weight:600; }
+.mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
+.mm-mail-from input.mm-from-name { flex:0 0 38%; }
+.mm-mail-body { padding:14px 18px 18px; }
+.mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
+
+/* Sidebar cards. */
+.mm-side .mm-card { padding:16px; margin-bottom:16px; }
+.mm-side h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
+.mm-preview { margin:0 0 12px; }
+.mm-rcpt-types { margin-bottom:8px; }
 .mm-rcpt-types label { display:flex; align-items:center; gap:6px; margin:5px 0; }
 
-/* Framed plain-text editor. */
+/* Framed editor. */
 #adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
 #adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; }
 #adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
@@ -66,133 +86,122 @@ Toolbar::cancel();
 .mm-chip-x:hover { color:#c53030; }
 </style>
 
-<?php if (!$sendingOn) { ?>
-<p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
-<?php } ?>
+<div class="mm-compose">
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
+	<?php if (!$sendingOn) { ?>
+	<p class="mm-sending-off"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
+	<?php } ?>
 
-	<div class="mm-headers">
-		<?php if ($isSuper) { ?>
-		<div class="mm-header-fields">
-			<label for="field-from-name"><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></label>
-			<input type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($this->row->get('from_name')); ?>" />
-			<label for="field-from-email"><?php echo Lang::txt('COM_MASSMAIL_FROM_EMAIL'); ?></label>
-			<input type="text" name="fields[from_email]" id="field-from-email" value="<?php echo $this->escape($this->row->get('from_email')); ?>" />
-			<label for="field-reply-to"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></label>
-			<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($this->row->get('reply_to')); ?>" />
-		</div>
-		<?php
-		} else {
-			$fromName  = trim((string) $this->row->get('from_name'));
-			$fromEmail = trim((string) $this->row->get('from_email'));
-			$replyTo   = trim((string) $this->row->get('reply_to'));
-			$fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
-		?>
-		<dl class="mm-header-readonly">
-			<dt><?php echo Lang::txt('COM_MASSMAIL_FROM_NAME'); ?></dt>
-			<dd><?php echo $this->escape($fromShown); ?></dd>
-			<?php if ($replyTo) { ?>
-			<dt><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></dt>
-			<dd><?php echo $this->escape($replyTo); ?></dd>
-			<?php } ?>
-		</dl>
-		<p class="mm-header-hint"><?php echo Lang::txt('COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
-		<?php } ?>
-	</div>
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
+		<div class="mm-grid">
+			<div class="mm-main">
+				<div class="mm-card mm-mail">
+					<div class="mm-mail-headers">
+						<div class="mm-mail-row">
+							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
+							<?php if ($isSuper) { ?>
+								<span class="mm-mail-from">
+									<input class="mm-from-name" type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($fromName); ?>" placeholder="<?php echo $this->escape(Config::get('fromname')); ?>" />
+									<input type="text" name="fields[from_email]" id="field-from-email" value="<?php echo $this->escape($fromEmail); ?>" placeholder="<?php echo $this->escape(Config::get('mailfrom')); ?>" />
+								</span>
+							<?php } else { ?>
+								<span class="mm-mail-value"><?php echo $this->escape($fromShown); ?></span>
+							<?php } ?>
+						</div>
+						<div class="mm-mail-row">
+							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span>
+							<?php if ($isSuper) { ?>
+								<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($replyTo); ?>" />
+							<?php } else { ?>
+								<span class="mm-mail-value"><?php echo $replyTo ? $this->escape($replyTo) : '&mdash;'; ?></span>
+							<?php } ?>
+						</div>
+						<div class="mm-mail-row">
+							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span>
+							<input class="mm-mail-subject" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" placeholder="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_SUBJECT')); ?>" />
+						</div>
+					</div>
 
-	<div class="grid">
-		<div class="col span8">
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MASSMAIL_MESSAGE'); ?></legend>
+					<div class="mm-mail-body">
+						<?php
+						$editor = \Hubzero\Html\Editor::getInstance('ckeditor5');
+						echo $editor->display(
+							'fields[body]',
+							$this->row->get('body'),
+							'100%', '350', 35, 12, false, 'field-body', null, null,
+							array(
+								// Basic HTML formatting; the paperclip is injected after these.
+								'toolbar' => array('bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo')
+							)
+						);
+						?>
+						<input type="file" name="attachment[]" id="field-attachment" multiple="multiple" hidden />
+						<ul class="mm-chips" id="mm-chips">
+							<?php foreach ($atts as $att) { ?>
+								<li class="mm-chip">
+									<span class="mm-clip">&#128206;</span> <?php echo $this->escape($att->get('filename')); ?>
+									<span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span>
+									<?php if (!$isNew) { ?>
+										<a class="mm-chip-x" title="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeattachment&attachment=' . $att->get('id') . '&' . Session::getFormToken() . '=1'); ?>">&times;</a>
+									<?php } ?>
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
 
-				<div class="input-wrap">
-					<label for="field-subject"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?> <span class="required">*</span></label>
-					<input type="text" name="fields[subject]" id="field-subject" size="60" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
+					<?php if (!$isSuper) { ?>
+					<p class="mm-header-hint"><?php echo Lang::txt('COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
+					<?php } ?>
+				</div>
+			</div>
+
+			<div class="mm-side">
+				<div class="mm-card">
+					<h4><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h4>
+
+					<p class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
+
+					<div class="input-wrap mm-rcpt-types">
+						<label><input type="radio" name="recipient_type" value="all"<?php echo ($type == 'all' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?></label>
+						<label><input type="radio" name="recipient_type" value="group"<?php echo ($type == 'group' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUP'); ?></label>
+						<label><input type="radio" name="recipient_type" value="user"<?php echo ($type == 'user' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_USER'); ?></label>
+						<label><input type="radio" name="recipient_type" value="email"<?php echo ($type == 'email' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_EMAIL'); ?></label>
+					</div>
+
+					<div class="input-wrap" data-rcpt="group">
+						<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
+						<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(',', isset($spec['groups']) ? (array) $spec['groups'] : array())); ?>" placeholder="e.g. 3041, 3042" />
+					</div>
+					<div class="input-wrap" data-rcpt="user">
+						<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
+						<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(',', isset($spec['users']) ? (array) $spec['users'] : array())); ?>" placeholder="e.g. 1002, 1230" />
+					</div>
+					<div class="input-wrap" data-rcpt="email">
+						<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
+						<textarea name="emails" id="field-emails" rows="5" placeholder="one per line"><?php echo $this->escape(implode("\n", isset($spec['emails']) ? (array) $spec['emails'] : array())); ?></textarea>
+					</div>
 				</div>
 
-				<div class="input-wrap">
-					<label for="field-body"><?php echo Lang::txt('COM_MASSMAIL_BODY'); ?> <span class="required">*</span></label>
-					<p class="hint"><?php echo Lang::txt('COM_MASSMAIL_BODY_HINT'); ?></p>
-					<?php
-					$editor = \Hubzero\Html\Editor::getInstance('ckeditor5');
-					echo $editor->display(
-						'fields[body]',
-						$this->row->get('body'),
-						'100%', '350', 35, 12, false, 'field-body', null, null,
-						array(
-							// Keep it plain text, but give the editor a real (minimal)
-							// toolbar so it reads as an editor rather than a bare box.
-							// The attach paperclip is injected into this toolbar by JS.
-							'toolbar' => array('undo', 'redo'),
-							'removePlugins' => array('Heading', 'Bold', 'Italic', 'Strikethrough', 'Code', 'Link', 'List', 'BlockQuote', 'BulletedList', 'NumberedList')
-						)
-					);
-					?>
-					<input type="file" name="attachment[]" id="field-attachment" multiple="multiple" hidden />
-					<ul class="mm-chips" id="mm-chips">
-						<?php foreach ($atts as $att) { ?>
-							<li class="mm-chip">
-								<span class="mm-clip">&#128206;</span> <?php echo $this->escape($att->get('filename')); ?>
-								<span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span>
-								<?php if (!$isNew) { ?>
-									<a class="mm-chip-x" title="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeattachment&attachment=' . $att->get('id') . '&' . Session::getFormToken() . '=1'); ?>">&times;</a>
-								<?php } ?>
-							</li>
-						<?php } ?>
-					</ul>
-				</div>
-			</fieldset>
-		</div>
-
-		<div class="col span4">
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></legend>
-
-				<p class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
-
-				<div class="input-wrap mm-rcpt-types">
-					<label><input type="radio" name="recipient_type" value="all"<?php echo ($type == 'all' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_ALL'); ?></label>
-					<label><input type="radio" name="recipient_type" value="group"<?php echo ($type == 'group' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUP'); ?></label>
-					<label><input type="radio" name="recipient_type" value="user"<?php echo ($type == 'user' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_USER'); ?></label>
-					<label><input type="radio" name="recipient_type" value="email"<?php echo ($type == 'email' ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_RCPT_EMAIL'); ?></label>
-				</div>
-
-				<div class="input-wrap" data-rcpt="group">
-					<label for="field-groups"><?php echo Lang::txt('COM_MASSMAIL_GROUP_IDS'); ?></label>
-					<input type="text" name="groups[]" id="field-groups" value="<?php echo $this->escape(implode(',', isset($spec['groups']) ? (array) $spec['groups'] : array())); ?>" placeholder="e.g. 3041, 3042" />
-				</div>
-				<div class="input-wrap" data-rcpt="user">
-					<label for="field-users"><?php echo Lang::txt('COM_MASSMAIL_USER_IDS'); ?></label>
-					<input type="text" name="users" id="field-users" value="<?php echo $this->escape(implode(',', isset($spec['users']) ? (array) $spec['users'] : array())); ?>" placeholder="e.g. 1002, 1230" />
-				</div>
-				<div class="input-wrap" data-rcpt="email">
-					<label for="field-emails"><?php echo Lang::txt('COM_MASSMAIL_RAW_EMAILS'); ?></label>
-					<textarea name="emails" id="field-emails" rows="5" placeholder="one per line"><?php echo $this->escape(implode("\n", isset($spec['emails']) ? (array) $spec['emails'] : array())); ?></textarea>
-				</div>
-			</fieldset>
-
-			<?php if ($canDo->get('core.override')) { ?>
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></legend>
-				<div class="input-wrap">
+				<?php if ($canDo->get('core.override')) { ?>
+				<div class="mm-card">
+					<h4><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h4>
 					<label class="mm-warn">
 						<input type="checkbox" name="ignore_optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> />
 						<?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?>
 					</label>
 					<p class="hint warning"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
 				</div>
-			</fieldset>
-			<?php } ?>
+				<?php } ?>
+			</div>
 		</div>
-	</div>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="" />
-	<?php echo Html::input('token'); ?>
-</form>
+		<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="" />
+		<?php echo Html::input('token'); ?>
+	</form>
+</div>
 
 <script type="text/javascript">
 (function () {
@@ -273,7 +282,6 @@ Toolbar::cancel();
 			renderPicked();
 		});
 
-		// Wait for CKEditor to build its toolbar, then drop a paperclip button in.
 		var tries = 0;
 		var iv = setInterval(function () {
 			var items = document.querySelector('#adminForm .ck-toolbar__items') || document.querySelector('#adminForm .ck-toolbar');
