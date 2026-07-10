@@ -114,6 +114,8 @@ Toolbar::cancel();
 .mm-rcpt-section:first-of-type { border-top:none; padding-top:2px; }
 .mm-rcpt-section h5 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
 .mm-rcpt-section textarea { width:100%; box-sizing:border-box; }
+.mm-rcpt-section .mm-chips { margin:0; }
+.mm-rcpt-section .mm-chips:not(:empty) { margin:0 0 10px; }
 .mm-modal-actions { margin-top:18px; text-align:right; }
 
 /* Chips (To: and attachments). */
@@ -267,16 +269,6 @@ Toolbar::cancel();
 					</div>
 				</div>
 
-				<?php if ($canDo->get('core.override')) { ?>
-				<div class="mm-card">
-					<h4><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h4>
-					<label class="mm-warn mm-optout-label">
-						<input type="checkbox" name="ignore_optout" id="field-optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> />
-						<?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?>
-					</label>
-					<p class="<?php echo $ignore ? 'warning' : 'info'; ?> mm-optout-note" id="mm-optout-note"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
-				</div>
-				<?php } ?>
 			</div>
 		</div>
 
@@ -321,6 +313,13 @@ Toolbar::cancel();
 				<textarea id="mb-emails" rows="3" placeholder="one per line"></textarea>
 			</div>
 
+			<?php if ($canDo->get('core.override')) { ?>
+			<div class="mm-rcpt-section">
+				<h5><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h5>
+				<label class="mm-warn mm-optout-label"><input type="checkbox" name="ignore_optout" id="field-optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?></label>
+				<p class="<?php echo $ignore ? 'warning' : 'info'; ?> mm-optout-note" id="mm-optout-note"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
+			</div>
+			<?php } ?>
 			<div class="mm-modal-actions">
 				<button type="button" class="btn btn-primary" id="mb-done"><?php echo Lang::txt('COM_MASSMAIL_DONE'); ?></button>
 			</div>
@@ -371,6 +370,8 @@ Toolbar::cancel();
 		var ICON = { all: '★', group: '👥', user: '👤', email: '✉' };
 		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
 		var NONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET')); ?>;
+		var EDIT_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS')); ?>;
+		var ADD_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_ADD_RECIPIENTS')); ?>;
 		var state = <?php echo json_encode($rcptState); ?>;
 
 		var fAll = document.getElementById('field-all');
@@ -405,6 +406,7 @@ Toolbar::cancel();
 			state.users.forEach(function (u) { summary.appendChild(makeChip('user', u.label)); any = true; });
 			state.emails.forEach(function (e) { summary.appendChild(makeChip('email', e)); any = true; });
 			if (!any) { var none = document.createElement('li'); none.className = 'mm-to-none'; none.textContent = NONE; summary.appendChild(none); }
+			var eb = document.getElementById('mm-to-edit'); if (eb) { eb.textContent = any ? EDIT_LABEL : ADD_LABEL; }
 		}
 
 		var mbAll = document.getElementById('mb-all');
