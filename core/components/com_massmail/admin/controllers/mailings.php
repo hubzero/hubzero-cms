@@ -184,6 +184,24 @@ class Mailings extends AdminController
 			$row->set('scheduled_at', null);
 		}
 
+		// For the review/send flow, validate up front -- before persisting --
+		// so hitting "Send" on an incomplete message never leaves an orphan
+		// draft behind in the list after the error.
+		if ($this->getTask() == 'review')
+		{
+			if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
+			{
+				Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+				return $this->editTask($row);
+			}
+			$spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+			if (Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false) < 1)
+			{
+				Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+				return $this->editTask($row);
+			}
+		}
+
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
@@ -987,7 +1005,13 @@ class Mailings extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$ids = Request::getArray('id', array());
+		// The list checkboxes (Html::grid) post as cid[]; fall back to id[] for
+		// any other caller.
+		$ids = Request::getArray('cid', array());
+		if (empty($ids))
+		{
+			$ids = Request::getArray('id', array());
+		}
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;

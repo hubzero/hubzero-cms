@@ -357,6 +357,20 @@ Toolbar::cancel();
 (function () {
 	var form = document.getElementById('adminForm');
 
+	// --- Dismiss any admin notification once the user starts editing ---------
+	(function () {
+		var box = document.getElementById('system-message-container');
+		if (!box) { return; }
+		document.addEventListener('focusin', function (e) {
+			var t = e.target;
+			if (!t) { return; }
+			var tag = t.tagName;
+			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) {
+				box.innerHTML = '';
+			}
+		});
+	})();
+
 	// --- Live audience prediction (reads the hidden recipient fields) --------
 	var outs  = document.querySelectorAll('.mm-preview strong');
 	var timer = null;
