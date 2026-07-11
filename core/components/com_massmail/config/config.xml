@@ -14,6 +14,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="require_approval" type="radio" default="0" class="btn-group"
+			label="COM_MASSMAIL_CONFIG_REQ_APPROVAL_LABEL"
+			description="COM_MASSMAIL_CONFIG_REQ_APPROVAL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="hourly_limit" type="text" default="300"
 			label="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_LABEL"
 			description="COM_MASSMAIL_CONFIG_HOURLY_LIMIT_DESC" />

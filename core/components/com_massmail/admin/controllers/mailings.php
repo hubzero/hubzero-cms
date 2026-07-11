@@ -42,6 +42,7 @@ class Mailings extends AdminController
 	{
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('review', 'save');
 
 		parent::execute();
 	}
@@ -191,6 +192,14 @@ class Mailings extends AdminController
 
 		$this->handleUploads($row);
 
+		// "Send" saves the draft, then routes to the review/verification page
+		// rather than dispatching straight away.
+		if ($this->getTask() == 'review')
+		{
+			Request::setVar('id', array($row->get('id')));
+			return $this->verifyTask($row);
+		}
+
 		Notify::success(Lang::txt('COM_MASSMAIL_MAILING_SAVED'));
 
 		if ($this->getTask() == 'apply')
@@ -198,6 +207,100 @@ class Mailings extends AdminController
 			return $this->editTask($row);
 		}
 		$this->cancelTask();
+	}
+
+	/**
+	 * Does this hub require every mailing to be approved before it sends?
+	 *
+	 * @return  boolean
+	 */
+	protected function requireApproval()
+	{
+		return (bool) (int) \Component::params('com_massmail')->get('require_approval', 0);
+	}
+
+	/**
+	 * Does this mailing need an approval step before it can be dispatched?
+	 * True when opt-out is being overridden, or when the hub requires approval
+	 * of all mailings.
+	 *
+	 * @param   Mailing  $row
+	 * @return  boolean
+	 */
+	protected function needsApproval($row)
+	{
+		return (int) $row->get('ignore_optout') || $this->requireApproval();
+	}
+
+	/**
+	 * Review / verification page: shown after "Send" and before the mailing is
+	 * actually dispatched. Presents an email-style preview (text + HTML) and a
+	 * summary of exactly what accepting will do (schedule, audience size, whether
+	 * approval or release is required), then lets the user accept, edit, or bail.
+	 *
+	 * @param   object  $row
+	 * @return  void
+	 */
+	public function verifyTask($row = null)
+	{
+		if (!User::authorise('core.send', $this->_option))
+		{
+			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
+		}
+
+		Request::setVar('hidemainmenu', 1);
+
+		if (!is_object($row))
+		{
+			$row = Mailing::oneOrFail(Request::getInt('id', 0));
+		}
+
+		if ($row->get('status') != Mailing::STATUS_DRAFT)
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
+			return $this->cancelTask();
+		}
+
+		// Content + audience must be valid before we let anyone confirm a send.
+		$spec    = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+		$ignore  = (int) $row->get('ignore_optout') ? true : false;
+		$preview = Recipients::previewCount($spec, $ignore);
+
+		if (!trim((string) $row->get('subject')) || !trim(strip_tags((string) $row->get('body'))))
+		{
+			Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+			return $this->editTask($row);
+		}
+		if ($preview < 1)
+		{
+			Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+			return $this->editTask($row);
+		}
+
+		// Render both parts exactly as they will be built at launch, with the
+		// per-recipient unsubscribe token shown as a placeholder.
+		$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+		$text = Formatter::buildText($row->get('body'), $footer);
+		$html = Formatter::buildHtml($row->get('body'), $footer);
+		$text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']', $text);
+		$html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
+
+		$disposition = array(
+			'needs_general_approval' => $this->requireApproval(),
+			'needs_optout_approval'  => $ignore,
+			'held'                   => !$this->sendingEnabled(),
+			'scheduled'              => $this->isScheduledFuture($row),
+			'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : ''
+		);
+
+		$this->view
+			->set('row', $row)
+			->set('preview', $preview)
+			->set('previewText', $text)
+			->set('previewHtml', $html)
+			->set('disposition', $disposition)
+			->setLayout('verify')
+			->display();
 	}
 
 	/**
@@ -591,9 +694,10 @@ class Mailings extends AdminController
 		$row->set('body_text', Formatter::buildText($row->get('body'), $footer));
 		$row->set('body_html', Formatter::buildHtml($row->get('body'), $footer));
 
-		if ((int) $row->get('ignore_optout'))
+		if ($this->needsApproval($row))
 		{
-			// Overriding opt-out requires sign-off from someone with core.approve.
+			// Overriding opt-out, or a hub-wide "approve everything" policy,
+			// requires sign-off from someone with core.approve before dispatch.
 			$row->set('status', Mailing::STATUS_PENDING_APPROVAL);
 			$row->save();
 			Notify::warning(Lang::txt('COM_MASSMAIL_QUEUED_FOR_APPROVAL'));

@@ -66,7 +66,8 @@ Toolbar::save();
 if (!$isNew && $canDo->get('core.send'))
 {
 	Toolbar::custom('sendtest', 'preview', 'preview', Lang::txt('COM_MASSMAIL_SEND_TEST'), false);
-	Toolbar::custom('launch', 'upload', 'upload', Lang::txt('COM_MASSMAIL_LAUNCH'), false);
+	// "Send" goes through the review/verification page, not straight to dispatch.
+	Toolbar::custom('review', 'upload', 'upload', Lang::txt('COM_MASSMAIL_LAUNCH'), false);
 }
 Toolbar::cancel();
 ?>
@@ -168,6 +169,10 @@ Toolbar::cancel();
 .mm-dopt-sub { color:#a0aec0; font-size:12px; }
 .mm-schedule-field { margin-top:10px; }
 .mm-schedule-field[hidden] { display:none; }
+
+/* Bottom action bar. */
+.mm-compose-actions { display:flex; gap:10px; margin:20px 0 30px; }
+.mm-compose-actions .btn { min-width:110px; }
 </style>
 
 <div class="mm-compose">
@@ -272,6 +277,13 @@ Toolbar::cancel();
 				</div>
 
 			</div>
+		</div>
+
+		<div class="mm-compose-actions">
+			<?php if ($canDo->get('core.send')) { ?>
+				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
+			<?php } ?>
+			<button type="button" class="btn" onclick="Joomla.submitbutton('cancel');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL'); ?></button>
 		</div>
 
 		<input type="hidden" name="rcpt_all" id="field-all" value="<?php echo $hidAll; ?>" />
