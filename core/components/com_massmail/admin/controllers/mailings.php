@@ -201,16 +201,23 @@ class Mailings extends AdminController
 
 			if ($invalid)
 			{
-				// Lead with the content error when subject/body are missing;
-				// otherwise it's purely a recipient problem. Every failed field
-				// is marked on the form regardless.
-				if (in_array('subject', $invalid) || in_array('body', $invalid))
+				$hasSelection = !empty($spec['all']) || !empty($spec['groups'])
+					|| !empty($spec['users']) || !empty($spec['emails']);
+
+				if ($invalid === array('recipients') && $hasSelection)
 				{
-					Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+					// Recipients were chosen but none can be mailed -- explain why
+					// rather than just calling the field "required".
+					Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
 				}
 				else
 				{
-					Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+					// Name every missing piece so nothing is a surprise.
+					$names = array();
+					if (in_array('subject', $invalid))    { $names[] = Lang::txt('COM_MASSMAIL_FIELD_SUBJECT'); }
+					if (in_array('body', $invalid))       { $names[] = Lang::txt('COM_MASSMAIL_FIELD_BODY'); }
+					if (in_array('recipients', $invalid)) { $names[] = Lang::txt('COM_MASSMAIL_FIELD_RECIPIENTS'); }
+					Notify::error(Lang::txt('COM_MASSMAIL_REQUIRED_FIELDS', implode(', ', $names)));
 				}
 				return $this->editTask($row, $invalid);
 			}

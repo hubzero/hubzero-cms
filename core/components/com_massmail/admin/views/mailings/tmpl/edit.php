@@ -99,7 +99,9 @@ Toolbar::cancel();
 /* Fields flagged by a failed Send. */
 input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
 .mm-to-display.mm-invalid .mm-to-edit { border-color:#e53e3e; color:#c53030; }
-.mm-mail-body.mm-invalid .ck.ck-editor__editable { border-color:#e53e3e; }
+/* Beat #adminForm .ck.ck-editor__editable so the red frame actually shows. */
+#adminForm .mm-mail-body.mm-invalid .ck.ck-toolbar,
+#adminForm .mm-mail-body.mm-invalid .ck.ck-editor__editable { border-color:#e53e3e; }
 .mm-required-note { color:#c53030; font-size:12px; font-weight:600; }
 .mm-mail-subject { font-weight:600; }
 .mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
