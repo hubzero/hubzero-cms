@@ -89,7 +89,7 @@ class Mailings extends AdminController
 	 * @param   object  $row
 	 * @return  void
 	 */
-	public function editTask($row = null)
+	public function editTask($row = null, $invalid = array())
 	{
 		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
@@ -120,6 +120,7 @@ class Mailings extends AdminController
 
 		$this->view
 			->set('row', $row)
+			->set('invalid', (array) $invalid)
 			->setLayout('edit')
 			->display();
 	}
@@ -189,16 +190,29 @@ class Mailings extends AdminController
 		// draft behind in the list after the error.
 		if ($this->getTask() == 'review')
 		{
-			if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
-			{
-				Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
-				return $this->editTask($row);
-			}
+			$invalid = array();
+			if (!trim((string) $row->get('subject'))) { $invalid[] = 'subject'; }
+			if ($this->isBlankBody($row->get('body')))  { $invalid[] = 'body'; }
 			$spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
 			if (Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false) < 1)
 			{
-				Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-				return $this->editTask($row);
+				$invalid[] = 'recipients';
+			}
+
+			if ($invalid)
+			{
+				// Lead with the content error when subject/body are missing;
+				// otherwise it's purely a recipient problem. Every failed field
+				// is marked on the form regardless.
+				if (in_array('subject', $invalid) || in_array('body', $invalid))
+				{
+					Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+				}
+				else
+				{
+					Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+				}
+				return $this->editTask($row, $invalid);
 			}
 		}
 

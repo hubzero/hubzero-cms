@@ -18,6 +18,12 @@ $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 $atts = $this->row->attachments()->rows();
 
+// Fields flagged by a failed "Send" so they can be highlighted here.
+$invalid    = isset($this->invalid) ? (array) $this->invalid : array();
+$badSubject = in_array('subject', $invalid);
+$badBody    = in_array('body', $invalid);
+$badRcpt    = in_array('recipients', $invalid);
+
 // The mail server must be configured to send as the From address, so only a
 // Super Administrator may edit the sender; everyone else sees it read-only.
 $isSuper = User::authorise('core.admin');
@@ -89,6 +95,12 @@ Toolbar::cancel();
 .mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
 .mm-mail-row input { flex:1; border:1px solid #e2e8f0; background:#f8fafc; box-shadow:none; padding:5px 9px; margin:0; font-size:14px; color:#1a202c; min-width:0; border-radius:6px; }
 .mm-mail-row input:focus { outline:none; box-shadow:none; border-color:#90cdf4; background:#fff; }
+
+/* Fields flagged by a failed Send. */
+input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
+.mm-to-display.mm-invalid .mm-to-edit { border-color:#e53e3e; color:#c53030; }
+.mm-mail-body.mm-invalid .ck.ck-editor__editable { border-color:#e53e3e; }
+.mm-required-note { color:#c53030; font-size:12px; font-weight:600; }
 .mm-mail-subject { font-weight:600; }
 .mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
 .mm-mail-from input.mm-from-name { flex:0 0 38%; }
@@ -194,9 +206,10 @@ Toolbar::cancel();
 					<div class="mm-mail-headers">
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_TO'); ?></span>
-							<div class="mm-to-display" id="mm-to-display">
+							<div class="mm-to-display<?php echo $badRcpt ? ' mm-invalid' : ''; ?>" id="mm-to-display">
 								<ul class="mm-to-chips" id="mm-to-summary"></ul>
 								<button type="button" class="mm-to-edit" id="mm-to-edit"><?php echo Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'); ?></button>
+								<?php if ($badRcpt) { ?><span class="mm-required-note"><?php echo Lang::txt('COM_MASSMAIL_REQUIRED'); ?></span><?php } ?>
 							</div>
 						</div>
 						<div class="mm-count"><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
@@ -222,11 +235,11 @@ Toolbar::cancel();
 						</div>
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span>
-							<input class="mm-mail-subject" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
+							<input class="mm-mail-subject<?php echo $badSubject ? ' mm-invalid' : ''; ?>" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
 						</div>
 					</div>
 
-					<div class="mm-mail-body">
+					<div class="mm-mail-body<?php echo $badBody ? ' mm-invalid' : ''; ?>">
 						<?php
 						$editor = \Hubzero\Html\Editor::getInstance('ckeditor5');
 						echo $editor->display(
@@ -359,16 +372,28 @@ Toolbar::cancel();
 
 	// --- Dismiss any admin notification once the user starts editing ---------
 	(function () {
-		var box = document.getElementById('system-message-container');
-		if (!box) { return; }
-		document.addEventListener('focusin', function (e) {
+		function clearMsgs() {
+			if (window.Hubzero && typeof Hubzero.removeMessages === 'function') { Hubzero.removeMessages(); }
+			var box = document.getElementById('system-message-container');
+			if (box) { box.innerHTML = ''; }
+			// Kameleon shows admin messages as floating "growl" notices separate
+			// from that container -- remove those too, or the error stays visible.
+			var notices = document.querySelectorAll('.growl-notice');
+			for (var n = 0; n < notices.length; n++) {
+				if (notices[n].parentNode) { notices[n].parentNode.removeChild(notices[n]); }
+			}
+			// Drop the field highlights from a previous failed send.
+			var marked = document.querySelectorAll('.mm-invalid');
+			for (var i = 0; i < marked.length; i++) { marked[i].classList.remove('mm-invalid'); }
+		}
+		function onEdit(e) {
 			var t = e.target;
 			if (!t) { return; }
 			var tag = t.tagName;
-			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) {
-				box.innerHTML = '';
-			}
-		});
+			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) { clearMsgs(); }
+		}
+		document.addEventListener('focusin', onEdit, true);
+		document.addEventListener('input', onEdit, true);
 	})();
 
 	// --- Live audience prediction (reads the hidden recipient fields) --------
