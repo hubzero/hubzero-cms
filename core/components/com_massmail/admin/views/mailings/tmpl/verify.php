@@ -76,7 +76,8 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 
 .mm-verify-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
 .mm-verify-actions .spacer { flex:1; }
-.mm-verify-actions .btn { text-decoration:none; min-width:120px; border-radius:6px; }
+/* Normalize so the <button> and <a> actions render as the same box. */
+.mm-verify-actions .btn { display:inline-block; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
 .mm-btn-accept { background:#2f855a; border:1px solid #276749; color:#fff; }
 .mm-btn-accept:hover, .mm-btn-accept:focus { background:#276749; border-color:#276749; color:#fff; }
 .mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
