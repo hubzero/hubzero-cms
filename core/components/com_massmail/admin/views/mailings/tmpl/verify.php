@@ -74,9 +74,13 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 .mm-disp-sub { display:block; margin-top:5px; }
 .mm-optout-flag { background:#fff5f5; border:1px solid #fc8181; color:#742a2a; border-radius:8px; padding:10px 12px; font-size:12px; margin-top:12px; }
 
-.mm-verify-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; }
+.mm-verify-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
 .mm-verify-actions .spacer { flex:1; }
-.mm-verify-actions .btn { text-decoration:none; }
+.mm-verify-actions .btn { text-decoration:none; min-width:120px; border-radius:6px; }
+.mm-btn-accept { background:#2f855a; border:1px solid #276749; color:#fff; }
+.mm-btn-accept:hover, .mm-btn-accept:focus { background:#276749; border-color:#276749; color:#fff; }
+.mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
+.mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
 </style>
 
 <form action="<?php echo Route::url($base); ?>" method="post" name="adminForm" id="adminForm" class="mm-verify">
@@ -153,10 +157,10 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 	</div>
 
 	<div class="mm-verify-actions">
-		<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('launch');"><?php echo Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
-		<a class="btn" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
+		<button type="button" class="btn mm-btn-accept" onclick="Joomla.submitbutton('launch');"><?php echo Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
+		<a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
 		<span class="spacer"></span>
-		<a class="btn" href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('COM_MASSMAIL_BACK_HOME'); ?></a>
+		<a class="btn mm-btn-neutral" href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('COM_MASSMAIL_BACK_HOME'); ?></a>
 	</div>
 
 	<input type="hidden" name="task" value="" />

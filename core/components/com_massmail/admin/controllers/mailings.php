@@ -210,6 +210,22 @@ class Mailings extends AdminController
 	}
 
 	/**
+	 * Is the composed body effectively empty? The editor can leave visually-blank
+	 * markup behind (an empty paragraph, a stray <br>, or a lone &nbsp;), none of
+	 * which is a real message -- so decode entities and drop non-breaking spaces
+	 * before deciding.
+	 *
+	 * @param   string   $html
+	 * @return  boolean
+	 */
+	protected function isBlankBody($html)
+	{
+		$t = html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		$t = str_replace("\xC2\xA0", ' ', $t); // non-breaking space -> blank
+		return trim($t) === '';
+	}
+
+	/**
 	 * Does this hub require every mailing to be approved before it sends?
 	 *
 	 * @return  boolean
@@ -266,7 +282,7 @@ class Mailings extends AdminController
 		$ignore  = (int) $row->get('ignore_optout') ? true : false;
 		$preview = Recipients::previewCount($spec, $ignore);
 
-		if (!trim((string) $row->get('subject')) || !trim(strip_tags((string) $row->get('body'))))
+		if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
 		{
 			Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
 			return $this->editTask($row);
@@ -678,7 +694,7 @@ class Mailings extends AdminController
 		$spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
 		$preview = Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false);
 
-		if (!trim((string) $row->get('subject')) || !trim(strip_tags((string) $row->get('body'))))
+		if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
 		{
 			Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
 			return $this->editTask($row);

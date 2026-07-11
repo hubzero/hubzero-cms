@@ -106,7 +106,9 @@ Toolbar::cancel();
 .mm-count strong { color:#2d3748; }
 
 /* Recipient builder modal. */
-.mm-modal { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; z-index:10000; align-items:flex-start; justify-content:center; padding:40px 20px; overflow:auto; }
+/* Above the admin's notification/tooltip layer (z-index up to ~1000001) so an
+   error banner never floats over the open builder. */
+.mm-modal { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; z-index:2000000; align-items:flex-start; justify-content:center; padding:40px 20px; overflow:auto; }
 .mm-modal.open { display:flex; }
 .mm-modal-inner { background:#fff; border-radius:10px; padding:22px 24px; width:100%; max-width:520px; position:relative; box-shadow:0 12px 40px rgba(0,0,0,.3); }
 .mm-modal-close { position:absolute; top:8px; right:14px; font-size:26px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
@@ -170,9 +172,13 @@ Toolbar::cancel();
 .mm-schedule-field { margin-top:10px; }
 .mm-schedule-field[hidden] { display:none; }
 
-/* Bottom action bar. */
-.mm-compose-actions { display:flex; gap:10px; margin:20px 0 30px; }
-.mm-compose-actions .btn { min-width:110px; }
+/* Bottom action bar: primary action first, divided from the form above. */
+.mm-compose-actions { display:flex; gap:10px; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
+.mm-compose-actions .btn { min-width:120px; border-radius:6px; }
+.mm-btn-send { background:#3182ce; border:1px solid #2c73b8; color:#fff; }
+.mm-btn-send:hover, .mm-btn-send:focus { background:#2c6ca8; border-color:#2c6ca8; color:#fff; }
+.mm-btn-cancel { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
+.mm-btn-cancel:hover, .mm-btn-cancel:focus { background:#e2e8f0; color:#2d3748; }
 </style>
 
 <div class="mm-compose">
@@ -281,9 +287,9 @@ Toolbar::cancel();
 
 		<div class="mm-compose-actions">
 			<?php if ($canDo->get('core.send')) { ?>
-				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
+				<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
 			<?php } ?>
-			<button type="button" class="btn" onclick="Joomla.submitbutton('cancel');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL'); ?></button>
+			<button type="button" class="btn mm-btn-cancel" onclick="Joomla.submitbutton('cancel');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL'); ?></button>
 		</div>
 
 		<input type="hidden" name="rcpt_all" id="field-all" value="<?php echo $hidAll; ?>" />
