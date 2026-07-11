@@ -370,30 +370,44 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 (function () {
 	var form = document.getElementById('adminForm');
 
-	// --- Dismiss any admin notification once the user starts editing ---------
-	(function () {
-		function clearMsgs() {
-			if (window.Hubzero && typeof Hubzero.removeMessages === 'function') { Hubzero.removeMessages(); }
-			var box = document.getElementById('system-message-container');
-			if (box) { box.innerHTML = ''; }
-			// Kameleon shows admin messages as floating "growl" notices separate
-			// from that container -- remove those too, or the error stays visible.
-			var notices = document.querySelectorAll('.growl-notice');
-			for (var n = 0; n < notices.length; n++) {
-				if (notices[n].parentNode) { notices[n].parentNode.removeChild(notices[n]); }
-			}
-			// Drop the field highlights from a previous failed send.
-			var marked = document.querySelectorAll('.mm-invalid');
-			for (var i = 0; i < marked.length; i++) { marked[i].classList.remove('mm-invalid'); }
+	// --- Validation feedback: dismiss the error banner + clear per-field marks
+	// A failed Send flags the missing fields; each flag clears as soon as that
+	// field is actually addressed (rather than lingering or clearing wholesale).
+	function mmDismissError() {
+		if (window.Hubzero && typeof Hubzero.removeMessages === 'function') { Hubzero.removeMessages(); }
+		var box = document.getElementById('system-message-container');
+		if (box) { box.innerHTML = ''; }
+		// Kameleon shows admin messages as a floating "growl" notice separate
+		// from that container -- remove those too, or the error stays visible.
+		var notices = document.querySelectorAll('.growl-notice');
+		for (var n = 0; n < notices.length; n++) {
+			if (notices[n].parentNode) { notices[n].parentNode.removeChild(notices[n]); }
 		}
+	}
+	function mmClearRcptMark() {
+		var d = document.getElementById('mm-to-display');
+		if (!d) { return; }
+		d.classList.remove('mm-invalid');
+		var note = d.querySelector('.mm-required-note');
+		if (note && note.parentNode) { note.parentNode.removeChild(note); }
+	}
+	(function () {
 		function onEdit(e) {
 			var t = e.target;
 			if (!t) { return; }
 			var tag = t.tagName;
-			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) { clearMsgs(); }
+			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) { mmDismissError(); }
 		}
 		document.addEventListener('focusin', onEdit, true);
 		document.addEventListener('input', onEdit, true);
+
+		// Clear the subject/body highlight the moment there's real content.
+		var subj = document.getElementById('field-subject');
+		if (subj) { subj.addEventListener('input', function () { if (subj.value.trim() !== '') { subj.classList.remove('mm-invalid'); } }); }
+		var mbody = document.querySelector('.mm-mail-body');
+		if (mbody) { mbody.addEventListener('input', function () { mbody.classList.remove('mm-invalid'); }, true); }
+		// The recipient highlight is cleared by the live count (below), which
+		// already accounts for groups, individuals, raw emails and opt-out override.
 	})();
 
 	// --- Live audience prediction (reads the hidden recipient fields) --------
@@ -416,7 +430,12 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 			headers: { 'X-Requested-With': 'XMLHttpRequest' }
 		})
 		.then(function (r) { return r.json(); })
-		.then(function (d) { if (d && typeof d.text === 'string') { for (var oi = 0; oi < outs.length; oi++) { outs[oi].textContent = d.text; } } })
+		.then(function (d) {
+			if (d && typeof d.text === 'string') { for (var oi = 0; oi < outs.length; oi++) { outs[oi].textContent = d.text; } }
+			// Once the selection actually reaches someone (respecting opt-out
+			// override), drop any "recipients required" highlight.
+			if (d && d.count > 0) { mmClearRcptMark(); }
+		})
 		.catch(function () {});
 	}
 	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
