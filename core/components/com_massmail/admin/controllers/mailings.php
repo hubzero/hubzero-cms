@@ -1038,24 +1038,7 @@ class Mailings extends AdminController
 		$removed = 0;
 		foreach ($ids as $id)
 		{
-			$row = Mailing::oneOrFail(intval($id));
-
-			// Purge recipients
-			$db = App::get('db');
-			$db->setQuery("DELETE FROM `#__massmail_recipients` WHERE mailing_id = " . (int) $row->get('id'));
-			$db->execute();
-
-			// Purge attachments (rows + files)
-			foreach ($row->attachments()->rows() as $att)
-			{
-				if ($att->get('stored_path') && is_file($att->get('stored_path')))
-				{
-					Filesystem::delete($att->get('stored_path'));
-				}
-				$att->destroy();
-			}
-
-			if ($row->destroy())
+			if ($this->purgeMailing(Mailing::oneOrFail(intval($id))))
 			{
 				$removed++;
 			}
@@ -1064,6 +1047,75 @@ class Mailings extends AdminController
 		if ($removed)
 		{
 			Notify::success(Lang::txt('COM_MASSMAIL_MAILINGS_DELETED', $removed));
+		}
+		$this->cancelTask();
+	}
+
+	/**
+	 * Permanently remove a mailing and everything hanging off it (queued
+	 * recipients + attachment rows and files).
+	 *
+	 * @param   Mailing  $row
+	 * @return  boolean
+	 */
+	protected function purgeMailing($row)
+	{
+		$db = App::get('db');
+		$db->setQuery("DELETE FROM `#__massmail_recipients` WHERE mailing_id = " . (int) $row->get('id'));
+		$db->execute();
+
+		foreach ($row->attachments()->rows() as $att)
+		{
+			if ($att->get('stored_path') && is_file($att->get('stored_path')))
+			{
+				Filesystem::delete($att->get('stored_path'));
+			}
+			$att->destroy();
+		}
+
+		return $row->destroy();
+	}
+
+	/**
+	 * Discard a single draft: delete it outright (the "throw it away" exit from
+	 * compose / review). Only drafts can be discarded, so an in-flight or sent
+	 * mailing is never destroyed this way.
+	 *
+	 * @return  void
+	 */
+	public function discardTask()
+	{
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$id = Request::getInt('id', 0);
+		if (!$id)
+		{
+			$fields = Request::getArray('fields', array());
+			$id = isset($fields['id']) ? (int) $fields['id'] : 0;
+		}
+
+		// Nothing saved yet -- just leave.
+		if (!$id)
+		{
+			return $this->cancelTask();
+		}
+
+		$row = Mailing::oneOrFail($id);
+
+		if ($row->get('status') != Mailing::STATUS_DRAFT)
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_DISCARDABLE'));
+			return $this->cancelTask();
+		}
+
+		if ($this->purgeMailing($row))
+		{
+			Notify::success(Lang::txt('COM_MASSMAIL_DRAFT_DISCARDED'));
 		}
 		$this->cancelTask();
 	}

@@ -82,6 +82,8 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 .mm-btn-accept:hover, .mm-btn-accept:focus { background:#276749; border-color:#276749; color:#fff; }
 .mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
 .mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
+.mm-btn-danger { background:#fff5f5; border:1px solid #fc8181; color:#c53030; }
+.mm-btn-danger:hover, .mm-btn-danger:focus { background:#fed7d7; border-color:#e53e3e; color:#9b2c2c; }
 </style>
 
 <form action="<?php echo Route::url($base); ?>" method="post" name="adminForm" id="adminForm" class="mm-verify">
@@ -161,7 +163,8 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 		<button type="button" class="btn mm-btn-accept" onclick="Joomla.submitbutton('launch');"><?php echo Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
 		<a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
 		<span class="spacer"></span>
-		<a class="btn mm-btn-neutral" href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('COM_MASSMAIL_BACK_HOME'); ?></a>
+		<a class="btn mm-btn-neutral" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></a>
+		<a class="btn mm-btn-danger" href="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id') . '&' . $token . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
 	</div>
 
 	<input type="hidden" name="task" value="" />

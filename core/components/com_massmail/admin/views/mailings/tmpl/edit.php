@@ -186,13 +186,16 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 .mm-schedule-field { margin-top:10px; }
 .mm-schedule-field[hidden] { display:none; }
 
-/* Bottom action bar: primary action first, divided from the form above. */
-.mm-compose-actions { display:flex; gap:10px; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
-.mm-compose-actions .btn { min-width:120px; border-radius:6px; }
+/* Bottom action bar: send on the left, exit options on the right. */
+.mm-compose-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
+.mm-compose-actions .mm-spacer { flex:1; }
+.mm-compose-actions .btn { display:inline-block; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
 .mm-btn-send { background:#3182ce; border:1px solid #2c73b8; color:#fff; }
 .mm-btn-send:hover, .mm-btn-send:focus { background:#2c6ca8; border-color:#2c6ca8; color:#fff; }
-.mm-btn-cancel { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
-.mm-btn-cancel:hover, .mm-btn-cancel:focus { background:#e2e8f0; color:#2d3748; }
+.mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
+.mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
+.mm-btn-danger { background:#fff5f5; border:1px solid #fc8181; color:#c53030; }
+.mm-btn-danger:hover, .mm-btn-danger:focus { background:#fed7d7; border-color:#e53e3e; color:#9b2c2c; }
 </style>
 
 <div class="mm-compose">
@@ -304,7 +307,11 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 			<?php if ($canDo->get('core.send')) { ?>
 				<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
 			<?php } ?>
-			<button type="button" class="btn mm-btn-cancel" onclick="Joomla.submitbutton('cancel');"><?php echo Lang::txt('COM_MASSMAIL_CANCEL'); ?></button>
+			<span class="mm-spacer"></span>
+			<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
+			<?php if (!$isNew) { ?>
+				<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+			<?php } ?>
 		</div>
 
 		<input type="hidden" name="rcpt_all" id="field-all" value="<?php echo $hidAll; ?>" />
