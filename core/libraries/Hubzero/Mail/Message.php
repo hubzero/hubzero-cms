@@ -616,7 +616,14 @@ class Message extends \Symfony\Component\Mime\Email
 	 /**
 	 * Add a MimePart to this Message. (compatability function)
 	 *
-	 * @param string $body
+	 * Symfony's Email uses addPart() as its attachment-collection primitive:
+	 * attach(), embed(), embedFromPath() and attachPart() all funnel into it
+	 * with a DataPart. This override keeps the legacy Swiftmailer-style
+	 * addPart($body, $contentType) signature working, so a DataPart must be
+	 * handed straight to the parent — otherwise it falls through to attach(),
+	 * which wraps it in a second DataPart and throws.
+	 *
+	 * @param mixed  $body
 	 * @param string $contentType
 	 * @param string $charset
 	 *
@@ -624,6 +631,11 @@ class Message extends \Symfony\Component\Mime\Email
 	 */
 	public function addPart($body, $contentType = null, $charset = ''): static
 	{
+		if ($body instanceof \Symfony\Component\Mime\Part\DataPart)
+		{
+			return parent::addPart($body);
+		}
+
 		if ($contentType == "text/html")
 		{
 			$this->html($body, $charset);
