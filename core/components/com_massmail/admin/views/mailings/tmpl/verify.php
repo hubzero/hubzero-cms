@@ -167,7 +167,8 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 					</div>
 				<?php } ?>
 
-				<?php if ($disp['needs_optout_approval']) { ?>
+				<?php if ($disp['needs_optout_approval'] && !$needsApproval) { ?>
+					<?php /* Only when the approval banner isn't already explaining the override. */ ?>
 					<div class="mm-optout-flag">&#9888; <?php echo Lang::txt('COM_MASSMAIL_VERIFY_OPTOUT_FLAG'); ?></div>
 				<?php } ?>
 			</div>
