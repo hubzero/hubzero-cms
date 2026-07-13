@@ -114,8 +114,9 @@ class Mailings extends AdminController
 
 		if ($row->isNew())
 		{
-			$row->set('from_name', Config::get('fromname'));
-			$row->set('from_email', Config::get('mailfrom'));
+			$mmp = \Component::params('com_massmail');
+			$row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
+			$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
 		}
 
 		$this->view
@@ -141,15 +142,22 @@ class Mailings extends AdminController
 
 		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
-		// The From/Reply-to address must match what the mail server is configured
-		// to send as, so only a Super Administrator may set it; ignore any sender
-		// fields submitted by anyone else (the form shows them read-only).
+		// Reply-to must match what the mail server can send as, so only a Super
+		// Administrator may set it; ignore it from anyone else. From is not a
+		// per-mailing field at all -- it's stamped from the options below.
+		unset($fields['from_name'], $fields['from_email']);
 		if (!User::authorise('core.admin'))
 		{
-			unset($fields['from_name'], $fields['from_email'], $fields['reply_to']);
+			unset($fields['reply_to']);
 		}
 
 		$row = Mailing::oneOrNew($fields['id'])->set($fields);
+
+		// The From address is a hub-wide option; always stamp the configured
+		// value so the sender uses it regardless of what was submitted.
+		$mmp = \Component::params('com_massmail');
+		$row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
+		$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
 
 		// Never let a save move a mailing out of draft.
 		if ($row->isNew() || !$row->get('status'))

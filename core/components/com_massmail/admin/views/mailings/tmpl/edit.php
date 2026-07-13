@@ -24,14 +24,17 @@ $badSubject = in_array('subject', $invalid);
 $badBody    = in_array('body', $invalid);
 $badRcpt    = in_array('recipients', $invalid);
 
-// The mail server must be configured to send as the From address, so only a
-// Super Administrator may edit the sender; everyone else sees it read-only.
+// The From address is configured hub-wide in the component options (the mail
+// server has to be set up to send as it), so every mailing sends as that
+// address. It's shown here read-only, formatted "Name <email>". Reply-to is
+// still per-mailing and only a Super Administrator may set it.
 $isSuper = User::authorise('core.admin');
 
-$fromName  = trim((string) $this->row->get('from_name'));
-$fromEmail = trim((string) $this->row->get('from_email'));
-$replyTo   = trim((string) $this->row->get('reply_to'));
+$mmParams  = \Component::params('com_massmail');
+$fromName  = trim((string) $mmParams->get('from_name'))  ?: Config::get('fromname');
+$fromEmail = trim((string) $mmParams->get('from_email')) ?: Config::get('mailfrom');
 $fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
+$replyTo   = trim((string) $this->row->get('reply_to'));
 
 // Scheduled time (stored UTC) shown back in the viewer's local zone for the picker.
 $scheduledLocal = '';
@@ -95,10 +98,13 @@ Toolbar::cancel();
 .mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
 .mm-mail-row input { flex:1; border:1px solid #e2e8f0; background:#f8fafc; box-shadow:none; padding:5px 9px; margin:0; font-size:14px; color:#1a202c; min-width:0; border-radius:6px; }
 .mm-mail-row input:focus { outline:none; box-shadow:none; border-color:#90cdf4; background:#fff; }
+/* From is read-only info; keep it looking like a (locked) field. */
+.mm-mail-row input.mm-from-info { background:#eef2f7; color:#2d3748; cursor:default; }
+.mm-mail-row input.mm-from-info:focus { border-color:#e2e8f0; background:#eef2f7; }
 
 /* Fields flagged by a failed Send. */
 input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
-.mm-to-display.mm-invalid .mm-to-edit { border-color:#e53e3e; color:#c53030; }
+.mm-to-display.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
 /* Beat #adminForm .ck.ck-editor__editable so the red frame actually shows. */
 #adminForm .mm-mail-body.mm-invalid .ck.ck-toolbar,
 #adminForm .mm-mail-body.mm-invalid .ck.ck-editor__editable { border-color:#e53e3e; }
@@ -109,8 +115,9 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 .mm-mail-body { padding:14px 18px 18px; }
 .mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
 
-/* To: read-only summary + edit button. */
-.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; cursor:pointer; }
+/* To: shaded like the other header inputs so it reads as an editable field. */
+.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; cursor:pointer; border:1px solid #e2e8f0; background:#f8fafc; border-radius:6px; padding:4px 9px; min-height:34px; box-sizing:border-box; }
+.mm-to-display:hover { border-color:#cbd5e0; }
 .mm-chip-optout { background:#fed7d7; border-color:#fc8181; }
 .mm-to-chips { display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0; }
 .mm-to-edit { background:none; border:1px dashed #cbd5e0; border-radius:14px; color:#3182ce; font-size:12px; padding:3px 12px; cursor:pointer; }
@@ -221,14 +228,7 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
-							<?php if ($isSuper) { ?>
-								<span class="mm-mail-from">
-									<input class="mm-from-name" type="text" name="fields[from_name]" id="field-from-name" value="<?php echo $this->escape($fromName); ?>" placeholder="<?php echo $this->escape(Config::get('fromname')); ?>" />
-									<input type="text" name="fields[from_email]" id="field-from-email" value="<?php echo $this->escape($fromEmail); ?>" placeholder="<?php echo $this->escape(Config::get('mailfrom')); ?>" />
-								</span>
-							<?php } else { ?>
-								<span class="mm-mail-value"><?php echo $this->escape($fromShown); ?></span>
-							<?php } ?>
+							<input class="mm-from-info" type="text" value="<?php echo $this->escape($fromShown); ?>" readonly title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_FROM_INFO_HINT')); ?>" />
 						</div>
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span>
@@ -270,9 +270,7 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 						</ul>
 					</div>
 
-					<?php if (!$isSuper) { ?>
-					<p class="mm-header-hint"><?php echo Lang::txt('COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
-					<?php } ?>
+					<p class="mm-header-hint"><?php echo Lang::txt($isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
 				</div>
 			</div>
 
