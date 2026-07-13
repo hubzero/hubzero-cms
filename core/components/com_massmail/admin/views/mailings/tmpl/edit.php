@@ -69,6 +69,11 @@ $chipIcon = array('all' => '★', 'group' => '👥', 'user' => '👤', 'email' =
 // Live audience preview
 $preview = Recipients::previewCount($spec, $ignore ? true : false);
 
+// Small inline icons for the action buttons (decorative; the text carries the meaning).
+$icSend  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>';
+$icSave  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 2H9v3h2V2Z"/><path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0ZM1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5Zm3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4v4.5ZM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5V15Z"/></svg>';
+$icTrash = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/></svg>';
+
 Toolbar::title(Lang::txt($isNew ? 'COM_MASSMAIL_NEW_MAILING' : 'COM_MASSMAIL_EDIT_MAILING'), 'massmail');
 Toolbar::apply();
 Toolbar::save();
@@ -196,7 +201,8 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 /* Bottom action bar: send on the left, exit options on the right. */
 .mm-compose-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
 .mm-compose-actions .mm-spacer { flex:1; }
-.mm-compose-actions .btn { display:inline-block; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
+.mm-compose-actions .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
+.mm-compose-actions .btn svg { flex:0 0 auto; }
 .mm-btn-send { background:#3182ce; border:1px solid #2c73b8; color:#fff; }
 .mm-btn-send:hover, .mm-btn-send:focus { background:#2c6ca8; border-color:#2c6ca8; color:#fff; }
 .mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
@@ -275,12 +281,12 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 
 				<div class="mm-compose-actions">
 					<?php if ($canDo->get('core.send')) { ?>
-						<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
+						<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo $icSend . Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
 					<?php } ?>
 					<span class="mm-spacer"></span>
-					<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
+					<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
 					<?php if (!$isNew) { ?>
-						<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+						<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
 					<?php } ?>
 				</div>
 			</div>
