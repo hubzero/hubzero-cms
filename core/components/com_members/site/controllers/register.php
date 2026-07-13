@@ -1578,6 +1578,16 @@ class Register extends SiteController
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
+			// Stash the confirmation code in the session so it survives the
+			// login round-trip. The URL 'return' we pass to the login page can
+			// be dropped/reset before the user gets back here, which used to
+			// strand people on the login page unconfirmed; the system/unconfirmed
+			// plugin completes the confirmation from this once they log in.
+			if ($code)
+			{
+				Session::set('members.confirmcode', $code);
+			}
+
 			// See if they've provided an email address as well
 			// perhaps we can log them in with that and their token
 			$email = Request::getString('email', false);
