@@ -31,6 +31,12 @@ Html::behavior('tooltip');
 
 $statuses = \Components\Massmail\Models\Mailing::statuses();
 ?>
+<style>
+/* Give the pagination footer a little breathing room from the list; the
+   template's list-footer uses a negative top margin, so neutralize it here. */
+.mm-list-foot { padding-top:16px; }
+.mm-list-foot .pagination { margin-top:0; }
+</style>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
@@ -66,7 +72,7 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php echo $this->rows->pagination; ?></td>
+				<td class="mm-list-foot" colspan="7"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
