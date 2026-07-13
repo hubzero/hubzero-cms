@@ -98,9 +98,9 @@ Toolbar::cancel();
 .mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
 .mm-mail-row input { flex:1; border:1px solid #e2e8f0; background:#f8fafc; box-shadow:none; padding:5px 9px; margin:0; font-size:14px; color:#1a202c; min-width:0; border-radius:6px; }
 .mm-mail-row input:focus { outline:none; box-shadow:none; border-color:#90cdf4; background:#fff; }
-/* From is read-only info; keep it looking like a (locked) field. */
-.mm-mail-row input.mm-from-info { background:#eef2f7; color:#2d3748; cursor:default; }
-.mm-mail-row input.mm-from-info:focus { border-color:#e2e8f0; background:#eef2f7; }
+/* From is read-only info -- render as plain text, not an editable box. */
+.mm-mail-row input.mm-from-info { background:transparent; border-color:transparent; color:#2d3748; font-weight:600; cursor:default; padding-left:0; }
+.mm-mail-row input.mm-from-info:focus { background:transparent; border-color:transparent; }
 
 /* Fields flagged by a failed Send. */
 input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
@@ -272,6 +272,17 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 
 					<p class="mm-header-hint"><?php echo Lang::txt($isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
 				</div>
+
+				<div class="mm-compose-actions">
+					<?php if ($canDo->get('core.send')) { ?>
+						<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
+					<?php } ?>
+					<span class="mm-spacer"></span>
+					<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
+					<?php if (!$isNew) { ?>
+						<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+					<?php } ?>
+				</div>
 			</div>
 
 			<div class="mm-side">
@@ -301,16 +312,6 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 			</div>
 		</div>
 
-		<div class="mm-compose-actions">
-			<?php if ($canDo->get('core.send')) { ?>
-				<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
-			<?php } ?>
-			<span class="mm-spacer"></span>
-			<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
-			<?php if (!$isNew) { ?>
-				<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
-			<?php } ?>
-		</div>
 
 		<input type="hidden" name="rcpt_all" id="field-all" value="<?php echo $hidAll; ?>" />
 		<input type="hidden" name="groups[]" id="field-groups" value="<?php echo $this->escape($hidGroups); ?>" />
