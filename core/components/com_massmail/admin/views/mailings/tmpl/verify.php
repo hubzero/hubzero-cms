@@ -150,20 +150,23 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 							<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_OPTOUT'); ?></span>
 						<?php } ?>
 					</div>
-				<?php } elseif ($disp['held']) { ?>
-					<div class="mm-disp mm-disp-hold">
-						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_HELD'); ?></span>
-						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_HOLD'); ?></span>
-					</div>
-				<?php } elseif ($disp['scheduled']) { ?>
+				<?php } elseif ($disp['scheduled'] && !$disp['held']) { ?>
 					<div class="mm-disp mm-disp-send">
 						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SCHEDULED'); ?></span>
 						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SCHEDULE'); ?></span>
 					</div>
-				<?php } else { ?>
+				<?php } elseif (!$disp['held']) { ?>
 					<div class="mm-disp mm-disp-send">
 						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SENDING'); ?></span>
 						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SEND'); ?></span>
+					</div>
+				<?php } ?>
+
+				<?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too. ?>
+				<?php if ($disp['held']) { ?>
+					<div class="mm-disp mm-disp-hold">
+						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
+						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_HOLD'); ?></span>
 					</div>
 				<?php } ?>
 
