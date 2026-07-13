@@ -64,6 +64,11 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 				<th class="priority-3"><?php echo Lang::txt('COM_MASSMAIL_COL_CREATED'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="7"><?php echo $this->rows->pagination; ?></td>
+			</tr>
+		</tfoot>
 		<tbody>
 		<?php if (!$this->rows->count()) { ?>
 			<tr><td colspan="7"><?php echo Lang::txt('COM_MASSMAIL_NO_MAILINGS'); ?></td></tr>
@@ -96,8 +101,6 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 		<?php } } ?>
 		</tbody>
 	</table>
-
-	<?php echo $this->rows->pagination; ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
