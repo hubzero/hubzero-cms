@@ -40,12 +40,23 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 			$current .= ($task       = Request::getWord('task', false)) ? '.' . $task : '';
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
+			// Always let the registration/confirmation controller through so an
+			// unapproved user can still confirm their email address, resend the
+			// confirmation, or change it. Email confirmation and admin approval
+			// are separate gates -- blocking confirmation until approval traps
+			// users who need to confirm first. The hardcoded exceptions match on
+			// the exact option.controller.task.view string, so a stray '.profiles'
+			// view segment (as on /members/register/resend) silently broke the
+			// match and left unapproved users unable to confirm at all.
+			$isRegister = (Request::getWord('option') == 'com_members'
+				&& (Request::getWord('controller') == 'register' || Request::getWord('view') == 'register'));
+
 			// Pull current user data from DB rather than cached session value.
 			// Proper fix should reload the session value
 			$user = \Hubzero\User\User::oneByUsername(User::get('username'));
 
 			// If guest, proceed as normal and they'll land on the login page
-			if (!in_array($current, $exceptions) && !$user->get('approved'))
+			if (!in_array($current, $exceptions) && !$isRegister && !$user->get('approved'))
 			{
 				$originalOption = Request::getWord('option', '');
 

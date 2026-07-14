@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2020 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="Resend Confirmation Email">
+		<message>
+			<![CDATA[Request a new account confirmation email]]>
+		</message>
+	</layout>
+	<state>
+		<name>Resend Confirmation Email</name>
+		<description>Resend Confirmation Email</description>
+	</state>
+</metadata>
