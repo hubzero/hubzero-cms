@@ -1316,15 +1316,113 @@ class Register extends SiteController
 	 */
 	public function resendTask()
 	{
-		// Check if the user is logged in
+		// Incoming
+		$return = urldecode(Request::getString('return', '/'));
+
+		// An unconfirmed user rarely has a live session (that is the whole
+		// point of confirmation), so requiring login to re-request the
+		// confirmation email is a catch-22: the people who need it most are
+		// locked out. Let guests re-request it by entering their email/username.
+		// Abuse is contained with a honeypot, the site CAPTCHA, and a light
+		// per-session throttle, and the response is deliberately neutral so the
+		// form can't be used to discover which addresses have accounts.
 		if (User::isGuest())
 		{
-			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_RESEND'),
-				'warning'
-			);
+			$this->_buildPathway();
+			$this->_buildTitle();
+
+			// First visit (or a bad token) -- just show the request form.
+			if (Request::getMethod() != 'POST')
+			{
+				// Prefill from the email we (almost) always already know: the
+				// confirmation link carries '&email=', and we may be bounced
+				// here from the confirm flow. Only a bare guest who navigated
+				// here with nothing in hand has to type it in.
+				$prefill = trim(Request::getString('email', ''));
+
+				$this->view
+					->set('title', Lang::txt('COM_MEMBERS_REGISTER_RESEND'))
+					->set('hubName', Config::get('sitename'))
+					->set('identifier', $prefill)
+					->setLayout('resend_request')
+					->display();
+				return;
+			}
+
+			// Check for request forgeries
+			Request::checkToken();
+
+			$identifier = trim(Request::getString('identifier', ''));
+			$abuse      = false;
+
+			// Honeypot -- hidden from real users; only bots fill it in.
+			if (Request::getString('botcheck', ''))
+			{
+				$abuse = true;
+			}
+
+			// CAPTCHA (a no-op if no captcha plugin is enabled)
+			$validcaptchas = Event::trigger('captcha.onCheckAnswer');
+			foreach ((array) $validcaptchas as $validcaptcha)
+			{
+				if (!$validcaptcha)
+				{
+					$abuse = true;
+				}
+			}
+
+			// Light per-session throttle: at most 3 sends per 10 minutes.
+			$now    = time();
+			$recent = array();
+			foreach ((array) Session::get('members.resend.times', array()) as $t)
+			{
+				if (($now - $t) < 600)
+				{
+					$recent[] = $t;
+				}
+			}
+			if (count($recent) >= 3)
+			{
+				$abuse = true;
+			}
+
+			if ($abuse)
+			{
+				$this->view
+					->set('title', Lang::txt('COM_MEMBERS_REGISTER_RESEND'))
+					->set('hubName', Config::get('sitename'))
+					->set('identifier', $identifier)
+					->setLayout('resend_request')
+					->setError('Sorry, we could not process that request. Please complete the check below and try again in a few minutes.')
+					->display();
+				return;
+			}
+
+			$recent[] = $now;
+			Session::set('members.resend.times', $recent);
+
+			// Look up the account (matches email, falling back to username).
+			// Only (re)send for a real account that is still unconfirmed and
+			// not blocked.
+			if ($identifier)
+			{
+				$user = User::oneByEmail($identifier);
+				if ($user && $user->get('id')
+					&& $user->get('activation') < 0
+					&& !$user->get('block'))
+				{
+					$this->sendConfirmationEmail($user);
+				}
+			}
+
+			// Neutral response -- never reveal whether the account exists.
+			$this->view
+				->set('title', Lang::txt('COM_MEMBERS_REGISTER_RESEND'))
+				->set('hubName', Config::get('sitename'))
+				->set('identifier', $identifier)
+				->setLayout('resend_sent')
+				->display();
+			return;
 		}
 
 		$xprofile = User::getInstance();
@@ -1335,59 +1433,16 @@ class Register extends SiteController
 		// resend and bounce the user back, so read the current value.
 		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
-		// Incoming
-		$return = urldecode(Request::getString('return', '/'));
-
 		// If already confirmed?
 		if ($email_confirmed == 1 || $email_confirmed == 3)
 		{
 			App::redirect($return);
 		}
 
-		$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
-
-		$xprofile->set('activation', $confirm);
-		$xprofile->save();
-
-		$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
-
-		$eview = new \Hubzero\Mail\View(array(
-			'name'   => 'emails',
-			'layout' => 'confirm'
-		));
-		$eview->option     = $this->_option;
-		$eview->controller = $this->_controller;
-		$eview->sitename   = Config::get('sitename');
-		$eview->login      = $login;
-		$eview->name       = $xprofile->get('name');
-		$eview->registerDate = $xprofile->get('registerDate');
-		$eview->baseURL    = $this->baseURL;
-		$eview->confirm    = $confirm;
-		$eview->email      = $email;
-
-		$msg = new \Hubzero\Mail\Message();
-		$msg->setSubject($subject)
-		    ->addTo($email)
-		    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-		    ->addHeader('X-Component', $this->_option);
-
-		$message = $eview->loadTemplate(false);
-		$message = str_replace("\n", "\r\n", $message);
-
-		$msg->addPart($message, 'text/plain');
-
-		$eview->setLayout('confirm_html');
-		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
-
-		$msg->addPart($message, 'text/html');
-
-		if (!$msg->send())
+		if (!$this->sendConfirmationEmail($xprofile))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $email));
 		}
-
-		Event::trigger('onUserAfterConfirmResend', array($xprofile->toArray()));
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -1405,6 +1460,58 @@ class Register extends SiteController
 			->setLayout('send')
 			->setErrors($this->getErrors())
 			->display();
+	}
+
+	/**
+	 * Regenerate a user's email-confirmation token and send the confirmation
+	 * email. Shared by the logged-in and guest resend paths.
+	 *
+	 * @param   object   $profile  The user to (re)send confirmation to
+	 * @return  boolean  True if the message was handed off to the mailer
+	 */
+	protected function sendConfirmationEmail($profile)
+	{
+		$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
+
+		$profile->set('activation', $confirm);
+		$profile->save();
+
+		$subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+
+		$eview = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => 'confirm'
+		));
+		$eview->option       = $this->_option;
+		$eview->controller   = $this->_controller;
+		$eview->sitename     = Config::get('sitename');
+		$eview->login        = $profile->get('username');
+		$eview->name         = $profile->get('name');
+		$eview->registerDate = $profile->get('registerDate');
+		$eview->baseURL      = $this->baseURL;
+		$eview->confirm      = $confirm;
+		$eview->email        = $profile->get('email');
+
+		$msg = new \Hubzero\Mail\Message();
+		$msg->setSubject($subject)
+		    ->addTo($profile->get('email'))
+		    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
+		    ->addHeader('X-Component', $this->_option);
+
+		$message = $eview->loadTemplate(false);
+		$message = str_replace("\n", "\r\n", $message);
+		$msg->addPart($message, 'text/plain');
+
+		$eview->setLayout('confirm_html');
+		$message = $eview->loadTemplate();
+		$message = str_replace("\n", "\r\n", $message);
+		$msg->addPart($message, 'text/html');
+
+		$sent = $msg->send();
+
+		Event::trigger('onUserAfterConfirmResend', array($profile->toArray()));
+
+		return $sent;
 	}
 
 	/**
@@ -1578,11 +1685,83 @@ class Register extends SiteController
 		// Check if the user is logged in
 		if (User::isGuest())
 		{
-			// Stash the confirmation code in the session so it survives the
-			// login round-trip. The URL 'return' we pass to the login page can
-			// be dropped/reset before the user gets back here, which used to
-			// strand people on the login page unconfirmed; the system/unconfirmed
-			// plugin completes the confirmation from this once they log in.
+			// A valid confirmation link is itself proof that the recipient
+			// controls the email address, so confirm the account directly --
+			// no login required. Requiring a login here is a catch-22: an
+			// unconfirmed user rarely has a working session, which is precisely
+			// why they can get stuck never confirmed. We look the account up
+			// strictly by its pending (negative) activation token and only
+			// activate an account that is still unconfirmed and whose token
+			// matches exactly.
+			if ($code && \Components\Members\Helpers\Utility::isActiveCode($code))
+			{
+				$pending = User::oneByActivationToken(-$code);
+
+				if ($pending && $pending->get('id')
+					&& $pending->get('activation') < 0
+					&& (int) $pending->get('activation') === -(int) $code)
+				{
+					// Respect any post-registration return stored on the account
+					$dest    = '';
+					$cReturn = $this->config->get('ConfirmationReturn');
+					if ($cReturn)
+					{
+						$dest = $cReturn;
+					}
+					$pReturn = base64_decode(urldecode($pending->getParam('return', '')));
+					if ($pReturn)
+					{
+						$dest = $pReturn;
+						$pending->setParam('return', '');
+					}
+
+					// Activate the account
+					$pending->set('activation', 1);
+					$pending->set('access', $this->config->get('privacy', 1));
+
+					if (!$pending->save())
+					{
+						$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
+					}
+					else
+					{
+						Event::trigger('onUserAfterConfirmEmail', array($pending->toArray()));
+					}
+
+					// Nothing left for the system/unconfirmed plugin to finish
+					Session::set('members.confirmcode', null);
+
+					// Send them on to log in, landing on their intended page
+					if (empty($dest))
+					{
+						$dest = Route::url('index.php?option=com_members&task=myaccount');
+					}
+					$loginUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($dest), false);
+
+					$this->_buildPathway();
+					$this->_buildTitle();
+
+					$this->view
+						->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
+						->set('login', $pending->get('username'))
+						->set('email', $pending->get('email'))
+						->set('code', $code)
+						->set('justConfirmed', !$this->getError())
+						->set('loginUrl', $loginUrl)
+						->set('redirect', $loginUrl)
+						->set('sitename', Config::get('sitename'))
+						->setErrors($this->getErrors())
+						->setLayout('confirm')
+						->display();
+					return;
+				}
+			}
+
+			// Not a clean, still-pending token match (already confirmed, or a
+			// bad/expired code) -- fall back to the login round-trip. Stash the
+			// code so the URL 'return' being dropped/reset before the user gets
+			// back here no longer strands them: the system/unconfirmed plugin
+			// completes the confirmation from this once they log in.
 			if ($code)
 			{
 				Session::set('members.confirmcode', $code);
