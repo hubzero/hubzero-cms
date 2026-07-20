@@ -27,12 +27,12 @@ $this->css('register')
 			<div class="error">
 				<h4><?php echo Lang::txt('Invalid Confirmation'); ?></h4>
 				<p>The email confirmation link you followed is no longer valid. Your email address "<?php echo $this->escape($this->email); ?>" has not been confirmed.</p>
-				<p>Please be sure to click the link from the latest confirmation email received.  Earlier confirmation emails will be invalid. If you cannot locate a newer confirmation email, you may <a href="<?php echo Route::url('index.php?option='.$this->option.'&task=resend&email='.urlencode($this->email)); ?>">resend a new confirmation email</a>.</p>
+				<p>Please be sure to click the link from the latest confirmation email received.  Earlier confirmation emails will be invalid. If you cannot locate a newer confirmation email, you may <a href="<?php echo Route::url('index.php?option='.$this->option.'&task=resend&email='.urlencode((string) $this->email)); ?>">resend a new confirmation email</a>.</p>
 			</div>
 		</div><!-- / .subject -->
 		<aside class="aside">
 		<h4>Never received or cannot find the confirmation email?</h4>
-		<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo Route::url('index.php?option='.$this->option.'&task=resend&email='.urlencode($this->email).'&return='.$this->redirect); ?>">clicking here</a>.</p>
+		<p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo Route::url('index.php?option='.$this->option.'&task=resend&email='.urlencode((string) $this->email).'&return='.$this->redirect); ?>">clicking here</a>.</p>
 	</aside><!-- / .aside -->
 	</div>
 <?php elseif (!empty($this->justConfirmed)) : ?>
