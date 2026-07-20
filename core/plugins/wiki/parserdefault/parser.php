@@ -1520,6 +1520,9 @@ class WikiParser
 	 */
 	private function macros($text)
 	{
+		// Guard against null content (PHP 8.1+: passing null to preg_* is deprecated)
+		$text = (string) $text;
+
 		$path = __DIR__;
 		if (is_file($path . DS . 'macro.php'))
 		{
@@ -1990,6 +1993,9 @@ class WikiParser
 	 */
 	private function headings($text)
 	{
+		// Guard against null content (PHP 8.1+: passing null to preg_* is deprecated)
+		$text = (string) $text;
+
 		for ($i = 6; $i >= 1; --$i)
 		{
 			$h = str_repeat('=', $i);
