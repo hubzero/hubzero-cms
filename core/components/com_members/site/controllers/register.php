@@ -580,6 +580,13 @@ class Register extends SiteController
 				$suser->set('username', $xprofile->get('username'));
 				$suser->set('email', $xprofile->get('email'));
 				$suser->set('name', $xprofile->get('name'));
+				// Keep the session's activation state in step with the DB. Changing
+				// the email sets a new pending-confirmation token on the account;
+				// if the session still held the old (confirmed) value, the
+				// unconfirmed system plugin (which reads the DB) and
+				// register::unconfirmedTask (which reads the session) would
+				// disagree and bounce the user in a redirect loop.
+				$suser->set('activation', $xprofile->get('activation'));
 				Session::set('user', $suser);
 
 				// Update the session entry
@@ -1038,6 +1045,15 @@ class Register extends SiteController
 			$xregistration = new \Components\Members\Models\Registration();
 		}
 
+		// Third-party-auth users carry an internal "-N@invalid" placeholder
+		// address. Don't pre-fill the email field with it — blank it so the
+		// user sees an empty box and supplies a real address.
+		if (preg_match('/^-[0-9]+@invalid$/', (string) $xregistration->get('email')))
+		{
+			$xregistration->set('email', '');
+			$xregistration->set('confirmEmail', '');
+		}
+
 		// Push some values to the view
 		$rules = \Hubzero\Password\Rule::all()
 			->whereEquals('enabled', 1)
@@ -1072,6 +1088,20 @@ class Register extends SiteController
 			else
 			{
 				$this->view->registrationUsername = Field::STATE_READONLY;
+			}
+
+			// Third-party-auth users (e.g. ORCID) arrive without a usable email
+			// address — the configured 'update' state is read-only, which would
+			// leave them stuck with a placeholder "-N@invalid" address they can't
+			// change. When the address is missing or a placeholder, require them
+			// to supply a real one; a user who already has a valid address keeps
+			// the configured (read-only) behaviour.
+			$email = $xregistration->get('email');
+
+			if (empty($email) || substr($email, -8) == '@invalid')
+			{
+				$this->view->registrationEmail = Field::STATE_REQUIRED;
+				$this->view->registrationConfirmEmail = Field::STATE_REQUIRED;
 			}
 
 			$this->view->registrationPassword = Field::STATE_HIDDEN;
@@ -1211,7 +1241,10 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
-		$email_confirmed = $xprofile->get('activation');
+		// Authoritative activation from the DB. A stale session copy (e.g. after
+		// an email change) can read as "confirmed" and make us silently skip the
+		// resend and bounce the user back, so read the current value.
+		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
 		// Incoming
 		$return = urldecode(Request::getString('return', '/'));
@@ -1610,16 +1643,31 @@ class Register extends SiteController
 	public function unconfirmedTask()
 	{
 		$xprofile = User::getInstance();
-		$email_confirmed = $xprofile->get('activation');
+
+		// Read the activation state from the database, not the (possibly stale)
+		// session. The unconfirmed system plugin that routes the user here reads
+		// the DB; if we trusted a session value that disagreed with it we would
+		// redirect straight back into the plugin and loop forever.
+		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
 		// Incoming
 		$return = Request::getString('return', urlencode('/'));
 
+		// Loop guard: even if some unforeseen state mismatch lines up to send us
+		// back to this page over and over, never redirect off it more than a few
+		// times in a row. Once the counter trips we fall through and render the
+		// page so the user can never be trapped in an infinite redirect loop.
+		$redirects = (int) Session::get('members.unconfirmed.redirects', 0);
+
 		// Check if the email has been confirmed
-		if ($email_confirmed == 1 || $email_confirmed == 3)
+		if (($email_confirmed == 1 || $email_confirmed == 3) && $redirects < 3)
 		{
+			Session::set('members.unconfirmed.redirects', $redirects + 1);
 			App::redirect(urldecode($return));
 		}
+
+		// We're rendering the page rather than redirecting — clear the guard.
+		Session::set('members.unconfirmed.redirects', 0);
 
 		// Check if the user is logged in
 		if (User::isGuest())

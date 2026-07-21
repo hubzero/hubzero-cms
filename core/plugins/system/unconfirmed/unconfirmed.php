@@ -56,11 +56,32 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 			&& ($activation != 3)
 			&& !in_array($current, $exceptions))
 			{
+				$originalOption = Request::getWord('option', '');
+
 				Request::setVar('option', 'com_members');
 				Request::setVar('controller', 'register');
 				Request::setVar('task', 'unconfirmed');
 
 				$this->event->stop();
+
+				// The site's front-page template only renders the component
+				// position on non-default menu items, so the in-place swap above
+				// produces no visible output on the home page — the user just
+				// sees the landing page instead of the "confirm your email"
+				// notice. On the default menu item, redirect to the real URL so
+				// we land on a page whose template shows the component. The
+				// $originalOption guard keeps this from firing on the redirect
+				// target itself (com_members), so it can't loop.
+				if (!in_array($originalOption, array('com_members')))
+				{
+					$menu = App::get('menu');
+
+					if (is_object($menu->getActive()) && is_object($menu->getDefault())
+						&& $menu->getActive()->id == $menu->getDefault()->id)
+					{
+						App::redirect(Route::url('index.php?option=com_members&controller=register&task=unconfirmed'));
+					}
+				}
 			}
 		}
 	}

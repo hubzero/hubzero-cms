@@ -230,9 +230,19 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 				$response->username = '-' . $hzal->id;
 				$response->email    = $response->username . '@invalid';
 
-				// Also set a suggested username for their hub account
+				// Suggest a username for their hub account. The other auth
+				// plugins derive this from the email local-part, but ORCID's
+				// public API returns no email, so default to the ORCID-iD-based
+				// username (always present and unique) so the field is never
+				// left blank on the registration form.
 				$sub_email    = explode('@', $orcid->email() ?? '', 2);
 				$tmp_username = $sub_email[0];
+
+				if ($tmp_username === '')
+				{
+					$tmp_username = strtolower(str_replace('-', '_', 'u' . $username));
+				}
+
 				Session::set('auth_link.tmp_username', $tmp_username);
 			}
 
