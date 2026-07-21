@@ -26,10 +26,10 @@
   align-items: center;
 }
 .modnotices.low {
-  background-color: #c2571a;
+  background-color: #107896;
 }
 .modnotices.medium {
-  background-color: #107896;
+  background-color: #c2571a;
 }
 .modnotices.high {
   background-color: #9a2617;
