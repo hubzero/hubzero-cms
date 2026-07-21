@@ -1050,6 +1050,26 @@ class Publications extends SiteController
 			return;
 		}
 
+		// No queue row yet, but a served bundle already exists on disk — one built
+		// by the legacy in-request packager before async was enabled, or a version
+		// left over after a queue reset (TRUNCATE rollback). Serve it directly
+		// rather than needlessly rebuilding it, so enabling bundle_async on any
+		// host is safe with no manual backfill of the queue.
+		if ($status === null)
+		{
+			$existing = $this->model->path('base', true) . DS . $this->model->_curationModel->getBundleName();
+
+			if (is_file($existing))
+			{
+				if ($this->model->isPublished())
+				{
+					$this->model->logAccess('primary');
+				}
+				$this->model->_curationModel->serveBundle();
+				return;
+			}
+		}
+
 		// Never built, or ready-but-stale (needs repair): (re)queue it.
 		if ($status === null || $status == \Components\Publications\Models\BundleQueue::STATUS_READY)
 		{
