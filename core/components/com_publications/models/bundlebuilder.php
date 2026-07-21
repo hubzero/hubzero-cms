@@ -1861,8 +1861,6 @@ class BundleBuilder
 			return;
 		}
 
-		$hasReadme  = ($zip->locateName($name . '/README.txt') !== false)
-				   || ($zip->locateName($name . '/hubREADME.txt') !== false);
 		$hasLicense = ($zip->locateName($name . '/LICENSE.txt') !== false);
 
 		$hasGallery = false;
@@ -1880,12 +1878,24 @@ class BundleBuilder
 		{
 			list($kind, $entry) = $info;
 
-			if (($kind === 'readme' && $hasReadme)
-				|| ($kind === 'license' && $hasLicense)
+			if ($kind === 'readme')
+			{
+				// Always REFRESH the archival readme: drop any existing copy of
+				// this entry (the regenerated hubREADME.txt) so a rebuild replaces
+				// a stale one instead of keeping it. Only this archival entry is
+				// dropped -- never an author-supplied README.txt payload, which is
+				// added as an ordinary file, not metadata.
+				if ($zip->locateName($entry) !== false)
+				{
+					$zip->deleteName($entry);
+				}
+			}
+			elseif (($kind === 'license' && $hasLicense)
 				|| ($kind === 'gallery' && $hasGallery))
 			{
 				continue;
 			}
+
 			if ($zip->locateName($entry) !== false || !is_file($abs))
 			{
 				continue;
@@ -1925,25 +1935,30 @@ class BundleBuilder
 	{
 		$meta = array();
 
-		// README — content from the on-disk copy (legacy README.txt or modern
-		// hubREADME.txt); regenerate to hubREADME.txt when neither is present.
+		// README — always REGENERATE the archival readme so a stale copy left in
+		// the base dir (e.g. a draft-era stub from before the version was
+		// published) is never embedded. The legacy packager likewise rewrote the
+		// readme on every build; the async builder must match, or a version whose
+		// publish-time build failed (too large) and is later built off-request
+		// ships the outdated draft readme. Fall back to an on-disk copy only if
+		// generation somehow yields nothing.
 		$readme = null;
-		foreach (array('hubREADME.txt', 'README.txt') as $rn)
+		$text   = $this->generateReadme($versionId, $version);
+		if ($text !== '' && @file_put_contents($base . DS . 'hubREADME.txt', $text) !== false)
 		{
-			if (is_file($base . DS . $rn))
-			{
-				$readme = $rn;
-				break;
-			}
+			@chgrp($base . DS . 'hubREADME.txt', 'access-content');
+			@chmod($base . DS . 'hubREADME.txt', 0664);
+			$readme = 'hubREADME.txt';
 		}
-		if ($readme === null)
+		else
 		{
-			$text = $this->generateReadme($versionId, $version);
-			if ($text !== '' && @file_put_contents($base . DS . 'hubREADME.txt', $text) !== false)
+			foreach (array('hubREADME.txt', 'README.txt') as $rn)
 			{
-				@chgrp($base . DS . 'hubREADME.txt', 'access-content');
-				@chmod($base . DS . 'hubREADME.txt', 0664);
-				$readme = 'hubREADME.txt';
+				if (is_file($base . DS . $rn))
+				{
+					$readme = $rn;
+					break;
+				}
 			}
 		}
 		if ($readme !== null)

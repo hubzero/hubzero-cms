@@ -139,6 +139,21 @@ class BundleBuilderTest extends Basic
 	}
 
 	/**
+	 * Call the protected ensureMetadata().
+	 *
+	 * @param   \ZipArchive  $zip
+	 * @param   string       $name
+	 * @param   array        $metadata
+	 * @return  void
+	 */
+	protected function ensureMetadata($zip, $name, $metadata)
+	{
+		$m = new \ReflectionMethod($this->builder, 'ensureMetadata');
+		$m->setAccessible(true);
+		$m->invoke($this->builder, $zip, $name, $metadata);
+	}
+
+	/**
 	 * Test-local recursive remove (does not follow symlinks).
 	 *
 	 * @param   string  $dir
@@ -451,5 +466,60 @@ class BundleBuilderTest extends Basic
 
 		$this->assertFalse($this->linkInto($this->root . $ds . 'nope.zip', $link));
 		$this->assertFileDoesNotExist($link);
+	}
+
+	/**
+	 * ensureMetadata REFRESHES the archival readme: on a rebuild it replaces a
+	 * stale hubREADME.txt entry with the freshly regenerated one (never keeps the
+	 * old copy, never duplicates it), while leaving an author-supplied README.txt
+	 * payload untouched and keeping an already-present gallery as-is (backfill
+	 * only). This is what stops a version built off-request from shipping a
+	 * stale draft readme (ticket 2787 / pub 5149).
+	 *
+	 * @return  void
+	 */
+	public function testEnsureMetadataRefreshesReadmeButKeepsPayload()
+	{
+		$ds   = DIRECTORY_SEPARATOR;
+		$name = '10_4231_ABCD-1234';
+		$z    = $this->root . $ds . 'outer.zip';
+
+		$a = new \ZipArchive();
+		$a->open($z, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+		$a->addFromString($name . '/hubREADME.txt', 'STALE ARCHIVAL README');
+		$a->addFromString($name . '/README.txt', 'AUTHOR PAYLOAD');   // author's own file, not archival
+		$a->addFromString($name . '/gallery/pic.png', 'ORIGINAL IMG');
+		$a->close();
+
+		// The freshly regenerated archival readme + a (would-be) gallery source.
+		$fresh  = $this->root . $ds . 'hubREADME.txt';
+		file_put_contents($fresh, 'FRESH ARCHIVAL README');
+		$galSrc = $this->root . $ds . 'pic.png';
+		file_put_contents($galSrc, 'NEW IMG');
+
+		$a = new \ZipArchive();
+		$a->open($z);
+		$this->ensureMetadata($a, $name, array(
+			$fresh  => array('readme',  $name . '/hubREADME.txt'),
+			$galSrc => array('gallery', $name . '/gallery/pic.png'),
+		));
+		$a->close();
+
+		$a = new \ZipArchive();
+		$a->open($z);
+		$this->assertSame('FRESH ARCHIVAL README', $a->getFromName($name . '/hubREADME.txt'), 'archival readme refreshed');
+		$this->assertSame('AUTHOR PAYLOAD', $a->getFromName($name . '/README.txt'), 'author payload README.txt untouched');
+		$this->assertSame('ORIGINAL IMG', $a->getFromName($name . '/gallery/pic.png'), 'gallery kept, not overwritten (backfill only)');
+
+		$count = 0;
+		for ($i = 0; $i < $a->numFiles; $i++)
+		{
+			if ($a->getNameIndex($i) === $name . '/hubREADME.txt')
+			{
+				$count++;
+			}
+		}
+		$a->close();
+		$this->assertSame(1, $count, 'exactly one archival readme entry (refreshed, not duplicated)');
 	}
 }
