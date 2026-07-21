@@ -247,8 +247,10 @@ class Arr
 		{
 			case 'INT':
 			case 'INTEGER':
-				// Only use the first integer value
-				@preg_match('/-?[0-9]+/', $result, $matches);
+				// Only use a LEADING integer value (whitespace trimmed). Anchored
+				// so digits are never scavenged from mid-string -- otherwise a
+				// value like "jesus1993coral@gmail.com" would yield 1993.
+				@preg_match('/^-?[0-9]+/', trim((string) $result), $matches);
 				$result = @(int) $matches[0];
 				break;
 

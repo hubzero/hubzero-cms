@@ -189,11 +189,16 @@ class Request extends BaseRequest
 	{
 		$str = $this->getVar($key, $default, $hash);
 		$str = is_array($str) ? self::_flatten('', $str) : $str;
+		$str = trim($str === null ? '' : (string) $str);
 
-		if (preg_match('/-?[0-9]+/', $str == null ? '' : $str, $matches))
+		// Read only a LEADING integer (whitespace already trimmed above). The
+		// match is anchored so digits are never scavenged from the middle of
+		// arbitrary text: "jesus1993coral@gmail.com" returns the default, not
+		// 1993 -- the unanchored match let an email typed into an id field
+		// resolve to a bogus user id (collaborator/author "look up by ID").
+		if (preg_match('/^-?[0-9]+/', $str, $matches))
 		{
-			$result = $matches[0];
-			return (!is_null($result) ? (int) $result : $default);
+			return (int) $matches[0];
 		}
 
 		return $default;
