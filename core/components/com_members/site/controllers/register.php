@@ -26,6 +26,7 @@ use Components\Members\Helpers\ReturnUrl;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'returnurl.php';
 
 /**
  * Controller class for member registration
