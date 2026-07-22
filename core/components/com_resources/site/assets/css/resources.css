@@ -409,6 +409,14 @@
 		display: block;
 	}
 
+	.launch-new-instance {
+		margin: -1em 0 1.5em 0;
+	}
+	.launch-new-instance .btn {
+		display: block;
+		text-align: center;
+	}
+
 	#primary-document_pop {
 		display: none;
 		position: absolute;

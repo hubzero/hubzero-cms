@@ -824,7 +824,24 @@ class Html
 					//} else {
 						$pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
 						$pop = ($resource->revision =='dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
-						$html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
+
+						$existingSession = self::findExistingToolSession($resource);
+						if ($existingSession)
+						{
+							$resumeUrl = Route::url(
+								'index.php?option=com_tools&task=session'
+								. '&app=' . $existingSession->appname
+								. '&sess=' . $existingSession->sessnum
+							);
+							$routedLurl = Route::url($lurl);
+							$newUrl = $routedLurl . (strpos($routedLurl, '?') !== false ? '&newinstance=1' : '?newinstance=1');
+							$html .= self::primaryButton('resumetool', $resumeUrl, Lang::txt('COM_RESOURCES_RESUME_TOOL'), '', Lang::txt('COM_RESOURCES_RESUME_TOOL_TITLE'), '', 0, $pop);
+							$html .= '<p class="launch-new-instance"><a class="btn btn-secondary" href="' . $newUrl . '">' . Lang::txt('COM_RESOURCES_LAUNCH_NEW_INSTANCE') . '</a></p>';
+						}
+						else
+						{
+							$html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
+						}
 					//}
 				}
 				else
@@ -1093,6 +1110,71 @@ class Html
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Look for an existing middleware session for the current user that matches
+	 * this tool resource (any version). Returns the most recently accessed one,
+	 * or null when none exist / middleware is unavailable.
+	 *
+	 * @param   object  $resource  Tool resource
+	 * @return  object|null
+	 */
+	protected static function findExistingToolSession($resource)
+	{
+		if (User::isGuest())
+		{
+			return null;
+		}
+
+		if (!$resource->alias)
+		{
+			return null;
+		}
+
+		// The session appname is the attached revision: alias_r<rev>, or "_dev" for the dev version.
+		$appname = (!isset($resource->revision) || $resource->revision == 'dev')
+			? $resource->alias . '_dev'
+			: $resource->alias . '_r' . $resource->revision;
+
+		try
+		{
+			require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+
+			$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+			if (!$mwdb)
+			{
+				return null;
+			}
+
+			$toolsTables = \Component::path('com_tools') . DS . 'tables';
+			require_once $toolsTables . DS . 'viewperm.php';
+			require_once $toolsTables . DS . 'session.php';
+
+			$ms = new \Components\Tools\Tables\Session($mwdb);
+			$records = $ms->getRecords(User::get('username'), $appname, false);
+		}
+		catch (\Exception $e)
+		{
+			return null;
+		}
+
+		if (!$records)
+		{
+			return null;
+		}
+
+		// Records are already filtered to this appname; pick the most recently accessed.
+		$match = null;
+		foreach ($records as $row)
+		{
+			if (!$match || strtotime($row->accesstime) > strtotime($match->accesstime))
+			{
+				$match = $row;
+			}
+		}
+
+		return $match;
 	}
 
 	/**
