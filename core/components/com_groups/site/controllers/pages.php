@@ -173,6 +173,22 @@ class Pages extends Base
 			$this->view->version = $this->version;
 		}
 
+		// For a new page in a group that isn't fully public, default the
+		// privacy to members-only so private group content isn't published
+		// publicly by default. ('default' privacy would otherwise inherit the
+		// overview tab's access, which can be public even on a restricted
+		// group.) The author can still change this in the form.
+		if ($new && !$this->view->page->get('privacy'))
+		{
+			$isPrivateGroup = ($this->group->get('join_policy') != 0
+				|| $this->group->get('discoverability') == 1);
+
+			if ($isPrivateGroup)
+			{
+				$this->view->page->set('privacy', 'members');
+			}
+		}
+
 		// checkout page
 		Helpers\Pages::checkout($this->view->page->get('id'));
 

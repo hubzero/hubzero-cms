@@ -319,9 +319,9 @@ class Pages extends SiteController
 			);
 		}
 
-		// Check if the page can be edited
-		if ((!$this->page->access('edit') || ($this->page->created_by && $this->page->created_by != User::get('id')))
-			&& !$this->page->access('manage'))
+		// Check if the page can be edited. access('edit') already encodes
+		// ownership (core.edit, or the creator via core.edit.own).
+		if (!$this->page->access('edit') && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),
@@ -330,8 +330,8 @@ class Pages extends SiteController
 			);
 		}
 
-		// make help pages noneditable
-		if ($this->page->getNamespace() == 'help')
+		// Help pages are shipped documentation; only wiki managers may edit them
+		if ($this->page->getNamespace() == 'help' && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),
@@ -426,6 +426,17 @@ class Pages extends SiteController
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
+		}
+		// Include the page's ancestors in the trail (matches the display view)
+		if ($this->page->get('parent'))
+		{
+			foreach ($this->page->ancestors() as $p)
+			{
+				Pathway::append(
+					$p->get('title'),
+					$p->link()
+				);
+			}
 		}
 		Pathway::append(
 			$this->page->title,
@@ -756,9 +767,9 @@ class Pages extends SiteController
 				'error'
 			);
 		}
-		// Make sure they're authorized to delete
-		if ((!$this->page->access('delete') || ($this->page->created_by && $this->page->created_by != User::get('id')))
-			&& !$this->page->access('manage'))
+		// Make sure they're authorized to delete. access('delete') already
+		// encodes ownership via the ACL.
+		if (!$this->page->access('delete') && !$this->page->access('manage'))
 		{
 			App::redirect(
 				Route::url($this->page->link()),
@@ -886,13 +897,24 @@ class Pages extends SiteController
 			);
 		}
 
-		// Make sure they're authorized to delete
+		// Make sure they're authorized
 		if (!$this->page->access('edit'))
 		{
 			App::redirect(
 				Route::url($this->page->link('base')),
 				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
+			);
+		}
+
+		// The wiki home page cannot be renamed (change the homepage setting first)
+		if ($this->page->get('pagename') == $this->book->config('homepage', 'MainPage')
+			&& !$this->page->get('path'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
+				'warning'
 			);
 		}
 
@@ -973,6 +995,27 @@ class Pages extends SiteController
 
 		// Load the page
 		$this->page = Page::oneByPath($oldpagename, $this->book->get('scope'), $this->book->get('scope_id'));
+
+		// Must be authorized to edit the page being renamed
+		if (!$this->page->access('edit') && !$this->page->access('manage'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
+				'error'
+			);
+		}
+
+		// The wiki home page cannot be renamed (change the homepage setting first)
+		if ($this->page->get('pagename') == $this->book->config('homepage', 'MainPage')
+			&& !$this->page->get('path'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
+				'warning'
+			);
+		}
 
 		$newpagename = $this->page->normalize($newpagename);
 

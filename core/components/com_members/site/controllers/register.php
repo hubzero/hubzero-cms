@@ -22,8 +22,11 @@ use User;
 use Date;
 use App;
 
+use Components\Members\Helpers\ReturnUrl;
+
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'returnurl.php';
 
 /**
  * Controller class for member registration
@@ -578,6 +581,13 @@ class Register extends SiteController
 				$suser->set('username', $xprofile->get('username'));
 				$suser->set('email', $xprofile->get('email'));
 				$suser->set('name', $xprofile->get('name'));
+				// Keep the session's activation state in step with the DB. Changing
+				// the email sets a new pending-confirmation token on the account;
+				// if the session still held the old (confirmed) value, the
+				// unconfirmed system plugin (which reads the DB) and
+				// register::unconfirmedTask (which reads the session) would
+				// disagree and bounce the user in a redirect loop.
+				$suser->set('activation', $xprofile->get('activation'));
 				Session::set('user', $suser);
 
 				// Update the session entry
@@ -628,6 +638,11 @@ class Register extends SiteController
 				if ($suri == '/register/update' || $suri == '/members/update' || $suri == '/members/register/update')
 				{
 					$suri = Route::url('index.php?option=' . $this->_option . '&task=myaccount');
+				}
+
+				if (!$suri)
+				{
+					$suri = rtrim(Request::base(true), '/') . '/';
 				}
 
 				App::redirect(
@@ -884,8 +899,9 @@ class Register extends SiteController
 					$user->set('password', \Hubzero\User\Password::getPasshash($xregistration->get('password')));
 				}
 
-				// Do we have a return URL?
-				$regReturn = Request::getString('return', '');
+				// Do we have a return URL? Sanitize to an internal target so it
+				// can never be used as an open redirect at confirmation time.
+				$regReturn = ReturnUrl::sanitize(Request::getString('return', ''));
 
 				if ($regReturn)
 				{
@@ -1030,6 +1046,15 @@ class Register extends SiteController
 			$xregistration = new \Components\Members\Models\Registration();
 		}
 
+		// Third-party-auth users carry an internal "-N@invalid" placeholder
+		// address. Don't pre-fill the email field with it — blank it so the
+		// user sees an empty box and supplies a real address.
+		if (preg_match('/^-[0-9]+@invalid$/', (string) $xregistration->get('email')))
+		{
+			$xregistration->set('email', '');
+			$xregistration->set('confirmEmail', '');
+		}
+
 		// Push some values to the view
 		$rules = \Hubzero\Password\Rule::all()
 			->whereEquals('enabled', 1)
@@ -1064,6 +1089,20 @@ class Register extends SiteController
 			else
 			{
 				$this->view->registrationUsername = Field::STATE_READONLY;
+			}
+
+			// Third-party-auth users (e.g. ORCID) arrive without a usable email
+			// address — the configured 'update' state is read-only, which would
+			// leave them stuck with a placeholder "-N@invalid" address they can't
+			// change. When the address is missing or a placeholder, require them
+			// to supply a real one; a user who already has a valid address keeps
+			// the configured (read-only) behaviour.
+			$email = $xregistration->get('email');
+
+			if (empty($email) || substr($email, -8) == '@invalid')
+			{
+				$this->view->registrationEmail = Field::STATE_REQUIRED;
+				$this->view->registrationConfirmEmail = Field::STATE_REQUIRED;
 			}
 
 			$this->view->registrationPassword = Field::STATE_HIDDEN;
@@ -1203,7 +1242,10 @@ class Register extends SiteController
 		$xprofile = User::getInstance();
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
-		$email_confirmed = $xprofile->get('activation');
+		// Authoritative activation from the DB. A stale session copy (e.g. after
+		// an email change) can read as "confirmed" and make us silently skip the
+		// resend and bounce the user back, so read the current value.
+		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
 		// Incoming
 		$return = urldecode(Request::getString('return', '/'));
@@ -1442,8 +1484,8 @@ class Register extends SiteController
 			$code = Request::getString('code', false);
 		}
 
-		// Get the return value if it was requested
-		$return = Request::getString('return', false);
+		// Get the return value if it was requested (validated as internal)
+		$return = ReturnUrl::sanitize(Request::getString('return', false));
 
 		// Check if the user is logged in
 		if (User::isGuest())
@@ -1469,8 +1511,8 @@ class Register extends SiteController
 				Request::setVar('task', 'login');
 				Request::setVar('option', 'com_login');
 
-				$authController->login();
-				// $authController->login() always redirects, should never make it here
+				$authController->loginTask();
+				// loginTask() always redirects, so we should never make it here
 			}
 			else
 			{
@@ -1524,21 +1566,14 @@ class Register extends SiteController
 		}
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code)
 		{
-			//var to hold return path
-			$return = '';
+			// Where to send them after confirming: the return stored at
+			// registration, else the configured default. Both are validated as
+			// internal, so a stored value can never become an open redirect.
+			$return = ReturnUrl::resolve('', $xprofile, $this->config->get('ConfirmationReturn'));
 
-			// get return path
-			$cReturn = $this->config->get('ConfirmationReturn');
-			if ($cReturn)
+			// Consume the stored return
+			if ($xprofile->getParam('return'))
 			{
-				$return = $cReturn;
-			}
-
-			//check to see if we have a return param
-			$pReturn = base64_decode(urldecode($xprofile->getParam('return','')));
-			if ($pReturn)
-			{
-				$return = $pReturn;
 				$xprofile->setParam('return', '');
 			}
 
@@ -1563,18 +1598,17 @@ class Register extends SiteController
 
 			Event::trigger('onUserAfterConfirmEmail', array($xprofile->toArray()));
 
-			// Redirect
-			if (empty($return))
+			// Fall back to a pre-registration action stored in a cookie, then to
+			// the account page. The cookie value is validated as internal too.
+			if (!$return && isset($_COOKIE['return']))
 			{
-				$r = $this->config->get('ConfirmationReturn');
-				$return = ($r) ? $r : Route::url('index.php?option=com_members&task=myaccount');
+				$return = ReturnUrl::sanitize($_COOKIE['return']);
+				setcookie('return', '', time() - 3600);
+			}
 
-				// consume cookie (yum) if available to return to whatever action prompted registration
-				if (isset($_COOKIE['return']))
-				{
-					$return = $_COOKIE['return'];
-					setcookie('return', '', time() - 3600);
-				}
+			if (!$return)
+			{
+				$return = Route::url('index.php?option=com_members&task=myaccount');
 			}
 
 			App::redirect($return, '', 'message', true);
@@ -1610,16 +1644,31 @@ class Register extends SiteController
 	public function unconfirmedTask()
 	{
 		$xprofile = User::getInstance();
-		$email_confirmed = $xprofile->get('activation');
+
+		// Read the activation state from the database, not the (possibly stale)
+		// session. The unconfirmed system plugin that routes the user here reads
+		// the DB; if we trusted a session value that disagreed with it we would
+		// redirect straight back into the plugin and loop forever.
+		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
 		// Incoming
 		$return = Request::getString('return', urlencode('/'));
 
+		// Loop guard: even if some unforeseen state mismatch lines up to send us
+		// back to this page over and over, never redirect off it more than a few
+		// times in a row. Once the counter trips we fall through and render the
+		// page so the user can never be trapped in an infinite redirect loop.
+		$redirects = (int) Session::get('members.unconfirmed.redirects', 0);
+
 		// Check if the email has been confirmed
-		if ($email_confirmed == 1 || $email_confirmed == 3)
+		if (($email_confirmed == 1 || $email_confirmed == 3) && $redirects < 3)
 		{
+			Session::set('members.unconfirmed.redirects', $redirects + 1);
 			App::redirect(urldecode($return));
 		}
+
+		// We're rendering the page rather than redirecting — clear the guard.
+		Session::set('members.unconfirmed.redirects', 0);
 
 		// Check if the user is logged in
 		if (User::isGuest())

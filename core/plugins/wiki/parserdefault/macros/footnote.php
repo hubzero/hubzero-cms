@@ -21,8 +21,21 @@ class FootNoteMacro extends WikiMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.';
-		$txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.</p>';
+		$txt['wiki'] = "Add a footnote, or explicitly display collected footnotes when no args are given. Useful for citations.
+
+Examples:
+ * [[Footnote(I am a footnote)]]  # add a reference to a footnote with text 'I am a footnote'
+ * [[Footnote(reflabel | I am another footnote )]]  # add a reference with label 'reflabel' to a footnote with text 'I am another footnote'. The label can be used in future footnote macro calls to reference the same footnote (see next example).
+ * [[Footnote(reflabel)]]  # add a reference to a new footnote with text 'reflabel' or an existing footnote with label or text 'reflabel'
+ * [[Footnote]]  # display all collected footnotes in a referenced list";
+		$txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args are given.  Useful for citations.</p>
+<p>Examples:</p>
+<ul>
+<li><code>[[Footnote(I am a footnote)]]</code>  # add a reference to a footnote with text "I am a footnote"</li>
+<li><code>[[Footnote(reflabel | I am another footnote )]]</code>  # add a reference with label "reflabel" to a footnote with text "I am another footnote". The label can be used in future footnote macro calls to reference the same footnote (see next example).</li>
+<li><code>[[Footnote(reflabel)]]</code>  # add a reference to a new footnote with text "reflabel" or an existing footnote with label or text "reflabel"</li>
+<li><code>[[Footnote]]</code>  # display all collected footnotes in a referenced list</li>
+</ul>';
 		return $txt['html'];
 	}
 
@@ -39,29 +52,37 @@ class FootNoteMacro extends WikiMacro
 		{
 			$wm = new stdClass();
 			$wm->footnotes = array();
-			$wm->footnotes_notes = array();
+			$wm->footnotes_stubs = array();
 			$wm->footnotes_count = 0;
 		}
 
-		$note = $this->args;
-
-		if ($note)
+		if ($this->args)
 		{
 			$p = new WikiParser('Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain);
-//echo $note . '<br /><br />';
-			$note = $p->parse(trim($note));
+
+			// Args are either "note" or "label | note". The label (stub) lets a
+			// later [[Footnote(label)]] reference the same footnote. When no label
+			// is given the note text itself acts as the stub.
+			// Split on the FIRST pipe only so footnote text may contain '|'.
+			$args = explode('|', $this->args, 2);
+			$stub = trim(array_shift($args));
+			$note = (isset($args[0]) ? trim($args[0]) : $stub);
 
 			$wm->footnotes_count++;
 
-			if (in_array($note, $wm->footnotes_notes))
+			// Only labelled (non-empty stub) footnotes are de-duplicated;
+			// otherwise distinct footnotes with empty stubs would collide.
+			if ($stub !== '' && in_array($stub, $wm->footnotes_stubs))
 			{
-				$i = array_search($note, $wm->footnotes_notes) + 1;
+				$i = array_search($stub, $wm->footnotes_stubs) + 1;
 				$k = $wm->footnotes_count;
 
 				$wm->footnotes[$i-1]->refs[] = 'fndef-' . $k;
 
-				return '<sup id="fndef-' . $k . '"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+				return '<sup id="fndef-' . $k . '" class="tex2jax_ignore"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
 			}
+
+			$note = $p->parse($note);
 
 			$i = count($wm->footnotes) + 1;
 
@@ -72,10 +93,10 @@ class FootNoteMacro extends WikiMacro
 				'fndef-' . $i
 			);
 
-			$wm->footnotes_notes[] = $note;
+			$wm->footnotes_stubs[] = $stub;
 			$wm->footnotes[] = $footnote;
 
-			return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+			return '<sup id="fndef-' . $i . '" class="tex2jax_ignore"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
 		}
 		else
 		{
@@ -84,13 +105,13 @@ class FootNoteMacro extends WikiMacro
 			$html  = '<ol class="footnotes">';
 			foreach ($wm->footnotes as $i => $footnote)
 			{
-				$html .= '<li><p>';
+				$html .= '<li>';
 				if (count($footnote->refs) > 1)
 				{
 					$html .= '^ ';
 					foreach ($footnote->refs as $key => $ref)
 					{
-						$html .= '<sup><a href="#' . $ref . '">' . strtolower($letters[$key]) . '</a></sup> ';
+						$html .= '<sup class="tex2jax_ignore"><a href="#' . $ref . '">' . strtolower($letters[$key]) . '</a></sup> ';
 					}
 				}
 				else if (count($footnote->refs) == 1)

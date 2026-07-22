@@ -470,6 +470,61 @@ class File extends Base
 	}
 
 	/**
+	 * Async bundle display state for the download button: false (async not
+	 * active for this version — show the normal button), 'ready', 'preparing'
+	 * (queued/building or not yet queued), or 'failed'.
+	 *
+	 * Cheap and defensive to match the serve-side gate: a flag check plus a
+	 * single try-guarded status query (no model load), and a missing table
+	 * reads as "not active" — so the button is unchanged while async is off.
+	 *
+	 * @param   object  $pub
+	 * @return  string|false
+	 */
+	private function bundleDisplayState($pub)
+	{
+		$flag = (int) \Component::params('com_publications')->get('bundle_async', 0);
+		$vid  = (int) $pub->get('version_id');
+
+		if (!$flag && !$vid)
+		{
+			return false;
+		}
+
+		$status = null;
+
+		try
+		{
+			$db = \App::get('db');
+			$db->setQuery("SELECT `status` FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $vid . " LIMIT 1");
+			$status = $db->loadResult();
+		}
+		catch (\Throwable $e)
+		{
+			return false;
+		}
+
+		// Async active only if the flag is on or a queue row exists (canary).
+		if (!$flag && $status === null)
+		{
+			return false;
+		}
+
+		if ($status === 'ready')
+		{
+			return 'ready';
+		}
+
+		if ($status === 'failed')
+		{
+			return 'failed';
+		}
+
+		// queued / building, or flag-on but not yet queued
+		return 'preparing';
+	}
+
+	/**
 	 * Draw launcher
 	 *
 	 * @param   object   $element
@@ -609,6 +664,35 @@ class File extends Base
 					$show->title = Lang::txt('Show bundle contents');
 
 					$options[] = $show;
+
+					// Async bundle: reflect build state on the button so a
+					// not-ready bundle shows progress rather than a link that
+					// loops to the "preparing" notice. No-op when async is off.
+					$bstate = $this->bundleDisplayState($pub);
+					if ($bstate === 'preparing')
+					{
+						$label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_PREPARING');
+						$disabled = 1;
+						$pop      = '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_PREPARING') . '</p>';
+
+						// Poll build status; when ready, send the browser to the
+						// download so the "preparing" button becomes live without
+						// a manual refresh.
+						$statusUrl = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=bundlestatus&v=' . $pub->version_number);
+						\Document::addScriptDeclaration(
+							"(function(){var u=" . json_encode($statusUrl) . ";function p(){"
+							. "fetch(u,{headers:{'X-Requested-With':'XMLHttpRequest'},credentials:'same-origin'})"
+							. ".then(function(r){return r.json();}).then(function(d){"
+							. "if(d&&d.ready&&d.url){window.location=d.url;}else{setTimeout(p,8000);}"
+							. "}).catch(function(){setTimeout(p,15000);});}setTimeout(p,8000);})();"
+						);
+					}
+					else if ($bstate === 'failed')
+					{
+						$label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_UNAVAILABLE');
+						$disabled = 1;
+						$pop      = '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE') . '</p>';
+					}
 				}
 				else
 				{

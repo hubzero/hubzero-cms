@@ -316,48 +316,48 @@ class Html
 	 */
 	public static function buildTimeZoneSelect($tzselected, $args)
 	{
-		$timezones = array(
-			\Html::select('option', -12, Lang::txt('EVENTS_TIME_UTC_-12')),
-			\Html::select('option', -11, Lang::txt('EVENTS_TIME_UTC_-11')),
-			\Html::select('option', -10, Lang::txt('EVENTS_TIME_UTC_-10')),
-			\Html::select('option', -9.5, Lang::txt('EVENTS_TIME_UTC_-930')),
-			\Html::select('option', -9, Lang::txt('EVENTS_TIME_UTC_-9')),
-			\Html::select('option', -8, Lang::txt('EVENTS_TIME_UTC_-8')),
-			\Html::select('option', -7, Lang::txt('EVENTS_TIME_UTC_-7')),
-			\Html::select('option', -6, Lang::txt('EVENTS_TIME_UTC_-6')),
-			\Html::select('option', -5, Lang::txt('EVENTS_TIME_UTC_-5')),
-			\Html::select('option', -4, Lang::txt('EVENTS_TIME_UTC_-4')),
-			\Html::select('option', -4.5, Lang::txt('EVENTS_TIME_UTC_-430')),
-			\Html::select('option', -3.5, Lang::txt('EVENTS_TIME_UTC_-330')),
-			\Html::select('option', -3, Lang::txt('EVENTS_TIME_UTC_-3')),
-			\Html::select('option', -2, Lang::txt('EVENTS_TIME_UTC_-2')),
-			\Html::select('option', -1, Lang::txt('EVENTS_TIME_UTC_-1')),
-			\Html::select('option', 0, Lang::txt('EVENTS_TIME_UTC_0')),
-			\Html::select('option', 1, Lang::txt('EVENTS_TIME_UTC_1')),
-			\Html::select('option', 2, Lang::txt('EVENTS_TIME_UTC_2')),
-			\Html::select('option', 3, Lang::txt('EVENTS_TIME_UTC_3')),
-			\Html::select('option', 3.5, Lang::txt('EVENTS_TIME_UTC_330')),
-			\Html::select('option', 4, Lang::txt('EVENTS_TIME_UTC_4')),
-			\Html::select('option', 4.5, Lang::txt('EVENTS_TIME_UTC_430')),
-			\Html::select('option', 5, Lang::txt('EVENTS_TIME_UTC_5')),
-			\Html::select('option', 5.5, Lang::txt('EVENTS_TIME_UTC_530')),
-			\Html::select('option', 5.75, Lang::txt('EVENTS_TIME_UTC_545')),
-			\Html::select('option', 6, Lang::txt('EVENTS_TIME_UTC_6')),
-			\Html::select('option', 6.5, Lang::txt('EVENTS_TIME_UTC_630')),
-			\Html::select('option', 7, Lang::txt('EVENTS_TIME_UTC_7')),
-			\Html::select('option', 8, Lang::txt('EVENTS_TIME_UTC_8')),
-			\Html::select('option', 8.75, Lang::txt('EVENTS_TIME_UTC_845')),
-			\Html::select('option', 9, Lang::txt('EVENTS_TIME_UTC_9')),
-			\Html::select('option', 9.5, Lang::txt('EVENTS_TIME_UTC_930')),
-			\Html::select('option', 10, Lang::txt('EVENTS_TIME_UTC_10')),
-			\Html::select('option', 10.5, Lang::txt('EVENTS_TIME_UTC_1030')),
-			\Html::select('option', 11, Lang::txt('EVENTS_TIME_UTC_11')),
-			\Html::select('option', 11.5, Lang::txt('EVENTS_TIME_UTC_1130')),
-			\Html::select('option', 12, Lang::txt('EVENTS_TIME_UTC_12')),
-			\Html::select('option', 12.75, Lang::txt('EVENTS_TIME_UTC_1245')),
-			\Html::select('option', 13, Lang::txt('EVENTS_TIME_UTC_13')),
-			\Html::select('option', 14, Lang::txt('EVENTS_TIME_UTC_14')),
+		// Legacy events may still carry a numeric UTC offset; map it to the IANA
+		// zone the save used so the current value pre-selects correctly.
+		$offsets = array(
+			'-12' => 'Etc/GMT-12', '-11' => 'Pacific/Midway', '-10' => 'Pacific/Honolulu',
+			'-9.5' => 'Pacific/Marquesas', '-9' => 'US/Alaska', '-8' => 'US/Pacific',
+			'-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern',
+			'-4.5' => 'America/Caracas', '-4' => 'America/Barbados', '-3.5' => 'Canada/Newfoundland',
+			'-3' => 'America/Buenos_Aires', '-2' => 'Atlantic/South_Georgia', '-1' => 'Atlantic/Azores',
+			'0' => 'Europe/London', '1' => 'Europe/Amsterdam', '2' => 'Europe/Istanbul',
+			'3' => 'Asia/Riyadh', '3.5' => 'Asia/Tehran', '4' => 'Asia/Muscat', '4.5' => 'Asia/Kabul',
+			'5' => 'Asia/Karachi', '5.5' => 'Asia/Calcutta', '5.75' => 'Asia/Katmandu', '6' => 'Asia/Dhaka',
+			'6.5' => 'Indian/Cocos', '7' => 'Asia/Bangkok', '8' => 'Australia/Perth', '8.75' => 'Australia/West',
+			'9' => 'Asia/Tokyo', '9.5' => 'Australia/Adelaide', '10' => 'Australia/Brisbane',
+			'10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
+			'12' => 'Pacific/Auckland', '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu',
+			'14' => 'Pacific/Kiritimati'
 		);
+		if (isset($offsets[(string) $tzselected]))
+		{
+			$tzselected = $offsets[(string) $tzselected];
+		}
+		if (!$tzselected)
+		{
+			$hub = (string) \Config::get('offset');
+			$tzselected = isset($offsets[$hub]) ? $offsets[$hub] : ($hub ? $hub : 'US/Eastern');
+		}
+
+		// Full IANA list, labeled with the current UTC offset and abbreviation.
+		$timezones = array();
+		foreach (\DateTimeZone::listIdentifiers() as $zone)
+		{
+			try
+			{
+				$now   = new \DateTime('now', new \DateTimeZone($zone));
+				$label = $zone . ' (UTC' . $now->format('P') . ', ' . $now->format('T') . ')';
+			}
+			catch (\Exception $e)
+			{
+				$label = $zone;
+			}
+			$timezones[] = \Html::select('option', $zone, $label);
+		}
 
 		return \Html::select('genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
 	}

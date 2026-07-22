@@ -50,6 +50,11 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 				'name'   => 'updateFtpLinks',
 				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_UPDATE_FTP_LINKS'),
 				'params' => 'ftplinkdates'
+			),
+			array(
+				'name'   => 'buildPublicationBundles',
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_BUILD_BUNDLES'),
+				'params' => ''
 			)
 		);
 		return $obj;
@@ -506,6 +511,96 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 				$publication->_curationModel->removeLink();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Dispatch asynchronous publication-bundle builds.
+	 *
+	 * Fast dispatcher (returns immediately, never holds the tick): reclaim any
+	 * build whose worker died/was killed/timed out, then — if under the
+	 * concurrency cap — start the next eligible queued bundle by spawning a
+	 * detached `muse publications:bundle build --version=N --queue` worker that
+	 * does the heavy zip out of this process. A failing build can never block
+	 * the queue (BundleQueue applies backoff, dead-lettering, and a poison-pill-
+	 * safe selection; this dispatches one build per tick).
+	 *
+	 * Gated by the bundle_async component flag, so the job can be scheduled
+	 * before cutover and stays inert until the flag is turned on.
+	 *
+	 * @param   object   $job  \Components\Cron\Models\Job
+	 * @return  boolean
+	 */
+	public function buildPublicationBundles(\Components\Cron\Models\Job $job)
+	{
+		$config = Component::params('com_publications');
+
+		if (!$config->get('bundle_async', 0))
+		{
+			return true; // async path not enabled yet
+		}
+
+		require_once Component::path('com_publications') . '/models/bundlequeue.php';
+
+		// Recover builds whose worker is gone (dead/killed/timed out).
+		\Components\Publications\Models\BundleQueue::reclaimStale();
+
+		// Total concurrency cap. (Size-aware large/small lanes are a planned
+		// refinement; v1 dispatches serially by default.)
+		$max = (int) $config->get('bundle_max_concurrent', 1);
+		$max = $max < 1 ? 1 : $max;
+
+		if (\Components\Publications\Models\BundleQueue::buildingCount() >= $max)
+		{
+			return true; // at capacity this tick
+		}
+
+		// Start the next eligible build (one per tick; the spawned worker
+		// claims the row atomically, so the cap is honored on later ticks).
+		$next = \Components\Publications\Models\BundleQueue::nextEligible();
+
+		if ($next && $next->get('id'))
+		{
+			$this->spawnDetachedBundleWorker((int) $next->get('publication_version_id'));
+		}
+
+		return true;
+	}
+
+	/**
+	 * Launch a detached CLI worker to build one version's bundle out of this
+	 * tick's process. setsid gives it its own session (survives an fpm reload);
+	 * stdio detaches to a log; backgrounded so the dispatcher returns at once.
+	 * The worker claims the queue row atomically, so overlapping launches can't
+	 * double-build. Bundle building needs no web/URL context, so CLI is safe.
+	 *
+	 * @param   integer  $versionId
+	 * @return  boolean
+	 */
+	protected function spawnDetachedBundleWorker($versionId)
+	{
+		$versionId = (int) $versionId;
+
+		if (!$versionId)
+		{
+			return false;
+		}
+
+		$php  = is_executable('/usr/bin/php') ? '/usr/bin/php' : 'php';
+		$muse = PATH_CORE . DS . 'bin' . DS . 'muse';
+		$log  = PATH_APP . DS . 'logs' . DS . 'publication-bundles.log';
+
+		if (!is_file($muse))
+		{
+			return false;
+		}
+
+		$cmd = 'setsid ' . escapeshellarg($php) . ' ' . escapeshellarg($muse)
+			. ' publications:bundle build --version=' . $versionId . ' --queue'
+			. ' < /dev/null >> ' . escapeshellarg($log) . ' 2>&1 &';
+
+		@exec($cmd);
 
 		return true;
 	}

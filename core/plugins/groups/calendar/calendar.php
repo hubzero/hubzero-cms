@@ -447,20 +447,24 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$up   = Date::of($rawEvent->get('publish_up'));
 			$down = Date::of($rawEvent->get('publish_down'));
 			$params = new \Hubzero\Config\Registry($rawEvent->get('params'));
-			$ignoreDst = false;
-			$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
-			$timeFormat = 'Y-m-d\TH:i:sO';
+			// Event times are stored in UTC. Show each event in its own zone:
+			// emit the local wall-clock as a floating time (no offset) so it lands
+			// on the day/time it occurs in that zone, and label it with the abbr.
+			$eventTz     = $rawEvent->get('time_zone') ? $rawEvent->get('time_zone') : \Config::get('offset');
+			$timeFormat  = 'Y-m-d\TH:i:sO';
+			$localFormat = 'Y-m-d\TH:i:s';
+			$abbr        = Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, 'T');
 
 			$event            = new stdClass;
 			$event->id        = $rawEvent->get('id');
-			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
+			$event->title     = $rawEvent->get('title') . ($event->allDay ? '' : ' (' . $abbr . ')');
 			$event->url       = $rawEvent->link();
-			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toTimezone($timezone, $timeFormat, $ignoreDst);
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, $localFormat);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat, $ignoreDst);
+				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : Date::of($rawEvent->get('publish_down'))->toTimeZone($eventTz, $localFormat);
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -596,7 +600,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$timezone = 'UTC';
 		}
 
-		$view->timezone = isset($timezone) ? $timezone : -5;
+		$view->timezone = $timezone ? $timezone : \Config::get('offset');
 
 		//push some vars to the view
 		$view->month      = $this->month;

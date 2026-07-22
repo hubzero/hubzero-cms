@@ -373,6 +373,32 @@ $this->css('.none {
 					<?php echo Html::input('calendar', 'fields[publish_down]', $this->escape((!$this->row->get('publish_down') || $this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), array('id' => 'field-publish_down')); ?>
 				</div>
 			</fieldset>
+
+			<?php
+				// "detach" lives in the job params Registry (saveTask() rebuilds
+				// params from the posted params[...] fields).
+				$jobParams = $this->row->get('params');
+				if (!is_object($jobParams))
+				{
+					$jobParams = new \Hubzero\Config\Registry($jobParams);
+				}
+				$detach = (int) $jobParams->get('detach', 0);
+			?>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_EXECUTION'); ?></span></legend>
+
+				<div class="input-wrap">
+					<label for="field-detach">
+						<input type="hidden" name="params[detach]" value="0" />
+						<input type="checkbox" name="params[detach]" id="field-detach" value="1"<?php echo ($detach ? ' checked="checked"' : ''); ?> />
+						<?php echo Lang::txt('COM_CRON_FIELD_DETACH'); ?>
+					</label>
+					<p class="hint"><?php echo Lang::txt('COM_CRON_FIELD_DETACH_DESC'); ?></p>
+					<?php if (trim((string) \Config::get('live_site')) === '') { ?>
+						<p class="warning"><?php echo Lang::txt('COM_CRON_DETACH_NO_LIVESITE'); ?></p>
+					<?php } ?>
+				</div>
+			</fieldset>
 		</div>
 	</div>
 

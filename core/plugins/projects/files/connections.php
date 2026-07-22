@@ -218,13 +218,19 @@ class connections
 		if ($this->connection)
 		{
 			$connection_params = json_decode($connection->get('params'));
+			// Clear the stored OAuth credential so the next manager visit
+			// re-runs the provider's authorization flow. (app_token is the
+			// legacy key; access_token is what the connectors actually use.)
 			unset($connection_params->app_token);
+			unset($connection_params->access_token);
 			$connection->set('params', json_encode($connection_params));
 			$connection->save();
 		}
 
 		Notify::message(Lang::txt("Connection " . $connection->get('name') . " reset."));
-		App::redirect(Route::url($this->model->link('files')));
+		// Return to the connection itself; with the credential cleared this
+		// re-initiates the provider's authorization flow for the manager.
+		App::redirect(Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->get('id')));
 	}
 
 	/**
@@ -312,6 +318,131 @@ class connections
 	}
 
 	/**
+	 * Begin an OAuth handshake to authorize this connection's provider.
+	 *
+	 * Manager-gated: only a genuine project manager may grant provider access,
+	 * because it binds their own account to the shared connection. Public
+	 * repositories never need this -- they are read anonymously -- so this is
+	 * reached only for private repositories, and only via an explicit click.
+	 *
+	 * @return  void
+	 */
+	public function authorize()
+	{
+		if (!$this->connection || !$this->connectionManageableByUser())
+		{
+			App::redirect(Route::url($this->model->link('files')));
+		}
+
+		\Plugin::import('filesystem');
+
+		$alias  = $this->connection->provider ? $this->connection->provider->alias : '';
+		$plugin = 'plgFilesystem' . ucfirst($alias);
+
+		if (method_exists($plugin, 'authorize'))
+		{
+			// Make the connection id available to the provider's OAuth setup.
+			Request::setVar('connection', $this->connection->get('id'));
+
+			$params = json_decode($this->connection->params ? $this->connection->params : '{}', true);
+			$plugin::authorize(is_array($params) ? $params : []); // redirects away
+		}
+
+		App::redirect(Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->get('id')));
+	}
+
+	/**
+	 * Whether the current user may authorize this connection.
+	 *
+	 * This deliberately checks genuine project membership with the manager
+	 * role -- NOT the model's access('content'), which is also granted to site
+	 * super-admins via the com_projects core.manage override. The OAuth
+	 * handshake attaches the authorizing user's own provider identity to the
+	 * shared connection, so it must be performed by a real project manager/owner,
+	 * not an administrator who is merely viewing the project.
+	 *
+	 * @return  bool
+	 */
+	private function connectionManageableByUser()
+	{
+		$member = $this->model->member();
+
+		return $member
+			&& $member->get('id')
+			&& $member->get('status') == 1
+			&& $member->get('role') == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER;
+	}
+
+	/**
+	 * Render a friendly notice when a connection cannot be browsed because it
+	 * needs to be (re)authorized or its stored credential has failed.
+	 *
+	 * The OAuth handshake itself is only ever offered to project managers, so a
+	 * read-only member (who may not have a provider account) is told to ask a
+	 * manager rather than being redirected to the provider.
+	 *
+	 * @param   \Throwable  $error  Optional underlying error
+	 * @return  string
+	 */
+	private function connectionUnavailable($error = null)
+	{
+		$canManage = $this->connectionManageableByUser();
+
+		if ($this->isRateLimited($error))
+		{
+			$message = $canManage
+				? Lang::txt('GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to authenticate it, which raises the limit.')
+				: Lang::txt('This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. A project manager needs to authenticate it with GitHub.');
+		}
+		elseif ($canManage)
+		{
+			$message = Lang::txt('This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.');
+		}
+		else
+		{
+			$message = Lang::txt('This connection is not currently available. A project manager needs to authorize it before its files can be shown.');
+		}
+
+		$html  = '<div class="error width-content connection-unavailable">';
+		$html .= '<p class="witherror">' . htmlspecialchars($message) . '</p>';
+
+		if ($canManage)
+		{
+			$authorize = Route::url($this->model->link('files') . '&action=authorize&connection=' . $this->connection->id);
+			$html .= '<p><a class="btn" href="' . $authorize . '">' . Lang::txt('Connect with GitHub') . '</a></p>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Whether a browse failure was caused by GitHub's request rate limit --
+	 * typically the low (60/hour) anonymous limit used for public repositories.
+	 * Walks the exception chain so a wrapped cause is still detected.
+	 *
+	 * @param   \Throwable  $error
+	 * @return  bool
+	 */
+	private function isRateLimited($error)
+	{
+		while ($error instanceof \Throwable)
+		{
+			if ($error instanceof \Github\Exception\ApiLimitExceedException
+				|| stripos($error->getMessage(), 'rate limit') !== false
+				|| stripos($error->getMessage(), 'hourly limit') !== false)
+			{
+				return true;
+			}
+
+			$error = $error->getPrevious();
+		}
+
+		return false;
+	}
+
+	/**
 	 * Renders file browser view
 	 *
 	 * @return  string
@@ -324,6 +455,7 @@ class connections
 		{
 			return $this->setup_base_dir();
 		}
+
 		$view = new \Hubzero\Plugin\View([
 			'folder'  => 'projects',
 			'element' => 'files',
@@ -338,11 +470,20 @@ class connections
 		$sortby  = Request::getString('sortby', 'basename');
 		$sortasc = Request::getString('sortdir', 'ASC') == 'ASC' ? true : false;
 
-		// Get directory that we're interested in
-		$dir = Entity::fromPath($this->subdir, $this->connection->adapter());
+		// Get directory that we're interested in. A failure here is typically an
+		// expired/revoked provider credential; show a notice rather than 500.
+		try
+		{
+			$dir   = Entity::fromPath($this->subdir, $this->connection->adapter());
+			$items = $dir->listContents()->sort($sortby, $sortasc);
+		}
+		catch (\Throwable $e)
+		{
+			return $this->connectionUnavailable($e);
+		}
 
 		// Assign view vars
-		$view->set('items', $dir->listContents()->sort($sortby, $sortasc));
+		$view->set('items', $items);
 		$view->set('title', $this->_area['title']);
 		$view->set('option', $this->_option);
 		$view->set('sortby', $sortby);
@@ -371,8 +512,19 @@ class connections
 			'layout'	=> 'pathprefix'
 		]);
 		$subdir = Request::getString('subdir', '');
-		$dir = Entity::fromPath($subdir, $this->connection->adapter());
-		$contents = $dir->listContents()->sort('basename', 'ASC');
+
+		// A failure here is typically an expired/revoked provider credential;
+		// show a notice rather than surfacing a raw 401/500.
+		try
+		{
+			$dir = Entity::fromPath($subdir, $this->connection->adapter());
+			$contents = $dir->listContents()->sort('basename', 'ASC');
+		}
+		catch (\Throwable $e)
+		{
+			return $this->connectionUnavailable($e);
+		}
+
 		$dirs = array();
 		foreach ($contents as $file)
 		{

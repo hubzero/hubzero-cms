@@ -65,15 +65,43 @@ class Jobs extends Base implements CommandInterface
 
 		$processed = array();
 
+		// A specific --job is force-run regardless of its schedule.
+		$forced = (bool) $id;
+
 		if ($jobs->count())
 		{
 			$this->output->addLine(Lang::txt('[%s] Starting scheduled jobs ...', $now), 'info');
 
 			foreach ($jobs as $job)
 			{
-				if ($job->get('active') || !$job->isAvailable())
+				if (!$job->isAvailable())
 				{
 					continue;
+				}
+
+				$wasActive = $job->get('active');
+
+				// Atomically take ownership. claim() skips a job whose process
+				// is still alive and atomically reclaims one left active by a
+				// dead/killed/timed-out process (pid gone or reused). If another
+				// runner won the race, skip.
+				if (!$job->claim())
+				{
+					continue;
+				}
+
+				// Re-confirm still due after claiming (a concurrent runner may
+				// have finished it and advanced next_run since our list was
+				// built). Forced --job runs ignore the schedule.
+				if (!$forced && !$job->stillDue())
+				{
+					$job->release();
+					continue;
+				}
+
+				if ($wasActive)
+				{
+					$this->output->addLine(Lang::txt('[%s] Reclaimed job "%s" left active by a dead process.', with(new Date('now'))->toLocal(), $job->get('event')), 'warning');
 				}
 
 				$now = with(new Date('now'))->toLocal();
@@ -84,32 +112,134 @@ class Jobs extends Base implements CommandInterface
 
 				try
 				{
-					$res = Event::trigger('cron.' . $job->get('event'), array($job));
+					Event::trigger('cron.' . $job->get('event'), array($job));
 
-					$now = with(new Date('now'))->toLocal();
-
-					$this->output->addLine(Lang::txt('[%s] Finished event "%s".', $now, $job->get('event')), 'info');
-
-					$job->mark('end_run');
-					$job->set('last_run', $now);
-					$job->set('next_run', $job->nextRun());
-					$job->save();
-
-					$processed[] = $job->toArray();
+					$this->output->addLine(Lang::txt('[%s] Finished event "%s".', with(new Date('now'))->toLocal(), $job->get('event')), 'info');
 				}
-				catch (\Exception $e)
+				catch (\Throwable $e)
 				{
-					$now = with(new Date('now'))->toLocal();
-
-					$this->output->addLine(Lang::txt('[%s] Event "%s" generated an error. Skipping...', $now, $job->get('event')), 'error');
+					$this->output->addLine(Lang::txt('[%s] Event "%s" generated an error: %s', with(new Date('now'))->toLocal(), $job->get('event'), $e->getMessage()), 'error');
 				}
+				finally
+				{
+					$job->mark('end_run');
+
+					$next = null;
+					try
+					{
+						$next = $job->nextRun();
+					}
+					catch (\Throwable $e2)
+					{
+						// Leave next_run as-is if the recurrence can't be parsed;
+						// the job stays due and is retried rather than wedging.
+					}
+
+					// Always clear active + pid ownership and persist run times,
+					// whether the event succeeded, threw, or fataled.
+					$job->release(with(new Date('now'))->toLocal(), $next);
+				}
+
+				$processed[] = $job->toArray();
 			}
 
-			$this->output->addLine(Lang::txt('[%s] Finished scheduled jobs.', $now), 'success');
+			$this->output->addLine(Lang::txt('[%s] Finished scheduled jobs.', with(new Date('now'))->toLocal()), 'success');
 		}
 		else
 		{
 			$this->output->addLine(Lang::txt('No scheduled jobs found.'), 'info');
+		}
+	}
+
+	/**
+	 * Trigger the scheduled-job tick over HTTP — the in-process replacement for
+	 * the legacy Python hzcms-tick. It requests the com_cron tick endpoint so
+	 * jobs run in the WEB context (correct absolute URLs, etc.), under a
+	 * single-flight lock, and logs the outcome.
+	 *
+	 * The hub URL comes from the CMS `live_site` config; if that is empty it
+	 * errors out rather than guess, since a CLI tick has no web request to derive
+	 * the host/scheme from (which would yield broken links). Wire it from cron in
+	 * place of hzcms-tick, e.g.:
+	 *   * * * * * apache  /var/www/purr/core/bin/muse cron:jobs tick >> <log>
+	 *
+	 * @museDescription  Trigger the scheduled-job tick over HTTP (replaces hzcms-tick)
+	 * @return  void
+	 **/
+	public function tick()
+	{
+		$host = gethostname() ?: 'localhost';
+		$pid  = getmypid();
+		$log  = function ($msg) use ($host, $pid)
+		{
+			$this->output->addLine(gmdate('c') . ' ' . $host . ' cron:tick[' . $pid . '] ' . $msg);
+		};
+
+		// The hub URL must come from the CMS config; a CLI tick has no request to
+		// derive it from, so refuse rather than guess (broken URLs / wrong host).
+		$base = rtrim((string) \Config::get('live_site'), '/');
+
+		if ($base === '')
+		{
+			$this->output->error('live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows which URL to request.');
+			return;
+		}
+
+		$url = $base . '/index.php?option=com_cron&task=tick&no_html=1';
+
+		// Single-flight: don't let ticks pile up. flock auto-releases on process
+		// exit, so there is no stale-lockfile problem.
+		$tmp = (string) \Config::get('tmp_path');
+		$tmp = $tmp !== '' ? rtrim($tmp, '/') : sys_get_temp_dir();
+		$lock = @fopen($tmp . '/.cron-tick.lock', 'c');
+
+		if ($lock === false || !flock($lock, LOCK_EX | LOCK_NB))
+		{
+			$log('skipped — a previous tick is still running');
+			return;
+		}
+
+		// Hit the endpoint. Follow redirects (the hub forces https), skip TLS
+		// verification (self-referential request), bounded timeout, and a
+		// recognizable user agent so com_usage keeps filtering the hit out of
+		// traffic stats.
+		$ch = curl_init();
+		curl_setopt_array($ch, array(
+			CURLOPT_URL            => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_CONNECTTIMEOUT => 10,
+			CURLOPT_TIMEOUT        => 1800,
+			CURLOPT_USERAGENT      => 'hubzero-cms cron tick',
+		));
+
+		$start = microtime(true);
+		$body  = curl_exec($ch);
+		$secs  = microtime(true) - $start;
+		$code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$cerr  = curl_error($ch);
+		curl_close($ch);
+
+		// Count the jobs the endpoint reported running (legacy hzcms-tick format).
+		$count = '-';
+
+		if ($body !== false && ($p = strpos($body, '{')) !== false)
+		{
+			$data = json_decode(substr($body, $p), true);
+
+			if (isset($data['jobs']) && is_array($data['jobs']))
+			{
+				$count = count($data['jobs']);
+			}
+		}
+
+		$log(sprintf('GET %s %.6f %s HTTP %d%s', $url, $secs, $count, $code, ($body === false ? ' ERROR ' . $cerr : '')));
+
+		if ($body === false || $code !== 200)
+		{
+			$this->output->error('cron tick request failed');
 		}
 	}
 
@@ -189,6 +319,9 @@ class Jobs extends Base implements CommandInterface
 		}
 
 		$job->set('active', 0);
+		$job->set('pid', null);
+		$job->set('pid_started', null);
+		$job->set('pid_host', null);
 
 		if (!$job->save())
 		{

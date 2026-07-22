@@ -236,7 +236,7 @@ class Events extends AdminController
 		else
 		{
 			$this->view->row->state = 0;
-			$this->view->row->time_zone = -5;
+			$this->view->row->time_zone = \Config::get('offset');
 			$this->view->row->content = '';
 			$this->view->row->title = '';
 			$this->view->row->adresse_info = '';

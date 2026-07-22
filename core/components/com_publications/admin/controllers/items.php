@@ -1926,6 +1926,20 @@ class Items extends AdminController
 		// Set pub assoc and load curation
 		$pub->setCuration();
 
+		// Async: queue the (re)build for the background worker instead of
+		// building inline, and drop the existing link so a stale bundle isn't
+		// served while it rebuilds (gated; off = the legacy synchronous rebuild
+		// below).
+		if ((int) \Component::params('com_publications')->get('bundle_async', 0))
+		{
+			require_once \Component::path('com_publications') . '/models/bundlequeue.php';
+			\Components\Publications\Models\BundleQueue::enqueueVersion($pub->get('version_id'));
+			$pub->_curationModel->removeLink();
+			$pub->publication->checkin();
+			App::redirect($url, Lang::txt('COM_PUBLICATIONS_BUNDLE_QUEUED'), 'success');
+			return;
+		}
+
 		// Produce archival package
 		if (!$pub->_curationModel->package(true))
 		{

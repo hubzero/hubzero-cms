@@ -442,12 +442,19 @@ class Event extends Table
 			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
 		}
 
+		// If no publish down set, set to "infinite" future
+		if (!isset($filters['publish_down']))
+		{
+			$filters['publish_down'] = '9999-12-31 00:00:00';
+		}
+
 		// publish up/down
 		if (isset($filters['publish_up']) && isset($filters['publish_down']))
 		{
-			$q  = "(publish_up >=" . $this->_db->quote($filters['publish_up']);
-			$q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
-			$q .= " OR (publish_up IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . "))";
+			$q  = "(publish_up >=" . $this->_db->quote($filters['publish_up']) . " AND publish_up <= " . $this->_db->quote($filters['publish_down']);
+			$q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down >=" . $this->_db->quote($filters['publish_up']) . " AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
+			$q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . ")";
+			$q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down = '0000-00-00 00:00:00'))";
 			$where[] = $q;
 		}
 

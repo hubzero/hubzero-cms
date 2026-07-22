@@ -43,6 +43,13 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	protected static $handlers = array();
 
 	/**
+	 * Cached map of profile field name => default access level
+	 *
+	 * @var  array
+	 */
+	protected static $fieldAccess = null;
+
+	/**
 	 *  Constructor
 	 *
 	 * @param   mixes   $raw      Raw data
@@ -408,6 +415,34 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	}
 
 	/**
+	 * Map of profile field name => default access level.
+	 *
+	 * Mirrors what the registration controller passes to saveProfile() so
+	 * imported accounts get each field's configured access level instead of
+	 * falling back to the model's Private (5) default (ticket 370).
+	 *
+	 * @return  array
+	 */
+	private function _profileFieldAccess()
+	{
+		if (self::$fieldAccess === null)
+		{
+			self::$fieldAccess = array();
+
+			$fields = \Components\Members\Models\Profile\Field::all()
+				->where('action_create', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+				->rows();
+
+			foreach ($fields as $field)
+			{
+				self::$fieldAccess[$field->get('name')] = $field->get('access');
+			}
+		}
+
+		return self::$fieldAccess;
+	}
+
+	/**
 	 * Save profile
 	 *
 	 * @return  void
@@ -553,7 +588,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if (!empty($this->_profile))
 		{
-			if (!$this->record->entry->saveProfile($this->_profile))
+			// For new accounts, pass each field's configured default access
+			// level (mirroring the registration controller). Without it,
+			// saveProfile() falls back to its Private (5) default for every new
+			// profile entry, so imported accounts had public/registered fields
+			// wrongly set to private (ticket 370). Existing accounts keep their
+			// current per-field access on re-import.
+			$access = $isNew ? $this->_profileFieldAccess() : array();
+
+			if (!$this->record->entry->saveProfile($this->_profile, $access))
 			{
 				throw new Exception($this->record->entry->getError());
 			}

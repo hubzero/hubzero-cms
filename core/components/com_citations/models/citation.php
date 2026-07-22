@@ -163,6 +163,12 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			});
 		}
 
+		// Filter by the citation's own keywords field (distinct from hub tags)
+		if (!empty($filters['keyword']))
+		{
+			$records->whereLike($records->getQualifiedFieldName('keywords'), $filters['keyword']);
+		}
+
 		if (!empty($filters['search']))
 		{
 			$searchQuery = $filters['search'];
@@ -193,7 +199,26 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$records->where('year', '<=', (int)$filters['year_end']);
 		}
 
-		$authorFields = array_intersect_key($filters, array('author' => null, 'geo' => '', 'aff' => ''));
+		// Author filter: match the citation's own denormalized author field (which
+		// is populated for nearly all citations) in addition to the split-out
+		// relational author records (which exist for only a small fraction of
+		// citations). Searching only the relational records made this filter
+		// return nothing for most authors, even though the main search - which
+		// uses the denormalized field - found them.
+		if (!empty($filters['author']))
+		{
+			$authorTerm = $filters['author'];
+			$records->whereLike($records->getQualifiedFieldName('author'), $authorTerm, 1);
+			$records->orWhereRelatedHas('relatedAuthors', function($author) use ($authorTerm){
+				$author->filterByAuthor($authorTerm);
+				return $author;
+			}, 1);
+			$records->resetDepth();
+		}
+
+		// Geography / affiliation narrowing still operates on the relational
+		// author records only.
+		$authorFields = array_intersect_key($filters, array('geo' => '', 'aff' => ''));
 		$maxOptions = array('geo' => 4, 'aff' => 3);
 		$authorFields = array_filter($authorFields);
 		foreach ($maxOptions as $filter => $max)
@@ -285,7 +310,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 			if (!empty($filters['reftype']) && count($filters['reftype']) < 4)
 			{
-				$refKeys = array_keys($filters['reftype']);
+				$refKeys = array_values(array_intersect(
+					array_keys($filters['reftype']),
+					array_keys($refTypes)
+				));
+				if (empty($refKeys))
+				{
+					return $this;
+				}
 				$firstQuery = $refKeys[0];
 				$query = '(';
 				$queryBindings = array();
@@ -307,6 +339,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							break;
 						case 'cyberinfrastructure':
 							$excludes = array_merge($refTypes['research'], $refTypes['education']);
+							break;
 						case 'education':
 							$excludes = $refTypes['research'];
 							break;

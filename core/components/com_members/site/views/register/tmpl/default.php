@@ -49,6 +49,15 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			if (!Request::getBool('update', false, 'post'))
 			{
 				$this->showMissing = false;
+
+				// First display, before the user has submitted: show the plain
+				// "required" markers on the fields but no error state at all —
+				// neither the per-field red highlighting (_invalid) nor the
+				// "Please correct the indicated fields" summary box (_missing).
+				// Those only appear once they've actually submitted an
+				// incomplete form (i.e. the 'update' POST var is present).
+				$this->xregistration->_invalid = array();
+				$this->xregistration->_missing = array();
 			}
 		break;
 

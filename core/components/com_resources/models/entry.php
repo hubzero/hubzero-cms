@@ -1593,14 +1593,27 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		if (isset($filters['author']))
 		{
-			$query
-				->join($a, $a . '.subid', $r . '.id', 'left')
-				->whereEquals($a . '.subtable', 'resources')
-				->whereEquals($a . '.authorid', $filters['author']);
-
-			if (isset($filters['notauthorrole']))
+			if (isset($filters['authororsubmitter']) && $filters['authororsubmitter'])
 			{
-				$query->where($a . '.role', '!=', $filters['notauthorrole']);
+				// Resources the member authored OR submitted/uploaded
+				// (created_by). A submitted-only resource has no author_assoc
+				// row, so match created_by directly and use a subquery for
+				// authorship rather than the join below.
+				$uid = (int) $filters['authororsubmitter'];
+				$query->whereRaw('(' . $r . '.created_by = ' . $uid
+					. ' OR ' . $r . '.id IN (SELECT subid FROM ' . $a . ' WHERE authorid = ' . $uid . " AND subtable = 'resources'))");
+			}
+			else
+			{
+				$query
+					->join($a, $a . '.subid', $r . '.id', 'left')
+					->whereEquals($a . '.subtable', 'resources')
+					->whereEquals($a . '.authorid', $filters['author']);
+
+				if (isset($filters['notauthorrole']))
+				{
+					$query->where($a . '.role', '!=', $filters['notauthorrole']);
+				}
 			}
 		}
 

@@ -13,6 +13,63 @@ $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
 $base = rtrim(str_replace('administrator', '', Request::base()), '/');
 $sef  = ltrim(Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn')), '/');
 
+// Pre-change values (keyed) for noting what changed. Empty for a new group,
+// in which case no change markers are shown.
+$before = (isset($this->before) && is_array($this->before)) ? $this->before : array();
+
+// Return a "*** was: <old> ***" marker when a field's display value changed.
+$wasText = function($key, $newDisplay, $oldDisplay) use ($before)
+{
+	if (!array_key_exists($key, $before))
+	{
+		return '';
+	}
+	if ((string) $newDisplay === (string) $oldDisplay)
+	{
+		return '';
+	}
+	$old = ($oldDisplay === '' || $oldDisplay === null) ? '[ Empty ]' : $oldDisplay;
+	return '   *** ' . Lang::txt('COM_GROUPS_EMAIL_WAS', $old) . ' ***';
+};
+
+// Shared value->label formatters so the old and new sides render identically
+$joinPolicyLabel = function($v)
+{
+	switch ($v)
+	{
+		case 3:  return Lang::txt('Closed');
+		case 2:  return Lang::txt('Invite Only');
+		case 1:  return Lang::txt('Restricted');
+		default: return Lang::txt('Open');
+	}
+};
+$discoverabilityLabel = function($v)
+{
+	return ($v == 1) ? Lang::txt('Hidden') : Lang::txt('Visible');
+};
+$pageCommentsLabel = function($v)
+{
+	if ($v == 2)
+	{
+		return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
+	}
+	if ($v == 1)
+	{
+		return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES');
+	}
+	return Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO');
+};
+$pageAuthorLabel = function($v)
+{
+	return ($v == 1)
+		? Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES')
+		: Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO');
+};
+$onOffLabel = function($v)
+{
+	return $v ? Lang::txt('On') : Lang::txt('Off');
+};
+
 $message  = Lang::txt('Group Updated') . "\n\n";
 $message .= "--------------------------------------------\n";
 $message .= Lang::txt('Group:') . ' ' . strip_tags($this->group->get('description')) . "\n";
@@ -21,46 +78,38 @@ $message .= Lang::txt('Updated:') . ' @ ' . Date::of('now')->toLocal(Lang::txt('
 $message .= Lang::txt('Updated By:') . ' ' . $this->user->get('name') . ' ('.$this->user->get('email').')' . "\n";
 $message .= "--------------------------------------------\n\n";
 
-$message .= "\t" . Lang::txt('Name:') . ' ' . strip_tags($this->group->get('description')) . "\n\n";
+$nameNew = strip_tags($this->group->get('description'));
+$message .= "\t" . Lang::txt('Name:') . ' ' . $nameNew;
+$message .= $wasText('description', $nameNew, isset($before['description']) ? strip_tags($before['description']) : null) . "\n\n";
+
 $message .= "\t" . Lang::txt('Interests (Tags):') . ' ';
 
 	$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
 	$tags = $gt->render('string');
 
-	$message .= ($tags ? $tags : Lang::txt('[ Empty ]')) . "\n\n";
+	$message .= ($tags ? $tags : Lang::txt('[ Empty ]'));
+	$message .= $wasText('tags', $tags, isset($before['tags']) ? $before['tags'] : null) . "\n\n";
 
-$message .= "\t" . Lang::txt('Public Description:') . ' ' . strip_tags($this->group->get('public_desc', '[ Empty ]')) . "\n\n";
-$message .= "\t" . Lang::txt('Private Description:') . ' ' . strip_tags($this->group->get('private_desc', '[ Empty ]')) . "\n\n";
-$message .= "\t" . Lang::txt('Logo:') . ' ' . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]') . "\n\n";
+$publicNew = strip_tags($this->group->get('public_desc', '[ Empty ]'));
+$message .= "\t" . Lang::txt('Public Description:') . ' ' . $publicNew;
+$message .= $wasText('public_desc', $this->group->get('public_desc'), isset($before['public_desc']) ? strip_tags($before['public_desc']) : null) . "\n\n";
+
+$privateNew = strip_tags($this->group->get('private_desc', '[ Empty ]'));
+$message .= "\t" . Lang::txt('Private Description:') . ' ' . $privateNew;
+$message .= $wasText('private_desc', $this->group->get('private_desc'), isset($before['private_desc']) ? strip_tags($before['private_desc']) : null) . "\n\n";
+
+$message .= "\t" . Lang::txt('Logo:') . ' ' . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]');
+$message .= $wasText('logo', $this->group->get('logo'), isset($before['logo']) ? ($before['logo'] ? $before['logo'] : '[ Not set ]') : null) . "\n\n";
+
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';
-	switch ($this->group->get('join_policy'))
-	{
-		case 3:
-			$policy = Lang::txt('Closed');
-			break;
-		case 2:
-			$policy = Lang::txt('Invite Only');
-			break;
-		case 1:
-			$policy = Lang::txt('Restricted');
-			break;
-		case 0:
-		default:
-			$policy = Lang::txt('Open');
-			break;
-	}
-	$message .= $policy . "\n\n";
+	$policy = $joinPolicyLabel($this->group->get('join_policy'));
+	$message .= $policy;
+	$message .= $wasText('join_policy', $policy, isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null) . "\n\n";
 
 $message .= "\t" . Lang::txt('Discoverability:') . ' ';
-	switch ($this->group->get('discoverability'))
-	{
-		case 1:  $discoverability = Lang::txt('Hidden');
-break;
-		case 0:
-		default: $discoverability = Lang::txt('Visible');
-break;
-	}
-	$message .= $discoverability . "\n\n";
+	$discoverability = $discoverabilityLabel($this->group->get('discoverability'));
+	$message .= $discoverability;
+	$message .= $wasText('discoverability', $discoverability, isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null) . "\n\n";
 
 $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 	$levels = array(
@@ -80,6 +129,7 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 	));
 
 	$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
+	$oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;
 
 	foreach ($group_plugins as $plugin)
 	{
@@ -87,7 +137,14 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 		{
 			$title  = $plugin['title'];
 			$perm = $access[$plugin['name']];
-			$message .= "\t\t" .$title . ' => ' . $levels[$perm] . "\n";
+			$line = "\t\t" .$title . ' => ' . $levels[$perm];
+			if ($oldAccess !== null && isset($oldAccess[$plugin['name']]) && $oldAccess[$plugin['name']] != $perm)
+			{
+				$oldPerm  = $oldAccess[$plugin['name']];
+				$oldLabel = isset($levels[$oldPerm]) ? $levels[$oldPerm] : $oldPerm;
+				$line .= '   *** ' . Lang::txt('COM_GROUPS_EMAIL_WAS', $oldLabel) . ' ***';
+			}
+			$message .= $line . "\n";
 		}
 	}
 	$message .= "\n";
@@ -95,34 +152,20 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 $params = Component::params('com_groups');
 if ($params->get('email_forum_comments'))
 {
-	$message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . ($this->group->get('discussion_email_autosubscribe') ? Lang::txt('On') : Lang::txt('Off')) . "\n\n";
+	$autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
+	$message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . $autosub;
+	$message .= $wasText('discussion_email_autosubscribe', $autosub, isset($before['discussion_email_autosubscribe']) ? $onOffLabel($before['discussion_email_autosubscribe']) : null) . "\n\n";
 }
 
 $message .= "\t" . Lang::txt('Page Comments:') . ' ';
-	if ($gparams->get('page_comments') == 2)
-	{
-		$message .= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
-	}
-	elseif ($gparams->get('page_comments') == 1)
-	{
-		$message .= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES');
-	}
-	else
-	{
-		$message .= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO');
-	}
-	$message .= "\n";
+	$pageComments = $pageCommentsLabel($gparams->get('page_comments'));
+	$message .= $pageComments;
+	$message .= $wasText('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null) . "\n";
 
 $message .= "\t" . Lang::txt('Page Author Details:') . ' ';
-	if ($gparams->get('page_author') == 1)
-	{
-		$message .= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES');
-	}
-	else
-	{
-		$message .= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO');
-	}
-	$message .= "\n";
+	$pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
+	$message .= $pageAuthor;
+	$message .= $wasText('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null) . "\n";
 
 $message .= "\n\n";
 $message .= $base . '/' . $sef."\n";

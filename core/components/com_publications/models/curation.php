@@ -2129,31 +2129,87 @@ class Curation extends Obj
 	}
 
 	/**
-	 * Generate link for publication package
+	 * Generate (or refresh) the FTP download hard link for this publication's
+	 * served bundle. The link is a POSIX hard link in the configured sftppath,
+	 * named getBundleName(true); file.php::drawLauncher builds the ftp:// download
+	 * URL from that name for bundles over the size threshold.
 	 *
-	 * @return boolean
+	 * Idempotent and refresh-capable: a no-op when the link already shares the
+	 * served bundle's inode, otherwise it (re)points the link atomically — link
+	 * to a temp name, verify it shares the served inode, then rename over any
+	 * existing (possibly stale) link. This is what keeps the link valid after a
+	 * rebuild: a fresh package() build gives the served bundle a NEW inode
+	 * (ZipArchive rewrites the file on close()), which orphans a link created the
+	 * old "only if absent" way. A hard link adds no disk and shares the bundle's
+	 * ownership/mode. Best-effort — returns false on any problem (no sftp
+	 * configured, cross-device, permissions) without disturbing an existing link.
+	 *
+	 * @return  boolean
 	 */
 	public function createLink()
 	{
-		$tarname = $this->getBundleName();
-		$tarpath = $this->_pub->path('relative') . DS . $tarname;
-		$link = $this->_linkPath();
-		if ($link !== false)
-		{
-			chdir(dirname($link));
-		}
-
-		if (empty($this->_pub) || $link == false || !is_file($tarpath))
+		if (empty($this->_pub))
 		{
 			return false;
 		}
-		if (!is_file($link))
+
+		$link = $this->_linkPath();
+		if ($link === false)
 		{
-			if (!link($tarpath, $link))
-			{
-				return false;
-			}
+			return false;
 		}
+
+		$tarpath = $this->_pub->path('base', true) . DS . $this->getBundleName();
+		if (!is_file($tarpath))
+		{
+			return false;
+		}
+
+		// Only bundles actually served over FTP get a link. drawLauncher routes to
+		// the ftp:// download only when the served bundle is at least sftpsize MB
+		// (see attachments/file.php); a smaller bundle serves over HTTP, so a link
+		// would be unused clutter in the anon-FTP dir. Drop any that exists (e.g.
+		// the bundle shrank under the threshold on rebuild) so the FTP directory
+		// mirrors exactly the set of FTP-served bundles.
+		$thresholdMb = (int) Component::params('com_publications')->get('sftpsize', 5000);
+		if ((filesize($tarpath) / 1024 / 1024) < $thresholdMb)
+		{
+			$this->removeLink();
+			return false;
+		}
+
+		// A just-rebuilt bundle: drop any cached stat so inodes compare true.
+		clearstatcache();
+
+		// Already the right hard link (same inode)? Nothing to do.
+		if (is_file($link) && @fileinode($link) !== false
+			&& @fileinode($link) === @fileinode($tarpath))
+		{
+			return true;
+		}
+
+		// Atomic refresh-or-create: link to a temp name, confirm it shares the
+		// served inode, then rename over any existing (possibly stale) link.
+		$tmp = $link . '.relink.' . getmypid();
+		@unlink($tmp);
+
+		if (!@link($tarpath, $tmp))
+		{
+			return false;
+		}
+
+		if (@fileinode($tmp) !== @fileinode($tarpath))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
+		if (!@rename($tmp, $link))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
 		return true;
 	}
 
@@ -2175,6 +2231,71 @@ class Curation extends Obj
 			unlink($link);
 		}
 		return true;
+	}
+
+	/**
+	 * File attachments in this version whose source no longer exists at its
+	 * recorded path in the project repository — i.e. the file was moved (e.g.
+	 * organized into a folder), renamed, or removed in the project after it was
+	 * selected for the publication. Such a selection is stale: the served bundle
+	 * would not reflect the project's current file/folder layout (the cause of
+	 * "bundles have no folders" when a submitter organizes into folders only
+	 * after selecting). Used as a publish-time gate (see
+	 * plg_projects_publications::publishDraft) so a draft cannot be published
+	 * against a selection that has drifted from the project; the curator re-selects
+	 * the files (which captures their current paths) or removes the stale ones.
+	 *
+	 * Read-only — stat only, never matches or moves anything. Returns an empty
+	 * array for publications with no local file attachments (Databases, Series),
+	 * for connection-sourced files, and when the repo path cannot be resolved.
+	 *
+	 * @return  array  stale attachment rows (each carries path, title, element_id)
+	 */
+	public function movedSourceAttachments()
+	{
+		if (empty($this->_pub) || empty($this->_pub->_project) || empty($this->_pub->version_id))
+		{
+			return array();
+		}
+
+		$repo = $this->_pub->_project->repo();
+		if (!$repo)
+		{
+			return array();
+		}
+
+		$repoPath = $repo->get('path');
+		if (!$repoPath || !is_dir($repoPath))
+		{
+			return array();
+		}
+
+		$objPA = new Tables\Attachment($this->_db);
+		$files = $objPA->getAttachments($this->_pub->version_id, array('type' => 'file'));
+
+		$moved = array();
+
+		if ($files)
+		{
+			foreach ($files as $file)
+			{
+				$path = (string) $file->path;
+
+				// Skip connection-sourced files (path begins "<id>://"): their
+				// source is a remote/connection entity, not a local repo path.
+				if ($path === '' || preg_match('/^[0-9]*:\/\//', $path))
+				{
+					continue;
+				}
+
+				if (!is_file($repoPath . DS . $path))
+				{
+					$moved[] = $file;
+				}
+			}
+		}
+
+		return $moved;
 	}
 
 	/**
@@ -2348,6 +2469,20 @@ class Curation extends Obj
 		{
 			return false;
 		}
+
+		// A fresh build gives the served bundle a NEW inode (ZipArchive rewrites
+		// the file on close()), orphaning any FTP download hard link created at
+		// publish; refresh it so the ftp:// download keeps serving the current
+		// bundle. Best-effort — never blocks returning the successful build.
+		// Gate to published, non-embargoed versions (the same condition the
+		// publish-time createLink callers use): package() also runs on-demand for
+		// unpublished/embargoed versions, and their bundle must never be linked
+		// into the anonymously-served FTP directory.
+		if ($this->_pub->isPublished() && !$this->_pub->isEmbargoed())
+		{
+			$this->createLink();
+		}
+
 		return true;
 	}
 

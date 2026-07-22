@@ -1,0 +1,161 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ *
+ * HUBzero shared video player. Class-scoped so any number of `.hz-video`
+ * instances can coexist on a page. Paired with core/assets/js/hz-video-player.js
+ */
+
+.hz-video {
+	position: relative;
+	display: block;
+	max-width: 100%;
+	background: #000;
+	color: #fff;
+	line-height: normal;
+	overflow: hidden;
+}
+
+.hz-video__media,
+.hz-video > video {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+}
+
+.hz-video--fullscreen > video {
+	height: 100%;
+	object-fit: contain;
+}
+
+/* Big center play button (paused state only) */
+.hz-video__bigplay {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 72px;
+	height: 72px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(20, 20, 25, 0.65);
+	color: #fff;
+	cursor: pointer;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s ease;
+}
+.hz-video--paused .hz-video__bigplay { display: flex; }
+.hz-video__bigplay:hover,
+.hz-video__bigplay:focus { background: rgba(0, 0, 0, 0.85); outline: none; }
+.hz-video__bigplay svg { width: 38px; height: 38px; margin-left: 3px; }
+
+/* Control bar */
+.hz-video__controls {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 0.35em 0.6em 0.5em;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	font-size: 14px;
+}
+.hz-video:hover .hz-video__controls,
+.hz-video--paused .hz-video__controls,
+.hz-video:focus-within .hz-video__controls { opacity: 1; }
+
+.hz-video__row {
+	display: flex;
+	align-items: center;
+	gap: 0.25em;
+}
+.hz-video__group { display: flex; align-items: center; gap: 0.15em; }
+.hz-video__spacer { flex: 1 1 auto; }
+
+.hz-video__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.4em;
+	height: 2.4em;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 3px;
+}
+.hz-video__btn svg { width: 1.5em; height: 1.5em; }
+.hz-video__btn:hover { color: #4db8ff; }
+.hz-video__btn:focus-visible { outline: 2px solid #4db8ff; outline-offset: -2px; }
+.hz-video__btn.is-active { color: #4db8ff; }
+
+.hz-video__time {
+	font-variant-numeric: tabular-nums;
+	font-size: 0.85em;
+	padding: 0 0.5em;
+	white-space: nowrap;
+}
+
+/* Progress / seek bar */
+.hz-video__progress {
+	position: relative;
+	height: 6px;
+	margin: 0 0 0.4em;
+	background: rgba(255, 255, 255, 0.3);
+	border-radius: 3px;
+	cursor: pointer;
+}
+.hz-video__progress:focus-visible { outline: 2px solid #4db8ff; outline-offset: 2px; }
+.hz-video__progress-filled {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 0;
+	background: #4db8ff;
+	border-radius: 3px;
+}
+
+.hz-video__volume {
+	width: 70px;
+	max-width: 22vw;
+	accent-color: #4db8ff;
+	cursor: pointer;
+}
+
+/* Optional transcript panel */
+.hz-video__transcript {
+	max-height: 220px;
+	overflow-y: auto;
+	background: #f5f5f7;
+	color: #222;
+	padding: 0.5em;
+	border: 1px solid #ccc;
+	border-top: 0;
+}
+.hz-video__cue {
+	display: block;
+	width: 100%;
+	text-align: left;
+	background: transparent;
+	border: 0;
+	padding: 0.25em 0.4em;
+	cursor: pointer;
+	font: inherit;
+	color: inherit;
+	border-radius: 3px;
+}
+.hz-video__cue:hover { background: #e3e8ef; }
+.hz-video__cue.is-active { background: #d5e8fb; font-weight: 600; }
+.hz-video__cue:focus-visible { outline: 2px solid #4db8ff; }
+
+/* Native caption cues sit above the control bar */
+.hz-video > video::cue { background: rgba(0, 0, 0, 0.75); color: #fff; }
+.hz-video > video::-webkit-media-text-track-container { padding-bottom: 3.2em; }

@@ -73,6 +73,11 @@ class Media extends SiteController
 		}
 		else
 		{
+			$this->logUploadIssue('no file in request (no qqfile / missing CONTENT_LENGTH)', array(
+				'ticket'  => $ticket,
+				'has_get' => isset($_GET['qqfile']) ? 1 : 0,
+				'has_files' => isset($_FILES['qqfile']) ? 1 : 0
+			));
 			echo json_encode(array('error' => Lang::txt('File not found')));
 			return;
 		}
@@ -83,6 +88,7 @@ class Media extends SiteController
 		{
 			if (!Filesystem::makeDirectory($path))
 			{
+				$this->logUploadIssue('could not create upload directory', array('ticket' => $ticket, 'path' => $path));
 				echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
 				return;
 			}
@@ -90,6 +96,7 @@ class Media extends SiteController
 
 		if (!is_writable($path))
 		{
+			$this->logUploadIssue('upload directory not writable', array('ticket' => $ticket, 'path' => $path));
 			echo json_encode(array('error' => Lang::txt('Server error. Upload directory isn\'t writable.')));
 			return;
 		}
@@ -97,11 +104,13 @@ class Media extends SiteController
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
+			$this->logUploadIssue('reported file size is 0', array('ticket' => $ticket, 'stream' => $stream ? 1 : 0));
 			echo json_encode(array('error' => Lang::txt('File is empty')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
+			$this->logUploadIssue('file exceeds size limit', array('ticket' => $ticket, 'size' => $size, 'limit' => $sizeLimit));
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is %s', $max)));
 			return;
@@ -116,7 +125,7 @@ class Media extends SiteController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -129,6 +138,11 @@ class Media extends SiteController
 
 		if (!in_array(strtolower($ext), $allowed))
 		{
+			$this->logUploadIssue('extension not in allowed list', array(
+				'ticket' => $ticket,
+				'file'   => $file,
+				'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
+			));
 			echo json_encode(array('error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
 			return;
 		}
@@ -156,14 +170,22 @@ class Media extends SiteController
 
 		if (!Filesystem::isSafe($file))
 		{
-			if (Filesystem::delete($file))
-			{
-				echo json_encode(array(
-					'success' => false,
-					'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
-				));
-				return;
-			}
+			// Always remove the rejected upload, then report - previously the
+			// error was only returned when the delete happened to succeed,
+			// which let a rejected file fall through and get saved anyway.
+			Filesystem::delete($file);
+
+			$this->logUploadIssue('antivirus scan rejected file', array(
+				'ticket' => $ticket,
+				'file'   => $filename . '.' . $ext,
+				'size'   => $size
+			));
+
+			echo json_encode(array(
+				'success' => false,
+				'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
+			));
+			return;
 		}
 
 		// Create database entry
@@ -177,6 +199,11 @@ class Media extends SiteController
 		));
 		if (!$asset->save())
 		{
+			$this->logUploadIssue('attachment DB record failed to save', array(
+				'ticket' => $ticket,
+				'file'   => $filename . '.' . $ext,
+				'error'  => $asset->getError()
+			));
 			echo json_encode(array(
 				'success' => false,
 				'error'   => $asset->getError()
@@ -317,8 +344,13 @@ class Media extends SiteController
 		$exts = $exts ?: $mediaConfig->get('upload_extensions');
 		$allowed = array_values(array_filter(explode(',', $exts)));
 
-		if (!in_array($ext, $allowed))
+		if (!in_array(strtolower($ext), $allowed))
 		{
+			$this->logUploadIssue('extension not in allowed list', array(
+				'ticket' => $ticket,
+				'file'   => $file['name'],
+				'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
+			));
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
 			return $this->displayTask();
 		}
@@ -335,14 +367,20 @@ class Media extends SiteController
 		{
 			$fle = $path . DS . $filename;
 
-			if (!Filesystem::isSafe($file))
+			// Scan the file that was actually written ($fle), not the raw
+			// $_FILES array ($file), and always remove it on rejection.
+			if (!Filesystem::isSafe($fle))
 			{
-				if (Filesystem::delete($file))
-				{
-					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
-					echo $this->getError();
-					return;
-				}
+				Filesystem::delete($fle);
+
+				$this->logUploadIssue('antivirus scan rejected file', array(
+					'ticket' => $ticket,
+					'file'   => $filename
+				));
+
+				$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
+				echo $this->getError();
+				return;
 			}
 
 			// Create database entry
@@ -459,5 +497,36 @@ class Media extends SiteController
 			->setErrors($this->getErrors())
 			->setLayout('list')
 			->display();
+	}
+
+	/**
+	 * Log a support-attachment upload problem to the PHP error log.
+	 *
+	 * These uploads fail intermittently for some users and are very hard to
+	 * reproduce; recording which branch rejected the upload (and the relevant
+	 * request facts) makes the next occurrence diagnosable instead of silent.
+	 *
+	 * @param   string  $reason   Short reason / branch identifier
+	 * @param   array   $context  Extra key => value context
+	 * @return  void
+	 */
+	protected function logUploadIssue($reason, $context = array())
+	{
+		$context = array_merge(array(
+			'guest'          => User::isGuest() ? 1 : 0,
+			'content_length' => isset($_SERVER['CONTENT_LENGTH']) ? $_SERVER['CONTENT_LENGTH'] : '-',
+		), $context);
+
+		$parts = array();
+		foreach ($context as $k => $v)
+		{
+			$parts[] = $k . '=' . $v;
+		}
+
+		error_log(sprintf(
+			' cms.WARNING support attachment upload failed: %s [%s]',
+			$reason,
+			implode(' ', $parts)
+		));
 	}
 }

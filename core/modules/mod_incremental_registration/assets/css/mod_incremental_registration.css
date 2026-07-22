@@ -74,7 +74,11 @@
 		z-index: 999;
 	}
 /* Questions */
-	#overlay #questions {
+	/* NB: #questions is a SIBLING of #overlay in popover.php, not a child, so
+	   do not scope these as "#overlay #questions" — that selector never matches
+	   and the modal loses its positioning/z-index, leaving #overlay on top and
+	   blocking all clicks. */
+	#questions {
 		z-index: 1000;
 		position: fixed;
 		background: #fff;
@@ -89,7 +93,7 @@
 		top: 20px;
 		bottom: 40px;
 	}
-	#overlay #questions ol {
+	#questions ol {
 		background: #fafafa;
 		border-radius: 10px;
 		text-align: left;
@@ -97,6 +101,6 @@
 		margin-right: 4em;
 		list-style-position: inside;
 	}
-	#overlay #questions input[type="text"] {
+	#questions input[type="text"] {
 		width: 400px;
 	}

@@ -134,6 +134,11 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				$this->getValues($model->id, Request::getInt('period', 13));
 				return;
 			}
+			if ($action == 'download')
+			{
+				$this->downloadData($model->id, Request::getInt('period', $period));
+				return;
+			}
 
 			include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
@@ -403,6 +408,52 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
+		die();
+	}
+
+	/**
+	 * Stream the raw per-period usage statistics for a resource as a CSV file
+	 *
+	 * @param   integer  $id      Resource ID
+	 * @param   integer  $period  Stats period (1=monthly, 12=yearly, 14=cumulative, ...)
+	 * @return  void
+	 */
+	public function downloadData($id, $period=14)
+	{
+		$results = $this->getOverview($id, $period);
+
+		$columns = array(
+			'datetime', 'period', 'users', 'sessions', 'simulations', 'jobs',
+			'avg_wall', 'tot_wall', 'avg_cpu', 'tot_cpu',
+			'avg_view', 'tot_view', 'avg_wait', 'tot_wait',
+			'avg_cpus', 'tot_cpus', 'processed_on'
+		);
+
+		ob_clean();
+
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename="resource-' . intval($id) . '-usage-period-' . intval($period) . '.csv"');
+
+		$out = fopen('php://output', 'w');
+		fputcsv($out, $columns);
+
+		foreach ($results as $row)
+		{
+			$line = array();
+			foreach ($columns as $col)
+			{
+				$val = isset($row->$col) ? $row->$col : '';
+				// Normalize the 'YYYY-MM-00 00:00:00' period stamp to 'YYYY-MM'
+				if ($col == 'datetime')
+				{
+					$val = substr($val, 0, 7);
+				}
+				$line[] = $val;
+			}
+			fputcsv($out, $line);
+		}
+
+		fclose($out);
 		die();
 	}
 

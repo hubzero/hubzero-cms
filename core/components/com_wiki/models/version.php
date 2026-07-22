@@ -188,16 +188,22 @@ class Version extends Relational
 		$route = implode('/', $route);
 		$route = ($route ? $route . '/' : $route);
 
+		// Resolve automatic table-of-contents settings so the parser can place an
+		// inline TOC on pages that have no explicit [[TableOfContents]] macro.
+		$tocSettings = Parser::tocSettings($page->get('scope'), $page->get('scope_id'));
+
 		$wikiconfig = array(
-			'option'    => ($option ?: \Request::getCmd('option')),
-			'scope'     => $page->get('path'), // $route . $page->get('path'),
-			'pagename'  => $page->get('pagename'),
-			'pageid'    => $page->get('id'),
-			'filepath'  => '',
-			'domain'    => $page->get('scope'),
-			'domain_id' => $page->get('scope_id'),
-			'url'       => $page->link(),
-			'loglinks'  => true
+			'option'        => ($option ?: \Request::getCmd('option')),
+			'scope'         => $page->get('path'), // $route . $page->get('path'),
+			'pagename'      => $page->get('pagename'),
+			'pageid'        => $page->get('id'),
+			'filepath'      => '',
+			'domain'        => $page->get('scope'),
+			'domain_id'     => $page->get('scope_id'),
+			'url'           => $page->link(),
+			'loglinks'      => true,
+			'automatic_toc' => $tocSettings['mode'],
+			'toc_threshold' => $tocSettings['threshold']
 		);
 
 		$parser = Parser::getInstance();

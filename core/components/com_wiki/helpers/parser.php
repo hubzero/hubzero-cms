@@ -106,6 +106,130 @@ class Parser extends Obj
 	}
 
 	/**
+	 * Build a standalone table of contents for already-parsed page HTML
+	 *
+	 * @param   string   $text    The parsed page HTML to extract headings from
+	 * @param   array    $config  Params for the parser (scope, domain, url, etc.)
+	 * @param   integer  $depth   Limit the TOC to this many heading levels (0 = no limit)
+	 * @return  string   Rendered table-of-contents markup
+	 */
+	public function toc($text, $config, $depth = 0)
+	{
+		$this->load(array(), $config, true);
+		$parser = $this->parser->onGetWikiParser($config, true);
+
+		return $parser->toc($text, true, $depth);
+	}
+
+	/**
+	 * Parse the positional arguments of a [[TableOfContents(...)]] macro.
+	 *
+	 * Args are type-dispatched and order-independent: an integer sets the
+	 * depth, a keyword (here|inline|sidebar|off) sets the placement mode.
+	 * Last value of each type wins. Unrecognized tokens are ignored.
+	 *
+	 * @param   string  $args  Raw argument string (contents of the parentheses)
+	 * @return  array   array('mode' => string, 'depth' => int)
+	 */
+	public static function parseTocArgs($args)
+	{
+		$mode  = 'here';   // default: render at the macro's own position
+		$depth = 0;        // 0 = no depth limit
+
+		if ($args !== null && $args !== '')
+		{
+			foreach (explode(',', $args) as $arg)
+			{
+				$arg = trim($arg);
+				if ($arg === '')
+				{
+					continue;
+				}
+				if (ctype_digit($arg))
+				{
+					$depth = (int) $arg;
+				}
+				elseif (in_array(strtolower($arg), array('here', 'inline', 'sidebar', 'off'), true))
+				{
+					$mode = strtolower($arg);
+				}
+			}
+		}
+
+		return array('mode' => $mode, 'depth' => $depth);
+	}
+
+	/**
+	 * Detect an explicit [[TableOfContents(...)]] macro in raw wiki text and
+	 * return its resolved mode/depth, or null when the page has no such macro.
+	 *
+	 * @param   string  $pagetext  Raw wiki markup
+	 * @return  array|null  array('mode' => string, 'depth' => int) or null
+	 */
+	public static function tocDirective($pagetext)
+	{
+		if ($pagetext === null || $pagetext === '')
+		{
+			return null;
+		}
+
+		if (preg_match('/\[\[\s*TableOfContents\s*(?:\(([^)]*)\))?\s*\]\]/i', $pagetext, $m))
+		{
+			return self::parseTocArgs(isset($m[1]) ? $m[1] : '');
+		}
+
+		return null;
+	}
+
+	/**
+	 * Resolve the effective automatic table-of-contents settings for a wiki.
+	 *
+	 * These govern pages that have no explicit [[TableOfContents]] macro. The
+	 * component configuration provides the defaults; a group may override them
+	 * via its own params (layered in by the group wiki plugin).
+	 *
+	 * @param   string   $domain     Scope type (e.g. 'group')
+	 * @param   integer  $domain_id  Scope id (e.g. group gidNumber)
+	 * @return  array    array('mode' => inline|sidebar|off, 'threshold' => int)
+	 */
+	public static function tocSettings($domain = null, $domain_id = null)
+	{
+		$params = \Component::params('com_wiki');
+
+		$mode      = $params->get('automatic_toc', 'inline');
+		$threshold = (int) $params->get('toc_threshold', 4);
+
+		// Group-level override
+		if ($domain == 'group' && $domain_id)
+		{
+			$group = \Hubzero\User\Group::getInstance($domain_id);
+			if ($group)
+			{
+				$gparams = new Registry($group->get('params'));
+
+				$gmode = $gparams->get('automatic_toc', '');
+				if (in_array($gmode, array('inline', 'sidebar', 'off'), true))
+				{
+					$mode = $gmode;
+				}
+
+				$gthreshold = $gparams->get('toc_threshold', '');
+				if ($gthreshold !== '' && $gthreshold !== null)
+				{
+					$threshold = (int) $gthreshold;
+				}
+			}
+		}
+
+		if (!in_array($mode, array('inline', 'sidebar', 'off'), true))
+		{
+			$mode = 'inline';
+		}
+
+		return array('mode' => $mode, 'threshold' => max(1, $threshold));
+	}
+
+	/**
 	 * Parse the text
 	 *
 	 * @param   string  $text       The content to be parsed

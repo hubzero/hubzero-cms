@@ -201,3 +201,22 @@ jQuery(document).ready(function(jq){
 	}
 });
 
+
+// Handles wiki Table of Contents expand/collapse toggle buttons
+document.addEventListener('DOMContentLoaded', function () {
+	document.querySelectorAll('.article-toc .toggle-button').forEach(function (button) {
+		var sublist = button.closest('li').querySelector('ul');
+
+		// Hide the toggle when there is no sub-section to expand
+		if (!sublist) {
+			button.style.visibility = 'hidden';
+			return;
+		}
+
+		button.addEventListener('click', function () {
+			var expanded = button.getAttribute('aria-expanded') === 'true';
+			button.setAttribute('aria-expanded', String(!expanded));
+			sublist.style.display = expanded ? 'none' : 'block';
+		});
+	});
+});

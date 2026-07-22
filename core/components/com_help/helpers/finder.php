@@ -50,7 +50,7 @@ class Finder
 		// If we have an extension
 		if ($extension)
 		{
-			$paths[2] = PATH_CORE . DS . 'plugins' . DS . $name . DS . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
+			$paths[2] = \Plugin::path($name, $extension) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
 			$paths[0] = $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
 		}
 

@@ -281,9 +281,9 @@ class Parser
 	 */
 	private function strip($text)
 	{
-		$text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', array(&$this, '_dataPush'), $text);
+		$text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', array(&$this, '_dataPush'), $text ?: '');
 
-		$text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', array(&$this, '_dataPush'), $text);
+		$text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', array(&$this, '_dataPush'), $text ?: '');
 
 		return $text;
 	}

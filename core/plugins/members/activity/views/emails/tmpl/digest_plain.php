@@ -22,7 +22,9 @@ foreach ($this->rows as $row)
 		"/(&#[0-9]+;)/",
 		function($m)
 		{
-			return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES");
+			// mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
+			// numeric entity to its UTF-8 character with the supported function.
+			return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
 		},
 		$output
 	);

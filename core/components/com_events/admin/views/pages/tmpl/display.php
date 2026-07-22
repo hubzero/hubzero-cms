@@ -69,10 +69,10 @@ Toolbar::deleteList();
 					<td><?php echo $row->id; ?></td>
 					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
 					<td>
-						<?php echo $pageNav->orderUpIcon($i, ($row->ordering != @$orderings[$i-1])); ?>
+						<?php echo $pageNav->orderUpIcon($i, ($row->ordering != ($orderings[$i-1] ?? null))); ?>
 					</td>
 					<td>
-						<?php echo $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != @$orderings[$i+1])); ?>
+						<?php echo $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != ($orderings[$i+1] ?? null))); ?>
 					</td>
 					<td><?php echo $row->ordering; ?></td>
 				</tr>

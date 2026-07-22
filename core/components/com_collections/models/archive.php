@@ -401,7 +401,63 @@ class Archive extends Obj
 		}
 
 		$tbl = new Tables\Post($this->_db);
-		return $tbl->getRecords($filters);
+
+		if ($results = $tbl->getRecords($filters))
+		{
+			$ids = array();
+			foreach ($results as $key => $result)
+			{
+				$ids[] = $result->item_id;
+			}
+
+			// Get all the assets for this list of items (avoids an N+1 per post)
+			$ba = new Tables\Asset($this->_db);
+			$assets = $ba->getRecords(array('item_id' => $ids));
+
+			// Get all the tags for this list of items
+			$bt = new Tags();
+			$tags = $bt->getTagsForIds($ids);
+
+			// Loop through all the items and push assets and tags
+			foreach ($results as $key => $result)
+			{
+				$results[$key] = new Post($result);
+
+				if ($assets)
+				{
+					foreach ($assets as $asset)
+					{
+						if ($asset->item_id == $results[$key]->get('item_id'))
+						{
+							$results[$key]->item()->addAsset($asset);
+						}
+						else
+						{
+							$results[$key]->item()->addAsset(null);
+						}
+					}
+				}
+				else
+				{
+					$results[$key]->item()->addAsset(null);
+				}
+
+				if (isset($tags[$results[$key]->get('item_id')]))
+				{
+					$results[$key]->item()->addTag($tags[$results[$key]->get('item_id')]);
+				}
+				else
+				{
+					$results[$key]->item()->addTag(null);
+				}
+			}
+		}
+		else
+		{
+			$results = array();
+		}
+
+		return new ItemList($results);
 	}
 
 	/**

@@ -17,12 +17,6 @@
         "issues": "http://help.hubzero.org/support/ticket/new",
         "source": "http://hubzero.org/download"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/hubzero/flysystem-github"
-        }
-    ],
     "require": {
         "bordoni/phpass": "0.3.*",
         "apereo/phpcas": "1.6.*",
@@ -44,14 +38,14 @@
         "simshaun/recurr": "4.0.*",
         "pelago/emogrifier": "7.0.*",
         "google/apiclient": "2.14.*",
-        "guzzlehttp/guzzle": "7.9.*",
+        "guzzlehttp/guzzle": "7.15.*",
         "symfony/mailchimp-mailer": "v5.4.*",
         "phpdocumentor/reflection-docblock": "5.2.*",
         "bshaffer/oauth2-server-php": "1.11.*",
         "pear/net_dns2": "1.5.*",
         "hubzero/orcid-php": "0.3.*",
         "league/flysystem": "1.1.*",
-        "potherca/flysystem-github": "0.3.*",
+        "knplabs/github-api": "^3.16",
         "nao-pon/flysystem-google-drive": "1.1.*",
         "php-amqplib/php-amqplib": "2.12.*",
         "league/flysystem-aws-s3-v3": "1.0.*",
@@ -60,7 +54,7 @@
         "cilogon/oauth2-cilogon": "1.1.*",
         "srmklive/flysystem-dropbox-v2": "1.0.*",
         "stevenmaguire/oauth2-dropbox": "3.1.*",
-	"composer/composer": "2.9.*",
+	"composer/composer": "2.10.*",
 	"phpoffice/phpspreadsheet": "1.30.*",
 	"league/oauth2-facebook": "2.0.*",
 	"league/oauth2-client": "~2.8.1",

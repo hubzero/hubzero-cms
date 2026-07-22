@@ -22,7 +22,7 @@ if (count($this->citations) > 0) :
 			<thead>
 				<tr>
 					<th class="batch">
-						<input type="checkbox" class="checkall-download" />
+						<input type="checkbox" class="checkall-download" aria-label="Select all citations" />
 					</th>
 					<th colspan="5"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 				</tr>
@@ -32,7 +32,7 @@ if (count($this->citations) > 0) :
 				<?php foreach ($this->citations as $cite) : ?>
 					<tr class="citation-row">
 						<td class="batch">
-							<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+							<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" aria-label="Select citation <?php echo (int) $cite->id; ?>" />
 						</td>
 						<?php if ($this->label != "none") : ?>
 							<td class="citation-label <?php echo $this->citations_label_class; ?>">

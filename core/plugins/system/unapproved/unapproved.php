@@ -47,10 +47,31 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 			// If guest, proceed as normal and they'll land on the login page
 			if (!in_array($current, $exceptions) && !$user->get('approved'))
 			{
+				$originalOption = Request::getWord('option', '');
+
 				Request::setVar('option', 'com_members');
 				Request::setVar('task', 'unapproved');
 
 				$this->event->stop();
+
+				// The site's front-page template only renders the component
+				// position on non-default menu items, so the in-place swap above
+				// produces no visible output on the home page -- the user just
+				// sees the landing page instead of the "account pending approval"
+				// notice. On the default menu item, redirect to the real URL so
+				// we land on a page whose template shows the component. The
+				// $originalOption guard keeps this from firing on the redirect
+				// target itself (com_members), so it can't loop.
+				if (!in_array($originalOption, array('com_members')))
+				{
+					$menu = App::get('menu');
+
+					if (is_object($menu->getActive()) && is_object($menu->getDefault())
+						&& $menu->getActive()->id == $menu->getDefault()->id)
+					{
+						App::redirect(Route::url('index.php?option=com_members&task=unapproved'));
+					}
+				}
 			}
 		}
 	}

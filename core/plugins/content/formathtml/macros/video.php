@@ -100,10 +100,10 @@ class Video extends Macro
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$width  = (isset($this->attr['width']) && $this->attr['width'] != '')   ? $this->attr['width']  : $default_width;
 		$height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
@@ -223,11 +223,20 @@ class Video extends Macro
 		{
 			$ext = strtolower(\Filesystem::extension($video_url));
 
-			\Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-			\Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+			// Shared HUBzero player: native <video> + accessible control bar
+			// (no external dependency, multi-instance safe)
+			\Document::addStyleSheet('/core/assets/css/hz-video-player.css');
+			\Document::addScript('/core/assets/js/hz-video-player.js');
 
-			$html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
-			$html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
+			$transcript = (isset($this->attr['transcript']) && $this->attr['transcript']) ? ' data-transcript="1"' : '';
+
+			// Cap the player at the requested width (default 640) but let it shrink
+			// responsively on narrow screens.
+			$cssWidth = is_numeric($width) ? $width . 'px' : $width;
+
+			$html  = '<div class="hz-video" style="max-width:' . htmlspecialchars($cssWidth, ENT_QUOTES, 'UTF-8') . '"' . $transcript . '>';
+			// `controls` is a no-JS fallback; the player removes it once enhanced
+			$html .= '<video width="' . $width . '" height="' . $height . '" preload="metadata" playsinline controls>';
 			switch ($ext)
 			{
 				case 'mov':
@@ -245,13 +254,44 @@ class Video extends Macro
 					$html .= '<source src="' . $this->_link($url) . '" type="video/webm" />';
 				break;
 			}
+
+			// Optional WebVTT captions: [[Video(clip.mp4, captions="clip.en.vtt")]]
+			if (isset($this->attr['captions']) && $this->attr['captions'] != '')
+			{
+				$capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '') ? $this->attr['captionlang'] : 'en';
+				$capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '') ? $this->attr['captionlabel'] : 'Captions';
+				$html .= '<track kind="captions" src="' . $this->_link($this->attr['captions']) . '"'
+					. ' srclang="' . htmlspecialchars($capLang, ENT_QUOTES, 'UTF-8') . '"'
+					. ' label="' . htmlspecialchars($capLabel, ENT_QUOTES, 'UTF-8') . '" default />';
+			}
+
 			$html .= '</video>';
 			$html .= '</div>';
 		}
 		// External
 		else
 		{
-			$title = isset($this->attr['title']) ? $this->attr['title'] : ucfirst($type) . ' video';
+			// Compose a unique-per-embed title so pages with multiple videos don't
+			// repeat the same iframe title (axe frame-title-unique / WCAG 4.1.2).
+			if (isset($this->attr['title']) && $this->attr['title'] !== '')
+			{
+				$title = $this->attr['title'];
+			}
+			else
+			{
+				$title = ucfirst($type) . ' video';
+
+				// Append an id fragment from the URL path when available
+				$path = parse_url($video_url, PHP_URL_PATH) ?: '';
+				if ($path !== '')
+				{
+					$seg = rtrim(basename($path), '/');
+					if ($seg !== '' && $seg !== 'embed')
+					{
+						$title .= ' ' . $seg;
+					}
+				}
+			}
 			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title) . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 

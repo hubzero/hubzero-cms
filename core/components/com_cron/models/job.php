@@ -418,4 +418,248 @@ class Job extends Relational
 	{
 		return new Registry($this->get('params'));
 	}
+
+	/**
+	 * Read a process' start time (in jiffies / clock ticks since boot).
+	 *
+	 * Thin wrapper over the dependency-free Helpers\Process so the parsing and
+	 * pid-identity logic can be unit-tested in isolation.
+	 *
+	 * @param   integer  $pid
+	 * @return  string|false  start time in jiffies, or false if unreadable
+	 */
+	public static function procStartTime($pid)
+	{
+		return \Hubzero\Utility\Process::startTime($pid);
+	}
+
+	/**
+	 * Is the process that owns this job's active run still alive?
+	 *
+	 * True only when a process with the recorded pid exists AND has the
+	 * recorded start time (guarding against pid reuse). Only meaningful on
+	 * the host that started the run, so the caller must compare hosts.
+	 *
+	 * @return  boolean
+	 */
+	public function ownerIsAlive()
+	{
+		return \Hubzero\Utility\Process::isAlive($this->get('pid'), $this->get('pid_started'));
+	}
+
+	/**
+	 * Whether this job is marked active but the process that owned the run is
+	 * gone (died, was killed, or timed out). Such a job would otherwise stay
+	 * active forever and never run again.
+	 *
+	 * Process identity is only checkable on the host that started the run, so
+	 * we only judge staleness when the recorded host matches this host. A run
+	 * owned by another host is left alone (conservative — never reclaim a job
+	 * we cannot verify is dead).
+	 *
+	 * @return  boolean
+	 */
+	public function isStale()
+	{
+		return \Hubzero\Utility\Process::isStale(
+			$this->get('active'),
+			$this->get('pid'),
+			$this->get('pid_started'),
+			$this->get('pid_host'),
+			$this->get('active_since'),
+			self::STALE_ACTIVE_SECONDS
+		);
+	}
+
+	/**
+	 * Upper bound (seconds) a job may stay active when owned by a host whose
+	 * process we cannot verify locally, before it is assumed dead and
+	 * reclaimable. Guards against a permanent wedge if the recorded host ever
+	 * stops matching this host (rename, container, multi-node). Same-host runs
+	 * are judged by live process check, not this timer.
+	 *
+	 * @var  integer
+	 */
+	const STALE_ACTIVE_SECONDS = 21600; // 6 hours
+
+	/**
+	 * Hostname of the current machine, used to scope pid checks.
+	 *
+	 * @return  string
+	 */
+	public static function thisHost()
+	{
+		return \Hubzero\Utility\Process::host();
+	}
+
+	/**
+	 * Atomically take ownership of this job for the current process.
+	 *
+	 * Succeeds in exactly two cases, decided in a single conditional UPDATE so
+	 * overlapping runners (e.g. the web tick and a `muse cron:jobs run`, which
+	 * share no lock) can never both win:
+	 *
+	 *   - the job is free (active = 0); or
+	 *   - the job is active but owned by the exact (pid, start time, host) we
+	 *     observed AND that process is no longer alive — i.e. we are reclaiming
+	 *     a run whose process died/was killed/timed out.
+	 *
+	 * The reclaim arm keys on the observed ownership, so if another runner
+	 * reclaimed the same dead job a moment earlier, its new pid/start time no
+	 * longer match our WHERE and we lose the race cleanly (no double run). A
+	 * job whose owner is still alive (or lives on another host we can't verify)
+	 * is never claimed.
+	 *
+	 * @return  boolean  true if this process now owns the run
+	 */
+	public function claim()
+	{
+		$id = (int) $this->get('id');
+
+		if (!$id)
+		{
+			return false;
+		}
+
+		// Active with a live owner (or an owner on another host we cannot
+		// verify) — genuinely running elsewhere, so it is not claimable.
+		if ($this->get('active') && !$this->isStale())
+		{
+			return false;
+		}
+
+		$pid     = getmypid();
+		$started = self::procStartTime($pid);
+		$host    = self::thisHost();
+		$nowSql  = Date::toSql();
+
+		$db = \App::get('db');
+
+		$startedSql = ($started === false) ? 'NULL' : $db->quote($started);
+
+		// Observed (dead) ownership for the reclaim arm.
+		$obsPid     = ($this->get('pid') === null)         ? 'NULL' : $db->quote($this->get('pid'));
+		$obsStarted = ($this->get('pid_started') === null) ? 'NULL' : $db->quote($this->get('pid_started'));
+		$obsHost    = ($this->get('pid_host') === null)    ? 'NULL' : $db->quote($this->get('pid_host'));
+
+		$query = "UPDATE `#__cron_jobs`
+			SET `active` = 1, `pid` = " . $db->quote($pid) . ",
+				`pid_started` = " . $startedSql . ",
+				`pid_host` = " . $db->quote($host) . ",
+				`active_since` = " . $db->quote($nowSql) . "
+			WHERE `id` = " . $id . "
+			  AND (`active` = 0
+			       OR (`active` = 1
+			           AND `pid` <=> " . $obsPid . "
+			           AND `pid_started` <=> " . $obsStarted . "
+			           AND `pid_host` <=> " . $obsHost . "))";
+
+		$db->setQuery($query);
+		$db->query();
+
+		if ($db->getAffectedRows() < 1)
+		{
+			return false;
+		}
+
+		$this->set('active', 1);
+		$this->set('pid', $pid);
+		$this->set('pid_started', $started);
+		$this->set('pid_host', $host);
+		$this->set('active_since', $nowSql);
+
+		return true;
+	}
+
+	/**
+	 * Re-confirm this job is still due, reading the current next_run from the
+	 * database rather than the (possibly stale) value loaded when the run list
+	 * was built. Used after claim() to avoid re-running a job that a concurrent
+	 * runner finished and rescheduled while our run list was in hand.
+	 *
+	 * @return  boolean
+	 */
+	public function stillDue()
+	{
+		$id = (int) $this->get('id');
+
+		if (!$id)
+		{
+			return false;
+		}
+
+		$row = self::all()->whereEquals('id', $id)->row();
+
+		if (!$row || !$row->get('id'))
+		{
+			return false;
+		}
+
+		$next = $row->get('next_run');
+
+		// Mirror the runner's due query (next_run <= now); a NULL next_run is
+		// not selected by that query, so treat it the same here.
+		return ($next !== null && $next <= Date::of('now')->toSql());
+	}
+
+	/**
+	 * Release this job from the active state and clear its process ownership.
+	 *
+	 * Done as a targeted raw UPDATE rather than save() on purpose: releasing a
+	 * lock must never be gated by the model's validation rules (a row with a
+	 * malformed recurrence/empty field would otherwise fail to save, leaving
+	 * the job active and re-running every tick). It also skips the params
+	 * re-serialization save() does.
+	 *
+	 * When called after a run, pass the new last_run/next_run to persist them
+	 * in the same statement. When called to GIVE BACK a claim (e.g. the job
+	 * was no longer due), pass nothing: the schedule is left untouched so a
+	 * concurrent runner's freshly-advanced next_run is not clobbered.
+	 *
+	 * @param   mixed  $lastRun  new last_run to persist, or null to leave as-is
+	 * @param   mixed  $nextRun  new next_run to persist, or null to leave as-is
+	 * @return  boolean
+	 */
+	public function release($lastRun = null, $nextRun = null)
+	{
+		$id = (int) $this->get('id');
+
+		$db   = \App::get('db');
+		$sets = "`active` = 0, `pid` = NULL, `pid_started` = NULL, `pid_host` = NULL, `active_since` = NULL";
+
+		if ($lastRun !== null)
+		{
+			$sets .= ", `last_run` = " . $db->quote($lastRun);
+		}
+
+		if ($nextRun !== null)
+		{
+			$sets .= ", `next_run` = " . $db->quote($nextRun);
+		}
+
+		if ($id)
+		{
+			$db->setQuery("UPDATE `#__cron_jobs` SET " . $sets . " WHERE `id` = " . $id);
+			$db->query();
+		}
+
+		// Keep the in-memory model in step with the row.
+		$this->set('active', 0);
+		$this->set('pid', null);
+		$this->set('pid_started', null);
+		$this->set('pid_host', null);
+		$this->set('active_since', null);
+
+		if ($lastRun !== null)
+		{
+			$this->set('last_run', $lastRun);
+		}
+
+		if ($nextRun !== null)
+		{
+			$this->set('next_run', $nextRun);
+		}
+
+		return true;
+	}
 }

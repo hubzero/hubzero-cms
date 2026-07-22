@@ -83,6 +83,20 @@ class plgGroupsCalendarHelper
 			'14'    => array('abbreviation' => 'LINT',  'name' => 'Line Islands Time')
 		);
 
-		return (isset($abbreviations[$timezone])) ? $abbreviations[$timezone] : null;
+		if (isset($abbreviations[$timezone]))
+		{
+			return $abbreviations[$timezone];
+		}
+
+		// IANA zone (post-migration): derive the current abbreviation and name.
+		try
+		{
+			$now = new \DateTime('now', new \DateTimeZone($timezone));
+			return array('abbreviation' => $now->format('T'), 'name' => $timezone);
+		}
+		catch (\Exception $e)
+		{
+			return null;
+		}
 	}
 }

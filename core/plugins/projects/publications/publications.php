@@ -2044,6 +2044,36 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED'));
 		}
 
+		// Selected files that have moved/been renamed/removed in the project since
+		// they were added: the selection is stale and the served bundle would not
+		// reflect the project's current folder layout. Block publish and point the
+		// curator at the files to re-select. (Not on revert — no re-selection there.)
+		if ($this->_task != 'revert')
+		{
+			$movedFiles = $pub->_curationModel->movedSourceAttachments();
+
+			if ($movedFiles)
+			{
+				$movedNames = array();
+				foreach ($movedFiles as $movedFile)
+				{
+					$movedNames[] = $movedFile->path;
+				}
+
+				$total = count($movedNames);
+				$shown = array_slice($movedNames, 0, 20);
+				if ($total > 20)
+				{
+					$shown[] = '… (and ' . ($total - 20) . ' more)';
+				}
+
+				$this->setError(
+					Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FILES_MOVED', $total)
+					. ' ' . implode(', ', $shown)
+				);
+			}
+		}
+
 		// Is revert allowed?
 		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
 		if ($revertAllowed && $pub->version->state == 1

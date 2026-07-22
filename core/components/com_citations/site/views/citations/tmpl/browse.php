@@ -126,7 +126,7 @@ if ($label == 'none') {
 										<?php $citeId = $cite->id; ?>
 										<?php if ($batch_download) : ?>
 											<td class="batch">
-												<input type="checkbox" class="download-marker" name="download_marker[]" id="download_marker<?php echo $citeId; ?>" value="<?php echo $citeId; ?>" />
+												<input type="checkbox" class="download-marker" name="download_marker[]" id="download_marker<?php echo $citeId; ?>" value="<?php echo $citeId; ?>" aria-label="Select citation <?php echo (int) $citeId; ?>" />
 											</td>
 										<?php endif; ?>
 										<?php if ($label != "none") : ?>
@@ -290,6 +290,10 @@ if ($label == 'none') {
 						<?php else: ?>
 							<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 						<?php endif; ?>
+				</label>
+				<label for="ackeywords">
+					<?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?>:
+					<input type="text" name="keyword" id="ackeywords" value="<?php echo $this->escape($this->filters['keyword']); ?>" />
 				</label>
 				<label for="author">
 					<?php echo Lang::txt('COM_CITATIONS_AUTHORED_BY'); ?>

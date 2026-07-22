@@ -29,10 +29,20 @@ class TableOfContentsMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
+	 * The real table of contents is substituted later, during the parser's
+	 * heading pass. Here we only emit a placeholder that preserves any
+	 * positional arguments (mode/depth) so that pass can honor them.
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
-		return 'MACRO' . $this->uniqPrefix . '[[TableOfContents]]';
+		$args = '';
+		if ($this->args !== null && $this->args !== '')
+		{
+			$args = '(' . $this->args . ')';
+		}
+
+		return 'MACRO' . $this->uniqPrefix . '[[TableOfContents' . $args . ']]';
 	}
 }

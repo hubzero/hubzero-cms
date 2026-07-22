@@ -8,6 +8,65 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+use Components\Wiki\Helpers\Parser;
+
+// Build the sidebar table of contents for the current page (display view only).
+// Only one TOC renders per page: an explicit [[TableOfContents]] macro decides
+// (a "sidebar" macro puts it here; here/inline/off keep it out of the sidebar);
+// without a macro we render it in the sidebar by default.
+$showtoc = ($this->controller == 'pages' && $this->task == 'display'
+	&& $this->page->getNamespace() != 'special');
+$toc = '';
+
+if ($showtoc)
+{
+	$directive = Parser::tocDirective($this->page->version->get('pagetext'));
+
+	$render = false;
+	$depth  = 0;
+	if ($directive === null)
+	{
+		// No macro: honor the automatic-TOC setting. Only 'sidebar' renders here,
+		// and only once the page meets the configured heading threshold.
+		$settings = Parser::tocSettings($this->page->get('scope'), $this->page->get('scope_id'));
+		if ($settings['mode'] == 'sidebar')
+		{
+			$headings = preg_match_all('/<h[1-6][\s>]/i', (string) $this->page->version->get('pagehtml'));
+			$render = ($headings >= $settings['threshold']);
+		}
+	}
+	elseif ($directive['mode'] == 'sidebar')
+	{
+		// Macro explicitly asks for the sidebar (forced, no threshold)
+		$render = true;
+		$depth  = $directive['depth'];
+	}
+	// automatic inline/off, or macro here/inline/off => the sidebar stays empty
+
+	if ($render)
+	{
+		// Make sure the base URL is correct for the TOC so anchor links don't reload the page
+		$url = $this->page->link();
+		if ($this->page->get('pagename') == 'MainPage')
+		{
+			$path = explode('/', rtrim($_SERVER['REQUEST_URI'], '/'));
+			if (end($path) != 'MainPage')
+			{
+				$url = $this->page->link('base');
+			}
+		}
+
+		$parser = Parser::getInstance();
+		$toc = $parser->toc($this->page->version->get('pagehtml'), array(
+			'option'    => ($this->option ?: \Request::getCmd('option')),
+			'scope'     => $this->page->get('path'),
+			'domain'    => $this->page->get('scope'),
+			'domain_id' => $this->page->get('scope_id'),
+			'url'       => $url,
+		), $depth);
+	}
+}
+
 ?>
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></h3>
@@ -23,6 +82,12 @@ defined('_HZEXEC_') or die();
 				</fieldset>
 			</form>
 		</div>
+
+		<?php if (trim($toc) != '') { ?>
+		<div class="container">
+			<?php echo $toc; ?>
+		</div>
+		<?php } ?>
 
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_WIKI'); ?></h3>
@@ -47,6 +112,23 @@ defined('_HZEXEC_') or die();
 						<?php echo Lang::txt('COM_WIKI_SPECIAL_RECENT_CHANGES'); ?>
 					</a>
 				</li>
+				<?php
+				// Group managers get a link to the group wiki settings (TOC behavior)
+				if ($this->page->get('scope') == 'group')
+				{
+					$grp = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
+					if ($grp && !User::isGuest() && in_array(User::get('id'), (array) $grp->get('managers')))
+					{
+						?>
+						<li class="page-settings">
+							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $grp->get('cn') . '&active=wiki&action=settings'); ?>">
+								<?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
+							</a>
+						</li>
+						<?php
+					}
+				}
+				?>
 			</ul>
 		</div>
 
@@ -60,7 +142,7 @@ defined('_HZEXEC_') or die();
 					</a>
 				</li>
 				<li class="page-cite">
-					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id')); ?>">
+					<a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id') . '&path=' . $this->page->get('path')); ?>">
 						<?php echo Lang::txt('COM_WIKI_SPECIAL_CITE'); ?>
 					</a>
 				</li>

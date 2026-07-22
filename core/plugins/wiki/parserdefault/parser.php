@@ -374,8 +374,13 @@ class WikiParser
 		$text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
 		$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
 
-		// Format headings and build a table of contents
-		if ($this->get('fullparse') && strstr($text, '<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>'))
+		// Anchor every heading (and substitute an inline [[TableOfContents]] macro if one
+		// is present). This runs on every full parse -- not only when the macro appears --
+		// so that heading id anchors exist on all pages and any table of contents (inline,
+		// sidebar, or the explicit macro) can link to them. When no macro placeholder is
+		// present, toc()'s closing str_replace is a no-op and it returns the body with the
+		// headings anchored.
+		if ($this->get('fullparse'))
 		{
 			$text = $this->toc($text);
 		}
@@ -2998,15 +3003,49 @@ class WikiParser
 	 * @param   string  $text  Text to build TOC from
 	 * @return  string
 	 */
-	public function toc($text)
+	public function toc($text, $standalone = false, $depth = 0)
 	{
 		$isMain              = true;
-		$maxTocLevel         = 15;
 		$showEditLink        = true;
 		$doNumberHeadings    = false;
 		$doTocNumberHeadings = true;
 		$forceTocPosition    = true;
 		//$mShowToc            = true;
+
+		// Placement of the inline TOC. Only meaningful when not standalone (i.e.
+		// when substituting a [[TableOfContents]] macro): 'none' means the page has
+		// no macro, so we only anchor headings; otherwise the macro's mode
+		// (here|inline|sidebar|off) decides where the TOC lands. A depth given in
+		// the macro overrides any passed-in default.
+		$tocMode     = 'sidebar';
+		$placeholder = '';
+		if (!$standalone)
+		{
+			$tocMode = 'none';
+			if (preg_match('/<p>MACRO' . preg_quote($this->token(), '/') . '\[\[TableOfContents(?:\(([^)]*)\))?\]\]' . "\n" . '<\/p>/', $text ?: '', $mm))
+			{
+				$directive   = \Components\Wiki\Helpers\Parser::parseTocArgs(isset($mm[1]) ? $mm[1] : '');
+				$tocMode     = $directive['mode'];
+				$depth       = $directive['depth'];
+				$placeholder = $mm[0];
+			}
+		}
+
+		// Limit heading levels when a depth was requested. Level checks below are
+		// "toclevel < maxTocLevel", so add one; 0 means no limit.
+		$maxTocLevel = ($depth > 0) ? $depth + 1 : 15;
+
+		// Anchor for the "(Top)" link. Super groups render their own header, so
+		// point at that; regular groups sit under the sub-content header.
+		$toc_title_anchor = 'content-header';
+		if ($this->get('domain') == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($this->get('domain_id'));
+			if ($group && !$group->isSuperGroup())
+			{
+				$toc_title_anchor = 'sub-content-header';
+			}
+		}
 
 		// Get all headlines for numbering them and adding funky stuff like [edit]
 		// links - this is for later, but we need the number of headlines right now
@@ -3062,7 +3101,15 @@ class WikiParser
 					if ($toclevel < $maxTocLevel)
 					{
 						$prevtoclevel = $toclevel;
-						$toc .= $this->_tocIndent();
+						if ($toc == '')
+						{
+							$toc .= $this->_tocIndent($toclevel);
+							$toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+						}
+						else
+						{
+							$toc .= $this->_tocIndent($toclevel);
+						}
 						$numVisible++;
 					}
 				}
@@ -3227,12 +3274,59 @@ class WikiParser
 			$i++;
 		}
 
-		$output  = '<div class="article-toc">' . "\n";
+		// Ensure at least a "(Top)" entry when there were no sub-headings
+		if ($toc == '')
+		{
+			$toc .= $this->_tocIndent($toclevel);
+			$toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+		}
+
+		$output  = '<div class="article-toc' . (!$standalone ? ' macro-toc' : '') . '">' . "\n";
 		$output .= '<h3 class="article-toc-heading">Contents</h3>' . "\n";
 		$output .= $toc . "\n";
 		$output .= '</div>' . "\n";
 
-		return str_replace('<p>MACRO' . $this->token() . '[[TableOfContents]]' . "\n" . '</p>', $output, $full);
+		// Standalone: return just the TOC (for placement in a sidebar/aside).
+		if ($standalone)
+		{
+			return $output;
+		}
+
+		// No explicit macro: headings in $full are already anchored. Apply the
+		// automatic-TOC setting -- only 'inline' places anything in the body
+		// (sidebar is handled by the view, off does nothing), and only once the
+		// page meets the heading threshold.
+		if ($tocMode == 'none' || $placeholder == '')
+		{
+			$autoMode      = $this->get('automatic_toc', 'off');
+			$autoThreshold = (int) $this->get('toc_threshold', 4);
+
+			if ($autoMode == 'inline' && $numVisible > 0 && $numMatches >= $autoThreshold)
+			{
+				return $output . "\n" . $full;
+			}
+
+			return $full;
+		}
+
+		// Place the inline TOC per the macro's mode. Only one TOC renders per page;
+		// the view suppresses the sidebar when the macro is here/inline/off.
+		switch ($tocMode)
+		{
+			case 'here':
+				// At the macro's own position
+				return str_replace($placeholder, $output, $full);
+
+			case 'inline':
+				// At the top of the content
+				return $output . "\n" . str_replace($placeholder, '', $full);
+
+			case 'sidebar':
+			case 'off':
+			default:
+				// Rendered in the sidebar by the view, or not at all
+				return str_replace($placeholder, '', $full);
+		}
 	}
 
 	/**
@@ -3255,9 +3349,9 @@ class WikiParser
 	 *
 	 * @return  string
 	 */
-	private function _tocIndent()
+	private function _tocIndent($toclevel)
 	{
-		return "\n<ul>";
+		return "\n<ul class='toc-list'" . ($toclevel > 1 ? " style='display: none;'" : "") . ">";
 	}
 
 	/**
@@ -3285,11 +3379,14 @@ class WikiParser
 		$url = $this->get('url');
 		$url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
 
-		return "\n" . '<li class="toclevel-' . $level . '">' .
-						'<a href="' . Route::url($url) . '#' . $anchor . '">' .
-							'<span class="tocnumber">' . $tocnumber . ' </span>' .
-							'<span class="toctext">' . $tocLine . '</span>' .
-						'</a>';
+		return "\n" . '<li class="toclevel toclevel-' . $level . '">' .
+						'<div class="toc-item">' .
+							'<button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button>' .
+							'<a href="' . Route::url($url) . '#' . $anchor . '">' .
+								'<span class="tocnumber">' . $tocnumber . ' </span>' .
+								'<span class="toctext">' . $tocLine . '</span>' .
+							'</a>' .
+						'</div>';
 	}
 
 	/**
