@@ -274,7 +274,13 @@ class Jobs extends SiteController
 			return false;
 		}
 
-		$cmd = 'setsid ' . escapeshellarg($php) . ' ' . escapeshellarg($muse)
+		// Disable OPcache for the one-shot worker: spawned from the php-fpm web
+		// tick, it lands in fpm's PrivateTmp namespace whose empty /tmp has no
+		// place for OPcache's SHM lock file, so it would fatal at startup
+		// ("Unable to create lock file"). A CLI job gains nothing from OPcache.
+		$cmd = 'setsid ' . escapeshellarg($php)
+			. ' -d opcache.enable=0 -d opcache.enable_cli=0 '
+			. escapeshellarg($muse)
 			. ' cron:jobs run --job=' . $jobId
 			. ' < /dev/null >> ' . escapeshellarg($log) . ' 2>&1 &';
 

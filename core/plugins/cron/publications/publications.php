@@ -596,7 +596,18 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$cmd = 'setsid ' . escapeshellarg($php) . ' ' . escapeshellarg($muse)
+		// Disable OPcache for the one-shot worker. It gains nothing from OPcache,
+		// and when this dispatcher runs in the php-fpm web-cron context
+		// (hzcms-tick -> /cron/tick) the worker is spawned into fpm's PrivateTmp
+		// systemd namespace, whose /tmp is an empty private tmpfs where OPcache
+		// cannot create its SHM lock file -- it fatals at startup ("Unable to
+		// create lock file: No such file or directory") before it can even claim
+		// the queue row, so no bundle ever builds. Verified inside the fpm
+		// namespace: opcache on -> fatal, opcache off -> runs. A plain CLI cron is
+		// unaffected, but disabling OPcache makes the worker robust either way.
+		$cmd = 'setsid ' . escapeshellarg($php)
+			. ' -d opcache.enable=0 -d opcache.enable_cli=0 '
+			. escapeshellarg($muse)
 			. ' publications:bundle build --version=' . $versionId . ' --queue'
 			. ' < /dev/null >> ' . escapeshellarg($log) . ' 2>&1 &';
 
