@@ -27,13 +27,26 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 		<?php
 		if ($this->model->params->get('show_ranking', 0))
 		{
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+
+			$citations = \Components\Citations\Models\Citation::all();
+			$associationTable = \Components\Citations\Models\Association::blank()->getTableName();
+			$citationTable = $citations->getTableName();
+
+			$citationCount = $citations
+				->join($associationTable, $associationTable . '.cid', $citationTable . '.id', 'inner')
+				->whereEquals($citationTable . '.published', 1)
+				->whereEquals($associationTable . '.tbl', 'resource')
+				->whereEquals($associationTable . '.oid', $this->model->id)
+				->count();
+
 			if ($this->model->isTool())
 			{
-				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->id, $this->model->type, $this->model->rating);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->id, $this->model->type, $this->model->rating, $citationCount);
 			}
 			else
 			{
-				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->id, $this->model->type, $this->model->rating);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->id, $this->model->type, $this->model->rating, $citationCount);
 			}
 
 			$rank = round($this->model->ranking, 1);
