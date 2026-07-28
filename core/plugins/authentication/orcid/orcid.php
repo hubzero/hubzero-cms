@@ -212,6 +212,13 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal->user_id)
 			{
+				// Resolve to the linked account's real username. Otherwise the
+				// response keeps the ORCID-iD-derived "u..." username set above,
+				// which matches no account, so the login establishes no user and
+				// xusers throws E_HUBZERO_USER_PLUGIN_FAILED (ticket #649). This
+				// mirrors plg_authentication_google.
+				$response->username = User::getInstance($hzal->user_id)->get('username');
+
 				// If we have a real user, drop the authenticator cookie
 				// Set cookie with login preference info
 				$prefs = array(
