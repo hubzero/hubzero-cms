@@ -247,7 +247,7 @@ class Doi extends Obj
 		$this->set('doi', $pub->version->doi);
 		$this->set('title', htmlspecialchars($pub->version->title));
 		$this->set('version', htmlspecialchars($pub->version->version_label));
-		$this->set('abstract', htmlspecialchars($pub->version->description));
+		$this->set('abstract', html_entity_decode(strip_tags($pub->version->description), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 		$this->set('synopsis', htmlspecialchars($pub->version->abstract));
 		
 		$this->set('url', $this->_configs->livesite . DS . 'publications'. DS . $pub->id . DS . $pub->version->version_number);
@@ -394,7 +394,7 @@ class Doi extends Obj
 		$grantInfo = [];
 		if ($project->params->get('grant_title'))
 		{
-			$grantInfo['grant_title'] = $project->params->get('grant_title');
+			$grantInfo['grant_title'] = html_entity_decode($project->params->get('grant_title'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 		}
 		if ($project->params->get('award_number'))
 		{
@@ -402,7 +402,7 @@ class Doi extends Obj
 		}
 		if ($project->params->get('grant_agency'))
 		{
-			$grantInfo['grant_agency'] = $project->params->get('grant_agency');
+			$grantInfo['grant_agency'] = html_entity_decode($project->params->get('grant_agency'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 		}
 		if ($project->params->get('grant_agency_id'))
 		{
