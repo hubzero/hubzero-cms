@@ -77,7 +77,7 @@ if ($this_datetime <= $last_event_time) {
 $content  = '<table class="ecalendar">'."\n";
 $content .= ' <caption>';
 if ($this->shownav) {
-	$content .= '<a class="prv" href="'.$prev.'" title="'.$prev_text.'" aria-label="'.$prev_text.'">&lsaquo;</a> <a class="nxt" href="'.$next.'" title="'.$next_text.'" aria-label="'.$next_text.'">&rsaquo;</a> ';
+	$content .= '<a class="prv" rel="nofollow" href="'.$prev.'" title="'.$prev_text.'" aria-label="'.$prev_text.'">&lsaquo;</a> <a class="nxt" rel="nofollow" href="'.$next.'" title="'.$next_text.'" aria-label="'.$next_text.'">&rsaquo;</a> ';
 }
 $content .= \Components\Events\Helpers\Html::getMonthName($cal_month).'</caption>'."\n";
 $content .= ' <thead>'."\n";
@@ -183,7 +183,7 @@ for ($d=1; $d<=$lastDayOfMonth; $d++)
 	$content .= '   <td';
 	$content .= ($class) ? ' class="'.$class.'">' : '>';
 	if ($hasevents) {
-		$content .= '<a class="mod_events_daylink" href="'.Route::url('index.php?option='.$this->option.'&year='.$cal_year.'&month='.$cal_month.'&day='.$do).'">'.$d.'</a>';
+		$content .= '<a class="mod_events_daylink" rel="nofollow" href="'.Route::url('index.php?option='.$this->option.'&year='.$cal_year.'&month='.$cal_month.'&day='.$do).'">'.$d.'</a>';
 	} else {
 		$content .= $d;
 	}

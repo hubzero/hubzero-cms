@@ -823,7 +823,15 @@ class Profiles extends SiteController
 			// Check if they're logged in
 			if (User::isGuest())
 			{
-				$rtrn = Request::getString('REQUEST_URI', Route::url($profile->link()), 'server');
+			// geodynamics 2026-08-02: use the canonical target, not
+			// REQUEST_URI. REQUEST_URI carries the client-supplied query
+			// string, so reflecting it minted a distinct /login?return=<b64>
+			// for every distinct query a crawler invented -- an
+			// unbounded-cardinality crawl trap of the same shape as the
+			// 2026-08-01 flood. The canonical URL was already sitting here
+			// as the fallback argument; this just stops preferring the
+			// attacker-controlled value over it.
+				$rtrn = Route::url($profile->link());
 
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -944,7 +952,15 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true), 'server');
+			// geodynamics 2026-08-02: use the canonical target, not
+			// REQUEST_URI. REQUEST_URI carries the client-supplied query
+			// string, so reflecting it minted a distinct /login?return=<b64>
+			// for every distinct query a crawler invented -- an
+			// unbounded-cardinality crawl trap of the same shape as the
+			// 2026-08-01 flood. The canonical URL was already sitting here
+			// as the fallback argument; this just stops preferring the
+			// attacker-controlled value over it.
+			$rtrn = Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true);
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
@@ -1171,7 +1187,15 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true), 'server');
+			// geodynamics 2026-08-02: use the canonical target, not
+			// REQUEST_URI. REQUEST_URI carries the client-supplied query
+			// string, so reflecting it minted a distinct /login?return=<b64>
+			// for every distinct query a crawler invented -- an
+			// unbounded-cardinality crawl trap of the same shape as the
+			// 2026-08-01 flood. The canonical URL was already sitting here
+			// as the fallback argument; this just stops preferring the
+			// attacker-controlled value over it.
+			$rtrn = Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true);
 
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
@@ -1418,7 +1442,15 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
+			// geodynamics 2026-08-02: use the canonical target, not
+			// REQUEST_URI. REQUEST_URI carries the client-supplied query
+			// string, so reflecting it minted a distinct /login?return=<b64>
+			// for every distinct query a crawler invented -- an
+			// unbounded-cardinality crawl trap of the same shape as the
+			// 2026-08-01 flood. The canonical URL was already sitting here
+			// as the fallback argument; this just stops preferring the
+			// attacker-controlled value over it.
+			$rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
@@ -1875,7 +1907,15 @@ class Profiles extends SiteController
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
+			// geodynamics 2026-08-02: use the canonical target, not
+			// REQUEST_URI. REQUEST_URI carries the client-supplied query
+			// string, so reflecting it minted a distinct /login?return=<b64>
+			// for every distinct query a crawler invented -- an
+			// unbounded-cardinality crawl trap of the same shape as the
+			// 2026-08-01 flood. The canonical URL was already sitting here
+			// as the fallback argument; this just stops preferring the
+			// attacker-controlled value over it.
+			$rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);

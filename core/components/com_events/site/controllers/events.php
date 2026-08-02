@@ -278,6 +278,50 @@ class Events extends SiteController
 			App::abort(404, Lang::txt('COM_EVENTS_DAY_NOT_VALID'));
 			return;
 		}
+
+		// geodynamics 2026-08-02: 404 for years outside the range in
+		// which events can exist.
+		//
+		// The calendar previously answered 200 with a fully rendered
+		// 33 KB page for any syntactically valid year, so ~90,000 dates
+		// were live, indexable URLs. Crawlers enumerated them: requests
+		// spanning 1977 to 2099, and 26% of all dated event traffic
+		// (1,102 of 4,191 sampled) fell outside the possible range.
+		// rel=nofollow on the calendar controls stops well-behaved
+		// crawlers walking in, but does nothing for the ones that
+		// ignore it -- and those are the majority here. A 404 is both
+		// the accurate answer and the cheap one.
+		//
+		// Redirecting to /events instead was considered and rejected:
+		// it still costs a request, crawlers still follow it, and
+		// search engines treat a mass redirect of unrelated URLs to one
+		// page as a soft 404 anyway.
+		//
+		// Only the year is compared, not the full date. That is enough
+		// to close the unbounded space while never 404ing a real month
+		// inside a boundary year. The upper bound moves as events are
+		// scheduled, which is correct: a 404 means "no events then",
+		// and crawlers re-check.
+		//
+		// Guarded on the year having been supplied explicitly, so the
+		// undated /events view (which defaults to today) is untouched.
+		if (Request::getInt('year', 0) > 0)
+		{
+			$db = App::get('db');
+			$db->setQuery(
+				"SELECT YEAR(MIN(publish_up)) AS mn, YEAR(MAX(publish_down)) AS mx
+				   FROM `#__events`
+				  WHERE `scope` = 'event' AND `state` = 1 AND `approved` = 1"
+			);
+			$bounds = $db->loadObject();
+			if ($bounds && $bounds->mn && $bounds->mx
+			 && ((int) $this->year < (int) $bounds->mn
+			  || (int) $this->year > (int) $bounds->mx))
+			{
+				App::abort(404, Lang::txt('COM_EVENTS_YEAR_NOT_VALID'));
+				return;
+			}
+		}
 	}
 
 	/**

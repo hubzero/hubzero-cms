@@ -185,10 +185,38 @@ class Auth extends SiteController
 			{
 				$decoded_return = base64_decode($return);
 
-				$dr = new Uri($decoded_return);
-				if ($dr->hasUriVar('authenticator'))
+				// geodynamics 2026-08-02: refuse a return that points back at
+				// an auth page. $return is re-emitted into every link this
+				// view renders, so a return naming /login or /register nests
+				// on each hop:
+				//   /login?return=b64(/login?return=b64(/login?...))
+				// That is an unbounded URL space. Verified Bingbot was
+				// walking it and collecting 429s; the 2026-08-01 crawl flood
+				// hit the same space from the other direction. robots.txt now
+				// disallows both paths and the links carry rel=nofollow, but
+				// those only stop well-behaved crawlers *finding* it -- this
+				// stops it existing.
+				//
+				// Dropping the return is the correct degradation: the user
+				// lands on the site default after login instead of being
+				// bounced back to a login page they have just left.
+				$rpath  = (string) parse_url($decoded_return, PHP_URL_PATH);
+				$rquery = (string) parse_url($decoded_return, PHP_URL_QUERY);
+				if (preg_match('#(^|/)(login|register)(/|$)#i', $rpath)
+				 || preg_match('#view=(login|register)(&|$)#i', $rquery))
 				{
-					$auth = $dr->getUriVar('authenticator');
+					$return = null;
+					Request::setVar('return', null);
+					$decoded_return = '';
+				}
+
+				if ($decoded_return !== '')
+				{
+					$dr = new Uri($decoded_return);
+					if ($dr->hasUriVar('authenticator'))
+					{
+						$auth = $dr->getUriVar('authenticator');
+					}
 				}
 				/*$query  = parse_url($decoded_return);
 				if (is_array($query) && isset($query['query']))
