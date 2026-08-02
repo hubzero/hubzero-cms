@@ -233,6 +233,16 @@ class Router extends Base
 				default:
 					if ($segments[0] == 'browse')
 					{
+						// A repeated 'browse' is a malformed URL, not a
+						// category. /publications/browse/browse came
+						// from a relative href resolving against a
+						// trailing-slash URL and was being crawled at
+						// increasing depth; treating it as a category
+						// name made every depth a distinct live URL.
+						if ($segments[1] == 'browse')
+						{
+							App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
+						}
 						$vars['category'] = $segments[1];
 					}
 					else

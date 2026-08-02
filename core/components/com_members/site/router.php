@@ -155,6 +155,20 @@ class Router extends Base
 				break;
 				case 'browse':
 					$vars['task'] = 'browse';
+					// /members/browse is a listing; it takes no further
+					// segments. Without this the next segment falls
+					// through to $vars['active'] below and is treated as
+					// a profile section, so /members/browse/browse
+					// rendered instead of 404ing -- and so did
+					// /members/browse/browse/browse, an unbounded path
+					// space. Bing still holds ~500 of these carrying
+					// dead login-loop return= chains, and a 302 or a
+					// challenge just invites retries; a 404 gets them
+					// dropped.
+					if (isset($segments[1]))
+					{
+						App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
+					}
 				break;
 				default:
 					if (isset($segments[0][0]) && $segments[0][0] == 'n')
