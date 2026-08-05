@@ -230,6 +230,29 @@ class Doi extends Obj
 	}
 
 	/**
+	 * Escape a user-supplied value for the hand-built DataCite metadata XML.
+	 *
+	 * Decodes any HTML entities to their Unicode characters first (so a named
+	 * entity like &rsquo; -- which is NOT defined in XML and fails DataCite
+	 * validation -- becomes the real glyph), then XML-escapes, so a literal &,
+	 * < or > (e.g. "Health & Human Services") is written as a valid entity
+	 * instead of breaking the document. Idempotent on already-decoded input
+	 * (nothing left to decode). Apply this at every point a raw DB value is
+	 * concatenated into the XML string.
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
+	protected function xmlText($value)
+	{
+		return htmlspecialchars(
+			html_entity_decode((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+			ENT_QUOTES,
+			'UTF-8'
+		);
+	}
+
+	/**
 	 * Map publication object to DOI fields
 	 *
 	 * @param   object  $pub  Instance of Components\Publications\Models\Publication
@@ -779,21 +802,21 @@ class Doi extends Obj
 				$xmlfile .= '<fundingReferences>
 				<fundingReference>';
 				
-				$xmlfile .= '	<funderName>' . $grantInfo['grant_agency'] . '</funderName>';
+				$xmlfile .= '	<funderName>' . $this->xmlText($grantInfo['grant_agency']) . '</funderName>';
 				
 				if (array_key_exists('grant_agency_id', $grantInfo))
 				{
-					$xmlfile .= '	<funderIdentifier funderIdentifierType="ROR">' . $grantInfo['grant_agency_id'] . '</funderIdentifier>';
+					$xmlfile .= '	<funderIdentifier funderIdentifierType="ROR">' . $this->xmlText($grantInfo['grant_agency_id']) . '</funderIdentifier>';
 				}
 				
 				if (array_key_exists('award_number', $grantInfo))
 				{
-					$xmlfile .= '	<awardNumber>' . $grantInfo['award_number'] . '</awardNumber>';
+					$xmlfile .= '	<awardNumber>' . $this->xmlText($grantInfo['award_number']) . '</awardNumber>';
 				}
 				
 				if (array_key_exists('grant_title', $grantInfo))
 				{
-					$xmlfile .= '	<awardTitle>' . $grantInfo['grant_title'] . '</awardTitle>';
+					$xmlfile .= '	<awardTitle>' . $this->xmlText($grantInfo['grant_title']) . '</awardTitle>';
 				}
 				
 				$xmlfile .= '	</fundingReference>
@@ -835,11 +858,11 @@ class Doi extends Obj
 				if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim(strip_tags($regTag->description))))
 				{
 					$url = substr(trim(strip_tags($regTag->description)), 6);
-					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $regTag->raw_tag . '</subject>';
+					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $this->xmlText($regTag->raw_tag) . '</subject>';
 				}
 				else
 				{
-					$xmlfile .= '	<subject>' . $regTag->raw_tag . '</subject>';
+					$xmlfile .= '	<subject>' . $this->xmlText($regTag->raw_tag) . '</subject>';
 				}
 			}
 		}
@@ -854,7 +877,7 @@ class Doi extends Obj
 			{
 				$classificationCode = substr(trim($valArr[0]), 5);
 				$fosTagVal = trim($valArr[1]);
-				$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $fosTagVal . '</subject>';
+				$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $this->xmlText($fosTagVal) . '</subject>';
 			}
 		}
 		$xmlfile .= '</subjects>';
