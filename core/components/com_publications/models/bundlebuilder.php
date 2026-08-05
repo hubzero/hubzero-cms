@@ -2154,6 +2154,8 @@ class BundleBuilder
 	 * version's file attachments grouped by their element's role label, listed as
 	 * ">>> <path>" — a nested multi-file primary is shown as ">>> bundle.zip", a
 	 * gallery image under gallery/, mirroring how package()/bundleItems lists them.
+	 * Each attachment's description (attribs), when set, follows on its own
+	 * ">>> <description>" line, exactly as attachments/file.php::addToBundle did.
 	 *
 	 * @param   integer  $versionId
 	 * @return  string
@@ -2164,7 +2166,7 @@ class BundleBuilder
 
 		$db = \App::get('db');
 		$db->setQuery(
-			"SELECT `path`, `role` FROM `#__publication_attachments`
+			"SELECT `path`, `role`, `attribs` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` = 'file'
 			 ORDER BY `role`, `ordering`, `id`"
 		);
@@ -2172,11 +2174,11 @@ class BundleBuilder
 		$byRole = array();
 		foreach ((array) $db->loadObjectList() as $a)
 		{
-			$byRole[(int) $a->role][] = (string) $a->path;
+			$byRole[(int) $a->role][] = array('path' => (string) $a->path, 'desc' => (string) $a->attribs);
 		}
 
 		$out = '';
-		foreach ($byRole as $role => $paths)
+		foreach ($byRole as $role => $items)
 		{
 			$label    = isset($elemByRole[$role]['label']) && $elemByRole[$role]['label'] !== ''
 					  ? $elemByRole[$role]['label'] : ('Role ' . $role);
@@ -2184,15 +2186,22 @@ class BundleBuilder
 
 			$out .= "\n" . $label . ': ' . "\n";
 
-			if ($role == 1 && $multiZip == 1 && count($paths) > 1)
+			if ($role == 1 && $multiZip == 1 && count($items) > 1)
 			{
 				$out .= '>>> bundle.zip' . "\n";
 				continue;
 			}
-			foreach ($paths as $p)
+			foreach ($items as $item)
 			{
-				$rel = str_replace('./', '', ltrim(str_replace('\\', '/', $p), '/'));
+				$rel = str_replace('./', '', ltrim(str_replace('\\', '/', $item['path']), '/'));
 				$out .= '>>> ' . ($role == 3 ? 'gallery/' . basename($rel) : $rel) . "\n";
+
+				// The attachment's description, as the original packager
+				// (attachments/file.php::addToBundle) emitted it after each file.
+				if (trim($item['desc']) !== '')
+				{
+					$out .= '>>> ' . $item['desc'] . "\n";
+				}
 			}
 		}
 
