@@ -280,8 +280,8 @@ $option = 'com_groups';
 							<td>
 								<?php if ($inviteemail) { ?>
 									<span class="name">
-										<a href="mailto:<?php echo $guser; ?>">
-											<?php echo $guser; ?>
+										<a href="mailto:<?php echo $this->escape($guser); ?>">
+											<?php echo $this->escape($guser); ?>
 										</a>
 									</span>
 									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
@@ -291,6 +291,9 @@ $option = 'com_groups';
 								<?php } else { ?>
 									<span class="name">
 											<?php
+												// givenName/surname are user-controlled profile fields and
+												// were echoed raw below, so a member could run script in a
+												// manager's session just by editing their own profile.
 												//handles the comma
 												$displayName = '';
 												$surname = $u->get('surname');
@@ -299,9 +302,9 @@ $option = 'com_groups';
 												$displayName .= !empty($givenName) ? !empty($displayName) ? ', ' . $givenName : $givenName :  '';
 											?>
 										<?php if (in_array($u->get('access'), User::getAuthorisedviewLevels()) && ($u->get('activation') > 0)) { ?>
-											<a href="<?php echo Route::url($url); ?>"><?php echo $displayName;?></a>
+											<a href="<?php echo Route::url($url); ?>"><?php echo $this->escape($displayName); ?></a>
 										<?php } else { ?>
-											<?php echo $displayName; ?>
+											<?php echo $this->escape($displayName); ?>
 										<?php } ?>
 									</span>
 									<span class="status"><?php echo $status; ?></span><br />
