@@ -102,6 +102,23 @@ class Role extends Relational
 	}
 
 	/**
+	 * Remove a user's role assignments within a single group
+	 *
+	 * `#__xgroups_member_roles` carries no gidNumber, so the group is resolved
+	 * through the roles it owns. destroyByUser() drops the user's assignments
+	 * in *every* group, which is only correct when the account itself is going
+	 * away; leaving one group should not cost the user their roles in others.
+	 *
+	 * @param   integer  $user_id
+	 * @param   integer  $gidNumber
+	 * @return  boolean  False if error, True on success
+	 */
+	public static function destroyByUserAndGroup($user_id, $gidNumber)
+	{
+		return \Hubzero\User\Group\Membership::clearRoles($gidNumber, $user_id);
+	}
+
+	/**
 	 * Remove records by role ID
 	 *
 	 * @param   integer  $role_id

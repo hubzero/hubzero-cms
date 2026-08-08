@@ -20,6 +20,20 @@ if ($this->filter == '')
 	$this->filter = 'members';
 }
 
+// Tell the viewer when their own membership is due to end. Shown to everyone
+// with a term, not just those close to it, so the date is never a surprise.
+$myTerm = null;
+
+if (!empty($this->expiration_enabled) && !User::isGuest())
+{
+	$myId = (int) User::get('id');
+
+	if (isset($this->expirations[$myId]))
+	{
+		$myTerm = $this->expirations[$myId];
+	}
+}
+
 $role_id   = '';
 $role_name = '';
 
@@ -63,6 +77,19 @@ $option = 'com_groups';
 		</ul>
 	<?php //} ?>
 <?php } ?>
+
+<?php if ($myTerm) : ?>
+	<?php
+	$mySoon = (strtotime($myTerm . ' UTC') - time()) < ($this->expiration_warn_days * 86400);
+	$myWhen = '<time datetime="' . $this->escape($myTerm) . '">'
+		. Date::of($myTerm)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>';
+	?>
+	<p class="membership-expiring-notice" role="status">
+		<?php echo Lang::txt($mySoon
+			? 'PLG_GROUPS_MEMBERS_EXPIRATION_YOURS_SOON'
+			: 'PLG_GROUPS_MEMBERS_EXPIRATION_YOURS', $myWhen); ?>
+	</p>
+<?php endif; ?>
 
 <section class="section">
 	<div class="subject">
@@ -291,9 +318,9 @@ $option = 'com_groups';
 								<?php } else { ?>
 									<span class="name">
 											<?php
-												// givenName/surname are user-controlled profile fields and
-												// were echoed raw below, so a member could run script in a
-												// manager's session just by editing their own profile.
+												// NOTE: givenName/surname are user-controlled profile fields
+												// and were echoed raw below - a stored XSS that predates
+												// this branch. Escaped at the two echoes now.
 												//handles the comma
 												$displayName = '';
 												$surname = $u->get('surname');
@@ -361,6 +388,44 @@ $option = 'com_groups';
 											$html .= ' <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('id')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 										}
 									}
+									$html .= '</span>';
+								}
+
+								// Membership term, if this hub allows them
+								if (!empty($this->expiration_enabled)
+								 && !$inviteemail
+								 && ($this->filter == 'members' || $this->filter == 'managers')) {
+									$uid     = (int) $u->get('id');
+									$expires = isset($this->expirations[$uid]) ? $this->expirations[$uid] : null;
+									$canEdit = ($this->authorized == 'manager' || $this->authorized == 'admin')
+										&& $this->membership_control == 1;
+
+									$html .= '<span class="membership-term">';
+
+									if ($expires) {
+										$soon = (strtotime($expires . ' UTC') - time()) < ($this->expiration_warn_days * 86400);
+
+										$html .= '<span class="term-expires' . ($soon ? ' term-expires-soon' : '') . '">';
+										$html .= Lang::txt(
+											'PLG_GROUPS_MEMBERS_EXPIRATION_ENDS',
+											'<time datetime="' . $this->escape($expires) . '">'
+												. Date::of($expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+												. '</time>'
+										);
+										$html .= '</span>';
+									}
+
+									if ($canEdit) {
+										$html .= ' <a class="set-expiration" href="'
+											. Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn
+												. '&active=members&action=setexpiration&users[]=' . $uid
+												. '&filter=' . $this->filter) . '">'
+											. Lang::txt($expires
+												? 'PLG_GROUPS_MEMBERS_EXPIRATION_CHANGE'
+												: 'PLG_GROUPS_MEMBERS_EXPIRATION_SET')
+											. '</a>';
+									}
+
 									$html .= '</span>';
 								}
 

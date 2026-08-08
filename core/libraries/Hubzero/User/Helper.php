@@ -346,6 +346,9 @@ class Helper
 		$db = \App::get('db');
 		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
 
+		// Record the memberships, and any terms on them, before they go
+		Group\Membership::archiveUser($uid, Group\Membership::REASON_USER);
+
 		foreach ($tables as $table)
 		{
 			$sql = "DELETE FROM `".$table."` WHERE uidNumber=" . $db->quote($uid);

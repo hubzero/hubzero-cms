@@ -823,7 +823,7 @@ class Membership extends Base
 		// delete member roles
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member' . DS . 'role.php';
 
-		\Components\Groups\Models\Member\Role::destroyByUser(User::get('id'));
+		\Components\Groups\Models\Member\Role::destroyByUserAndGroup(User::get('id'), $this->view->group->get('gidNumber'));
 
 		// Log the membership cancellation
 		Log::log(array(

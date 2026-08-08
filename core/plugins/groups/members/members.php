@@ -251,6 +251,20 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 				$view->current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
 
+				// Membership terms, fetched for the whole roster in one query
+				$view->expiration_enabled = \Hubzero\User\Group\Membership::enabled()
+					&& \Hubzero\User\Group\Membership::supported();
+				$view->expirations = $view->expiration_enabled
+					? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
+					: array();
+
+				// Flag a term from the point the hub starts warning about it -
+				// the widest threshold - so the list agrees with the mail the
+				// member has already had. The narrowest threshold is often a
+				// single day, which is too late to be a useful signal.
+				$warnDays = \Hubzero\User\Group\Membership::warningDays();
+				$view->expiration_warn_days = $warnDays ? max($warnDays) : 30;
+
 				switch ($view->filter)
 				{
 					case 'invitees':
@@ -777,6 +791,163 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * May the current user administer membership terms here?
+	 *
+	 * @return  boolean
+	 */
+	private function canSetExpiration()
+	{
+		if (!\Hubzero\User\Group\Membership::enabled()
+		 || !\Hubzero\User\Group\Membership::supported())
+		{
+			return false;
+		}
+
+		// Membership cannot be changed on a closed group, and an end date is a
+		// removal on a timer - allowing it here would be a way around the same
+		// guard that stops remove()
+		if ($this->group->get('join_policy') == 3)
+		{
+			return false;
+		}
+
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
+		if ($this->membership_control == 0)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Display the form for putting an end date on a membership
+	 *
+	 * @return  void
+	 */
+	private function setexpiration()
+	{
+		if (!$this->canSetExpiration())
+		{
+			App::abort(403, Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NOT_AUTHORIZED'));
+		}
+
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION'));
+
+		$users = Request::getArray('users', array());
+		$users = array_values(array_filter(array_map('intval', (array) $users)));
+
+		$view = $this->view('default', 'expiration');
+		$view->option     = $this->_option;
+		$view->group      = $this->group;
+		$view->authorized = $this->authorized;
+		$view->users      = $users;
+		$view->filter     = Request::getWord('filter', 'members');
+		$view->maxDays    = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
+		$view->current    = array();
+
+		foreach ($users as $uid)
+		{
+			$view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor($this->group->get('gidNumber'), $uid);
+		}
+
+		foreach ($this->getErrors() as $error)
+		{
+			$view->setError($error);
+		}
+
+		$this->_output = $view->loadTemplate();
+	}
+
+	/**
+	 * Apply an end date to one or more memberships
+	 *
+	 * @return  void
+	 */
+	private function confirmsetexpiration()
+	{
+		if (!$this->canSetExpiration())
+		{
+			App::abort(403, Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NOT_AUTHORIZED'));
+		}
+
+		Request::checkToken();
+
+		$users = Request::getArray('users', array());
+		$users = array_values(array_filter(array_map('intval', (array) $users)));
+
+		$mode    = Request::getWord('mode', 'set');
+		$expires = trim(Request::getString('expires', ''));
+		$gid     = $this->group->get('gidNumber');
+		$done    = 0;
+
+		// Extending by a fixed period is the common case for a renewal, and
+		// unlike an absolute date it does the right thing for a batch whose
+		// members are on different end dates.
+		$extend = (int) Request::getInt('extend_days', 0);
+
+		// An empty date with neither the clear box nor an extension is an
+		// incomplete form, not an instruction to wipe the term. Removing one
+		// has to be deliberate.
+		if ($mode != 'clear' && $expires === '' && $extend <= 0)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NO_DATE'));
+
+			Request::setVar('users', $users);
+			$this->setexpiration();
+			return;
+		}
+
+		foreach ($users as $uid)
+		{
+			try
+			{
+				if ($mode == 'clear')
+				{
+					\Hubzero\User\Group\Membership::setExpiration($gid, $uid, null);
+				}
+				elseif ($extend > 0)
+				{
+					\Hubzero\User\Group\Membership::extend($gid, $uid, '+' . $extend . ' days');
+				}
+				else
+				{
+					\Hubzero\User\Group\Membership::setExpiration($gid, $uid, $expires);
+				}
+
+				$done++;
+			}
+			catch (\Exception $e)
+			{
+				$this->setError($e->getMessage());
+			}
+		}
+
+		// Anything rejected goes back to the form with the reason rather than
+		// silently doing nothing
+		if ($this->getErrors())
+		{
+			Request::setVar('users', $users);
+			$this->setexpiration();
+			return;
+		}
+
+		$filter = Request::getWord('filter', 'members');
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter),
+			($mode == 'clear'
+				? Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_CLEARED', $done)
+				: Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_SAVED', $done)),
+			'passed'
+		);
+	}
+
+	/**
 	 * Display a form for sending a message to users being removed
 	 *
 	 * @return  void
@@ -882,7 +1053,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$users_man[] = $uid;
 				}
 
-				Components\Groups\Models\Member\Role::destroyByUser($uid);
+				Components\Groups\Models\Member\Role::destroyByUserAndGroup($uid, $this->group->get('gidNumber'));
 
 				// Log activity
 				$recipients = array(

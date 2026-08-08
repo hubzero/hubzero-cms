@@ -62,6 +62,37 @@ $this->css()
 	->js();
 ?>
 
+<?php
+// Shown when the feature is on, and also whenever something is still past due,
+// so switching the feature off does not hide enforcement that is still running.
+$expirationPastDue = \Hubzero\User\Group\Membership::supported()
+	? \Hubzero\User\Group\Membership::pastDueCount() : 0;
+?>
+<?php if (\Hubzero\User\Group\Membership::supported()
+	&& (\Hubzero\User\Group\Membership::enabled() || $expirationPastDue > 0)) : ?>
+	<?php
+	// Terms are enforced by a cron job, so a stopped job is the difference
+	// between end dates being enforced and being decorative. Say so plainly.
+	$reaperOk  = \Hubzero\User\Group\Membership::reaperHealthy();
+	$lastRun   = \Hubzero\User\Group\Membership::lastRun();
+	$pastDue   = $expirationPastDue;
+	?>
+	<div class="<?php echo $reaperOk ? 'info' : 'error'; ?>" id="membership-expiration-health">
+		<?php if (!$reaperOk) : ?>
+			<strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_REAPER_STALLED'); ?></strong>
+			<?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_REAPER_STALLED_DESC'); ?>
+		<?php else : ?>
+			<?php echo Lang::txt(
+				'COM_GROUPS_MEMBERSHIP_REAPER_OK',
+				Date::of($lastRun->timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' g:ia')
+			); ?>
+		<?php endif; ?>
+		<?php if ($pastDue > 0) : ?>
+			<?php echo ' ' . Lang::txt('COM_GROUPS_MEMBERSHIP_PAST_DUE', $pastDue); ?>
+		<?php endif; ?>
+	</div>
+<?php endif; ?>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
@@ -77,6 +108,16 @@ $this->css()
 					<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Applicant'); ?></option>
 					<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Invitee'); ?></option>
 				</select>
+
+				<?php if (!empty($this->expiration_supported)) : ?>
+					<label for="filter-term"><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM'); ?>:</label>
+					<select name="term" id="filter-term" class="filter filter-submit">
+						<option value=""<?php echo (@$this->filters['term'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_ANY'); ?></option>
+						<option value="limited"<?php echo (@$this->filters['term'] == 'limited') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_LIMITED'); ?></option>
+						<option value="perpetual"<?php echo (@$this->filters['term'] == 'perpetual') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_PERPETUAL'); ?></option>
+						<option value="expiring"<?php echo (@$this->filters['term'] == 'expiring') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_EXPIRING'); ?></option>
+					</select>
+				<?php endif; ?>
 
 				<input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
 			</div>
@@ -188,6 +229,19 @@ $this->css()
 					<span class="status <?php echo $status; ?>">
 						<?php echo $status; ?>
 					</span>
+					<?php if (!empty($this->expiration_supported) && isset($row->uidNumber)) : ?>
+						<?php $rowExpires = isset($this->expirations[(int) $row->uidNumber])
+							? $this->expirations[(int) $row->uidNumber] : null; ?>
+						<?php if ($rowExpires) : ?>
+							<br />
+							<span class="membership-term<?php echo (strtotime($rowExpires . ' UTC') <= time() + (30 * 86400)) ? ' term-expires-soon' : ''; ?>">
+								<?php echo Lang::txt(
+									'COM_GROUPS_MEMBER_TERM_ENDS',
+									Date::of($rowExpires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+								); ?>
+							</span>
+						<?php endif; ?>
+					<?php endif; ?>
 				</td>
 				<td>
 		<?php if ($canDo->get('core.edit')) { ?>

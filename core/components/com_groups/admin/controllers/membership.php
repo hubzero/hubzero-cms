@@ -147,6 +147,51 @@ class Membership extends AdminController
 
 		$this->view->group = $group;
 
+		// Membership terms for the whole roster in one query, so the list can
+		// show and filter on them without asking per row
+		$this->view->expiration_supported = \Hubzero\User\Group\Membership::supported();
+		$this->view->expirations = $this->view->expiration_supported
+			? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
+			: array();
+
+		$this->view->filters['term'] = trim(Request::getState(
+			$this->_option . '.' . $this->_controller . '.term',
+			'term',
+			''
+		));
+
+		// Filtering on the term is done here rather than in the query: the row
+		// set already includes invite-email pseudo-rows that have no
+		// membership row to join against.
+		if ($this->view->expiration_supported && $this->view->filters['term'] != '')
+		{
+			$terms = $this->view->expirations;
+			$want  = $this->view->filters['term'];
+			$soon  = time() + (30 * 86400);
+
+			$this->view->rows = array_filter((array) $this->view->rows, function ($row) use ($terms, $want, $soon)
+			{
+				$uid     = isset($row->uidNumber) ? (int) $row->uidNumber : 0;
+				$expires = ($uid && isset($terms[$uid])) ? $terms[$uid] : null;
+
+				switch ($want)
+				{
+					case 'limited':
+						return !is_null($expires);
+					case 'perpetual':
+						return is_null($expires);
+					case 'expiring':
+						return !is_null($expires) && strtotime($expires . ' UTC') <= $soon;
+				}
+
+				return true;
+			});
+
+			// The count no longer matches the filtered set; pagination is
+			// against the filtered rows
+			$this->view->total = count($this->view->rows);
+		}
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
