@@ -892,3 +892,12 @@
 
 /* Center the Apply button under the browse filter column */
 .members-filter-apply { text-align: center; }
+
+/*accessibility requirement*/
+div p a {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex !important;
+	justify-content: center;
+	align-items: center; 
+}

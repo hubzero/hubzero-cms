@@ -128,13 +128,13 @@ if (!function_exists('paginator_item_active'))
 				if ($page->base !== null)
 				{
 					?>
-					<li class="page"><?php echo paginator_item_active($page, $this->prefix); ?></li>
+					<li tabindex="0" class="page"><?php echo paginator_item_active($page, $this->prefix); ?></li>
 					<?php
 				}
 				else
 				{
 					?>
-					<li class="page active"><strong aria-current="page"><?php echo $page->text; ?></strong></li>
+					<li tabindex="0" class="page active"><strong aria-current="page"><?php echo $page->text; ?></strong></li>
 					<?php
 				}
 			}

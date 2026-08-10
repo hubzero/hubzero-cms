@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 $series = $this->series;
 ?>
 
-<h4><?php echo Lang::txt('COM_PUBLICATIONS_SERIES'); ?></h4>
+<h3><?php echo Lang::txt('COM_PUBLICATIONS_SERIES'); ?></h3>
 <div class="pub-content">
 	<p><?php echo Lang::txt('COM_PUBLICATIONS_IS_PART_OF_SERIES'); ?></p>
 	<ul class="element-list">

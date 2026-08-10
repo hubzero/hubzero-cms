@@ -1111,7 +1111,7 @@
 	font-size: 11px;
 }
 .group-page-toolbar span a {
-	color: #aaa;
+	color: #1c1b20 !important;
 	border: none;
 }
 .group-page-toolbar span a:hover {
@@ -2409,4 +2409,21 @@ fieldset.assignment label {
 	#page_info {
 		display: block;
 	}
+}
+
+/*accessibility requirement*/
+nav ul li a.overview, a.announcements, a.files, a.activity {
+	min-height:45px;
+	width: 100%;
+	display: inline-flex !important;
+	justify-content: left;
+	align-items: center; 
+}
+
+ol li a.tag {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex !important;
+	justify-content: center;
+	align-items: center; 
 }

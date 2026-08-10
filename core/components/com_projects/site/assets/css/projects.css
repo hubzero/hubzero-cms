@@ -2201,3 +2201,12 @@ ul[id^='ui-id-'] {
 ul[id^='ui-id-'] li {
 	padding-left: 12px;
 }
+
+/*accessibility requirement*/
+nav ul li a, ol li p a  {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex !important;
+	justify-content: center;
+	align-items: center; 
+}

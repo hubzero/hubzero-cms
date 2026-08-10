@@ -107,3 +107,45 @@
 	font-family: "Fontcons";
 	margin-right: 0.2em;
 }
+
+/*Accessibility requirement*/
+a.btn {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;  
+}
+
+a.icon-browse::before {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+p > a {
+  display: inline-block;
+  min-width: 45px;
+  min-height: 45px;
+  line-height: 45px;
+}
+
+ol > li > a.tag{
+	min-width: 45px;
+	min-height: 45px;
+	display: inline-flex !important; 
+	align-items: center;
+}
+
+div ol.tags {
+	padding:0;
+}
+
+nav ul li a, nav ul li strong  {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex !important;
+	justify-content: center;
+	align-items: center; 
+}
+

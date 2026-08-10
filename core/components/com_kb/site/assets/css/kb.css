@@ -70,3 +70,10 @@
 		line-height: 0;
 		clear: left;
 	}
+/*accessibility requirement*/
+div a, ul li a, ul li strong, ol li a.tag  {
+	min-height:45px;
+	min-width:45px;
+	display: inline-flex !important;
+	align-items: center; 
+}
