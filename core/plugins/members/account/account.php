@@ -256,7 +256,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->passinfo = $this->getPassInfo();
 
 		// Get the ssh key if it exists
-		$view->key = $this->readKey();
+		$keyError = null;
+
+		$view->key      = $this->readKey($keyError);
+		$view->keyError = $keyError;
 
 		// Get the password rules
 		$password_rules = \Hubzero\Password\Rule::all()
@@ -706,60 +709,283 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get the base path of the webdav mount holding the member home directories
+	 *
+	 * @return  string
+	 */
+	protected function webdavHome()
+	{
+		return DS . 'webdav' . DS . 'home';
+	}
+
+	/**
+	 * Make sure the member has a real home directory, creating one if needed
+	 *
+	 * @return  boolean
+	 */
+	protected function ensureHomeDirectory()
+	{
+		$homeDir = $this->member->get('homeDirectory');
+
+		if (!empty($homeDir) && Filesystem::exists($homeDir))
+		{
+			return true;
+		}
+
+		// Try to create their home directory
+		require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+
+		return (bool) \Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'));
+	}
+
+	/**
+	 * Resolve the path of the member's .ssh directory, refusing anything unsafe
+	 *
+	 * The webdav mount gives the web server write access to the member's home
+	 * directory, but the member also controls the contents of that directory.
+	 * If any component of <home>/.ssh were a symlink, the member could aim it at
+	 * another account (or at the web server's own account) and take over the
+	 * authorized_keys file found there, so links are never followed: every
+	 * component has to be a real directory inside the member's own home.
+	 *
+	 * @param   boolean  $create  Create the directory when it is missing?
+	 * @param   string   &$error  Language key describing why the path was rejected
+	 * @return  string|boolean    Canonical path of the .ssh directory, false on failure
+	 */
+	protected function sshDirectory($create = true, &$error = null)
+	{
+		$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE';
+
+		$base     = $this->webdavHome();
+		$username = (string) $this->member->get('username');
+
+		// Never build a path out of an unexpected username
+		if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/', $username))
+		{
+			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			return false;
+		}
+
+		// Make sure webdav is there
+		if (!is_dir($base))
+		{
+			return false;
+		}
+
+		$home = $base . DS . $username;
+
+		// The home directory itself has to be a real directory
+		if (is_link($home) || !is_dir($home))
+		{
+			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			return false;
+		}
+
+		$ssh = $home . DS . '.ssh';
+
+		// Member doesn't have an ssh directory, so try to create one (with
+		// appropriate permissions). is_link() is tested separately because a
+		// dangling symlink is invisible to file_exists(): without it, a member
+		// aiming .ssh at a path that doesn't exist yet would get a confusing
+		// "create folder failed" instead of being told the path is unsafe.
+		if ($create && !is_link($ssh) && !file_exists($ssh))
+		{
+			if (!@mkdir($ssh, 0700))
+			{
+				$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED';
+				return false;
+			}
+		}
+
+		// Refuse to follow a symlinked (or otherwise unexpected) .ssh
+		if (is_link($ssh) || !is_dir($ssh))
+		{
+			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			return false;
+		}
+
+		// Make sure nothing above .ssh leads back out of the home directory
+		$realHome = realpath($home);
+		$realSsh  = realpath($ssh);
+
+		if (!$realHome || !$realSsh || $realSsh !== $realHome . DS . '.ssh')
+		{
+			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			return false;
+		}
+
+		$error = null;
+
+		return $realSsh;
+	}
+
+	/**
+	 * Resolve the authorized_keys path inside an already validated .ssh directory
+	 *
+	 * @param   string  $ssh     Validated .ssh directory
+	 * @param   string  &$error  Language key describing why the path was rejected
+	 * @return  string|boolean   Path of the authorized_keys file, false on failure
+	 */
+	protected function authorizedKeysPath($ssh, &$error = null)
+	{
+		$error = null;
+		$auth  = $ssh . DS . 'authorized_keys';
+
+		// A symlink, a directory, a device, ... is not ours to write to
+		if (is_link($auth) || (file_exists($auth) && !is_file($auth)))
+		{
+			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			return false;
+		}
+
+		// A hard link can reach a file living outside of this account
+		if (is_file($auth))
+		{
+			$stat = @stat($auth);
+
+			if (!$stat || $stat['nlink'] > 1)
+			{
+				$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+				return false;
+			}
+		}
+
+		return $auth;
+	}
+
+	/**
+	 * Write the authorized_keys file without ever following a link
+	 *
+	 * The content goes to a temporary file created with O_EXCL (so it cannot be
+	 * redirected through a planted symlink) and is then moved into place, since
+	 * rename() replaces the destination itself rather than following it. That
+	 * way the write still lands inside this account even if the member turns
+	 * authorized_keys into a symlink after the path was validated.
+	 *
+	 * The .ssh directory itself could in theory still be swapped between the
+	 * check above and the write below. PHP exposes no openat()/O_NOFOLLOW, so
+	 * closing that last window would mean handing the write to a privileged
+	 * helper outside of the CMS.
+	 *
+	 * @param   string   $auth     Validated path of the authorized_keys file
+	 * @param   string   $content  File content
+	 * @return  boolean
+	 */
+	protected function writeAuthorizedKeys($auth, $content)
+	{
+		$content = (string) $content;
+
+		// 'x' is O_CREAT|O_EXCL, which fails if the path already exists, and
+		// that includes existing as a symlink
+		$tmp    = dirname($auth) . DS . '.authorized_keys.' . bin2hex(random_bytes(8));
+		$handle = @fopen($tmp, 'xb');
+
+		if ($handle === false)
+		{
+			return false;
+		}
+
+		$written = fwrite($handle, $content);
+		fclose($handle);
+
+		if ($written === false || $written !== strlen($content))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
+		// Set correct permissions before the file appears under its final name
+		@chmod($tmp, 0600);
+
+		if (!@rename($tmp, $auth))
+		{
+			@unlink($tmp);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Record a rejected SSH key path so abuse attempts are visible to admins
+	 *
+	 * @param   string  $action  Either 'read' or 'write'
+	 * @param   string  $error   Language key the path was rejected with
+	 * @return  void
+	 */
+	protected function logUnsafePath($action, $error)
+	{
+		if ($error != 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH')
+		{
+			return;
+		}
+
+		Log::warning(sprintf(
+			'Refused to %s the SSH key of member %s: unsafe path under %s',
+			$action,
+			$this->member->get('username'),
+			$this->webdavHome()
+		));
+	}
+
+	/**
 	 * Upload SSH key
 	 *
 	 * @return  void
 	 */
 	private function _uploadKey()
 	{
-		// Webdav path
-		$base = DS . 'webdav' . DS . 'home';
-		$user = DS . $this->member->get('username');
-		$ssh  = DS . '.ssh';
-		$auth = DS . 'authorized_keys';
+		Request::checkToken();
 
-		// Real home directory
-		$homeDir = $this->member->get('homeDirectory');
+		$memberId = (int) $this->member->get('id');
+		$userId   = (int) $this->user->get('id');
 
-		// First, make sure webdav is there and that the necessary folders are there
-		if (!Filesystem::exists($base))
+		// Only the account owner can change their own key, and only when the hub
+		// offers local services at all. Whether this action is reachable at all
+		// is decided by onMembersAreas() further up, but that is several steps
+		// away from a write into someone's home directory.
+		if (!$this->params->get('ssh_key_upload', 0)
+		 || !$userId
+		 || $memberId !== $userId)
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AUTHORIZED'));
+			return;
+		}
+
+		// First, make sure webdav is there
+		if (!is_dir($this->webdavHome()))
 		{
 			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
-		if (!Filesystem::exists($homeDir))
-		{
-			// Try to create their home directory
-			require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
-			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
-			{
-				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
-				return;
-			}
-		}
-		if (!Filesystem::exists($base . $user . $ssh))
+		// ... and that the member has a home directory to write into
+		if (!$this->ensureHomeDirectory())
 		{
-			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700))
-			{
-				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
-				return;
-			}
+			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
+			return;
+		}
+
+		$error = null;
+
+		if (!($ssh = $this->sshDirectory(true, $error))
+		 || !($auth = $this->authorizedKeysPath($ssh, $error)))
+		{
+			$this->logUnsafePath('write', $error);
+
+			App::abort(500, Lang::txt($error));
+			return;
 		}
 
 		// Get the form input
 		$content = Request::getString('keytext', '');
 
 		// Write to the file
-		if (!Filesystem::write($base . $user . $ssh . $auth, $content) && $content != '')
+		if (!$this->writeAuthorizedKeys($auth, $content))
 		{
 			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
 			return;
 		}
-
-		// Set correct permissions on authorized_keys file
-		Filesystem::setPermissions($base . $user . $ssh . $auth, '0600');
 
 		// Set the redirect
 		Notify::success(Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'));
@@ -772,67 +998,39 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Read SSH key
 	 *
+	 * @param   string  &$error  Language key describing why the key couldn't be read
 	 * @return  string  .ssh/authorized_keys file content
 	 */
-	private function readKey()
+	private function readKey(&$error = null)
 	{
-		// Webdav path
-		$base = DS . 'webdav' . DS . 'home';
-		$user = DS . $this->member->get('username');
-		$ssh  = DS . '.ssh';
-		$auth = DS . 'authorized_keys';
-
-		// Real home directory
-		$homeDir = $this->member->get('homeDirectory');
-
-		$key = '';
-
-		// First, make sure webdav is there and that the necessary folders are there
-		if (!Filesystem::exists($base))
+		// First, make sure webdav is there and that the member has a home directory
+		if (!is_dir($this->webdavHome()) || !$this->ensureHomeDirectory())
 		{
 			// Not sure what to do here
-			return $key = false;
+			return false;
 		}
-		if (!Filesystem::exists($homeDir))
-		{
-			// Try to create their home directory
-			require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
-			if (!\Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username')))
-			{
-				return $key = false;
-			}
-		}
-		if (!Filesystem::exists($base . $user . $ssh))
+		if (!($ssh = $this->sshDirectory(true, $error))
+		 || !($auth = $this->authorizedKeysPath($ssh, $error)))
 		{
-			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!Filesystem::makeDirectory($base . $user . $ssh, 0700, true, true))
-			{
-				return $key = false;
-			}
+			$this->logUnsafePath('read', $error);
+
+			return false;
 		}
-		if (!Filesystem::exists($base . $user . $ssh . $auth))
+
+		if (!is_file($auth))
 		{
 			// Try to create their authorized keys file
-			$content = ''; // J25 passes param by reference so couldn't use constant below
-			Filesystem::write($base . $user . $ssh . $auth, $content);
-			if (!Filesystem::exists($base . $user . $ssh . $auth))
+			if (!$this->writeAuthorizedKeys($auth, ''))
 			{
-				return $key = false;
+				return false;
 			}
-			else
-			{
-				// Set correct permissions on authorized_keys file
-				Filesystem::setPermissions($base . $user . $ssh . $auth, '0600');
 
-				return $key;
-			}
+			return '';
 		}
 
 		// Read the file contents
-		$key = Filesystem::read($base . $user . $ssh . $auth);
-
-		return $key;
+		return Filesystem::read($auth);
 	}
 
 	/**

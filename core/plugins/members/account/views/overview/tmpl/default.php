@@ -196,13 +196,14 @@ $this->css()
 			<?php if ($this->key !== false) : ?>
 				<form action="<?php echo Route::url($this->member->link() . '&active=account&task=uploadkey', true, true); ?>" method="post">
 					<p><?php echo Lang::txt('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
-					<textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
+					<textarea name="keytext" cols="50" rows="6"><?php echo $this->escape($this->key); ?></textarea>
 					<div class="clear"></div>
 					<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_SUBMIT'); ?>" />
 					<input type="reset" class="cancel" value="<?php echo Lang::txt('PLG_MEMBERS_CANCEL'); ?>" />
+					<?php echo Html::input('token'); ?>
 				</form>
 			<?php else : ?>
-				<p class="error"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_ERROR_ACCESSING_HOME_DIR'); ?></p>
+				<p class="error"><?php echo Lang::txt(!empty($this->keyError) ? $this->keyError : 'PLG_MEMBERS_ACCOUNT_KEY_ERROR_ACCESSING_HOME_DIR'); ?></p>
 			<?php endif; ?>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
