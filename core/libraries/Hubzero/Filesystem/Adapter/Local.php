@@ -100,6 +100,19 @@ class Local implements AdapterInterface
 
 		foreach ($paths as $path)
 		{
+			// A link is removed as a link. unlink() doesn't follow it, but the chmod()
+			// below would - loosening the permissions of whatever it points at, which
+			// may be a file in another account entirely.
+			if (is_link($path))
+			{
+				if (!@unlink($path))
+				{
+					$success = false;
+				}
+
+				continue;
+			}
+
 			if (!is_file($path))
 			{
 				continue;
@@ -531,6 +544,14 @@ class Local implements AdapterInterface
 	 */
 	public function deleteDirectory($directory, $preserve = false)
 	{
+		// isDirectory() follows links, so a link to a directory would have us
+		// empty out the target. Remove the link itself instead - that is what the
+		// caller pointed at - and leave whatever it referenced alone.
+		if (is_link($directory))
+		{
+			return @unlink($directory);
+		}
+
 		if (!$this->isDirectory($directory))
 		{
 			return false;
@@ -540,6 +561,15 @@ class Local implements AdapterInterface
 
 		foreach ($items as $item)
 		{
+			// A symlink is removed, never followed. isDir() below reports true for a
+			// link to a directory, so without this the recursion would delete the
+			// contents of the target - which may well live in another account.
+			if ($item->isLink())
+			{
+				@unlink($item->getPathname());
+				continue;
+			}
+
 			// If the item is a directory, we can just recurse into the function and
 			// delete that sub-director, otherwise we'll just delete the file and
 			// keep iterating through each file until the directory is cleaned.

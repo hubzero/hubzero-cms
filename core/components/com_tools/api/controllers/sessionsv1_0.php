@@ -410,32 +410,40 @@ class Sessionsv1_0 extends ApiController
 		if (!$screenshot)
 		{
 			//check to make sure we have a sessions dir
-			$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($sess->username) . DS . 'data' . DS . 'sessions';
-			if (!is_dir($home_directory))
+			// The member owns everything under their home directory, so the path is
+			// resolved without following links: a link here would have us serve an
+			// image out of somebody else's account
+			$base     = DS . 'webdav' . DS . 'home';
+			$relative = strtolower($sess->username) . DS . 'data' . DS . 'sessions';
+
+			if (!($sessions = \Hubzero\Filesystem\SafePath::directory($base, $relative)))
 			{
 				clearstatcache();
-				if (!is_dir($home_directory))
+
+				if (!($sessions = \Hubzero\Filesystem\SafePath::directory($base, $relative)))
 				{
-					throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $home_directory), 404);
+					throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $base . DS . $relative), 404);
 				}
 			}
 
 			//check to make sure we have an active session with the ID supplied
-			$home_directory .= DS . $sessionid . '{,L,D}';
-			$directories = glob($home_directory, GLOB_BRACE);
+			$directories = glob($sessions . DS . $sessionid . '{,L,D}', GLOB_BRACE);
 			if (empty($directories))
 			{
 				throw new Exception(Lang::txt('No Session directory with the ID: %s', $sessionid), 404);
 			}
-			else
+
+			$home_directory = \Hubzero\Filesystem\SafePath::directory($sessions, basename($directories[0]));
+
+			if (!$home_directory)
 			{
-				$home_directory = $directories[0];
+				throw new Exception(Lang::txt('No Session directory with the ID: %s', $sessionid), 404);
 			}
 
 			// check to make sure we have a screenshot
-			$screenshot = $home_directory . DS . 'screenshot.png';
+			$screenshot = \Hubzero\Filesystem\SafePath::file($home_directory, 'screenshot.png');
 
-			if (!file_exists($screenshot))
+			if (!$screenshot || !file_exists($screenshot))
 			{
 				if ($notFound)
 				{
@@ -930,10 +938,10 @@ class Sessionsv1_0 extends ApiController
 		{
 			// Build a path to where the driver file will go through webdav
 			$base = DS . 'webdav' . DS . 'home';
-			$user = DS . $profile->get('username');
-			$data = DS . 'data';
-			$drvr = DS . '.queued_drivers';
-			$inst = DS . md5(time()) . '.xml';
+
+			// Unpredictable name: a guessable one lets the member pre-place a
+			// symlink at the path we are about to write to
+			$inst = bin2hex(random_bytes(8)) . '.xml';
 
 			// Real home directory
 			$homeDir = $profile->get('homeDirectory');
@@ -956,20 +964,31 @@ class Sessionsv1_0 extends ApiController
 				}
 			}
 
-			// Check for, and create if needed a session data directory
-			if (!\Filesystem::exists($base . $user . $data) && !\Filesystem::makeDirectory($base . $user . $data, 0700))
+			// The member owns the contents of their home directory, so this path is
+			// resolved without ever following a link out of it. A link at data/ or
+			// .queued_drivers/ would otherwise put this file - whose content comes
+			// straight from the request - inside somebody else's account.
+			$home = \Hubzero\Filesystem\SafePath::directory($base, $profile->get('username'));
+
+			if ($home === false)
+			{
+				throw new Exception(Lang::txt('Failed to create user home directory'), 500);
+			}
+
+			// Check for, and create if needed, the session data and queued drivers directories
+			$drivers = \Hubzero\Filesystem\SafePath::directory($home, 'data' . DS . '.queued_drivers', true, 0700);
+
+			if ($drivers === false)
 			{
 				throw new Exception(Lang::txt('Failed to create data directory'), 500);
 			}
 
-			// Check for, and create if needed a queued drivers directory
-			if (!\Filesystem::exists($base . $user . $data . $drvr) && !\Filesystem::makeDirectory($base . $user . $data . $drvr, 0700))
-			{
-				throw new Exception(Lang::txt('Failed to create drivers directory'), 500);
-			}
+			// Write the driver file out. The mode is left to the umask, as it was
+			// when this went through Filesystem::write(), since the middleware reads
+			// the file back as the member.
+			$file = \Hubzero\Filesystem\SafePath::file($drivers, $inst);
 
-			// Write the driver file out
-			if (!\Filesystem::write($base . $user . $data . $drvr . $inst, $driver))
+			if ($file === false || !\Hubzero\Filesystem\SafePath::write($file, $driver, null))
 			{
 				throw new Exception(Lang::txt('Failed to create driver file'), 500);
 			}
@@ -981,7 +1000,7 @@ class Sessionsv1_0 extends ApiController
 
 		// Now build params path that will be included with tool execution
 		// We know from the checks above that this directory already exists
-		$params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . $inst;
+		$params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . DS . $inst;
 		$encoded = ' params=' . rawurlencode($params) . ' ';
 		$command = 'start user=' . escapeshellarg($profile->get('username')) . ' ip=' . escapeshellarg($app->ip) . ' app=' . escapeshellarg($app->name) . ' version=' . escapeshellarg($app->version) . $encoded;
 		$status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
@@ -1042,22 +1061,29 @@ class Sessionsv1_0 extends ApiController
 		}*/
 
 		// Check for specific sesssion entry, either sesssion# or session#-expired
-		$dir = DS . 'webdav' . DS . 'home' . DS . $profile->get('username') . DS . 'data' . DS .'sessions' . DS . $session;
+		// The member owns everything under their home directory, so these are
+		// resolved without following links out of it
+		$sessions = \Hubzero\Filesystem\SafePath::directory(
+			DS . 'webdav' . DS . 'home',
+			$profile->get('username') . DS . 'data' . DS . 'sessions'
+		);
+
+		$dir = $sessions ? \Hubzero\Filesystem\SafePath::directory($sessions, $session) : false;
 
 		// If the active session dir doesn't exist, look for an expired one
-		if (!is_dir($dir))
+		if (!$dir)
 		{
-			$dir .= '-expired';
+			$dir = $sessions ? \Hubzero\Filesystem\SafePath::directory($sessions, $session . '-expired') : false;
 
-			if (!is_dir($dir))
+			if (!$dir)
 			{
 				throw new Exception(Lang::txt('No session directory found.'), 404);
 			}
 		}
 
 		// Look for a rappture.status file in that dir
-		$statusFile = $dir . DS . 'rappture.status';
-		if (!is_file($statusFile))
+		$statusFile = \Hubzero\Filesystem\SafePath::file($dir, 'rappture.status');
+		if (!$statusFile || !is_file($statusFile))
 		{
 			throw new Exception(Lang::txt('No status file found.'), 404);
 		}
@@ -1133,17 +1159,24 @@ class Sessionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('You can only check the status of your sessions.'), 401);
 		}*/
 
-		// Check for specific sesssion entry
-		$dir = DS . 'webdav' . DS . 'home' . DS . User::get('username') . DS . 'data' . DS .'results' . DS . $session;
+		// Check for specific sesssion entry. $runFile comes out of a status file the
+		// member can write, and the directory is theirs too, so neither is allowed
+		// to lead through a link into another account
+		$results = \Hubzero\Filesystem\SafePath::directory(
+			DS . 'webdav' . DS . 'home',
+			User::get('username') . DS . 'data' . DS . 'results'
+		);
 
-		if (!is_dir($dir))
+		$dir = $results ? \Hubzero\Filesystem\SafePath::directory($results, $session) : false;
+
+		if (!$dir)
 		{
 			throw new Exception(Lang::txt('No results directory found.'), 404);
 		}
 
-		$outputFile = $dir . DS . $runFile;
+		$outputFile = \Hubzero\Filesystem\SafePath::file($dir, $runFile);
 
-		if (!is_file($outputFile))
+		if (!$outputFile || !is_file($outputFile))
 		{
 			throw new Exception(Lang::txt('No run file found.'), 404);
 		}

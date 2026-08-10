@@ -745,8 +745,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 * directory, but the member also controls the contents of that directory.
 	 * If any component of <home>/.ssh were a symlink, the member could aim it at
 	 * another account (or at the web server's own account) and take over the
-	 * authorized_keys file found there, so links are never followed: every
-	 * component has to be a real directory inside the member's own home.
+	 * authorized_keys file found there, so links are never followed - see
+	 * Hubzero\Filesystem\SafePath for how the path is resolved.
 	 *
 	 * @param   boolean  $create  Create the directory when it is missing?
 	 * @param   string   &$error  Language key describing why the path was rejected
@@ -754,9 +754,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	protected function sshDirectory($create = true, &$error = null)
 	{
-		$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE';
-
-		$base     = $this->webdavHome();
 		$username = (string) $this->member->get('username');
 
 		// Never build a path out of an unexpected username
@@ -766,57 +763,46 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// Make sure webdav is there
-		if (!is_dir($base))
+		$reason = null;
+
+		// The home directory is created by the middleware, with the member as its
+		// owner, so it is never created from here
+		$home = \Hubzero\Filesystem\SafePath::directory($this->webdavHome(), $username, false, 0700, $reason);
+
+		if ($home === false)
 		{
-			return false;
-		}
-
-		$home = $base . DS . $username;
-
-		// The home directory itself has to be a real directory
-		if (is_link($home) || !is_dir($home))
-		{
-			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
-			return false;
-		}
-
-		$ssh = $home . DS . '.ssh';
-
-		// Member doesn't have an ssh directory, so try to create one (with
-		// appropriate permissions). is_link() is tested separately because a
-		// dangling symlink is invisible to file_exists(): without it, a member
-		// aiming .ssh at a path that doesn't exist yet would get a confusing
-		// "create folder failed" instead of being told the path is unsafe.
-		if ($create && !is_link($ssh) && !file_exists($ssh))
-		{
-			if (!@mkdir($ssh, 0700))
+			switch ($reason)
 			{
-				$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED';
-				return false;
-			}
-		}
+				case \Hubzero\Filesystem\SafePath::REASON_BASE:
+					$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE';
+					break;
 
-		// Refuse to follow a symlinked (or otherwise unexpected) .ssh
-		if (is_link($ssh) || !is_dir($ssh))
-		{
-			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+				case \Hubzero\Filesystem\SafePath::REASON_MISSING:
+					$error = 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY';
+					break;
+
+				default:
+					$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+					break;
+			}
+
 			return false;
 		}
 
-		// Make sure nothing above .ssh leads back out of the home directory
-		$realHome = realpath($home);
-		$realSsh  = realpath($ssh);
+		$ssh = \Hubzero\Filesystem\SafePath::directory($home, '.ssh', $create, 0700, $reason);
 
-		if (!$realHome || !$realSsh || $realSsh !== $realHome . DS . '.ssh')
+		if ($ssh === false)
 		{
-			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+			$error = ($reason == \Hubzero\Filesystem\SafePath::REASON_CREATE
+				? 'PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'
+				: 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH');
+
 			return false;
 		}
 
 		$error = null;
 
-		return $realSsh;
+		return $ssh;
 	}
 
 	/**
@@ -829,25 +815,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	protected function authorizedKeysPath($ssh, &$error = null)
 	{
 		$error = null;
-		$auth  = $ssh . DS . 'authorized_keys';
 
-		// A symlink, a directory, a device, ... is not ours to write to
-		if (is_link($auth) || (file_exists($auth) && !is_file($auth)))
+		$auth = \Hubzero\Filesystem\SafePath::file($ssh, 'authorized_keys');
+
+		if ($auth === false)
 		{
 			$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
 			return false;
-		}
-
-		// A hard link can reach a file living outside of this account
-		if (is_file($auth))
-		{
-			$stat = @stat($auth);
-
-			if (!$stat || $stat['nlink'] > 1)
-			{
-				$error = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
-				return false;
-			}
 		}
 
 		return $auth;
@@ -856,54 +830,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	/**
 	 * Write the authorized_keys file without ever following a link
 	 *
-	 * The content goes to a temporary file created with O_EXCL (so it cannot be
-	 * redirected through a planted symlink) and is then moved into place, since
-	 * rename() replaces the destination itself rather than following it. That
-	 * way the write still lands inside this account even if the member turns
-	 * authorized_keys into a symlink after the path was validated.
-	 *
-	 * The .ssh directory itself could in theory still be swapped between the
-	 * check above and the write below. PHP exposes no openat()/O_NOFOLLOW, so
-	 * closing that last window would mean handing the write to a privileged
-	 * helper outside of the CMS.
-	 *
 	 * @param   string   $auth     Validated path of the authorized_keys file
 	 * @param   string   $content  File content
 	 * @return  boolean
 	 */
 	protected function writeAuthorizedKeys($auth, $content)
 	{
-		$content = (string) $content;
-
-		// 'x' is O_CREAT|O_EXCL, which fails if the path already exists, and
-		// that includes existing as a symlink
-		$tmp    = dirname($auth) . DS . '.authorized_keys.' . bin2hex(random_bytes(8));
-		$handle = @fopen($tmp, 'xb');
-
-		if ($handle === false)
-		{
-			return false;
-		}
-
-		$written = fwrite($handle, $content);
-		fclose($handle);
-
-		if ($written === false || $written !== strlen($content))
-		{
-			@unlink($tmp);
-			return false;
-		}
-
-		// Set correct permissions before the file appears under its final name
-		@chmod($tmp, 0600);
-
-		if (!@rename($tmp, $auth))
-		{
-			@unlink($tmp);
-			return false;
-		}
-
-		return true;
+		return \Hubzero\Filesystem\SafePath::write($auth, $content, 0600);
 	}
 
 	/**

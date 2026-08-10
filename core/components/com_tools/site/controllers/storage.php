@@ -352,6 +352,11 @@ class Storage extends SiteController
 	/**
 	 * Construct the path to be used for file management
 	 *
+	 * $listdir and $subdir come straight from the request, and the member owns
+	 * everything under their storage directory, so the path is resolved one
+	 * component at a time: traversal is refused rather than normalized away, and
+	 * no link is ever followed out of the member's own directory.
+	 *
 	 * @param   string  $listdir  Base directory
 	 * @param   string  $subdir   Sub-directory
 	 * @return  string
@@ -359,29 +364,77 @@ class Storage extends SiteController
 	private function _buildUploadPath($listdir, $subdir='')
 	{
 		// Get the configured upload path
-		$base = $this->config->get('storagepath', 'webdav' . DS . 'home') . DS . User::get('username');
-		if ($base)
-		{
-			$base = DS . trim($base, DS);
-		}
+		$base     = DS . trim($this->config->get('storagepath', 'webdav' . DS . 'home'), DS);
+		$username = (string) User::get('username');
 
-		$listdir = DS . trim($listdir, DS);
-
-		if ($subdir)
+		// Without a username the path below would be everybody's storage directory
+		if ($username === '')
 		{
-			$subdir = DS . trim($subdir, DS);
-		}
-
-		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base)
-		{
-			// Yes - ... this really shouldn't happen
 			App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
 			return;
 		}
 
-		// Build the path
-		return $base . $listdir . $subdir;
+		$relative = \Hubzero\Filesystem\SafePath::relative($username . DS . $listdir . DS . $subdir);
+
+		if ($relative === false)
+		{
+			App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
+			return;
+		}
+
+		$reason = null;
+		$path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0700, $reason);
+
+		if ($path === false)
+		{
+			if ($reason != \Hubzero\Filesystem\SafePath::REASON_MISSING)
+			{
+				App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
+				return;
+			}
+
+			// A directory that doesn't exist (yet) is not an error here - the tasks
+			// below test for existence themselves and show an empty list. Whatever
+			// did exist along the way was still checked for links.
+			$path = realpath($base) . DS . $relative;
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Resolve a file or folder to act on, below an already resolved directory
+	 *
+	 * Directories leading to the target are resolved without following links; the
+	 * target itself is only checked for traversal, so that a link can still be
+	 * deleted (as a link) rather than being followed.
+	 *
+	 * @param   string  $path   Directory returned by _buildUploadPath()
+	 * @param   string  $name   Incoming file or folder name
+	 * @return  string|boolean  Path to act on, or false
+	 */
+	private function _resolveTarget($path, $name)
+	{
+		$name = \Hubzero\Filesystem\SafePath::relative($name);
+
+		if ($name === false || $name === '')
+		{
+			return false;
+		}
+
+		$parent = dirname($name);
+
+		if ($parent != '.')
+		{
+			$path = \Hubzero\Filesystem\SafePath::directory($path, $parent);
+
+			if ($path === false)
+			{
+				return false;
+			}
+		}
+
+		return $path . DS . basename($name);
 	}
 
 	/**
@@ -397,6 +450,8 @@ class Storage extends SiteController
 			$this->filelistTask();
 			return;
 		}
+
+		Request::checkToken(array('get', 'post'));
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = urldecode(Request::getString('listdir', ''));
@@ -418,17 +473,20 @@ class Storage extends SiteController
 			return;
 		}
 
-		$folder = DS . trim($folder, DS);
+		// Resolve the folder below the listing directory: every directory leading to
+		// it has to be real, and the folder itself is removed rather than followed
+		// if it turns out to be a link, so this can never empty out another account
+		$target = $this->_resolveTarget($path, $folder);
 
 		// Check if the folder even exists
-		if (!is_dir($path . $folder) or !$folder)
+		if (!$target || (!is_dir($target) && !is_link($target)))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
-			if (!Filesystem::deleteDirectory($path . $folder))
+			if (!Filesystem::deleteDirectory($target))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -452,6 +510,8 @@ class Storage extends SiteController
 			return;
 		}
 
+		Request::checkToken(array('get', 'post'));
+
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = urldecode(Request::getString('listdir', ''));
 
@@ -466,15 +526,18 @@ class Storage extends SiteController
 			return;
 		}
 
+		// Resolve the file below the listing directory (see _resolveTarget)
+		$target = $this->_resolveTarget($path, $file);
+
 		// Check if the file even exists
-		if (!file_exists($path . DS . $file) or !$file)
+		if (!$target || (!file_exists($target) && !is_link($target)))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
-			if (!Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($target))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 			}
