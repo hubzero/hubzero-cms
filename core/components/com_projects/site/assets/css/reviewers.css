@@ -26,7 +26,7 @@
 		height: 50px;
 	}
 	#newadmincomment h4 {
-		margin: 0;
+		margin: 0.5em 0;
 	}
 	#newadmincomment label {
 		display: block;
@@ -164,4 +164,26 @@
 	}
 	#browseForm {
 		margin-top: 1em;
+	}
+	.sensitivereview {
+		padding:0.5em;
+		display: flex;
+		flex-direction: column;
+	}
+	#abox-content div.sensitivereview h4 {
+		margin:0.5em 0;
+	}
+	#abox-content #hubForm-ajax div.sensitivereview label {
+		padding:0.5em 0;
+		text-transform: capitalize;
+		font-size:0.94rem;
+		display: inline-flex;
+		align-items: center;
+		gap:4px;
+	}
+	#abox-content #hubForm-ajax p.submitarea input.btn-cancel {
+		margin:0;
+	}
+	#abox-content #hubForm-ajax hr {
+		margin: 1em 0;
 	}

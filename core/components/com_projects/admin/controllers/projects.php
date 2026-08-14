@@ -134,7 +134,7 @@ class Projects extends AdminController
 			'quota'      => Request::getString('quota', 'all', 'post')
 		);
 
-		if (!in_array($this->view->filters['filterby'], array('active', 'archived')))
+		if (!in_array($this->view->filters['filterby'], array('setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval')))
 		{
 			$this->view->filters['filterby'] = '';
 		}

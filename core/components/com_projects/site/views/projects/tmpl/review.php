@@ -17,6 +17,11 @@ if ($this->reviewer == 'sponsored')
 			Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED') :
 			Lang::txt('COM_PROJECTS_SAVE_SPS');
 }
+elseif ($this->reviewer == 'sensitive')
+{
+	$title = Lang::txt('COM_PROJECTS_REVIEW_PROJECT_SENSITIVE');
+	$b_action = Lang::txt('COM_PROJECTS_SAVE');
+}
 else {
 	$title = $this->model->isPending()
 			? Lang::txt('COM_PROJECTS_REVIEW_PROJECT_HIPAA')
@@ -63,7 +68,7 @@ if ($this->getError()) {
 		<div class="pinfo">
 			<p class="info_title">
 			<?php echo $this->model->get('title'); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
-			<p class="info_title"><span class="italic"><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
+			<p class="info_title"><span><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
 		</div>
 	</div>
 
@@ -130,10 +135,15 @@ if ($this->getError()) {
 		</table>
 	</div>
 	<?php } ?>
-	<?php if ($this->model->isPending() && $this->reviewer == 'sensitive') { ?>
-	 <div>
-		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
-	 </div>
+	<?php if ($this->reviewer == 'sensitive' && ($this->model->isPending() || $this->model->isActive() || $this->model->isRejected())) { ?>
+	<div class="sensitivereview">
+		<h4><?php echo Lang::txt('COM_PROJECTS_SENSITIVE_APPROVE_OR_REJECT'); ?></h4>
+		<label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?php echo ($this->model->isActive()) ? 'checked="checked"' : ''; ?>/> <?php echo Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE'); ?></label>
+		<label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio" value="0" <?php echo ($this->model->isRejected()) ? 'checked="checked"' : ''; ?>/> <?php echo Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_REJECT'); ?></label>
+		<!--
+		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>-->
+	</div>
+	<hr>
 	<?php } ?>
 
 	<div id="newadmincomment">

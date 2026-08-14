@@ -388,6 +388,26 @@ class Project extends Model
 
 		return false;
 	}
+	
+	/**
+	 * Check if the project is rejected
+	 *
+	 * @return  boolean
+	 */
+	public function isRejected()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		if ($this->get('state') == 4 && !$this->inSetup())
+		{
+			return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * Is project archived?
