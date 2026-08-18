@@ -207,6 +207,30 @@ endif;
 							</label>
 						</div>
 					</fieldset>
+
+<?php if (\Hubzero\User\Group\Membership::enabled() && \Hubzero\User\Group\Membership::supported()) : ?>
+	<?php
+	$gp       = new \Hubzero\Config\Registry($this->group->get('params'));
+	$termDays = (int) $gp->get('membership_default_term_days', 0);
+	$hubMax   = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
+	?>
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_LEGEND'); ?></legend>
+
+						<div class="form-group">
+							<label for="membership_default_term_days">
+								<?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT'); ?>
+								<input type="number" min="0" step="1"<?php echo $hubMax > 0 ? ' max="' . $hubMax . '"' : ''; ?>
+									class="form-control" name="params[membership_default_term_days]"
+									id="membership_default_term_days" value="<?php echo $termDays; ?>" />
+								<br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT_DESC'); ?></span>
+								<?php if ($hubMax > 0) : ?>
+									<br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $hubMax); ?></span>
+								<?php endif; ?>
+							</label>
+						</div>
+					</fieldset>
+<?php endif; ?>
 				</fieldset>
 
 				<fieldset>

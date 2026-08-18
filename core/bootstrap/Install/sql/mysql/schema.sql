@@ -5749,7 +5749,8 @@ CREATE TABLE `#__xgroups_log` (
   `action` varchar(50) DEFAULT NULL,
   `comments` text DEFAULT NULL,
   `actorid` int(11) DEFAULT 0,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_action_timestamp` (`action`,`timestamp`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
@@ -5794,9 +5795,31 @@ CREATE TABLE `#__xgroups_members` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
+  `expires` datetime DEFAULT NULL,
+  `expires_set_by` int(11) DEFAULT NULL,
+  `expires_notified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `idx_gidNumber_uidNumber` (`gidNumber`,`uidNumber`)
+  UNIQUE KEY `idx_gidNumber_uidNumber` (`gidNumber`,`uidNumber`),
+  KEY `idx_expires` (`expires`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+
+--
+-- Table structure for table `#__xgroups_member_history`
+--
+
+CREATE TABLE `#__xgroups_member_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gidNumber` int(11) NOT NULL,
+  `uidNumber` int(11) NOT NULL,
+  `expires` datetime DEFAULT NULL,
+  `revoked` datetime DEFAULT NULL,
+  `reason` varchar(32) DEFAULT NULL,
+  `was_manager` tinyint(1) DEFAULT 0,
+  `actor` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_gidNumber_uidNumber` (`gidNumber`,`uidNumber`),
+  KEY `idx_revoked` (`revoked`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --

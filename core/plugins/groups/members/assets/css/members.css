@@ -317,3 +317,26 @@
 	color: #545454;
 	line-height: 1.5;
 }
+
+/* Time-limited membership */
+.membership-term {
+	display: block;
+	font-size: 0.85em;
+	margin-top: 0.25em;
+}
+.membership-term .term-expires {
+	color: #555;
+}
+.membership-term .term-expires-soon {
+	color: #a5240e;
+	font-weight: bold;
+}
+.membership-term .set-expiration {
+	font-size: 0.95em;
+}
+.membership-expiring-notice {
+	padding: 0.5em 1em;
+	border-left: 4px solid #c7a008;
+	background: #fdf6d9;
+	margin-bottom: 1em;
+}
