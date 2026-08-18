@@ -283,7 +283,7 @@ if ($mode != 'preview')
 			'id'     => $this->model->id
 		);
 		// Prevent SQL injection vulnerability by doing input validation on sortby
-		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
+		if (!in_array($filters['sortby'], array('ordering', 'date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
 			App::abort(403, Lang::txt('Invalid sort value'));
 		}
