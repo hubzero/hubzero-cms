@@ -239,7 +239,7 @@ class Attachments extends Obj
 			return false;
 		}
 
-		$output = '<ul class="element-list">';
+		$output = '<ul class="element-list files">';
 		$i = 0;
 		$links = '';
 		foreach ($elements as $element)

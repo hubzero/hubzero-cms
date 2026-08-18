@@ -284,7 +284,7 @@ body #introduction:after {
 
 /* Author list */
 #authorslist p {
-	line-height: 1.4em;
+	line-height: 1.5;
 	margin: 0.5em 0;
 	color: #000;
 }
@@ -296,7 +296,6 @@ body #introduction:after {
 }
 #authorslist p.orgs {
 	color: #000;
-	font-style: italic;
 }
 #authorslist p > a[href^="https://orcid.org/"] {
 	background-image: none;
@@ -890,7 +889,7 @@ div.sample p {
 	text-align: left;
 	padding: 0.5em 0 10px 22px;
 	margin: -0.5em 0 0 0;
-	line-height: 1em;
+	line-height: 1.5;
 }
 .opensource {
 	background: url("../img/logos/opensource.gif") 0 0 no-repeat !important;
@@ -1610,6 +1609,19 @@ ul.element-list {
 }
 ul.element-list a {
 	border: none;
+}
+/* Files/attachments list: enlarge each download link to the WCAG 2.5.5 minimum
+   target size (44px). Scoped to .files so it does not touch the series list,
+   whose element-list links wrap full publication titles. inline-flex keeps the
+   icon + filename vertically centred and lets long names wrap, avoiding the
+   45px line-gaps a fixed line-height would create. */
+ul.element-list.files a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 45px;
+	min-height: 45px;
+	text-align: center;
 }
 ul.element-list li {
 	padding: 0.3em 0;
