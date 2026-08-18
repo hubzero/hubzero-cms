@@ -11,6 +11,7 @@ use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Hubzero\Component\ApiController;
 use Component;
+use User;
 use Exception;
 use stdClass;
 use Request;
@@ -100,9 +101,20 @@ class Entriesv1_0 extends ApiController
 					->resetDepth();
 		}
 
-		if ($filters['type'])
+		if ($filters['type'] !== '')
 		{
-			$query->whereEquals($r . '.type', $filters['type']);
+			// `type` is documented as a type name, but was compared straight
+			// against the numeric column, so only ids ever matched. Resolve an
+			// alias to its id, and let an unknown one match nothing rather
+			// than falling through and matching everything.
+			if (!is_numeric($filters['type']))
+			{
+				$type = Type::oneByAlias($filters['type']);
+
+				$filters['type'] = ($type && $type->get('id')) ? (int) $type->get('id') : -1;
+			}
+
+			$query->whereEquals($r . '.type', (int) $filters['type']);
 		}
 
 		$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
@@ -116,6 +128,26 @@ class Entriesv1_0 extends ApiController
 			->resetDepth();
 
 		$query->whereEquals($r . '.published', Entry::STATE_PUBLISHED);
+
+		// Restrict to what the caller may actually see. Without this the
+		// endpoint returned registered-, protected- and private-level entries
+		// to anonymous callers: `standalone`, `published` and the publish
+		// window were the only filters applied.
+		//
+		// Same rule the site views use: public for everyone, plus
+		// registered-level once authenticated. Component administrators keep
+		// the unrestricted view they had.
+		if (!User::authorise('core.admin', 'com_resources'))
+		{
+			$access = array(0);   // public
+
+			if (!User::isGuest())
+			{
+				$access[] = 1;    // registered
+			}
+
+			$query->whereIn($r . '.access', $access);
+		}
 
 		switch ($filters['sortby'])
 		{
