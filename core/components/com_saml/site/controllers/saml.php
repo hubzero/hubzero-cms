@@ -7,6 +7,12 @@
 
 namespace Components\Saml\Site\Controllers;
 
+use App;
+
+/**
+ * There is nothing to serve at the bare /saml route — every endpoint lives
+ * under /saml/idp/*.
+ */
 class Saml extends \Hubzero\Component\SiteController
 {
 	public function execute()
