@@ -110,33 +110,82 @@ class Project extends Table
 		elseif ($admin)
 		{
 			$query .= " WHERE 1=1 "; //p.provisioned = 0 ";
-			if ($filterby == 'archived')
+			
+			if ($filterby == 'setting_up_in_progress')
 			{
-				$query .= " AND p.state=3";
+				$query .= " AND p.state=0";
 			}
 			elseif ($filterby == 'active')
 			{
-				$query .= " AND p.state NOT IN (2, 3) ";
+				$query .= " AND p.state=1";
+			}
+			elseif ($filterby == 'deleted')
+			{
+				$query .= " AND p.state=2";
+			}
+			elseif ($filterby == 'archived')
+			{
+				$query .= " AND p.state=3";
+			}
+			elseif ($filterby == 'rejected')
+			{
+				$query .= " AND p.state=4";
+			}
+			elseif ($filterby == 'pending_approval')
+			{
+				$query .= " AND p.state=5";
 			}
 			else
 			{
-				$query .= $showall ? "" : " AND p.state != 2 ";
+				$query .= $showall ? "" : " AND p.state NOT IN (0, 1, 2, 3, 4, 5) ";
 			}
 		}
 		else
 		{
 			if ($mine)
 			{
-				if ($filterby == 'archived')
+				if ($filterby == 'setting_up_in_progress')
 				{
 					$query .= $uid
-							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 3) "
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 0
+								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
 							: " WHERE 1=2";
 				}
 				elseif ($filterby == 'active')
 				{
 					$query .= $uid
-							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state NOT IN (2, 3)
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 1
+								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+							: " WHERE 1=2";
+				}
+				elseif ($filterby == 'deleted')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 2
+								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+							: " WHERE 1=2";
+				}
+				elseif ($filterby == 'archived')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 3) "
+							: " WHERE 1=2";
+				}
+				elseif ($filterby == 'rejected')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 4
+								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+							: " WHERE 1=2";
+				}
+				elseif ($filterby == 'pending_approval')
+				{
+					$query .= $uid
+							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 5
 								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
 							: " WHERE 1=2";
@@ -145,7 +194,7 @@ class Project extends Table
 				{
 					$query .= $uid
 							? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
-								AND ((p.state!=2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
+								AND ((p.state NOT IN (0, 1, 2, 3, 4, 5) AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
 								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
 							: " WHERE 1=2";
 				}
@@ -230,6 +279,35 @@ class Project extends Table
 						AND p.params NOT LIKE '%grant_status=2%') "
 					: " AND p.state = 5 ";
 		}
+		
+		if ($reviewer == 'sensitive')
+		{
+			if ($filterby == 'setting_up_in_progress')
+			{
+				$query .= " AND p.state = 0 ";
+			}
+			elseif ($filterby == 'active')
+			{
+				$query .= " AND p.state = 1 ";
+			}
+			elseif ($filterby == 'deleted')
+			{
+				$query .= " AND p.state = 2 ";
+			}
+			elseif ($filterby == 'archived')
+			{
+				$query .= " AND p.state = 3 ";
+			}
+			elseif ($filterby == 'rejected')
+			{
+				$query .= " AND p.state = 4 ";
+			}
+			else
+			{
+				$query .= "";
+			}
+		}
+		
 		if ($search)
 		{
 			$query .= " AND (p.title LIKE " . $this->_db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->_db->quote('%' . $search . '%') . ") ";

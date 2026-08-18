@@ -58,8 +58,12 @@ if (substr($base, -13) == 'administrator')
 				<label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
 				<select name="filterby" id="filter-filterby" class="filter filter-submit">
 					<option value=""<?php echo ($this->filters['filterby'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL'); ?></option>
+					<option value="setting_up_in_progress"<?php echo ($this->filters['filterby'] == 'setting_up_in_progress') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS'); ?></option>
 					<option value="active"<?php echo ($this->filters['filterby'] == 'active') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE'); ?></option>
+					<option value="deleted"<?php echo ($this->filters['filterby'] == 'deleted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED'); ?></option>
 					<option value="archived"<?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED'); ?></option>
+					<option value="rejected"<?php echo ($this->filters['filterby'] == 'rejected') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_REJECTED'); ?></option>
+					<option value="pending_approval"<?php echo ($this->filters['filterby'] == 'pending_approval') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_PEDING_APPROVAL'); ?></option>
 				</select>
 
 				<?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
@@ -155,6 +159,10 @@ if (substr($base, -13) == 'administrator')
 					else if ($row->state == 3)
 					{
 						$status = '<span class="archived">' . Lang::txt('Archived') . '</span> ';
+					}
+					else if ($row->state == 4)
+					{
+						$status = '<span class="rejected">' . Lang::txt('Rejected') . '</span> ';
 					}
 					else if ($row->state == 5)
 					{
