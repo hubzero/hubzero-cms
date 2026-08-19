@@ -213,10 +213,15 @@ class Cloud extends \Hubzero\Base\Obj
 			if (isset($filters['scope']) && $filters['scope'])
 			{
 				$results->whereEquals($tbl . '.tbl', (string) $filters['scope']);
-			}
-			if (isset($filters['scope_id']) && $filters['scope_id'])
-			{
-				$results->whereEquals($tbl . '.objectid', (int) $filters['scope_id']);
+
+				// When object-scoped, always constrain to the object id — even
+				// when it is 0. An unsaved object (id 0) has no tags, so this must
+				// return none; without it the query drops the objectid predicate
+				// and returns the entire scope's tag vocabulary (e.g. a brand-new
+				// support ticket's changelog showing "tags changed from <every
+				// support tag> to (blank)").
+				$scope_id = isset($filters['scope_id']) ? (int) $filters['scope_id'] : (int) $this->get('scope_id');
+				$results->whereEquals($tbl . '.objectid', $scope_id);
 			}
 			if (isset($filters['label']) && $filters['label'])
 			{
