@@ -322,6 +322,121 @@ class Membership extends AdminController
 	}
 
 	/**
+	 * Show the form for putting an end date on selected memberships
+	 *
+	 * Reached as a popup from the membership list, the same way newTask() is.
+	 *
+	 * @return  void
+	 */
+	public function expirationTask()
+	{
+		$gid = Request::getString('gid', '');
+
+		$this->view->group = new Group();
+		$this->view->group->read($gid);
+
+		$ids = Request::getArray('id', array());
+		$ids = array_values(array_filter(array_map('intval', (array) $ids)));
+
+		$this->view->users   = $ids;
+		$this->view->maxDays = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
+		$this->view->current = array();
+
+		foreach ($ids as $uid)
+		{
+			$this->view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor(
+				$this->view->group->get('gidNumber'), $uid
+			);
+		}
+
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		$this->view->display();
+	}
+
+	/**
+	 * Apply or clear an end date on selected memberships
+	 *
+	 * Deliberately does not consult join_policy. An administrator can already
+	 * remove a member of a closed group from this screen, so refusing to
+	 * schedule the same removal here would be inconsistent. The front-end
+	 * manager UI is the one that honours the closed-group rule.
+	 *
+	 * @return  void
+	 */
+	public function setexpirationTask()
+	{
+		Request::checkToken();
+
+		$gid = Request::getString('gid', '');
+
+		$this->group = new Group();
+		$this->group->read($gid);
+
+		$return = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn');
+
+		if (!\Hubzero\User\Group\Membership::supported())
+		{
+			App::redirect(Route::url($return, false), Lang::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_UNAVAILABLE'), 'error');
+			return;
+		}
+
+		$ids     = Request::getArray('id', array());
+		$ids     = array_values(array_filter(array_map('intval', (array) $ids)));
+		$mode    = Request::getWord('mode', 'set');
+		$expires = trim(Request::getString('expires', ''));
+
+		if ($mode != 'clear' && $expires === '')
+		{
+			App::redirect(Route::url($return, false), Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NO_DATE'), 'error');
+			return;
+		}
+
+		$done   = 0;
+		$errors = array();
+
+		foreach ($ids as $uid)
+		{
+			try
+			{
+				\Hubzero\User\Group\Membership::setExpiration(
+					$this->group->get('gidNumber'),
+					$uid,
+					($mode == 'clear' ? null : $expires)
+				);
+
+				$done++;
+			}
+			catch (\Exception $e)
+			{
+				$errors[] = $e->getMessage();
+			}
+		}
+
+		if ($done)
+		{
+			Log::log(array(
+				'gidNumber' => $this->group->get('gidNumber'),
+				'action'    => ($mode == 'clear' ? 'group_member_term_cleared' : 'group_member_term_set'),
+				'comments'  => $ids
+			));
+		}
+
+		App::redirect(
+			Route::url($return, false),
+			$errors
+				? implode(' ', array_unique($errors))
+				: Lang::txt($mode == 'clear'
+					? 'PLG_GROUPS_MEMBERS_EXPIRATION_CLEARED'
+					: 'PLG_GROUPS_MEMBERS_EXPIRATION_SAVED', $done),
+			$errors ? 'error' : 'passed'
+		);
+	}
+
+	/**
 	 * Approves requested membership for user(s)
 	 *
 	 * @return void

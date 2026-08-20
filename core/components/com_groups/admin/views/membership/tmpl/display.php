@@ -45,6 +45,11 @@ switch ($this->filters['status'])
 			Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
 			Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false, false);
 		}
+		if ($canDo->get('core.edit') && \Hubzero\User\Group\Membership::supported()
+		 && \Hubzero\User\Group\Membership::enabled())
+		{
+			Toolbar::appendButton('Popup', 'options', 'COM_GROUPS_MEMBER_TERM', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=expiration&gid=' . $this->filters['gid']), 570, 300);
+		}
 		if ($canDo->get('core.delete'))
 		{
 			Toolbar::deleteList('COM_GROUPS_MEMBER_DELETE', 'delete');

@@ -397,8 +397,7 @@ $option = 'com_groups';
 								 && ($this->filter == 'members' || $this->filter == 'managers')) {
 									$uid     = (int) $u->get('id');
 									$expires = isset($this->expirations[$uid]) ? $this->expirations[$uid] : null;
-									$canEdit = ($this->authorized == 'manager' || $this->authorized == 'admin')
-										&& $this->membership_control == 1;
+									$canEdit = !empty($this->can_set_expiration);
 
 									$html .= '<span class="membership-term">';
 
