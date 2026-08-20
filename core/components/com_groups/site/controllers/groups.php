@@ -232,11 +232,21 @@ class Groups extends Base
 			return;
 		}
 
-	        $gparams = new \Hubzero\Config\Registry($this->view->group->params);
-                $page_template = $gparams->get("page_template");
-                if ($page_template && $page_template != ""){
-                        App::get('template')->template = $page_template;
-                }
+		// A group may set its own site template. Guarded on is_object rather
+		// than relying on the not-found check above still sitting in front of
+		// it: Group::getInstance() returns false for an unknown cn, and this
+		// block has been moved above that check before now, which turns every
+		// hit on a missing group into a warning in the error log.
+		if (is_object($this->view->group))
+		{
+			$gparams       = new Registry($this->view->group->get('params'));
+			$page_template = $gparams->get('page_template');
+
+			if ($page_template)
+			{
+				App::get('template')->template = $page_template;
+			}
+		}
 	
 		// Ensure it's an allowable group type to display
 		if (!in_array($this->view->group->get('type'), array(1, 3)))
