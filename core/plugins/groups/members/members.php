@@ -258,6 +258,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
 					: array();
 
+				// The same predicate the action enforces, so the link cannot be
+				// offered where the action would refuse it. Kept separate from
+				// expiration_enabled, which only governs *showing* a term - a
+				// member should still see their own end date on a closed group.
+				$view->can_set_expiration = $this->canSetExpiration();
+
 				// Flag a term from the point the hub starts warning about it -
 				// the widest threshold - so the list agrees with the mail the
 				// member has already had. The narrowest threshold is often a
