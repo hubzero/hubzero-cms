@@ -16,3 +16,5 @@ psalm.xml
 .claude
 .vscode
 phpunit.xml
+configuration.php
+hubconfiguration.php
