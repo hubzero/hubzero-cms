@@ -86,8 +86,17 @@ class Assets extends AdminController
 		$tbl = new Tables\Asset($this->database);
 		// print_r($this->view->filters);
 
+		// A scope id of 0 here means "every scope", but the table now reads a
+		// zero as "match nothing", so drop the key instead of passing it.
+		$where = $this->view->filters;
+
+		if (empty($where['asset_scope_id']))
+		{
+			unset($where['asset_scope_id']);
+		}
+
 		$rows = $tbl->find(array(
-			'w' => $this->view->filters
+			'w' => $where
 		));
 
 		// print_r($rows);

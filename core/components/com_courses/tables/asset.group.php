@@ -101,7 +101,8 @@ class AssetGroup extends Table
 
 		$where = array();
 
-		if (isset($filters['unit_id']) && $filters['unit_id'])
+		// A unit_id of 0 must match no groups rather than dropping the clause
+		if (isset($filters['unit_id']))
 		{
 			$where[] = "cag.unit_id=" . $this->_db->quote($filters['unit_id']);
 		}

@@ -128,7 +128,9 @@ class Unit extends Table
 
 		$where = array();
 
-		if (isset($filters['offering_id']) && $filters['offering_id'])
+		// Note the deliberate lack of a truthiness test: an offering_id of 0
+		// has to match no units, not every unit in the table.
+		if (isset($filters['offering_id']))
 		{
 			$where[] = "cu.offering_id=" . $this->_db->quote($filters['offering_id']);
 		}

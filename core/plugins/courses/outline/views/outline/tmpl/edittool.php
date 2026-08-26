@@ -86,7 +86,7 @@ $tool_path = $config->get('tool_path');
 			</div>
 		</div>
 		<div class="tool-files-available">
-			<?php $files = $toolAsset ? $toolAsset->files($asset) : array(); ?>
+			<?php $files = ($toolAsset && method_exists($toolAsset, 'files')) ? $toolAsset->files($asset) : array(); ?>
 			<?php if (!empty($files)) : ?>
 				<ul class="tool-files-list">
 					<?php foreach ($files as $file) : ?>

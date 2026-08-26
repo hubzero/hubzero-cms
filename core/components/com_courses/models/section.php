@@ -310,7 +310,7 @@ class Section extends Base
 		if (!isset($this->_permissions))
 		{
 			$this->_permissions = Permissions::getInstance();
-			$this->_permissions->set('offering_id', $this->get('id'));
+			$this->_permissions->set('offering_id', $this->get('offering_id'));
 			$this->_permissions->set('section_id', $this->get('id'));
 		}
 		return $this->_permissions->access($action, $item);
