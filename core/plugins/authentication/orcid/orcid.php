@@ -18,6 +18,22 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Derive a login-safe username hint from an ORCID iD.
+	 *
+	 * The result is always lowercase alphanumeric + underscore, always
+	 * unique per ORCID iD, and always a valid login name. Callers that
+	 * want a user-friendly editable value should let the user override
+	 * on the registration form.
+	 *
+	 * @param   string  $orcidId  ORCID iD in canonical form, e.g. "0000-0002-6885-6310"
+	 * @return  string            Login-safe hint, e.g. "u0000_0002_6885_6310"
+	 */
+	public static function suggestUsername($orcidId)
+	{
+		return strtolower(str_replace('-', '_', 'u' . $orcidId));
+	}
+
+	/**
 	 * Perform logout
 	 *
 	 * @return  void
@@ -206,7 +222,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			$response->status        = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname      = $orcid->fullName();
 			$response->authoritative = $this->params->get('authoritative', false);
-			$response->username      = strtolower( str_replace('-','_','u' . $username));
+			$response->username      = self::suggestUsername($username);
 			$response->email         = $orcid->email();
 			$response->orcid         = $orcid->id();
 
@@ -237,20 +253,14 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 				$response->username = '-' . $hzal->id;
 				$response->email    = $response->username . '@invalid';
 
-				// Suggest a username for their hub account. The other auth
-				// plugins derive this from the email local-part, but ORCID's
-				// public API returns no email, so default to the ORCID-iD-based
-				// username (always present and unique) so the field is never
-				// left blank on the registration form.
-				$sub_email    = explode('@', $orcid->email() ?? '', 2);
-				$tmp_username = $sub_email[0];
-
-				if ($tmp_username === '')
-				{
-					$tmp_username = strtolower(str_replace('-', '_', 'u' . $username));
-				}
-
-				Session::set('auth_link.tmp_username', $tmp_username);
+				// Suggest a username derived from the ORCID iD. Other auth
+				// plugins use the email local-part, but that is often invalid
+				// for login (contains '+', '.', uppercase, etc.) and ORCID's
+				// public API often returns no email at all. The ORCID-iD form
+				// is always present, always unique, and always a valid login
+				// name; on hubs where the username field is user-editable at
+				// registration, the user can still change it before submit.
+				Session::set('auth_link.tmp_username', self::suggestUsername($username));
 			}
 
 			$hzal->update();
