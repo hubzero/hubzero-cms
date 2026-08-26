@@ -887,29 +887,39 @@ class Groups extends Base
 		// Only inform site admin if the group wasn't auto-approved
 		if (!$this->config->get('auto_approve', 1) && $group->get('approved') == 0)
 		{
-			// Create approval subject
-			$subject = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL', Config::get('sitename'));
+			$reviewers = $this->config->get('group_reviewer', $emailadmin);
+			
+			if (!empty($reviewers))
+			{
+				$reviewers = explode(",", $reviewers);
+				
+				// Create approval subject
+				$subject = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL', Config::get('sitename'));
 
-			// build approval message
-			$link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
-			$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator';
-			$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
-			$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
-
-			// Create new message
-			$message = new \Hubzero\Mail\Message();
-
-			// Build message object and send
-			$message->setSubject($subject)
-					->addFrom($from['email'], $from['name'])
-					->setTo($emailadmin)
-					->addHeader('X-Mailer', 'PHP/' . phpversion())
-					->addHeader('X-Component', 'com_groups')
-					->addHeader('X-Component-Object', 'group_pending_approval')
-					->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
-					->addPart($plain, 'text/plain')
-					->addPart($html, 'text/html')
-					->send();
+				// build approval message
+				$link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
+				$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator/index.php?option=' . $this->_option;
+				$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC', $link, $group->get('cn'), $group->get('description'), $link2);
+				$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
+				
+				foreach ($reviewers as $reviewer)
+				{
+					// Create new message
+					$message = new \Hubzero\Mail\Message();
+					
+					// Build message object and send
+					$message->setSubject($subject)
+						->addFrom($from['email'], $from['name'])
+						->setTo(trim($reviewer))
+						->addHeader('X-Mailer', 'PHP/' . phpversion())
+						->addHeader('X-Component', 'com_groups')
+						->addHeader('X-Component-Object', 'group_pending_approval')
+						->addHeader('X-Component-ObjectId', $group->get('gidNumber'))
+						->addPart($plain, 'text/plain')
+						->addPart($html, 'text/html')
+						->send();
+				}
+			}
 		}
 
 		// Create home page
