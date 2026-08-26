@@ -31,6 +31,13 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formDeployment.ph
 class Form extends SiteController
 {
 	/**
+	 * Viewing without being enrolled (admins and course managers)
+	 *
+	 * @var  boolean
+	 */
+	protected $unenrolled = false;
+
+	/**
 	 * Execute a task
 	 *
 	 * @return  void
@@ -44,10 +51,21 @@ class Form extends SiteController
 		if (!$this->member || !is_numeric($this->member))
 		{
 			$this->member = $this->course->offering()->member(User::get('id'))->get('id');
-			if (!$this->member || !is_numeric($this->member))
+		}
+
+		if (!$this->member || !is_numeric($this->member))
+		{
+			// authorize() already exempts super admins and course managers, but
+			// it runs inside the task and execute() gets here first. Let them
+			// through without a member id rather than turning them away, and
+			// flag it so the view can say so.
+			if (User::get('usertype') != 'Super Administrator' && !$this->course->access('manage'))
 			{
 				App::abort(422, Lang::txt('No user found'));
 			}
+
+			$this->member     = null;
+			$this->unenrolled = true;
 		}
 
 		// Set the base path
@@ -198,11 +216,12 @@ class Form extends SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->pdf      = new PdfForm($this->assertFormId());
-		$this->view->title    = $this->view->pdf->getTitle();
-		$this->view->readonly = Request::getInt('readonly', false);
-		$this->view->base     = $this->base;
-		$this->view->course   = $this->course;
+		$this->view->pdf        = new PdfForm($this->assertFormId());
+		$this->view->title      = $this->view->pdf->getTitle();
+		$this->view->readonly   = Request::getInt('readonly', false);
+		$this->view->unenrolled = $this->unenrolled;
+		$this->view->base       = $this->base;
+		$this->view->course     = $this->course;
 		$this->view->display();
 	}
 
@@ -353,6 +372,12 @@ class Form extends SiteController
 	 */
 	public function showDeploymentTask($dep=null)
 	{
+		// These need a real member record; viewing as an admin is not enough
+		if (!$this->member)
+		{
+			App::abort(422, Lang::txt('No user found'));
+		}
+
 		if (!$id = Request::getInt('id', false))
 		{
 			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
@@ -379,6 +404,12 @@ class Form extends SiteController
 	 */
 	public function completeTask()
 	{
+		// These need a real member record; viewing as an admin is not enough
+		if (!$this->member)
+		{
+			App::abort(422, Lang::txt('No user found'));
+		}
+
 		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
@@ -475,6 +506,12 @@ class Form extends SiteController
 	 */
 	public function startWorkTask()
 	{
+		// These need a real member record; viewing as an admin is not enough
+		if (!$this->member)
+		{
+			App::abort(422, Lang::txt('No user found'));
+		}
+
 		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
@@ -500,6 +537,12 @@ class Form extends SiteController
 	 */
 	public function saveProgressTask()
 	{
+		// These need a real member record; viewing as an admin is not enough
+		if (!$this->member)
+		{
+			App::abort(422, Lang::txt('No user found'));
+		}
+
 		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer']))
 		{
 			echo Lang::txt('COM_COURSES_ERROR_MISSING_CRUMB_QUESTION_OR_ANSWER');
@@ -526,6 +569,12 @@ class Form extends SiteController
 	 */
 	public function submitTask()
 	{
+		// These need a real member record; viewing as an admin is not enough
+		if (!$this->member)
+		{
+			App::abort(422, Lang::txt('No user found'));
+		}
+
 		if (!$crumb = Request::getString('crumb', false))
 		{
 			App::abort(422);
