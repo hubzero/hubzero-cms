@@ -591,6 +591,54 @@ class Register extends SiteController
 					// The profile info, however, may have issues. But, it's not crucial.
 					//$result = false;
 				}
+
+				// Sync scalar columns that live on the extended profile
+				// (#__xprofiles) but not on the base user record, when a
+				// third-party-auth account is completing registration.
+				//
+				//  - homeDirectory: auto-create stamped it with the
+				//    "-<hzal_id>" placeholder username; the base user record
+				//    was just recomputed above but plg_user_xusers does not
+				//    propagate the home directory, so fix the profile copy too.
+				//  - orcid: for ORCID logins the auth link's username column
+				//    holds the canonical iD; it is never captured otherwise.
+				//
+				// Guarded by $wasPlaceholder so an existing member editing
+				// their profile can never have a custom home directory
+				// clobbered here.
+				if ($wasPlaceholder)
+				{
+					$profileRow = \Hubzero\User\Profile::getInstance($xprofile->get('id'));
+
+					if (is_object($profileRow) && $profileRow->get('uidNumber'))
+					{
+						$profileUpdate = false;
+
+						$expectedHome = $hubHomeDir . DS . $xprofile->get('username');
+
+						if ($profileRow->get('homeDirectory') != $expectedHome)
+						{
+							$profileRow->set('homeDirectory', $expectedHome);
+							$profileUpdate = true;
+						}
+
+						if (is_object($hzal) && !$profileRow->get('orcid'))
+						{
+							$domain = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
+
+							if ($domain && is_object($domain) && $domain->get('authenticator') == 'orcid')
+							{
+								$profileRow->set('orcid', $hzal->username);
+								$profileUpdate = true;
+							}
+						}
+
+						if ($profileUpdate)
+						{
+							$profileRow->update();
+						}
+					}
+				}
 			}
 
 			// Update current session if appropriate
