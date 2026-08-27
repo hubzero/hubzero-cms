@@ -631,6 +631,38 @@ class Html
 	}
 
 	/**
+	 * Determine if a legacy media type is actually holding a playable video file
+	 *
+	 * Video attachments predating the 'video' resource type are typed
+	 * 'quicktime' or 'player'. The router knows neither, so they fall through
+	 * to a download link even though they are plain video files. Route those to
+	 * the HTML5 player instead - but only where the player can handle them: the
+	 * file has to be one of the formats the manifest builder collects, and it
+	 * has to live in the resource's own filespace.
+	 *
+	 * @param   object   $item  Child resource
+	 * @return  boolean
+	 */
+	public static function isLegacyPlayableVideo($item)
+	{
+		if (!in_array($item->type->alias, array('quicktime', 'player')))
+		{
+			return false;
+		}
+
+		// Externally hosted or absolute paths have no filespace to build a manifest from
+		if (strstr($item->path, 'http')
+		 || substr($item->path, 0, 3) == 'mms'
+		 || substr($item->path, 0, 1) == '/')
+		{
+			return false;
+		}
+
+		// Keep in sync with the extensions buildVideoManifestForResource() globs for
+		return (bool) preg_match('/\.(mp4|ogv|webm)$/i', $item->path);
+	}
+
+	/**
 	 * Determine the final URL for the primary resource child
 	 *
 	 * @param   string   $option  Component name
@@ -648,6 +680,14 @@ class Html
 		else
 		{
 			$type = $item->type->alias;
+
+			// Legacy media types still carry plain video files. Send those to the
+			// player too, unless the caller explicitly asked for the file itself
+			// ($action 3 - the OAI-PMH miner harvests direct file URLs).
+			if ($action != 3 && self::isLegacyPlayableVideo($item))
+			{
+				return Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
+			}
 
 			switch ($type)
 			{
@@ -1034,6 +1074,16 @@ class Html
 					$childParams = $firstChild->params;
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
+					$isVideo = ($firstChild->type->alias == 'video' || self::isLegacyPlayableVideo($firstChild));
+
+					// A playable video always goes to the player. The generic linkAction
+					// hint the type carries - legacy logical types such as
+					// 'Podcast (video)' are commonly set to 'download' - must not win.
+					if ($isVideo)
+					{
+						$linkAction = 0;
+					}
+
 					$url = self::processPath($option, $firstChild, $resource->id, $linkAction);
 
 					switch ($linkAction)
@@ -1077,6 +1127,13 @@ class Html
 					//$rt = new \Components\Resources\Tables\Type($database);
 					//$rt->load($firstChild->type);
 
+					// resources.js keys the inline embed off this class
+					if ($isVideo)
+					{
+						$class = 'video';
+						$mesg  = Lang::txt('COM_RESOURCES_VIEW_PRESENTATION');
+					}
+
 					//if we are a hubpresenter resource type, do not show file type in button
 					if ($firstChild->type->alias == 'hubpresenter')
 					{
@@ -1087,11 +1144,6 @@ class Html
 					else
 					{
 						$mesg .= ' ' . self::getFileAttribs($firstChild->path);
-					}
-
-					if ($firstChild->type->alias == 'video')
-					{
-						$class = 'video';
 					}
 
 					if ($resource->type->alias == 'databases')
