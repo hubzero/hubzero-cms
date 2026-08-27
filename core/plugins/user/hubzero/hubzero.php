@@ -14,6 +14,91 @@ defined('_HZEXEC_') or die;
 class plgUserHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * True when the user array looks like a third-party-auth auto-create
+	 * placeholder — username of the form "-<hzal_id>" (numeric). These are
+	 * inserted by the login pipeline before the user has picked a real
+	 * name/email on the registration-completion form, and downstream admin
+	 * notifications should be deferred until that form is submitted.
+	 *
+	 * @param   array  $user  Joomla-style user array; only ['username'] is read
+	 * @return  bool
+	 */
+	public static function isThirdPartyPlaceholder($user)
+	{
+		if (empty($user['username']))
+		{
+			return false;
+		}
+
+		return (bool) preg_match('/^-\d+$/', (string) $user['username']);
+	}
+
+	/**
+	 * Assemble and send the "new account request" admin notification email.
+	 *
+	 * Extracted from onUserAfterSave so it can be re-invoked from
+	 * com_members/register::updateTask when a third-party-auth account
+	 * transitions out of its placeholder state. At auto-create time the
+	 * username and email are "-<hzal_id>" and "-<hzal_id>@invalid"; a
+	 * notification sent then would show only those placeholder values.
+	 * Deferring to the update lets the admin see the user's real name,
+	 * chosen login, and confirmed email address.
+	 *
+	 * @param   array  $user  Joomla-style user array. The email templates read
+	 *                        ['id'], ['name'], ['email'], and ['username'];
+	 *                        all four must be present.
+	 * @return  void
+	 */
+	public static function sendAdminNewUserNotification($user)
+	{
+		$config = App::get('config');
+
+		$lang = App::get('language');
+		$lang->load('plg_user_hubzero', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
+		$lang->load('plg_user_hubzero', PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
+		$lang->load('plg_user_hubzero', __DIR__);
+
+		$emailAddress = $config->get('mailfrom');
+
+		$eview = new Hubzero\Mail\View(array(
+			'base_path'     => __DIR__,
+			'name'          => 'emails',
+			'layout'        => 'admincreate_plain',
+			'override_path' => ''
+		));
+		$eview->addTemplatePath(App::get('template')->path . '/html/plg_user_hubzero');
+
+		$eview->set('user', $user);
+		$eview->set('sitename', $config->get('sitename'));
+
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout('admincreate_html');
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+
+		$mail = new Hubzero\Mail\Message();
+		$mail
+			->addFrom(
+				$emailAddress,
+				Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename'))
+			)
+			->addTo($emailAddress)
+			->addHeader('X-Component', Request::getCmd('option', 'com_members'))
+			->addHeader('X-Component-Object', 'user_creation_admin_notification')
+			->setSubject(Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
+			->addPart($plain, 'text/plain')
+			->addPart($html, 'text/html');
+
+		if (!$mail->send())
+		{
+			// TODO: Probably should raise a plugin error but this event is not error checked.
+			Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
+		}
+	}
+
+	/**
 	 * Remove all sessions for the user name
 	 *
 	 * Method is called after user data is deleted from the database
@@ -59,57 +144,22 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Initialise variables.
-		$config = App::get('config');
+		// Third-party-auth users are auto-created with a "-<hzal_id>"
+		// placeholder username and a "-<hzal_id>@invalid" email. Registration
+		// is completed later on the update form. Defer the admin notification
+		// until the real values exist; com_members/register::updateTask
+		// re-invokes self::sendAdminNewUserNotification() when the account
+		// transitions out of the placeholder state.
+		if (self::isThirdPartyPlaceholder($user))
+		{
+			return;
+		}
 
 		if (App::isSite())
 		{
 			if ($this->params->get('mail_to_admin', 1))
 			{
-				$lang = App::get('language');
-				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site') ||
-				$lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'administrator') ||
-				$lang->load('plg_user_' . $this->_name, __DIR__);
-
-				$emailAddress = $config->get('mailfrom');
-
-				$eview = new Hubzero\Mail\View(array(
-					'base_path'     => __DIR__,
-					'name'          => 'emails',
-					'layout'        => 'admincreate_plain',
-					'override_path' => ''
-				));
-				$eview->addTemplatePath(App::get('template')->path . '/html/plg_' . $this->_type . '_' . $this->_name);
-
-				$eview->set('user', $user);
-				$eview->set('sitename', $config->get('sitename'));
-
-				$plain = $eview->loadTemplate(false);
-				$plain = str_replace("\n", "\r\n", $plain);
-
-				$eview->setLayout('admincreate_html');
-				$html = $eview->loadTemplate();
-				$html = str_replace("\n", "\r\n", $html);
-
-				// Assemble the email data
-				$mail = new Hubzero\Mail\Message();
-				$mail
-					->addFrom(
-						$emailAddress,
-						Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename'))
-					)
-					->addTo($emailAddress)
-					->addHeader('X-Component', Request::getCmd('option', 'com_members'))
-					->addHeader('X-Component-Object', 'user_creation_admin_notification')
-					->setSubject(Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION', $config->get('sitename')))
-					->addPart($plain, 'text/plain')
-					->addPart($html, 'text/html');
-
-				if (!$mail->send())
-				{
-					// TODO: Probably should raise a plugin error but this event is not error checked.
-					Log::error(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR', $emailAddress));
-				}
+				self::sendAdminNewUserNotification($user);
 			}
 		}
 

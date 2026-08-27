@@ -323,6 +323,16 @@ class Register extends SiteController
 		$force = false;
 		$updateEmail = false;
 
+		// Snapshot whether this session's account is still a third-party-auth
+		// auto-create placeholder ("-<hzal_id>"). We need to know this later,
+		// after the save has overwritten the placeholder username with a real
+		// one, so we can fire the admin new-account notification that was
+		// deferred by plg_user_hubzero at auto-create time.
+		\Plugin::import('user', 'hubzero');
+		$wasPlaceholder = \plgUserHubzero::isThirdPartyPlaceholder(array(
+			'username' => (string) User::get('username'),
+		));
+
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -613,6 +623,23 @@ class Register extends SiteController
 			}
 
 			Session::set('registration.incomplete', false);
+
+			// If this registration is transitioning from a third-party-auth
+			// placeholder (`-<hzal_id>` / `-<hzal_id>@invalid`) to a completed
+			// account, fire the admin new-user notification now — at auto-
+			// create time plg_user_hubzero deferred it so the email would
+			// carry the user's real chosen values rather than the placeholder.
+			if ($wasPlaceholder && !\plgUserHubzero::isThirdPartyPlaceholder(array(
+				'username' => (string) $xprofile->get('username'),
+			)))
+			{
+				\plgUserHubzero::sendAdminNewUserNotification(array(
+					'id'       => $xprofile->get('id'),
+					'name'     => $xprofile->get('name'),
+					'email'    => $xprofile->get('email'),
+					'username' => $xprofile->get('username'),
+				));
+			}
 
 			// Notify the user
 			if ($updateEmail)
