@@ -1,0 +1,13 @@
+{
+  "name": "hubzero-ckeditor5-build",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Modern CKEditor 5 build for the HUBzero ckeditor5 editor plugin",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "ckeditor5": "^48.4.0",
+    "esbuild": "^0.28.2"
+  }
+}

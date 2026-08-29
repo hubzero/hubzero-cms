@@ -110,6 +110,14 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		$col = $col ?: 35;
 		$row = $row ?: 10;
 
+		// Optional image-upload wiring: a caller may pass an 'uploadUrl' (and a
+		// 'token' form-field name for CSRF) in $params to enable the editor's
+		// image-upload button. Pulled out here so they don't leak into the
+		// <textarea> attributes below.
+		$uploadUrl  = isset($params['uploadUrl']) ? $params['uploadUrl'] : '';
+		$tokenField = isset($params['token']) ? $params['token'] : '';
+		unset($params['uploadUrl'], $params['token']);
+
 		if (!isset($params['class']))
 		{
 			$params['class'] = array();
@@ -133,14 +141,22 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 			$params['height'] = intval($row) . 'em';
 		}
 
-		// Fix script and php protected source
-		$config = "{ }";
+		// Editor options (image upload is enabled only when an uploadUrl is given)
+		$opts = array();
+		if ($uploadUrl !== '')
+		{
+			$opts['uploadUrl'] = $uploadUrl;
+		}
+		if ($tokenField !== '')
+		{
+			$opts['tokenField'] = $tokenField;
+		}
+		$optsJson = json_encode($opts ? $opts : new \stdClass());
 
-		// Script to actually make ckeditor
-		$script = '<script type="text/javascript">';
-		$script .= 'ClassicEditor';
-		$script .= '.create(document.querySelector("#'.$id.'"), '.$config.')';
-		$script .= '.catch( error => { console.error( error ); } );';
+		// Script to actually make ckeditor (deferred until the element exists)
+		$script  = '<script type="text/javascript">';
+		$script .= '(function(){var f=function(){if(window.HubEditor){HubEditor.create(document.querySelector("#'.$id.'"), '.$optsJson.').catch(function(e){console.error(e);});}};';
+		$script .= 'if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",f);}else{f();}})();';
 		$script .= '</script>';
 
 		$params['class'] = implode(' ', $params['class']);
