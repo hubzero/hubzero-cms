@@ -105,7 +105,10 @@ window.HubEditor = {
 			table: { contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] },
 			mediaEmbed: { previewsInData: true },
 			htmlSupport: {
+				// Preserve layout containers, figures and media so custom content
+				// (e.g. multi-column layouts) round-trips instead of being flattened.
 				allow: [
+					{ name: /^(div|section|article|aside|figure|figcaption|span)$/, classes: true, styles: true, attributes: true },
 					{ name: 'video', attributes: true, classes: true, styles: true },
 					{ name: 'source', attributes: true },
 					{ name: 'iframe', attributes: true, classes: true, styles: true }
