@@ -226,6 +226,29 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			$response->email         = $orcid->email();
 			$response->orcid         = $orcid->id();
 
+			// A link row can exist with no user_id — it is created at the start
+			// of login, before any account exists, and stays unlinked if the
+			// member never finishes registering. That is correct for someone
+			// genuinely new. But when an account for this ORCID iD already
+			// exists, treating them as new is a dead end: they are handed a
+			// "-<id>@invalid" placeholder and sent to registration, where their
+			// own email is already taken by the very account they are trying to
+			// reach, and (with the username field locked to the derived name)
+			// so is their username. Five members reached that state.
+			//
+			// The username is derived from the ORCID iD and nothing else, so it
+			// identifies the account unambiguously — adopt it instead of
+			// manufacturing a second one.
+			if (!$hzal->user_id)
+			{
+				$existing = \Hubzero\User\User::oneByUsername(self::suggestUsername($username));
+
+				if ($existing && $existing->get('id'))
+				{
+					$hzal->set('user_id', $existing->get('id'));
+				}
+			}
+
 			if ($hzal->user_id)
 			{
 				// Resolve to the linked account's real username. Otherwise the
