@@ -236,9 +236,13 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			// reach, and (with the username field locked to the derived name)
 			// so is their username. Five members reached that state.
 			//
-			// The username is derived from the ORCID iD and nothing else, so it
-			// identifies the account unambiguously — adopt it instead of
-			// manufacturing a second one.
+			// The link row is the ORCID iD -> account mapping, and it is already
+			// immune to anything we rename internally. This only repairs a row
+			// that has lost its user_id: fall back to the username derived from
+			// the iD, which is how these accounts were named. An account since
+			// renamed can't be recovered here — that needs the link repaired
+			// directly, rather than this plugin reaching into profile data it
+			// has no business reading.
 			if (!$hzal->user_id)
 			{
 				$existing = \Hubzero\User\User::oneByUsername(self::suggestUsername($username));
