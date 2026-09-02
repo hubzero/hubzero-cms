@@ -2287,8 +2287,18 @@ class BundleBuilder
 	protected function versionAuthors($versionId)
 	{
 		$db = \App::get('db');
+		// Resolve each author's organization the way the website (getAuthors() /
+		// the Member model) does: an author's affiliation lives in the profile
+		// field store #__user_profiles, NOT the legacy #__xprofiles.organization
+		// column, which is empty for most users. Prefer the org entered on the
+		// author record, then the user's profile-field organization, then the
+		// legacy xprofiles column as a last resort (ticket 2797). A correlated
+		// subquery avoids duplicating author rows when the field store has extras.
 		$db->setQuery(
-			"SELECT A.`name`, A.`organization`, x.`name` AS p_name, x.`organization` AS p_organization
+			"SELECT A.`name`, A.`organization`, x.`name` AS p_name, x.`organization` AS p_organization,
+			        (SELECT up.`profile_value` FROM `#__user_profiles` up
+			          WHERE up.`user_id` = A.`user_id` AND up.`profile_key` = 'organization'
+			            AND up.`profile_value` <> '' ORDER BY up.`ordering`, up.`id` LIMIT 1) AS up_organization
 			 FROM `#__publication_authors` A
 			 JOIN `#__project_owners` PO ON PO.`id` = A.`project_owner_id`
 			 LEFT JOIN `#__xprofiles` x ON x.`uidNumber` = PO.`userid`
@@ -2302,7 +2312,20 @@ class BundleBuilder
 		foreach ((array) $db->loadObjectList() as $a)
 		{
 			$name = ($a->name !== null && $a->name !== '') ? $a->name : (string) $a->p_name;
-			$org  = ($a->organization !== null && $a->organization !== '') ? $a->organization : (string) $a->p_organization;
+
+			if ($a->organization !== null && $a->organization !== '')
+			{
+				$org = $a->organization;
+			}
+			elseif (isset($a->up_organization) && $a->up_organization !== null && $a->up_organization !== '')
+			{
+				$org = $a->up_organization;
+			}
+			else
+			{
+				$org = (string) $a->p_organization;
+			}
+
 			$out[] = array('name' => (string) $name, 'org' => trim((string) $org));
 		}
 
