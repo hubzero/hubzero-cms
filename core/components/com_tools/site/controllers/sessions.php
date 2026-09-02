@@ -144,6 +144,122 @@ class Sessions extends SiteController
 	}
 
 	/**
+	 * Asynchronous launch interstitial.
+	 *
+	 * Renders immediately -- it makes NO call out to the middleware -- and lets
+	 * the browser (launch.js) drive the launch: start the session over the API,
+	 * poll its state, then either load the viewer (VNC) or redirect to the proxy
+	 * (weber, e.g. Jupyter). The legacy blocking invokeTask/viewTask are left
+	 * untouched, so this path can be switched on and off freely.
+	 *
+	 * @return  void
+	 */
+	public function launchTask()
+	{
+		// Launching a tool requires a logged-in user
+		if (User::isGuest())
+		{
+			$this->loginTask();
+			return;
+		}
+
+		$app     = trim(Request::getString('app', ''));
+		$version = Request::getString('version', 'default');
+
+		if (!$app)
+		{
+			$this->badparamsTask('app');
+			return;
+		}
+
+		// Resolve the tool version to learn its display proxy type (VNC vs
+		// weber) and title. This is a plain CMS DB read -- no middleware call.
+		require_once \Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
+
+		$tv = new \Components\Tools\Tables\Version($this->database);
+
+		switch ($version)
+		{
+			case '1':
+			case 'default':
+				$instance = $tv->getCurrentVersionProperty($app, 'instance');
+			break;
+			case 'test':
+			case 'dev':
+				$instance = $app . '_dev';
+			break;
+			default:
+				$instance = $app . '_r' . $version;
+			break;
+		}
+
+		$mode  = 'vnc';
+		$title = $app;
+
+		if ($instance && $tv->loadFromInstance($instance))
+		{
+			if ($tv->title)
+			{
+				$title = stripslashes($tv->title);
+			}
+
+			// #__tool_version.params carries the publish/display type:
+			//   displayProxyType = "weber=" | "VNC="   (authoritative)
+			//   publishType      = "jupyter" | "weber=" | "standard" | "simtool"
+			$params = json_decode((string) $tv->params, true);
+			if (is_array($params))
+			{
+				$dpt = strtolower(trim(isset($params['displayProxyType']) ? $params['displayProxyType'] : ''));
+				$pub = strtolower(trim(isset($params['publishType']) ? $params['publishType'] : ''));
+
+				if ($dpt !== '')
+				{
+					$mode = (strpos($dpt, 'weber') !== false) ? 'redirect' : 'vnc';
+				}
+				else if ($pub !== '')
+				{
+					$mode = (strpos($pub, 'weber') !== false || strpos($pub, 'jupyter') !== false) ? 'redirect' : 'vnc';
+				}
+			}
+		}
+
+		$this->view->setLayout('launch');
+		$this->_buildTitle();
+		$this->_buildPathway();
+
+		$this->view->title     = $this->_title;
+		$this->view->app       = $app;
+		$this->view->version   = $version;
+		$this->view->toolTitle = $title;
+		$this->view->mode      = $mode;
+		$this->view->display();
+	}
+
+	/**
+	 * Should this launch go through the asynchronous interstitial (task=launch)
+	 * rather than the classic blocking invoke? Driven by the com_tools
+	 * `async_launch` config, with a per-request &launch=async / &launch=legacy
+	 * override for testing and quick rollback.
+	 *
+	 * @return  boolean
+	 */
+	protected function useAsyncLaunch()
+	{
+		$override = strtolower(Request::getWord('launch', ''));
+
+		if ($override == 'async')
+		{
+			return true;
+		}
+		if ($override == 'legacy')
+		{
+			return false;
+		}
+
+		return (bool) $this->config->get('async_launch', 0);
+	}
+
+	/**
 	 * Show an Access Denied error
 	 *
 	 * @return  void
@@ -321,6 +437,14 @@ class Sessions extends SiteController
 		{
 			$this->loginTask();
 			return;
+		}
+
+		// Async launch: hand off to the interstitial when enabled. This is the
+		// single switch point, so it catches the launch button, direct invoke
+		// URLs and old bookmarks alike. &launch=legacy forces the classic path.
+		if ($this->useAsyncLaunch())
+		{
+			return $this->launchTask();
 		}
 
 		$params = Request::getString('params', '');

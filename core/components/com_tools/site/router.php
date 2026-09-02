@@ -211,6 +211,7 @@ class Router extends Base
 				break;
 
 				// Sessions controller
+				case 'launch':
 				case 'reinvoke':
 				case 'invoke':
 					$vars['option'] = 'com_tools';

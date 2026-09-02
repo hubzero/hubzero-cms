@@ -620,8 +620,11 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//get request vars
+		// NOTE: the API Loader reserves the `version` query param for selecting
+		// the API controller version, so the tool version is read from
+		// `appversion` first (falling back to `version` for legacy callers).
 		$tool_name    = Request::getString('app', '');
-		$tool_version = Request::getString('version', 'default');
+		$tool_version = Request::getString('appversion', Request::getString('version', 'default'));
 
 		//build application object
 		$app = new stdClass;
@@ -708,7 +711,9 @@ class Sessionsv1_0 extends ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running.
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb, $result->get('username'));
+		// (Use the middleware session table directly -- it provides getCount();
+		// the Middleware\Session model does not.)
+		$ms = new \Components\Tools\Tables\Session($mwdb);
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
@@ -1251,17 +1256,16 @@ class Sessionsv1_0 extends ApiController
 		$app->sess = $sessionid;
 		$app->ip   = $ip;
 
-		//load the session
-		// the middleware Session *model* has no loadSession() (a 500 on every
-		// call); the table does, scoped to the caller's own view permissions
+		//load the session. Ownership is checked against the session table
+		//directly -- viewperm (which loadSession()/checkSession() join on) does
+		//not exist until the first view() call, and the Middleware\Session model
+		//has no loadSession() anyway.
 		$ms = new \Components\Tools\Tables\Session($mwdb);
-		$row = $ms->loadSession($app->sess);
-
-		//if we didnt find a session
-		if (!is_object($row) || !$row->appname)
+		if (!$ms->load($app->sess, $result->get('username')) || !$ms->appname)
 		{
 			throw new Exception(Lang::txt('Session Doesn\'t Exist.'), 404);
 		}
+		$row = $ms;
 
 		//get the version
 		if (strstr($row->appname, '_'))
@@ -1311,10 +1315,310 @@ class Sessionsv1_0 extends ApiController
 		//add tool title to result
 		$output->tool = $tv->title;
 		$output->session_title = $app->caption;
-		$output->owner = ($row->viewuser == $row->username) ? 1 : 0;
-		$output->readonly = ($row->readonly == 'Yes') ? 1 : 0;
+		// The session was loaded filtered by the caller's username, so the
+		// caller owns it. (viewperm-based shared viewing is a separate path.)
+		$output->owner = 1;
+		$output->readonly = 0;
 
 		$this->send($output);
+	}
+
+	/**
+	 * Report the launch/connection state of a tool session using ONLY the
+	 * middleware database -- it never calls out to the middleware (maxwell).
+	 *
+	 * This is the poll target for the async launch interstitial: the browser
+	 * waits cheaply on this until a follow-up "read" (view) call will succeed,
+	 * then either loads the viewer (vnc) or redirects to the proxy (redirect).
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}/state
+	 * @apiParameter {
+	 * 		"name":          "session",
+	 * 		"description":   "A valid hub tool session number",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "mode",
+	 * 		"description":   "Connection style to evaluate readiness for: 'vnc' or 'redirect'",
+	 * 		"type":          "string",
+	 * 		"required":      false,
+	 * 		"default":       "vnc"
+	 * }
+	 * @return    void
+	 */
+	public function stateTask()
+	{
+		$this->requiresAuthentication();
+
+		// Resolve the caller
+		$profile = User::getInstance(App::get('authn')['user_id']);
+		if (!$profile->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
+		$username = $profile->get('username');
+
+		// The router places the numeric path segment in 'sessionid'
+		$sess = Request::getInt('sessionid', Request::getInt('session', 0));
+		if (!$sess)
+		{
+			throw new Exception(Lang::txt('A valid session number is required.'), 400);
+		}
+
+		$mode = strtolower(Request::getWord('mode', 'vnc'));
+		if (!in_array($mode, array('vnc', 'redirect')))
+		{
+			$mode = 'vnc';
+		}
+
+		// Middleware database -- everything below is read-only
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+		if (!$mwdb)
+		{
+			throw new Exception(Lang::txt('Middleware is not available.'), 503);
+		}
+
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+
+		// Ownership is taken from the session row itself, NOT from viewperm --
+		// viewperm does not exist until the first view() call, which is exactly
+		// what the interstitial is waiting to make.
+		$row   = new \Components\Tools\Tables\Session($mwdb);
+		$alive = $row->load($sess, $username);
+
+		$steps = array(
+			'session' => 'wait',
+			'token'   => 'wait',
+			'display' => ($mode == 'vnc' ? 'wait' : 'na')
+		);
+
+		// A live session row exists only while the session is alive; once it
+		// ends the row is removed and a sessionlog row remains. That difference
+		// separates "not started yet" from "already exited". (A session that is
+		// not ours simply looks like it has not started -- we never leak it.)
+		if (!$alive || !$row->sessnum)
+		{
+			$mwdb->setQuery(
+				"SELECT COUNT(*) FROM `sessionlog` WHERE sessnum=" . $mwdb->quote($sess) .
+				" AND username=" . $mwdb->quote($username)
+			);
+			$exited = ((int) $mwdb->loadResult() > 0);
+
+			$this->send(array(
+				'session' => $sess,
+				'state'   => ($exited ? 'exited' : 'starting'),
+				'ready'   => false,
+				'exited'  => $exited,
+				'steps'   => $steps
+			));
+			return;
+		}
+
+		// The session is registered
+		$steps['session'] = 'pass';
+
+		$hasToken       = (trim((string) $row->sesstoken) !== '');
+		$steps['token'] = ($hasToken ? 'pass' : 'wait');
+
+		$dispnum  = (int) $row->dispnum;
+		$exechost = (string) $row->exechost;
+		$state    = ($hasToken ? 'registered' : 'starting');
+
+		$displayReady = false;
+		$hostStatus   = null;
+
+		if ($mode == 'vnc')
+		{
+			// The VNC server for this display must be up and bound to us. This
+			// is the authoritative "the display is ready to connect" signal.
+			$mwdb->setQuery(
+				"SELECT status FROM `display` WHERE hostname=" . $mwdb->quote($exechost) .
+				" AND dispnum=" . (int) $dispnum .
+				" AND sessnum=" . $mwdb->quote($sess) . " LIMIT 1"
+			);
+			$dstatus = $mwdb->loadResult();
+
+			if ($dstatus === 'broken')
+			{
+				$steps['display'] = 'broken';
+				$state = 'display_broken';
+			}
+			else if (in_array($dstatus, array('used', 'ready')))
+			{
+				$steps['display'] = 'pass';
+				$displayReady = true;
+			}
+
+			// Report the exec host's status for context only. The websockify
+			// proxy is the hub's shared front proxy (SERVER_NAME:8080 by
+			// default) and is NOT reliably recorded per exec host -- most exec
+			// rows carry NULL proxy columns even for working sessions -- so it
+			// must not gate readiness.
+			$mwdb->setQuery(
+				"SELECT status FROM `host` WHERE hostname=" . $mwdb->quote($exechost) . " LIMIT 1"
+			);
+			$hostStatus = $mwdb->loadResult();
+		}
+
+		// Overall readiness
+		if ($state == 'display_broken')
+		{
+			$ready = false;
+		}
+		else if ($mode == 'redirect')
+		{
+			// A redirect tool (e.g. Jupyter) is reachable once the middleware
+			// has registered it -- the proxy handles any remaining app spawn.
+			$ready = $hasToken;
+			$state = ($hasToken ? 'ready' : 'starting');
+		}
+		else
+		{
+			// VNC: registered + the display server being up is the reliable gate.
+			$ready = ($hasToken && $displayReady);
+
+			if ($ready)
+			{
+				$state = 'ready';
+			}
+			else if ($hasToken && !$displayReady)
+			{
+				$state = 'display_pending';
+			}
+		}
+
+		$this->send(array(
+			'session'     => $sess,
+			'state'       => $state,
+			'ready'       => $ready,
+			'exited'      => false,
+			'dispnum'     => $dispnum,
+			'host_status' => $hostStatus,
+			'steps'       => $steps
+		));
+	}
+
+	/**
+	 * Report the timeout window for a tool session (DB-only; no middleware call).
+	 *
+	 * The middleware session row's `timeout` (seconds) does double duty:
+	 *   - normally it is an IDLE/disuse timeout, measured from `accesstime`;
+	 *   - for tools listed in hard_timeout_tools in the middleware client config
+	 *     (/etc/mw-client/mw2-client.conf) it is a HARD limit, measured from the
+	 *     session `start`.
+	 * `hard` says which applies and `basis` names the timestamp it counts from.
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /tools/{session}/timeout
+	 * @apiParameter {
+	 * 		"name":          "session",
+	 * 		"description":   "A valid hub tool session number",
+	 * 		"type":          "integer",
+	 * 		"required":      true,
+	 * 		"default":       0
+	 * }
+	 * @return    void
+	 */
+	public function timeoutTask()
+	{
+		$this->requiresAuthentication();
+
+		$profile = User::getInstance(App::get('authn')['user_id']);
+		if (!$profile->get('id'))
+		{
+			throw new Exception(Lang::txt('Unable to find user.'), 404);
+		}
+		$username = $profile->get('username');
+
+		$sess = Request::getInt('sessionid', Request::getInt('session', 0));
+		if (!$sess)
+		{
+			throw new Exception(Lang::txt('A valid session number is required.'), 400);
+		}
+
+		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+		if (!$mwdb)
+		{
+			throw new Exception(Lang::txt('Middleware is not available.'), 503);
+		}
+
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+
+		// Ownership comes from the session row itself (see stateTask)
+		$row = new \Components\Tools\Tables\Session($mwdb);
+		if (!$row->load($sess, $username) || !$row->sessnum)
+		{
+			throw new Exception(Lang::txt('Session Doesn\'t Exist.'), 404);
+		}
+
+		$timeout = (int) $row->timeout;
+
+		// Resolve the base tool name to test against the hard-timeout list
+		$tv = new \Components\Tools\Tables\Version(\App::get('db'));
+		$tv->loadFromInstance($row->appname);
+		$toolname = $tv->toolname ? $tv->toolname : $row->appname;
+
+		$hard   = $this->isHardTimeoutTool($toolname);
+		$basis  = $hard ? 'start' : 'accesstime';
+
+		// Timestamps are stored UTC
+		$baseTs = strtotime((string) ($hard ? $row->start : $row->accesstime));
+		$expiry = ($timeout && $baseTs) ? $baseTs + $timeout : null;
+
+		$this->send(array(
+			'session'           => $sess,
+			'toolname'          => $toolname,
+			'timeout'           => $timeout,
+			'hard'              => $hard,
+			'basis'             => $basis,
+			'start'             => $row->start,
+			'accesstime'        => $row->accesstime,
+			'expires_at'        => ($expiry !== null ? gmdate('Y-m-d H:i:s', $expiry) : null),
+			'expires_epoch'     => $expiry,
+			'seconds_remaining' => ($expiry !== null ? max(0, $expiry - time()) : null)
+		));
+	}
+
+	/**
+	 * Is a tool subject to a hard (from-start) session timeout rather than the
+	 * default idle timeout? True when its name appears in hard_timeout_tools in
+	 * the middleware client config.
+	 *
+	 * @param   string   $toolname  Base tool name
+	 * @return  boolean
+	 */
+	protected function isHardTimeoutTool($toolname)
+	{
+		if (!$toolname)
+		{
+			return false;
+		}
+
+		$conf = '/etc/mw-client/mw2-client.conf';
+		if (!is_readable($conf))
+		{
+			return false;
+		}
+
+		$contents = file_get_contents($conf);
+		if ($contents === false)
+		{
+			return false;
+		}
+
+		// hard_timeout_tools = [ "toola", "toolb", ... ]
+		if (!preg_match('/hard_timeout_tools\s*=\s*\[(.*?)\]/s', $contents, $m))
+		{
+			return false;
+		}
+
+		preg_match_all('/["\']([^"\']+)["\']/', $m[1], $names);
+
+		return in_array($toolname, $names[1]);
 	}
 
 	/**

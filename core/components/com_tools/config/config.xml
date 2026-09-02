@@ -43,6 +43,10 @@
 			<option value="1">ON</option>
 			<option value="2">ON (admin only)</option>
 		</field>
+		<field name="async_launch" type="list" default="0" label="Async launch" description="Route the Launch Tool button through the asynchronous launch interstitial instead of the classic blocking launch. Can be overridden per-request with &amp;launch=async or &amp;launch=legacy.">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
 		<field name="zones" type="radio" default="0" label="Zones" description="Allow Tool Session Zones">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
