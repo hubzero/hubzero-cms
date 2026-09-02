@@ -887,30 +887,32 @@ class Groups extends Base
 		// Only inform site admin if the group wasn't auto-approved
 		if (!$this->config->get('auto_approve', 1) && $group->get('approved') == 0)
 		{
-			$reviewers = $this->config->get('group_reviewer', $emailadmin);
-			
+			// Always notify the site admin, plus any configured reviewers
+			$reviewers = array_merge(array($emailadmin), explode(',', $this->config->get('group_reviewer', '')));
+			$reviewers = array_unique(array_filter(array_map('trim', $reviewers)));
+
 			if (!empty($reviewers))
 			{
-				$reviewers = explode(",", $reviewers);
-				
 				// Create approval subject
 				$subject = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL', Config::get('sitename'));
 
 				// build approval message
 				$link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
 				$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator/index.php?option=' . $this->_option;
-				$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC', $link, $group->get('cn'), $group->get('description'), $link2);
-				$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
-				
+				// Escape the user-supplied description for the HTML part
+				$descHtml = htmlspecialchars($group->get('description'), ENT_QUOTES, 'UTF-8');
+				$html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC', $link, $group->get('cn'), $descHtml, $link2);
+				$plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('cn'), $group->get('description'), $link2);
+
 				foreach ($reviewers as $reviewer)
 				{
 					// Create new message
 					$message = new \Hubzero\Mail\Message();
-					
+
 					// Build message object and send
 					$message->setSubject($subject)
 						->addFrom($from['email'], $from['name'])
-						->setTo(trim($reviewer))
+						->setTo($reviewer)
 						->addHeader('X-Mailer', 'PHP/' . phpversion())
 						->addHeader('X-Component', 'com_groups')
 						->addHeader('X-Component-Object', 'group_pending_approval')

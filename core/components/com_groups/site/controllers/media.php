@@ -760,36 +760,37 @@ class Media extends Base
 		}
 
 		$this->logActivity('uploaded', str_replace($this->path, '', $file));
-		
-		// Notify administrator when a file is uploaded to group whose file section is open to anyone
-		if ($this->pluginAccess['files'] == "anyone")
+
+		// Notify the configured reviewers when a file is uploaded to a group whose
+		// file section is open to anyone (opt-in: only when reviewers are set)
+		if ($this->pluginAccess['files'] == 'anyone')
 		{
-			$emailadmin = Config::get('mailfrom');
-			$groupConfig = \Component::params('com_groups');
-			$reviewers = $groupConfig->get('group_reviewer');
-			
+			$reviewers = \Component::params('com_groups')->get('group_reviewer', '');
+			$reviewers = array_unique(array_filter(array_map('trim', explode(',', $reviewers))));
+
 			if (!empty($reviewers))
 			{
 				$from = array(
 					'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
 					'email' => Config::get('mailfrom')
 				);
-				
+
 				$subject = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE', Config::get('sitename'));
-				
-				$link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $this->group->get('cn') . '/files';
-				$html  = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_HTML_DESC', $filename . '.' . $ext, $this->group->get('cn'), $this->group->get('description'), $link);
-				$plain = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_DESC', $filename . '.' . $ext, $this->group->get('cn'), $this->group->get('description'), $link);
-				
-				$reviewers = explode(",", $reviewers);
-				
+
+				$link     = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $this->group->get('cn') . '/files';
+				// Escape the user-supplied filename and description for the HTML part
+				$fileHtml = htmlspecialchars($filename . '.' . $ext, ENT_QUOTES, 'UTF-8');
+				$descHtml = htmlspecialchars($this->group->get('description'), ENT_QUOTES, 'UTF-8');
+				$html     = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_HTML_DESC', $fileHtml, $this->group->get('cn'), $descHtml, $link);
+				$plain    = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_DESC', $filename . '.' . $ext, $this->group->get('cn'), $this->group->get('description'), $link);
+
 				foreach ($reviewers as $reviewer)
 				{
 					$message = new \Hubzero\Mail\Message();
-					
+
 					$message->setSubject($subject)
 						->addFrom($from['email'], $from['name'])
-						->setTo(trim($reviewer))
+						->setTo($reviewer)
 						->addHeader('X-Mailer', 'PHP/' . phpversion())
 						->addHeader('X-Component', 'com_groups')
 						->addHeader('X-Component-Object', 'file_uploaded_notice')
@@ -800,7 +801,7 @@ class Media extends Base
 				}
 			}
 		}
-		
+
 		//return success
 		echo json_encode(array('success' => true));
 		return;
