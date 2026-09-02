@@ -2166,33 +2166,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_NOT_SAVED'));
 				}
 			}
-
-			// Every listed author must carry an organization (affiliation), not
-			// just the contact -- otherwise the hubREADME, citation and DOI
-			// metadata list the author with no affiliation (ticket 2797).
-			// getAuthors() applies the same profile-organization fallback the
-			// readme uses, so this blocks only authors with no organization
-			// anywhere (neither entered nor on their hub profile) and skips the
-			// submitter, matching how the readme enumerates authors.
-			$missingOrg = array();
-
-			foreach ((array) (new \Components\Publications\Tables\Author($db))->getAuthors($pub->version->id) as $coauthor)
-			{
-				$org = isset($coauthor->organization) ? trim((string) $coauthor->organization) : '';
-
-				if ($org === '')
-				{
-					$name = trim((string) (!empty($coauthor->name) ? $coauthor->name : (isset($coauthor->p_name) ? $coauthor->p_name : '')));
-					$missingOrg[] = ($name !== '') ? $name : Lang::txt('JGLOBAL_UNKNOWN');
-				}
-			}
-
-			if (!empty($missingOrg))
-			{
-				Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_AUTHOR_ORGANIZATION_MISSING', implode(', ', $missingOrg)), 'projects');
-				App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
-				return;
-			}
 		}
 
 		// Main version?
