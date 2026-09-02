@@ -16,12 +16,18 @@ use Event;
 use User;
 use Lang;
 use App;
+use Config;
 
 /**
  * Groups controller class
  */
 class Media extends Base
 {
+	/**
+	 * Plugin acccess
+	 */
+	protected $pluginAccess;
+	
 	/**
 	 * Override Execute Method
 	 *
@@ -46,7 +52,7 @@ class Media extends Base
 		$this->authorized = false;
 
 		// Load plugin access groups
-		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
+		$this->pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
 
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber'))
@@ -55,7 +61,7 @@ class Media extends Base
 		}
 
 		// Kick user out if not logged in and should be
-		/*if (User::isGuest() && $pluginAccess['files'] == 'registered')
+		/*if (User::isGuest() && $this->pluginAccess['files'] == 'registered')
 		{
 			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 		}*/
@@ -64,7 +70,7 @@ class Media extends Base
 		if (User::isGuest())
 		{
 			// If not everyone can view files, kick them to the login page
-			if ($pluginAccess['files'] != 'anyone')
+			if ($this->pluginAccess['files'] != 'anyone')
 			{
 				return $this->loginTask(Lang::txt('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
 			}
@@ -73,7 +79,7 @@ class Media extends Base
 		// Check authorization
 		if (!in_array(User::get('id'), $this->group->get('members')))
 		{
-			if ($pluginAccess['files'] == 'members')
+			if ($this->pluginAccess['files'] == 'members')
 			{
 				$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
 			}
@@ -754,6 +760,47 @@ class Media extends Base
 		}
 
 		$this->logActivity('uploaded', str_replace($this->path, '', $file));
+
+		// Notify the configured reviewers when a file is uploaded to a group whose
+		// file section is open to anyone (opt-in: only when reviewers are set)
+		if ($this->pluginAccess['files'] == 'anyone')
+		{
+			$reviewers = \Component::params('com_groups')->get('group_reviewer', '');
+			$reviewers = array_unique(array_filter(array_map('trim', explode(',', $reviewers))));
+
+			if (!empty($reviewers))
+			{
+				$from = array(
+					'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+					'email' => Config::get('mailfrom')
+				);
+
+				$subject = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE', Config::get('sitename'));
+
+				$link     = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $this->group->get('cn') . '/files';
+				// Escape the user-supplied filename and description for the HTML part
+				$fileHtml = htmlspecialchars($filename . '.' . $ext, ENT_QUOTES, 'UTF-8');
+				$descHtml = htmlspecialchars($this->group->get('description'), ENT_QUOTES, 'UTF-8');
+				$html     = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_HTML_DESC', $fileHtml, $this->group->get('cn'), $descHtml, $link);
+				$plain    = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_DESC', $filename . '.' . $ext, $this->group->get('cn'), $this->group->get('description'), $link);
+
+				foreach ($reviewers as $reviewer)
+				{
+					$message = new \Hubzero\Mail\Message();
+
+					$message->setSubject($subject)
+						->addFrom($from['email'], $from['name'])
+						->setTo($reviewer)
+						->addHeader('X-Mailer', 'PHP/' . phpversion())
+						->addHeader('X-Component', 'com_groups')
+						->addHeader('X-Component-Object', 'file_uploaded_notice')
+						->addHeader('X-Component-ObjectId', $this->group->get('gidNumber'))
+						->addPart($plain, 'text/plain')
+						->addPart($html, 'text/html')
+						->send();
+				}
+			}
+		}
 
 		//return success
 		echo json_encode(array('success' => true));
