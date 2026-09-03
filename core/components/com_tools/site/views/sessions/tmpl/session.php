@@ -49,6 +49,7 @@ $output  = Event::trigger('tools.onToolSessionView', array($this->app, $this->ou
 $plugins = Event::trigger('tools.onToolSessionIdentify');
 
 $this->css('tools.css')
+     ->css('session-frame.css')
      ->js('sessions.js');
 ?>
 <div id="session">
@@ -73,18 +74,21 @@ if (!$this->app->sess) {
 				<ul class="app-toolbar" id="session-options">
 					<li>
 						<a id="app-btn-keep" class="keep" href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
 							<span><?php echo Lang::txt('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
 						</a>
 					</li>
 					<?php if ($this->app->owns) { ?>
 						<li>
 							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
 								<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
 							</a>
 						</li>
 					<?php } else { ?>
 						<li>
 							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
 								<span><?php echo Lang::txt('COM_TOOLS_STOP_SHARING'); ?></span>
 							</a>
 						</li>
@@ -92,6 +96,7 @@ if (!$this->app->sess) {
 					<?php if (count($plugins) > 1) { ?>
 						<li>
 							<a id="app-btn-options" class="options" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></svg>
 								<span><?php echo Lang::txt('COM_TOOLS_SESSION_OPTIONS'); ?></span>
 							</a>
 						</li>
@@ -183,6 +188,13 @@ if (!$this->app->sess) {
 				}
 			}
 			?>
+			<?php if ($this->app->sess) : ?>
+				<div id="session-timer" hidden data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+					<span class="st-label"><?php echo Lang::txt('COM_TOOLS_SESSION_ENDS_IN'); ?></span>
+					<span class="st-clock">--:--:--</span>
+				</div>
+			<?php endif; ?>
 		</div><!-- #app-footer -->
 		<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
 			<div id="app-zone">

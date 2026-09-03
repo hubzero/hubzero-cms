@@ -17,6 +17,57 @@ jQuery(document).ready(function(jq){
 
 	Hubzero.initApi();
 
+	// Session countdown (hard-timeout tools only). Reads /api/tools/{sess}/timeout;
+	// idle-timeout tools reset on activity, so they get no countdown.
+	(function () {
+		var el = document.getElementById('session-timer');
+		if (!el) { return; }
+
+		var sess = parseInt(el.getAttribute('data-sess'), 10);
+		var base = (el.getAttribute('data-base') || '').replace(/\/+$/, '');
+		if (!sess) { return; }
+
+		var url  = base + '/api/tools/' + sess + '/timeout';
+		var WARN = 15 * 60, CRIT = 5 * 60;
+		var remaining = null, tick = null;
+
+		function pad(n) { return (n < 10 ? '0' : '') + n; }
+		function fmt(s) {
+			s = Math.max(0, s | 0);
+			return pad(Math.floor(s / 3600)) + ':' + pad(Math.floor((s % 3600) / 60)) + ':' + pad(s % 60);
+		}
+		function render() {
+			$('#session-timer .st-clock').text(fmt(remaining));
+			el.classList.toggle('warn', remaining <= WARN && remaining > CRIT);
+			el.classList.toggle('crit', remaining <= CRIT);
+		}
+		function fetchTimeout() {
+			$.ajax({ url: url, dataType: 'json', xhrFields: { withCredentials: true } })
+				.done(function (data) {
+					if (!data || !data.hard || data.seconds_remaining == null) {
+						if (tick) { clearInterval(tick); tick = null; }
+						el.hidden = true;
+						return;
+					}
+					remaining = parseInt(data.seconds_remaining, 10);
+					el.hidden = false;
+					render();
+					if (!tick) {
+						tick = setInterval(function () {
+							if (remaining == null) { return; }
+							remaining = Math.max(0, remaining - 1);
+							render();
+							if (remaining === 0) { clearInterval(tick); tick = null; }
+						}, 1000);
+					}
+				});
+			// A failure (not the owner, or session gone) simply leaves it hidden.
+		}
+
+		fetchTimeout();
+		setInterval(fetchTimeout, 60 * 1000);  // re-sync to correct drift
+	})();
+
 	if ($('#app-btn-options').length) {
 		$('#app-btn-options').on('click', function (e){
 			e.preventDefault();

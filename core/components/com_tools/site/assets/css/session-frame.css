@@ -1,0 +1,322 @@
+/**
+ * Modernized "brushed aluminum" session viewer frame (QuickTime/Aqua vibe).
+ *
+ * Loaded AFTER tools.css and scoped to the #app-* session viewer, so it
+ * overrides the legacy gradient chrome without affecting other com_tools
+ * pages. Removing this stylesheet restores the old look.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* ---- Brushed-silver 3D metal frame with side rails -------------------- */
+#app-wrap {
+	/* content-box so the side-rail padding adds OUTSIDE the JS-set width --
+	   a global box-sizing:border-box (Tailwind) would otherwise shrink the
+	   content box and let the fixed-width canvas overflow the right rail. */
+	box-sizing: content-box;
+	padding: 0 7px;   /* brushed-metal side rails around the screen */
+	background:
+		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nNDgnPjxmaWx0ZXIgaWQ9J2InPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAxMyAwLjgyJyBudW1PY3RhdmVzPScyJyBzZWVkPScxMScgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjYiknIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg=="),
+		linear-gradient(180deg, #c9ced5 0%, #a3a9b2 100%);
+	background-blend-mode: soft-light, normal;
+	border: 1px solid #787e88;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow:
+		0 5px 16px rgba(0, 0, 0, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.9),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+		inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+/* Shared bar surface: brushed-metal wave + vertical sheen + bevel */
+#app-header,
+#app-footer {
+	background:
+		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nNDgnPjxmaWx0ZXIgaWQ9J2InPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAxMyAwLjgyJyBudW1PY3RhdmVzPScyJyBzZWVkPScxMScgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjYiknIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg=="),
+		linear-gradient(180deg, #ccd1d8 0%, #aeb4bc 54%, #9fa5ae 100%);
+	background-blend-mode: soft-light, normal;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+	color: #2b2f35;
+	filter: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+	overflow: visible;
+	zoom: normal;
+}
+
+/* ---- Header: title (left) · toolbar (right) --------------------------- */
+#app-header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	height: 46px;
+	padding: 0 0.4rem 0 1rem;
+	border-bottom: 1px solid #9198a1;
+	border-radius: 0;
+}
+#app-header h2#session-title {
+	float: none;
+	width: auto;
+	flex: 0 1 auto;
+	margin: 0;
+	padding: 0;
+	font: 600 0.98rem/1.3 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #23272c;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#app-header ul#session-options,
+#app-header ul.app-toolbar {
+	position: static;
+	float: none;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	width: auto;
+	margin: 0 0 0 auto;
+	padding: 0;
+	border: 0;
+	background: none;
+}
+
+/* ---- Toolbar / footer control buttons (metal, dark labels) ----------- */
+#app-header ul.app-toolbar li,
+#app-footer > ul li {
+	float: none;
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: 0;
+}
+#app-header ul.app-toolbar li a,
+#app-footer > ul li a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.42rem;
+	height: 32px;
+	padding: 0 0.75rem;
+	border: 1px solid transparent;
+	border-radius: 7px;
+	background: none;
+	color: #494f57;
+	font: 500 0.82rem/1 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	text-decoration: none;
+	cursor: pointer;
+}
+#app-header ul.app-toolbar li a svg,
+#app-footer > ul li a svg {
+	width: 15px;
+	height: 15px;
+	flex: none;
+}
+/* Neutralize legacy span styling (sprite icons, Fontcons glyphs, indents) */
+#app-header ul.app-toolbar li a span,
+#app-footer > ul li a span {
+	position: static;
+	display: inline;
+	overflow: visible;
+	width: auto;
+	margin: 0;
+	padding: 0;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: 1;
+	white-space: nowrap;
+	color: inherit;
+	text-shadow: inherit;
+	background: none !important;
+}
+#app-header ul.app-toolbar li a span::before,
+#app-footer > ul li a span::before,
+#app-header a.keep span::before,
+#app-header a.terminate span::before,
+#app-header a.options span::before,
+#app-footer a.refresh span::before,
+#app-footer a.resize span::before,
+#app-footer a.popout span::before {
+	content: none !important;
+	margin: 0 !important;
+	font: inherit !important;
+}
+#app-footer a.refresh span,
+#app-footer a.resize span,
+#app-footer a.popout span {
+	width: auto !important;
+	padding: 0 !important;
+	font-size: inherit !important;
+	line-height: 1 !important;
+	display: inline !important;
+	overflow: visible !important;
+	white-space: nowrap !important;
+}
+#app-header ul.app-toolbar li a:hover,
+#app-header ul.app-toolbar li.active a,
+#app-footer > ul li a:hover,
+#app-footer > ul li.active a {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0.04));
+	border-color: rgba(0, 0, 0, 0.22);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 1px rgba(0, 0, 0, 0.14);
+	color: #23272c;
+	filter: none;
+}
+#app-header ul.app-toolbar li a.terminate:hover {
+	background: linear-gradient(180deg, rgba(214, 69, 61, 0.24), rgba(214, 69, 61, 0.10));
+	border-color: rgba(180, 45, 38, 0.55);
+	color: #a5241c;
+}
+
+/* ---- Canvas: sunken screen recessed into the metal bezel ------------- */
+/* Dark fill so the screen area (and any letterbox gap left by the centered
+   noVNC canvas) reads as the screen, not the silver frame showing through. */
+#app-content {
+	background: #0b0d10;
+	box-shadow:
+		inset 0 0 0 1px rgba(0, 0, 0, 0.5),
+		inset 0 4px 12px rgba(0, 0, 0, 0.6),
+		inset 0 -2px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* ---- Footer: storage (left) · injected controls · countdown (right) -- */
+#app-footer {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	min-height: 46px;
+	padding: 0 0.6rem 0 1rem;
+	border-top: 1px solid #b9bec5;
+	border-bottom: none;
+}
+#diskusage       { order: 1; margin-right: auto; }
+#app-footer > ul { order: 2; display: flex; align-items: center; gap: 0.25rem; float: none; margin: 0; padding: 0; border: 0; list-style: none; background: none; }
+#session-timer   { order: 3; }
+
+/* Storage indicator: label · slim recessed meter · figure */
+#diskusage {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	margin: 0 auto 0 0;
+	padding: 0;
+	border: none;
+}
+#diskusage dt {
+	float: none;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	font-size: 0.86rem;
+	color: #494f57;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	white-space: nowrap;
+}
+#diskusage dt a { color: #1f6da8; }
+#diskusage dt a:hover { color: #17537f; }
+#diskusage #du-amount {
+	position: relative;
+	float: none;
+	display: inline-block;
+	width: 120px;
+	height: 9px;
+	margin: 0 5.5rem 0 0;
+	padding: 0;
+	border-radius: 5px;
+	background: #9298a1;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.6);
+	filter: none;
+}
+#diskusage #du-amount .du-amount-bar,
+#diskusage #du-amount div {
+	height: 9px;
+	margin: 0;
+	border-radius: 5px;
+	background: linear-gradient(180deg, #7cc0f0, #3f8fc9);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+	filter: none;
+}
+#diskusage #du-amount div strong { display: none; }
+#diskusage #du-amount .du-amount-text,
+#diskusage #du-amount div span {
+	position: absolute;
+	left: calc(100% + 0.6rem);
+	top: 50%;
+	transform: translateY(-50%);
+	width: auto;
+	padding: 0;
+	font: 600 0.85rem/1 'IBM Plex Mono', ui-monospace, monospace;
+	color: #2b2f35;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	text-align: left;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+/* injected "size" (W x H) read-out */
+#app-footer a.resize #app-size,
+#app-footer #app-size {
+	font-family: 'IBM Plex Mono', ui-monospace, monospace;
+	font-size: 0.8rem;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ---- Session countdown (hard-timeout tools only) --------------------- */
+#session-timer {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	height: 30px;
+	padding: 0 0.75rem;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 7px;
+	background: rgba(0, 0, 0, 0.06);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16), 0 1px 0 rgba(255, 255, 255, 0.6);
+	color: #494f57;
+}
+#session-timer[hidden] { display: none; }
+#session-timer svg { width: 15px; height: 15px; flex: none; }
+#session-timer .st-label { font-size: 0.76rem; white-space: nowrap; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+#session-timer .st-clock {
+	font: 600 0.9rem/1 'IBM Plex Mono', ui-monospace, monospace;
+	color: #23272c;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+#session-timer.warn { border-color: rgba(176, 122, 20, 0.55); color: #8a5e0c; }
+#session-timer.warn .st-clock { color: #8a5e0c; }
+#session-timer.crit { border-color: rgba(180, 45, 38, 0.6); color: #a5241c; }
+#session-timer.crit .st-clock { color: #a5241c; }
+/* !important so the hub's global prefers-reduced-motion reset can't freeze it */
+#session-timer.crit svg { animation: session-timer-tick 1s steps(2) infinite !important; }
+@keyframes session-timer-tick { 50% { opacity: 0.4; } }
+
+/* ---- Hide the Refresh control (removed per design) ------------------- */
+#app-footer a.refresh { display: none !important; }
+#app-footer > ul li:has(> a.refresh) { display: none !important; }
+
+/* ---- Resize grip: engraved diagonal grooves (Aqua corner) ------------ */
+.ui-resizable-handle,
+.ui-resizable-se {
+	right: 3px;
+	bottom: 3px;
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	display: block;
+	z-index: 700;
+	cursor: se-resize;
+	background:
+		repeating-linear-gradient(-45deg,
+			rgba(0, 0, 0, 0.42) 0 1px,
+			rgba(255, 255, 255, 0.7) 1px 2px,
+			transparent 2px 4px);
+	-webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%);
+	        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+	opacity: 0.9;
+}
+.ui-resizable-handle:hover,
+.ui-resizable-se:hover { opacity: 1; }
