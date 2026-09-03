@@ -966,6 +966,18 @@ class Projects extends Base
 			return false;
 		}
 
+		// Re-sync the project's login (pr-<alias>) group to the new state: emptied on
+		// delete, repopulated on reinstate. sysGroup() stores the group, which fires
+		// user.onAfterStoreGroup -> the ldap plugin -> the LDAP posixGroup, so SFTP
+		// (projfs) access is revoked on delete and restored on reinstate (ticket 2802).
+		if (in_array($this->_task, array('delete', 'reinstate'), true))
+		{
+			$this->model->_tblOwner->sysGroup(
+				$this->model->get('alias'),
+				$this->config->get('group_prefix', 'pr-')
+			);
+		}
+
 		// Log activity
 		$this->_logActivity($this->model->get('id'), 'project', 'status', $this->_task, 1);
 

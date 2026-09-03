@@ -484,6 +484,17 @@ class Projects extends AdminController
 			return $this->cancelTask();
 		}
 
+		// Re-sync the project's login (pr-<alias>) group to the new state so SFTP
+		// (projfs) access is revoked on delete and restored on reinstate -- the same
+		// fix as the site-side changestate (ticket 2802).
+		if (in_array($action, array('delete', 'reinstate'), true))
+		{
+			$model->table('Owner')->sysGroup(
+				$model->get('alias'),
+				$this->config->get('group_prefix', 'pr-')
+			);
+		}
+
 		// Incoming tags
 		$tags = Request::getString('tags', '', 'post');
 

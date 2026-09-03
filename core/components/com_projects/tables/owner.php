@@ -196,6 +196,10 @@ class Owner extends Table
 			$query  =  "SELECT o." . $get . " FROM $this->_tbl as o ";
 			$query .= " JOIN #__projects AS p ON p.id=o.projectid";
 			$query .= " WHERE p.alias=" . $this->_db->quote($projectid);
+			// A deleted (trashed) project has no members for access-control purposes,
+			// so exclude it -- this lets sysGroup() empty the project's login group on
+			// delete and repopulate it on reinstate (ticket 2802).
+			$query .= " AND p.state != 2 ";
 			$query .=  $active == 1 ? " AND o.status=1 " : " AND o.status!=2 ";
 			if ($role != 'all')
 			{
