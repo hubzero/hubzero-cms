@@ -1068,7 +1068,7 @@ class Sessionsv1_0 extends ApiController
 			$profile->get('username') . DS . 'data' . DS . 'sessions'
 		);
 
-		$dir = $sessions ? \Hubzero\Filesystem\SafePath::directory($sessions, $session) : false;
+		$dir = $sessions ? \Hubzero\Filesystem\SafePath::directory($sessions, (string) $session) : false;
 
 		// If the active session dir doesn't exist, look for an expired one
 		if (!$dir)
