@@ -387,7 +387,7 @@ class Miner extends Obj implements Provider
 			"SELECT pa.name, pa.user_id
 			FROM `#__publication_authors` AS pa
 			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
-			ORDER BY pa.name"
+			ORDER BY pa.ordering"
 		);
 		$creators = $this->database->loadObjectList();
 		foreach ($creators as $creator)
