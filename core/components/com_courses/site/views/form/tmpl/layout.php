@@ -17,6 +17,11 @@ $this->css('jquery.ui.css', 'system')
 
 ?>
 <section class="main section courses-form">
+	<?php if (!empty($this->unenrolled)) : ?>
+		<div class="warning">
+			<?php echo Lang::txt('COM_COURSES_FORM_NOT_ENROLLED'); ?>
+		</div>
+	<?php endif; ?>
 	<noscript>
 		<div class="error">You must enable JavaScript to annotate PDFs for deployment as forms, sorry.</div>
 	</noscript>
