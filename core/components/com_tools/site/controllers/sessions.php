@@ -1342,19 +1342,31 @@ class Sessions extends SiteController
 			setcookie($name, $output->weber_auth, time()+86400*30, "/", $domain, $secure, $httponly);
 		}
 
-		// If this is something other than VNC, such as Jupyter,
-		// redirect to the proxy URL provided.  And we're done.
+		// If this is something other than VNC, such as Jupyter, we normally
+		// redirect to the proxy URL. PROTOTYPE: with &embed=1 we instead render
+		// the session viewer and embed that URL in an iframe (so timeout popups
+		// etc. can be overlaid). Revert by deleting this embed branch.
 		if (isset($output->redirect_url))
 		{
-			$componentPath = Component::path('com_redirect');
-			if($componentPath){
-				require_once($componentPath . DS . "helpers" . DS . "converter.php");
-				$redirect_url = \Component\Redirect\Helpers\Converter::encode($output->redirect_url);
-				App::Redirect($redirect_url);
-			} else {
-				App::Redirect($output->redirect_url);
+			if (Request::getInt('embed', 0))
+			{
+				$output->embed_url = $output->redirect_url;
+				if (empty($output->width))  { $output->width  = 1280; }
+				if (empty($output->height)) { $output->height = 760; }
+				// fall through -- session.php renders the iframe instead of VNC
 			}
-			return; // Do no more after this.
+			else
+			{
+				$componentPath = Component::path('com_redirect');
+				if($componentPath){
+					require_once($componentPath . DS . "helpers" . DS . "converter.php");
+					$redirect_url = \Component\Redirect\Helpers\Converter::encode($output->redirect_url);
+					App::Redirect($redirect_url);
+				} else {
+					App::Redirect($output->redirect_url);
+				}
+				return; // Do no more after this.
+			}
 		}
 
 		if ($app->params->get('vncEncoding', 0))

@@ -177,6 +177,10 @@ class Storage extends SiteController
 		$this->view->exceeded = $exceeded;
 		$this->view->output = (isset($this->view->output)) ? $this->view->output : null;
 		$this->view->percentage = $this->percent;
+		$this->view->usedBytes  = isset($this->used) ? $this->used : 0;
+		$this->view->softBytes  = isset($this->soft) ? $this->soft : 0;
+		$this->view->freeBytes  = ($this->view->softBytes > $this->view->usedBytes)
+			? ($this->view->softBytes - $this->view->usedBytes) : 0;
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -291,6 +295,11 @@ class Storage extends SiteController
 		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
 		$this->percent   = $percent;
 		$this->total     = $total;
+
+		// Raw byte figures for the usage gauge / stat tiles
+		$this->used = isset($du['space'])     ? (float) $du['space']     : 0;
+		$this->soft = isset($du['softspace']) ? (float) $du['softspace'] : 0;
+		$this->hard = isset($du['hardspace']) ? (float) $du['hardspace'] : 0;
 
 		//if ($this->percent >= 100 && $this->remaining == 0) {
 		if ($this->percent >= 100 && !$this->exceeded)

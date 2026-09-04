@@ -31,6 +31,9 @@
 		var mode    = (cfg.mode === 'redirect') ? 'redirect' : 'vnc';
 		var api     = base + '/api/tools';
 		var viewerTpl = cfg.viewerUrl || '';
+		// PROTOTYPE: embed weber/Jupyter in an iframe (via the session viewer)
+		// instead of redirecting away. Triggered by &embed=1 on the launch URL.
+		var embed = /[?&]embed=1(?:&|$)/.test(window.location.search);
 
 		var sess       = null;
 		var timer      = null;
@@ -82,6 +85,13 @@
 		// no-cors (resolves on any HTTP response; rejects on connection refused /
 		// DNS / TLS / timeout), not an HTTP-status read.
 		//
+		// We probe with GET, not HEAD: the backend here is a Tornado server
+		// (Jupyter/weber) that returns 405 for HEAD but a real 302 -> /tree for
+		// GET. GET is also the exact request the browser makes on navigation, so
+		// probing it tests the same path the handoff will take. (405 travelled
+		// all the way through the transparent maxwell proxy to Tornado -- the
+		// proxy is not answering for itself.)
+		//
 		// If the page's CSP (connect-src) blocks the probe, we cannot check this
 		// way at all -- a CSP-blocked fetch rejects just like a network failure,
 		// so we listen for the securitypolicyviolation event to tell them apart
@@ -122,8 +132,8 @@
 
 			(function probe(attempt) {
 				if (done) { return; }
-				log('PROBE #' + attempt + ' HEAD', url);
-				window.fetch(url, { method: 'HEAD', mode: 'no-cors', credentials: 'include', cache: 'no-store' })
+				log('PROBE #' + attempt + ' GET', url);
+				window.fetch(url, { method: 'GET', mode: 'no-cors', credentials: 'include', cache: 'no-store' })
 					.then(function () {
 						log('PROBE #' + attempt + ': weber accepted a connection');
 						finish('connected');
@@ -230,6 +240,15 @@
 			stopPoll();
 
 			if (mode === 'redirect') {
+				if (embed) {
+					// PROTOTYPE: hand off to the session viewer, which embeds the
+					// weber page in an iframe (so we can overlay our own UI).
+					setStep('connect', 'pass');
+					setStatus(S.loadingView);
+					var vu = viewerUrl();
+					go(vu + (vu.indexOf('?') !== -1 ? '&' : '?') + 'embed=1');
+					return;
+				}
 				// Fetch the proxy URL (only the view call knows it) and hand off
 				setStatus(S.connecting);
 				var url = api + '/' + sess;
@@ -261,6 +280,24 @@
 		}
 
 		$('#launch-retry').on('click', function (e) { e.preventDefault(); log('retry clicked'); start(); });
+
+		// Cancel: stop polling, best-effort terminate any session we created, and
+		// go back where the user came from (or the hub root as a fallback).
+		$('#launch-cancel').on('click', function (e) {
+			e.preventDefault();
+			log('cancel clicked; sess =', sess);
+			stopPoll();
+			if (sess && window.fetch) {
+				try {
+					window.fetch(api + '/' + sess, { method: 'DELETE', mode: 'cors', credentials: 'include', keepalive: true });
+				} catch (err) { log('cancel terminate failed', err); }
+			}
+			if (window.history.length > 1) {
+				window.history.back();
+			} else {
+				window.location.href = base + '/';
+			}
+		});
 
 		start();
 	});

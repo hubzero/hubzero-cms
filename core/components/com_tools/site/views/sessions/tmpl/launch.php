@@ -63,6 +63,10 @@ $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' .
 				</p>
 			</div>
 
+			<p class="tool-launch-cancel">
+				<a href="#" id="launch-cancel"><?php echo Lang::txt('COM_TOOLS_LAUNCH_CANCEL'); ?></a>
+			</p>
+
 			<noscript>
 				<p class="tool-launch-status"><?php echo Lang::txt('COM_TOOLS_LAUNCH_NOSCRIPT'); ?>
 					<a href="<?php echo $classicUrl; ?>"><?php echo Lang::txt('COM_TOOLS_LAUNCH_CLASSIC'); ?></a>

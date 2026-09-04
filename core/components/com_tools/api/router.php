@@ -51,6 +51,14 @@ class Router extends Base
 
 		$vars['controller'] = 'sessions';
 
+		// Storage endpoints live on their own controller: /api/tools/storage/{task}
+		if (isset($segments[0]) && !is_numeric($segments[0]) && $segments[0] == 'storage')
+		{
+			$vars['controller'] = 'storage';
+			$vars['task'] = isset($segments[1]) ? $segments[1] : 'usage';
+			return $vars;
+		}
+
 		if (isset($segments[0]))
 		{
 			if (is_numeric($segments[0]))

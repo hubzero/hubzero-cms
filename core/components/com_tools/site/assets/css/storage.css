@@ -131,3 +131,402 @@
 		text-indent: -9999px;
 		overflow: hidden;
 	}
+
+/* =====================================================================
+   Modern storage manager (scoped to #storage-manager). Uses the central
+   template's page/section/button chrome; only the gauge, tiles, cards and
+   file list are styled here. Light-first with a dark-scheme fallback.
+   ===================================================================== */
+#storage-manager {
+	--sm-card:   #ffffff;
+	--sm-border: #e2e5ea;
+	--sm-text:   #2b2f35;
+	--sm-muted:  #6b7280;
+	--sm-track:  #e7eaef;
+	--sm-accent: #2f6db3;
+	--sm-ok:     #3f9d54;
+	--sm-warn:   #d99a2b;
+	--sm-crit:   #cf4033;
+	color: var(--sm-text);
+}
+#storage-manager * { box-sizing: border-box; }
+
+#storage-manager .storage-alert {
+	margin: 0 0 1.25rem;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	border: 1px solid var(--sm-border);
+}
+#storage-manager .storage-alert.warning { background: #fdf3e3; border-color: #f0d9a8; color: #8a5a13; }
+#storage-manager .storage-alert.error   { background: #fdeceb; border-color: #f2c3bf; color: #a3271c; }
+#storage-manager .storage-alert.passed  { background: #eaf6ec; border-color: #b9e2c3; color: #1f7a37; }
+
+/* Layout: overview + cleanup side by side, stacking when narrow */
+#storage-manager .storage-top {
+	display: grid;
+	grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+	gap: 1.25rem;
+	align-items: stretch;
+}
+@media (max-width: 780px) {
+	#storage-manager .storage-top { grid-template-columns: 1fr; }
+}
+
+#storage-manager .storage-card {
+	background: var(--sm-card);
+	border: 1px solid var(--sm-border);
+	border-radius: 12px;
+	padding: 1.4rem 1.5rem;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+#storage-manager .storage-card h3 {
+	margin: 0 0 0.35rem;
+	font-size: 1.05rem;
+	font-weight: 600;
+	color: var(--sm-text);
+}
+#storage-manager .storage-muted { margin: 0 0 1rem; color: var(--sm-muted); font-size: 0.92rem; line-height: 1.5; }
+#storage-manager .storage-hint  { margin: 0.9rem 0 0; color: var(--sm-muted); font-size: 0.82rem; }
+
+/* Overview: gauge + stat tiles */
+#storage-manager .storage-overview {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+}
+#storage-manager .storage-gauge {
+	position: relative;
+	flex: none;
+	width: 150px;
+	height: 150px;
+}
+#storage-manager .storage-gauge svg { width: 100%; height: 100%; display: block; }
+#storage-manager .gauge-track { stroke: var(--sm-track); }
+#storage-manager .gauge-value { stroke: var(--sm-accent); }
+#storage-manager[data-state="ok"]   .gauge-value { stroke: var(--sm-ok); }
+#storage-manager[data-state="warn"] .gauge-value { stroke: var(--sm-warn); }
+#storage-manager[data-state="crit"] .gauge-value { stroke: var(--sm-crit); }
+
+#storage-manager .gauge-center {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+#storage-manager .gauge-percent { font-size: 2.4rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+#storage-manager .gauge-unit    { font-size: 1.1rem; font-weight: 600; color: var(--sm-muted); margin-top: 0.2rem; }
+#storage-manager .gauge-caption { margin-top: 0.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sm-muted); }
+#storage-manager[data-state="ok"]   .gauge-percent { color: var(--sm-ok); }
+#storage-manager[data-state="warn"] .gauge-percent { color: var(--sm-warn); }
+#storage-manager[data-state="crit"] .gauge-percent { color: var(--sm-crit); }
+
+#storage-manager .storage-stats {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	flex: 1 1 140px;
+	min-width: 140px;
+}
+#storage-manager .storage-stats li {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid var(--sm-border);
+}
+#storage-manager .storage-stats li:last-child { border-bottom: 0; }
+#storage-manager .stat-label { color: var(--sm-muted); font-size: 0.9rem; }
+#storage-manager .stat-value { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Cleanup form */
+#storage-manager .storage-field { display: block; margin: 0 0 0.9rem; }
+#storage-manager .storage-field > span { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--sm-text); }
+#storage-manager .storage-field select {
+	width: 100%;
+	max-width: 22rem;
+	padding: 0.5rem 0.6rem;
+	border: 1px solid var(--sm-border);
+	border-radius: 8px;
+	background: var(--sm-card);
+	color: var(--sm-text);
+	font-size: 0.95rem;
+}
+#storage-manager #storage-purge-btn.is-busy { opacity: 0.6; cursor: progress; }
+
+/* File browser */
+#storage-manager .storage-files { margin-top: 1.25rem; }
+#storage-manager .storage-browser {
+	border: 1px solid var(--sm-border);
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--sm-card);
+}
+#storage-manager .storage-browser #filer {
+	display: block;
+	width: 100%;
+	height: 460px;
+	border: 0;
+}
+
+/* Cleaner file list inside the iframe (filelist.php also loads this file) */
+#small-page { background: transparent; }
+.databrowser #filelist table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.databrowser #filelist caption {
+	text-align: left;
+	padding: 0.6rem 0.75rem;
+	border-bottom: 1px solid #e2e5ea;
+	color: #6b7280;
+}
+.databrowser #filelist tbody tr { border-bottom: 1px solid #eef0f3; }
+.databrowser #filelist tbody tr:hover { background: #f6f8fa; }
+.databrowser #filelist td { padding: 0.5rem 0.75rem; vertical-align: middle; }
+.databrowser #filelist a.icon-folder { font-weight: 500; }
+
+@media (prefers-color-scheme: dark) {
+	#storage-manager {
+		--sm-card:   #1e1f22;
+		--sm-border: #34363b;
+		--sm-text:   #e7eaee;
+		--sm-muted:  #9aa1ab;
+		--sm-track:  #34363b;
+	}
+	#storage-manager .storage-card { box-shadow: none; }
+	.databrowser #filelist tbody tr:hover { background: rgba(255,255,255,0.04); }
+}
+
+/* --- AJAX file browser --------------------------------------------------- */
+#storage-manager .storage-browser { padding: 0; }
+#storage-manager .sb-head {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.55rem 0.75rem;
+	border-bottom: 1px solid var(--sm-border);
+	background: rgba(0, 0, 0, 0.015);
+}
+#storage-manager .sb-crumbs {
+	flex: 1 1 auto;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.15rem;
+	font-size: 0.9rem;
+	min-width: 0;
+}
+#storage-manager .sb-crumb {
+	border: 0;
+	background: none;
+	padding: 0.1rem 0.25rem;
+	color: var(--sm-accent);
+	cursor: pointer;
+	font: inherit;
+	border-radius: 5px;
+}
+#storage-manager .sb-crumb:hover { background: rgba(47, 109, 179, 0.1); }
+#storage-manager .sb-crumbs > span:last-child { color: var(--sm-text); font-weight: 600; padding: 0.1rem 0.25rem; }
+#storage-manager .sb-sep { color: var(--sm-muted); font-weight: 400 !important; padding: 0 0.1rem !important; }
+#storage-manager .sb-refresh {
+	flex: none;
+	display: inline-flex;
+	border: 1px solid var(--sm-border);
+	background: var(--sm-card);
+	color: var(--sm-muted);
+	width: 30px; height: 30px;
+	align-items: center; justify-content: center;
+	border-radius: 7px;
+	cursor: pointer;
+}
+#storage-manager .sb-refresh:hover { color: var(--sm-text); }
+#storage-manager .sb-refresh svg { width: 15px; height: 15px; }
+
+#storage-manager .sb-list { list-style: none; margin: 0; padding: 0.25rem 0; max-height: 420px; overflow-y: auto; }
+#storage-manager .sb-list.is-loading { opacity: 0.45; }
+#storage-manager .sb-item {
+	display: grid;
+	grid-template-columns: auto auto 1fr auto;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.1rem 0.5rem 0.1rem 0.25rem;
+	border-bottom: 1px solid transparent;
+}
+#storage-manager .sb-item:hover { background: rgba(0, 0, 0, 0.03); }
+#storage-manager .sb-open {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	min-width: 0;
+	border: 0;
+	background: none;
+	padding: 0.45rem 0.35rem;
+	font: inherit;
+	color: var(--sm-text);
+	text-align: left;
+	cursor: pointer;
+	border-radius: 6px;
+}
+#storage-manager .sb-open.sb-static { cursor: default; }
+#storage-manager .sb-folder .sb-open:hover { color: var(--sm-accent); }
+#storage-manager .sb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#storage-manager .sb-ico { flex: none; display: inline-flex; color: var(--sm-muted); }
+#storage-manager .sb-ico svg { width: 17px; height: 17px; display: block; }
+#storage-manager .sb-folder .sb-ico { color: var(--sm-accent); }
+#storage-manager .sb-size { color: var(--sm-muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#storage-manager .sb-del {
+	flex: none;
+	display: inline-flex;
+	align-items: center; justify-content: center;
+	width: 30px; height: 30px;
+	border: 1px solid transparent;
+	background: none;
+	color: var(--sm-muted);
+	border-radius: 7px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.12s ease;
+}
+#storage-manager .sb-item:hover .sb-del,
+#storage-manager .sb-del:focus { opacity: 1; }
+#storage-manager .sb-del:hover { color: var(--sm-crit); border-color: rgba(207, 64, 51, 0.4); background: rgba(207, 64, 51, 0.08); }
+#storage-manager .sb-del.is-busy { opacity: 0.5; cursor: progress; }
+#storage-manager .sb-del svg { width: 15px; height: 15px; }
+#storage-manager .sb-state { margin: 0; padding: 1.5rem; text-align: center; color: var(--sm-muted); font-size: 0.9rem; }
+#storage-manager .sb-error { color: var(--sm-crit); }
+
+/* touch devices: no hover, so keep delete visible */
+@media (hover: none) {
+	#storage-manager .sb-del { opacity: 1; }
+}
+
+/* --- Browser: filter, bulk bar, checkboxes, selection -------------------- */
+#storage-manager .sb-head { flex-wrap: wrap; }
+#storage-manager .sb-tools { display: flex; align-items: center; gap: 0.4rem; flex: 0 0 auto; }
+#storage-manager .sb-filter {
+	width: 12rem;
+	max-width: 46vw;
+	padding: 0.35rem 0.55rem;
+	border: 1px solid var(--sm-border);
+	border-radius: 7px;
+	background: var(--sm-card);
+	color: var(--sm-text);
+	font-size: 0.88rem;
+}
+#storage-manager .sb-filter:focus { outline: 2px solid rgba(47, 109, 179, 0.5); outline-offset: 1px; }
+
+#storage-manager .sb-bulk {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	padding: 0.4rem 0.6rem 0.4rem 0.5rem;
+	border-bottom: 1px solid var(--sm-border);
+	background: rgba(47, 109, 179, 0.06);
+	font-size: 0.88rem;
+}
+#storage-manager .sb-selall { display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+#storage-manager .sb-count { color: var(--sm-muted); margin-right: auto; }
+#storage-manager .sb-bulk-del.is-busy { opacity: 0.6; cursor: progress; }
+
+/* checkbox column + placeholder to keep names aligned */
+#storage-manager .sb-check { width: 16px; height: 16px; margin: 0 0.15rem; cursor: pointer; flex: none; }
+#storage-manager .sb-noaction { display: inline-block; width: 30px; height: 30px; flex: none; }
+#storage-manager .sb-noaction.sb-check-none { width: 16px; height: 30px; margin: 0 0.15rem; }
+
+/* selected-row highlight (mouse multiselect); focus-within keeps it visible for keyboard */
+#storage-manager .sb-item.is-selected { background: rgba(47, 109, 179, 0.12); }
+#storage-manager .sb-item.is-selected:hover { background: rgba(47, 109, 179, 0.16); }
+#storage-manager .sb-check:focus-visible { outline: 2px solid rgba(47, 109, 179, 0.6); outline-offset: 1px; }
+/* text isn't selectable during shift/ctrl range-clicks */
+#storage-manager .sb-list.is-selecting { user-select: none; }
+
+@media (prefers-color-scheme: dark) {
+	#storage-manager .sb-bulk { background: rgba(90, 170, 225, 0.1); }
+	#storage-manager .sb-item.is-selected { background: rgba(90, 170, 225, 0.16); }
+}
+
+/* --- New folder / upload / rename / drag-drop / progress ----------------- */
+#storage-manager .storage-browser { position: relative; }
+
+#storage-manager .sb-tool-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	height: 30px;
+	padding: 0 0.6rem;
+	border: 1px solid var(--sm-border);
+	background: var(--sm-card);
+	color: var(--sm-text);
+	border-radius: 7px;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.85rem;
+}
+#storage-manager .sb-tool-btn:hover { background: rgba(0, 0, 0, 0.03); }
+#storage-manager .sb-tool-btn:focus-visible { outline: 2px solid rgba(47, 109, 179, 0.6); outline-offset: 1px; }
+#storage-manager .sb-tool-btn svg { width: 15px; height: 15px; flex: none; }
+#storage-manager .sb-tool-btn[disabled] { opacity: 0.6; cursor: default; }
+
+/* per-row actions group (rename + delete), reserved width keeps names aligned */
+#storage-manager .sb-actions { display: inline-flex; align-items: center; gap: 2px; flex: none; }
+#storage-manager .sb-noaction.sb-actions-none { width: 62px; height: 30px; }
+#storage-manager .sb-ren {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px; height: 30px;
+	border: 1px solid transparent;
+	background: none;
+	color: var(--sm-muted);
+	border-radius: 7px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.12s ease;
+}
+#storage-manager .sb-item:hover .sb-ren,
+#storage-manager .sb-ren:focus { opacity: 1; }
+#storage-manager .sb-ren:hover { color: var(--sm-accent); border-color: rgba(47, 109, 179, 0.4); background: rgba(47, 109, 179, 0.08); }
+#storage-manager .sb-ren svg { width: 15px; height: 15px; }
+#storage-manager .sb-ren[disabled] { opacity: 0.5; cursor: progress; }
+@media (hover: none) { #storage-manager .sb-ren { opacity: 1; } }
+
+/* upload progress */
+#storage-manager .sb-progress {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.5rem 0.75rem;
+	border-bottom: 1px solid var(--sm-border);
+}
+#storage-manager .sb-progress-track { flex: 1 1 auto; height: 6px; background: var(--sm-track); border-radius: 4px; overflow: hidden; }
+#storage-manager .sb-progress-bar { height: 100%; width: 0; background: var(--sm-accent); transition: width 0.15s ease; }
+#storage-manager .sb-progress-text { flex: none; font-size: 0.8rem; color: var(--sm-muted); font-variant-numeric: tabular-nums; }
+
+/* drag-drop overlay */
+#storage-manager .sb-drop {
+	position: absolute;
+	inset: 0;
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px dashed transparent;
+	border-radius: 10px;
+	color: var(--sm-accent);
+	font-weight: 600;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.12s ease;
+}
+#storage-manager .sb-drop.is-over {
+	opacity: 1;
+	border-color: var(--sm-accent);
+	background: rgba(47, 109, 179, 0.1);
+}
+
+/* ".." parent row: muted, and its up-arrow uses the folder accent */
+#storage-manager .sb-parent .sb-name { color: var(--sm-muted); }
+#storage-manager .sb-parent .sb-ico { color: var(--sm-accent); }

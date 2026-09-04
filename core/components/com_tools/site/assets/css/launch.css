@@ -134,6 +134,23 @@
 	margin-top: 1em;
 }
 
+.tool-launch-cancel {
+	margin-top: 1.25em;
+}
+
+.tool-launch-cancel a {
+	color: #6b7280;
+	font-size: 0.9em;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+}
+
+.tool-launch-cancel a:hover,
+.tool-launch-cancel a:focus {
+	color: #b3261e;
+	border-bottom-color: currentColor;
+}
+
 /* --- Dark mode --- */
 @media (prefers-color-scheme: dark) {
 	.tool-launch-card {
@@ -145,4 +162,7 @@
 	.tool-launch-status { color: #d6d9de; }
 	.tool-launch-steps li { color: #6b7280; }
 	.tool-launch-spinner span { background: #5aaae1; }
+	.tool-launch-cancel a { color: #8a919c; }
+	.tool-launch-cancel a:hover,
+	.tool-launch-cancel a:focus { color: #ff6b5e; }
 }

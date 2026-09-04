@@ -1557,8 +1557,10 @@ class Sessionsv1_0 extends ApiController
 
 		$timeout = (int) $row->timeout;
 
-		// Resolve the base tool name to test against the hard-timeout list
-		$tv = new \Components\Tools\Tables\Version(\App::get('db'));
+		// Resolve the base tool name to test against the hard-timeout list.
+		// (The Table constructor takes $db by reference, so pass a variable.)
+		$database = \App::get('db');
+		$tv = new \Components\Tools\Tables\Version($database);
 		$tv->loadFromInstance($row->appname);
 		$toolname = $tv->toolname ? $tv->toolname : $row->appname;
 
