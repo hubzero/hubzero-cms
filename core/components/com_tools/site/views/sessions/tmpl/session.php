@@ -44,8 +44,12 @@ else if ($declared = $preferences->param('viewer'))
 	Request::setVar('viewer', $declared);
 }
 
+// PROTOTYPE: weber/Jupyter iframe embed (set by viewTask when &embed=1). When
+// embedding we skip the VNC viewer plugins entirely. Revert by removing this.
+$embedUrl = (isset($this->output->embed_url) && $this->output->embed_url) ? $this->output->embed_url : '';
+
 // We actually need to do this first so we know what viewer is the active one.
-$output  = Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
+$output  = $embedUrl ? array() : Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
 $plugins = Event::trigger('tools.onToolSessionIdentify');
 
 $this->css('tools.css')
@@ -155,15 +159,34 @@ if (!$this->app->sess) {
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php
-			$output = implode("\n", $output);
-			if (!trim($output))
+			if ($embedUrl)
 			{
-				$output = '<p class="error">' . Lang::txt('COM_TOOLS_ERROR_NOVIEWER') . '</p>';
+				// PROTOTYPE: embed the weber/Jupyter page. Cross-origin, so we can
+				// overlay our own popups but cannot script into it.
+				echo '<iframe id="app-embed" src="' . $this->escape($embedUrl) . '"'
+					. ' allow="fullscreen; clipboard-read; clipboard-write; autoplay"'
+					. ' referrerpolicy="no-referrer-when-downgrade"'
+					. ' style="width:100%;height:100%;border:0;display:block;background:#0b0d10;"></iframe>';
 			}
-			echo $output;
+			else
+			{
+				$output = implode("\n", $output);
+				if (!trim($output))
+				{
+					$output = '<p class="error">' . Lang::txt('COM_TOOLS_ERROR_NOVIEWER') . '</p>';
+				}
+				echo $output;
+			}
 			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
+			<?php // Designer mark (dark two-tone), seated on the metal footer ?>
+			<div id="app-logo" class="brand" aria-hidden="true">
+				<svg viewBox="0 0 48.52 85.7" xmlns="http://www.w3.org/2000/svg" focusable="false">
+					<path fill="#383a36" d="M34.93 61.44c0 5.2-3.1 12.31-10.67 12.31s-10.67-6.2-10.67-12.31v-8.68L0 57.53v3.55C0 79.5 15.05 85.7 24.53 85.7s23.98-6.2 23.98-24.62V57.4l-13.59-4.59v8.64ZM24.35 15.66c-2.98 0-6.92.69-10.76 2.43V0L0 3.9v42.5h1.04l12.55 4.24V40.02c0-5.93 3.01-12.4 10.58-12.4 9.3 0 10.76 8.48 10.76 12.31v11.14l13.59-4.77v-6.01c0-18.24-14.68-24.62-24.17-24.62Z"/>
+					<path fill="#0b0b0b" d="M13.59 18.09C8.88 19.65 0 22.99 0 29.92v-6.15c0-5.37 9.37-7.78 13.59-7.49z"/>
+				</svg>
+			</div>
 			<?php
 			if ($this->config->get('show_storage'))
 			{

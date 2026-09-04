@@ -14,6 +14,25 @@ if (!$this->app->sess)
 }
 else
 {
+	// Which VNC JS engine to run: the HubZero-extended stack ("legacy") or the
+	// stock modern noVNC client ("vanilla"). The plugin's vnc_engine config sets
+	// the default; &vncengine=legacy|vanilla overrides it per-request for testing.
+	$engine = strtolower(Request::getWord('vncengine', ''));
+	if (!$engine)
+	{
+		$engine = strtolower($this->params->get('vnc_engine', 'legacy'));
+	}
+	if (!in_array($engine, array('legacy', 'vanilla')))
+	{
+		$engine = 'legacy';
+	}
+
+	if ($engine == 'vanilla')
+	{
+		require __DIR__ . DIRECTORY_SEPARATOR . 'vanilla.php';
+	}
+	else
+	{
 	$this->js('jquery.editable.min.js', 'system');
 
 	// Invlude NoVNC
@@ -32,6 +51,9 @@ else
 	     ->js('./novnc/rfb.js')
 	     ->js('./novnc/keysym.js')
 	     ->js('./novnc/ui-hubzero.js');
+
+	// Shared recovery overlay: registers assets and emits #novnc-reconnect-config
+	require __DIR__ . DIRECTORY_SEPARATOR . '_reconnect.php';
 
 	$base = rtrim(Request::base(true), '/');
 
@@ -99,12 +121,20 @@ else
 				appfooter = $('#app-footer'),
 				appcontent = $('#app-content'),
 				appcontainer = $('#noVNC_container'),
-				appwrap = appcontent.parent(),
-				footermenu = $('<ul></ul>');
+				appwrap = appcontent.parent();
+
+			// normalStateAchieved fires on EVERY transition to 'normal' (every
+			// reconnect included), so reuse the existing controls menu and guard
+			// each button by id -- appending a fresh menu each time duplicated
+			// the footer buttons across the frame.
+			var footermenu = appfooter.find('ul.app-controls');
+			if (!footermenu.length) {
+				footermenu = $('<ul class="app-controls"></ul>').appendTo(appfooter);
+			}
 
 			$('#noVNC-control-bar').removeClass('hidden');
 
-			if (!app.hasClass('no-refresh')) {
+			if (!app.hasClass('no-refresh') && !$('#app-btn-refresh').length) {
 				var li = $('<li></li>');
 				$('<a class="refresh" id="app-btn-refresh" alt="<?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?>"><span><?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?></span></a>')
 					.on('click', function(event) {
@@ -119,7 +149,25 @@ else
 				li.appendTo(footermenu);
 			}
 
-			footermenu.appendTo(appfooter);
+			// Test affordance: drop the live VNC connection to exercise the
+			// connection-recovery sequence. The session stays alive, so recovery
+			// polls state -> ready -> reconnects. Toggle off with class no-nettest.
+			if (!app.hasClass('no-nettest') && !$('#app-btn-nettest').length) {
+				var liNet = $('<li></li>');
+				$('<a class="nettest" id="app-btn-nettest" href="#" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_NETTEST'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg><span><?php echo Lang::txt('PLG_TOOLS_NOVNC_NETTEST_LABEL'); ?></span></a>')
+					.on('click', function(event) {
+						event.preventDefault();
+						if (window.console) { console.log('[novnc-reconnect] test: dropping connection'); }
+						// Paint the overlay right away -- the canvas blanks
+						// instantly but the 'disconnected' state lags ~1s.
+						if (window.NoVNCReconnect) { NoVNCReconnect.pending(); }
+						if (UI.rfb) {
+							try { UI.rfb.disconnect(); } catch (e) {}
+						}
+					})
+					.appendTo(liNet);
+				liNet.appendTo(footermenu);
+			}
 
 			if (!app.hasClass('no-resize') && !$('#app-btn-resizehandle').length) {
 				var li = $('<li></li>');
@@ -243,6 +291,58 @@ else
 				submit : 'OK',
 				cancel : 'cancel'
 			});
+
+			// Connection recovery: drive the shared overlay from the legacy UI
+			// state machine. Wrapping UI.updateState here (before window.onload
+			// runs UI.load) lets us observe connect/disconnect without touching
+			// ui-hubzero.js. Recovery only engages after a working connection.
+			if (window.NoVNCReconnect) {
+				var everConnected = false;
+				try {
+					var rcfg = JSON.parse(document.getElementById('novnc-reconnect-config').textContent);
+					NoVNCReconnect.init({
+						mount:    document.getElementById('noVNC_screen'),
+						sess:     rcfg.sess,
+						apiBase:  rcfg.apiBase,
+						links:    rcfg.links,
+						strings:  rcfg.strings,
+						reconnect: function() {
+							try {
+								UI.rfb.connect(host, port, password, connectPath);
+							} catch (e) {
+								if (window.console) { console.warn('[novnc-reconnect] legacy reconnect failed', e); }
+							}
+						}
+					});
+
+					var _origUpdateState = UI.updateState;
+					UI.updateState = function(rfb, state, oldstate, msg) {
+						_origUpdateState.call(UI, rfb, state, oldstate, msg);
+						if (state === 'normal') {
+							everConnected = true;
+							NoVNCReconnect.connected();
+						} else if (everConnected &&
+							(state === 'failed' || state === 'fatal' || state === 'disconnected')) {
+							NoVNCReconnect.disconnected(state === 'disconnected');
+						}
+					};
+
+					// A dead connection clears the framebuffer, which fires
+					// onFBResize -> resizeContainers(0,0) and collapses
+					// #app-content / #app-wrap down to the empty canvas. While the
+					// recovery/terminal overlay is up, freeze the frame so the
+					// viewport (and the overlay filling it) keep their size.
+					var _origResizeContainers = UI.resizeContainers;
+					UI.resizeContainers = function(w, h) {
+						if (NoVNCReconnect.isHolding()) {
+							return;
+						}
+						return _origResizeContainers.call(UI, w, h);
+					};
+				} catch (e) {
+					if (window.console) { console.warn('[novnc-reconnect] init failed', e); }
+				}
+			}
 		});
 		/*window.onscriptsload = function () {
 			UI.load();
@@ -251,4 +351,6 @@ else
 		//Final attachment for onload
 		window.onload = UI.load;
 	</script>
-<?php }
+<?php
+	} // end legacy engine
+} // end has-session

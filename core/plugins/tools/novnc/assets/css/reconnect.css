@@ -1,0 +1,155 @@
+/**
+ * noVNC connection-recovery overlay.
+ *
+ * Rendered by reconnect.js on top of the VNC window when a connection drops.
+ * Visual language matches the tool-launch interstitial (dark scrim, centered
+ * card, bouncing-dots spinner).
+ *
+ * The overlay carries id="novnc-reco"; every rule is scoped under it so these
+ * styles out-specify the host template's element rules (notably its <a> link
+ * colors) on merit -- no !important needed for the ordinary properties.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+#novnc-reco {
+	position: absolute;
+	inset: 0;
+	top: 0; right: 0; bottom: 0; left: 0;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 50;
+	/* Effectively opaque: the live tool desktop (often a bright blue/teal) sits
+	   directly behind this overlay, and any translucency lets that color bleed
+	   through and tint the whole panel. Cover it completely. */
+	background: #0b0d10;
+}
+
+#novnc-reco.is-visible {
+	display: flex;
+}
+
+#novnc-reco .novnc-reco-card {
+	max-width: 26em;
+	width: calc(100% - 3em);
+	margin: 1.5em;
+	padding: 1.75em 1.75em 1.5em;
+	text-align: center;
+	border-radius: 12px;
+	background: #1e1f22;
+	border: 1px solid #34363b;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+	color: #e7eaee;
+	font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+#novnc-reco .novnc-reco-title {
+	margin: 0.5em 0 0.35em;
+	font-size: 1.15em;
+	font-weight: 600;
+	color: #f2f4f6;
+}
+
+#novnc-reco .novnc-reco-msg {
+	margin: 0;
+	color: #c3c8cf;
+}
+
+#novnc-reco .novnc-reco-state {
+	margin: 0.75em 0 0;
+	font-size: 0.8em;
+	color: #7f868f;
+}
+
+/* Bouncing-dots spinner (matches the launch interstitial) */
+#novnc-reco .novnc-reco-spinner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4em;
+	height: 1.5em;
+	margin-bottom: 0.25em;
+}
+
+#novnc-reco .novnc-reco-spinner span {
+	display: inline-block;
+	width: 0.6em;
+	height: 0.6em;
+	border-radius: 50%;
+	background: #5aaae1;
+	/* The one justified !important: the hub ships a global reduced-motion reset
+	   ( *{ animation:...!important } ) that freezes animations. Only another
+	   !important can win against an !important -- specificity cannot -- so this
+	   is required to keep the "waiting" indicator alive. */
+	animation: novnc-reco-bounce 1s ease-in-out infinite !important;
+}
+
+#novnc-reco .novnc-reco-spinner span:nth-child(2) { animation-delay: 0.15s !important; }
+#novnc-reco .novnc-reco-spinner span:nth-child(3) { animation-delay: 0.3s !important; }
+
+@keyframes novnc-reco-bounce {
+	0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+	40%           { transform: translateY(-0.5em); opacity: 1; }
+}
+
+/* Action buttons / links. Scoped under the id so the host's <a> link color and
+   underline (higher specificity than a bare class) don't repaint them. */
+#novnc-reco .novnc-reco-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6em;
+	justify-content: center;
+	margin-top: 1.4em;
+}
+
+/* Selectors include the real .novnc-reco-actions parent so every button reaches
+   specificity (1,2,0) -- enough to beat the host's id+class+element link rule
+   ( ~ #app-content .main a, (1,1,1) ) that otherwise repaints the plain
+   (non-primary) buttons pale link-blue. */
+#novnc-reco .novnc-reco-actions .novnc-reco-btn {
+	display: inline-block;
+	padding: 0.5em 1.1em;
+	border-radius: 7px;
+	font-size: 0.92em;
+	text-decoration: none;
+	color: #eef1f4;
+	background: #3c414a;
+	border: 1px solid #5a616c;
+}
+
+#novnc-reco .novnc-reco-actions .novnc-reco-btn:hover,
+#novnc-reco .novnc-reco-actions .novnc-reco-btn:focus {
+	background: #4a505a;
+	border-color: #6c7480;
+	color: #ffffff;
+}
+
+#novnc-reco .novnc-reco-actions .novnc-reco-btn.primary {
+	background: #2f6db3;
+	border-color: #2f6db3;
+	color: #ffffff;
+}
+
+#novnc-reco .novnc-reco-actions .novnc-reco-btn.primary:hover,
+#novnc-reco .novnc-reco-actions .novnc-reco-btn.primary:focus {
+	background: #3a80cf;
+	border-color: #3a80cf;
+	color: #ffffff;
+}
+
+/* Under reduced-motion, keep a subtle activity cue (opacity only, no bounce)
+   rather than stopping entirely -- this is a live "waiting" indicator. Same
+   !important rationale as the bounce above (beats the host's !important reset). */
+@media (prefers-reduced-motion: reduce) {
+	#novnc-reco .novnc-reco-spinner span {
+		animation: novnc-reco-pulse 1.4s ease-in-out infinite !important;
+	}
+}
+
+@keyframes novnc-reco-pulse {
+	0%, 100% { opacity: 0.35; }
+	50%      { opacity: 1; }
+}
