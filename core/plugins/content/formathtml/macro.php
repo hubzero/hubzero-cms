@@ -73,11 +73,11 @@ class Macro
 	public $linkLog = array();
 
 	/**
-	 * Instance of a macro
+	 * Macro instances, keyed by class name
 	 *
-	 * @var  object
+	 * @var  array
 	 */
-	static protected $thisInstance = null;
+	static protected $instances = array();
 
 	/**
 	 * Constructor
@@ -157,19 +157,17 @@ class Macro
 	 */
 	public static function getInstance($config=array())
 	{
-		if (self::$thisInstance == null)
+		// Keyed by class. A single shared slot combined with static::class
+		// meant whichever macro asked first owned the instance for the whole
+		// request, and every later macro was handed that same wrong object.
+		$name = isset($config['name']) ? $config['name'] : static::class;
+
+		if (!isset(self::$instances[$name]))
 		{
-			if (isset($config['name']))
-			{
-				$name = $config['name'];
-			}
-			else
-			{
-				$name = static::class;
-			}
-			self::$thisInstance = new $name();
+			self::$instances[$name] = new $name();
 		}
-		return self::$thisInstance;
+
+		return self::$instances[$name];
 	}
 
 	/**
