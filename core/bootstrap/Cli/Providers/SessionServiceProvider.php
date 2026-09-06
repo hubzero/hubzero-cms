@@ -9,6 +9,8 @@ namespace Bootstrap\Cli\Providers;
 
 use Hubzero\Base\ServiceProvider;
 use Hubzero\Session\Manager;
+use Hubzero\User\User;
+use Hubzero\Config\Registry;
 
 /**
  * Session service provider for CLI
@@ -45,7 +47,26 @@ class SessionServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		// No-op for CLI - we don't need to persist sessions to database
-		// CLI commands are stateless single-shot executions
+		// Nothing is persisted to the database for CLI, but the session still
+		// has to carry a user and a state registry. Without them
+		// User\Manager::getCurrentUser() builds a throwaway User on every call,
+		// so identity never sticks, and the User facade finds a null registry
+		// and turns getState()/setState() into silent no-ops.
+		if (!$this->app['session']->isNew())
+		{
+			return;
+		}
+
+		$this->app['session']->set('registry', new Registry('session'));
+
+		try
+		{
+			$this->app['session']->set('user', new User);
+		}
+		catch (\Hubzero\Database\Exception\ConnectionFailedException $e)
+		{
+			// No database yet, as during install. Leaving the slot empty is
+			// fine: getCurrentUser() falls back to a fresh guest User.
+		}
 	}
 }
