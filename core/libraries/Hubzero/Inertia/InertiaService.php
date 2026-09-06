@@ -129,6 +129,15 @@ class InertiaService
      */
     public function renderRootNode(string $component, array $props = array(), string $mountId = 'app'): string
     {
+        // Go through the same merge render() does. Calling page() with the raw
+        // props would ship an initial page without any shared prop, so a
+        // component reading one would render blank on first paint and only
+        // fill in after the first client side visit.
+        $props = $this->resolveProps(
+            $component,
+            array_merge($this->resolveSharedProps(), $props)
+        );
+
         $page = $this->page($component, $props);
         $json = json_encode($page);
 
@@ -160,7 +169,7 @@ class InertiaService
             $this->versionResolver = $resolver;
         }
 
-        if (is_callable($this->versionResolver)) {
+        if ($this->isLazyValue($this->versionResolver)) {
             return (string) call_user_func($this->versionResolver);
         }
 
@@ -329,6 +338,21 @@ class InertiaService
     }
 
     /**
+     * Whether a value should be called to produce the real one
+     *
+     * Deliberately narrower than is_callable(): a string or an array is data
+     * here, even when it happens to name a function or a method pair.
+     *
+     * @param   mixed  $value
+     * @return  bool
+     */
+    protected function isLazyValue($value): bool
+    {
+        return $value instanceof \Closure
+            || (is_object($value) && is_callable($value));
+    }
+
+    /**
      * @return  array
      */
     protected function resolveSharedProps(): array
@@ -336,7 +360,13 @@ class InertiaService
         $resolved = array();
 
         foreach ($this->sharedProps as $key => $value) {
-            $resolved[$key] = is_callable($value) ? call_user_func($value) : $value;
+            // Only a closure or an invokable object counts as a lazy prop.
+            // is_callable() is true for any string naming a global function, so
+            // sharing the plain string 'time' or 'compact' would otherwise call
+            // it instead of passing the value through.
+            $resolved[$key] = $this->isLazyValue($value)
+                ? call_user_func($value)
+                : $value;
         }
 
         return $resolved;
