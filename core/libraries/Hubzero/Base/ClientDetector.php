@@ -131,26 +131,34 @@ class ClientDetector
 	 */
 	protected function isInstalled()
 	{
-		// Get database configuration from Config facade
-		$dbConfig = \Config::get('database');
-
-		if (!$dbConfig)
+		// This runs before the config repository is built and before facades
+		// are registered, so it cannot ask Config for anything. Look on disk
+		// for the database configuration the installer writes once its
+		// database step completes.
+		//
+		// Deliberately no connection attempt either: detect() runs on every
+		// request, and treating an unreachable database as "not installed"
+		// would hand the installer to visitors of a live site during an outage.
+		if (!defined('PATH_APP'))
 		{
 			return false;
 		}
 
-		$dbConfig = (array) $dbConfig;
+		$candidates = glob(PATH_APP . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database.*');
 
-		// Check for required config values
-		if (empty($dbConfig['host']) || empty($dbConfig['db']) || empty($dbConfig['user']))
+		if (empty($candidates))
 		{
 			return false;
 		}
 
-		// A populated database config is the install marker. Deliberately no
-		// connection attempt here: detect() runs on every request, and treating
-		// an unreachable database as "not installed" would hand the installer to
-		// visitors of a live site during a transient outage.
-		return true;
+		foreach ($candidates as $candidate)
+		{
+			if (is_file($candidate))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
