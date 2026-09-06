@@ -347,7 +347,7 @@ else // Start Minimal Muse
         }
     }
     // Handle install command
-    if ($argv[1] == "install")
+    else if ($argv[1] == "install")
     {
         // In minimal mode, only certain subcommands are valid
         // Any other subcommand requires full muse
