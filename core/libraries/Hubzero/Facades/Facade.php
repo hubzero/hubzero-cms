@@ -30,6 +30,13 @@ abstract class Facade
 	protected static $aliases;
 
 	/**
+	 * Whether the alias autoloader has been registered
+	 *
+	 * @var  bool
+	 */
+	protected static $aliasLoaderRegistered = false;
+
+	/**
 	 * Get the application instance behind the facade.
 	 *
 	 * @return  object  \Hubzero\Base\Application
@@ -89,10 +96,19 @@ abstract class Facade
 	 */
 	public static function createAliases(array $aliases)
 	{
-		static::$aliases = $aliases;
+		// Merge rather than replace. Callers that register a partial map (test
+		// bootstraps, for instance) would otherwise drop every alias registered
+		// before them, and the facades those aliases covered stop resolving.
+		static::$aliases = array_merge((array) static::$aliases, $aliases);
 
-		// Create autoloader that creates class aliases during runtime
-		spl_autoload_register(__NAMESPACE__ . '\Facade::loadAliases');
+		// Create autoloader that creates class aliases during runtime.
+		// Registering it again would only add a duplicate callback.
+		if (!static::$aliasLoaderRegistered)
+		{
+			spl_autoload_register(__NAMESPACE__ . '\Facade::loadAliases');
+
+			static::$aliasLoaderRegistered = true;
+		}
 	}
 
 	/**
