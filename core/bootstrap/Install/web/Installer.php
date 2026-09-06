@@ -150,6 +150,17 @@ class Installer
                 ]);
                 exit;
             }
+            if ($this->isInstalled()) {
+                $this->security->logSecurityEvent(
+                    'AJAX_AFTER_INSTALL',
+                    'Refused an installer action on an installed site'
+                );
+                header('Content-Type: application/json');
+                http_response_code(409);
+                echo json_encode(['error' => 'This site is already installed.']);
+                return;
+            }
+
             $this->handleAjax();
             return;
         }
@@ -184,6 +195,24 @@ class Installer
 
         // Handle form submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Refuse to change anything on a site that is already set up.
+            // Every step before the current one stays reachable so it can be
+            // reviewed, and on a finished install that is all of them, so
+            // without this a post to the database step would rewrite a live
+            // site's connection settings.
+            if ($this->isInstalled()) {
+                $this->security->logSecurityEvent(
+                    'POST_AFTER_INSTALL',
+                    'Refused a form submission for step "' . $this->currentStep . '" on an installed site'
+                );
+                $this->addMessage(
+                    'This site is already installed. The installer is read-only.',
+                    'error'
+                );
+                $this->render();
+                return;
+            }
+
             $this->handlePost();
             return;
         }
