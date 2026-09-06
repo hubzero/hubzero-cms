@@ -1,7 +1,5 @@
 <?php
 
-namespace Plugins\Content\Geshi;
-
 use Hubzero\Plugin\Plugin;
 use Highlight\Highlighter;
 
@@ -19,7 +17,7 @@ defined('_HZEXEC_') or die;
  *
  * Uses scrivo/highlight.php (a PHP port of highlight.js)
  */
-class Geshi extends Plugin
+class plgContentGeshi extends Plugin
 {
     /**
      * GeSHi language names to highlight.php equivalents
