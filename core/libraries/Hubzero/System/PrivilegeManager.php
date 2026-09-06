@@ -204,6 +204,18 @@ class PrivilegeManager
         }
 
         if ($this->sudoUserInfo !== null) {
+            // Load the user's supplementary groups before giving up root.
+            // Setting only the primary group leaves the process holding root's
+            // group list, so anything reachable through a secondary group --
+            // which is how deployment permissions are usually granted -- comes
+            // back as permission denied. initgroups() needs root itself, so it
+            // has to run before the euid changes.
+            if (function_exists('posix_initgroups')
+             && posix_geteuid() === self::ROOT_UID
+             && $this->sudoUser !== null) {
+                posix_initgroups($this->sudoUser, $this->sudoUserInfo['gid']);
+            }
+
             posix_setegid($this->sudoUserInfo['gid']);
             posix_seteuid($this->sudoUserInfo['uid']);
             $this->elevated = false;
