@@ -192,13 +192,19 @@ class HtmxService
     public function renderStateNode(string $id = 'hx-state'): string
     {
         $safeId = htmlspecialchars(trim($id) !== '' ? $id : 'hx-state', ENT_QUOTES, 'UTF-8');
-        $json = json_encode($this->state);
+
+        // Script element content is raw text: browsers do not decode HTML
+        // entities inside it, so escaping the JSON that way would hand
+        // JSON.parse the literal characters "&amp;". Escape at the JSON level
+        // instead, which also stops a value containing "</script>" from
+        // closing the element early.
+        $json = json_encode($this->state, JSON_HEX_TAG | JSON_HEX_AMP);
+
         if (!is_string($json)) {
             $json = '{}';
         }
-        $safeJson = htmlspecialchars($json, ENT_NOQUOTES, 'UTF-8');
 
-        return '<script type="application/json" id="' . $safeId . '">' . $safeJson . '</script>';
+        return '<script type="application/json" id="' . $safeId . '">' . $json . '</script>';
     }
 
     /**
@@ -536,12 +542,12 @@ class HtmxService
             if (method_exists($response, 'setStatusCode')) {
                 $response->setStatusCode($status);
             }
-        } else {
-            header('Content-Type: text/html; charset=utf-8', true, $status);
-            if (function_exists('http_response_code')) {
-                http_response_code($status);
-            }
         }
+
+        // App::close() exits without sending the Response, so the status and
+        // content type have to go out directly or the client sees a plain 200.
+        header('Content-Type: text/html; charset=utf-8', true, $status);
+        http_response_code($status);
 
         echo $html;
         \App::close();
@@ -675,11 +681,14 @@ class HtmxService
         $response = \App::get('response');
         if ($response && isset($response->headers)) {
             $response->headers->set($name, $value);
-            $this->emitDebugHeaderIfEnabled();
-            return;
         }
 
-        header($name . ': ' . $value, true);
+        // Always emit the real header as well. Terminal HTMX responses end at
+        // App::close(), which exits without the Response object ever being
+        // sent, so anything recorded only on that object never reaches the
+        // client. Vary accumulates rather than replaces.
+        header($name . ': ' . $value, $name !== 'Vary');
+
         $this->emitDebugHeaderIfEnabled();
     }
 
