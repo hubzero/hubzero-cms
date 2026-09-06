@@ -589,9 +589,23 @@ class SecurityGuard
      */
     public function isLockedOut(): bool
     {
-        $data = $this->loadChallengeData();
-        $lockoutUntil = $data['lockout_until'] ?? 0;
-        return time() < $lockoutUntil;
+        return time() < $this->getLockoutUntil();
+    }
+
+    /**
+     * Latest lockout expiry across the session and the client address
+     *
+     * @return int
+     */
+    private function getLockoutUntil(): int
+    {
+        $session = $this->loadChallengeData();
+        $client  = $this->loadIpAttemptData();
+
+        return max(
+            (int) ($session['lockout_until'] ?? 0),
+            (int) ($client['lockout_until'] ?? 0)
+        );
     }
 
     /**
@@ -601,9 +615,7 @@ class SecurityGuard
      */
     public function getLockoutRemaining(): int
     {
-        $data = $this->loadChallengeData();
-        $lockoutUntil = $data['lockout_until'] ?? 0;
-        return max(0, $lockoutUntil - time());
+        return max(0, $this->getLockoutUntil() - time());
     }
 
     /**
@@ -626,6 +638,83 @@ class SecurityGuard
         }
 
         $this->saveChallengeData($data);
+
+        // Also count against the client address. The record above is keyed on
+        // the session, so on its own it is reset by simply dropping the cookie
+        // and the attempt limit never bites.
+        $client = $this->loadIpAttemptData() ?? [];
+        $clientAttempts = ($client['attempts'] ?? 0) + 1;
+        $client['attempts'] = $clientAttempts;
+
+        if ($clientAttempts >= self::MAX_ATTEMPTS) {
+            $client['lockout_until'] = time() + self::LOCKOUT_DURATION;
+            $client['attempts'] = 0;
+            $this->logSecurityEvent('LOCKOUT', "Locked out after {$clientAttempts} failed attempts from this address");
+        }
+
+        $this->saveIpAttemptData($client);
+    }
+
+    /**
+     * Path of the per client address attempt record
+     *
+     * @return string
+     */
+    private function getIpAttemptFilePath(): string
+    {
+        $key = hash_hmac('sha256', $this->getClientIP(), $this->getServerSecret());
+
+        return $this->getStorageDir() . '/attempts-' . substr($key, 0, 16) . '.json';
+    }
+
+    /**
+     * Read the per client address attempt record
+     *
+     * @return array|null
+     */
+    private function loadIpAttemptData(): ?array
+    {
+        $file = $this->getIpAttemptFilePath();
+
+        if (!file_exists($file)) {
+            return null;
+        }
+
+        $data = json_decode(file_get_contents($file), true);
+
+        if (!is_array($data) || !isset($data['signature'])) {
+            return null;
+        }
+
+        $signature = $data['signature'];
+        unset($data['signature']);
+
+        $expected = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+
+        if (!hash_equals($expected, $signature)) {
+            @unlink($file);
+            return null;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Write the per client address attempt record
+     *
+     * @param   array  $data
+     * @return  bool
+     */
+    private function saveIpAttemptData(array $data): bool
+    {
+        $this->ensureStorageDir();
+
+        $data['signature'] = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
+
+        return file_put_contents(
+            $this->getIpAttemptFilePath(),
+            json_encode($data, JSON_PRETTY_PRINT)
+        ) !== false;
     }
 
     /**
@@ -638,6 +727,12 @@ class SecurityGuard
         $data = $this->loadChallengeData() ?? [];
         $data['attempts'] = 0;
         $this->saveChallengeData($data);
+
+        // Clear the address record too, or a successful verification would
+        // leave earlier failures counting toward a later lockout.
+        $client = $this->loadIpAttemptData() ?? [];
+        $client['attempts'] = 0;
+        $this->saveIpAttemptData($client);
     }
 
     /**
@@ -706,28 +801,69 @@ class SecurityGuard
      */
     public function getClientIP(): string
     {
-        // Check for forwarded IP (behind proxy/load balancer)
-        $headers = [
-            'HTTP_CF_CONNECTING_IP',     // Cloudflare
-            'HTTP_X_FORWARDED_FOR',      // Standard proxy
-            'HTTP_X_REAL_IP',            // Nginx proxy
-            'REMOTE_ADDR'                // Direct connection
-        ];
+        $remote = $_SERVER['REMOTE_ADDR'] ?? '';
 
-        foreach ($headers as $header) {
-            if (!empty($_SERVER[$header])) {
-                // X-Forwarded-For may contain multiple IPs, get the first
-                $ip = $_SERVER[$header];
-                if (strpos($ip, ',') !== false) {
-                    $ip = trim(explode(',', $ip)[0]);
-                }
-                if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                    return $ip;
+        // Forwarded headers are attacker supplied unless the request actually
+        // reached us through a proxy we know about. Half the verification
+        // fingerprint is built from this value, so an ungated read would let
+        // anyone claim to be someone else's address.
+        if ($this->isTrustedProxy($remote)) {
+            $headers = [
+                'HTTP_CF_CONNECTING_IP',     // Cloudflare
+                'HTTP_X_FORWARDED_FOR',      // Standard proxy
+                'HTTP_X_REAL_IP'             // Nginx proxy
+            ];
+
+            foreach ($headers as $header) {
+                if (!empty($_SERVER[$header])) {
+                    // X-Forwarded-For may contain multiple IPs, get the first
+                    $ip = $_SERVER[$header];
+                    if (strpos($ip, ',') !== false) {
+                        $ip = trim(explode(',', $ip)[0]);
+                    }
+                    if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                        return $ip;
+                    }
                 }
             }
         }
 
+        if (filter_var($remote, FILTER_VALIDATE_IP)) {
+            return $remote;
+        }
+
         return '0.0.0.0';
+    }
+
+    /**
+     * Whether the connecting address is a proxy whose forwarded headers we accept
+     *
+     * Set HUBZERO_TRUSTED_PROXIES to a comma separated list of addresses when
+     * the installer sits behind a load balancer or CDN. Empty by default, so
+     * the direct peer address is the only thing believed.
+     *
+     * @param   string  $remote
+     * @return  bool
+     */
+    private function isTrustedProxy(string $remote): bool
+    {
+        if ($remote === '') {
+            return false;
+        }
+
+        $configured = getenv('HUBZERO_TRUSTED_PROXIES');
+
+        if ($configured === false || trim($configured) === '') {
+            return false;
+        }
+
+        foreach (explode(',', $configured) as $proxy) {
+            if (trim($proxy) === $remote) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
