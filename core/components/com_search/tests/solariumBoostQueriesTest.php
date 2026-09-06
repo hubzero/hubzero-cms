@@ -45,9 +45,10 @@ class SolariumBoostQueriesTest extends Basic
 			'class' => 'SolariumBoostQuery',
 			'methods' => ['toArray']
 		]);
-		$queryFactoryMock = $this->getMockBuilder('SolariumBoostQuery')
-			->setMethods(['one'])
-			->getMock();
+		$queryFactoryMock = $this->mock([
+			'class' => 'SolariumBoostQuery',
+			'methods' => ['one']
+		]);
 
 		$queries = new Queries([
 			'boosts' => [$boostMock1, $boostMock2],

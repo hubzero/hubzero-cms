@@ -19,4 +19,5 @@ phpunit.xml
 configuration.php
 hubconfiguration.php
 .phpunit.result.cache
+.phpunit.cache/
 *.sqlite3

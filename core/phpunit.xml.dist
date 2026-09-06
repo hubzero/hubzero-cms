@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         failOnWarning="true"
+         failOnNotice="true">
+    <testsuites>
+        <testsuite name="libraries">
+            <directory>libraries/Hubzero</directory>
+            <!-- Production classes that happen to be named Test.php and so
+                 match PHPUnit's default suffix. -->
+            <exclude>libraries/Hubzero/Console/Command/Test.php</exclude>
+            <exclude>libraries/Hubzero/Console/Command/Scaffolding/Test.php</exclude>
+            <exclude>libraries/Hubzero/Content/Auditor/Test.php</exclude>
+        </testsuite>
+        <testsuite name="components">
+            <directory>components/*/tests</directory>
+            <directory>components/*/helpers/tests</directory>
+        </testsuite>
+        <testsuite name="plugins">
+            <directory>plugins/*/*/tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">libraries/Hubzero</directory>
+        </include>
+    </source>
+</phpunit>

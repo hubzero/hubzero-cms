@@ -35,12 +35,18 @@ class HelpersTest extends Basic
         parent::setUpBeforeClass();
 
         if (self::$app === null) {
-            self::$app = new Container();
-            self::$app['config'] = function () {
-                return new Registry([
-                    'application_env' => 'testing',
-                ]);
-            };
+            // Adopt the container the bootstrap installed rather than
+            // replacing it, so other bindings survive for later test classes.
+            self::$app = Facade::getApplication() ?: new Container();
+
+            if (!isset(self::$app['config'])) {
+                self::$app['config'] = function () {
+                    return new Registry([
+                        'application_env' => 'testing',
+                    ]);
+                };
+            }
+
             Facade::setApplication(self::$app);
         }
     }

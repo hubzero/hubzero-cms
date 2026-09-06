@@ -95,12 +95,17 @@ class Database extends TestCase
 
         // Only bootstrap facades once
         if (self::$app === null) {
-            self::$app = new Container();
+            // Adopt the container the bootstrap already installed rather than
+            // replacing it. Overwriting it would drop every other binding
+            // (component, db, ...) that files loaded at file scope depend on.
+            self::$app = Facade::getApplication() ?: new Container();
 
             // Register the event dispatcher
-            self::$app['dispatcher'] = function () {
-                return new Dispatcher();
-            };
+            if (!isset(self::$app['dispatcher'])) {
+                self::$app['dispatcher'] = function () {
+                    return new Dispatcher();
+                };
+            }
 
             // Set up the facade application
             Facade::setApplication(self::$app);
