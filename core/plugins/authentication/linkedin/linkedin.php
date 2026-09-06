@@ -166,7 +166,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
             App::redirect($authUrl);
-        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+        } elseif (!$this->hasValidState($state)) {
             Session::clear('oauth2state', $this->name);
 
             $response->status = \Hubzero\Auth\Status::FAILURE;
@@ -202,6 +202,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
                 );
                 return;
             }
+
+            // Adopt a pre-v2 link for this member before looking one up
+            $this->migrateLegacyLink($id, $email);
 
             // Create the hubzero auth link
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
@@ -281,7 +284,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
             App::redirect($authUrl);
-        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+        } elseif (!$this->hasValidState($state)) {
             Session::clear('oauth2state', $this->name);
 
             App::redirect(
@@ -312,6 +315,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
                 );
                 return;
             }
+
+            // Adopt a pre-v2 link for this member before looking one up
+            $this->migrateLegacyLink($id, $email);
 
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');
 
@@ -345,6 +351,94 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
                 'error'
             );
         }
+    }
+
+    /**
+     * Re-key a pre-v2 LinkedIn auth link onto the current member ID
+     *
+     * LinkedIn's v1 profile API and the v2 endpoint this plugin now uses issue
+     * member IDs from different ID spaces, so a link stored before the v2
+     * migration will never match on username alone and the member would be
+     * treated as a brand new user. Where exactly one link in this domain
+     * carries the same verified email, adopt that row instead.
+     *
+     * @param   string  $id     Current (v2) LinkedIn member ID
+     * @param   string  $email  Verified email address reported by LinkedIn
+     * @return  void
+     */
+    private function migrateLegacyLink($id, $email)
+    {
+        if (empty($id) || empty($email))
+        {
+            return;
+        }
+
+        $hzad = \Hubzero\Auth\Domain::find_or_create('authentication', $this->name, null);
+
+        if (!is_object($hzad) || !$hzad->get('id'))
+        {
+            return;
+        }
+
+        // Already keyed on the current member ID - nothing to migrate
+        if (\Hubzero\Auth\Link::getInstance($hzad->get('id'), $id))
+        {
+            return;
+        }
+
+        $rows = \Hubzero\Auth\Link::all()
+            ->whereEquals('auth_domain_id', $hzad->get('id'))
+            ->whereEquals('email', $email)
+            ->rows();
+
+        // Only adopt an unambiguous match
+        if (!$rows || $rows->count() != 1)
+        {
+            return;
+        }
+
+        $row = $rows->first();
+
+        if (!$row->get('id') || $row->get('username') == $id)
+        {
+            return;
+        }
+
+        $legacy = $row->get('username');
+        $row->set('username', $id);
+
+        if ($row->update())
+        {
+            Log::auth(sprintf(
+                'Re-keyed LinkedIn auth link %s from legacy member ID "%s" to "%s"',
+                $row->get('id'),
+                $legacy,
+                $id
+            ));
+        }
+    }
+
+    /**
+     * Verify the OAuth state parameter against the one issued for this session
+     *
+     * A plain !== comparison is not sufficient: when the request carries no
+     * state and the session holds none, null !== null is false and the guard
+     * passes, letting an attacker feed us their own authorization code. Treat a
+     * missing value on either side as a failure and compare in constant time.
+     *
+     * @param   mixed    $state  State parameter from the request
+     * @return  bool     whether the state matches the one issued
+     */
+    private function hasValidState($state)
+    {
+        $expected = Session::get('oauth2state', null, $this->name);
+
+        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '')
+        {
+            return false;
+        }
+
+        return hash_equals($expected, $state);
     }
 
     /**

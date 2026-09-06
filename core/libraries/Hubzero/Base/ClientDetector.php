@@ -7,7 +7,6 @@
 
 namespace Hubzero\Base;
 
-use Hubzero\Database\MysqlDatabaseConnection;
 use Hubzero\Http\Request;
 
 /**
@@ -148,24 +147,10 @@ class ClientDetector
 			return false;
 		}
 
-		// Try to connect and check for users
-		try
-		{
-			$pdo = MysqlDatabaseConnection::connectOrFail($dbConfig);
-			$prefix = $dbConfig['dbprefix'] ?? 'jos_';
-			$stmt = $pdo->query("SELECT COUNT(*) FROM `{$prefix}users`");
-
-			if ($stmt && $stmt->fetchColumn() > 0)
-			{
-				return true;
-			}
-		}
-		catch (\Exception $e)
-		{
-			// Can't connect or query - consider not installed
-			return false;
-		}
-
-		return false;
+		// A populated database config is the install marker. Deliberately no
+		// connection attempt here: detect() runs on every request, and treating
+		// an unreachable database as "not installed" would hand the installer to
+		// visitors of a live site during a transient outage.
+		return true;
 	}
 }

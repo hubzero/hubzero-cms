@@ -167,7 +167,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
             Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
 
             App::redirect($authUrl);
-        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+        } elseif (!$this->hasValidState($state)) {
             Session::clear('oauth2state', $this->name);
             Session::clear('oauth2verifier', $this->name);
 
@@ -283,7 +283,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
             Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
 
             App::redirect($authUrl);
-        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+        } elseif (!$this->hasValidState($state)) {
             Session::clear('oauth2state', $this->name);
             Session::clear('oauth2verifier', $this->name);
 
@@ -347,6 +347,29 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
                 'error'
             );
         }
+    }
+
+    /**
+     * Verify the OAuth state parameter against the one issued for this session
+     *
+     * A plain !== comparison is not sufficient: when the request carries no
+     * state and the session holds none, null !== null is false and the guard
+     * passes, letting an attacker feed us their own authorization code. Treat a
+     * missing value on either side as a failure and compare in constant time.
+     *
+     * @param   mixed    $state  State parameter from the request
+     * @return  bool     whether the state matches the one issued
+     */
+    private function hasValidState($state)
+    {
+        $expected = Session::get('oauth2state', null, $this->name);
+
+        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '')
+        {
+            return false;
+        }
+
+        return hash_equals($expected, $state);
     }
 
     /**

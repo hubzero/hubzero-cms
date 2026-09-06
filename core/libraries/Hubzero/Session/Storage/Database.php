@@ -138,7 +138,10 @@ class Database extends Store
 
 				// execute() returns affected row count for UPDATE queries.
 				// Use !== false since 0 affected rows (identical data) is still success.
-				$this->connection->execute();
+				if ($this->connection->execute() === false)
+				{
+					return false;
+				}
 
 				if ($this->profiler)
 				{
