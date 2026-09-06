@@ -35,6 +35,8 @@ class Xml extends Base
 	 */
 	public function parse($path)
 	{
+		$this->assertReadable($path);
+
 		libxml_use_internal_errors(true);
 
 		$xml = simplexml_load_file($path, null, LIBXML_NOERROR);

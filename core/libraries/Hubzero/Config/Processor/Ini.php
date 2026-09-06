@@ -45,10 +45,7 @@ class Ini extends Base
 	 */
 	public function parse($path)
 	{
-		if (!is_file($path))
-		{
-			throw new ParseException(['message' => "File not found: $path"]);
-		}
+		$this->assertReadable($path);
 
 		$data = parse_ini_file($path, true, INI_SCANNER_RAW);
 

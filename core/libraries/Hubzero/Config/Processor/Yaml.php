@@ -37,11 +37,13 @@ class Yaml extends Base
 	 */
 	public function parse($path)
 	{
+		$this->assertReadable($path);
+
 		try
 		{
 			$data = SymfonyYaml::parse(file_get_contents($path));
 		}
-		catch (Exception $exception)
+		catch (\Throwable $exception)
 		{
 			throw new ParseException(
 				array(

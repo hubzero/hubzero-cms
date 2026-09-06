@@ -8,6 +8,7 @@
 namespace Hubzero\Config;
 
 use Hubzero\Error\Exception\InvalidArgumentException;
+use Hubzero\Config\Exception\ParseException;
 
 /**
  * Abstract Registry Processor
@@ -130,6 +131,37 @@ abstract class Processor
 	 * @param   array   $options  An array of options for the formatter.
 	 * @return  string  Formatted string.
 	 */
+	/**
+	 * Make sure a config file can actually be read before parsing it
+	 *
+	 * Deliberately opens the file rather than asking is_readable(). That
+	 * function tests the real user id, and under sudo the real id stays root
+	 * while the effective id is whatever the process dropped to, so it reports
+	 * success for files the parse will then fail to open.
+	 *
+	 * @param   string  $path
+	 * @return  void
+	 * @throws  ParseException  If the file is missing or cannot be opened
+	 */
+	protected function assertReadable($path)
+	{
+		if (!is_file($path))
+		{
+			throw new ParseException(array('message' => 'Config file not found: ' . $path));
+		}
+
+		$handle = @fopen($path, 'r');
+
+		if ($handle === false)
+		{
+			throw new ParseException(array(
+				'message' => 'Config file is not readable by the current user: ' . $path
+			));
+		}
+
+		fclose($handle);
+	}
+
 	abstract public function objectToString($object, $options = null);
 
 	/**

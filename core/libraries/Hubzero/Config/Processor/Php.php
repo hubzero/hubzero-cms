@@ -36,12 +36,16 @@ class Php extends Base
 	 */
 	public function parse($path)
 	{
-		// Require the file, if it throws an exception, rethrow it
+		$this->assertReadable($path);
+
+		// Require the file, if it throws, rethrow it. Catch Throwable rather
+		// than Exception: a failed require raises an Error, so an Exception
+		// only catch let it escape as an uncaught fatal.
 		try
 		{
 			$temp = require $path;
 		}
-		catch (\Exception $exception)
+		catch (\Throwable $exception)
 		{
 			throw new ParseException(
 				array(

@@ -36,6 +36,8 @@ class Json extends Base
 	 */
 	public function parse($path)
 	{
+		$this->assertReadable($path);
+
 		$data = json_decode(file_get_contents($path), true);
 
 		if (function_exists('json_last_error_msg'))
