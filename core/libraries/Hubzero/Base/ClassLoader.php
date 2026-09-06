@@ -206,13 +206,28 @@ class ClassLoader
             $fileVariants[] = strtolower($relativePath);
         }
 
-        // Determine which base directory owns this extension
-        // Framework classes (psr4): check all directories, core last
-        // Extensions: If directory exists in PATH_APP, use ONLY that
+        // Framework classes (psr4) are searched across every directory: an app
+        // level override usually holds only a handful of files, and stopping at
+        // the first directory that happens to contain one would hide the rest
+        // of the framework sitting in core.
         $isFramework = ($config['type'] === 'psr4');
 
-        // For framework, we check all directories (Composer should handle most)
-        // For extensions, find the owning directory
+        if ($isFramework) {
+            foreach (self::$directories as $baseDir) {
+                foreach ($fileVariants as $path) {
+                    $fullPath = $baseDir . '/' . $path;
+                    if (file_exists($fullPath)) {
+                        require_once $fullPath;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // Extensions are different: whichever directory holds the extension
+        // owns it outright, so an app level copy fully replaces the core one.
         $owningBase = null;
 
         foreach (self::$directories as $baseDir) {
@@ -226,18 +241,6 @@ class ClassLoader
 
         // If no extension directory found, class doesn't exist
         if ($owningBase === null) {
-            // For framework classes, still try all directories
-            if ($isFramework) {
-                foreach (self::$directories as $baseDir) {
-                    foreach ($fileVariants as $path) {
-                        $fullPath = $baseDir . '/' . $path;
-                        if (file_exists($fullPath)) {
-                            require $fullPath;
-                            return true;
-                        }
-                    }
-                }
-            }
             return false;
         }
 
@@ -245,7 +248,7 @@ class ClassLoader
         foreach ($fileVariants as $path) {
             $fullPath = $owningBase . '/' . $path;
             if (file_exists($fullPath)) {
-                require $fullPath;
+                require_once $fullPath;
                 return true;
             }
         }
