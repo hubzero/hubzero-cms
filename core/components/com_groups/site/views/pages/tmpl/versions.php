@@ -170,7 +170,7 @@ $this->css()
 
 								// out formatted diff table
 								$formatter = new TableDiffFormatter();
-								$diff = $formatter->format(new Diff($previous, $current), $contextFormatter);
+								$diff = $formatter->format(new \WikiDiff($previous, $current), $contextFormatter);
 								echo $diff;
 							?>
 						</div>

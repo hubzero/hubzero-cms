@@ -44,7 +44,7 @@ require_once __DIR__ . '/Diff/TableDiffFormatter.php';
 /**
  * Class representing a 'diff' between two sequences of strings.
  */
-class Diff
+class WikiDiff
 {
 	/**
 	 * Description for 'edits'
@@ -73,7 +73,7 @@ class Diff
 	 *
 	 * SYNOPSIS:
 	 *
-	 *    $diff = new Diff($lines1, $lines2);
+	 *    $diff = new WikiDiff($lines1, $lines2);
 	 *    $rev = $diff->reverse();
 	 *
 	 * @return  object  A Diff object representing the inverse of the original diff.

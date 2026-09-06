@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
  *
  * Long description (if any) ...
  */
-class MappedDiff extends Diff
+class MappedDiff extends WikiDiff
 {
 	/**
 	 * Constructor.
