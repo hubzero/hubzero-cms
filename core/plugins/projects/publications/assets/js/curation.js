@@ -619,10 +619,6 @@ HUB.ProjectPublicationsDraft = {
 	{
 		var $ = this.jQuery;
 
-		if (typeof CKEDITOR === 'undefined') {
-		    CKEDITOR = false;
-		}
-
 		var el = $('.blockelement');
 		if (el.length > 0)
 		{
@@ -665,8 +661,8 @@ HUB.ProjectPublicationsDraft = {
 					});
 				}
 
-				// CKEditor?
-				if (editor && CKEDITOR)
+				// Rich text editor? (via HUB.Editor abstraction)
+				if (editor && window.HUB && HUB.Editor)
 				{
 					var editorArea = $(item).find('textarea');
 					var editorId = editorArea.attr('id');
@@ -674,17 +670,37 @@ HUB.ProjectPublicationsDraft = {
 					{
 						return;
 					}
-					if (CKEDITOR.instances[editorId])
+					// Do not gate on HUB.Editor.has(): editors register
+					// asynchronously, so the instance may not be in the registry
+					// yet. getData() reads the textarea until it is.
+					if (editorId)
 					{
+						// One poll per element. initialize() can run again when a
+						// block is re-rendered, so drop any timer a previous run
+						// left behind, and stop once the element leaves the page.
+						var previous = $(item).data('editorPollTimer');
+						if (previous)
+						{
+							clearInterval(previous);
+						}
+
 						var timer = setInterval(function()
 						{
-							 var val = CKEDITOR.instances[editorId].getData();
+							 if (!$.contains(document, item))
+							 {
+								 clearInterval(timer);
+								 return;
+							 }
+
+							 var val = HUB.Editor.getData(editorId);
 							 val = val.replace(/&nbsp;/g,'');
 							 val = val.replace(/<p><\/p>/g,'');
 							 val = val.trim();
 
 							 HUB.ProjectPublicationsDraft.checkElementCompleteness(val, required, $(item))
 						}, HUB.ProjectPublicationsDraft.doneTypingInterval);
+
+						$(item).data('editorPollTimer', timer);
 					}
 				}
 
