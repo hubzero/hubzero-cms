@@ -71,7 +71,11 @@ class Post extends Relational
 	public $always = array(
 		'title',
 		'scope',
-		'asset_id'
+		'asset_id',
+		'parent',
+		'thread',
+		'scope_sub_id',
+		'object_id'
 	);
 
 	/**
@@ -162,6 +166,71 @@ class Post extends Relational
 
 			return false;
 		});
+	}
+
+	/**
+	 * Normalises an optional foreign key
+	 *
+	 * The post forms submit an empty string for these whenever there is nothing
+	 * to point at, and the columns are integers that do not accept null. A
+	 * strict SQL mode refuses the empty string outright, so a new thread cannot
+	 * be created at all; a lenient one quietly coerces it to zero, which is what
+	 * these columns already mean by absent.
+	 *
+	 * @param   array   $data   the data being saved
+	 * @param   string  $field  the column to read
+	 * @return  int
+	 */
+	protected function optionalId($data, $field)
+	{
+		return (isset($data[$field]) && $data[$field] !== '') ? (int) $data[$field] : 0;
+	}
+
+	/**
+	 * Generates automatic parent value
+	 *
+	 * @param   array  $data  the data being saved
+	 * @return  int
+	 */
+	public function automaticParent($data)
+	{
+		return $this->optionalId($data, 'parent');
+	}
+
+	/**
+	 * Generates automatic thread value
+	 *
+	 * A new thread has none until it has been saved and can take its own id;
+	 * that happens after the insert, and zero reads as absent until then.
+	 *
+	 * @param   array  $data  the data being saved
+	 * @return  int
+	 */
+	public function automaticThread($data)
+	{
+		return $this->optionalId($data, 'thread');
+	}
+
+	/**
+	 * Generates automatic scope_sub_id value
+	 *
+	 * @param   array  $data  the data being saved
+	 * @return  int
+	 */
+	public function automaticScopeSubId($data)
+	{
+		return $this->optionalId($data, 'scope_sub_id');
+	}
+
+	/**
+	 * Generates automatic object_id value
+	 *
+	 * @param   array  $data  the data being saved
+	 * @return  int
+	 */
+	public function automaticObjectId($data)
+	{
+		return $this->optionalId($data, 'object_id');
 	}
 
 	/**
