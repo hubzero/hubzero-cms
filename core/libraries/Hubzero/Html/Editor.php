@@ -145,6 +145,16 @@ class Editor extends Obj
 			return;
 		}
 
+		$document = \App::get('document');
+		if ($document->getType() != 'html')
+		{
+			return;
+		}
+
+		// Load the editor abstraction layer before any editor plugin JS
+		$base = str_replace('/administrator', '', \App::get('request')->base(true));
+		$document->addScript($base . '/core/assets/js/editor.js');
+
 		$return = '';
 		$results[] = $this->editor->onInit();
 
@@ -157,11 +167,6 @@ class Editor extends Obj
 			}
 		}
 
-		$document = \App::get('document');
-		if ($document->getType() != 'html')
-		{
-			return;
-		}
 		$document->addCustomTag($return);
 	}
 
