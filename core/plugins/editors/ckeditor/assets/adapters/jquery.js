@@ -25,9 +25,31 @@ if (typeof(jQuery) !== "undefined") {
 			return q;
 		}
 	}
+	// File browser URLs that CKEditor 4 opens in a popup window
+	var fileBrowserUrlKeys = [
+		'filebrowserBrowseUrl',
+		'filebrowserImageBrowseUrl',
+		'filebrowserImageBrowseLinkUrl'
+	];
+
+	/**
+	 * Append the editor-agnostic file browser parameters to a URL.
+	 *
+	 * CKEditor 4 appends its own CKEditor/CKEditorFuncNum parameters as well,
+	 * but the Hubzero file browser reads only these generic ones.
+	 */
+	function addEditorParams(url, id, callbackId) {
+		var separator = (url.indexOf('?') === -1) ? '?' : '&';
+		return url + separator
+			+ 'editor=' + encodeURIComponent(id)
+			+ '&editorFuncNum=' + encodeURIComponent(callbackId);
+	}
+
 	function jInitEditors() {
 		$('.ckeditor-content').each(function(i, el){
-			var cfg = $('#' + $(el).attr('id') + '-ckeconfig'),
+			var $el = $(el),
+				id = $el.attr('id'),
+				cfg = $('#' + id + '-ckeconfig'),
 				config = null;
 			if (cfg.length) {
 				config = JSON.parse(cfg.html());
@@ -38,27 +60,94 @@ if (typeof(jQuery) !== "undefined") {
 					}
 				}
 			}
-			$(el).ckeditor(function() {}, config);
+
+			// Already initialised — re-running would leak a second callback
+			if ($el.data('ckeditorInstance')) {
+				return;
+			}
+
+			var ckInstance = null,
+				callbackId = null;
+
+			// Bridge the Hubzero file browser to CKEditor 4's own insert function.
+			// setUrl() is registered by CKEditor 4's filebrowser plugin at editor
+			// init and lives on the instance until it is destroyed. It puts the
+			// chosen file into whichever dialog field opened the browser.
+			if (config && window.HUB && HUB.Editor) {
+				callbackId = HUB.Editor.registerFileBrowserCallback(function(file, done) {
+					if (ckInstance && ckInstance._ && typeof ckInstance._.filebrowserFn != 'undefined') {
+						CKEDITOR.tools.callFunction(ckInstance._.filebrowserFn, file);
+					}
+					if (typeof done == 'function') {
+						done();
+					}
+				});
+
+				for (var u = 0; u < fileBrowserUrlKeys.length; u++) {
+					var key = fileBrowserUrlKeys[u];
+					if (config[key]) {
+						config[key] = addEditorParams(config[key], id, callbackId);
+					}
+				}
+			}
+
+			$el.ckeditor(function() {
+				// Register this CKEditor 4 instance with HUB.Editor
+				if (window.HUB && HUB.Editor) {
+					ckInstance = CKEDITOR.instances[id];
+					if (ckInstance) {
+						HUB.Editor.register(id, {
+							getData: function() { return ckInstance.getData(); },
+							setData: function(html) { ckInstance.setData(html); },
+							updateElement: function() { ckInstance.updateElement(); },
+							instance: ckInstance
+						});
+						ckInstance.on('destroy', function() {
+							HUB.Editor.unregister(id);
+							if (callbackId !== null) {
+								HUB.Editor.unregisterFileBrowserCallback(callbackId);
+							}
+						});
+					}
+				}
+			}, config);
 		});
 	}
+
+	// Legacy global functions — delegate to HUB.Editor
 	function jInsertEditorText(text, editor) {
-		CKEDITOR.instances[editor].updateElement();
-		var content = document.getElementById(editor).value;
-		content = content + text;
-		CKEDITOR.instances[editor].setData(content);
+		if (window.HUB && HUB.Editor && HUB.Editor.has(editor)) {
+			HUB.Editor.insertText(editor, text);
+		} else {
+			CKEDITOR.instances[editor].updateElement();
+			var content = document.getElementById(editor).value;
+			content = content + text;
+			CKEDITOR.instances[editor].setData(content);
+		}
 	}
 	function jSaveEditorText() {
-		for (instance in CKEDITOR.instances) {
-			CKEDITOR.instances[instance].fire("beforeSave");
-			CKEDITOR.instances[instance].updateElement();
+		if (window.HUB && HUB.Editor) {
+			HUB.Editor.updateAllElements();
+		} else {
+			for (var instance in CKEDITOR.instances) {
+				CKEDITOR.instances[instance].fire("beforeSave");
+				CKEDITOR.instances[instance].updateElement();
+			}
 		}
 	}
 	function getEditorContent(id) {
+		if (window.HUB && HUB.Editor && HUB.Editor.has(id)) {
+			return HUB.Editor.getData(id);
+		}
 		CKEDITOR.instances[id].updateElement();
 		return document.getElementById(id).value;
 	}
 	function setEditorContent(id, content) {
-		CKEDITOR.instances[id].setData(content);
+		if (window.HUB && HUB.Editor) {
+			HUB.Editor.setData(id, content);
+		} else {
+			CKEDITOR.instances[id].setData(content);
+		}
 	}
 
 	jQuery(document)
