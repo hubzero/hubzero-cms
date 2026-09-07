@@ -15,7 +15,7 @@
 import editorCss from 'ckeditor5/ckeditor5.css';
 import {
 	ClassicEditor,
-	Plugin, ButtonView, View, Dialog,
+	Plugin, ButtonView, View, Dialog, DomEventObserver,
 	Essentials, Paragraph, Heading,
 	Bold, Italic, Underline, Strikethrough, Subscript, Superscript, Code, RemoveFormat,
 	FontColor, FontBackgroundColor, FontSize,
@@ -366,6 +366,167 @@ class HubzeroGrid extends Plugin {
 	}
 }
 
+const EQUATION_ICON = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 4h6.2l2.3 5.1L14 4h3l-3.6 6.6L17 17h-3.1l-2.5-5.4L8.7 17H6l3.9-6.7L7.6 6H3V4Z"/></svg>';
+
+// A LaTeX expression rendered server-side to an image. The markup matches the
+// CKEditor 4 plugin exactly: the expression is kept on data-equation so the
+// image can be edited again later, rather than reverse engineered from the URL.
+const EQUATION_CLASS = 'hubzeroequation-result';
+
+function equationHtml(expression, src) {
+	return '<img class="' + EQUATION_CLASS + '"'
+		+ ' data-equation="' + expression.replace(/"/g, '&quot;') + '"'
+		+ ' alt="Equation: ' + expression.replace(/"/g, '&quot;') + '"'
+		+ ' src="' + src + '">';
+}
+
+// The view document does not watch for double clicks out of the box.
+class DoubleClickObserver extends DomEventObserver {
+	constructor(view) {
+		super(view);
+		this.domEventType = 'dblclick';
+	}
+
+	onDomEvent(domEvent) {
+		this.fire(domEvent.type, domEvent);
+	}
+}
+
+class HubzeroEquation extends Plugin {
+	static get requires() { return [Dialog]; }
+	static get pluginName() { return 'HubzeroEquation'; }
+
+	init() {
+		const editor = this.editor;
+		const url = editor.config.get('hubzero.latexUrl') || '/api/resources/renderlatex';
+
+		addButton(editor, 'hubzeroEquation', 'Equation', EQUATION_ICON, () => this._open(url));
+
+		// Double-clicking a rendered equation reopens it for editing, as it did
+		// in CKEditor 4. The class and data-equation are not rendered onto the
+		// <img> in the editing view: general html support keeps them on the
+		// model and the widget wrapper carries them, so search upwards rather
+		// than testing the click target itself.
+		editor.editing.view.addObserver(DoubleClickObserver);
+
+		editor.editing.view.document.on('dblclick', (evt, data) => {
+			const target = data.domTarget;
+			const holder = (target && target.closest) ? target.closest('.' + EQUATION_CLASS) : null;
+
+			if (!holder) {
+				return;
+			}
+
+			const image = (holder.tagName === 'IMG') ? holder : holder.querySelector('img');
+
+			this._open(
+				url,
+				holder.getAttribute('data-equation') || '',
+				image ? image.getAttribute('src') : ''
+			);
+
+			data.preventDefault();
+			evt.stop();
+		});
+	}
+
+	_open(url, expression, src) {
+		const editor = this.editor;
+		const dialog = editor.plugins.get('Dialog');
+		let field, preview, status, timer, last;
+
+		const render = () => {
+			const value = field.value.trim();
+
+			if (value === last) {
+				return;
+			}
+			last = value;
+
+			if (!value) {
+				preview.removeAttribute('src');
+				status.textContent = '';
+				return;
+			}
+
+			status.textContent = 'Rendering…';
+
+			fetch(url + '?expression=' + encodeURIComponent(value), { credentials: 'same-origin' })
+				.then(r => r.json())
+				.then(json => {
+					if (json && json.error) {
+						status.textContent = String(json.error);
+						return;
+					}
+					if (json && json.img) {
+						preview.src = json.img;
+						status.textContent = '';
+					}
+				})
+				.catch(() => { status.textContent = 'Could not render the expression.'; });
+		};
+
+		dialog.show({
+			id: 'hubzeroEquation',
+			title: expression ? 'Edit equation' : 'Insert equation',
+			content: new HubDialogView(editor.locale, el => {
+				el.style.cssText = 'padding:12px;min-width:420px;';
+
+				const label = document.createElement('label');
+				label.textContent = 'LaTeX expression';
+				label.style.cssText = 'display:block;margin-bottom:4px;';
+
+				field = document.createElement('textarea');
+				field.rows = 4;
+				field.value = expression || '';
+				field.style.cssText = 'width:100%;box-sizing:border-box;font-family:monospace;';
+
+				status = document.createElement('div');
+				status.style.cssText = 'font-size:12px;min-height:1.2em;margin:6px 0;';
+
+				preview = document.createElement('img');
+				preview.alt = 'Preview';
+				preview.style.cssText = 'max-width:100%;display:block;';
+				if (src) {
+					preview.src = src;
+				}
+
+				field.addEventListener('keyup', () => {
+					clearTimeout(timer);
+					timer = setTimeout(render, 600);
+				});
+
+				el.appendChild(label);
+				el.appendChild(field);
+				el.appendChild(status);
+				el.appendChild(preview);
+			}),
+			onHide: () => { clearTimeout(timer); },
+			actionButtons: [
+				{ label: 'Cancel', withText: true, onExecute: () => dialog.hide() },
+				{
+					label: expression ? 'Update' : 'Insert',
+					withText: true,
+					class: 'ck-button-action',
+					onExecute: () => {
+						const value = field.value.trim();
+						const source = preview.getAttribute('src');
+
+						if (!value || !source) {
+							status.textContent = 'Enter an expression and wait for the preview.';
+							return;
+						}
+
+						dialog.hide();
+						editor.model.change(() => insertHtml(editor, equationHtml(value, source)));
+						editor.editing.view.focus();
+					}
+				}
+			]
+		});
+	}
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -406,7 +567,7 @@ window.HubEditor = {
 
 		// The Hubzero authoring tools. Macro is a reference panel; the rest
 		// insert or annotate content.
-		extra.push(HubzeroMacro, HubzeroGrid);
+		extra.push(HubzeroMacro, HubzeroGrid, HubzeroEquation);
 
 		// The cut-down toolbar mirrors the CKEditor 4 plugin's 'minimal' class,
 		// which the forum and other short-form fields ask for
@@ -424,7 +585,7 @@ window.HubEditor = {
 				'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
 				'outdent', 'indent', '|',
 				'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
-				'hubzeroGrid', 'hubzeroMacro', '|',
+				'hubzeroGrid', 'hubzeroEquation', 'hubzeroMacro', '|',
 				'findAndReplace'
 			];
 
