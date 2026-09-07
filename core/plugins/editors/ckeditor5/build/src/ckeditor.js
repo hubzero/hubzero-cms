@@ -25,7 +25,8 @@ import {
 	Table, TableToolbar, TableProperties, TableCellProperties, TableCaption, TableColumnResize,
 	Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageUpload,
 	MediaEmbed, SourceEditing, GeneralHtmlSupport,
-	FindAndReplace, SpecialCharacters, SpecialCharactersEssentials, PageBreak, HtmlEmbed
+	FindAndReplace, SpecialCharacters, SpecialCharactersEssentials, PageBreak, HtmlEmbed,
+	Mention
 } from 'ckeditor5';
 
 // Inject the editor stylesheet once.
@@ -631,6 +632,93 @@ class HubzeroHighlight extends Plugin {
 	}
 }
 
+// Mentions.
+//
+// Callers configure these the way the CKEditor 4 plugin wants them: a feed URL
+// carrying {encodedQuery}, and itemTemplate/outputTemplate strings. CKEditor 5
+// wants a feed function, an itemRenderer returning an element, and a downcast
+// for the output markup, so translate rather than ask every caller to change.
+function fillTemplate(template, values) {
+	return template.replace(/\{(\w+)\}/g, (match, key) => {
+		return (values[key] === undefined || values[key] === null) ? '' : String(values[key]);
+	});
+}
+
+function makeMentionFeed(config) {
+	const marker = config.marker || '@';
+
+	return {
+		marker: marker,
+		minimumCharacters: (config.minChars === undefined) ? 0 : Number(config.minChars),
+
+		feed: query => {
+			const url = config.feed
+				.replace(/\{encodedQuery\}/g, encodeURIComponent(query))
+				.replace(/\{query\}/g, query);
+
+			return fetch(url, { credentials: 'same-origin', headers: { Accept: 'application/json' } })
+				.then(response => response.ok ? response.json() : [])
+				.then(rows => (Array.isArray(rows) ? rows : []).map(row => ({
+					// CKEditor requires the id to start with the marker; the
+					// original row is kept alongside for the templates
+					id: marker + row.username,
+					userId: row.id,
+					username: row.username,
+					name: row.name,
+					picture: row.picture
+				})))
+				.catch(() => []);
+		},
+
+		itemRenderer: item => {
+			const holder = document.createElement('div');
+			holder.innerHTML = fillTemplate(config.itemTemplate || '<span>{username}</span>', {
+				id: item.userId,
+				username: item.username,
+				name: item.name,
+				picture: item.picture
+			});
+
+			return holder.firstElementChild || document.createTextNode(item.username);
+		}
+	};
+}
+
+// Render a mention as the link the CKEditor 4 output template produced, rather
+// than CKEditor 5's default <span class="mention">.
+function makeMentionOutputPlugin(template) {
+	return function (editor) {
+		editor.conversion.for('dataDowncast').attributeToElement({
+			model: 'mention',
+			view: (value, { writer }) => {
+				if (!value) {
+					return;
+				}
+
+				const holder = document.createElement('div');
+				holder.innerHTML = fillTemplate(template, {
+					id: value.userId,
+					username: value.username,
+					name: value.name
+				});
+
+				const element = holder.firstElementChild;
+				if (!element) {
+					return;
+				}
+
+				const attributes = {};
+				Array.from(element.attributes).forEach(attribute => {
+					attributes[attribute.name] = attribute.value;
+				});
+
+				return writer.createAttributeElement(element.tagName.toLowerCase(), attributes, { priority: 20 });
+			},
+			converterPriority: 'high'
+		});
+	};
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -672,6 +760,17 @@ window.HubEditor = {
 		// The Hubzero authoring tools. Macro is a reference panel; the rest
 		// insert or annotate content.
 		extra.push(HubzeroMacro, HubzeroGrid, HubzeroEquation, HubzeroHighlight);
+
+		var mentionConfig = null;
+		if (opts.mentions && opts.mentions.length) {
+			plugins.push(Mention);
+			mentionConfig = { feeds: opts.mentions.map(makeMentionFeed) };
+
+			var outputTemplate = opts.mentions[0].outputTemplate;
+			if (outputTemplate) {
+				extra.push(makeMentionOutputPlugin(outputTemplate));
+			}
+		}
 
 		// The cut-down toolbar mirrors the CKEditor 4 plugin's 'minimal' class,
 		// which the forum and other short-form fields ask for
@@ -740,6 +839,7 @@ window.HubEditor = {
 				]
 			},
 			list: { properties: { styles: true, startIndex: true, reversed: true } },
+			mention: mentionConfig || {},
 			mediaEmbed: { previewsInData: true },
 			htmlSupport: {
 				// Allow every element, attribute, class and style, which is what
