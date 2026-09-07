@@ -221,6 +221,23 @@ class Arguments
 	}
 
 	/**
+	 * Is this class name an actual console command?
+	 *
+	 * class_exists() on its own is not enough. Hubzero\Facades\Facade registers
+	 * an autoloader that aliases any namespaced class whose last segment matches
+	 * a facade name, so \App\Commands\User resolves to the User facade and would
+	 * otherwise be accepted as a command, shadowing the real one.
+	 *
+	 * @param   string  $class  Fully qualified class name
+	 * @return  bool
+	 **/
+	protected static function isCommand($class)
+	{
+		return class_exists($class)
+			&& is_subclass_of($class, __NAMESPACE__ . '\Command\CommandInterface');
+	}
+
+	/**
 	 * Routes command to the proper file based on the input given
 	 *
 	 * @param   string  $command  The command to route
@@ -293,8 +310,11 @@ class Arguments
 				}
 			}
 
-			// Check for existence
-			if (!class_exists($namespace) && !empty($paths))
+			// Load the command file before asking whether the class exists.
+			// Probing first would trigger the facade alias loader, which claims
+			// the name (see isCommand below) and would then collide with the
+			// real declaration when the file is required.
+			if (!empty($paths))
 			{
 				foreach ($paths as $path)
 				{
@@ -307,7 +327,7 @@ class Arguments
 				}
 			}
 
-			if (class_exists($namespace))
+			if (self::isCommand($namespace))
 			{
 				$class = $namespace;
 				break;
