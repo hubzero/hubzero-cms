@@ -35,52 +35,69 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 	/**
 	 * Copy editor content to form field.
 	 *
-	 * Not applicable in this editor.
+	 * The bundle also syncs on form submit, so this is for callers that need
+	 * the textarea populated before then.
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function onSave()
 	{
+		return "if (window.HUB && HUB.Editor) { HUB.Editor.updateAllElements(); }\n";
+	}
+
+	/**
+	 * Encode a value for embedding in an inline <script> block
+	 *
+	 * The hex flags keep quotes, ampersands and angle brackets out of the
+	 * output, so the result is safe both inside the script and if the script
+	 * ends up in an HTML attribute.
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
+	private function _js($value)
+	{
+		return json_encode(
+			$value,
+			JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+		);
 	}
 
 	/**
 	 * Get the editor content.
-	 * 
-	 * Not applicable in this editor
 	 *
-	 * @param   string $id The id of the editor field.
+	 * @param   string  $id  The id of the editor field.
 	 * @return  string
 	 */
 	public function onGetContent($id)
 	{
-		return "";
+		return 'getEditorContent(' . $this->_js($id) . ");\n";
 	}
 
 	/**
 	 * Set the editor content.
-	 * 
-	 * Not applicable in this editor
 	 *
-	 * @param   string $id   The id of the editor field.
-	 * @param   string $html The content to set.
+	 * @param   string  $id    The id of the editor field.
+	 * @param   string  $html  The content to set.
 	 * @return  string
 	 */
 	public function onSetContent($id, $html)
 	{
-		return "";
+		return 'setEditorContent(' . $this->_js($id) . ', ' . $this->_js($html) . ");\n";
 	}
 
 	/**
 	 * Inserts text
-	 * 
-	 * Not applicable in this editor
 	 *
-	 * @param	string	$id
-	 * @return	string
+	 * jInsertEditorText() is provided by the editor abstraction layer, which is
+	 * loaded ahead of every editor plugin.
+	 *
+	 * @param   string  $id
+	 * @return  bool
 	 */
 	public function onGetInsertMethod($id)
 	{
-		return "";
+		return true;
 	}
 
 	/**
@@ -151,11 +168,24 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		{
 			$opts['tokenField'] = $tokenField;
 		}
-		$optsJson = json_encode($opts ? $opts : new \stdClass());
+		$optsJson = $this->_js($opts ? $opts : new \stdClass());
+		$idJson   = $this->_js($id);
 
-		// Script to actually make ckeditor (deferred until the element exists)
+		// Script to actually make ckeditor (deferred until the element exists).
+		// The created instance is registered with HUB.Editor so application code
+		// can read and write it without knowing which editor is running.
 		$script  = '<script type="text/javascript">';
-		$script .= '(function(){var f=function(){if(window.HubEditor){HubEditor.create(document.querySelector("#'.$id.'"), '.$optsJson.').catch(function(e){console.error(e);});}};';
+		$script .= '(function(){var f=function(){if(!window.HubEditor){return;}';
+		$script .= 'HubEditor.create(document.getElementById('.$idJson.'), '.$optsJson.')';
+		$script .= '.then(function(editor){if(!window.HUB||!HUB.Editor){return;}';
+		$script .= 'HUB.Editor.register('.$idJson.',{';
+		$script .= 'getData:function(){return editor.getData();},';
+		$script .= 'setData:function(html){editor.setData(html);},';
+		$script .= 'updateElement:function(){editor.updateSourceElement();},';
+		$script .= 'instance:editor});';
+		$script .= 'editor.on("destroy",function(){HUB.Editor.unregister('.$idJson.');});';
+		$script .= '})';
+		$script .= '.catch(function(e){console.error(e);});};';
 		$script .= 'if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",f);}else{f();}})();';
 		$script .= '</script>';
 
