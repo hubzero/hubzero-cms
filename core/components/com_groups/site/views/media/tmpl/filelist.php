@@ -25,16 +25,16 @@ $baseURI = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'
 
 //get request vars
 $type          = Request::getWord('type', '', 'get');
-$ckeditor      = Request::getString('CKEditor', '', 'get');
-$ckeditorFunc  = Request::getInt('CKEditorFuncNum', 0, 'get');
-$ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
+$editorName    = Request::getString('editor', '', 'get');
+$editorFunc    = Request::getInt('editorFuncNum', 0, 'get');
+$editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum=' . $editorFunc;
 ?>
 
 <script type="text/javascript">
-	function ckeditorInsertFile( file )
+	function editorInsertFile( file )
 	{
 		var opener = window.parent;
-		HUB.GroupsMediaList.ckeditorInsert( file, opener );
+		HUB.GroupsMediaList.editorInsert( file, opener );
 	}
 </script>
 
@@ -177,8 +177,8 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $downloadPath; ?></span>
 						</li>
 						<li>
-							<?php if ($this->authorized && isset($ckeditor) && $ckeditor != '') : ?>
-								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
+							<?php if ($this->authorized && isset($editorName) && $editorName != '') : ?>
+								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
 							<?php endif; ?>
 							<a href="<?php echo $downloadPath; ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
 							<?php if ($this->authorized) : ?>

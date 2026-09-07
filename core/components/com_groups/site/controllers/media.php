@@ -428,11 +428,11 @@ class Media extends Base
 	}
 
 	/**
-	 * File upload - for CKeditor
+	 * File upload - for rich text editor file browser
 	 *
 	 * @return  void
 	 */
-	public function ckeditorUploadTask()
+	public function editorUploadTask()
 	{
 		// vars for later
 		$message = '';
@@ -445,14 +445,14 @@ class Media extends Base
 			$file     = $upload->file;
 			$fileInfo = pathinfo($file);
 
-			// build url to return to ckeditor
+			// build url to return to editor
 			$url  = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
 			$url .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'File:' . $fileInfo['basename'];
 		} else {
 			$message = $upload->message;
 		}
 
-		// return to ckeditor
+		// return to editor
 		echo json_encode(array(
 			'uploaded' => ($message) ? 0 : 1,
 			'url'      => ($message) ? '' : $url,
@@ -1020,16 +1020,16 @@ class Media extends Base
 
 		$this->logActivity('deleted', str_replace($this->path, '', $file));
 
-		//are we deleting through ckeditor
-		$ckeditor     = Request::getString('CKEditor', '', 'get');
-		$ckeditorFunc = Request::getInt('CKEditorFuncNum', 0, 'get');
+		// Are we deleting through the editor file browser?
+		$editorName   = Request::getString('editor', '', 'get');
+		$editorFunc   = Request::getInt('editorFuncNum', 0, 'get');
 		$type         = Request::getString('type', 'image', 'get');
 
-		if (isset($ckeditor) && $ckeditor != '')
+		if (isset($editorName) && $editorName != '')
 		{
 			$base = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
 			$base .= $_SERVER['HTTP_HOST'];
-			$listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir='.$listdir.'&tmpl=component&type='.$type.'&CKEditor='.$ckeditor.'&CKEditorFuncNum='.$ckeditorFunc;
+			$listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir='.$listdir.'&tmpl=component&type='.$type.'&editor='.$editorName.'&editorFuncNum='.$editorFunc;
 
 			App::redirect($listFilesUrl);
 		}

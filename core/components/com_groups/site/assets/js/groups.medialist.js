@@ -300,12 +300,14 @@ HUB.GroupsMediaList = {
 	
 	//-----
 	
-	ckeditorInsert: function( file, w )
+	editorInsert: function( file, w )
 	{
-		var funcNum = HUB.GroupsMediaList._getUrlParam('CKEditorFuncNum');
-		w.opener.CKEDITOR.tools.callFunction(funcNum, file, function() {
-			w.close();
-		});
+		var funcNum = HUB.GroupsMediaList._getUrlParam('editorFuncNum');
+		if (w.opener.HUB && w.opener.HUB.Editor) {
+			w.opener.HUB.Editor.insertFile(funcNum, file, function() {
+				w.close();
+			});
+		}
 		return false;
 	},
 	

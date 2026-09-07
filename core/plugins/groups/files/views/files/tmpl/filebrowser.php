@@ -17,9 +17,9 @@ $this->css()
 
 //get request vars
 $type          = Request::getWord('type', '', 'get');
-$ckeditor      = Request::getString('CKEditor', '', 'get');
-$ckeditorFunc  = Request::getInt('CKEditorFuncNum', 0, 'get');
-$ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' . $ckeditorFunc;
+$editorName    = Request::getString('editor', '', 'get');
+$editorFunc    = Request::getInt('editorFuncNum', 0, 'get');
+$editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum=' . $editorFunc;
 ?>
 <div class="files-wrap">
 	<div class="upload-browser cf">
@@ -65,7 +65,7 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 			<?php } ?>
 		</div>
 		<div class="upload-browser-col right">
-			<iframe class="upload-browser-filelist-iframe" title="File list" src="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
+			<iframe class="upload-browser-filelist-iframe" title="File list" src="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=listfiles&tmpl=component&type=' . $editorQuery); ?>"></iframe>
 		</div>
 	</div>
 </div>

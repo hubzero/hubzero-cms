@@ -97,8 +97,8 @@ foreach ($menus as $menu)
 								$config['templates_files']   = array('pagelayouts' => substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
 
-							// display with ckeditor
-							$editor = new \Hubzero\Html\Editor('ckeditor');
+							// display editor
+							$editor = App::get('editor');
 							echo $editor->display('module[content]', stripslashes($this->module->get('content')), '100%', '100px', 0, 0, false, 'field-content', null, null, $config);
 						?>
 					</label>

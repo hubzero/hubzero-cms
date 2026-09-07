@@ -134,7 +134,7 @@ if ($this->page->get('id'))
 								'fileBrowserWindowWidth'      => 1200,
 								'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
 								'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
-								'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=ckeditorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
+								'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=editorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
 								'allowPhpTags'                => $allowPhp,
 								'allowScriptTags'             => $allowScripts
 							);
@@ -146,8 +146,8 @@ if ($this->page->get('id'))
 								$config['templates_files']   = array('pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
 
-							// display with ckeditor
-							$editor = App::get('editor'); //new \Hubzero\Html\Editor('ckeditor');
+							// display editor
+							$editor = App::get('editor');
 							echo $editor->display('pageversion[content]', $this->escape($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
 
