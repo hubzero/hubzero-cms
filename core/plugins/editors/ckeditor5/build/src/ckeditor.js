@@ -793,9 +793,21 @@ function selectionLength(selection) {
 	return total;
 }
 
+function byteLength(text) {
+	if (typeof TextEncoder !== 'undefined') {
+		return new TextEncoder().encode(text).length;
+	}
+	return unescape(encodeURIComponent(text)).length;
+}
+
 function makeWordLimitPlugin(config) {
 	const maxCharacters = Number(config.maxCharCount) > 0 ? Number(config.maxCharCount) : 0;
 	const maxWords = Number(config.maxWordCount) > 0 ? Number(config.maxWordCount) : 0;
+	// The column a post is saved into is measured in bytes of HTML, which no
+	// count of visible characters can predict: markup and multibyte characters
+	// both cost more than they show. Without strict SQL mode an oversize value
+	// is truncated rather than rejected, cutting the HTML mid-tag.
+	const maxDataBytes = Number(config.maxDataBytes) > 0 ? Number(config.maxDataBytes) : 0;
 	// CKEditor 4 called the blocking behaviour hardLimit; without it the counter
 	// is advisory and the author can run past the maximum.
 	const hardLimit = config.hardLimit !== false;
@@ -818,7 +830,38 @@ function makeWordLimitPlugin(config) {
 				});
 			}
 
-			if (!hardLimit || (!maxCharacters && !maxWords)) {
+			if (!hardLimit) {
+				return;
+			}
+
+			// Backstop. Checked after the fact because the serialised size of an
+			// edit is not knowable before it is made; a change that crosses the
+			// ceiling is reverted.
+			if (maxDataBytes) {
+				let reverting = false;
+				let armed = false;
+
+				// Only after the initial content is loaded. An existing post that
+				// is already over the ceiling must open normally so it can be cut
+				// down by hand; reverting it here would empty the editor instead.
+				editor.on('ready', () => { armed = true; });
+
+				editor.model.document.on('change:data', () => {
+					if (!armed || reverting) {
+						return;
+					}
+
+					if (byteLength(editor.getData()) <= maxDataBytes) {
+						return;
+					}
+
+					reverting = true;
+					editor.execute('undo');
+					reverting = false;
+				});
+			}
+
+			if (!maxCharacters && !maxWords) {
 				return;
 			}
 
