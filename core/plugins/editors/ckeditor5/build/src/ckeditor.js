@@ -254,16 +254,29 @@ window.HubEditor = {
 		}
 		extra.push(makeProtectedSourcePlugin(protectedPatterns));
 
-		var toolbar = [
-			'heading', '|',
-			'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript',
-			'code', 'removeFormat', '|',
-			'fontSize', 'fontColor', 'fontBackgroundColor', '|',
-			'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
-			'outdent', 'indent', '|',
-			'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
-			'findAndReplace'
-		];
+		// The cut-down toolbar mirrors the CKEditor 4 plugin's 'minimal' class,
+		// which the forum and other short-form fields ask for
+		var toolbar = opts.minimal
+			? [
+				'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript', '|',
+				'link', '|',
+				'bulletedList', 'numberedList'
+			]
+			: [
+				'heading', '|',
+				'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript',
+				'code', 'removeFormat', '|',
+				'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+				'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
+				'outdent', 'indent', '|',
+				'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
+				'findAndReplace'
+			];
+
+		// Images are insertable in minimal mode only when asked for
+		if (opts.minimal && opts.images) {
+			toolbar.push('|', 'insertImage');
+		}
 
 		if (opts.fileBrowser && opts.fileBrowser.url) {
 			extra.push(makeFileBrowserPlugin(opts.fileBrowser));
@@ -276,7 +289,12 @@ window.HubEditor = {
 			}
 		}
 
-		toolbar.push('|', 'sourceEditing', '|', 'undo', 'redo');
+		// The source button is on unless a caller turned it off
+		if (opts.sourceViewButton !== false) {
+			toolbar.push('|', 'sourceEditing');
+		}
+
+		toolbar.push('|', 'undo', 'redo');
 
 		return ClassicEditor.create(el, {
 			licenseKey: 'GPL',
@@ -310,6 +328,16 @@ window.HubEditor = {
 				]
 			}
 		}).then(function (editor) {
+			if (opts.minHeight) {
+				editor.editing.view.change(function (writer) {
+					writer.setStyle('min-height', opts.minHeight, editor.editing.view.document.getRoot());
+				});
+			}
+
+			if (opts.startInSource && editor.plugins.has('SourceEditing')) {
+				editor.plugins.get('SourceEditing').isSourceEditingMode = true;
+			}
+
 			// Sync editor HTML back to the source textarea on form submit, so
 			// existing HubZero forms post the content without per-view glue.
 			var form = (el && el.closest) ? el.closest('form') : null;

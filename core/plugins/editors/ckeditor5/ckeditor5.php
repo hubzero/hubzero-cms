@@ -166,6 +166,20 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 			$params['fileBrowserWindowHeight']
 		);
 
+		// The remaining behavioural parameters the CKEditor 4 plugin honours.
+		// Like the file browser keys above, they are pulled out here so they
+		// stop being rendered as <textarea> attributes.
+		$startInSource    = (isset($params['startupMode']) && $params['startupMode'] == 'source');
+		$sourceViewButton = !isset($params['sourceViewButton']) || $params['sourceViewButton'];
+		$allowScriptTags  = !empty($params['allowScriptTags']);
+		$editorHeight     = isset($params['height']) ? $params['height'] : '';
+		unset(
+			$params['startupMode'],
+			$params['sourceViewButton'],
+			$params['allowScriptTags'],
+			$params['allowPhpTags']
+		);
+
 		if (!isset($params['class']))
 		{
 			$params['class'] = array();
@@ -206,6 +220,34 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 				'width'  => $browseWidth,
 				'height' => $browseHeight
 			);
+		}
+		if ($startInSource)
+		{
+			$opts['startInSource'] = true;
+		}
+		if (!$sourceViewButton)
+		{
+			$opts['sourceViewButton'] = false;
+		}
+		if ($allowScriptTags)
+		{
+			$opts['allowScriptTags'] = true;
+		}
+		if ($editorHeight !== '')
+		{
+			$opts['minHeight'] = $editorHeight;
+		}
+
+		// The 'minimal' and 'images' class markers select a cut-down toolbar,
+		// as they do for the CKEditor 4 plugin
+		if (in_array('minimal', $params['class']))
+		{
+			$opts['minimal'] = true;
+
+			if (in_array('images', $params['class']))
+			{
+				$opts['images'] = true;
+			}
 		}
 		$optsJson = $this->_js($opts ? $opts : new \stdClass());
 		$idJson   = $this->_js($id);
