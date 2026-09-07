@@ -52,6 +52,18 @@ class Post extends Relational
 	);
 
 	/**
+	 * Longest comment that can be stored, in bytes
+	 *
+	 * The column is a TEXT, which holds 65535 bytes. Stay beneath that: without
+	 * strict SQL mode an oversize value is truncated rather than refused, which
+	 * cuts the markup mid-tag and leaves an unclosed element to disturb the
+	 * layout of the whole thread.
+	 *
+	 * @var  int
+	 */
+	const MAX_COMMENT_BYTES = 60000;
+
+	/**
 	 * Automatically fillable fields
 	 *
 	 * @var  array
@@ -109,6 +121,18 @@ class Post extends Relational
 			if (!isset($data['comment']) || !trim($data['comment']))
 			{
 				return Lang::txt('comment cannot be empty');
+			}
+
+			// strlen() counts bytes, which is what the column limits. Checked
+			// before the duplicate lookup below so an oversize post is refused
+			// without a query.
+			if (strlen($data['comment']) > self::MAX_COMMENT_BYTES)
+			{
+				return Lang::txt(
+					'Post is too long: %s bytes of markup, and the limit is %s.',
+					number_format(strlen($data['comment'])),
+					number_format(self::MAX_COMMENT_BYTES)
+				);
 			}
 
 			if (!isset($data['created_by']) || !$data['created_by'])
