@@ -26,7 +26,7 @@ import {
 	Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageUpload,
 	MediaEmbed, SourceEditing, GeneralHtmlSupport,
 	FindAndReplace, SpecialCharacters, SpecialCharactersEssentials, PageBreak, HtmlEmbed,
-	Mention
+	Mention, WordCount
 } from 'ckeditor5';
 
 // Inject the editor stylesheet once.
@@ -38,6 +38,7 @@ import {
 	s.id = 'ckeditor5-styles';
 	s.textContent = editorCss + [
 		// Author aids. Both only ever appear in the editing view.
+		'.hz-word-count{padding:4px 8px;font-size:12px;color:#555;border-top:1px solid #ccc;}',
 		'.ck-content .hz-highlight{border-radius:2px;padding:0 1px;}',
 		'.ck-content .hz-highlight-macro{background:#fff3c4;box-shadow:0 0 0 1px #e0b000;}',
 		'.ck-content .hz-highlight-xhub{background:#dcecff;box-shadow:0 0 0 1px #7fb2e5;}',
@@ -736,6 +737,115 @@ function makeMentionOutputPlugin(template) {
 	};
 }
 
+// Length limits.
+//
+// CKEditor 5's WordCount counts; it does not enforce. The CKEditor 4 plugin had
+// a hardLimit that refused input past a maximum, so build that here rather than
+// ship a counter and call it the same feature.
+function contentLength(content) {
+	if (typeof content === 'string') {
+		return content.length;
+	}
+
+	let total = 0;
+
+	const walk = item => {
+		if (!item) {
+			return;
+		}
+		if (item.is && (item.is('$text') || item.is('$textProxy'))) {
+			total += item.data.length;
+			return;
+		}
+		if (item.getChildren) {
+			for (const child of item.getChildren()) {
+				walk(child);
+			}
+		}
+	};
+
+	if (content.is && content.is('documentFragment')) {
+		for (const child of content.getChildren()) {
+			walk(child);
+		}
+	} else {
+		walk(content);
+	}
+
+	return total;
+}
+
+function selectionLength(selection) {
+	let total = 0;
+
+	if (!selection || !selection.getRanges) {
+		return 0;
+	}
+
+	for (const range of selection.getRanges()) {
+		for (const item of range.getItems()) {
+			if (item.is && (item.is('$text') || item.is('$textProxy'))) {
+				total += item.data.length;
+			}
+		}
+	}
+
+	return total;
+}
+
+function makeWordLimitPlugin(config) {
+	const maxCharacters = Number(config.maxCharCount) > 0 ? Number(config.maxCharCount) : 0;
+	const maxWords = Number(config.maxWordCount) > 0 ? Number(config.maxWordCount) : 0;
+	// CKEditor 4 called the blocking behaviour hardLimit; without it the counter
+	// is advisory and the author can run past the maximum.
+	const hardLimit = config.hardLimit !== false;
+	const showCount = config.showCharCount || config.showWordCount;
+
+	return class HubWordLimit extends Plugin {
+		static get requires() { return [WordCount]; }
+		static get pluginName() { return 'HubWordLimit'; }
+
+		init() {
+			const editor = this.editor;
+			const counter = editor.plugins.get('WordCount');
+
+			if (showCount) {
+				editor.on('ready', () => {
+					const holder = document.createElement('div');
+					holder.className = 'hz-word-count';
+					holder.appendChild(counter.wordCountContainer);
+					editor.ui.view.element.appendChild(holder);
+				});
+			}
+
+			if (!hardLimit || (!maxCharacters && !maxWords)) {
+				return;
+			}
+
+			// Typing and pasting both route through insertContent, so refusing
+			// the event here covers each of them, while deletion stays possible.
+			editor.model.on('insertContent', (evt, args) => {
+				const replaced = selectionLength(args[1] || editor.model.document.selection);
+
+				if (maxCharacters) {
+					const projected = counter.characters + contentLength(args[0]) - replaced;
+
+					if (projected > maxCharacters) {
+						evt.stop();
+						return;
+					}
+				}
+
+				// Words cannot be projected reliably before the fact, so refuse
+				// further input once the maximum has been reached.
+				if (maxWords && counter.words >= maxWords && contentLength(args[0]) > 0) {
+					evt.stop();
+				}
+			}, { priority: 'high' });
+		}
+	};
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -777,6 +887,10 @@ window.HubEditor = {
 		// The Hubzero authoring tools. Macro is a reference panel; the rest
 		// insert or annotate content.
 		extra.push(HubzeroMacro, HubzeroGrid, HubzeroEquation, HubzeroHighlight);
+
+		if (opts.wordCount) {
+			extra.push(makeWordLimitPlugin(opts.wordCount));
+		}
 
 		var mentionConfig = null;
 		if (opts.mentions && opts.mentions.length) {

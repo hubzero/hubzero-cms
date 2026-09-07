@@ -173,13 +173,15 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		$sourceViewButton = !isset($params['sourceViewButton']) || $params['sourceViewButton'];
 		$allowScriptTags  = !empty($params['allowScriptTags']);
 		$editorHeight     = isset($params['height']) ? $params['height'] : '';
-		$mentions = (isset($params['mentions']) && is_array($params['mentions'])) ? $params['mentions'] : array();
+		$mentions  = (isset($params['mentions']) && is_array($params['mentions'])) ? $params['mentions'] : array();
+		$wordcount = (isset($params['wordcount']) && is_array($params['wordcount'])) ? $params['wordcount'] : array();
 		unset(
 			$params['startupMode'],
 			$params['sourceViewButton'],
 			$params['allowScriptTags'],
 			$params['allowPhpTags'],
-			$params['mentions']
+			$params['mentions'],
+			$params['wordcount']
 		);
 
 		if (!isset($params['class']))
@@ -242,6 +244,10 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		if ($mentions)
 		{
 			$opts['mentions'] = array_values($mentions);
+		}
+		if ($wordcount)
+		{
+			$opts['wordCount'] = $wordcount;
 		}
 
 		// The 'minimal' and 'images' class markers select a cut-down toolbar,
