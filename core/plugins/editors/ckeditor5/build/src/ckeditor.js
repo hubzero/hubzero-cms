@@ -35,7 +35,22 @@ import {
 	}
 	var s = document.createElement('style');
 	s.id = 'ckeditor5-styles';
-	s.textContent = editorCss;
+	s.textContent = editorCss + [
+		// Author aids. Both only ever appear in the editing view.
+		'.ck-content .hz-highlight{border-radius:2px;padding:0 1px;}',
+		'.ck-content .hz-highlight-macro{background:#fff3c4;box-shadow:0 0 0 1px #e0b000;}',
+		'.ck-content .hz-highlight-xhub{background:#dcecff;box-shadow:0 0 0 1px #7fb2e5;}',
+		// Protected markup is swapped for a placeholder before the editor sees
+		// it, and the editing view renders an unknown element as a span marked
+		// data-ck-unsafe-element, so without this it is invisible and empty.
+		'.ck-content hz-protected,.ck-content [data-ck-unsafe-element="hz-protected"]',
+		// CKEditor hides unsafe elements outright; show this one, since its whole
+		// purpose is to tell the author that something is there
+		'{display:inline-block!important;padding:0 6px;background:#eee;border:1px dashed #999;',
+		'border-radius:3px;font:0.85em monospace;color:#444;}',
+		'.ck-content hz-protected::before,',
+		'.ck-content [data-ck-unsafe-element="hz-protected"]::before{content:"protected markup";}'
+	].join('');
 	document.head.appendChild(s);
 })();
 
@@ -527,6 +542,95 @@ class HubzeroEquation extends Plugin {
 	}
 }
 
+// Author aids: mark up the things that are not literal text so they are
+// visible while editing.
+//
+// CKEditor 4 did this by rewriting the document — stripping <mark> tags out of
+// the data, adding new ones, and calling setData again on every blur. That put
+// the content itself at risk for a purely visual effect. Markers do the same
+// job in the editing view only and never reach the data.
+const HIGHLIGHT_PATTERNS = [
+	{ name: 'macro', pattern: /\[\[[^\]]*\]\]/g },
+	{ name: 'xhub', pattern: /\{xhub:[^}]*\}/g }
+];
+
+const HIGHLIGHT_PREFIX = 'hzHighlight';
+
+class HubzeroHighlight extends Plugin {
+	static get pluginName() { return 'HubzeroHighlight'; }
+
+	init() {
+		const editor = this.editor;
+
+		editor.conversion.for('editingDowncast').markerToHighlight({
+			model: HIGHLIGHT_PREFIX,
+			view: ({ markerName }) => {
+				const type = markerName.split(':')[1];
+				return { classes: ['hz-highlight', 'hz-highlight-' + type] };
+			}
+		});
+
+		this._refreshing = false;
+		editor.model.document.on('change:data', () => this._refresh());
+	}
+
+	afterInit() {
+		this._refresh();
+	}
+
+	_refresh() {
+		if (this._refreshing) {
+			return;
+		}
+		this._refreshing = true;
+
+		const model = this.editor.model;
+
+		// Not undoable and not affecting data: these markers are decoration, and
+		// must not put the document into a modified state or land in the undo
+		// stack, which is exactly what the CKEditor 4 version got wrong.
+		model.enqueueChange({ isUndoable: false }, writer => {
+			for (const marker of Array.from(model.markers)) {
+				if (marker.name.indexOf(HIGHLIGHT_PREFIX + ':') === 0) {
+					writer.removeMarker(marker.name);
+				}
+			}
+
+			let index = 0;
+
+			for (const rootName of model.document.getRootNames()) {
+				const root = model.document.getRoot(rootName);
+
+				for (const item of model.createRangeIn(root).getItems()) {
+					if (!item.is('$text') && !item.is('$textProxy')) {
+						continue;
+					}
+
+					for (const entry of HIGHLIGHT_PATTERNS) {
+						entry.pattern.lastIndex = 0;
+
+						let match;
+						while ((match = entry.pattern.exec(item.data)) !== null) {
+							const from = item.startOffset + match.index;
+
+							writer.addMarker(HIGHLIGHT_PREFIX + ':' + entry.name + ':' + (index++), {
+								range: writer.createRange(
+									writer.createPositionAt(item.parent, from),
+									writer.createPositionAt(item.parent, from + match[0].length)
+								),
+								usingOperation: false,
+								affectsData: false
+							});
+						}
+					}
+				}
+			}
+		});
+
+		this._refreshing = false;
+	}
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -567,7 +671,7 @@ window.HubEditor = {
 
 		// The Hubzero authoring tools. Macro is a reference panel; the rest
 		// insert or annotate content.
-		extra.push(HubzeroMacro, HubzeroGrid, HubzeroEquation);
+		extra.push(HubzeroMacro, HubzeroGrid, HubzeroEquation, HubzeroHighlight);
 
 		// The cut-down toolbar mirrors the CKEditor 4 plugin's 'minimal' class,
 		// which the forum and other short-form fields ask for
