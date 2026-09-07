@@ -662,9 +662,25 @@ class HubzeroHighlight extends Plugin {
 // carrying {encodedQuery}, and itemTemplate/outputTemplate strings. CKEditor 5
 // wants a feed function, an itemRenderer returning an element, and a downcast
 // for the output markup, so translate rather than ask every caller to change.
+// The values substituted here are the member's own profile fields, and the
+// result is assigned with innerHTML. Escape them: a display name is free text
+// that its owner controls, and it lands in both element content and attribute
+// values, so quotes matter as much as angle brackets.
+const HTML_ESCAPES = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#39;'
+};
+
+function escapeHtml(value) {
+	return String(value).replace(/[&<>"']/g, character => HTML_ESCAPES[character]);
+}
+
 function fillTemplate(template, values) {
 	return template.replace(/\{(\w+)\}/g, (match, key) => {
-		return (values[key] === undefined || values[key] === null) ? '' : String(values[key]);
+		return (values[key] === undefined || values[key] === null) ? '' : escapeHtml(values[key]);
 	});
 }
 
@@ -713,10 +729,17 @@ function makeMentionFeed(config) {
 			// templates are themselves an <li>. Unwrap so the list is valid.
 			if (rendered.tagName === 'LI') {
 				const span = document.createElement('span');
-				span.className = rendered.className;
+
+				// Carry the template's own attributes across, not just its
+				// classes; a template commonly hangs the member id off the item.
+				Array.from(rendered.attributes).forEach(attribute => {
+					span.setAttribute(attribute.name, attribute.value);
+				});
+
 				while (rendered.firstChild) {
 					span.appendChild(rendered.firstChild);
 				}
+
 				return span;
 			}
 
