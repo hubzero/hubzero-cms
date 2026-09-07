@@ -196,7 +196,10 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$atts = array();
 		foreach ($params as $key => $value)
 		{
-			if ($key == 'mentions')
+			// Configuration, not markup. 'limits' is read by the CKEditor 5
+			// plugin and meaningless here, but every parameter this loop does
+			// not recognise ends up as an attribute on the textarea.
+			if ($key == 'mentions' || $key == 'limits')
 			{
 				continue;
 			}
