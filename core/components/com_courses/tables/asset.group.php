@@ -56,6 +56,13 @@ class AssetGroup extends Table
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 		$this->makeAliasUnique();
 
+		// Neither column accepts null, and a TEXT column cannot carry a default,
+		// so an insert that omits them is refused outright by a strict SQL mode
+		// and quietly given an empty string by a lenient one. Creating a group
+		// from the outline builder sends neither.
+		$this->description = (string) $this->description;
+		$this->params      = (string) $this->params;
+
 		if (!$this->id)
 		{
 			$high = $this->getHighestOrder($this->unit_id, $this->parent);
