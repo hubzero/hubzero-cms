@@ -174,14 +174,16 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		$allowScriptTags  = !empty($params['allowScriptTags']);
 		$editorHeight     = isset($params['height']) ? $params['height'] : '';
 		$mentions  = (isset($params['mentions']) && is_array($params['mentions'])) ? $params['mentions'] : array();
-		$wordcount = (isset($params['wordcount']) && is_array($params['wordcount'])) ? $params['wordcount'] : array();
+		// Not 'wordcount': the CKEditor 4 plugin reads that key, and a caller
+		// asking this editor for a limit must not silently reconfigure that one.
+		$limits = (isset($params['limits']) && is_array($params['limits'])) ? $params['limits'] : array();
 		unset(
 			$params['startupMode'],
 			$params['sourceViewButton'],
 			$params['allowScriptTags'],
 			$params['allowPhpTags'],
 			$params['mentions'],
-			$params['wordcount']
+			$params['limits']
 		);
 
 		if (!isset($params['class']))
@@ -245,9 +247,9 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		{
 			$opts['mentions'] = array_values($mentions);
 		}
-		if ($wordcount)
+		if ($limits)
 		{
-			$opts['wordCount'] = $wordcount;
+			$opts['wordCount'] = $limits;
 		}
 
 		// The 'minimal' and 'images' class markers select a cut-down toolbar,

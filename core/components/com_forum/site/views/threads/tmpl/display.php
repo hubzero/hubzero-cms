@@ -137,7 +137,10 @@ $now = Date::of('now')->toSql();
 											// A post is stored in a TEXT column, so cap it well inside that
 											// ceiling. Without strict SQL mode an oversize value is truncated
 											// rather than refused, which cuts the markup mid-tag.
-											'wordcount' => array(
+									// Deliberately not called 'wordcount': the CKEditor 4 plugin reads
+									// that key and would start showing a counter and enforcing a limit
+									// it counts differently, changing behaviour for editors not in scope.
+											'limits' => array(
 												'maxDataBytes'  => 60000,
 												'maxCharCount'  => 20000,
 												'hardLimit'     => true,
