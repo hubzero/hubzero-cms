@@ -135,6 +135,29 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		$tokenField = isset($params['token']) ? $params['token'] : '';
 		unset($params['uploadUrl'], $params['token']);
 
+		// Optional file-browser wiring: callers pass the same fileBrowser* keys
+		// the CKEditor 4 plugin reads. Pulled out here for the same reason.
+		$browseUrl = '';
+		foreach (array('fileBrowserImageBrowseUrl', 'fileBrowserBrowseUrl') as $key)
+		{
+			if (!empty($params[$key]))
+			{
+				$browseUrl = $params[$key];
+				break;
+			}
+		}
+		$browseWidth  = isset($params['fileBrowserWindowWidth']) ? intval($params['fileBrowserWindowWidth']) : 1200;
+		$browseHeight = isset($params['fileBrowserWindowHeight']) ? intval($params['fileBrowserWindowHeight']) : 600;
+		unset(
+			$params['fileBrowserBrowseUrl'],
+			$params['fileBrowserImageBrowseUrl'],
+			$params['fileBrowserImageBrowseLinkUrl'],
+			$params['fileBrowserUploadUrl'],
+			$params['fileBrowserImageUploadUrl'],
+			$params['fileBrowserWindowWidth'],
+			$params['fileBrowserWindowHeight']
+		);
+
 		if (!isset($params['class']))
 		{
 			$params['class'] = array();
@@ -167,6 +190,14 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 		if ($tokenField !== '')
 		{
 			$opts['tokenField'] = $tokenField;
+		}
+		if ($browseUrl !== '')
+		{
+			$opts['fileBrowser'] = array(
+				'url'    => $browseUrl,
+				'width'  => $browseWidth,
+				'height' => $browseHeight
+			);
 		}
 		$optsJson = $this->_js($opts ? $opts : new \stdClass());
 		$idJson   = $this->_js($id);
