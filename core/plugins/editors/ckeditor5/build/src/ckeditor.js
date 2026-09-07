@@ -17,12 +17,15 @@ import {
 	ClassicEditor,
 	Plugin, ButtonView,
 	Essentials, Paragraph, Heading,
-	Bold, Italic, Underline, Strikethrough, Code, RemoveFormat,
+	Bold, Italic, Underline, Strikethrough, Subscript, Superscript, Code, RemoveFormat,
+	FontColor, FontBackgroundColor, FontSize,
 	Link, LinkImage,
-	List, BlockQuote, HorizontalLine, Alignment, Indent, Autoformat, PasteFromOffice,
-	Table, TableToolbar,
+	List, ListProperties, BlockQuote, HorizontalLine, Alignment,
+	Indent, IndentBlock, Autoformat, PasteFromOffice,
+	Table, TableToolbar, TableProperties, TableCellProperties, TableCaption, TableColumnResize,
 	Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageUpload,
-	MediaEmbed, SourceEditing, GeneralHtmlSupport
+	MediaEmbed, SourceEditing, GeneralHtmlSupport,
+	FindAndReplace, SpecialCharacters, SpecialCharactersEssentials, PageBreak, HtmlEmbed
 } from 'ckeditor5';
 
 // Inject the editor stylesheet once.
@@ -171,12 +174,15 @@ window.HubEditor = {
 
 		var plugins = [
 			Essentials, Paragraph, Heading,
-			Bold, Italic, Underline, Strikethrough, Code, RemoveFormat,
+			Bold, Italic, Underline, Strikethrough, Subscript, Superscript, Code, RemoveFormat,
+			FontColor, FontBackgroundColor, FontSize,
 			Link, LinkImage,
-			List, BlockQuote, HorizontalLine, Alignment, Indent, Autoformat, PasteFromOffice,
-			Table, TableToolbar,
+			List, ListProperties, BlockQuote, HorizontalLine, Alignment,
+			Indent, IndentBlock, Autoformat, PasteFromOffice,
+			Table, TableToolbar, TableProperties, TableCellProperties, TableCaption, TableColumnResize,
 			Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize, ImageInsert, ImageUpload,
-			MediaEmbed, SourceEditing, GeneralHtmlSupport
+			MediaEmbed, SourceEditing, GeneralHtmlSupport,
+			FindAndReplace, SpecialCharacters, SpecialCharactersEssentials, PageBreak, HtmlEmbed
 		];
 
 		var extra = [];
@@ -187,9 +193,13 @@ window.HubEditor = {
 		// The browse button only exists when a caller supplied a browse URL
 		var toolbar = [
 			'heading', '|',
-			'bold', 'italic', 'underline', 'strikethrough', 'code', 'removeFormat', '|',
-			'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment', '|',
-			'insertImage', 'mediaEmbed', 'insertTable', '|',
+			'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript',
+			'code', 'removeFormat', '|',
+			'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+			'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
+			'outdent', 'indent', '|',
+			'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
+			'findAndReplace', '|',
 			'sourceEditing', '|', 'undo', 'redo'
 		];
 
@@ -209,7 +219,13 @@ window.HubEditor = {
 					'toggleImageCaption', 'imageTextAlternative', '|', 'resizeImage'
 				]
 			},
-			table: { contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] },
+			table: {
+				contentToolbar: [
+					'tableColumn', 'tableRow', 'mergeTableCells',
+					'tableProperties', 'tableCellProperties', 'toggleTableCaption'
+				]
+			},
+			list: { properties: { styles: true, startIndex: true, reversed: true } },
 			mediaEmbed: { previewsInData: true },
 			htmlSupport: {
 				// Allow every element, attribute, class and style, which is what
