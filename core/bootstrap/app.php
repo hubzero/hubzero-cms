@@ -144,6 +144,33 @@ if (!function_exists('dump'))
 	}
 }
 
+if (!function_exists('e'))
+{
+	/**
+	 * Encode HTML special characters in a string.
+	 *
+	 * Templates shared with a newer core call this, where it arrives with
+	 * Laravel's helpers. Without it the template fatals, and because it is the
+	 * error template that does so, the real error is replaced by a stack trace
+	 * about the missing function.
+	 *
+	 * Guarded so that it defers to the real helper wherever that is present.
+	 *
+	 * @param   mixed    $value
+	 * @param   boolean  $doubleEncode
+	 * @return  string
+	 */
+	function e($value, $doubleEncode = true)
+	{
+		if (is_object($value) && method_exists($value, 'toHtml'))
+		{
+			return (string) $value->toHtml();
+		}
+
+		return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', $doubleEncode);
+	}
+}
+
 /**
  * Return the given object. Useful for chaining.
  *
