@@ -679,7 +679,24 @@ function makeMentionFeed(config) {
 				picture: item.picture
 			});
 
-			return holder.firstElementChild || document.createTextNode(item.username);
+			const rendered = holder.firstElementChild;
+
+			if (!rendered) {
+				return document.createTextNode(item.username);
+			}
+
+			// CKEditor puts each suggestion in its own <li>, while the CKEditor 4
+			// templates are themselves an <li>. Unwrap so the list is valid.
+			if (rendered.tagName === 'LI') {
+				const span = document.createElement('span');
+				span.className = rendered.className;
+				while (rendered.firstChild) {
+					span.appendChild(rendered.firstChild);
+				}
+				return span;
+			}
+
+			return rendered;
 		}
 	};
 }
