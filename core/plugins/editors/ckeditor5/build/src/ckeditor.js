@@ -15,7 +15,7 @@
 import editorCss from 'ckeditor5/ckeditor5.css';
 import {
 	ClassicEditor,
-	Plugin, ButtonView,
+	Plugin, ButtonView, View, Dialog,
 	Essentials, Paragraph, Heading,
 	Bold, Italic, Underline, Strikethrough, Subscript, Superscript, Code, RemoveFormat,
 	FontColor, FontBackgroundColor, FontSize,
@@ -216,6 +216,156 @@ function installProtectedSource(editor, patterns) {
 	};
 }
 
+// A dialog body built from plain DOM. The CKEditor 5 template system is not a
+// good fit for the small ad-hoc forms these plugins need, so give each one a
+// container and let it fill it in.
+class HubDialogView extends View {
+	constructor(locale, build) {
+		super(locale);
+		this._build = build;
+		this.setTemplate({ tag: 'div', attributes: { class: ['ck', 'ck-reset_all-excluded', 'hz-dialog'] } });
+	}
+
+	render() {
+		super.render();
+		this._build(this.element);
+	}
+}
+
+// Insert a fragment of HTML at the selection. Goes through the data processor,
+// so protected source and the html support list apply as they do on load.
+function insertHtml(editor, html) {
+	editor.model.insertContent(editor.data.toModel(editor.data.processor.toView(html)));
+}
+
+// Register a toolbar button that runs a callback.
+function addButton(editor, name, label, icon, onExecute) {
+	editor.ui.componentFactory.add(name, locale => {
+		const view = new ButtonView(locale);
+		view.set({ label: label, icon: icon, tooltip: true });
+		view.on('execute', onExecute);
+		return view;
+	});
+}
+
+const MACRO_ICON = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h12v2H4V3Zm0 4h12v2H4V7Zm0 4h8v2H4v-2Zm0 4h8v2H4v-2Zm10.5-1.2 2.2-2.2-1.1-1.1-2.2 2.2-2.2-2.2-1.1 1.1 2.2 2.2-2.2 2.2 1.1 1.1 2.2-2.2 2.2 2.2 1.1-1.1-2.2-2.2Z"/></svg>';
+const GRID_ICON  = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 3h5v14H2V3Zm6.5 0h3v14h-3V3ZM13 3h5v14h-5V3Zm1.5 1.5v11h2v-11h-2ZM3.5 4.5v11h2v-11h-2Zm6.5 0v11h1v-11h-1Z"/></svg>';
+
+// Column layouts, matching the CKEditor 4 grid dialog.
+const GRID_LAYOUTS = [
+	{ value: 'one',   label: 'One',   cols: 1, cls: 'col span12' },
+	{ value: 'two',   label: 'Two',   cols: 2, cls: 'col span6' },
+	{ value: 'three', label: 'Three', cols: 3, cls: 'col span4' },
+	{ value: 'four',  label: 'Four',  cols: 4, cls: 'col span3' },
+	{ value: 'five',  label: 'Five',  cols: 5, cls: 'col five columns' },
+	{ value: 'six',   label: 'Six',   cols: 6, cls: 'col span2' }
+];
+
+function buildGrid(value, placeholders) {
+	const layout = GRID_LAYOUTS.find(l => l.value === value) || GRID_LAYOUTS[0];
+	let html = '<div class="grid">';
+
+	for (let i = 0; i < layout.cols; i++) {
+		const cls = layout.cls + ((i + 1 === layout.cols) ? ' omega' : '');
+		html += '<div class="' + cls + '">' + (placeholders ? 'Column ' + (i + 1) : '') + '</div>';
+	}
+
+	return html + '</div>';
+}
+
+// A reference list of the macros available on this hub, shown in a dialog.
+// It inserts nothing; the CKEditor 4 version was a help panel too.
+class HubzeroMacro extends Plugin {
+	static get requires() { return [Dialog]; }
+	static get pluginName() { return 'HubzeroMacro'; }
+
+	init() {
+		const editor = this.editor;
+		const url = (editor.config.get('hubzero.macroUrl')) || '/help/content/formathtml/macros';
+
+		addButton(editor, 'hubzeroMacro', 'Macros', MACRO_ICON, () => {
+			const dialog = editor.plugins.get('Dialog');
+
+			dialog.show({
+				id: 'hubzeroMacro',
+				title: 'Macros',
+				content: new HubDialogView(editor.locale, el => {
+					const frame = document.createElement('iframe');
+					frame.src = url;
+					frame.title = 'Macros';
+					frame.style.cssText = 'width:760px;height:460px;border:0;display:block;';
+					el.appendChild(frame);
+				}),
+				actionButtons: [
+					{ label: 'Close', withText: true, onExecute: () => dialog.hide() }
+				]
+			});
+		});
+	}
+}
+
+// Insert a column layout.
+class HubzeroGrid extends Plugin {
+	static get requires() { return [Dialog]; }
+	static get pluginName() { return 'HubzeroGrid'; }
+
+	init() {
+		const editor = this.editor;
+
+		addButton(editor, 'hubzeroGrid', 'Grid', GRID_ICON, () => {
+			const dialog = editor.plugins.get('Dialog');
+			let select, check;
+
+			dialog.show({
+				id: 'hubzeroGrid',
+				title: 'Grid creator',
+				content: new HubDialogView(editor.locale, el => {
+					el.style.cssText = 'padding:12px;min-width:280px;';
+
+					const row = document.createElement('div');
+					row.style.cssText = 'margin-bottom:10px;';
+					const label = document.createElement('label');
+					label.textContent = 'Number of columns: ';
+					select = document.createElement('select');
+					GRID_LAYOUTS.forEach(l => {
+						const o = document.createElement('option');
+						o.value = l.value;
+						o.textContent = l.label;
+						select.appendChild(o);
+					});
+					label.appendChild(select);
+					row.appendChild(label);
+
+					const row2 = document.createElement('div');
+					const label2 = document.createElement('label');
+					check = document.createElement('input');
+					check.type = 'checkbox';
+					label2.appendChild(check);
+					label2.appendChild(document.createTextNode(' Include placeholders'));
+					row2.appendChild(label2);
+
+					el.appendChild(row);
+					el.appendChild(row2);
+				}),
+				actionButtons: [
+					{ label: 'Cancel', withText: true, onExecute: () => dialog.hide() },
+					{
+						label: 'Insert',
+						withText: true,
+						class: 'ck-button-action',
+						onExecute: () => {
+							const html = buildGrid(select.value, check.checked);
+							dialog.hide();
+							editor.model.change(() => insertHtml(editor, html));
+							editor.editing.view.focus();
+						}
+					}
+				]
+			});
+		});
+	}
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -254,6 +404,10 @@ window.HubEditor = {
 		}
 		extra.push(makeProtectedSourcePlugin(protectedPatterns));
 
+		// The Hubzero authoring tools. Macro is a reference panel; the rest
+		// insert or annotate content.
+		extra.push(HubzeroMacro, HubzeroGrid);
+
 		// The cut-down toolbar mirrors the CKEditor 4 plugin's 'minimal' class,
 		// which the forum and other short-form fields ask for
 		var toolbar = opts.minimal
@@ -270,12 +424,19 @@ window.HubEditor = {
 				'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
 				'outdent', 'indent', '|',
 				'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
+				'hubzeroGrid', 'hubzeroMacro', '|',
 				'findAndReplace'
 			];
 
 		// Images are insertable in minimal mode only when asked for
 		if (opts.minimal && opts.images) {
 			toolbar.push('|', 'insertImage');
+		}
+
+		// As in CKEditor 4, the macro reference is offered in minimal mode only
+		// when the caller asks for it
+		if (opts.minimal && opts.macros) {
+			toolbar.push('|', 'hubzeroMacro');
 		}
 
 		if (opts.fileBrowser && opts.fileBrowser.url) {
