@@ -114,10 +114,8 @@ jQuery(document).ready(function($) {
 
 	$('.edit-form').submit(function ( e ) {
 		e.preventDefault();
-		if (typeof CKEDITOR !== 'undefined') {
-			for (var instance in CKEDITOR.instances) {
-				CKEDITOR.instances[instance].updateElement();
-			}
+		if (window.HUB && HUB.Editor) {
+			HUB.Editor.updateAllElements();
 		}
 	});
 

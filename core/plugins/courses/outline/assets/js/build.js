@@ -402,17 +402,15 @@ HUB.CoursesOutline = {
 										});
 
 										content.find('.edit-form').submit(function ( e ) {
-											// Run the CKEditor
-											var ckEditor = objects.iframe.CKEDITOR;
-											if(ckEditor) {
-												for(var instanceName in ckEditor.instances) {
-													ckEditor.instances[instanceName].updateElement();
-												}
+											// Sync all editor instances before submit. The form is
+											// loaded into the content box iframe, which has its own
+											// registry, so sync that window when it is there.
+											var frame = objects.iframe;
+											if (frame && frame.HUB && frame.HUB.Editor) {
+												frame.HUB.Editor.updateAllElements();
 											}
-											else if (typeof CKEDITOR !== 'undefined') {
-												for(var instanceName in CKEDITOR.instances) {
-													CKEDITOR.instances[instanceName].updateElement();
-												}
+											else if (window.HUB && HUB.Editor) {
+												HUB.Editor.updateAllElements();
 											}
 
 											// Create ajax call to change info in the database
@@ -1272,17 +1270,15 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function ( e ) {
-						// Run the CKEditor
-						var ckEditor = objects.iframe.CKEDITOR;
-						if(ckEditor) {
-							for(var instanceName in ckEditor.instances) {
-								ckEditor.instances[instanceName].updateElement();
-							}
+						// Sync all editor instances before submit. The form is
+						// loaded into the content box iframe, which has its own
+						// registry, so sync that window when it is there.
+						var frame = objects.iframe;
+						if (frame && frame.HUB && frame.HUB.Editor) {
+							frame.HUB.Editor.updateAllElements();
 						}
-						else if (typeof CKEDITOR !== 'undefined') {
-							for(var instanceName in CKEDITOR.instances) {
-								CKEDITOR.instances[instanceName].updateElement();
-							}
+						else if (window.HUB && HUB.Editor) {
+							HUB.Editor.updateAllElements();
 						}
 
 						// Create ajax call to change info in the database
