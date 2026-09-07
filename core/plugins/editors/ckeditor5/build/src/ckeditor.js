@@ -391,10 +391,17 @@ const EQUATION_ICON = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/sv
 const EQUATION_CLASS = 'hubzeroequation-result';
 
 function equationHtml(expression, src) {
+	// Escape the whole expression, not just its quotes. LaTeX is full of
+	// ampersands — every aligned environment uses them as column separators —
+	// and an unescaped one lets the parser read the following characters as an
+	// entity, so the expression read back on the next edit is not the one that
+	// was typed.
+	const escaped = escapeHtml(expression);
+
 	return '<img class="' + EQUATION_CLASS + '"'
-		+ ' data-equation="' + expression.replace(/"/g, '&quot;') + '"'
-		+ ' alt="Equation: ' + expression.replace(/"/g, '&quot;') + '"'
-		+ ' src="' + src + '">';
+		+ ' data-equation="' + escaped + '"'
+		+ ' alt="Equation: ' + escaped + '"'
+		+ ' src="' + escapeHtml(src) + '">';
 }
 
 // The view document does not watch for double clicks out of the box.
