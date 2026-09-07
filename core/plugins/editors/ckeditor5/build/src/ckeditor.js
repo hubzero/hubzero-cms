@@ -544,6 +544,23 @@ class HubzeroEquation extends Plugin {
 	}
 }
 
+// Run fn once the editor has been quiet for a moment, and stop when it goes
+// away so a pending call cannot land on a destroyed editor.
+function afterIdle(editor, fn, wait) {
+	let timer = null;
+
+	editor.on('destroy', () => clearTimeout(timer));
+
+	return () => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			if (editor.state !== 'destroyed') {
+				fn();
+			}
+		}, wait);
+	};
+}
+
 // Author aids: mark up the things that are not literal text so they are
 // visible while editing.
 //
@@ -573,7 +590,13 @@ class HubzeroHighlight extends Plugin {
 		});
 
 		this._refreshing = false;
-		editor.model.document.on('change:data', () => this._refresh());
+
+		// Each pass walks the whole document, so coalesce them rather than
+		// paying that on every keystroke. Highlighting is a reading aid; it does
+		// not need to keep up with typing, and not flickering mid-word is an
+		// improvement in its own right.
+		const refresh = afterIdle(editor, () => this._refresh(), 200);
+		editor.model.document.on('change:data', refresh);
 	}
 
 	afterInit() {
@@ -846,7 +869,12 @@ function makeWordLimitPlugin(config) {
 				// down by hand; reverting it here would empty the editor instead.
 				editor.on('ready', () => { armed = true; });
 
-				editor.model.document.on('change:data', () => {
+				// Serialising the document is the expensive part, and it is worst
+				// on exactly the long posts this guards, so coalesce the checks
+				// rather than running one per keystroke. The character limit
+				// above is the immediate feedback; this is the backstop behind
+				// it, and it only has to catch the document before it is saved.
+				const check = afterIdle(editor, () => {
 					if (!armed || reverting) {
 						return;
 					}
@@ -858,7 +886,9 @@ function makeWordLimitPlugin(config) {
 					reverting = true;
 					editor.execute('undo');
 					reverting = false;
-				});
+				}, 400);
+
+				editor.model.document.on('change:data', check);
 			}
 
 			if (!maxCharacters && !maxWords) {
