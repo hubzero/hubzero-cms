@@ -212,13 +212,15 @@ window.HubEditor = {
 			table: { contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] },
 			mediaEmbed: { previewsInData: true },
 			htmlSupport: {
-				// Preserve layout containers, figures and media so custom content
-				// (e.g. multi-column layouts) round-trips instead of being flattened.
+				// Allow every element, attribute, class and style, which is what
+				// the CKEditor 4 plugin did with extraAllowedContent '*(*)[*]{*}'.
+				// Anything narrower is not a display quirk: the editor writes out
+				// what it kept, so markup it refuses to load is deleted from the
+				// page on the next save. Existing group pages carry custom tags
+				// such as <group:include/> and image maps that no fixed list would
+				// anticipate. Filtering stays a server-side concern, as before.
 				allow: [
-					{ name: /^(div|section|article|aside|figure|figcaption|span)$/, classes: true, styles: true, attributes: true },
-					{ name: 'video', attributes: true, classes: true, styles: true },
-					{ name: 'source', attributes: true },
-					{ name: 'iframe', attributes: true, classes: true, styles: true }
+					{ name: /.*/, attributes: true, classes: true, styles: true }
 				]
 			}
 		}).then(function (editor) {
