@@ -15,6 +15,7 @@ favicon.ico
 psalm.xml
 .claude
 .vscode
+.playwright-mcp/
 phpunit.xml
 configuration.php
 hubconfiguration.php
