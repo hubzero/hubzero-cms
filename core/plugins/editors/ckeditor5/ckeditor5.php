@@ -28,8 +28,16 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 	 */
 	public function onInit()
 	{
-		// Add ckeditor
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'js/ckeditor.js' );
+		$bundle = __DIR__ . '/assets/js/ckeditor.js';
+
+		// Version the bundle by its mtime, as the CKEditor 4 plugin does, so a
+		// rebuilt editor is not shadowed by a browser cache
+		$version = file_exists($bundle) ? '?v=' . filemtime($bundle) : '';
+
+		Document::addScript(
+			str_replace('/administrator', '', Request::base(true))
+			. '/' . $this->_basePath . 'js/ckeditor.js' . $version
+		);
 	}
 
 	/**

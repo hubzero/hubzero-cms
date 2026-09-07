@@ -161,6 +161,61 @@ function makeFileBrowserPlugin(cfg) {
 	};
 }
 
+// Markup CKEditor 5 must not be allowed to parse.
+//
+// A PHP block becomes a nameless comment node and crashes conversion outright,
+// so any page containing one cannot be opened at all. A self-closing namespaced
+// tag such as <group:include ... /> stays open instead, because HTML5 ignores
+// the trailing slash on an unknown element, and swallows the block after it.
+//
+// CKEditor 4 handled both with config.protectedSource. There is no equivalent
+// here, so swap each match for a placeholder element before the data processor
+// sees it and put the original back on the way out. Everything else CKEditor 4
+// protected (image maps, {xhub:} macros) round-trips correctly on its own now
+// that the html support list is permissive, and is left alone.
+var PROTECTED_ALWAYS = [
+	/<\?[\s\S]*?\?>/g,
+	/<([a-z][\w-]*:[\w-]+)([^>]*?)\/>/gi
+];
+
+var PROTECTED_SCRIPT = /<script[^>]*>[\s\S]*?<\/script>/gi;
+
+var PLACEHOLDER = /<hz-protected data-hz-source="(\d+)"><\/hz-protected>/g;
+
+function makeProtectedSourcePlugin(patterns) {
+	return function (editor) {
+		installProtectedSource(editor, patterns);
+	};
+}
+
+function installProtectedSource(editor, patterns) {
+	if (!patterns.length) {
+		return;
+	}
+
+	var store = [];
+	var processor = editor.data.processor;
+	var toView = processor.toView.bind(processor);
+	var toData = processor.toData.bind(processor);
+
+	processor.toView = function (data) {
+		patterns.forEach(function (pattern) {
+			data = data.replace(pattern, function (match) {
+				store.push(match);
+				return '<hz-protected data-hz-source="' + (store.length - 1) + '"></hz-protected>';
+			});
+		});
+
+		return toView(data);
+	};
+
+	processor.toData = function (fragment) {
+		return toData(fragment).replace(PLACEHOLDER, function (match, index) {
+			return (store[index] !== undefined) ? store[index] : '';
+		});
+	};
+}
+
 function makeUploadPlugin(url, tokenField) {
 	return function (editor) {
 		editor.plugins.get('FileRepository').createUploadAdapter =
@@ -190,7 +245,15 @@ window.HubEditor = {
 			extra.push(makeUploadPlugin(opts.uploadUrl, opts.tokenField));
 		}
 
-		// The browse button only exists when a caller supplied a browse URL
+		// Registered as a plugin so it is in place before the editor parses the
+		// element's initial content, which is where a PHP block would otherwise
+		// crash conversion before create() ever resolves
+		var protectedPatterns = PROTECTED_ALWAYS.slice();
+		if (opts.allowScriptTags) {
+			protectedPatterns.push(PROTECTED_SCRIPT);
+		}
+		extra.push(makeProtectedSourcePlugin(protectedPatterns));
+
 		var toolbar = [
 			'heading', '|',
 			'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript',
@@ -199,14 +262,21 @@ window.HubEditor = {
 			'link', 'bulletedList', 'numberedList', 'blockQuote', 'horizontalLine', 'alignment',
 			'outdent', 'indent', '|',
 			'insertImage', 'mediaEmbed', 'insertTable', 'specialCharacters', 'pageBreak', 'htmlEmbed', '|',
-			'findAndReplace', '|',
-			'sourceEditing', '|', 'undo', 'redo'
+			'findAndReplace'
 		];
 
 		if (opts.fileBrowser && opts.fileBrowser.url) {
 			extra.push(makeFileBrowserPlugin(opts.fileBrowser));
-			toolbar.splice(toolbar.indexOf('insertTable') + 1, 0, 'hubzeroFileBrowser');
+
+			var after = toolbar.indexOf('insertTable');
+			if (after === -1) {
+				toolbar.push('hubzeroFileBrowser');
+			} else {
+				toolbar.splice(after + 1, 0, 'hubzeroFileBrowser');
+			}
 		}
+
+		toolbar.push('|', 'sourceEditing', '|', 'undo', 'redo');
 
 		return ClassicEditor.create(el, {
 			licenseKey: 'GPL',
