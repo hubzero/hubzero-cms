@@ -9,6 +9,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\System\PrivilegeManager;
 use Hubzero\Utility\Date;
 
 /**
@@ -16,6 +17,13 @@ use Hubzero\Utility\Date;
  **/
 class User extends Base implements CommandInterface
 {
+	/**
+	 * Shortest password the password task will accept
+	 *
+	 * @var  int
+	 **/
+	const MIN_PASSWORD_LENGTH = 8;
+
 	/**
 	 * Default (required) command
 	 *
@@ -381,5 +389,160 @@ class User extends Base implements CommandInterface
 	public function disable()
 	{
 		$this->output->addLine('Not implemented', 'warning');
+	}
+
+	/**
+	 * Set a new password for a user
+	 *
+	 * Restricted to root because it rewrites the credentials of an account
+	 * other than the caller's own.
+	 *
+	 * @museDescription  Sets a new password for a user, by username or ID (root only)
+	 *
+	 * @return  void
+	 **/
+	public function password()
+	{
+		$privileges = PrivilegeManager::getInstance();
+
+		if (!$privileges->isRoot() && !$privileges->isSudo())
+		{
+			$this->output->error('This command must be run as root, or under sudo.');
+		}
+
+		$identifier = $this->arguments->getOpt(3);
+
+		if (!$identifier && $this->output->isInteractive())
+		{
+			$identifier = $this->output->getResponse('Which user (username or ID)?');
+		}
+
+		if (!$identifier)
+		{
+			$this->output->error('Please provide a user in the format: muse user password [username|userId]');
+		}
+
+		$user = is_numeric($identifier)
+			? \Hubzero\User\User::oneOrNew((int)$identifier)
+			: \Hubzero\User\User::oneByUsername($identifier);
+
+		if (!$user || !$user->get('id'))
+		{
+			$this->output->error('User does not appear to be valid');
+		}
+
+		// A password given on the command line lands in the shell history, so it
+		// is only offered for non-interactive use
+		$password = $this->arguments->getOpt('password');
+
+		if (!$password)
+		{
+			if (!$this->output->isInteractive())
+			{
+				$this->output->error('Please provide a password with --password=, or run interactively');
+			}
+
+			$password = $this->promptPassword();
+		}
+
+		if (strlen($password) < self::MIN_PASSWORD_LENGTH)
+		{
+			$this->output->error('Password must be at least ' . self::MIN_PASSWORD_LENGTH . ' characters');
+		}
+
+		// changePassword() writes the hash to users_password, xprofiles and users,
+		// resets the shadow fields, and files the old hash into password history
+		if (!\Hubzero\User\Password::changePassword($user->get('id'), $password))
+		{
+			$this->output->error('Failed to set the password for ' . $user->get('username'));
+		}
+
+		$this->output->addLine(
+			'Password updated for ' . $user->get('username') . ' (' . $user->get('id') . ')',
+			'success'
+		);
+	}
+
+	/**
+	 * Ask for a password twice, without echoing it
+	 *
+	 * @return  string
+	 **/
+	private function promptPassword()
+	{
+		$password = $this->readHiddenResponse('New password:');
+		$confirm  = $this->readHiddenResponse('Confirm password:');
+
+		if ($password !== $confirm)
+		{
+			$this->output->error('Passwords do not match');
+		}
+
+		return $password;
+	}
+
+	/**
+	 * Read a line from stdin with terminal echo turned off
+	 *
+	 * Falls back to a visible read where stty is unavailable.
+	 *
+	 * @param   string  $prompt  Question to ask the user
+	 * @return  string
+	 **/
+	private function readHiddenResponse($prompt)
+	{
+		$this->output->addString(trim($prompt) . ' ');
+
+		$style = (function_exists('shell_exec') && strncasecmp(PHP_OS, 'WIN', 3) !== 0)
+			? shell_exec('stty -g 2>/dev/null')
+			: null;
+
+		// No terminal control available, so read the response visibly
+		if ($style === null)
+		{
+			$response = fgets(STDIN);
+
+			return ($response === false) ? '' : rtrim($response, "\r\n");
+		}
+
+		$restore = function () use ($style)
+		{
+			shell_exec('stty ' . trim($style) . ' 2>/dev/null');
+		};
+
+		// Ctrl+C raises SIGINT, which neither the finally below nor a shutdown
+		// function would see. Without this the caller is left with a terminal
+		// that no longer echoes what they type.
+		$trapped = function_exists('pcntl_async_signals') && function_exists('pcntl_signal');
+
+		if ($trapped)
+		{
+			pcntl_async_signals(true);
+			pcntl_signal(SIGINT, function () use ($restore)
+			{
+				$restore();
+				exit(130);
+			});
+		}
+
+		shell_exec('stty -echo 2>/dev/null');
+
+		try
+		{
+			$response = fgets(STDIN);
+		}
+		finally
+		{
+			$restore();
+
+			if ($trapped)
+			{
+				pcntl_signal(SIGINT, SIG_DFL);
+			}
+		}
+
+		$this->output->addLine('');
+
+		return ($response === false) ? '' : rtrim($response, "\r\n");
 	}
 }
