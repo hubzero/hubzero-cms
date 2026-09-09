@@ -19,6 +19,6 @@
 		<field type="text" name="template_templates" default="http://www.campaignmonitor.com/templates/" label="COM_NEWSLETTER_CONFIG_TEMPLATES_LINK_LABEL" description="COM_NEWSLETTER_CONFIG_TEMPLATES_LINK_DESC" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_kb" section="component" />
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_newsletter" section="component" />
 	</fieldset>
 </config>

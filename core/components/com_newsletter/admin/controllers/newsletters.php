@@ -111,7 +111,7 @@ class Newsletters extends AdminController
 				'int'
 			),
 			'type'=> Request::getstate(
-				$this->_option . '.' . $this->controller . '.type',
+				$this->_option . '.' . $this->_controller . '.type',
 				'type',
 				''
 			),

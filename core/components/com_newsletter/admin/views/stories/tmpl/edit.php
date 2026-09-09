@@ -33,7 +33,7 @@ Toolbar::cancel();
 		</div>
 		<div class="input-wrap">
 			<label for="field-type"><?php echo Lang::txt('COM_NEWSLETTER_STORY_TYPE'); ?>:</label>
-			<span class="pseudo-input"><?php echo Lang::txt('COM_NEWSLETTER_STORY_' . ucfirst($this->type)); ?></span>
+			<span class="pseudo-input"><?php echo Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)); ?></span>
 			<input type="hidden" name="type" id="field-type" value="<?php echo $this->escape(strtolower($this->type)); ?>" />
 		</div>
 		<div class="input-wrap">

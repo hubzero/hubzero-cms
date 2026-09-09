@@ -143,7 +143,7 @@ $this->js();
 								</a>
 							<?php else : ?>
 								<a class="state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1'); ?>">
-									<span><?php echo Lang::txt('JYES'); ?></span>
+									<span><?php echo Lang::txt('JNO'); ?></span>
 								</a>
 							<?php endif; ?>
 						</td>

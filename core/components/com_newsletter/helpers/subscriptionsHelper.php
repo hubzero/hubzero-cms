@@ -30,9 +30,9 @@ class SubscriptionsHelper
 		$this->db->setQuery("
 			select pf.id, pf.label, es.order, es.view, up.profile_value as $activeRef,
 			       pf.name as foreign_key
-			from jos_email_subscriptions es
-			left join jos_user_profile_fields pf on es.profile_field_name = pf.name
-			left join jos_user_profiles up on pf.name = up.profile_key and up.user_id = $userId;");
+			from #__email_subscriptions es
+			left join #__user_profile_fields pf on es.profile_field_name = pf.name
+			left join #__user_profiles up on pf.name = up.profile_key and up.user_id = $userId;");
 
 		return array_map(function($sub) {
 			return $this->subToMap($sub);
@@ -56,7 +56,7 @@ class SubscriptionsHelper
 		// If empty profileFieldId passed, we were unable to look up the subscription:
 		if ($profileFieldId) {
 			$this->db->setQuery("select value
-		                     from jos_user_profile_options
+		                     from #__user_profile_options
 		                     where field_id = $profileFieldId");
 		} else {
 			throw new Exception(self::$subscriptionNotFound, 400);
@@ -111,7 +111,7 @@ class SubscriptionsHelper
 		$profileFieldFk = $subscription['foreign_key'];
 
 		$countQuery = "select id
-		               from jos_user_profiles
+		               from #__user_profiles
 		               where user_id = $userId and profile_key = '$profileFieldFk';";
 
 		$this->db->setQuery($countQuery);
@@ -125,7 +125,7 @@ class SubscriptionsHelper
 		$preference = $subscription['preference'];
 		$profileFieldFk = $subscription['foreign_key'];
 
-		return "update jos_user_profiles
+		return "update #__user_profiles
 		        set profile_value = '$preference'
 		        where profile_key = '$profileFieldFk' and user_id = $userId;";
 	}
@@ -134,7 +134,7 @@ class SubscriptionsHelper
 		$preference = $subscription['preference'];
 		$profileFieldFk = $subscription['foreign_key'];
 
-		return "insert into jos_user_profiles
+		return "insert into #__user_profiles
 		        (user_id, profile_key, profile_value)
 		        values($userId, '$profileFieldFk', '$preference');";
 	}
@@ -158,8 +158,8 @@ class SubscriptionsHelper
 	{
 		$this->db->setQuery("
 				select pf.name
-				from jos_email_subscriptions es
-				left join jos_user_profile_fields pf on es.profile_field_name = pf.name;");
+				from #__email_subscriptions es
+				left join #__user_profile_fields pf on es.profile_field_name = pf.name;");
 
 		return $this->db->loadColumn();
 	}
@@ -177,9 +177,9 @@ class SubscriptionsHelper
 	{
 		$this->db->setQuery("
 				select po.value
-				from jos_email_subscriptions es
-				left join jos_user_profile_fields pf on es.profile_field_name = pf.name
-				left join jos_user_profile_options po on pf.id = po.field_id;");
+				from #__email_subscriptions es
+				left join #__user_profile_fields pf on es.profile_field_name = pf.name
+				left join #__user_profile_options po on pf.id = po.field_id;");
 
 		return $this->db->loadColumn();
 	}
