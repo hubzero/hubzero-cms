@@ -378,7 +378,7 @@ class Item extends Nested
                 ->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val']);
 
             if (!$query->execute()) {
-                $this->addError($query->getError());
+                $this->addError(App::get('db')->getErrorMsg());
                 return false;
             }
 
@@ -393,7 +393,7 @@ class Item extends Nested
                 );
 
             if (!$query->execute()) {
-                $this->addError($query->getError());
+                $this->addError(App::get('db')->getErrorMsg());
                 return false;
             }
 
@@ -691,6 +691,7 @@ class Item extends Nested
 
             // Confirm a view is defined.
             $formFile = false;
+            $view = '';
             if (isset($args['view'])) {
                 $view = $args['view'];
 
