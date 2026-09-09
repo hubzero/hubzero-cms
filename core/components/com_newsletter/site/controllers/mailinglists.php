@@ -29,6 +29,8 @@ use Hubzero\Facades\Notify;
  */
 class Mailinglists extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
     /**
      * Override parent build title method
      *

@@ -103,7 +103,7 @@
     @else
         <x-empty-state
             :title="Lang::txt('COM_POLL_SELECT_POLL')"
-            message="Choose a poll from the sidebar to view its results."
+            :message="Lang::txt('COM_POLL_SELECT_POLL_MESSAGE')"
         />
     @endif
 </x-page-container>

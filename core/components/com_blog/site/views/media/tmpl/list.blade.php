@@ -44,16 +44,16 @@
 
     @if(count($folders) == 0 && count($docs) == 0)
       <div class="text-center py-6 px-3">
-        <p class="text-base-content/50 text-sm">
+        <p class="text-subtle-foreground text-sm">
           {{ Lang::txt('COM_BLOG_NO_FILES_FOUND') }}
         </p>
-        <p class="text-base-content/35 text-xs mt-1">
+        <p class="text-faint-foreground text-xs mt-1">
           Upload files below to attach them to your post
         </p>
       </div>
     @else
-      <ul class="list-none m-0 p-0 divide-y divide-base-200">
-        <li class="text-xs text-base-content/40 px-2 py-1.5 text-center">
+      <ul class="list-none m-0 p-0 divide-y divide-[var(--color-border)]">
+        <li class="text-xs text-faint-foreground px-2 py-1.5 text-center">
           Select a file to insert, copy, or delete
         </li>
         @foreach($folders as $k => $folder)
@@ -117,7 +117,7 @@
             );
           @endphp
           <li class="file-row flex items-center gap-2 py-1.5 px-2
-                     cursor-pointer hover:bg-base-200 rounded transition-colors"
+                     cursor-pointer hover:bg-muted rounded transition-colors"
               data-filename="{{ $filename }}"
               data-ext="{{ strtoupper($ext) }}"
               data-size="{{ $sizeStr }}"
@@ -128,7 +128,7 @@
               data-confirm="{{ $confirmFileMsg }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke-width="1.5" stroke="currentColor"
-                 class="w-4 h-4 shrink-0 text-base-content/40" aria-hidden="true">
+                 class="w-4 h-4 shrink-0 text-faint-foreground" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
                     d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
             </svg>

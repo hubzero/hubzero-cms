@@ -11,7 +11,6 @@ namespace Components\Citations\Site\Controllers;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
-use Hubzero\Component\SiteController;
 use Exception;
 use Filesystem;
 use Hubzero\Facades\Pathway;
@@ -28,7 +27,7 @@ use Hubzero\Facades\App;
 /**
  * Citations controller class for importing citation entries
  */
-class Import extends SiteController
+class Import extends ComponentController
 {
     /**
      * Redirect to login form

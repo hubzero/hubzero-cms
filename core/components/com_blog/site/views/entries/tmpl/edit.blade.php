@@ -89,8 +89,7 @@
           </svg>
           {{ Lang::txt('COM_BLOG_FIELD_FILES') }}
         </div>
-        <iframe height="520"
-                name="filer"
+        <iframe name="filer"
                 id="filer"
                 src="{{ $mediaUrl }}"
                 class="w-full border-0"
@@ -101,150 +100,99 @@
       <form id="hubForm" method="post" action="{{ $saveUrl }}" class="space-y-6">
 
         {{-- Section: Details --}}
-        <div class="form-section">
-          <h2 class="form-section-heading">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-            {{ Lang::txt('COM_BLOG_EDIT_DETAILS') }}
-          </h2>
+        <x-form-section :heading="Lang::txt('COM_BLOG_EDIT_DETAILS')">
+          <x-form-field name="field-title"
+                        :label="Lang::txt('COM_BLOG_FIELD_TITLE')"
+                        :required="true">
+            <input type="text"
+                   id="field-title"
+                   name="entry[title]"
+                   class="input w-full"
+                   value="{{ $entry->get('title', '') }}"
+                   placeholder="{{ Lang::txt('COM_BLOG_FIELD_TITLE') }}"
+                   required />
+          </x-form-field>
 
-          <div class="form-section-body">
-            {{-- Title --}}
-            <div class="form-field">
-              <label class="form-field-label" for="field-title">
-                {{ Lang::txt('COM_BLOG_FIELD_TITLE') }}
-                <span class="text-error">*</span>
-              </label>
-              <input type="text"
-                     id="field-title"
-                     name="entry[title]"
-                     class="input w-full"
-                     value="{{ $entry->get('title', '') }}"
-                     placeholder="{{ Lang::txt('COM_BLOG_FIELD_TITLE') }}"
-                     required />
-              <p class="form-field-hint text-error hidden" id="field-title-error" role="alert">
-                {{ Lang::txt('COM_BLOG_ERROR_PROVIDE_TITLE') }}
-              </p>
-            </div>
+          <x-form-field name="entrycontent"
+                        :label="Lang::txt('COM_BLOG_FIELD_CONTENT')"
+                        :required="true">
+            {!! $__view->editor(
+                'entry[content]',
+                e($entry->content('raw')),
+                50, 20,
+                'entrycontent',
+                ['class' => 'textarea w-full']
+            ) !!}
+          </x-form-field>
 
-            {{-- Content --}}
-            <div class="form-field">
-              <label class="form-field-label" for="entrycontent">
-                {{ Lang::txt('COM_BLOG_FIELD_CONTENT') }}
-                <span class="text-error">*</span>
-              </label>
-              {!! $__view->editor(
-                  'entry[content]',
-                  e($entry->content('raw')),
-                  50, 20,
-                  'entrycontent',
-                  ['class' => 'textarea w-full']
-              ) !!}
-              <p class="form-field-hint text-error hidden" id="field-content-error" role="alert">
-                {{ Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT') }}
-              </p>
-            </div>
-
-            {{-- Tags --}}
-            <div class="form-field">
-              <label class="form-field-label" for="actags">
-                {{ Lang::txt('COM_BLOG_FIELD_TAGS') }}
-              </label>
-              {!! $__view->autocompleter(
-                  'tags', 'tags',
-                  e($entry->tags('string')),
-                  'actags'
-              ) !!}
-              <p class="form-field-hint">
-                {{ Lang::txt('COM_BLOG_FIELD_TAGS_HINT') }}
-              </p>
-            </div>
-          </div>
-        </div>
+          <x-form-field name="actags"
+                        :label="Lang::txt('COM_BLOG_FIELD_TAGS')"
+                        :hint="Lang::txt('COM_BLOG_FIELD_TAGS_HINT')">
+            {!! $__view->autocompleter(
+                'tags', 'tags',
+                e($entry->tags('string')),
+                'actags'
+            ) !!}
+          </x-form-field>
+        </x-form-section>
 
         {{-- Section: Publishing --}}
-        <div class="form-section">
-          <h2 class="form-section-heading">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-            </svg>
-            {{ Lang::txt('COM_BLOG_FIELD_PUBLISH_UP') }}
-          </h2>
-
-          <div class="form-section-body">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              {{-- Allow comments --}}
-              <div class="flex items-end h-full">
-                <label class="checkbox-label mb-2.5">
-                  <input type="checkbox"
-                         class="checkbox"
-                         name="entry[allow_comments]"
-                         id="field-allow_comments"
-                         value="1"
-                         @if($entry->get('allow_comments', 1) == 1) checked @endif />
-                  <span>{{ Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS') }}</span>
-                </label>
-              </div>
-
-              {{-- Privacy / Access --}}
-              <div>
-                <label class="form-field-label" for="field-access">
-                  {{ Lang::txt('COM_BLOG_FIELD_PRIVACY') }}
-                </label>
-                <select id="field-access"
-                        name="entry[access]"
-                        class="select w-full">
-                  <option value="1" @if($access == 1) selected @endif>
-                    {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') }}
-                  </option>
-                  <option value="2" @if($access == 2) selected @endif>
-                    {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') }}
-                  </option>
-                  <option value="5" @if($access > 2) selected @endif>
-                    {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') }}
-                  </option>
-                </select>
-              </div>
+        <x-form-section :heading="Lang::txt('COM_BLOG_FIELD_PUBLISH_UP')">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {{-- Allow comments --}}
+            <div class="flex items-end h-full">
+              <x-form-field name="entry[allow_comments]" inputId="field-allow_comments"
+                            :label="Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS')" type="checkbox">
+                <input type="checkbox"
+                       class="checkbox"
+                       name="entry[allow_comments]"
+                       id="field-allow_comments"
+                       value="1"
+                       @if($entry->get('allow_comments', 1) == 1) checked @endif />
+              </x-form-field>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {{-- Publish up --}}
-              <div>
-                <label class="form-field-label" for="field-publish_up">
-                  {{ Lang::txt('COM_BLOG_FIELD_PUBLISH_UP') }}
-                </label>
-                <input type="datetime-local"
-                       id="field-publish_up"
-                       name="entry[publish_up]"
-                       class="input w-full"
-                       value="{{ $publishUp }}" />
-                <p class="form-field-hint">
-                  {{ Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT') }}
-                </p>
-              </div>
-
-              {{-- Publish down --}}
-              <div>
-                <label class="form-field-label" for="field-publish_down">
-                  {{ Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN') }}
-                </label>
-                <input type="datetime-local"
-                       id="field-publish_down"
-                       name="entry[publish_down]"
-                       class="input w-full"
-                       value="{{ $publishDown }}" />
-                <p class="form-field-hint">
-                  {{ Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT') }}
-                </p>
-              </div>
-            </div>
+            {{-- Privacy / Access --}}
+            <x-form-field name="field-access"
+                          :label="Lang::txt('COM_BLOG_FIELD_PRIVACY')">
+              <select id="field-access"
+                      name="entry[access]"
+                      class="select w-full">
+                <option value="1" @if($access == 1) selected @endif>
+                  {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') }}
+                </option>
+                <option value="2" @if($access == 2) selected @endif>
+                  {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') }}
+                </option>
+                <option value="5" @if($access > 2) selected @endif>
+                  {{ Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') }}
+                </option>
+              </select>
+            </x-form-field>
           </div>
-        </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <x-form-field name="field-publish_up"
+                          :label="Lang::txt('COM_BLOG_FIELD_PUBLISH_UP')"
+                          :hint="Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT')">
+              <input type="datetime-local"
+                     id="field-publish_up"
+                     name="entry[publish_up]"
+                     class="input w-full"
+                     value="{{ $publishUp }}" />
+            </x-form-field>
+
+            <x-form-field name="field-publish_down"
+                          :label="Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN')"
+                          :hint="Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT')">
+              <input type="datetime-local"
+                     id="field-publish_down"
+                     name="entry[publish_down]"
+                     class="input w-full"
+                     value="{{ $publishDown }}" />
+            </x-form-field>
+          </div>
+        </x-form-section>
 
         {{-- Form actions --}}
         <div class="form-actions">

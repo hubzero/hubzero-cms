@@ -31,6 +31,20 @@ use Hubzero\Facades\Notify;
 class Articles extends SiteController
 {
     /**
+     * View engines this controller accepts.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks this controller accepts.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Display a single entry
      *
      * @return  void

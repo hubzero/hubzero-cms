@@ -34,6 +34,20 @@ use Hubzero\Facades\Session;
 class Entries extends SiteController
 {
     /**
+     * View engines this controller accepts.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks this controller accepts.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determines task being called and attempts to execute it
      *
      * @return  void

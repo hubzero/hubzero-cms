@@ -145,61 +145,53 @@
   @slot('sidebar')
     {{-- External link --}}
     @if($finalUrl)
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <a class="btn btn-primary w-full"
-             href="{{ $finalUrl }}"
-             rel="external">
-            {{ Lang::txt('COM_CITATIONS_VIEW_ARTICLE') }}
-          </a>
-        </div>
-      </div>
+      <x-sidebar-card>
+        <a class="btn btn-primary w-full"
+           href="{{ $finalUrl }}"
+           rel="external">
+          {{ Lang::txt('COM_CITATIONS_VIEW_ARTICLE') }}
+        </a>
+      </x-sidebar-card>
     @endif
 
     {{-- Download --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE') }}</h3>
-        <div class="flex flex-col gap-2">
-          <a class="btn btn-sm btn-ghost justify-start"
-             href="{{ $bibtexUrl }}">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            {{ Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') }}
-          </a>
-          <a class="btn btn-sm btn-ghost justify-start"
-             href="{{ $endnoteUrl }}">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            {{ Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') }}
-          </a>
-        </div>
+    <x-sidebar-card :title="Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE')">
+      <div class="flex flex-col gap-2">
+        <a class="btn btn-sm btn-ghost justify-start"
+           href="{{ $bibtexUrl }}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          {{ Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') }}
+        </a>
+        <a class="btn btn-sm btn-ghost justify-start"
+           href="{{ $endnoteUrl }}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          {{ Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') }}
+        </a>
       </div>
-    </div>
+    </x-sidebar-card>
 
     {{-- Sponsors --}}
     @if(count($sponsors) > 0)
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_CITATIONS_SPONSORED_BY') }}</h3>
-          <ul class="space-y-1">
-            @foreach($sponsors as $s)
-              <li>
-                <a class="link link-hover text-sm" rel="external"
-                   href="{{ $s->link }}">
-                  {{ $s->sponsor }}
-                </a>
-              </li>
-            @endforeach
-          </ul>
-        </div>
-      </div>
+      <x-sidebar-card :title="Lang::txt('COM_CITATIONS_SPONSORED_BY')">
+        <ul class="space-y-1">
+          @foreach($sponsors as $s)
+            <li>
+              <a class="link link-hover text-sm" rel="external"
+                 href="{{ $s->link }}">
+                {{ $s->sponsor }}
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </x-sidebar-card>
     @endif
   @endslot
 

@@ -31,6 +31,20 @@ use Hubzero\Facades\Component;
 class Solr extends SiteController
 {
     /**
+     * View engines accepted by this controller
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Display search form and results (if any)
      *
      * @param   $term

@@ -90,9 +90,7 @@
       @endif
 
       {{-- Archive by year/month --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-sm">{{ Lang::txt('COM_BLOG_ENTRIES_BY_YEAR') }}</h2>
+      <x-sidebar-card :title="Lang::txt('COM_BLOG_ENTRIES_BY_YEAR')">
           @if($first->get('id'))
             @php
               $startYear = intval(substr($first->get('publish_up'), 0, 4));
@@ -133,15 +131,12 @@
               @endfor
             </ul>
           @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+            <p class="text-sm text-muted-foreground">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
           @endif
-        </div>
-      </div>
+      </x-sidebar-card>
 
       {{-- Popular entries --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h2 class="card-title text-sm">{{ Lang::txt('COM_BLOG_POPULAR_ENTRIES') }}</h2>
+      <x-sidebar-card :title="Lang::txt('COM_BLOG_POPULAR_ENTRIES')">
           @php
             $popular = $archive->entries([
                 'state'  => $filters['state'],
@@ -159,25 +154,23 @@
               @endforeach
             </ul>
           @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+            <p class="text-sm text-muted-foreground">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
           @endif
-        </div>
-      </div>
+      </x-sidebar-card>
   @endslot
 
       {{-- Search --}}
-      <form action="{{ $browseUrl }}" method="get" role="search" class="mb-6">
-        <label for="entry-search-field" class="sr-only">
-          {{ Lang::txt('COM_BLOG_SEARCH_LABEL') }}
-        </label>
-        <input type="search"
-               id="entry-search-field"
-               name="search"
-               class="input input-bordered w-full"
-               value="{{ $filters['search'] }}"
-               placeholder="{{ Lang::txt('COM_BLOG_SEARCH_PLACEHOLDER') }}" />
+      <x-search-bar
+          :action="$browseUrl"
+          :query="$filters['search']"
+          :placeholder="Lang::txt('COM_BLOG_SEARCH_PLACEHOLDER')"
+          :label="Lang::txt('COM_BLOG_SEARCH_LABEL')"
+          :buttonLabel="Lang::txt('COM_BLOG_SEARCH')"
+          :clearUrl="$browseUrl"
+          :clearLabel="Lang::txt('COM_BLOG_CLEAR_LABEL')"
+          name="search">
         <input type="hidden" name="option" value="{{ $option }}" />
-      </form>
+      </x-search-bar>
 
       {{-- Section heading --}}
       <h2 class="text-lg font-semibold mb-4">
@@ -212,7 +205,7 @@
                     {{ $row->get('title') }}
                   </a>
                 </h3>
-                <div class="flex items-baseline gap-x-3 text-sm text-base-content/60">
+                <div class="flex items-baseline gap-x-3 text-sm text-muted-foreground">
                   <time datetime="{{ $row->published() }}">
                     {{ $row->published('date') }}
                   </time>
@@ -242,7 +235,7 @@
                     <span>{{ Lang::txt('COM_BLOG_COMMENTS_OFF') }}</span>
                   @endif
                 </div>
-                <p class="text-sm text-base-content/70 mt-1 line-clamp-2">
+                <p class="text-sm text-muted-foreground mt-1 line-clamp-2">
                   @if($cleanIntro)
                     {{ \Hubzero\Utility\Str::truncate(strip_tags($row->content), $introLength) }}
                   @else
@@ -283,7 +276,7 @@
       @else
         {{-- Empty state --}}
         <div class="text-center py-12" role="status">
-          <p class="text-base-content/60 mb-4">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+          <p class="text-muted-foreground mb-4">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
         </div>
       @endif
 

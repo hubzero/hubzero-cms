@@ -32,66 +32,52 @@
 <x-page-container :title="Lang::txt('COM_KB')">
   @slot('sidebar')
     @if(Component::isEnabled('com_answers'))
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_KB_COMMUNITY') }}</h3>
-          <p class="text-sm text-base-content/60">
-            {{ Lang::txt('COM_KB_COMMUNITY_CANT_FIND') }}
-            {!! Lang::txt(
-                'COM_KB_COMMUNITY_TRY_ANSWERS',
-                '<a class="link" href="' . Route::url('index.php?option=com_answers', false) . '">'
-                    . Lang::txt('COM_ANSWERS') . '</a>'
-            ) !!}
-          </p>
-        </div>
-      </div>
+      <x-sidebar-card :title="Lang::txt('COM_KB_COMMUNITY')">
+        <p class="text-sm text-base-content/60">
+          {{ Lang::txt('COM_KB_COMMUNITY_CANT_FIND') }}
+          {!! Lang::txt(
+              'COM_KB_COMMUNITY_TRY_ANSWERS',
+              '<a class="link" href="' . Route::url('index.php?option=com_answers', false) . '">'
+                  . Lang::txt('COM_ANSWERS') . '</a>'
+          ) !!}
+        </p>
+      </x-sidebar-card>
     @endif
 
     @if(Component::isEnabled('com_wishlist'))
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_KB_FEATURE_REQUEST') }}</h3>
-          <p class="text-sm text-base-content/60">
-            {{ Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST') }}
-            <a class="link" href="{{ Route::url('index.php?option=com_wishlist', false) }}">
-              {{ Lang::txt('COM_KB_FEATURE_TELL_US') }}
-            </a>
-          </p>
-        </div>
-      </div>
+      <x-sidebar-card :title="Lang::txt('COM_KB_FEATURE_REQUEST')">
+        <p class="text-sm text-base-content/60">
+          {{ Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST') }}
+          <a class="link" href="{{ Route::url('index.php?option=com_wishlist', false) }}">
+            {{ Lang::txt('COM_KB_FEATURE_TELL_US') }}
+          </a>
+        </p>
+      </x-sidebar-card>
     @endif
 
     @if(Component::isEnabled('com_support'))
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_KB_TROUBLE_REPORT') }}</h3>
-          <p class="text-sm text-base-content/60">
-            {{ Lang::txt('COM_KB_TROUBLE_FOUND_BUG') }}
-            <a class="link"
-               href="{{ Route::url('index.php?option=com_support&controller=tickets&task=new', false) }}">
-              {{ Lang::txt('COM_KB_TROUBLE_TELL_US') }}
-            </a>
-          </p>
-        </div>
-      </div>
+      <x-sidebar-card :title="Lang::txt('COM_KB_TROUBLE_REPORT')">
+        <p class="text-sm text-base-content/60">
+          {{ Lang::txt('COM_KB_TROUBLE_FOUND_BUG') }}
+          <a class="link"
+             href="{{ Route::url('index.php?option=com_support&controller=tickets&task=new', false) }}">
+            {{ Lang::txt('COM_KB_TROUBLE_TELL_US') }}
+          </a>
+        </p>
+      </x-sidebar-card>
     @endif
   @endslot
 
   {{-- Search --}}
-  <form method="get"
-        action="{{ Route::url('index.php?option=' . $option . '&section=all', false) }}"
-        role="search"
-        class="mb-6">
-    <label for="entry-search-field" class="sr-only">
-      {{ Lang::txt('COM_KB_SEARCH_LABEL') }}
-    </label>
-    <input type="search"
-           id="entry-search-field"
-           name="search"
-           class="input input-bordered w-full"
-           value=""
-           placeholder="{{ Lang::txt('COM_KB_SEARCH_PLACEHOLDER') }}" />
-  </form>
+  <x-search-bar
+      :action="$allUrl"
+      query=""
+      :placeholder="Lang::txt('COM_KB_SEARCH_PLACEHOLDER')"
+      :label="Lang::txt('COM_KB_SEARCH_LABEL')"
+      :buttonLabel="Lang::txt('COM_KB_SEARCH')"
+      :clearUrl="$allUrl"
+      name="search"
+  />
 
   {{-- Popular & Recent Articles --}}
   @php

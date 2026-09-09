@@ -53,55 +53,27 @@
     </a>
 </x-page-header>
 
-<section class="confirm-delete" role="alertdialog"
-         aria-labelledby="confirm-title" aria-describedby="confirm-desc">
-  <div class="confirm-card">
+<x-confirm-dialog
+    :title="Lang::txt('COM_BLOG_DELETE_TITLE', $entryTitle)"
+    :description="Lang::txt('COM_BLOG_DELETE_DESCRIPTION')"
+    :action="$deleteUrl"
+    :confirmLabel="Lang::txt('COM_BLOG_DELETE_HEADER')"
+    :cancelUrl="$cancelUrl"
+    :error="$__view->getError()">
 
-    <div class="confirm-icon" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"
-           fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-      </svg>
-    </div>
+    <h3>{{ Lang::txt('COM_BLOG_DELETE_IMPACT_HEADING') }}</h3>
+    <ul>
+      <li>{{ Lang::txt('COM_BLOG_DELETE_IMPACT_ENTRY', $entryTitle) }}</li>
+      <li>{{ Lang::txt('COM_BLOG_DELETE_IMPACT_COMMENTS') }}</li>
+      <li>{{ Lang::txt('COM_BLOG_DELETE_IMPACT_ATTACHMENTS') }}</li>
+    </ul>
 
-    <h2 class="confirm-title" id="confirm-title">
-      Delete "{{ $entryTitle }}"?
-    </h2>
-
-    <p class="confirm-desc" id="confirm-desc">
-      This will permanently delete the blog entry and all associated
-      comments. This action cannot be undone.
-    </p>
-
-    <div class="confirm-impact">
-      <h3>This will remove:</h3>
-      <ul>
-        <li>The blog entry "{{ $entryTitle }}"</li>
-        <li>All associated comments</li>
-        <li>All file attachments</li>
-      </ul>
-    </div>
-
-    @if($__view->getError())
-      <div class="alert alert-error" role="alert">
-        {{ $__view->getError() }}
-      </div>
-    @endif
-
-    <form method="post" action="{{ $deleteUrl }}">
-      <div class="confirm-actions">
-        <button class="btn btn-danger" type="submit">Delete Entry</button>
-        <a class="btn btn-ghost" href="{{ $cancelUrl }}">Cancel</a>
-      </div>
-
+    <x-slot name="hiddenFields">
       <input type="hidden" name="id" value="{{ $entry->get('id') }}" />
       <input type="hidden" name="task" value="delete" />
       <input type="hidden" name="process" value="1" />
       <input type="hidden" name="confirmdel" value="1" />
       <input type="hidden" name="option" value="{{ $option }}" />
       {!! Html::input('token') !!}
-    </form>
-
-  </div>
-</section>
+    </x-slot>
+</x-confirm-dialog>

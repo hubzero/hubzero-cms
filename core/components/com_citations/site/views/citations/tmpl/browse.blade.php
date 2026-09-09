@@ -85,127 +85,101 @@
 
   @slot('sidebar')
     {{-- Filters --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_CITATIONS_TYPE') }}</h3>
-        <ul class="menu menu-sm">
+    <x-sidebar-card :title="Lang::txt('COM_CITATIONS_TYPE')">
+      <ul class="menu menu-sm">
+        <li>
+          <a class="{{ empty($filters['type']) ? 'active' : '' }}"
+             href="{{ Route::url($browseBase . '&type=', false) }}">
+            {{ Lang::txt('COM_CITATIONS_ALL') }}
+          </a>
+        </li>
+        @foreach($types as $t)
           <li>
-            <a class="{{ empty($filters['type']) ? 'active' : '' }}"
-               href="{{ Route::url($browseBase . '&type=', false) }}">
-              {{ Lang::txt('COM_CITATIONS_ALL') }}
+            <a class="{{ $filters['type'] == $t['id'] ? 'active' : '' }}"
+               href="{{ Route::url($browseBase . '&type=' . $t['id'], false) }}">
+              {{ $t['type_title'] }}
             </a>
           </li>
-          @foreach($types as $t)
-            <li>
-              <a class="{{ $filters['type'] == $t['id'] ? 'active' : '' }}"
-                 href="{{ Route::url($browseBase . '&type=' . $t['id'], false) }}">
-                {{ $t['type_title'] }}
-              </a>
-            </li>
-          @endforeach
-        </ul>
-      </div>
-    </div>
+        @endforeach
+      </ul>
+    </x-sidebar-card>
 
     {{-- Year range --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_CITATIONS_YEAR') }}</h3>
-        <form method="get"
-              action="{{ Route::url($browseBase, false) }}"
-              class="space-y-2">
-          @foreach($filters as $fk => $fv)
-            @if(!in_array($fk, ['year_start', 'year_end', 'limitstart']))
-              @if(is_array($fv))
-                @foreach($fv as $fk2 => $fv2)
-                  <input type="hidden"
-                         name="{{ $fk }}[{{ $fk2 }}]"
-                         value="{{ $fv2 }}" />
-                @endforeach
-              @else
-                <input type="hidden" name="{{ $fk }}" value="{{ $fv }}" />
-              @endif
+    <x-sidebar-card :title="Lang::txt('COM_CITATIONS_YEAR')">
+      <form method="get"
+            action="{{ Route::url($browseBase, false) }}"
+            class="space-y-2">
+        @foreach($filters as $fk => $fv)
+          @if(!in_array($fk, ['year_start', 'year_end', 'limitstart']))
+            @if(is_array($fv))
+              @foreach($fv as $fk2 => $fv2)
+                <input type="hidden"
+                       name="{{ $fk }}[{{ $fk2 }}]"
+                       value="{{ $fv2 }}" />
+              @endforeach
+            @else
+              <input type="hidden" name="{{ $fk }}" value="{{ $fv }}" />
             @endif
-          @endforeach
-          <div class="flex items-center gap-2">
-            <label for="year_start" class="sr-only">
-              {{ Lang::txt('COM_CITATIONS_YEAR') }} (from)
-            </label>
-            <input type="text"
-                   id="year_start"
-                   name="year_start"
-                   class="input input-bordered input-sm w-20"
-                   value="{{ $filters['year_start'] }}"
-                   placeholder="From" />
-            <span class="text-base-content/50">&ndash;</span>
-            <label for="year_end" class="sr-only">
-              {{ Lang::txt('COM_CITATIONS_YEAR') }} (to)
-            </label>
-            <input type="text"
-                   id="year_end"
-                   name="year_end"
-                   class="input input-bordered input-sm w-20"
-                   value="{{ $filters['year_end'] }}"
-                   placeholder="To" />
-            <button type="submit" class="btn btn-sm btn-ghost">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                   stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+          @endif
+        @endforeach
+        <div class="flex items-center gap-2">
+          <label for="year_start" class="sr-only">
+            {{ Lang::txt('COM_CITATIONS_YEAR') }} (from)
+          </label>
+          <input type="text"
+                 id="year_start"
+                 name="year_start"
+                 class="input input-bordered input-sm w-20"
+                 value="{{ $filters['year_start'] }}"
+                 placeholder="From" />
+          <span class="text-base-content/50">&ndash;</span>
+          <label for="year_end" class="sr-only">
+            {{ Lang::txt('COM_CITATIONS_YEAR') }} (to)
+          </label>
+          <input type="text"
+                 id="year_end"
+                 name="year_end"
+                 class="input input-bordered input-sm w-20"
+                 value="{{ $filters['year_end'] }}"
+                 placeholder="To" />
+          <button type="submit" class="btn btn-sm btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </x-sidebar-card>
 
     {{-- Sort --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_CITATIONS_SORT_BY') }}</h3>
-        <ul class="menu menu-sm">
-          @foreach($sorts as $sk => $sv)
-            @if($isAdmin || $sv !== 'Date uploaded')
-              <li>
-                <a class="{{ $filters['sort'] == $sk ? 'active' : '' }}"
-                   href="{{ Route::url($browseBase . $qs . '&sort=' . urlencode($sk) . '&filter=' . $filters['filter'], false) }}">
-                  {{ $sv }}
-                </a>
-              </li>
-            @endif
-          @endforeach
-        </ul>
-      </div>
-    </div>
+    <x-sidebar-card :title="Lang::txt('COM_CITATIONS_SORT_BY')">
+      <ul class="menu menu-sm">
+        @foreach($sorts as $sk => $sv)
+          @if($isAdmin || $sv !== 'Date uploaded')
+            <li>
+              <a class="{{ $filters['sort'] == $sk ? 'active' : '' }}"
+                 href="{{ Route::url($browseBase . $qs . '&sort=' . urlencode($sk) . '&filter=' . $filters['filter'], false) }}">
+                {{ $sv }}
+              </a>
+            </li>
+          @endif
+        @endforeach
+      </ul>
+    </x-sidebar-card>
   @endslot
 
-  {{-- Search --}}
-  <form method="get"
-        action="{{ Route::url($browseBase, false) }}"
-        role="search"
-        class="mb-6">
+  <x-search-bar
+      :action="Route::url($browseBase, false)"
+      :query="$filters['search']"
+      :placeholder="Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER')"
+      :buttonLabel="Lang::txt('COM_CITATIONS_SEARCH')"
+      :clearUrl="Route::url($browseBase, false)"
+      :clearLabel="Lang::txt('COM_CITATIONS_CLEAR')"
+  >
     <input type="hidden" name="task" value="browse" />
-    <label for="browse-search-field" class="sr-only">
-      {{ Lang::txt('COM_CITATIONS_SEARCH_CITATIONS') }}
-    </label>
-    <div class="join w-full">
-      <input type="search"
-             id="browse-search-field"
-             name="search"
-             class="input input-bordered join-item w-full h-12"
-             value="{{ $filters['search'] }}"
-             placeholder="{{ Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') }}" />
-      <button type="submit" class="btn btn-primary join-item h-12">
-        {{ Lang::txt('COM_CITATIONS_SEARCH') }}
-      </button>
-      @if(!empty($filters['search']))
-        <a class="btn btn-ghost join-item h-12"
-           href="{{ Route::url($browseBase, false) }}">
-          {{ Lang::txt('COM_CITATIONS_CLEAR') }}
-        </a>
-      @endif
-    </div>
-  </form>
+  </x-search-bar>
 
   {{-- Affiliation filter tabs --}}
   <div class="flex flex-wrap items-center gap-3 mb-4">

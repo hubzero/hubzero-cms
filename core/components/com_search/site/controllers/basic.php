@@ -24,6 +24,20 @@ use Hubzero\Facades\Lang;
 class Basic extends SiteController
 {
     /**
+     * View engines accepted by this controller
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Display search form and results (if any)
      *
      * @return  void

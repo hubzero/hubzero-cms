@@ -27,6 +27,20 @@ use Hubzero\Facades\Component;
 class Media extends SiteController
 {
     /**
+     * View engines this controller accepts.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks this controller accepts.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Download a file
      *
      * @return  void

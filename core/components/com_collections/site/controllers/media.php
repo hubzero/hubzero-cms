@@ -11,7 +11,6 @@ namespace Components\Collections\Site\Controllers;
 use Components\Collections\Models\Item;
 use Components\Collections\Models\Post;
 use Components\Collections\Models\Asset;
-use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Component\View;
 use Hubzero\Utility\Number;
@@ -25,7 +24,7 @@ use Hubzero\Facades\Component;
 /**
  * Collections controller class for media
  */
-class Media extends SiteController
+class Media extends ComponentController
 {
     /**
      * Download a file

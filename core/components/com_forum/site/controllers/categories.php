@@ -28,6 +28,9 @@ use Hubzero\Facades\Event;
  */
 class Categories extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Determine task and execute
      *

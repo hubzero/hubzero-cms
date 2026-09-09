@@ -25,6 +25,20 @@ use Hubzero\Facades\App;
 class Polls extends SiteController
 {
     /**
+     * View engines accepted by this controller
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Method to show the search view
      *
      * @return  void

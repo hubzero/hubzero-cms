@@ -87,65 +87,57 @@
   @endslot
 
   @slot('sidebar')
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_KB_CATEGORIES') }}</h3>
-        <ul class="menu menu-sm">
-          <li>
-            <a class="{{ $catid <= 0 ? 'active' : '' }}"
-               href="{{ $allUrl }}">
-              {{ Lang::txt('COM_KB_ALL_ARTICLES') }}
-            </a>
-          </li>
-          @foreach($categories as $row)
-            @if($row->get('articles', 0) > 0)
-              <li>
-                <a class="{{ $catid == $row->get('id') ? 'active' : '' }}"
-                   href="{{ Route::url($row->link(), false) }}">
-                  {{ $row->get('title') }}
-                  <span class="badge badge-sm badge-ghost">{{ $row->get('articles', 0) }}</span>
-                </a>
-                @if($catid == $row->get('id'))
-                  @php
-                    $children = $row->children($catFilters)->rows();
-                  @endphp
-                  @if(count($children) > 0)
-                    <ul>
-                      @foreach($children as $child)
-                        <li>
-                          <a class="{{ $category->get('id') == $child->get('id') ? 'active' : '' }}"
-                             href="{{ Route::url($child->link(), false) }}">
-                            {{ $child->get('title') }}
-                            <span class="badge badge-sm badge-ghost">{{ $child->get('articles', 0) }}</span>
-                          </a>
-                        </li>
-                      @endforeach
-                    </ul>
-                  @endif
+    <x-sidebar-card :title="Lang::txt('COM_KB_CATEGORIES')">
+      <ul class="menu menu-sm">
+        <li>
+          <a class="{{ $catid <= 0 ? 'active' : '' }}"
+             href="{{ $allUrl }}">
+            {{ Lang::txt('COM_KB_ALL_ARTICLES') }}
+          </a>
+        </li>
+        @foreach($categories as $row)
+          @if($row->get('articles', 0) > 0)
+            <li>
+              <a class="{{ $catid == $row->get('id') ? 'active' : '' }}"
+                 href="{{ Route::url($row->link(), false) }}">
+                {{ $row->get('title') }}
+                <span class="badge badge-sm badge-ghost">{{ $row->get('articles', 0) }}</span>
+              </a>
+              @if($catid == $row->get('id'))
+                @php
+                  $children = $row->children($catFilters)->rows();
+                @endphp
+                @if(count($children) > 0)
+                  <ul>
+                    @foreach($children as $child)
+                      <li>
+                        <a class="{{ $category->get('id') == $child->get('id') ? 'active' : '' }}"
+                           href="{{ Route::url($child->link(), false) }}">
+                          {{ $child->get('title') }}
+                          <span class="badge badge-sm badge-ghost">{{ $child->get('articles', 0) }}</span>
+                        </a>
+                      </li>
+                    @endforeach
+                  </ul>
                 @endif
-              </li>
-            @endif
-          @endforeach
-        </ul>
-      </div>
-    </div>
+              @endif
+            </li>
+          @endif
+        @endforeach
+      </ul>
+    </x-sidebar-card>
   @endslot
 
   {{-- Search --}}
-  <form method="get"
-        action="{{ $allUrl }}"
-        role="search"
-        class="mb-6">
-    <label for="entry-search-field" class="sr-only">
-      {{ Lang::txt('COM_KB_SEARCH_LABEL') }}
-    </label>
-    <input type="search"
-           id="entry-search-field"
-           name="search"
-           class="input input-bordered w-full"
-           value="{{ $filters['search'] }}"
-           placeholder="{{ Lang::txt('COM_KB_SEARCH_PLACEHOLDER') }}" />
-  </form>
+  <x-search-bar
+      :action="$allUrl"
+      :query="$filters['search']"
+      :placeholder="Lang::txt('COM_KB_SEARCH_PLACEHOLDER')"
+      :label="Lang::txt('COM_KB_SEARCH_LABEL')"
+      :buttonLabel="Lang::txt('COM_KB_SEARCH')"
+      :clearUrl="$allUrl"
+      name="search"
+  />
 
   {{-- Sort tabs --}}
   <div class="flex flex-wrap items-center gap-3 mb-4">
@@ -200,7 +192,7 @@
             </a>
             <div class="text-sm text-base-content/60">
               @if($catid <= 0 && $row->get('ctitle'))
-                <span>{!! Lang::txt('COM_KB_IN_CATEGORY', e($row->get('ctitle', '') ?? '') !!}</span>
+                <span>{!! Lang::txt('COM_KB_IN_CATEGORY', e($row->get('ctitle', '') ?? '')) !!}</span>
               @endif
               <span>
                 {{ Lang::txt('COM_KB_LAST_MODIFIED') }}

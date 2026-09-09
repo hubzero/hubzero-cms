@@ -15,7 +15,6 @@ use Components\Citations\Models\Type;
 use Components\Citations\Models\Format as FormatModel;
 use Components\Citations\Models\Author;
 use Components\Citations\Models\Association;
-use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Facades\Filesystem;
 use Exception;
@@ -34,7 +33,7 @@ use Hubzero\Facades\Pathway;
 /**
  * Citations controller class for citation entries
  */
-class Citations extends SiteController
+class Citations extends ComponentController
 {
     /**
      * Execute a task

@@ -152,17 +152,7 @@
     @if($showReplyForm && $commentsOpen)
       <div class="mt-4">
         @if(User::isGuest())
-          @php
-            $returnUrl = base64_encode(
-                Route::url($article->link(), false, true)
-            );
-            $loginUrl = Route::url(
-                'index.php?option=com_users&view=login&return=' . $returnUrl, false
-            );
-          @endphp
-          <p class="text-base-content/60">
-            {!! Lang::txt('COM_KB_MUST_LOG_IN', $loginUrl) !!}
-          </p>
+          <x-auth-gate :returnUrl="Route::url($article->link(), false, true)" />
         @else
           <form action="{{ Route::url($article->link(), false) }}"
                 method="post"

@@ -30,6 +30,9 @@ use Hubzero\Facades\App;
  */
 class Articles extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *

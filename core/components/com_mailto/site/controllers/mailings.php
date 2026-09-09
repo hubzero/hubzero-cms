@@ -26,6 +26,8 @@ use Hubzero\Facades\App;
  */
 class Mailings extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
     /**
      * Show the form so that the user can send the link to someone
      */

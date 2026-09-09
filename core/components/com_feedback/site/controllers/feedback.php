@@ -31,6 +31,16 @@ use Hubzero\Facades\App;
 class Feedback extends SiteController
 {
     /**
+     * @var array View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determine task and execute it
      *
      * @return  void

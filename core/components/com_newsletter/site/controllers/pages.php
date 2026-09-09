@@ -17,6 +17,8 @@ use Hubzero\Facades\Notify;
 
 class Pages extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
     public function displayTask()
     {
         $code = Request::getString('code');

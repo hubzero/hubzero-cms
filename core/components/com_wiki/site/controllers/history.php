@@ -27,6 +27,20 @@ use Hubzero\Facades\Event;
 class History extends SiteController
 {
     /**
+     * Accepted view engines
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Accepted CSS frameworks
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Book model
      *
      * @var  object

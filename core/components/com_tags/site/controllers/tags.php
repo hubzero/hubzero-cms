@@ -31,6 +31,16 @@ use Hubzero\Facades\App;
 class Tags extends SiteController
 {
     /**
+     * @var array View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Execute a task
      *
      * @return  void
@@ -749,13 +759,14 @@ class Tags extends SiteController
         Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
 
         // Redirect to main listing
-        $limit  = Request::getInt('limit', 0);
-        $start  = Request::getInt('limitstart', 0);
-        $sortby = Request::getInt('sortby', '');
-        $search = urldecode(Request::getString('search', ''));
+        $limit   = Request::getInt('limit', 0);
+        $start   = Request::getInt('limitstart', 0);
+        $sort    = Request::getString('sort', '');
+        $sortdir = Request::getString('sortdir', '');
+        $search  = urldecode(Request::getString('search', ''));
 
         $url = 'index.php?option=' . $this->_option . '&task=browse';
-        $url .= '&search=' . urlencode($search) . '&sortby=' . $sortby;
+        $url .= '&search=' . urlencode($search) . '&sort=' . $sort . '&sortdir=' . $sortdir;
         $url .= '&limit=' . $limit . '&limitstart=' . $start;
 
         App::redirect(Route::url($url));
@@ -801,16 +812,16 @@ class Tags extends SiteController
         $this->cleancacheTask(false);
 
         // Get the browse filters so we can go back to previous view
-        $search = Request::getString('search', '');
-        $sortby = Request::getString('sortby', '');
-        $limit  = Request::getInt('limit', 25);
-        $start  = Request::getInt('limitstart', 0);
-        $count  = Request::getInt('count', 1);
+        $search  = Request::getString('search', '');
+        $sort    = Request::getString('sort', '');
+        $sortdir = Request::getString('sortdir', '');
+        $limit   = Request::getInt('limit', 25);
+        $start   = Request::getInt('limitstart', 0);
 
         // Redirect back to browse mode
         $url = 'index.php?option=' . $this->_option . '&task=browse';
-        $url .= '&search=' . $search . '&sortby=' . $sortby;
-        $url .= '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count;
+        $url .= '&search=' . $search . '&sort=' . $sort . '&sortdir=' . $sortdir;
+        $url .= '&limit=' . $limit . '&limitstart=' . $start;
 
         App::redirect(Route::url($url));
     }

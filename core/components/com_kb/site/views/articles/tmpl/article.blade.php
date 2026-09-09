@@ -100,47 +100,44 @@
   @endslot
 
   @slot('sidebar')
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_KB_CATEGORIES') }}</h3>
-        <ul class="menu menu-sm">
-          <li>
-            <a class="{{ $catid <= 0 ? 'active' : '' }}"
-               href="{{ $allUrl }}">
-              {{ Lang::txt('COM_KB_ALL_ARTICLES') }}
-            </a>
-          </li>
-          @foreach($categories as $row)
-            @if($row->get('articles', 0) > 0)
-              <li>
-                <a class="{{ $catid == $row->get('id') ? 'active' : '' }}"
-                   href="{{ Route::url($row->link(), false) }}">
-                  {{ $row->get('title') }}
-                  <span class="badge badge-sm badge-ghost">{{ $row->get('articles', 0) }}</span>
-                </a>
-                @if($catid == $row->get('id'))
-                  @php
-                    $children = $row->children($catFilters)->rows();
-                  @endphp
-                  @if(count($children) > 0)
-                    <ul>
-                      @foreach($children as $child)
-                        <li>
-                          <a class="{{ $category->get('id') == $child->get('id') ? 'active' : '' }}"
-                             href="{{ Route::url($child->link(), false) }}">
-                            {{ $child->get('title') }}
-                          </a>
-                        </li>
-                      @endforeach
-                    </ul>
-                  @endif
+    <x-sidebar-card :title="Lang::txt('COM_KB_CATEGORIES')">
+      <ul class="menu menu-sm">
+        <li>
+          <a class="{{ $catid <= 0 ? 'active' : '' }}"
+             href="{{ $allUrl }}">
+            {{ Lang::txt('COM_KB_ALL_ARTICLES') }}
+          </a>
+        </li>
+        @foreach($categories as $row)
+          @if($row->get('articles', 0) > 0)
+            <li>
+              <a class="{{ $catid == $row->get('id') ? 'active' : '' }}"
+                 href="{{ Route::url($row->link(), false) }}">
+                {{ $row->get('title') }}
+                <span class="badge badge-sm badge-ghost">{{ $row->get('articles', 0) }}</span>
+              </a>
+              @if($catid == $row->get('id'))
+                @php
+                  $children = $row->children($catFilters)->rows();
+                @endphp
+                @if(count($children) > 0)
+                  <ul>
+                    @foreach($children as $child)
+                      <li>
+                        <a class="{{ $category->get('id') == $child->get('id') ? 'active' : '' }}"
+                           href="{{ Route::url($child->link(), false) }}">
+                          {{ $child->get('title') }}
+                        </a>
+                      </li>
+                    @endforeach
+                  </ul>
                 @endif
-              </li>
-            @endif
-          @endforeach
-        </ul>
-      </div>
-    </div>
+              @endif
+            </li>
+          @endif
+        @endforeach
+      </ul>
+    </x-sidebar-card>
   @endslot
 
   {{-- Article --}}
@@ -215,17 +212,7 @@
 
     @if($commentsOpen)
       @if(User::isGuest())
-        @php
-          $returnUrl = base64_encode(
-              Route::url($article->link() . '#post-comment', false, true)
-          );
-          $loginUrl = Route::url(
-              'index.php?option=com_users&view=login&return=' . $returnUrl, false
-          );
-        @endphp
-        <p class="text-base-content/60">
-          {!! Lang::txt('COM_KB_MUST_LOG_IN', $loginUrl) !!}
-        </p>
+        <x-auth-gate :returnUrl="Route::url($article->link() . '#post-comment', false, true)" />
       @else
         <form action="{{ Route::url($article->link(), false) }}"
               method="post"

@@ -11,7 +11,6 @@ namespace Components\Collections\Site\Controllers;
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Orm\Post;
 use Components\Collections\Models\Archive;
-use Hubzero\Component\SiteController;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Pathway;
 use Hubzero\Facades\Request;
@@ -21,7 +20,7 @@ use Hubzero\Facades\User;
 /**
  * Controller class for collections and posts
  */
-class Collections extends SiteController
+class Collections extends ComponentController
 {
     /**
      * Determines task being called and attempts to execute it

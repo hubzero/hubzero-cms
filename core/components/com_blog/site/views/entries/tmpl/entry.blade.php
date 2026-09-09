@@ -133,29 +133,16 @@
   @slot('sidebar')
       {{-- Author card --}}
       @if($config->get('show_authors') && $row->creator->get('name'))
-        <div class="author-card">
-          <div class="author-card-inner">
-            <div class="author-card-avatar">
-              <img src="{{ $row->creator->picture() }}" alt="" />
-            </div>
-            <div class="author-card-info">
-              <h3 class="author-card-name">
-                @if(in_array($row->creator->get('access'), User::getAuthorisedViewLevels()))
-                  <a href="{{ Route::url($row->creator->link(), false) }}">
-                    {{ $row->creator->get('name') }}
-                  </a>
-                @else
-                  {{ $row->creator->get('name') }}
-                @endif
-              </h3>
-              @if($row->creator->get('bio'))
-                <p class="author-card-bio">
-                  {{ strip_tags($row->creator->get('bio')) }}
-                </p>
-              @endif
-            </div>
-          </div>
-        </div>
+        @php
+          $authorUrl = in_array($row->creator->get('access'), User::getAuthorisedViewLevels())
+              ? Route::url($row->creator->link(), false)
+              : '';
+        @endphp
+        <x-author-card
+            :name="$row->creator->get('name')"
+            :avatar="$row->creator->picture()"
+            :profileUrl="$authorUrl"
+            :bio="strip_tags($row->creator->get('bio'))" />
       @endif
 
       {{-- New entry button --}}
@@ -167,9 +154,7 @@
       @endif
 
       {{-- Archive by year/month --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_ENTRIES_BY_YEAR') }}</h3>
+      <x-sidebar-card :title="Lang::txt('COM_BLOG_ENTRIES_BY_YEAR')">
           @if($first->get('id'))
             @php
               $startYear  = intval(substr($first->get('publish_up'), 0, 4));
@@ -205,15 +190,12 @@
               @endfor
             </ul>
           @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+            <p class="text-sm text-muted-foreground">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
           @endif
-        </div>
-      </div>
+      </x-sidebar-card>
 
       {{-- Popular entries --}}
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_BLOG_POPULAR_ENTRIES') }}</h3>
+      <x-sidebar-card :title="Lang::txt('COM_BLOG_POPULAR_ENTRIES')">
           @php
             $popular = $archive->entries([
                 'state'  => $filters['state'],
@@ -231,10 +213,9 @@
               @endforeach
             </ul>
           @else
-            <p class="text-sm text-base-content/60">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
+            <p class="text-sm text-muted-foreground">{{ Lang::txt('COM_BLOG_NO_ENTRIES_FOUND') }}</p>
           @endif
-        </div>
-      </div>
+      </x-sidebar-card>
   @endslot
 
       <article id="e{{ $row->get('id') }}">
@@ -337,7 +318,7 @@
               @endforeach
             </div>
           @else
-            <p class="text-base-content/60">
+            <p class="text-muted-foreground">
               {{ Lang::txt('COM_BLOG_NO_COMMENTS') }}
             </p>
           @endif
@@ -362,7 +343,7 @@
                           $replyName = $replyTo->creator->get('name', $replyName);
                       }
                     @endphp
-                    <blockquote class="border-l-4 border-base-300 pl-4 mb-4 text-sm text-base-content/70">
+                    <blockquote class="border-l-4 border-default pl-4 mb-4 text-sm text-muted-foreground">
                       <p class="font-medium">{{ $replyName }}</p>
                       <p>{{ \Hubzero\Utility\Str::truncate($replyTo->get('content'), 300) }}</p>
                     </blockquote>
@@ -402,21 +383,9 @@
                   {!! Html::input('token') !!}
                 </form>
               @else
-                @php
-                  $returnUrl = base64_encode(
-                      Route::url($row->link() . '#post-comment', false, true)
-                  );
-                  $loginUrl = Route::url(
-                      'index.php?option=com_users&view=login&return=' . $returnUrl, false
-                  );
-                @endphp
-                <p class="login-to-comment">
-                  {!! Lang::txt(
-                      'COM_BLOG_MUST_LOG_IN',
-                      '<a href="' . $loginUrl . '">'
-                      . Lang::txt('COM_BLOG_LOG_IN') . '</a>'
-                  ) !!}
-                </p>
+                <x-auth-gate
+                    :returnUrl="Route::url($row->link() . '#post-comment', false, true)"
+                    :message="Lang::txt('COM_BLOG_MUST_LOG_IN', ':login')" />
               @endif
           </div>
         </section>

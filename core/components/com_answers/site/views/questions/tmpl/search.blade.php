@@ -56,9 +56,7 @@
 
   @slot('sidebar')
     {{-- Knowledge Base --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_ANSWERS_NEED_AN_ANSWER') }}</h3>
+    <x-sidebar-card :title="Lang::txt('COM_ANSWERS_NEED_AN_ANSWER')">
         <p class="text-sm text-base-content/60">
           {!! Lang::txt(
               'COM_ANSWERS_CANT_FIND_ANSWER',
@@ -67,59 +65,45 @@
               Config::get('sitename')
           ) !!}
         </p>
-      </div>
-    </div>
+    </x-sidebar-card>
 
     {{-- Get started --}}
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_ANSWERS_GET_STARTED') }}</h3>
+    <x-sidebar-card :title="Lang::txt('COM_ANSWERS_GET_STARTED')">
         <p class="text-sm text-base-content/60">
           {!! Lang::txt(
               'COM_ANSWERS_GET_STARTED_HELP',
               Route::url('index.php?option=com_help&component=answers&page=index', false)
           ) !!}
         </p>
-      </div>
-    </div>
+    </x-sidebar-card>
 
     {{-- Earn points --}}
     @if($config->get('banking'))
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_ANSWERS_EARN_POINTS') }}</h3>
+      <x-sidebar-card :title="Lang::txt('COM_ANSWERS_EARN_POINTS')">
           <p class="text-sm text-base-content/60">
             {{ Lang::txt('COM_ANSWERS_START_EARNING_POINTS') }}
             <a class="link" href="{{ $config->get('infolink') }}">
               {{ Lang::txt('COM_ANSWERS_LEARN_MORE') }}
             </a>.
           </p>
-        </div>
-      </div>
+      </x-sidebar-card>
     @endif
   @endslot
 
   {{-- Search --}}
-  <form method="get"
-        action="{{ Route::url('index.php?option=' . $option, false) }}"
-        role="search"
-        class="mb-6">
-    <label for="entry-search-field" class="sr-only">
-      {{ Lang::txt('COM_ANSWERS_SEARCH_LABEL') }}
-    </label>
-    <input type="search"
-           id="entry-search-field"
-           name="q"
-           class="input input-bordered w-full"
-           value="{{ $filters['search'] }}"
-           placeholder="{{ Lang::txt('COM_ANSWERS_SEARCH_PLACEHOLDER') }}" />
+  <x-search-bar
+    :action="Route::url('index.php?option=' . $option, false)"
+    name="q"
+    :query="$filters['search']"
+    :placeholder="Lang::txt('COM_ANSWERS_SEARCH_PLACEHOLDER')"
+  >
     <input type="hidden" name="option" value="{{ $option }}" />
     <input type="hidden" name="task" value="search" />
     <input type="hidden" name="area" value="{{ $filters['area'] }}" />
     <input type="hidden" name="sortby" value="{{ $filters['sortby'] }}" />
     <input type="hidden" name="sortdir" value="{{ $filters['sort_Dir'] }}" />
     <input type="hidden" name="filterby" value="{{ $filters['filterby'] }}" />
-  </form>
+  </x-search-bar>
 
   {{-- Filters --}}
   @php
@@ -202,15 +186,11 @@
   {{-- Results heading --}}
   @php
     $total = $results->count();
+    $resultsTitle = $filters['search']
+        ? Lang::txt('COM_ANSWERS_SEARCH_FOR', e($filters['search']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($filters['filterby'])))
+        : Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($filters['filterby']));
   @endphp
-  <h2 class="text-lg font-semibold mb-4">
-    @if($filters['search'])
-      {{ Lang::txt('COM_ANSWERS_SEARCH_FOR', e($filters['search']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($filters['filterby']))) }}
-    @else
-      {{ Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($filters['filterby'])) }}
-    @endif
-    <span class="text-base-content/50 font-normal text-sm">({{ $total }})</span>
-  </h2>
+  <x-results-heading :title="$resultsTitle" :count="$total" />
 
   @if($total > 0)
     <ul class="list bg-base-100 rounded-box shadow-sm" aria-label="{{ Lang::txt('COM_ANSWERS') }}">
@@ -267,8 +247,10 @@
             <div class="flex items-baseline gap-x-3 text-sm text-base-content/60">
               <span>
                 @if($authorUrl)
-                  {{ Lang::txt('COM_ANSWERS_ASKED_BY') }}
-                  <a class="link link-hover" href="{{ $authorUrl }}">{{ $authorName }}</a>
+                  {!! Lang::txt(
+                      'COM_ANSWERS_ASKED_BY',
+                      '<a class="link link-hover" href="' . $authorUrl . '">' . e($authorName) . '</a>'
+                  ) !!}
                 @else
                   {{ Lang::txt('COM_ANSWERS_ASKED_BY', $authorName) }}
                 @endif

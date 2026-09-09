@@ -378,6 +378,7 @@ class Book extends Obj
 
                         if (
                             Filesystem::extension($name) != 'php'
+                            || str_ends_with($name, '.blade.php')
                             || 'cvs' == strtolower($name)
                             || '.svn' == strtolower($name)
                         ) {

@@ -25,6 +25,9 @@ use Hubzero\Facades\Event;
  */
 class Sections extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Determine task and execute
      *

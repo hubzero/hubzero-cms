@@ -10,7 +10,6 @@ namespace Components\Citations\Site\Controllers;
 
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Author;
-use Hubzero\Component\SiteController;
 use Exception;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
@@ -19,7 +18,7 @@ use Hubzero\Facades\Lang;
 /**
  * Manage a citation's author entries
  */
-class Authors extends SiteController
+class Authors extends ComponentController
 {
     /**
      * Execute a task

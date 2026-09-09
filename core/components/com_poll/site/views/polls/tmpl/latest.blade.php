@@ -67,7 +67,7 @@
     @else
         <x-empty-state
             :title="Lang::txt('COM_POLL_NO_RESULTS')"
-            message="There are no active polls right now. Check back soon."
+            :message="Lang::txt('COM_POLL_NO_ACTIVE_POLLS')"
         />
     @endif
 </x-page-container>

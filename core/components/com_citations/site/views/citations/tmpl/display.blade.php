@@ -98,25 +98,12 @@
   </div>
 
   {{-- Search --}}
-  <form method="get"
-        action="{{ $browseUrl }}"
-        role="search"
-        class="mb-8">
-    <label for="entry-search-field" class="sr-only">
-      {{ Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD') }}
-    </label>
-    <div class="join w-full">
-      <input type="search"
-             id="entry-search-field"
-             name="search"
-             class="input input-bordered join-item w-full h-12"
-             value=""
-             placeholder="{{ Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') }}" />
-      <button type="submit" class="btn btn-primary join-item h-12">
-        {{ Lang::txt('COM_CITATIONS_SEARCH') }}
-      </button>
-    </div>
-  </form>
+  <x-search-bar
+      :action="$browseUrl"
+      query=""
+      :placeholder="Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER')"
+      :buttonLabel="Lang::txt('COM_CITATIONS_SEARCH')"
+  />
 
   {{-- Metrics --}}
   <h2 class="text-lg font-semibold mb-4">{{ Lang::txt('COM_CITATIONS_METRICS') }}</h2>

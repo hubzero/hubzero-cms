@@ -21,6 +21,8 @@ use Hubzero\Facades\App;
  */
 class Newsletters extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
     /**
      * Override parent execute method
      *

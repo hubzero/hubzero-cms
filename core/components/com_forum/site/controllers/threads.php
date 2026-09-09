@@ -32,6 +32,9 @@ use Hubzero\Facades\Event;
  */
 class Threads extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *

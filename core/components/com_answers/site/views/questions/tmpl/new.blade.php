@@ -52,19 +52,14 @@
   @endslot
 
   @slot('sidebar')
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title text-sm">{{ Lang::txt('COM_ANSWERS_TIPS') }}</h3>
+    <x-sidebar-card :title="Lang::txt('COM_ANSWERS_TIPS')">
         <p class="text-sm text-base-content/60">
           {{ Lang::txt('COM_ANSWERS_BE_POLITE') }}
         </p>
-      </div>
-    </div>
+    </x-sidebar-card>
 
     @if($config->get('banking'))
-      <div class="card bg-base-100 shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title text-sm">{{ Lang::txt('COM_ANSWERS_WHAT_IS_REWARD') }}</h3>
+      <x-sidebar-card :title="Lang::txt('COM_ANSWERS_WHAT_IS_REWARD')">
           <p class="text-sm text-base-content/60">
             {{ Lang::txt('COM_ANSWERS_EXPLAINED_MARKET_VALUE') }}
             <a class="link" href="{{ $config->get('infolink') }}">
@@ -72,8 +67,7 @@
             </a>
             {{ Lang::txt('COM_ANSWERS_ABOUT_POINTS') }}
           </p>
-        </div>
-      </div>
+      </x-sidebar-card>
     @endif
   @endslot
 
@@ -134,15 +128,15 @@
         <input type="hidden" name="fields[reward]" value="0" />
       @endif
 
-      <div class="form-field">
-        <label class="checkbox-label">
-          <input type="checkbox"
-                 class="checkbox checkbox-sm"
-                 name="fields[anonymous]"
-                 value="1" />
-          {{ Lang::txt('COM_ANSWERS_POST_QUESTION_ANON') }}
-        </label>
-      </div>
+      <x-form-field name="fields-anonymous"
+                    :label="Lang::txt('COM_ANSWERS_POST_QUESTION_ANON')"
+                    type="checkbox">
+        <input type="checkbox"
+               class="checkbox checkbox-sm"
+               name="fields[anonymous]"
+               id="fields-anonymous"
+               value="1" />
+      </x-form-field>
 
       {!! Html::input('honeypot') !!}
     </x-form-section>

@@ -22,6 +22,19 @@ use Hubzero\Facades\App;
 class Help extends SiteController
 {
     /**
+     * View engine preference (Blade first, PHP fallback).
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference (daisyUI first, classic fallback).
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+    /**
      * Display Help Article Pages
      *
      * @return  void

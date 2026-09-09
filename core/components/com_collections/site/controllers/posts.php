@@ -13,7 +13,6 @@ use Components\Collections\Models\Archive;
 use Components\Collections\Models\Post;
 use Components\Collections\Models\Item;
 use Components\Collections\Tables;
-use Hubzero\Component\SiteController;
 use Hubzero\Item\Comment;
 use Pathway;
 use Hubzero\Facades\Request;
@@ -26,7 +25,7 @@ use Hubzero\Facades\Event;
 /**
  * Controller class for collection posts
  */
-class Posts extends SiteController
+class Posts extends ComponentController
 {
     /**
      * Determines task being called and attempts to execute it
