@@ -856,7 +856,7 @@ class CurrentCart extends Cart
     public function setStepStatus($step, $meta = '', $status = true)
     {
         $sql = "UPDATE `#__cart_transaction_steps`
-				SET `tsStatus` = " .  $this->_db->quote($status) . "
+				SET `tsStatus` = " .  (int) $status . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
         if (!empty($meta)) {
             $sql .= "AND `tsMeta` = '{$meta}'";

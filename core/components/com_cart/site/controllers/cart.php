@@ -56,7 +56,16 @@ class Cart extends ComponentController
      */
     public function homeTask()
     {
-        $cart = new CurrentCart();
+        try {
+            $cart = new CurrentCart();
+        } catch (\Throwable $e) {
+            // Cart subsystem unavailable — show empty cart
+            $this->view->cartInfo = null;
+            $this->view->couponPerks = [];
+            $this->view->membershipInfo = [];
+            $this->view->display();
+            return;
+        }
 
         // Initialize errors array
         $errors = array();
