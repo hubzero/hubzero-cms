@@ -86,7 +86,7 @@ class Attachments extends SiteController
 
 		if (!$parentResource)
 		{
-			$parentResource = Entry::one('pid');
+			$parentResource = Entry::one($pid);
 		}
 		if (!($parentResource->access('edit')) && !($parentResource->access('edit-own')))
 		{

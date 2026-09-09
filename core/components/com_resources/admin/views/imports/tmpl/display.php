@@ -89,7 +89,7 @@ $this->css('import');
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
 							<?php
 							$created_by = User::getInstance($import->get('created_by'));
-							echo $created_by->get('name', Lang::txt('COM_RESOURCE_UNKNOWN'));
+							echo $created_by->get('name', Lang::txt('COM_RESOURCES_UNKNOWN'));
 							?>
 						</td>
 						<td class="priority-3">

@@ -1219,8 +1219,8 @@ class Create extends SiteController
 
 		$currentTagNames = App::get('db')
 			->setQuery("select tag.tag
-				from jos_tags as tag
-				left join jos_tags_object as assoc
+				from #__tags as tag
+				left join #__tags_object as assoc
 				on tag.id = assoc.tagid
 				where tbl = 'resources'
 				and objectid = $resourceId;")
