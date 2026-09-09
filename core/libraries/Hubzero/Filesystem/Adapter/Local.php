@@ -8,6 +8,7 @@
 namespace Hubzero\Filesystem\Adapter;
 
 use Hubzero\Filesystem\AdapterInterface;
+use Hubzero\Filesystem\Exception\FileNotFoundException;
 use Hubzero\Filesystem\Util\MimeType;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
