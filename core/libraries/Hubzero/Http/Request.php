@@ -228,9 +228,19 @@ class Request extends BaseRequest
 	 */
 	public function getFloat($name, $default = 0.0, $hash = 'input')
 	{
-		$result = $this->getVar($key, $default, $hash);
+		$result = $this->getVar($name, $default, $hash);
 		$result = is_array($result) ? self::_flatten('', $result) : $result;
-		return preg_replace(static::$filters['float'], '', $result);
+		$result = trim($result === null ? '' : (string) $result);
+
+		// Anchored, for the reason getInt() is: an unanchored match scavenges
+		// digits out of the middle of arbitrary text, so a word typed into a
+		// numeric field would resolve to a number rather than the default.
+		if (preg_match('/^-?[0-9]+(\.[0-9]+)?/', $result, $matches))
+		{
+			return (float) $matches[0];
+		}
+
+		return $default;
 	}
 
 	/**
