@@ -1,8 +1,10 @@
 <?php
 
 /**
+ * Image gallery view for the Dataviewer component.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -12,98 +14,118 @@ use Components\Dataviewer\Site\DvConfig;
 
 class Gallery
 {
+    /**
+     * Supported image extensions.
+     *
+     * @var  array
+     */
+    private static $imageTypes = ['png', 'gif', 'jpg', 'jpeg'];
+
+    /**
+     * Render the gallery page.
+     *
+     * @param   string  $hash  Session hash for the gallery path
+     * @return  void
+     */
     public static function render($hash)
     {
-        if (!isset($_SESSION['dv'])) {
-            $_SESSION['dv'] = array();
-        }
-
-        if (!isset($_SESSION['dv']['gallery']['list'][$hash])) {
+        $galleryList = \Hubzero\Facades\Session::get('dv.gallery.list', []);
+        if (!isset($galleryList[$hash])) {
             print "<h2>Invalid Gallery ID or Your session may have expired</h2>"
                 . "Please close this window and refresh the previous View/Page.";
             exit();
         }
 
-        $http_path = $_SESSION['dv']['gallery']['list'][$hash];
-        $real_path = explode('/site/', $http_path);
-        $real_path = '/site/' . $real_path[1];
+        $httpPath = $galleryList[$hash];
+        $pathParts = explode('/site/', $httpPath);
+        $realPath = '/site/' . $pathParts[1];
 
-        $imagetypes = array('png', 'gif', 'jpg', 'jprg');
-        $image_list = array();
-        $image_viewer = array();
-
-        if (!is_dir(PATH_ROOT . $real_path)) {
+        $absPath = PATH_ROOT . $realPath;
+        if (!is_dir($absPath)) {
             print "<h2>Error: Missing images.</h2>";
-            print "DEBUG: " . PATH_ROOT . $real_path;
             return;
         }
 
-    //  $file_list = scandir(PATH_ROOT . $real_path);
-        $cmd = 'find ' . PATH_ROOT . $real_path . ' -type f|grep -v small|grep -v medium';
-        $file_list = explode("\n", (`$cmd`));
-        array_pop($file_list);
+        // Scan directory for images using PHP instead of shell `find`
+        $fileList = self::scanForImages($absPath);
 
-        foreach ($file_list as $file) {
+        $imageList = [];
+        $imageViewer = [];
+
+        foreach ($fileList as $file) {
             $pi = pathinfo($file);
-            $dir_name = str_replace(PATH_ROOT, '', $pi['dirname']);
+            $dirName = str_replace(PATH_ROOT, '', $pi['dirname']);
             $ext = strtolower($pi['extension']);
 
-            $desc_file = str_replace($pi['extension'], 'txt', PATH_ROOT . $real_path . '/' . $file);
+            $descFile = $pi['dirname'] . '/' . $pi['filename'] . '.txt';
             $desc = '';
-            if (file_exists($desc_file)) {
-                $desc = htmlentities(file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');
+            if (file_exists($descFile)) {
+                $desc = htmlentities(
+                    file_get_contents($descFile),
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
             }
 
-            if (in_array($ext, $imagetypes)) {
-                $image_list[] = '<img title="' . $desc . '" alt="' . $pi['basename'] . '"'
-                    . ' src="' . $dir_name . '/small/' . $pi['basename'] . '" />';
-                $image_viewer[] = '<a title="Click to view the original image." target="_blank"'
-                    . ' href="' . $dir_name . '/' . $pi['basename'] . '">'
-                    . '<img alt="' . $pi['basename'] . '" src="' . $dir_name . '/medium/'
-                    . $pi['basename'] . '" style="display:none;" /></a>';
+            if (in_array($ext, self::$imageTypes)) {
+                $basename = htmlspecialchars(
+                    $pi['basename'],
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
+                $imageList[] = '<img title="' . $desc
+                    . '" alt="' . $basename
+                    . '" src="' . $dirName . '/small/' . $basename . '" />';
+                $imageViewer[] = '<a title="Click to view the original image."'
+                    . ' target="_blank" href="' . $dirName . '/' . $basename
+                    . '"><img alt="' . $basename . '" src="' . $dirName
+                    . '/medium/' . $basename
+                    . '" style="display:none;" /></a>';
             }
         }
+
+        $htmlPath = DvConfig::$html_path;
         ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
         <title>Dataview: Image gallery</title>
         <link rel="stylesheet" type="text/css"
-            href="<?php echo DvConfig::$html_path?>/ui/themes/smoothness/jquery-ui.css" />
-        <link rel="stylesheet" href="<?php echo DvConfig::$html_path?>/dv_gallery.css" type="text/css" />
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/ui/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/dv_gallery.js"></script>
-        <style type="text/css">
-            .dv_gallery_toolbar { font: 62.5% "Trebuchet MS", sans-serif;}
-        </style>
+            href="/core/assets/css/jquery.ui.min.css" />
+        <link rel="stylesheet" type="text/css"
+            href="<?php echo htmlspecialchars($htmlPath); ?>/css/gallery.css" />
+        <script src="/core/assets/js/jquery.js"></script>
+        <script src="/core/assets/js/jquery.ui.min.js"></script>
+        <script src="<?php echo htmlspecialchars($htmlPath); ?>/js/gallery.js"></script>
     </head>
     <body>
     <div id="dv_wrapper" class="ui-widget ui-widget-content ui-corner-all">
         <div id="dv_gallery_list" class="ui-widget ui-widget-header ui-corner-top">
-            <table style="padding:0px; margin:0px;">
+            <table style="padding:0; margin:0;">
                 <tr>
-                    <td><?php echo implode("</td><td>", $image_list);?></td>
+                    <?php foreach ($imageList as $img) : ?>
+                    <td><?php echo $img; ?></td>
+                    <?php endforeach; ?>
                 </tr>
             </table>
         </div>
 
         <div id="dv_gallery_viewer">
             <br />
-            <?php echo implode("\n", $image_viewer);?>
-            <br style="line-haight: 5px;" />
+            <?php echo implode("\n", $imageViewer); ?>
+            <br />
             <div id="dv_gallery_desc" class="ui-widget ui-widget-content ui-corner-all"
-                style="display:none; margin: 0px 20px 0px 20px; border-style: inset;">
+                style="display:none; margin: 0 20px; border-style: inset;">
                 The description will be displayed here...
             </div>
-            <br style="line-haight: 5px;" />
+            <br />
         </div>
 
         <div class="dv_gallery_toolbar ui-widget ui-widget-header ui-corner-bottom">
             <span id="dv_gallery_dl_image">
                 <a href="" target="_blank">
-                    <img src="<?php echo DvConfig::$html_path?>/download-l.png"
+                    <img src="<?php echo htmlspecialchars($htmlPath); ?>/img/download-l.png"
                         alt="Click here to download the full size image."
                         title="Download Original Image (Right click and save image)"
                         style="border: 1px #DDD solid;" />
@@ -118,12 +140,58 @@ class Gallery
                 <label for="color2">Light</label>
             </span> ]
             &nbsp;&nbsp;&nbsp;
-            <input type="button" value="Close Window" style="color: red;" onclick="window.close();">
+            <button type="button" id="dv-gallery-close" style="color: red;">Close Window</button>
         </div>
     </div>
+    <script>
+        document.getElementById('dv-gallery-close').addEventListener('click', function() {
+            window.close();
+        });
+    </script>
     </body>
 </html>
         <?php
         exit(0);
+    }
+
+    /**
+     * Recursively scan a directory for image files, excluding
+     * 'small' and 'medium' thumbnail subdirectories.
+     *
+     * @param   string  $dir  Directory to scan
+     * @return  array   List of absolute file paths
+     */
+    private static function scanForImages(string $dir): array
+    {
+        $files = [];
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(
+                $dir,
+                \RecursiveDirectoryIterator::SKIP_DOTS
+            )
+        );
+
+        foreach ($iterator as $file) {
+            if (!$file->isFile()) {
+                continue;
+            }
+
+            $path = $file->getPathname();
+
+            // Skip thumbnail directories
+            if (strpos($path, '/small/') !== false
+                || strpos($path, '/medium/') !== false
+            ) {
+                continue;
+            }
+
+            $ext = strtolower($file->getExtension());
+            if (in_array($ext, self::$imageTypes)) {
+                $files[] = $path;
+            }
+        }
+
+        sort($files);
+        return $files;
     }
 }
