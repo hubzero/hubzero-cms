@@ -1,14 +1,17 @@
 <?php
 
 /**
+ * Update a data definition for the admin Dataviewer component.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Components\Dataviewer\Admin\Helpers\GitHelper;
 
 class DataDefinitionUpdate
 {
@@ -17,40 +20,67 @@ class DataDefinitionUpdate
         \Components\Dataviewer\Admin\Libs\Security::checkRid();
         $base = DvConfig::$conf['dir_base'];
 
-        $db_id = \Hubzero\Facades\Request::getString('db', false);
-        $dd_name = \Hubzero\Facades\Request::getString('dd', false);
-        $dd_text = $_POST['dd_text'];
+        $dbId = \Hubzero\Facades\Request::getString('db', false);
+        $ddName = \Hubzero\Facades\Request::getString('dd', false);
+        $ddText = \Hubzero\Facades\Request::getString('dd_text', '');
 
-        $db_conf_file = $base . DS . $db_id . DS . 'database.json';
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $author = GitHelper::getAuthor();
 
-        $author = \Hubzero\Facades\User::get('name') . ' <' . \Hubzero\Facades\User::get('email') . '>';
+        // Write PHP data definition
+        $ddFilePhp = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions-php/' . $ddName . '.php';
+        file_put_contents($ddFilePhp, $ddText);
 
+        $phpDir = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions-php/';
+        GitHelper::commit(
+            $phpDir,
+            $ddName . '.php',
+            "[UPDATE] $ddName.php.",
+            $author
+        );
 
-        $dd_file_php = $base . '/' . $db_id . '/applications/'
-            . DvConfig::$com_name . "/datadefinitions-php/$dd_name.php";
-        file_put_contents($dd_file_php, $dd_text);
+        // Convert PHP to JSON
+        $ddFileJson = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions/' . $ddName . '.json';
+        self::convertPhpToJson($ddFilePhp, $ddFileJson);
 
-        $phpDir = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions-php/';
-        $cmd = "cd $phpDir; git commit $dd_name.php --author=\"$author\" "
-            . "-m\"[UPDATE] $dd_name.php.\"  > /dev/null";
-        system($cmd);
+        $jsonDir = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions/';
+        GitHelper::commit(
+            $jsonDir,
+            $ddName . '.json',
+            "[UPDATE] $ddName.json.",
+            $author
+        );
 
-        $dd_file_json = $base . '/' . $db_id . '/applications/'
-            . DvConfig::$com_name . "/datadefinitions/$dd_name.json";
+        $url = '/administrator/index.php?option=com_'
+            . urlencode(DvConfig::$com_name)
+            . '&task=data_definition&db=' . urlencode($dbId)
+            . '&dd=' . urlencode($ddName);
+        \Hubzero\Facades\App::redirect($url);
+    }
 
-        $cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
-        system($cmd);
+    /**
+     * Convert a PHP data definition to JSON using ddconvert.php.
+     *
+     * @param   string  $phpFile   Input PHP file path
+     * @param   string  $jsonFile  Output JSON file path
+     * @return  bool
+     */
+    private static function convertPhpToJson(
+        string $phpFile,
+        string $jsonFile
+    ): bool {
+        $script = dirname(__DIR__) . '/ddconvert.php';
+        $cmd = 'php '
+            . escapeshellarg($script)
+            . ' -i' . escapeshellarg($phpFile)
+            . ' -o' . escapeshellarg($jsonFile);
+        $output = [];
+        $returnCode = 0;
+        exec($cmd, $output, $returnCode);
 
-        $jsonDir = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions/';
-        $cmd = "cd $jsonDir; git commit $dd_name.json --author=\"$author\" "
-            . "-m\"[UPDATE] $dd_name.json.\"  > /dev/null";
-        system($cmd);
-
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
-        $url .= "/administrator/index.php?option=com_" . DvConfig::$com_name
-            . "&task=data_definition&db=$db_id&dd=$dd_name";
-        header("Location: $url");
-        exit();
+        return $returnCode === 0;
     }
 }

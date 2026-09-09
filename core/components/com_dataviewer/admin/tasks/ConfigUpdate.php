@@ -1,8 +1,10 @@
 <?php
 
 /**
+ * Update the Dataviewer configuration file for a database.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -17,17 +19,18 @@ class ConfigUpdate
         \Components\Dataviewer\Admin\Libs\Security::checkRid();
         $base = DvConfig::$conf['dir_base'];
 
-        $db_id = \Hubzero\Facades\Request::getString('db', false);
-        $dv_conf_text = \Hubzero\Facades\Request::getString('conf_text', false);
+        $dbId = \Hubzero\Facades\Request::getString('db', false);
+        $dvConfText = \Hubzero\Facades\Request::getString('conf_text', false);
 
-        $dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
-        file_put_contents($dv_conf_file, $dv_conf_text);
+        $dvConfFile = $base . DS . $dbId
+            . DS . 'applications/dataviewer/config.json';
+        file_put_contents($dvConfFile, $dvConfText);
 
-        $_SESSION['dataviewer']['conf_file_updated'] = true;
+        \Hubzero\Facades\Session::set('dv.admin.conf_updated', true);
 
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
-        $url .= "/administrator/index.php?option=com_" . DvConfig::$conf['com_name'] . "&task=config&db=$db_id";
-        header("Location: $url");
-        exit;
+        $url = '/administrator/index.php?option=com_'
+            . urlencode(DvConfig::$conf['com_name'])
+            . '&task=config&db=' . urlencode($dbId);
+        \Hubzero\Facades\App::redirect($url);
     }
 }

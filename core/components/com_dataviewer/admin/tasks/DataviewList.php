@@ -1,14 +1,20 @@
 <?php
 
 /**
+ * Dataview list task for the admin Dataviewer component.
+ *
+ * Lists all data definitions for a database with links to
+ * view, edit, and remove.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Components\Dataviewer\Admin\Helpers\GitHelper;
 
 class DataviewList
 {
@@ -19,51 +25,53 @@ class DataviewList
         $document = \Hubzero\Facades\App::get('document');
         $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-        $db_id = \Hubzero\Facades\Request::getString('db', false);
-        $db_conf_file = $base . DS . $db_id . DS . 'database.json';
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
+        $dbId = \Hubzero\Facades\Request::getString('db', false);
+        $dbConfFile = $base . DS . $dbId . DS . 'database.json';
+        $dbConf = json_decode(file_get_contents($dbConfFile), true);
 
-        $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
+        $jdb = \Hubzero\Database\Driver::getInstance($dbConf['database_ro']);
 
-        \Hubzero\Facades\Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
+        \Hubzero\Facades\Toolbar::title(
+            $dbConf['name'] . ' >> <small> The list of Dataviews</small>',
+            'databases'
+        );
 
         if (!$jdb->getErrorMsg()) {
-            \Hubzero\Facades\Toolbar::custom('new', 'new', 'new', 'New Dataview', false);
+            \Hubzero\Facades\Toolbar::custom(
+                'new', 'new', 'new', 'New Dataview', false
+            );
         }
 
-        \Hubzero\Facades\Toolbar::custom('back', 'back', 'back', 'Go back', false);
+        \Hubzero\Facades\Toolbar::custom(
+            'back', 'back', 'back', 'Go back', false
+        );
 
-        $path = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions/';
+        $path = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions/';
+        $pathPhp = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions-php/';
 
-        // Check directories
+        // Create directories using PHP instead of shell mkdir
         if (!file_exists($path)) {
-            $cmd = "mkdir -p $path; cd $path; git init > /dev/null";
-            system($cmd);
-            system("chmod ug+Xrw -R $path");
+            GitHelper::initRepo($path);
+        }
+        if (!file_exists($pathPhp)) {
+            GitHelper::initRepo($pathPhp);
         }
 
-        $path_php = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions-php/';
-
-        if (!file_exists($path_php)) {
-            $cmd = "mkdir -p $path_php; cd $path_php; git init > /dev/null";
-            system($cmd);
-            system("chmod ug+Xrw -R $path_php");
+        $files = [];
+        if (is_dir($pathPhp)) {
+            $files = scandir($pathPhp);
         }
 
-
-        $files = array();
-        if (is_dir($path_php)) {
-            $files = scandir($path_php);
-        }
-
-        $back_link = "/administrator/index.php?option=com_databases";
+        $backLink = "/administrator/index.php?option=com_databases";
 
         \Components\Dataviewer\Admin\Libs\Messages::dbShowMsg();
         ?>
 
         <script>
-            var com_name = '<?php echo DvConfig::$com_name; ?>';
-            var db_back_link = '<?php echo $back_link; ?>';
+            var com_name = '<?php echo htmlspecialchars(DvConfig::$com_name); ?>';
+            var db_back_link = '<?php echo htmlspecialchars($backLink); ?>';
         </script>
         <style type="text/css"> .toolbar-box .header:before {content: " ";}</style>
 
@@ -79,7 +87,6 @@ class DataviewList
                 </tr>
             </thead>
 
-
             <tbody>
         <?php
 
@@ -90,48 +97,59 @@ class DataviewList
             $c = 0;
             foreach ($files as $file) {
                 if (substr($file, -4) === '.php') {
-                    $dd_name = substr($file, 0, -4);
+                    $ddName = substr($file, 0, -4);
 
-                    $json_file = $path . DS . $dd_name . '.json';
-                    $php_file =  $path_php . DS . $dd_name . '.php';
+                    $jsonFile = $path . DS . $ddName . '.json';
+                    $phpFile = $pathPhp . DS . $ddName . '.php';
 
                     // Create JSON data definition if unavailable
-                    if (!file_exists($json_file)) {
-                        $cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$php_file -o$json_file";
-                        system($cmd);
+                    if (!file_exists($jsonFile)) {
+                        self::convertPhpToJson($phpFile, $jsonFile);
 
-                        $author = \Hubzero\Facades\User::get('name') . ' <' . \Hubzero\Facades\User::get('email') . '>';
-                        $cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json "
-                            . "--author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
-                        system($cmd);
+                        $author = GitHelper::getAuthor();
+                        GitHelper::addAndCommit(
+                            $path,
+                            $ddName . '.json',
+                            "[ADD] $ddName.json Initial commit.",
+                            $author
+                        );
                     }
 
-                    $dd = json_decode(file_get_contents($json_file), true);
-                    $last_mod = date("Y-m-d H:i:s", filemtime($php_file));
+                    $dd = json_decode(file_get_contents($jsonFile), true);
+                    $lastMod = date("Y-m-d H:i:s", filemtime($phpFile));
+
+                    $viewLink = '/' . htmlspecialchars(DvConfig::$com_name)
+                        . "/view/" . htmlspecialchars($dbId) . ":db/"
+                        . htmlspecialchars($ddName) . '/';
+                    $editLink = '/administrator/index.php?option=com_dataviewer'
+                        . '&task=data_definition&db='
+                        . urlencode($dbId) . '&dd=' . urlencode($ddName);
+                    $fsLink = '/administrator/index.php?option=com_dataviewer'
+                        . '&tmpl=component&task=data_definition&db='
+                        . urlencode($dbId) . '&dd=' . urlencode($ddName);
 
                     print '<tr>';
-                    print '<td >' . ++$c . '</td>';
-                    print '<td >' . $dd['title'] . ' &nbsp;<small>[' . $dd_name . ']</small></td>';
-                    print '<td ><a class="db-dd-remove-link" style="color: red;" '
-                        . 'data-dd="' . $dd_name . '" href="#" />Remove</td>';
-                    print '<td>' . $last_mod . '</td>';
-                    $viewLink = '/' . DvConfig::$com_name . "/view/$db_id:db/" . $dd_name . '/';
-                    print '<td align="center"><a target="_blank" href="' . $viewLink . '">View</a></td>';
-                    $editLink = '/administrator/index.php?option=com_dataviewer&task=data_definition'
-                        . '&db=' . $db_id . '&dd=' . $dd_name;
-                    $fsLink = '/administrator/index.php?option=com_dataviewer&tmpl=component'
-                        . '&task=data_definition&db=' . $db_id . '&dd=' . $dd_name;
+                    print '<td>' . ++$c . '</td>';
+                    print '<td>' . htmlspecialchars($dd['title'])
+                        . ' &nbsp;<small>[' . htmlspecialchars($ddName)
+                        . ']</small></td>';
+                    print '<td><a class="db-dd-remove-link" style="color: red;" '
+                        . 'data-dd="' . htmlspecialchars($ddName)
+                        . '" href="#">Remove</a></td>';
+                    print '<td>' . $lastMod . '</td>';
+                    print '<td align="center"><a target="_blank" href="'
+                        . $viewLink . '">View</a></td>';
                     print '<td><a href="' . $editLink . '">Edit &nbsp; </a>'
-                        . '&nbsp;[<a target="_blank" href="' . $fsLink . '">Full Screen</a>]</td>';
+                        . '&nbsp;[<a target="_blank" href="' . $fsLink
+                        . '">Full Screen</a>]</td>';
                     print '</tr>';
                 }
             }
         }
 
         ?>
-            <tbody>
+            </tbody>
         </table>
-
 
         <?php
 
@@ -140,7 +158,7 @@ class DataviewList
             return;
         } else {
             $sql = 'SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '
-                . $jdb->quote($db_conf['database_ro']['database'])
+                . $jdb->quote($dbConf['database_ro']['database'])
                 . ' GROUP BY TABLE_NAME ORDER BY TABLE_NAME';
             $jdb->setQuery($sql);
             $list = $jdb->loadAssocList();
@@ -150,33 +168,40 @@ class DataviewList
 
         <!-- Remove Table form -->
         <?php
-        $removeAction = '/administrator/index.php?option=com_' . DvConfig::$com_name
+        $removeAction = '/administrator/index.php?option=com_'
+            . htmlspecialchars(DvConfig::$com_name)
             . '&task=data_definition_remove';
         ?>
         <form id="db-dd-remove-frm" method="post"
             action="<?php echo $removeAction; ?>" style="display: none;">
-                <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
-                <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
+                <input name="<?php echo DB_RID; ?>" type="hidden"
+                    value="<?php echo DB_RID; ?>" />
+                <input name="db" type="hidden"
+                    value="<?php echo htmlspecialchars($dbId); ?>" />
                 <input name="dd_name" type="hidden">
         </form>
 
-
-
         <?php
-        $newAction = '/administrator/index.php?option=com_' . DvConfig::$com_name
+        $newAction = '/administrator/index.php?option=com_'
+            . htmlspecialchars(DvConfig::$com_name)
             . '&task=data_definition_new';
-        $dialogTitle = $db_conf['name'] . ' Database : Add new Dataview';
+        $dialogTitle = htmlspecialchars($dbConf['name'])
+            . ' Database : Add new Dataview';
         ?>
-        <div id="db-dd-new" style="display: none;" title="<?php echo $dialogTitle; ?>">
+        <div id="db-dd-new" style="display: none;"
+            title="<?php echo $dialogTitle; ?>">
             <form method="post" action="<?php echo $newAction; ?>">
-                <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
-                <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
+                <input name="<?php echo DB_RID; ?>" type="hidden"
+                    value="<?php echo DB_RID; ?>" />
+                <input name="db" type="hidden"
+                    value="<?php echo htmlspecialchars($dbId); ?>" />
                 <label for="table">Select Table:</label>
                 <br />
                 <select name="table" id="table">
                 <?php
                 foreach ($list as $table) {
-                    print '<option value="' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</option>';
+                    $tName = htmlspecialchars($table['TABLE_NAME']);
+                    print "<option value=\"$tName\">$tName</option>";
                 }
                 ?>
                 </select>
@@ -191,10 +216,32 @@ class DataviewList
                 <br />
                 <input type="text" id="title" name="title" />
 
-
                 <input type="submit" value="Create" />
             </form>
         </div>
         <?php
+    }
+
+    /**
+     * Convert a PHP data definition to JSON using ddconvert.php.
+     *
+     * @param   string  $phpFile   Input PHP file path
+     * @param   string  $jsonFile  Output JSON file path
+     * @return  bool
+     */
+    private static function convertPhpToJson(
+        string $phpFile,
+        string $jsonFile
+    ): bool {
+        $script = dirname(__DIR__) . '/ddconvert.php';
+        $cmd = 'php '
+            . escapeshellarg($script)
+            . ' -i' . escapeshellarg($phpFile)
+            . ' -o' . escapeshellarg($jsonFile);
+        $output = [];
+        $returnCode = 0;
+        exec($cmd, $output, $returnCode);
+
+        return $returnCode === 0;
     }
 }

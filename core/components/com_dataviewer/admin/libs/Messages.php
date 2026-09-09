@@ -1,35 +1,35 @@
 <?php
 
 /**
+ * Session-based notification helper for the admin Dataviewer.
+ *
+ * Uses the Hubzero Session facade instead of raw $_SESSION.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Admin\Libs;
 
+use Hubzero\Facades\Session;
+
 class Messages
 {
-    public static function init()
-    {
-        if (!isset($_SESSION['databases']['notifications'])) {
-            $_SESSION['databases']['notifications'] = array();
-        }
-    }
-
     public static function dbMsg($msg, $type = 'error')
     {
-        self::init();
-        $_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
+        $list = Session::get('dv.admin.notifications', []);
+        $list[] = ['message' => $msg, 'type' => $type];
+        Session::set('dv.admin.notifications', $list);
     }
 
     public static function dbShowMsg()
     {
-        self::init();
-        foreach ($_SESSION['databases']['notifications'] as $notification) {
-            print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+        $list = Session::get('dv.admin.notifications', []);
+        foreach ($list as $notification) {
+            print '<p class="' . htmlspecialchars($notification['type'])
+                . '">' . $notification['message'] . '</p>';
         }
-
-        $_SESSION['databases']['notifications'] = array();
+        Session::set('dv.admin.notifications', []);
     }
 }

@@ -1,14 +1,17 @@
 <?php
 
 /**
+ * Remove a data definition for the admin Dataviewer component.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Admin\Tasks;
 
 use Components\Dataviewer\Admin\DvConfig;
+use Components\Dataviewer\Admin\Helpers\GitHelper;
 
 class DataDefinitionRemove
 {
@@ -17,32 +20,51 @@ class DataDefinitionRemove
         \Components\Dataviewer\Admin\Libs\Security::checkRid();
         $base = DvConfig::$conf['dir_base'];
 
-        $db_id = \Hubzero\Facades\Request::getString('db', false);
-        $dd_name = \Hubzero\Facades\Request::getString('dd_name', false);
+        $dbId = \Hubzero\Facades\Request::getString('db', false);
+        $ddName = \Hubzero\Facades\Request::getString('dd_name', false);
 
-        $author = \Hubzero\Facades\User::get('name') . ' <' . \Hubzero\Facades\User::get('email') . '>';
+        $author = GitHelper::getAuthor();
 
+        // Remove PHP data definition
+        $ddFilePhp = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions-php/' . $ddName . '.php';
+        if (file_exists($ddFilePhp)) {
+            unlink($ddFilePhp);
+        }
 
-        $dd_file_php = $base . '/' . $db_id . '/applications/'
-            . DvConfig::$com_name . "/datadefinitions-php/$dd_name.php";
-        system("rm $dd_file_php");
-        $phpDir = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions-php/';
-        $cmd = "cd $phpDir; git commit $dd_name.php --author=\"$author\" "
-            . "-m\"[DELETE] $dd_name.php.\"  > /dev/null";
-        system($cmd);
+        $phpDir = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions-php/';
+        GitHelper::commit(
+            $phpDir,
+            $ddName . '.php',
+            "[DELETE] $ddName.php.",
+            $author
+        );
 
-        $dd_file_json = $base . '/' . $db_id . '/applications/'
-            . DvConfig::$com_name . "/datadefinitions/$dd_name.json";
-        system("rm $dd_file_json");
-        $jsonDir = $base . '/' . $db_id . '/applications/' . DvConfig::$com_name . '/datadefinitions/';
-        $cmd = "cd $jsonDir; git commit $dd_name.json --author=\"$author\" "
-            . "-m\"[DELETE] $dd_name.json.\"  > /dev/null";
-        system($cmd);
+        // Remove JSON data definition
+        $ddFileJson = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions/' . $ddName . '.json';
+        if (file_exists($ddFileJson)) {
+            unlink($ddFileJson);
+        }
 
-        \Components\Dataviewer\Admin\Libs\Messages::dbMsg('Dataview successfully removed', 'message');
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);
-        $url .= "/administrator/index.php?option=com_" . DvConfig::$com_name . "&task=dataview_list&db=$db_id";
-        header("Location: $url");
-        exit();
+        $jsonDir = $base . '/' . $dbId . '/applications/'
+            . DvConfig::$com_name . '/datadefinitions/';
+        GitHelper::commit(
+            $jsonDir,
+            $ddName . '.json',
+            "[DELETE] $ddName.json.",
+            $author
+        );
+
+        \Components\Dataviewer\Admin\Libs\Messages::dbMsg(
+            'Dataview successfully removed',
+            'message'
+        );
+
+        $url = '/administrator/index.php?option=com_'
+            . urlencode(DvConfig::$com_name)
+            . '&task=dataview_list&db=' . urlencode($dbId);
+        \Hubzero\Facades\App::redirect($url);
     }
 }

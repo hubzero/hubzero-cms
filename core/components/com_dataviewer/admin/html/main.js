@@ -20,7 +20,18 @@ db.dbJQ = jQuery;
 
 db.dbJQ(document).ready(function($) {
 
+	// Read config from data attributes if available (new Blade views)
+	var configEl = document.getElementById('dv-admin-config');
+	if (configEl) {
+		if (configEl.getAttribute('data-back-link')) {
+			db_back_link = configEl.getAttribute('data-back-link');
+		}
+		if (configEl.getAttribute('data-com-name')) {
+			window.com_name = configEl.getAttribute('data-com-name');
+		}
+	}
+
 	/* Back Link */
 	$('#toolbar-back a.toolbar').removeAttr('onclick').attr('href', db_back_link);
-	
+
 });

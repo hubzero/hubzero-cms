@@ -1,8 +1,10 @@
 <?php
 
 /**
+ * Admin controller dispatcher for the Dataviewer component.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -13,21 +15,29 @@ class Controller
     public static function dispatch()
     {
         if (!static::authorized()) {
-            $err_str = 'Access restricted.';
+            $errStr = 'Access restricted.';
 
             if (DvConfig::$conf['modes']['db']['enabled']) {
-                $group = DvConfig::$conf['access_limit_to_group'];
-                \Hubzero\Facades\Toolbar::title('Databases', 'databases');
-                \Hubzero\Facades\Toolbar::preferences('com_databases', '200');
-                $err_str = '<p class="error">Not authorized, access is limited to '
-                    . "\"<em>$group</em>\"</p>. "
-                    . '<h3>Use the Databases component parameters to change this</h3>';
+                $group = htmlspecialchars(
+                    DvConfig::$conf['access_limit_to_group']
+                );
+                \Hubzero\Facades\Toolbar::title(
+                    'Databases',
+                    'databases'
+                );
+                \Hubzero\Facades\Toolbar::preferences(
+                    'com_databases',
+                    '200'
+                );
+                $errStr = '<p class="error">Not authorized, access is'
+                    . ' limited to "<em>' . $group . '</em>"</p>. '
+                    . '<h3>Use the Databases component parameters'
+                    . ' to change this</h3>';
             }
 
-            print $err_str;
+            print $errStr;
             return;
         }
-
 
         // Get the task
         $task = \Hubzero\Facades\Request::getCmd('task', 'list');
@@ -46,9 +56,14 @@ class Controller
 
         if (isset($taskMap[$task])) {
             // Add task JS if exists
-            if (file_exists(__DIR__ . DS . 'Tasks' . DS . 'html' . DS . $task . '.js')) {
+            $jsFile = __DIR__ . DS . 'Tasks' . DS . 'html'
+                . DS . $task . '.js';
+            if (file_exists($jsFile)) {
                 $document = \Hubzero\Facades\App::get('document');
-                $document->addScript(DB_PATH . DS . 'Tasks' . DS . 'html' . DS . $task . '.js?v=2');
+                $document->addScript(
+                    DB_PATH . DS . 'Tasks' . DS . 'html'
+                        . DS . $task . '.js?v=2'
+                );
             }
             $taskMap[$task]::execute();
         }
@@ -60,8 +75,10 @@ class Controller
             return true;
         }
 
-        if (DvConfig::$conf['access_limit_to_group'] !== false && !\Hubzero\Facades\User::isGuest()) {
-            $groups = \Hubzero\User\Helper::getGroups(\Hubzero\Facades\User::get('id'));
+        if (!\Hubzero\Facades\User::isGuest()) {
+            $groups = \Hubzero\User\Helper::getGroups(
+                \Hubzero\Facades\User::get('id')
+            );
             if ($groups && count($groups)) {
                 foreach ($groups as $g) {
                     if ($g->cn == DvConfig::$conf['access_limit_to_group']) {

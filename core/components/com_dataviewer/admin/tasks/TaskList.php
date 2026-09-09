@@ -1,8 +1,10 @@
 <?php
 
 /**
+ * Database list task for the admin Dataviewer component.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -14,17 +16,22 @@ class TaskList
 {
     public static function execute()
     {
-        \Hubzero\Facades\Toolbar::title(\Hubzero\Facades\Lang::txt('Database List'), 'databases');
-        \Hubzero\Facades\Toolbar::preferences(\Hubzero\Facades\Request::getcmd('option'), '500');
-
+        \Hubzero\Facades\Toolbar::title(
+            \Hubzero\Facades\Lang::txt('Database List'),
+            'databases'
+        );
+        \Hubzero\Facades\Toolbar::preferences(
+            \Hubzero\Facades\Request::getcmd('option'),
+            '500'
+        );
 
         $base = DvConfig::$conf['dir_base'];
-        $arry = array();
-        $list = `cd $base; ls ./*/database.json`;
 
-        $list = explode("\n", $list ? $list : '');
-        array_pop($list);
-
+        // Use glob() instead of shell `ls` to find databases
+        $configFiles = glob($base . '/*/database.json');
+        if (!is_array($configFiles)) {
+            $configFiles = [];
+        }
         ?>
         <table class="adminlist">
             <thead>
@@ -39,23 +46,28 @@ class TaskList
         <?php
         $c = 0;
 
-        foreach ($list as $item) {
-            chdir($base);
-            $id = explode('/', $item);
-            $id = $id[1];
-            $db = json_decode(file_get_contents($item), true);
+        foreach ($configFiles as $configFile) {
+            $id = basename(dirname($configFile));
+            $db = json_decode(file_get_contents($configFile), true);
+            if (!$db) {
+                continue;
+            }
 
-            print '<tr>';
-            print '<td >' . ++$c . '</td>';
-            print '<td >' . $db['name'] . '</td>';
-            $configLink = '/administrator/index.php?option=com_dataviewer&task=config&db=' . $id;
-            $dvLink = '/administrator/index.php?option=com_dataviewer&task=dataview_list&db=' . $id;
-            print '<td><a href="' . $configLink . '">Edit Config</a></td>';
-            print '<td><a href="' . $dvLink . '" target="_blank">Dataviews</a></td>';
-            print '</tr>';
+            $configLink = '/administrator/index.php?option=com_dataviewer'
+                . '&task=config&db=' . urlencode($id);
+            $dvLink = '/administrator/index.php?option=com_dataviewer'
+                . '&task=dataview_list&db=' . urlencode($id);
+            ?>
+                <tr>
+                    <td><?php echo ++$c; ?></td>
+                    <td><?php echo htmlspecialchars($db['name']); ?></td>
+                    <td><a href="<?php echo $configLink; ?>">Edit Config</a></td>
+                    <td><a href="<?php echo $dvLink; ?>" target="_blank">Dataviews</a></td>
+                </tr>
+            <?php
         }
         ?>
-            <tbody>
+            </tbody>
         </table>
         <?php
     }
