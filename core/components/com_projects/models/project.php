@@ -62,7 +62,7 @@ class Project extends Model
     protected $_type;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_userGroups;
-    protected $params;
+    public $params;
 
     /**
      * Table class name

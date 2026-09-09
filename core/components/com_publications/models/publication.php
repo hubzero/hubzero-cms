@@ -508,7 +508,7 @@ class Publication extends Obj
     {
         if (empty($this->_project)) {
             $this->_project = new \Components\Projects\Models\Project($this->publication->project_id);
-            $this->_project->_params = new \Hubzero\Config\Registry($this->_project->params);
+            $this->_project->_params = $this->_project->getParams();
         }
 
         return $this->_project;

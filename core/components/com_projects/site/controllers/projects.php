@@ -398,7 +398,7 @@ class Projects extends Base
         // Reconcile members of project groups
         if (!$ajax) {
             if (
-                $this->model->_tblOwner->reconcileGroups(
+                $this->model->table('Owner')->reconcileGroups(
                     $this->model->get('id'),
                     $this->model->get('owned_by_group'),
                     $this->model->get('sync_group')
@@ -427,7 +427,7 @@ class Projects extends Base
 
         // Sync with system group in case of changes
         if ($sync == true) {
-            $this->model->_tblOwner->sysGroup(
+            $this->model->table('Owner')->sysGroup(
                 $this->model->get('alias'),
                 $this->config->get('group_prefix', 'pr-')
             );
@@ -467,7 +467,7 @@ class Projects extends Base
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
             $this->view->pub       = $pub;
-            $this->view->team      = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
+            $this->view->team      = $this->model->table('Owner')->getOwnerNames($this->model->get('id'));
             $this->view->suggested = Helpers\Html::suggestAlias($pub->title);
             $this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);
             $this->view->suggested = $this->view->verified ? $this->view->suggested : '';
@@ -486,7 +486,7 @@ class Projects extends Base
 
         // Invitation view
         if ($confirmcode && (!$member or $member->status != 1)) {
-            $match = $this->model->_tblOwner->matchInvite(
+            $match = $this->model->table('Owner')->matchInvite(
                 $this->model->get('id'),
                 $confirmcode,
                 $email
@@ -494,18 +494,18 @@ class Projects extends Base
 
             if (User::isGuest() && $match) {
                 $layout = 'invited';
-            } elseif ($match && $this->model->_tblOwner->load($match)) {
+            } elseif ($match && $this->model->table('Owner')->load($match)) {
                 if (strtolower(User::get('email')) == strtolower($email)) {
                     // Confirm user
-                    $this->model->_tblOwner->status = 1;
-                    $this->model->_tblOwner->userid = User::get('id');
+                    $this->model->table('Owner')->status = 1;
+                    $this->model->table('Owner')->userid = User::get('id');
 
-                    if (!$this->model->_tblOwner->store()) {
-                        $this->setError($this->model->_tblOwner->getError());
+                    if (!$this->model->table('Owner')->store()) {
+                        $this->setError($this->model->table('Owner')->getError());
                         return false;
                     } else {
                         // Sync with system group
-                        $this->model->_tblOwner->sysGroup(
+                        $this->model->table('Owner')->sysGroup(
                             $this->model->get('alias'),
                             $this->config->get('group_prefix', 'pr-')
                         );
@@ -735,7 +735,7 @@ class Projects extends Base
             $this->view->setLayout('provisioned');
             $this->view->set('model', $this->model);
 
-            $this->view->set('team', $this->model->_tblOwner->getOwnerNames($this->model->get('alias')));
+            $this->view->set('team', $this->model->table('Owner')->getOwnerNames($this->model->get('alias')));
 
             // Output HTML
             $this->view->set('pub', isset($pub) ? $pub : '');
