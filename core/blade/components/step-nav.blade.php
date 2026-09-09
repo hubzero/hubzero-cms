@@ -3,16 +3,21 @@
     'current' => 0,
 ])
 
-<ul class="step-nav">
+<ul class="steps steps-horizontal w-full mb-8">
     @foreach($steps as $i => $step)
         @php
-            $stepClass = $i < $current ? 'step-completed' : ($i === $current ? 'step-current' : '');
+            $label = is_array($step) ? ($step['label'] ?? '') : $step;
+            $url = is_array($step) ? ($step['url'] ?? null) : null;
+            $isCompleted = $i < $current;
+            $isCurrent = $i === $current;
+            $stepClass = ($isCompleted || $isCurrent) ? 'step-primary' : '';
         @endphp
-        <li class="step-nav-item {{ $stepClass }}">
-            @if(is_array($step) && isset($step['url']) && $i < $current)
-                <a href="{{ $step['url'] }}">{{ $step['label'] ?? $step }}</a>
+        <li class="step {{ $stepClass }}"
+            @if($isCurrent) aria-current="step" @endif>
+            @if($url && $isCompleted)
+                <a href="{{ $url }}">{{ $label }}</a>
             @else
-                {{ is_array($step) ? ($step['label'] ?? '') : $step }}
+                {{ $label }}
             @endif
         </li>
     @endforeach

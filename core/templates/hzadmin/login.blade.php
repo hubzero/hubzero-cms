@@ -16,7 +16,8 @@
   $direction  = $translator && $translator->isRTL() ? 'rtl' : 'ltr';
 @endphp
 <!DOCTYPE html>
-<html dir="{{ $direction }}" lang="{{ $lang }}" data-theme="hubzero">
+<html dir="{{ $direction }}" lang="{{ $lang }}" data-theme="hubzero"
+      data-css-framework="daisyui" data-view-engine="blade">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />

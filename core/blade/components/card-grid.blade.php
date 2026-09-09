@@ -2,6 +2,6 @@
     'cols' => 3,
 ])
 
-<div class="card-grid card-grid-{{ $cols }}">
+<div {{ $attributes->merge(['class' => "card-grid card-grid-{$cols}"]) }}>
     {{ $slot }}
 </div>
