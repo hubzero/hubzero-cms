@@ -206,7 +206,7 @@ class Generator
 
             // loop through each file
             foreach ($files as $file) {
-                if (!preg_match('/(.*)v[0-9]+_[0-9]+.php$/', $file)) {
+                if (!preg_match('/(.*)v[0-9]+[_r][0-9]+\.php$/', $file)) {
                     continue;
                 }
                 $output[$component] = array_merge($output[$component], $this->processFile($file));
@@ -385,7 +385,7 @@ class Generator
             $parts['client']     = $parts[2];
             $parts['controller'] = $parts[4];
             $b = explode('v', $parts[4]);
-            $parts['version']    = end($b);//$parts[4];
+            $parts['version']    = str_replace('r', '_', end($b));
             return $parts;
         }
 
