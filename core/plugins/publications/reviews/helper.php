@@ -23,10 +23,10 @@ use Hubzero\Facades\Date;
 class Helper extends \Hubzero\Base\Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
-    protected $loggedin;
-    protected $myreview;
-    protected $publication;
+    public $_option;
+    public $loggedin;
+    public $myreview;
+    public $publication;
 
     /**
      * Execute an action

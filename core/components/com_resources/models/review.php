@@ -154,7 +154,7 @@ class Review extends Relational
      */
     public function replies()
     {
-        return $this->oneShiftsToMany('Reviewcomment', 'item_id', 'item_type');
+        return $this->oneShiftsToMany('Review\\Comment', 'item_id', 'item_type');
     }
 
     /**

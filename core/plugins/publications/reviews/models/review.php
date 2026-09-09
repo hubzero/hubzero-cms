@@ -184,7 +184,7 @@ class Review extends \Hubzero\Base\Model
         switch (strtolower($rtrn)) {
             case 'count':
                 if (!isset($this->comments_count) || !is_numeric($this->comments_count) || $clear) {
-                    $this->comments_count = \Components\Publications\Reviews\Models\Comment::all()
+                    $this->comments_count = \Plugins\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereIn('state', $filters['state'])
@@ -197,7 +197,7 @@ class Review extends \Hubzero\Base\Model
             case 'results':
             default:
                 if (!$this->comments || $clear) {
-                    $results = \Components\Publications\Reviews\Models\Comment::all()
+                    $results = \Plugins\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('parent', $filters['parent'])
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])

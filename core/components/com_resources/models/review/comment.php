@@ -2,18 +2,18 @@
 
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Resources\Models;
+namespace Components\Resources\Models\Review;
 
 use Hubzero\Item\Comment as ItemComment;
 
 /**
  * Resources model for a review comment
  */
-class Reviewcomment extends ItemComment
+class Comment extends ItemComment
 {
     /**
      * Flagged state
@@ -36,7 +36,6 @@ class Reviewcomment extends ItemComment
         }
         $link = $this->_base;
 
-        // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'edit':
                 $link .= '&action=edit&comment=' . $this->get('id');
