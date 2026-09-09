@@ -197,9 +197,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 							<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 								<p>
 									<strong><?php echo $name; ?></strong>
-									<span class="comment-date-at"><?php echo Lang::txt('COM_KB_AT'); ?></span>
+									<span class="comment-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
 									<span class="time"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('time'); ?></time></span>
-									<span class="comment-date-on"><?php echo Lang::txt('COM_KB_ON'); ?></span>
+									<span class="comment-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
 									<span class="date"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('date'); ?></time></span>
 								</p>
 								<p>
