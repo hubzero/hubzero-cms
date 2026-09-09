@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Creating a Course On the /administrator interface, navigate to Courses under the Components tab At the top of the Courses panel, click the + sign to add a new…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/courses/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Courses</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#creating-a-course">Creating a Course</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-course-overview-pages-tabs">Creating Course Overview Pages (tabs)</a></li>
+<li class="toc__item toc__item--l2"><a href="#opening-up-enrollment-into-a-course">Opening up Enrollment into a Course</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-parameters-in-an-offering">Editing Parameters in an Offering</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-parameters-in-a-section">Editing Parameters in a Section</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-discussion-parameters">Editing Discussion Parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#deleting-assets">Deleting Assets</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-certificates">Creating Certificates</a></li>
+<li class="toc__item toc__item--l2"><a href="#deleting-certificates">Deleting Certificates</a></li>
+<li class="toc__item toc__item--l2"><a href="#changing-deployment-time">Changing Deployment Time</a></li>
+<li class="toc__item toc__item--l2"><a href="#display-number-of-users-enrolled-in-a-course">Display Number of Users Enrolled in a Course</a></li>
+<li class="toc__item toc__item--l2"><a href="#course-presentations-hub-presenter">Course Presentations: HUB Presenter</a></li>
+<li class="toc__item toc__item--l2"><a href="#setting-a-course-in-preview-mode">Setting a Course in Preview Mode</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Courses</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Courses</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/courses">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        <div class="prose">
+<h2 id="creating-a-course">Creating a Course</h2>
+<ol>
+<li>
+<p>On the <strong>/administrator</strong> interface, navigate to <strong>Courses</strong> under the Components tab</p>
+</li>
+<li>
+<p>At the top of the Courses panel, click the <strong>+</strong> sign to add a new course</p>
+</li>
+<li>
+<p>Fill in the details of the course. (See below for field/option descriptions.)</p>
+</li>
+<li>
+<p>Click on the drop-down section under <strong>Publishing</strong>, and determine if you want your course to be a <strong>Draft</strong> or <strong>Published</strong></p>
+</li>
+<li>
+<p>Click on <strong>Save</strong> to save the work that you have completed. You can only further edit your course, such as add an image or managers, after you have saved the initial details</p>
+</li>
+<li>
+<p>Under the Managers area, add course administrators (Instructors, Managers, etc.)</p>
+</li>
+<li>
+<p>Under the Image area, add a course image by dragging an image file into the upload box</p>
+</li>
+<li>
+<p>Click <strong>Save &amp; Close</strong> to save all the details of the course and to go back to the Courses main page, where your course will now be listed</p>
+</li>
+</ol>
+<p><strong>Field/Option Descriptions</strong></p>
+<ul>
+<li><strong>Course Alias:</strong> Your course alias. This will be part of the URL.</li>
+<li><strong>Course Title:</strong> The official name of your course. This name will be what users see when browsing the hub.</li>
+<li><strong>Interests (tags):</strong> Helps categorize your course in search results. These tags can help your course be discovered more effectually.</li>
+<li><strong>Blurb:</strong> A short description of the course.</li>
+<li><strong>Description:</strong> A longer description of the course. Here you can personalize what the goal or concept is in further detail to your students.</li>
+<li><strong>Unpublished:</strong> The course is taken off the front end of the hub.</li>
+<li><strong>Published:</strong> The course can be found in the front end. Anyone can find the course through searches.</li>
+<li><strong>Draft:</strong> The course is being drafted. The course is accessible only to course administrators. This allows instructors and managers to build a course before it is available to students.</li>
+<li><strong>Deleted:</strong> The course is deleted permanently. Once a course is deleted nothing can be retrieved from the course after this action.</li>
+</ul>
+<h2 id="creating-course-overview-pages-tabs">Creating Course Overview Pages (tabs)</h2>
+<ol>
+<li>In the backend, navigate to <strong>Courses</strong> under the Components tab</li>
+<li>Find your course in the list. Under the <strong>Pages</strong> column, click on the <strong>+</strong> sign to add a new page
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If there are already existing pages, you will see a number in place of the <strong>+</strong> sign.</p>
+</aside>
+</li>
+<li>Enter the title, URL, and content into the page details. In the published parameters choose <strong>Yes</strong> to make the page active on the <strong>Course Overview</strong>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Note: A new page must be saved before files can be uploaded.</p>
+</aside>
+</li>
+<li>Click <strong>Save &amp; Close</strong> and your new page will appear in the course pages list in the backend. On the frontend, your new page will show as another tab in the Course Overview</li>
+</ol>
+<h2 id="opening-up-enrollment-into-a-course">Opening up Enrollment into a Course</h2>
+<ol>
+<li>In the backend, navigate to <strong>Courses</strong> under the Components tab</li>
+<li>Locate the course and click the number of offerings for that course in the <strong>Offerings</strong> column</li>
+<li>Locate the offering and click the number of sections for that offering in the <strong>Sections</strong> column</li>
+<li>Click the section’s title</li>
+<li>Under the <strong>Details</strong> tab, locate <strong>Enrollment</strong> and select a response from the drop-down
+<ol>
+<li><strong>Open (anyone can join)</strong>: Any user on the Hub can join this section of the course.</li>
+<li><strong>Restricted (coupon code is required)</strong>: Only users with a coupon code can gain access to this section of the course.</li>
+<li><strong>Closed (no new enrollment)</strong>: This section of the course is closed and cannot be accessed by new students.</li>
+</ol>
+</li>
+</ol>
+<h2 id="editing-parameters-in-an-offering">Editing Parameters in an Offering</h2>
+<ol>
+<li>In the backend, navigate to <strong>Courses</strong> under the Components tab</li>
+<li>Locate the course and click the number of offerings for that course in the <strong>Offerings</strong> column</li>
+<li>Locate the offering and click the title</li>
+<li>Locate the <strong>Parameters</strong> section and select the parameters for <strong>Progress Calculation</strong>
+<ul>
+<li><strong>Inherit from course defaults-</strong> means that all of the parameters preset on the hub will be the same for this offering.</li>
+</ul>
+</li>
+<li>Click <strong>Save &amp; Close</strong> to save the parameters for that offering</li>
+</ol>
+<h2 id="editing-parameters-in-a-section">Editing Parameters in a Section</h2>
+<p><a id="addingparameterstoanoffering"></a></p>
+<ol>
+<li>In the backend, navigate to <strong>Courses</strong> under the Components tab</li>
+<li>Locate the course and click the number of offerings for that course in the <strong>Offerings</strong> column</li>
+<li>Locate the offering and click the number pf sections for that offering in the <strong>Sections</strong> column</li>
+<li>Click the section's title</li>
+<li>Under the <strong>Details</strong> tab, locate the <strong>Parameters</strong> section and select the parameters for <strong>Progress Calculation</strong>
+<ul>
+<li><strong>Inherit from course defaults</strong>- means that all of the parameters preset on the hub will be the same for this section.</li>
+</ul>
+</li>
+<li>Click <strong>Save &amp; Close</strong> to save the parameters for that section</li>
+</ol>
+<h2 id="editing-discussion-parameters">Editing Discussion Parameters</h2>
+<ol>
+<li>In the backend, navigate to <strong>Courses</strong> under the Components tab</li>
+<li>Find the course and the click the number in the <strong>Offerings</strong> column</li>
+<li>Locate the offering and click the number of sections for that offering in the <strong>Sections</strong> column</li>
+<li>Click the title of the section that you would like to change the discussions settings in</li>
+<li>Under the <strong>Details</strong> tab, locate the <strong>Discussions Parameters</strong> area. In the drop-down, choose <strong>All sections</strong> to show discussion threads across all sections in this offering, or choose <strong>This section only</strong> to show discussion threads only by this specific section</li>
+<li>Click <strong>Save &amp; Close</strong> to save the changes to the parameters</li>
+</ol>
+<h2 id="deleting-assets">Deleting Assets</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You must be logged into your hub in order to complete the following tasks.</p>
+</aside>
+<ol>
+<li>Click the <strong>Components</strong> tab and then select the <strong>Courses</strong> button located in the drop-down</li>
+<li>On the Courses page, locate the course</li>
+<li>After locating the course, under the <strong>Offerings</strong> column, select the number of offerings</li>
+<li>On the Courses: Offerings page, locate the offering</li>
+<li>Locate the <strong>Units</strong> column and select the number of units</li>
+<li>Locate the Unit, then under the <strong>Asset Groups</strong> column select the number of under the column</li>
+<li>Inside <strong>Asset Groups</strong>, check the box of the offering</li>
+<li>Click the <strong>Delete</strong> button to permanently remove the content and asset from the course</li>
+<li>A pop-up will appear asking <strong>Are you sure you want to remove these items?</strong></li>
+<li>Proceed to click <strong>OK</strong>, and the items will be removed from the course</li>
+</ol>
+<h2 id="creating-certificates">Creating Certificates</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You must be logged into your hub in order to complete the following tasks.</p>
+</aside>
+<p><img src="../../media/courses-210course.png" alt="210course" /></p>
+<ol>
+<li>Click the <strong>Components</strong> tab and then select the <strong>Courses</strong> button located in the drop-down</li>
+<li>On the Courses page, locate the course</li>
+<li>After locating the course, under the <strong>Cert.</strong> or certificate column click on the <strong>No Certificate Set</strong> button</li>
+<li>On the <strong>Courses: Certificate: Create page</strong>, upload a PDF certificate file by choosing the file from your files and then clicking <strong>Upload</strong></li>
+<li>Once the file is uploaded, a preview will appear
+<ol>
+<li>The preview is where you can place, drag, and resize various placeholders for elements such as the user’s name, course name, etc. to be dynamically filled in when a certificate is claimed.</li>
+</ol>
+</li>
+<li>Click the <strong>Save &amp; Close</strong> button in order to navigate back to the Courses page</li>
+</ol>
+<h2 id="deleting-certificates">Deleting Certificates</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You must be logged into your hub in order to complete the following tasks</p>
+</aside>
+<ol>
+<li>
+<p>Click the <strong>Components</strong> tab and then select the <strong>Courses</strong> button located in the drop-down</p>
+</li>
+<li>
+<p>On the Courses page, locate the course</p>
+</li>
+<li>
+<p>After locating the course, under the <strong>Cert</strong>. or certificate column click on the <strong>Certificate Set</strong> button (checkmark icon <strong>✔</strong>)</p>
+</li>
+<li>
+<p>On the <strong>Courses: Certificate: Create</strong> page, click the <strong>Delete</strong> button</p>
+</li>
+<li>
+<p>Click the <strong>Save &amp; Close</strong> button in order to navigate back to the <strong>Courses</strong> page</p>
+</li>
+<li>
+<p>A pop-up will appear stating <strong>Entry successfully removed</strong> and you will be navigated back to the Courses page</p>
+</li>
+</ol>
+<h2 id="changing-deployment-time">Changing Deployment Time</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You must be logged into your hub in order to complete the following tasks.</p>
+</aside>
+<ol>
+<li>Click the <strong>Components</strong> tab and then select the <strong>Courses</strong> button located in the drop-down</li>
+<li>On the <strong>Courses</strong> page, locate the course</li>
+<li>After locating the course, under the <strong>Offerings</strong> column, select the number of offerings</li>
+<li>On the <strong>Courses: Offerings</strong> page, locate the offering</li>
+<li>Locate the <strong>Sections</strong> column and select the number under the column</li>
+<li>Check the box of the section, and then click the <strong>Edit</strong> button</li>
+<li>In the <strong>Courses: Sections: Edit</strong> page, select the <strong>Dates/Times</strong> tab</li>
+<li>Locate the course asset and set a date and time for the content of the asset, which is usually in the third tier inside the asset group
+<ol>
+<li>Example: Exam&gt; Exam 1&gt; Exam1</li>
+</ol>
+</li>
+<li>Set the date and time by clicking the <strong>From</strong> and <strong>To</strong> boxes to access the time pop-up</li>
+<li>Save the changes by clicking <strong>Save &amp; Close</strong> and a pop-up will appear saying <strong>Entry successfully saved</strong></li>
+</ol>
+<h2 id="display-number-of-users-enrolled-in-a-course">Display Number of Users Enrolled in a Course</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You must be logged into your hub in order to complete the following tasks.</p>
+</aside>
+<p><img src="../../media/courses-210options.png" alt="210options" /></p>
+<ol>
+<li>Click the <strong>Components</strong> tab and then select the <strong>Courses</strong> button located in the drop-down</li>
+<li>On the <strong>Courses</strong> page, select the <strong>Options</strong> button in the top-right corner of the page</li>
+<li>Under the <strong>Defaults</strong> tab, locate the <strong>Show Enrollment Numbers</strong> option at the bottom of the pop-up</li>
+<li>Select between <strong>Yes</strong> to show enrollment numbers or <strong>No</strong> to not show enrollment numbers from the drop-down</li>
+<li>Click the <strong>Save &amp; Close</strong> button to save the new setting and exit out of the pop-up</li>
+</ol>
+<h2 id="course-presentations-hub-presenter">Course Presentations: HUB Presenter</h2>
+<p>Hub Presenter is a presentation formatting section available to upload large video files inside of Courses. An administrator with privileges to workspace is the only one who can upload these presentation files.</p>
+<ol>
+<li>Navigate to the HUB and go to <strong>hubname.org/resources</strong></li>
+<li>Create a new Resources and make the category <strong>Online Presentations</strong></li>
+<li>Fill out the information needed for the Resource and then navigate to the backend of the HUB to make sure that the Resource is <strong>Published</strong></li>
+<li>Then, navigate to the HUB <strong>Workspace</strong> and <strong>ssh</strong> into your HUB account</li>
+<li>Upload the videos &amp; slides of the presentation
+<ol>
+<li>Note: Slides must be uploaded in order by appearance as individual images (.jpg) in a zipped folder called Slides, the video must be uploaded as a .webm, .mp4, and a .ogv
+<ol>
+<li>Example: media.webm/media.mp4/media.ogv</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Create a folder called <strong>/slides</strong> and then navigate to /hubname/app/site/resources/XX-XX-XXXX/slides and upload all image slides as a .zip file
+<ol>
+<li>Note: &quot;XX-XX-XXXX&quot; is the date of when the resource was created</li>
+</ol>
+</li>
+<li>Listed below is an example of the presentation layout:</li>
+</ol>
+<p>{
+&quot;presentation&quot;: {
+&quot;title&quot;: &quot;Career Development&quot;,
+&quot;type&quot;: &quot;Video&quot;,
+&quot;media&quot;: [
+{
+&quot;source&quot;: &quot;media.mp4&quot;,
+&quot;type&quot;: &quot;mp4&quot;
+},
+{
+&quot;source&quot;: &quot;media.webm&quot;,
+&quot;type&quot;: &quot;webm&quot;
+},
+{
+&quot;source&quot;: &quot;media.ogv&quot;,
+&quot;type&quot;: &quot;ogv&quot;
+}
+],
+&quot;slides&quot;: [
+{
+&quot;title&quot;: &quot;Career Development&quot;,
+&quot;type&quot;: &quot;Image&quot;,
+&quot;media&quot;: &quot;slides/001.01.jpg&quot;,
+&quot;time&quot;: &quot;0&quot;,
+&quot;slide&quot;: &quot;1&quot;
+},
+{
+&quot;title&quot;: &quot;Career Development&quot;,
+&quot;type&quot;: &quot;Image&quot;,
+&quot;media&quot;: &quot;slides/001.01.jpg&quot;,
+&quot;thumb&quot;: &quot;slides/001.01.jpg&quot;,
+&quot;time&quot;: &quot;8.5752419085752418&quot;,
+&quot;slide&quot;: &quot;1&quot;
+},
+{
+&quot;title&quot;: &quot;Your Career Choices after Graduate School and The Most-Neglected Item in your Career Development&quot;,
+&quot;type&quot;: &quot;Image&quot;,
+&quot;media&quot;: &quot;slides/002.01.jpg&quot;,
+&quot;thumb&quot;: &quot;slides/002.02.jpg&quot;,
+&quot;time&quot;: &quot;50.417083750417085&quot;,
+&quot;slide&quot;: &quot;2&quot;
+},
+{
+&quot;title&quot;: &quot;Your Career Choices after Graduate School and The Most-Neglected Item in your Career Development&quot;,
+&quot;type&quot;: &quot;Image&quot;,
+&quot;media&quot;: &quot;slides/002.02.jpg&quot;,
+&quot;time&quot;: &quot;64.7313980647314&quot;,
+&quot;slide&quot;: &quot;2&quot;
+},
+{
+&quot;title&quot;: &quot;Questions? I Might have replies….&quot;,
+&quot;type&quot;: &quot;Image&quot;,
+&quot;media&quot;: &quot;slides/046.01.jpg&quot;,
+&quot;thumb&quot;: &quot;slides/046.01.jpg&quot;,
+&quot;time&quot;: &quot;4506.6733400066732&quot;,
+&quot;slide&quot;: &quot;46&quot;
+}
+]
+}
+}</p>
+<p>​</p>
+<h2 id="setting-a-course-in-preview-mode">Setting a Course in Preview Mode</h2>
+<p>You can set a course offering to give users a preview from the administrator interface.</p>
+<ol>
+<li>Navigate to /administrator for your hub and login</li>
+<li>Click on &quot;Courses&quot; under &quot;Components&quot;</li>
+<li>Locate the course where you want to enable preview mode, and click on the number of offerings</li>
+<li>Then click on &quot;Sections&quot; for that offering</li>
+<li>Click on the title of the offering</li>
+<li>Under &quot;Parameters&quot; change &quot;Preview mode&quot; to &quot;Yes, offer a full preview&quot; or &quot;Yes, offer a preview of the first unit.&quot;</li>
+<li>Click &quot;Save &amp; Close&quot;</li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../collections/index.html" rel="prev"><span>Previous</span>Collections</a><a class="pager__next" href="../cron/index.html" rel="next"><span>Next</span>Cron</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/07-courses.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

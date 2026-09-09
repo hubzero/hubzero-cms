@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citations · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Citations are the works — journal articles, books, theses, conference papers — that have cited the hub or something published on it. The component keeps a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/citations/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Citations</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#citations-2">Citations</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-citation">Creating or editing a citation</a></li>
+<li class="toc__item toc__item--l2"><a href="#stats">Stats</a></li>
+<li class="toc__item toc__item--l2"><a href="#types">Types</a></li>
+<li class="toc__item toc__item--l2"><a href="#sponsors">Sponsors</a></li>
+<li class="toc__item toc__item--l2"><a href="#format">Format</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#import-plugins">Import plugins</a></li>
+<li class="toc__item toc__item--l2"><a href="#member-and-group-citations">Member and group citations</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Citations</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Citations</h1>
+        </header>
+        
+        <div class="prose">
+<p>Citations are the works — journal articles, books, theses, conference
+papers — that have cited the hub or something published on it. The
+component keeps a catalogue of them, links each one to the resource or
+publication it references, formats it with a bibliographic style you
+choose, and offers it for download in BibTeX or EndNote. The catalogue is
+on the site at <code>/citations</code>; the <a href="../../../users/citations/index.html">Hub users</a>
+book covers browsing, submitting, and importing.</p>
+<p>Open it in the administrator interface under <strong>Components &gt; Citations</strong>.
+Five sub-menu links sit at the top left: <strong>Citations</strong>, the list below,
+<strong>Stats</strong>, <strong>Types</strong>, <strong>Sponsors</strong>, and <strong>Format</strong>.</p>
+<h2 id="citations-2">Citations</h2>
+<p>The list shows every citation on the hub, whatever its scope. Columns are
+<strong>ID</strong>, <strong>Type</strong>, <strong>Title</strong> / <strong>Author(s)</strong>, the published state, <strong>Year</strong>,
+<strong>Affiliated</strong>, <strong>Funded by</strong>, <strong>Scope</strong>, and <strong>Scope ID</strong>. Click a column
+heading to sort by it; click again to reverse the order. A citation with no
+type is listed as <strong>Generic</strong>; a citation with no scope is listed as <code>Hub</code>,
+and a scope ID of 0 as <code>N/A</code>.</p>
+<p>Above the list, type into the <strong>Search</strong> box and press <strong>Go</strong> to match
+titles, authors, and the other indexed fields, or press <strong>Clear</strong> to reset
+it. The <strong>Scope</strong> select narrows the list to hub, group, or member
+citations.</p>
+<p>The toolbar offers:</p>
+<ul>
+<li><strong>Options</strong> — the component's configuration; see <a href="#options">Options</a>.</li>
+<li><strong>New</strong> — create a citation.</li>
+<li><strong>Edit</strong> — open the checked citation. Clicking a title does the same.</li>
+<li><strong>Delete</strong> — remove the checked citations. This is permanent.</li>
+<li><strong>Help</strong> — the built-in help screen.</li>
+</ul>
+<p>There are no Publish and Unpublish toolbar buttons. Instead, click the
+state icon in a row to toggle that citation between published and
+unpublished, and click the icon in the <strong>Affiliated</strong> or <strong>Funded by</strong>
+column to toggle those flags.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Several labels on this screen render as their untranslated
+keys — the published column heading reads <code>PUBLISHED</code>, and the
+affiliation and funding toggles read <code>YES</code> and <code>NO</code> — because those
+strings are not defined in the component's language file.</p>
+</aside>
+<h2 id="creating-or-editing-a-citation">Creating or editing a citation</h2>
+<p>The edit screen has two columns. <strong>Save &amp; Close</strong> stores the citation and
+returns to the list, <strong>Cancel</strong> discards changes.</p>
+<p>The left column starts with <strong>Details</strong>, a long form in which you fill in
+only the fields that apply to the work being cited:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type</td>
+<td>The citation type, from the <strong>Types</strong> screen. Shown as title and alias.</td>
+</tr>
+<tr>
+<td>Cite key</td>
+<td>A unique identifier, such as <code>grossman93</code>.</td>
+</tr>
+<tr>
+<td>Ref Type</td>
+<td>Free text. The browse page's <strong>Reference Type</strong> filter matches on it.</td>
+</tr>
+<tr>
+<td>Date submitted, Date accepted, Date published</td>
+<td>Free text dates.</td>
+</tr>
+<tr>
+<td>Year, Month</td>
+<td>The year is used for sorting, filtering, and the yearly statistics.</td>
+</tr>
+<tr>
+<td>Author(s)</td>
+<td>Semicolon-separated. <code>Lastname, Firstname; …</code></td>
+</tr>
+<tr>
+<td>Author Address</td>
+<td></td>
+</tr>
+<tr>
+<td>Editor(s)</td>
+<td></td>
+</tr>
+<tr>
+<td>Title/Chapter</td>
+<td>The citation's title. Required.</td>
+</tr>
+<tr>
+<td>Book title, Short Title, Journal</td>
+<td></td>
+</tr>
+<tr>
+<td>Volume, Issue/Number, Pages</td>
+<td></td>
+</tr>
+<tr>
+<td>ISBN/ISSN, DOI</td>
+<td>A DOI is linked through <code>https://doi.org/</code>.</td>
+</tr>
+<tr>
+<td>Call Number, Accession Number</td>
+<td></td>
+</tr>
+<tr>
+<td>Series, Edition</td>
+<td></td>
+</tr>
+<tr>
+<td>School, Publisher, Institution</td>
+<td></td>
+</tr>
+<tr>
+<td>Address, Location</td>
+<td></td>
+</tr>
+<tr>
+<td>How published</td>
+<td>For nonstandard publishing methods.</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>The link the citation's title points at.</td>
+</tr>
+<tr>
+<td>E-print</td>
+<td>A link to an electronic copy, such as a PDF. Takes precedence over the URL on the single-citation page.</td>
+</tr>
+<tr>
+<td>Abstract, Text snippet/Notes, Keywords, Research Notes</td>
+<td>Editor fields.</td>
+</tr>
+</tbody>
+</table>
+<p>Below that, <strong>Manually Format Citation</strong> lets you override everything the
+formatter would produce: pick a <strong>Format Type</strong> of <strong>APA</strong> or <strong>IEEE</strong> and
+type the finished citation into the <strong>Citation</strong> box. Anything entered here
+is displayed verbatim wherever the citation appears.</p>
+<p>The right column holds four panels.</p>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Citation for</td>
+<td>Associations to hub content. Each row has a <strong>Type</strong> (<strong>Resource</strong> or <strong>Publication</strong>), an <strong>ID</strong>, and a <strong>Context</strong> of <strong>References this citation</strong> or <strong>Referenced by this citation</strong>. Five blank rows are offered; <strong>+ Add a row</strong> adds more. Clearing a row's type or ID deletes that association on save.</td>
+</tr>
+<tr>
+<td>Affiliation</td>
+<td><strong>Affiliated with your organization</strong> and <strong>Funded by your organization</strong>, the two flags shown in the list and used by the statistics.</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td><strong>Scope</strong> — <code>Hub</code>, <code>Group</code>, or <code>Member</code> — and <strong>Scope ID</strong>, the group or member the citation belongs to.</td>
+</tr>
+<tr>
+<td>Options</td>
+<td><strong>Sponsors</strong>, a multiple-selection list of the sponsors defined on the <strong>Sponsors</strong> screen; <strong>Tags</strong> and <strong>Badges</strong>, each shown only when the matching option is enabled; <strong>Exclude from export</strong>, fields to leave out of this citation's downloads; and <strong>Show Abstract in Rollover</strong>, which overrides the component-wide <strong>Show Abstract</strong> setting for this one citation.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="stats">Stats</h2>
+<p><strong>Stats</strong> is a read-only table of citations per <strong>Year</strong>, split into
+<strong>Affiliated</strong> and <strong>Non-affiliated</strong> counts with a <strong>Total</strong> column. The
+same figures appear on the public <code>/citations</code> page.</p>
+<h2 id="types">Types</h2>
+<p>A type is a kind of cited work — article, book, thesis. The list shows
+<strong>ID</strong>, <strong>Alias</strong>, and <strong>Title</strong>; the toolbar has <strong>New</strong>, <strong>Edit</strong>,
+<strong>Delete</strong>, and <strong>Help</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alias</td>
+<td>The short machine name, such as <code>article</code>.</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>The name shown in menus and on the site.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>What qualifies as this type.</td>
+</tr>
+<tr>
+<td>Fields</td>
+<td>The fields this type uses, one placeholder per line or comma-separated. The submit form on the site shows only these fields once a type is chosen. Type and Title are always included.</td>
+</tr>
+</tbody>
+</table>
+<p>The edit screen lists every available placeholder and the field it maps to
+beside the form.</p>
+<h2 id="sponsors">Sponsors</h2>
+<p>Sponsors are the organizations credited for a citation's abstract. The list
+shows <strong>ID</strong>, <strong>Sponsors</strong>, <strong>Link</strong>, <strong>Image</strong>, and <strong>Actions</strong>; each row
+carries <strong>Edit</strong> and <strong>Delete</strong> links. The toolbar has only <strong>New</strong> and
+<strong>Help</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>The sponsor's name, shown when no image is set.</td>
+</tr>
+<tr>
+<td>Link</td>
+<td>The URL the sponsor's name or logo points at.</td>
+</tr>
+<tr>
+<td>Image</td>
+<td>A URL to the sponsor's logo.</td>
+</tr>
+</tbody>
+</table>
+<p>Sponsors appear on a citation only while the <strong>Citations Sponsors</strong> option
+is on.</p>
+<h2 id="format">Format</h2>
+<p><strong>Format</strong> controls how citations are rendered. Choose a <strong>Format Style</strong>
+from the styles in the database, and the <strong>Format String</strong> box fills with
+that style's template. The table beside it lists every <strong>Placeholder</strong>,
+such as <code>{AUTHORS}</code> or <code>{TITLE/CHAPTER}</code>, with the field it stands for;
+clicking a row inserts it. <strong>Save &amp; Close</strong> stores the edited template.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Saving a style named anything other than <strong>Hub Custom</strong> edits
+that style's template in place. Choosing <strong>Custom Format</strong> and saving
+creates or overwrites the single style named <strong>Hub Custom</strong>.</p>
+</aside>
+<p>Which style citations actually use is set by the <strong>Default Format</strong> option,
+which takes a style name.</p>
+<h2 id="options">Options</h2>
+<p>The <strong>Options</strong> button opens the component's configuration. The <strong>Basic</strong>
+tab covers presentation: whether a citation's title links to its own page,
+the default bibliographic format, the label shown beside each citation in
+browse mode, whether abstracts and sponsors are shown, COinS and OpenURL
+output, how the title is linked, the &quot;internally cited&quot; image, and whether
+tags and badges may be attached and displayed. The <strong>Import/Export</strong> tab
+controls who may submit and import citations and whether single and bulk
+downloads are offered. Every option is listed with its values in the
+<a href="../../../reference/configuration/components/citations/index.html">configuration reference</a>.</p>
+<p>The <strong>Permissions</strong> tab controls who may administer and manage the
+component and who may create, delete, edit, edit the state of, and edit
+their own citations. The same five actions can be set separately for
+citations, types, and sponsors.</p>
+<h2 id="import-plugins">Import plugins</h2>
+<p>Bulk import is handled by the plugins in the <strong>Citation</strong> group. **Citation</p>
+<ul>
+<li>Default** takes a <code>.txt</code> upload and, if it holds EndNote records, hands
+it on; <strong>Citation - BibTex</strong> reads <code>.bib</code> files and <strong>Citation - Endnote</strong>
+reads <code>.enw</code> files. Only the last two advertise themselves on the upload
+page. Each has a title-match percentage that decides when an
+uploaded record is treated as a duplicate of one already on file, and the
+EndNote plugin can map custom tags to badges. <strong>Citation - DOI</strong> adds the
+citation to a publication's DOI metadata record.</li>
+</ul>
+<h2 id="member-and-group-citations">Member and group citations</h2>
+<p>Members and groups keep their own citation lists, stored in the same table
+with a scope of <code>member</code> or <code>group</code>. They are managed from the member
+profile and the group pages by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/members/citations/citations.php"><code>core/plugins/members/citations</code></a>
+and <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/citations/citations.php"><code>core/plugins/groups/citations</code></a>,
+and appear here with their scope in the <strong>Scope</strong> column.</p>
+<h2 id="api">API</h2>
+<p>The component exposes <code>GET /api/citations/list</code>, in two versions, for
+listing citations. See the <a href="../../../reference/api/citations/index.html">API reference</a>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cart/index.html" rel="prev"><span>Previous</span>Cart</a><a class="pager__next" href="../collections/index.html" rel="next"><span>Next</span>Collections</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/05-citations.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

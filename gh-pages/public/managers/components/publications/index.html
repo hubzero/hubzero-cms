@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publications · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Publications are versioned, citable releases of research output — datasets, papers, presentations, code. A member assembles one inside a project, a curator…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/publications/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Publications</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#publications-2">Publications</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-publication">Editing a publication</a></li>
+<li class="toc__item toc__item--l2"><a href="#licenses">Licenses</a></li>
+<li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l2"><a href="#master-types">Master Types</a></li>
+<li class="toc__item toc__item--l2"><a href="#batch-create">Batch Create</a></li>
+<li class="toc__item toc__item--l2"><a href="#curation-and-scheduled-jobs">Curation and scheduled jobs</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Publications</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Publications</h1>
+        </header>
+        
+        <div class="prose">
+<p>Publications are versioned, citable releases of research output — datasets,
+papers, presentations, code. A member assembles one inside a project, a
+curator reviews it, and once approved it gets a DOI and a permanent page at
+<code>/publications/&lt;id&gt;</code>. This chapter covers the administrator's side. The
+<a href="../../../users/publications/index.html">Hub users</a> book covers writing and
+curating one, and <a href="datacite/index.html">DOI registration</a> covers the identifier
+service.</p>
+<p>Open it under <strong>Components &gt; Publications</strong>. Six sub-menu links sit at the
+top left: <strong>Publications</strong>, <strong>Licenses</strong>, <strong>Categories</strong>, <strong>Master Types</strong>,
+<strong>Batch Create</strong>, and <strong>Plugins</strong> — the last opens the Plugins component
+filtered to the <code>publications</code> folder, and only appears if you may manage
+plugins.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The component ships with <strong>Component ON/OFF</strong> set to Off, and the
+Publications list then shows the banner <em>This component is currently
+disabled and is inaccessible to end users.</em> The banner is all that is left
+of the option: the front-end code that redirected <code>/publications</code> to the
+Resources component is commented out, so the site works either way. What
+actually decides whether members can publish is the <code>projects</code> Publications
+plugin.</p>
+</aside>
+<h2 id="publications-2">Publications</h2>
+<p>The <strong>Publication Manager</strong> lists every publication version. Columns are
+<strong>ID</strong>, <strong>Title</strong>, <strong>@v.</strong> (the version label), <strong>Status</strong>, <strong>Project</strong>,
+<strong>Releases</strong> (a link to that publication's version list), <strong>Master Type/
+Category</strong>, and <strong>Last Modified</strong>. ID, Title, and Project sort. Filter by a
+search term, by <strong>Status</strong>, or by <strong>Category</strong>, then press <strong>Go</strong>. Rows
+awaiting review are highlighted; a row another administrator has open shows
+<strong>[Checked out]</strong> in place of its checkbox, and a key under the list explains
+the status colours.</p>
+<p>The toolbar carries <strong>Options</strong>, <strong>Edit</strong>, and <strong>Delete</strong>. There is no
+<strong>New</strong> button — publications can only be started from the front end.
+Deleting removes the checked publications and all of their versions,
+including the files on disk; the principal version of a multi-version
+publication cannot be deleted on its own.</p>
+<h2 id="editing-a-publication">Editing a publication</h2>
+<p>Clicking a title opens one version for editing and checks it out. The left
+column holds the content, the right column the record's metadata and
+publishing controls.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Required. Chosen from the contributable categories.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>Optional. Used in place of the numeric ID in the publication's URL.</td>
+</tr>
+<tr>
+<td>Synopsis</td>
+<td>Short plain-text summary. Stored in the version's <code>abstract</code> column.</td>
+</tr>
+<tr>
+<td>Abstract</td>
+<td>The long description, in the editor. Stored in the version's <code>description</code> column.</td>
+</tr>
+<tr>
+<td>Metadata</td>
+<td>The custom fields defined by this publication's master type. Shows <em>No metadata collected</em> when the type defines none.</td>
+</tr>
+<tr>
+<td>Release Notes</td>
+<td>What changed in this version.</td>
+</tr>
+<tr>
+<td>Authors</td>
+<td>Reordered by dragging. <strong>Add author</strong> picks a hub member or takes details for someone without an account.</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Comma-separated.</td>
+</tr>
+<tr>
+<td>License type / License text</td>
+<td>One of the active licenses, and its wording.</td>
+</tr>
+<tr>
+<td>Disable download Link</td>
+<td>Hides the download button on the publication page.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The labels do not line up with the columns behind them:
+<strong>Synopsis</strong> writes to <code>abstract</code> and <strong>Abstract</strong> writes to <code>description</code>.
+The publication page shows the <strong>Abstract</strong> field as its body text.</p>
+</aside>
+<p>The right column shows the ID, creation date and creator, owning project, and
+master type; for published and unpublished versions it also shows <strong>Ranking</strong>
+and <strong>Rating</strong>, each with a button that resets the score. <strong>Version</strong> holds
+the version ID, an editable <strong>Version</strong> label, the public <strong>URL</strong>, and who
+last modified the record. <strong>Publishing</strong> decides whether the version is
+visible:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>draft, ready, pending approval, changes required, published, unpublished, or deleted.</td>
+</tr>
+<tr>
+<td>Unpublished Reason</td>
+<td>Enabled only when the status is unpublished: <em>The dataset is not available anymore</em>, <em>The dataset has error within it</em>, or <em>Others</em> with a free-text reason. Shown on the tombstone page.</td>
+</tr>
+<tr>
+<td>Featured</td>
+<td>Whether the publication is flagged as featured.</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>Public, Registered, or Private.</td>
+</tr>
+<tr>
+<td>Group owner</td>
+<td>Assigns a hub group as owner.</td>
+</tr>
+<tr>
+<td>Publish Date / Unpublish Date</td>
+<td>Embargo window. A future publish date holds the version back.</td>
+</tr>
+<tr>
+<td>DOI</td>
+<td>The registered identifier, editable by hand.</td>
+</tr>
+<tr>
+<td>Archival Package</td>
+<td><strong>produce archival package</strong> builds the version's bundle, or serves the existing one with a <strong>[Repackage]</strong> link beside it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Manage Publication</strong> holds the actions that also email the authors: <strong>Send
+message</strong>, and — depending on the status — <strong>Unpublish version</strong>,
+<strong>Republish version</strong>, or <strong>Approve and publish</strong> and <strong>Revert to draft</strong>.
+Approving stamps the accepted date, registers the DOI if the master type
+requires one, freezes the curation manifest onto the version, and runs the
+archival packaging.</p>
+<p>The <strong>Parameters</strong> slider shows or hides individual sections of the public
+page for this one publication: authors, audience, gallery, tags, license,
+notes, metadata, and submitter. Values default to the master type's setting.</p>
+<p><strong>Releases</strong> in the list opens the <strong>Versions</strong> screen: one row per version
+with its ID, label, title, status, DOI, and a <strong>manage version »</strong> link.</p>
+<h2 id="licenses">Licenses</h2>
+<p>Licenses are the choices authors get when they license their work. The list
+shows <strong>ID</strong>, <strong>Name</strong>, <strong>Title</strong>, <strong>Status</strong>, <strong>Default</strong>, and <strong>Order</strong>,
+with a search box over titles. The toolbar adds <strong>New</strong>, <strong>Edit</strong>, <strong>Make
+Default</strong>, <strong>Publish/Unpublish</strong>, and <strong>Delete</strong>; a license a publication
+already uses cannot be deleted.</p>
+<p><strong>License Information</strong> takes a <strong>Title</strong> and <strong>Name</strong> (both required; the
+name is generated from the title if blank), a <strong>URL</strong> to the full text, an
+<strong>About</strong> blurb (required), the license <strong>Content</strong>, and an <strong>Icon</strong> path.
+<strong>License Configuration</strong> holds four yes/no settings: <strong>Active</strong> (offered as
+a choice for new publications), <strong>Customizable</strong> (authors may edit the text),
+<strong>Agreement required</strong>, and <strong>Allow Derivatives</strong>.</p>
+<h2 id="categories">Categories</h2>
+<p>Categories group publications for browsing, and each carries a Dublin Core
+type used in exported metadata. The list shows <strong>ID</strong>, <strong>Name</strong> with its
+alias, URL alias and dc:type underneath, <strong>Contributable</strong>, and <strong>Status</strong>,
+with <strong>New</strong>, <strong>Edit</strong>, <strong>Change Status</strong>, and <strong>Delete</strong> on the toolbar.</p>
+<p><strong>Category Information</strong> takes a <strong>Name</strong> (required), an <strong>Alias</strong>, a <strong>URL
+alias</strong> used in <code>/publications/&lt;url alias&gt;</code>, a <strong>dc:type</strong> chosen from the
+twelve Dublin Core types, and a short <strong>About</strong>. <strong>Item Configuration</strong> sets
+the <strong>Status</strong> (Active or Inactive) and whether the category is
+<strong>Contributable</strong>.</p>
+<p><strong>Master Type Configuration</strong> decides, per master type, whether this category
+is offered when someone publishes that type. <strong>Plugins</strong> turns each installed
+<code>publications</code> plugin on or off for this category — that is how a category
+gains or loses its extra tabs. <strong>Custom Fields</strong> defines extra metadata
+inputs, each with a name, input type, and required flag.</p>
+<h2 id="master-types">Master Types</h2>
+<p>A master type is the blueprint for a kind of publication: which panels the
+author fills in, in what order, what each one accepts, and whether a DOI is
+required. The list shows <strong>ID</strong>, <strong>Name</strong>, <strong>Alias</strong>, <strong>Contributable</strong>, and
+<strong>Order</strong>, with <strong>New</strong>, <strong>Edit</strong>, and <strong>Delete</strong> on the toolbar and reorder
+arrows in the last column.</p>
+<p>Opening a type shows <strong>Master Type Information</strong> — <strong>Name</strong>, <strong>Alias</strong>,
+<strong>Description</strong>, <strong>Contributable</strong> — and <strong>Curation Configuration</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Curator Group</td>
+<td>A hub group whose members see publications of this type in the curation list.</td>
+</tr>
+<tr>
+<td>Default Publication Title</td>
+<td>Title given to a new draft.</td>
+</tr>
+<tr>
+<td>Default Category</td>
+<td>Category assigned to a new draft.</td>
+</tr>
+<tr>
+<td>Require DOI?</td>
+<td><em>Do not require or show DOI</em>, <em>Require DOI</em>, or <em>Offer choice to publish with DOI or post without DOI</em>.</td>
+</tr>
+<tr>
+<td>Bundle display and behavior</td>
+<td><em>Do NOT bundle</em>, <em>Always produce and serve a bundle, regardless of file count</em>, or <em>Bundle only in the case of multiple primary files</em>.</td>
+</tr>
+<tr>
+<td>List all publication contents on the main publication page?</td>
+<td>Yes or No, with a <strong>Label for the list of publication contents</strong>.</td>
+</tr>
+<tr>
+<td>Auto Approve?</td>
+<td>Publish submissions of this type without review.</td>
+</tr>
+<tr>
+<td>Request review? (when set to auto approve)</td>
+<td>Offer the author a box asking for a curator anyway.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A new master type must be saved before any of this appears — the
+panel shows <em>New type needs to be saved before curation can be configured</em>
+until it has an ID.</p>
+</aside>
+<p><strong>Blocks Configuration</strong> lists the panels the author walks through, in order.
+Each block switches <strong>Active</strong> or <strong>Inactive</strong> and carries a <strong>Short label</strong>,
+<strong>Title</strong>, <strong>Panel heading (draft)</strong>, <strong>Panel tagline (draft)</strong>, <strong>User
+tips</strong>, and <strong>Admin tips</strong>, plus its own parameters — <em>Input required</em>,
+<em>Editing allowed in published status?</em>, the license IDs to offer. <strong>Block
+Elements</strong> lists what the block collects; <strong>[Edit]</strong> sets each element's
+label, instructions, attachment <strong>Type</strong> (file, link, data, or Publication
+(link)), <strong>Attachment role</strong> (Primary, Supporting, or Gallery), <strong>Minimum
+count</strong> and <strong>Maximum count</strong>, allowed extensions, and how files are copied
+out of the project.</p>
+<p><strong>[Add a block]</strong> adds one, <strong>[Edit]</strong> beside a block's order opens the
+drag-to-rearrange screen, and <strong>[Delete]</strong> confirms before removing the block
+and everything authors entered into it. <strong>Advanced curation editing</strong> exposes
+the manifest as raw JSON.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The element editor warns that <em>Elements editing is not fully
+featured in this hub release.</em> A malformed manifest falls back to the basic
+Files manifest.</p>
+</aside>
+<p><strong>Type supported?</strong> reports whether a <code>projects</code> plugin with the same alias
+is installed and enabled. A type marked off cannot actually be produced.</p>
+<h2 id="batch-create">Batch Create</h2>
+<p><strong>Batch Create</strong> imports publications from an XML file. Choose the project
+and the master type, attach the file, and press <strong>Process data (you'll have a
+chance to review)</strong>. The file is validated against a schema you can download
+from the <strong>schema</strong> link; records are then shown for review — with missing
+licenses, unknown user IDs, and missing files flagged — before anything is
+written.</p>
+<h2 id="curation-and-scheduled-jobs">Curation and scheduled jobs</h2>
+<p>Curation is not an administrator screen. Members of the group named in the
+<strong>Name of Curators Group</strong> option review submissions at
+<code>/publications/curation</code> on the site — see
+<a href="../../../users/publications/curation/index.html">Curation</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Curation email — the note to a newly assigned curator, the
+approval and change-request notices to authors, the new-submission notice
+to curators — is only sent when <strong>Email Notifications</strong> is On. It is Off by
+default, and nothing warns you that the messages are being dropped.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A master type's own <strong>Curator Group</strong> narrows what its members
+see in the curation list, but it is stored as a group ID and compared
+against group names when the review screen checks permission, so on its own
+it does not let them open a submission. Put type curators in the
+component-wide curators group, or assign them to individual publications.</p>
+</aside>
+<p>Several background tasks belong to the component and have to be scheduled in
+<a href="../cron/index.html">Cron</a>: <code>runMkAip</code>, <code>issueMasterDoi</code>, <code>buildPublicationBundles</code>
+(needed when asynchronous bundling is on), <code>updateFtpLinks</code>,
+<code>sendAuthorStats</code>, and <code>rollUserStats</code>.</p>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> opens the component-wide settings, on six tabs. <strong>Basic</strong> holds
+the on/off switch, decides whether members may publish without a project, and
+sets the default thumbnails and storage paths. <strong>Curation</strong> names the
+curators group, the reply address for curation email, the grace period, and
+the auto-approved users. <strong>DOI</strong> configures the identifier service — see
+<a href="datacite/index.html">DOI registration</a>. <strong>Sections</strong> shows or hides parts of the
+public publication page, and <strong>AIP</strong> points at a trusted digital repository's
+archival storage. Every option is listed with its values in the
+<a href="../../../reference/configuration/components/publications/index.html">configuration reference</a>.</p>
+<p>The <strong>Permissions</strong> tab controls who may configure the component
+(<code>core.admin</code>), reach the administrator screens (<code>core.manage</code>), and create,
+edit, change the state of, or delete publications. Permissions are read at
+the component level only: the code asks for actions on <code>com_publications</code>
+itself, so per-category and per-publication rules have no effect here.</p>
+<h2 id="api">API</h2>
+<p><code>GET /api/publications/list</code>, in two versions, returns the publications the
+authenticated member is an author of — see the
+<a href="../../../reference/api/publications/index.html">API reference</a>.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="datacite/index.html">DOI registration</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../projects/projectfileconnect/index.html" rel="prev"><span>Previous</span>Project File Connectors</a><a class="pager__next" href="datacite/index.html" rel="next"><span>Next</span>DOI registration</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/16-publications/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

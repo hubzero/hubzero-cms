@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commit Messages · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="GIT commit messages are generally comprised of three sections: a short summary, a longer explanation, and links to references. Starting with this structure…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/commits/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../contributions/index.html">Contribution Guide</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Style Guide</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Commit Messages</a><ol class="toc">
+<li class="toc__item toc__item--l3"><a href="#template">Template</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../documentation/index.html">Working on the documentation</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Style Guide</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Commit Messages</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>Commit Messages</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions/commits">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2017.</aside>
+        <div class="prose">
+<p>GIT commit messages are generally comprised of three sections: a short summary, a longer explanation, and links to references. Starting with this structure forces you to answer why the change is necessary before outlining the changes that you have made.</p>
+<ul>
+<li>The summary should be no longer than 50 characters</li>
+<li>The summary should be tagged with what type of commit it is. For example, &quot;[feat] Added a new feature&quot; or &quot;[fix] Fixed a bug&quot;.</li>
+<li>Each line of the explanation should wrap at 72 characters</li>
+<li>If a commit fixes an issue, it should be denoted with <code>Fixes: {url}</code></li>
+<li>If a commit references another commit, outside source, etc, it should be denoted with <code>Refs: {url}</code></li>
+</ul>
+<p>The summary is required but the longer explanation and refs may not always be necessary or apply to the situation at hand.</p>
+<h3 id="template">Template</h3>
+<p>You can tell GIT to use a template for commit messages with this structure. This is done by setting <code>commit.template</code> in <code>~/.gitconfig</code>:</p>
+<pre><code>[commit]
+  template = ~/.gitmessage
+</code></pre>
+<p>Then create <code>~/.gitmessage</code> with the following:</p>
+<pre><code>#-----------------------50-----------------------|
+#Summary (50 characters)
+
+#----------------------------------72----------------------------------|
+#Explanation (wrap around 72 characters (80 - short indent on either side))
+
+#----------------------------------72----------------------------------|
+
+#----------------------------------72----------------------------------|
+#Refs:
+#Fixes:
+#----------------------------------72----------------------------------|
+# Type can be
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactoring production code)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    docs     (changes to documentation)
+#    test     (adding or refactoring tests; no production code change)
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databaseschema/index.html" rel="prev"><span>Previous</span>Database Schema Conventions</a><a class="pager__next" href="../../documentation/index.html" rel="next"><span>Next</span>Working on the documentation</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/05-commits.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Routing · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Every component is reachable by query string: names it, and everything else is a request variable. With search engine friendly URLs turned on the same request…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/routing/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Routing</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-the-router-goes">Where the router goes</a></li>
+<li class="toc__item toc__item--l2"><a href="#build">build()</a></li>
+<li class="toc__item toc__item--l2"><a href="#parse">parse()</a></li>
+<li class="toc__item toc__item--l2"><a href="#preprocess">preprocess()</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-happens-without-a-router">What happens without a router</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-api-router">The API router</a></li>
+<li class="toc__item toc__item--l2"><a href="#building-urls">Building URLs</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Routing</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Routing</h1>
+        </header>
+        
+        <div class="prose">
+<p>Every component is reachable by query string: <code>option</code> names it, and
+everything else is a request variable.</p>
+<pre><code>https://yourhub.org/index.php?option=com_kb&amp;task=category&amp;categoryAlias=printing
+</code></pre>
+<p>With search engine friendly URLs turned on the same request looks like this:</p>
+<pre><code>https://yourhub.org/kb/printing
+</code></pre>
+<p>The first path segment identifies the component; if no component matches, the
+application falls back to matching an article, category, or page alias. The
+remaining segments are the component's to interpret, and a <code>router.php</code> is
+what interprets them. A component without one still works — it just has ugly
+URLs.</p>
+<h2 id="where-the-router-goes">Where the router goes</h2>
+<p><code>Component::router()</code> looks for a class named
+<code>Components\{Name}\{Client}\Router</code>, so <code>com_kb</code>'s site router is
+<code>Components\Kb\Site\Router</code>. If the class is not already loaded it tries these
+files, in order, and includes the first that exists:</p>
+<ol>
+<li><code>{component}/{client}/routerv{version}.php</code>, when a version was requested;</li>
+<li><code>{component}/{client}/router.php</code>;</li>
+<li><code>{component}/router.php</code>.</li>
+</ol>
+<p>Each client gets its own. <code>com_kb</code> has one for the site and one for the API,
+and they parse quite different URLs.</p>
+<p>The class must implement
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Router/RouterInterface.php"><code>Hubzero\Component\Router\RouterInterface</code></a> —
+this is checked by reflection, and a class that does not is ignored without
+comment. Extending
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Router/Base.php"><code>Hubzero\Component\Router\Base</code></a>
+satisfies the interface and supplies a pass-through <code>preprocess()</code>, leaving you
+two methods to write.</p>
+<h2 id="build"><code>build()</code></h2>
+<p><code>build(&amp;$query)</code> is called by <code>Route::url()</code>. It receives the query as an
+array, minus <code>option</code>, and returns the path segments to put after the
+component name, <strong>in the order they should appear</strong>. Anything it consumes it
+must <code>unset()</code> from <code>$query</code>; whatever is left over is appended as a query
+string.</p>
+<p>Here is <code>com_kb</code>'s:</p>
+<pre><code class="language-php">	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &amp;$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&amp;$query)
+	{
+		$segments = array();
+
+		if (isset($query['task']))
+		{
+			if ($query['task'] == 'article')
+			{
+				unset($query['task']);
+			}
+			else if ($query['task'] == 'vote')
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+		}
+
+		if (isset($query['section']))
+		{
+			if (!empty($query['section']))
+			{
+				$segments[] = $query['section'];
+			}
+			unset($query['section']);
+		}
+
+		if (isset($query['category']))
+		{
+			if (!empty($query['category']))
+			{
+				$segments[] = $query['category'];
+			}
+			unset($query['category']);
+		}
+
+		if (isset($query['alias']))
+		{
+			if (!empty($query['alias']))
+			{
+				$segments[] = $query['alias'];
+			}
+			unset($query['alias']);
+		}
+
+		if (isset($query['id']))
+		{
+			if (!empty($query['id']))
+			{
+				$segments[] = $query['id'];
+			}
+			unset($query['id']);
+		}
+
+		if (isset($query['vote']))
+		{
+			if (!empty($query['vote']))
+			{
+				$segments[] = $query['vote'];
+			}
+			unset($query['vote']);
+		}
+
+		if (isset($query['controller']))
+		{
+			unset($query['controller']);
+		}
+
+		return $segments;
+	}
+</code></pre>
+<p>Read it as a sequence of optional slots: an optional task, then section,
+category, alias, id, and vote. <code>task=article</code> is dropped entirely, because an
+article URL is just its path. <code>controller</code> is dropped because <code>com_kb</code> has
+only one. So:</p>
+<pre><code class="language-php">Route::url('index.php?option=com_kb&amp;category=printing&amp;alias=duplex');
+// -&gt; /kb/printing/duplex
+</code></pre>
+<h2 id="parse"><code>parse()</code></h2>
+<p><code>parse(&amp;$segments)</code> is the inverse, and it runs on every page view of the
+component. It receives the path segments after the component name and returns
+the request variables they mean.</p>
+<pre><code class="language-php">	public function parse(&amp;$segments)
+	{
+		$vars  = array();
+
+		$vars['task'] = 'categories';
+
+		if (empty($segments[0]))
+		{
+			return $vars;
+		}
+
+		$count = count($segments);
+
+		// section/
+		switch ($count)
+		{
+			case 1:
+				$vars['task'] = 'category';
+				$vars['categoryAlias'] = urldecode($segments[0]);
+				$vars['categoryAlias'] = str_replace(':', '-', $vars['categoryAlias']);
+			break;
+</code></pre>
+<p><code>com_kb</code> switches on the number of segments rather than reading them
+positionally, because one segment means a category, two may mean either a
+sub-category or an article, and three or four may end in <code>comments.rss</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Position is everything. <code>example/view/123/rss</code> and
+<code>example/rss/view/123</code> are different URLs and a positional parser will read
+the second as nonsense. Where two shapes are genuinely ambiguous — as
+<code>com_kb</code>'s two-segment case is — the router has to look the value up to
+decide, and <code>com_kb</code> runs a category query to do exactly that.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>parse()</code> runs on every request to the component, including
+ones that will 404. A database query inside it is a query on every page load.
+Keep it cheap, and never let it throw — an exception in <code>parse()</code> happens
+before the component is loaded, so there is nothing sensible to show.</p>
+</aside>
+<h2 id="preprocess"><code>preprocess()</code></h2>
+<p><code>preprocess($query)</code> runs on every URL built for the component, whether SEF is
+on or not. It exists to complete a query — supplying a missing <code>Itemid</code>,
+forcing a language. <code>Base</code> returns the query untouched, which is what nearly
+every component wants.</p>
+<h2 id="what-happens-without-a-router">What happens without a router</h2>
+<p><code>Component::router()</code> always returns something. When no router class is found
+it falls back to one of two generic implementations:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Router/DefaultRouter.php"><code>DefaultRouter</code></a>,
+for a component with no <code>{name}.php</code> entry point and no
+<code>controllers/{name}.php</code>. It maps the first three segments to <code>controller</code>,
+<code>task</code>, and <code>id</code>, and builds them back in that order.</li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Router/Legacy.php"><code>Legacy</code></a>,
+for everything else. It looks for global functions named
+<code>{Name}BuildRoute()</code> and <code>{Name}ParseRoute()</code> — the pre-namespace convention —
+and returns an empty array when they do not exist, which is what leaves a
+component with query-string URLs.</li>
+</ul>
+<h2 id="the-api-router">The API router</h2>
+<p>An API router is the same interface against a different URL space. <code>com_kb</code>'s
+names a default controller and reads a numeric first segment as a record id:</p>
+<pre><code class="language-php">	public function parse(&amp;$segments)
+	{
+		$vars = array();
+
+		$vars['controller'] = 'entries';
+
+		if (isset($segments[0]))
+		{
+			if (is_numeric($segments[0]))
+			{
+				$vars['id'] = $segments[0];
+				if (\App::get('request')-&gt;method() == 'GET')
+				{
+					$vars['task'] = 'read';
+				}
+			}
+			else
+			{
+				$vars['task'] = $segments[0];
+			}
+
+			if (isset($segments[1]))
+			{
+				$vars['task'] = $segments[1];
+			}
+		}
+
+		return $vars;
+	}
+</code></pre>
+<p><code>/api/kb/list</code> reaches <code>listTask()</code>; <code>/api/kb/42</code> reaches <code>readTask()</code> with
+<code>id=42</code> on a GET. The controller name it produces — <code>entries</code> — is what the
+API loader turns into <code>entriesv1_0.php</code>. See
+<a href="../controllers/index.html#api-controllers">Controllers</a>.</p>
+<h2 id="building-urls">Building URLs</h2>
+<p>Never assemble a component URL by hand. <code>Route::url()</code> runs <code>preprocess()</code>,
+then <code>build()</code>, then adds the base path and whatever is left of the query:</p>
+<pre><code class="language-php">$url = Route::url('index.php?option=com_kb&amp;category=' . $category . '&amp;alias=' . $alias);
+</code></pre>
+<p>Pass <code>false</code> as the second argument for an unencoded URL — the administrator
+uses that form when the result goes into a redirect rather than into markup.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../assets/index.html" rel="prev"><span>Previous</span>Assets</a><a class="pager__next" href="../configuration/index.html" rel="next"><span>Next</span>Configuration</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/09-routing.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

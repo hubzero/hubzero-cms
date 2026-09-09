@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jupyter Integration with Submit · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Overview The submit command may be used like any other shell command in a notebook cell. In addition a more integrated approach is available by using the…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/grid/jupyter-submit/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Jupyter Integration with Submit</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#submitcommand-class">SubmitCommand class</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing Outside Computing Resources</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Jupyter Integration with Submit</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Jupyter Integration with Submit</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/jupyter_submit">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2023. It was never published there, so read it as a draft.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>The submit command may be used like any other shell command in a notebook cell. In addition a more integrated approach is available by using the SubmitCommand class. The SubmitCommand class provides a fully functional interface to all submit command options. For each <code>submit</code> command argument there are typically two method types - set and reset. The standard Python <code>help</code> builtin can be used to show methods and associated arguments.</p>
+<h2 id="submitcommand-class">SubmitCommand class</h2>
+<p>The SubmitCommand class is available from the <code>hubzero.submit</code> library and can be easily instantiated.</p>
+<pre><code>from hubzero.submit.SubmitCommand import SubmitCommand
+
+submitCommand = SubmitCommand()
+help(submitCommand)
+</code></pre>
+<pre><code>Help on SubmitCommand in module hubzero.submit.SubmitCommand object:
+
+class SubmitCommand(builtins.object)
+ |  Methods defined here:
+ |
+ |  __init__(self, configurationDirectory='/etc/submit', hubLogPath='/tmp/submit/.submit.log')
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |
+ |  addParameters(self, parameters, separator=None)
+ |      Supply additional set of parameters for submit run.
+ |      parameters can be specified as a single string or
+ |      of list of strings.
+ |
+ |  loadSubmitCommand(self, submitCommandJSONFile)
+ |      Load JSON file containing submit command settings.
+ |
+ |  resetAttachId(self)
+ |      Do not reattach to a previously detached submit run.
+ |
+ |  resetCommand(self)
+ |      Remove previous command and command argument settings.
+ |
+ |  resetCommandArguments(self)
+ |      Remove previous command argument settings.
+ |
+ |  resetDataFile(self)
+ |      Remove parameter datafile for submit run.
+ |
+ |  resetDebug(self)
+ |      Turn submit debug reporting off.
+ |
+ |  resetDefaultSeparator(self)
+ |      Set the default parameter separator to the system default.
+ |
+ |  resetDefaultTailNlines(self)
+ |      Set the default number of lines to report when
+ |      tailing output files to the system default.
+ |
+ |  resetDetach(self)
+ |      Disable detachment from submit run.
+ |
+ |  resetEnvironmentVariables(self)
+ |      Remove all environment variables set for submit run.
+ |
+ |  resetHelp(self, detail=None)
+ |      Disable requests for general help or a variety of more specific help.
+ |      See setHelp() for detail values.
+ |
+ |  resetInputFiles(self)
+ |      Remove inputfiles from submit run.
+ |
+ |  resetKillJobs(self)
+ |      Disable killing of previously submitted runs.
+ |
+ |  resetLocal(self)
+ |      Turn submit local execution off.
+ |
+ |  resetManager(self)
+ |      Set manager for submit run to the default manager.
+ |
+ |  resetNcores(self)
+ |      Set number of cores requested for submit run to the default value.
+ |
+ |  resetPPN(self)
+ |      Set number of cores per node requested for submit run to the default value.
+ |
+ |  resetParameters(self)
+ |      Remove parameters from submit run.
+ |
+ |  resetProgress(self)
+ |      Specify progress reporting to the default style.
+ |
+ |  resetQueryJobs(self)
+ |      Disable query for the status of previously submitted runs.
+ |
+ |  resetQuota(self)
+ |      Enable quota limit for submit run.
+ |
+ |  resetRedundancy(self)
+ |      Set redundancy factor for submit run to the default value.
+ |
+ |  resetReportMetrics(self)
+ |      Turn submit resource metrics reporting off.
+ |
+ |  resetRunName(self)
+ |      Set submit run name to default name.
+ |
+ |  resetStdin(self)
+ |      Remove previous stdin settings.
+ |
+ |  resetSubmitCommand(self)
+ |      Reset submit command settings to default values.
+ |
+ |  resetTailFiles(self)
+ |      Disable real time reporting of files other than
+ |      standard output and standard error.
+ |
+ |  resetTailStderr(self)
+ |      Disable real time reporting of standard error file.
+ |
+ |  resetTailStdout(self)
+ |      Disable real time reporting of standard output file.
+ |
+ |  resetVenue(self)
+ |      Remove venue setting from submit command.
+ |
+ |  resetVenueStatus(self)
+ |      Disable request of submit venue status.
+ |
+ |  resetVersion(self, detail=None)
+ |      Disable requests for version information.
+ |      See setVersion() for detail values.
+ |
+ |  resetWait(self)
+ |      Do not wait for period of reduced run submission rate to submit run.
+ |      If your measured rate of job submission is to high your request for
+ |      a new submit run will be denied.
+ |
+ |  resetWallTime(self)
+ |      Set wall time requested for submit run to the default value.
+ |
+ |  saveSubmitCommand(self, submitCommandJSONFile=None)
+ |      Save JSON file containing submit command settings.
+ |
+ |  setAttachId(self, attachId)
+ |      Reattach to a previously detached submit run.
+ |
+ |  setCommand(self, command)
+ |      Specify command to be run on remote resource.
+ |      command can be given as a single string or a list
+ |      of strings.  A single string will be split to form
+ |      a list.  The first list element is taken to be the
+ |      command and additional elements are taken to be
+ |      command arguments.
+ |
+ |  setCommandArguments(self, commandArguments)
+ |      Specify command arguments to be used on remote resource.
+ |      commandArguments can be given as a single string or a list
+ |      of strings.  A single string will be split to form
+ |      a list.
+ |
+ |  setDataFile(self, dataFile)
+ |      Supply parameter datafile for submit run.
+ |      dataFile is a single filename.
+ |
+ |  setDebug(self, debug=True)
+ |      Turn submit debug reporting on or off.
+ |
+ |  setDefaultSeparator(self, separatorDefault)
+ |      Set the default parameter separator.
+ |
+ |  setDefaultTailNlines(self, tailNlinesDefault)
+ |      Set the default number of lines to report when
+ |      tailing output files.
+ |
+ |  setDetach(self, detach=True)
+ |      Enable or disable detachment from submit run.
+ |      If a job is detached you can continue with other
+ |      operations and not wait for the submit to complete.
+ |      Job status will need to be monitored to determine
+ |      when completion occurs.  A detached can be reattached
+ |      at a later time.
+ |
+ |  setEnvironmentVariables(self, environmentVariables)
+ |      Provide a set of environment variables to be set
+ |      for submit run.  environmentVariables should be a
+ |      dictionary with keys being the environment variable
+ |      names.
+ |
+ |  setHelp(self, detail=None)
+ |      Request general help or a variety of more specific help.
+ |      detail       submit arguments
+ |      None         --help
+ |      managers     --help managers
+ |      tools        --help tools
+ |      venues       --help venues
+ |      examples     --help examples
+ |
+ |  setInputFiles(self, inputFiles)
+ |      Supply set of input files for submit run.
+ |      inputFiles can be specified as a single filename or
+ |      of list of filenames.
+ |
+ |  setKillJobs(self, killJobs)
+ |      Kill previously submitted runs.
+ |      killJobs can be given as a single integer id or list
+ |      of integer ids.
+ |
+ |  setLocal(self, local=True)
+ |      Turn submit local execution on or off.
+ |
+ |  setManager(self, manager)
+ |      Set manager for submit run.
+ |      By default manager is set by the venue or tool configuration.
+ |
+ |  setNcores(self, nCores)
+ |      Set number of cores requested for submit run.
+ |      If only one core is required no setting is necessary.
+ |
+ |  setPPN(self, ppn)
+ |      Set number of cores per node requested for submit run.
+ |      If number of cores per node is not set for the submit run
+ |      a default number of cores per node is set based on the
+ |      venue configuration.  This default value is typical based
+ |      on the node hardware.
+ |
+ |  setParameters(self, parameters, separator=None)
+ |      Supply set of parameters for submit run.
+ |      parameters can be specified as a single string or
+ |      of list of strings.  Previously set parameters are
+ |      removed.
+ |
+ |  setProgress(self, detail=None)
+ |      Specify progress reporting style.
+ |      detail       submit arguments
+ |      None
+ |      curses       --progress curses
+ |      submit       --progress submit
+ |      text         --progress text
+ |      pegasus      --progress pegasus
+ |      silent       --progress silent
+ |
+ |  setQueryJobs(self, queryJobs)
+ |      Do a query for the status of previously submitted runs.
+ |      queryJobs can be given as a single integer id or list
+ |      of integer ids.
+ |
+ |  setQuota(self, quota)
+ |      Enable or disable quota limit for submit run.
+ |      If enabled your HUB disk quota is used to limit data
+ |      generation on the remote resource.  This property is
+ |      enabled by default.
+ |
+ |  setRedundancy(self, redundancy)
+ |      Set redundancy factor for submit run.
+ |      The default redundancy factor is set by submit configuration.
+ |
+ |  setReportMetrics(self, reportMetrics=True)
+ |      Turn submit resource metrics reporting on or off.
+ |
+ |  setRunName(self, runName)
+ |      Set submit run name.
+ |      Default run name is the auto generated submit jobId.
+ |      The runName is used to set the standard output and
+ |      standard error filenames.
+ |
+ |  setStdin(self, stdinPath)
+ |      Specify path to stdin file.
+ |
+ |  setTailFiles(self, tailFiles)
+ |      Enable real time reporting of files other than
+ |      standard output and standard error.
+ |      tailFiles can be specified as a single filename
+ |      or a list of filenames.  To specify the number (#)
+ |      of lines to report add :# to the filename.
+ |
+ |  setTailStderr(self, tailStderr=True, tailStderrNlines=None)
+ |      Enable or disable real time reporting of standard error file.
+ |
+ |  setTailStdout(self, tailStdout=True, tailStdoutNlines=None)
+ |      Enable or disable real time reporting of standard output file.
+ |
+ |  setVenue(self, venue)
+ |      Request that run be submitted to &quot;venue&quot;.
+ |
+ |  setVenueStatus(self, venueStatus)
+ |      Request status of submit venue named venueStatus.
+ |
+ |  setVersion(self, detail=None)
+ |      Request complete or partial version information.
+ |      detail       submit arguments
+ |      None         --version
+ |      client       --version client
+ |      server       --version server
+ |      distributor  --version distributor
+ |
+ |  setWait(self, wait=True)
+ |      Wait for period of reduced run submission rate to submit run.
+ |      Users have a limited rate at which they are allowed to submit jobs.
+ |      The measured rate of run submission is measured over time with
+ |      more attention payed to the most recent submission.
+ |
+ |  setWallTime(self, wallTime)
+ |      Set the wall time limit for batch queue runs.
+ |      wallTime can be given as integer or floating
+ |      point number of minutes.
+ |
+ |  show(self, args=None, textWidth=80)
+ |      Show submit command as determined from previous settings.
+ |      If args is supplied previous settings are ignored but not
+ |      replaced or overwritten.
+ |
+ |  submit(self, args=None, stdin=None)
+ |      Execute submit command as determined from previous settings.
+ |      If args is supplied previous settings are ignored but not
+ |      replaced or overwritten.
+ |
+ |  ----------------------------------------------------------------------
+</code></pre>
+<p>The SubmitCommand class has a method that excepts command arguments as a simple list.</p>
+<pre><code>submitCommand = SubmitCommand()
+result = submitCommand.submit(['-w','5',applicationCode,'--C','0.001','--Vin','3'])
+</code></pre>
+<p>Another option is build the command incrementally, one argument at a time.</p>
+<pre><code>submitCommand = SubmitCommand()
+submitCommand.setWallTime(5)
+submitCommand.setVenue('OSGFactory')
+submitCommand.setCommand(applicationCode)
+submitCommand.setCommandArguments(['--C','0.001','--Vin','3'])
+submitCommand.show()
+result = submitCommand.submit()
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../rappture-submit/index.html" rel="prev"><span>Previous</span>Rappture Integration with Submit</a><a class="pager__next" href="../../accesshomedir/index.html" rel="next"><span>Next</span>Accesing your home directory</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/05-grid/04-jupyter_submit.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

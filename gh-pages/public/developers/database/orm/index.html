@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORM · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A model that extends maps one database table to one PHP class. It carries a query builder internally and forwards to it any method it does not define itself,…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/database/orm/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">ORM</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#a-model">A model</a></li>
+<li class="toc__item toc__item--l2"><a href="#retrieving-rows">Retrieving rows</a></li>
+<li class="toc__item toc__item--l3"><a href="#result-collections">Result collections</a></li>
+<li class="toc__item toc__item--l2"><a href="#attributes-transformers-and-parsed-fields">Attributes, transformers and parsed fields</a></li>
+<li class="toc__item toc__item--l2"><a href="#validation">Validation</a></li>
+<li class="toc__item toc__item--l2"><a href="#automatic-fields">Automatic fields</a></li>
+<li class="toc__item toc__item--l2"><a href="#saving-and-deleting">Saving and deleting</a></li>
+<li class="toc__item toc__item--l2"><a href="#relationships">Relationships</a></li>
+<li class="toc__item toc__item--l3"><a href="#eager-loading-and-constraining">Eager loading and constraining</a></li>
+<li class="toc__item toc__item--l2"><a href="#connections-and-caching">Connections and caching</a></li>
+<li class="toc__item toc__item--l2"><a href="#trees">Trees</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Database</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">ORM</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>ORM</h1>
+        </header>
+        
+        <div class="prose">
+<p>A model that extends
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Hubzero\Database\Relational</code></a>
+maps one database table to one PHP class. It carries a
+<a href="../queries/index.html">query builder</a> internally and forwards to it any method it does
+not define itself, so the whole query API is available on the model. What the
+model adds on top is validation rules, automatically populated fields,
+relationships to other models, and objects instead of <code>stdClass</code> rows.</p>
+<h2 id="a-model">A model</h2>
+<p>The smallest useful model is a class with a namespace property:</p>
+<pre><code class="language-php">namespace Components\Blog\Models;
+
+use Hubzero\Database\Relational;
+
+class Entry extends Relational
+{
+    protected $namespace = 'blog';
+}
+</code></pre>
+<p>The table name is derived in the constructor as <code>#__</code> + namespace + <code>_</code> +
+the pluralised, lower-cased short class name, so <code>Entry</code> with a namespace of
+<code>blog</code> becomes <code>#__blog_entries</code>. Set <code>protected $table</code> explicitly when the
+real name does not follow that pattern. The primary key defaults to <code>id</code> and
+is changed with <code>protected $pk</code>.</p>
+<p>Here is a real model's declarations — a knowledge base article:</p>
+<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
+{
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'kb';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'title';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title'    =&gt; 'notempty',
+		'category' =&gt; 'positive|nonzero',
+		'fulltxt'  =&gt; 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias',
+		'modified',
+		'modified_by'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var  array
+	 **/
+	protected $parsed = array(
+		'fulltxt'
+	);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$namespace</code></td>
+<td>Table prefix segment used to build the table name</td>
+</tr>
+<tr>
+<td><code>$table</code></td>
+<td>The table name, when it is not derivable</td>
+</tr>
+<tr>
+<td><code>$tableAlias</code></td>
+<td>Alias applied to the table in the seeded query</td>
+</tr>
+<tr>
+<td><code>$pk</code></td>
+<td>Primary key column, default <code>id</code></td>
+</tr>
+<tr>
+<td><code>$rules</code></td>
+<td>Field name to validation rule (see below)</td>
+</tr>
+<tr>
+<td><code>$always</code></td>
+<td>Fields regenerated on every save</td>
+</tr>
+<tr>
+<td><code>$initiate</code></td>
+<td>Fields generated only when the row is created</td>
+</tr>
+<tr>
+<td><code>$renew</code></td>
+<td>Fields generated only when an existing row is updated</td>
+</tr>
+<tr>
+<td><code>$parsed</code></td>
+<td>Fields whose content is run through the content parser</td>
+</tr>
+<tr>
+<td><code>$orderBy</code>, <code>$orderDir</code></td>
+<td>Defaults used by <code>ordered()</code>, and reported on the result set</td>
+</tr>
+</tbody>
+</table>
+<p>A model needing constructor work overrides <code>setup()</code> rather than
+<code>__construct()</code>; <code>Relational</code> calls it at the end of construction.</p>
+<h2 id="retrieving-rows">Retrieving rows</h2>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Model::one($id)</code></td>
+<td>The model with that primary key, or <code>false</code></td>
+</tr>
+<tr>
+<td><code>Model::oneOrFail($id)</code></td>
+<td>The same, but throws <code>RuntimeException</code> when missing</td>
+</tr>
+<tr>
+<td><code>Model::oneOrNew($id)</code></td>
+<td>The same, but returns an empty model when missing</td>
+</tr>
+<tr>
+<td><code>Model::oneByAlias($alias)</code></td>
+<td>The row whose <code>alias</code> column matches; an empty model when missing</td>
+</tr>
+<tr>
+<td><code>Model::all()</code></td>
+<td>A model with a fresh query, ready for constraints</td>
+</tr>
+<tr>
+<td><code>Model::blank()</code></td>
+<td>A new empty model</td>
+</tr>
+<tr>
+<td><code>-&gt;rows()</code></td>
+<td>A <code>Rows</code> collection of models</td>
+</tr>
+<tr>
+<td><code>-&gt;row()</code></td>
+<td>One model — an empty one when nothing matched</td>
+</tr>
+<tr>
+<td><code>-&gt;latest($limiter = 'created')</code></td>
+<td>The newest single row by that column</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">use Components\Blog\Models\Entry;
+
+$entries = Entry::all()
+    -&gt;whereEquals('scope', 'site')
+    -&gt;whereEquals('state', Entry::STATE_PUBLISHED)
+    -&gt;ordered()
+    -&gt;paginated()
+    -&gt;rows();
+
+foreach ($entries as $entry)
+{
+    echo $entry-&gt;title;
+}
+</code></pre>
+<p>Models implement <code>IteratorAggregate</code>, so iterating one fetches for you — but
+it iterates a <em>copy</em>, leaving the original query intact for a later call.
+<code>ArrayAccess</code> is implemented too, so <code>$entry['title']</code> works alongside
+<code>$entry-&gt;title</code> and <code>$entry-&gt;get('title')</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>all()</code> accepts a <code>$columns</code> argument and ignores it entirely —
+the body is <code>return self::blank();</code>. Use <code>select()</code> to narrow the columns.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>one()</code> returns <code>false</code>, not an empty model, when the id does not
+exist, because it seeks into the fetched <code>Rows</code> collection. Prefer
+<code>oneOrFail()</code> or <code>oneOrNew()</code> so you always have an object to work with.</p>
+</aside>
+<p><code>count()</code> fetches the rows and counts them; <code>total()</code> runs a <code>COUNT()</code> query
+instead and is what you want for pagination. <code>paginated($start = 'start', $limit = 'limit')</code> reads those request variables, sets the limit clause, and
+leaves a <code>Pagination</code> object on <code>$model-&gt;pagination</code>. <code>ordered($orderBy = 'orderby', $orderDir = 'orderdir')</code> reads the ordering from the request,
+remembers it in user state, and understands <code>relationship.field</code> notation by
+joining the relationship first. <code>whereIsMine($column = 'created_by')</code>
+constrains to the current user.</p>
+<h3 id="result-collections">Result collections</h3>
+<p><code>rows()</code> returns a <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Rows.php"><code>Hubzero\Database\Rows</code></a>
+collection, keyed by primary key where possible. Beyond <code>count()</code>, <code>first()</code>,
+<code>last()</code>, <code>next()</code> and <code>prev()</code>, it offers <code>seek($pk)</code>, <code>sort($field, $asc = true)</code>, <code>fieldsByKey($key)</code>, <code>pickRandom($n)</code>, <code>latest()</code>, <code>toArray()</code>,
+<code>toJson()</code>, <code>save()</code> and <code>destroyAll()</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>Rows::search($key, $value)</code> returns <code>true</code> or <code>false</code>, not the
+matching model, despite the name.</p>
+</aside>
+<h2 id="attributes-transformers-and-parsed-fields">Attributes, transformers and parsed fields</h2>
+<p>Values that came from the database, or that you intend to save, live in the
+attributes array. Read them with <code>get($key, $default = null)</code> or the magic
+property, and set them with <code>set($key, $value)</code> or <code>set(['a' =&gt; 1, 'b' =&gt; 2])</code>.
+Assigning a public property directly does <em>not</em> put it in the attributes and
+so does not save it.</p>
+<p>A method named <code>transformFoo()</code> makes <code>$model-&gt;foo</code> return its result instead
+of the raw attribute. <code>com_blog</code> uses one to hand back the entry's parameters
+as a <code>Registry</code> rather than a JSON string:</p>
+<pre><code class="language-php">	/**
+	 * Transform params
+	 *
+	 * @return  string
+	 */
+	public function transformParams()
+	{
+		if (!is_object($this-&gt;params))
+		{
+			$params = new Registry($this-&gt;get('params'));
+
+			$p = Component::params('com_blog');
+			$p-&gt;merge($params);
+
+			$this-&gt;params = $p;
+		}
+
+		return $this-&gt;params;
+	}
+</code></pre>
+<p>A method named <code>helperFoo()</code> makes <code>$model-&gt;foo(...)</code> call it. Listing a field
+in <code>$parsed</code> makes <code>$model-&gt;field</code> return the content run through
+<code>Hubzero\Html\Builder\Content::prepare()</code>, and <code>$model-&gt;field('raw')</code> return it
+with the format comment stripped.</p>
+<h2 id="validation">Validation</h2>
+<p><code>$rules</code> maps a field name to one rule, or to several separated by <code>|</code>. The
+built-in rules are <code>notempty</code>, <code>positive</code>, <code>nonzero</code>, <code>alpha</code>, <code>phone</code> and
+<code>email</code>. <code>save()</code> calls <code>validate()</code> first and returns <code>false</code> if it fails;
+the messages are then on <code>getErrors()</code>.</p>
+<p>For anything the built-ins do not cover, register a closure from <code>setup()</code>
+with <code>addRule($key, $rule)</code>. The closure receives the whole attributes array
+and returns <code>false</code> when valid or a message when not:</p>
+<pre><code class="language-php">	public function setup()
+	{
+		$this-&gt;addRule('publish_down', function($data)
+		{
+			if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00')
+			{
+				return false;
+			}
+			return $data['publish_down'] &gt;= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
+		});
+	}
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>Rules::validate()</code> iterates the <em>data</em>, not the rules. A rule on
+a field that was never set on the model is never evaluated, so <code>notempty</code>
+does not make a field required on create — it only rejects an empty value
+that was explicitly supplied.</p>
+</aside>
+<h2 id="automatic-fields">Automatic fields</h2>
+<p>For each field named in <code>$always</code>, <code>$initiate</code> or <code>$renew</code>, the model calls a
+method named <code>automatic</code> plus the field name in studly case, passing the
+current attributes, and stores the return value. <code>$initiate</code> runs on insert,
+<code>$renew</code> on update, and <code>$always</code> on both.</p>
+<p><code>Relational</code> supplies <code>automaticCreated()</code> (now, unless already set),
+<code>automaticCreatedBy()</code> (the current user id, unless already set) and
+<code>automaticAssetId()</code> (resolves an <code>#__assets</code> entry). Everything else you
+write yourself; a slug generator is the usual case:</p>
+<pre><code class="language-php">	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) &amp;&amp; $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = str_replace(' ', '-', $alias);
+		return preg_replace(&quot;/[^a-zA-Z0-9\-]/&quot;, '', strtolower($alias));
+	}
+</code></pre>
+<h2 id="saving-and-deleting">Saving and deleting</h2>
+<pre><code class="language-php">$entry = Entry::oneOrNew($id);
+$entry-&gt;set([
+    'title'   =&gt; 'Release notes',
+    'content' =&gt; 'Everything that changed.',
+    'scope'   =&gt; 'site'
+]);
+
+if (!$entry-&gt;save())
+{
+    // $entry-&gt;getError() / getErrors() explain why
+}
+</code></pre>
+<p><code>save()</code> decides between insert and update from whether the primary key is
+set, runs the automatics for that direction, filters the attributes down to
+real table columns, purges the query cache, sets the new id back on the model,
+and triggers <code>system.onContentSave</code> (plus <code>&lt;table&gt;_new</code> on a create).
+<code>destroy()</code> removes the row, deleting any associated asset first and
+triggering <code>system.onContentDestroy</code>.</p>
+<p><code>saveAndPropagate()</code> saves the model and then every relationship attached to
+it with <code>attach($relationship, $models)</code>, stopping and copying the errors up
+on the first failure.</p>
+<p><code>checkout($userId = null)</code> and <code>checkin()</code> set and clear <code>checked_out</code> and
+<code>checked_out_time</code>, but only when those columns exist on the table;
+<code>isCheckedOut()</code> reports the state.</p>
+<h2 id="relationships">Relationships</h2>
+<p>A relationship is a public method that returns one of these:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>oneToOne($model, $childKey = null, $thisKey = null)</code></td>
+<td>One row on the other side</td>
+</tr>
+<tr>
+<td><code>oneToMany($model, $relatedKey = null, $thisKey = null)</code></td>
+<td>Many rows on the other side</td>
+</tr>
+<tr>
+<td><code>belongsToOne($model, $thisKey = null, $parentKey = null)</code></td>
+<td>The inverse — this row's parent</td>
+</tr>
+<tr>
+<td><code>manyToMany($model, $associativeTable = null, $thisKey = null, $relatedKey = null)</code></td>
+<td>Many-to-many through a join table</td>
+</tr>
+<tr>
+<td><code>oneToManyThrough($model, $through, $relatedKey = null, $localKey = null)</code></td>
+<td>Many-to-many where the join table has its own model</td>
+</tr>
+<tr>
+<td><code>oneShiftsToMany($model, $relatedKey = 'scope_id', $shifter = 'scope', $thisKey = null)</code></td>
+<td>One-to-many where the child also stores which type of parent it has</td>
+</tr>
+<tr>
+<td><code>manyShiftsToMany($model, $associativeTable = null, $thisKey = 'scope_id', $shifter = 'scope', $relatedKey = null)</code></td>
+<td>The many-to-many equivalent</td>
+</tr>
+<tr>
+<td><code>shifter($shifter = 'scope', $thisKey = 'scope_id')</code></td>
+<td>The inverse of <code>oneShiftsToMany</code> — resolves the parent class from the shifter column</td>
+</tr>
+</tbody>
+</table>
+<p><code>$model</code> is a class name. It is resolved first as given, then against the
+current model's own namespace, so a sibling model can be named bare and
+anything else needs its full namespaced name. Keys default from the model
+names: <code>oneToMany</code> looks for <code>&lt;modelname&gt;_id</code> on the related table,
+<code>belongsToOne</code> looks for <code>&lt;parentmodelname&gt;_id</code> on this one, and
+<code>manyToMany</code> guesses an associative table of <code>#__&lt;namespace&gt;_&lt;name&gt;_&lt;name&gt;</code>
+with the two names sorted alphabetically, so both sides agree.</p>
+<p>The knowledge base article declares three:</p>
+<pre><code class="language-php">	/**
+	 * Defines a belongs to one relationship between comment and user
+	 *
+	 * @return  object
+	 */
+	public function creator()
+	{
+		return $this-&gt;belongsToOne('Hubzero\User\User', 'created_by');
+	}
+</code></pre>
+<pre><code class="language-php">public function comments()
+{
+    return $this-&gt;oneToMany('Comment', 'entry_id');
+}
+
+public function votes()
+{
+    return $this-&gt;oneShiftsToMany('Vote', 'object_id', 'type');
+}
+</code></pre>
+<p>Access them as properties — <code>$article-&gt;comments</code>, <code>$article-&gt;creator</code> — and
+the model fetches the related rows once and keeps them. Call them as methods
+instead when you want to constrain the related query before fetching:
+<code>$article-&gt;comments()-&gt;whereEquals('state', 1)-&gt;rows()</code>.</p>
+<p><code>manyToMany</code> relationships add <code>connect($ids)</code>, <code>disconnect($ids)</code> and
+<code>sync($ids)</code> for maintaining the associative table; <code>sync()</code> inserts what is
+missing and deletes what should no longer be there. <code>oneToMany</code> adds
+<code>save($data)</code>, <code>saveAll($models)</code> and <code>destroyAll()</code>.</p>
+<h3 id="eager-loading-and-constraining">Eager loading and constraining</h3>
+<p><code>including()</code> fetches named relationships alongside the main result set,
+avoiding one query per row. It accepts nested names with dots, and a
+<code>[name, closure]</code> pair to constrain the related query:</p>
+<pre><code class="language-php">$articles = Article::all()
+    -&gt;including('creator', ['comments', function ($comment) {
+        $comment-&gt;whereEquals('state', 1);
+    }])
+    -&gt;rows();
+</code></pre>
+<p><code>whereRelatedHas($relationship, $constraint)</code>, its <code>orWhereRelatedHas()</code> twin,
+and <code>whereRelatedHasCount($relationship, $count = 1, $depth = 0, $operator = '&gt;=')</code> narrow the main query by what exists on the other side. <code>forwardTo()</code>
+adds relationships to search when an attribute is missing on this model.</p>
+<p>Relationships can also be added from outside the class —
+<code>Relational::registerRelationship($name, $closure)</code> registers one at runtime,
+which is how plugins bolt a relationship onto a core model.</p>
+<h2 id="connections-and-caching">Connections and caching</h2>
+<p>Models use the connection in <code>Relational::$connection</code>, which is null by
+default and so falls through to <code>App::get('db')</code>.
+<code>Relational::setDefaultConnection($driver)</code> points every model at another
+driver — useful in tests. <code>disableCaching()</code> and <code>enableCaching()</code> control
+whether a model's fetches consult the query cache, and <code>purgeCache()</code> empties
+it.</p>
+<h2 id="trees">Trees</h2>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Nested.php"><code>Hubzero\Database\Nested</code></a>
+extends <code>Relational</code> for nested-set trees, adding <code>saveAsRoot()</code>,
+<code>saveAsChildOf($parent)</code>, <code>saveAsFirstChildOf()</code>, <code>saveAsLastChildOf()</code>,
+<code>children()</code> (which is <code>descendants(1)</code>) and <code>descendants($level = null)</code>. Its
+<code>destroy()</code> cascades: it removes the node, then every descendant, then closes
+the gap left in the tree.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../../extensions/index.html" rel="next"><span>Next</span>CMS Extensions</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/06-database/03-orm.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

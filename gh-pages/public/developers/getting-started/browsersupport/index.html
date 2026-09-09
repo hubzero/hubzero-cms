@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browser Support · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Overview The Browser Test Baseline provides a baseline set of browsers that should be tested. It is designed to maximize coverage with limited testing…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/browsersupport/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Browser Support</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#browser-test-baseline">Browser Test Baseline</a></li>
+<li class="toc__item toc__item--l2"><a href="#graded-browser-support-what-and-why">Graded Browser Support: What and Why</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-does-support-mean">What Does &quot;Support&quot; Mean?</a></li>
+<li class="toc__item toc__item--l3"><a href="#progressive-enhancement-vs-graceful-degradation">Progressive Enhancement vs. Graceful Degradation</a></li>
+<li class="toc__item toc__item--l2"><a href="#grades-of-support">Grades of Support</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-are-grades-of-support">What are Grades of Support?</a></li>
+<li class="toc__item toc__item--l3"><a href="#three-grades-of-support">Three Grades of Support</a></li>
+<li class="toc__item toc__item--l3"><a href="#beyond-the-three-grades">Beyond the Three Grades</a></li>
+<li class="toc__item toc__item--l3"><a href="#quality-assurance-qa-testing">Quality Assurance (QA) Testing</a></li>
+<li class="toc__item toc__item--l2"><a href="#conclusion">Conclusion</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Browser Support</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Browser Support</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/browsersupport">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2012. It was never published there, so read it as a draft.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>The Browser Test Baseline provides a baseline set of browsers that should be tested. It is designed to maximize coverage with limited testing resources by testing the smallest possible subset of browser combinations and leveraging implicit coverage from shared core browser engines. At the very least, all listed browsers should be tested in one operating system, in order to provide &quot;baseline&quot; coverage. Testing on multiple operating systems should be accommodated after all browsers have been verified with baseline coverage and should start with features that have known platform-specific issues. The test platforms should be chosen based on usage statistics and market trends.</p>
+<p>The Browser Test Baseline defines the current set of browers that should receive a verified, usable experience. However, trying to deliver the same &quot;A-grade&quot; experience across all tested browsers is neither cost-effective nor common. We support a tiered approach to user experience design, development, and testing, and encourage each project to define their own tiers that serve their users and their testing resources best.</p>
+<h2 id="browser-test-baseline">Browser Test Baseline</h2>
+<table>
+<tbody>
+<tr>
+<th scope="row">Internet Explorer</th>
+<td>7.0</td>
+<td>8.0</td>
+<td>9.0</td>
+</tr>
+<tr>
+<th scope="row">Firefox</th>
+<td>3.†</td>
+<td>4.†</td>
+<td>5.†</td>
+</tr>
+<tr>
+<th scope="row">Chrome †</th>
+<td colspan="3">Latest stable</td>
+</tr>
+<tr>
+<th scope="row">Safari</th>
+<td>5.†</td>
+<td>iOS 3.†</td>
+<td>iOS 4.†</td>
+</tr>
+<tr>
+<th scope="row">Webkit</th>
+<td colspan="3">Android 2.†</td>
+</tr>
+<tr>
+<th scope="row">Opera</th>
+<td colspan="3">10.†</td>
+</tr>
+</tbody>
+</table>
+<p><em>Notes:</em></p>
+<ul>
+<li>The dagger symbol (as in &quot;Firefox 4.†&quot;) indicates that the most-current non-beta version at that branch level receives support.</li>
+<li>No guidance is given on iOS or Android OS device usage. The recommendation is that you choose the devices that are most representative of your user base for each OS.</li>
+</ul>
+<p>The Browser Test Baseline provides a baseline set of browsers that should be tested. It is designed to maximize coverage with limited testing resources by testing the smallest possible subset of browser combinations and leveraging implicit coverage from shared core browser engines. At the very least, all listed browsers should be tested in one operating system, in order to provide &quot;baseline&quot; coverage. Testing on multiple operating systems should be accommodated after all browsers have been verified with baseline coverage and should start with features that have known platform-specific issues. The test platforms should be chosen based on usage statistics and market trends.</p>
+<p>The Browser Test Baseline defines the current set of browers that should receive a verified, usable experience. However, trying to deliver the same &quot;A-grade&quot; experience across all tested browsers is neither cost-effective nor common. We support a tiered approach to user experience design, development, and testing, and encourage each project to define their own tiers that serve their users and their testing resources best.</p>
+<h2 id="graded-browser-support-what-and-why">Graded Browser Support: What and Why</h2>
+<p>In the first 10 years of professional web development, back in the early '90s, browser support was binary: Do you — or don't you — support a given browser? When the answer was &quot;No&quot;, user access to the site was often actively prevented. In the years following IE5's release in 1998, professional web designers and developers have become accustomed to asking at the outset of any new undertaking, &quot;Do I have to support Netscape 4.x browsers for this project?&quot;</p>
+<p>By contrast, in modern web development we must support <em>all</em> browsers. Choosing to exclude a segment of users is inappropriate, and, with a &quot;GradedBrowser Support&quot; strategy, unnecessary.</p>
+<p>Graded Browser Support offers two fundamental ideas:</p>
+<ul>
+<li>A broader and more reasonable definition of &quot;support.&quot;</li>
+<li>The notion of &quot;grades&quot; of support.</li>
+</ul>
+<h3 id="what-does-support-mean">What Does &quot;Support&quot; Mean?</h3>
+<p>Support does not mean that everybody gets the same thing. Expecting two users using different browser software to have an identical experience fails to embrace or acknowledge the heterogeneous essence of the Web. In fact, requiring the same experience for all users creates an artificial barrier to participation. Availability and accessibility of content should be our key priority.</p>
+<p>Consider television. At the core: TV distributes information. A hand-cranked emergency radio is capable of receiving television audio transmissions. It would be counter-productive to prevent access to this content, even though it's a fringe experience.</p>
+<p>Some viewers still have black-and-white televisions. Broadcasting only in black-and-white — the &quot;lowest common denominator&quot; approach — ensures a shared experience but benefits no one. Excluding the black-and-white television owners — the &quot;you must be this tall to ride&quot; approach — provides no benefit either.</p>
+<p>An appropriate support strategy allows every user to consume as much visual and interactive richness as their environment can support. This approach—commonly referred to as <em>progressive enhancement</em> — builds a rich experience on top of an accessible core, without compromising that core.</p>
+<h3 id="progressive-enhancement-vs-graceful-degradation">Progressive Enhancement vs. Graceful Degradation</h3>
+<p>The concepts of <em>graceful degradation</em> and <em>progressive enhancement</em> are often applied to describe browser support strategies. Indeed, they are closely related approaches to the engineering of &quot;fault tolerance&quot;.</p>
+<p>These two concepts influence decision-making about browser support. Because they reflect different priorities, they frame the support discussion differently. Graceful degradation prioritizes <em>presentation</em>, and permits less widely-used browsers to receive less (and give less to the user). Progressive enhancement puts <em>content</em> at the center, and allows most browsers to receive more (and show more to the user). While close in meaning, progressive enhancement is a healthier and more forward-looking approach. Progressive enhancement is a core concept of Graded Browser Support.</p>
+<h2 id="grades-of-support">Grades of Support</h2>
+<h3 id="what-are-grades-of-support">What are Grades of Support?</h3>
+<p>While an inclusive definition of browser support is necessary, the support continuum does present design, development, and testing challenges. If anything goes, how do I know when the experience is broken? To address this question and return a sense of order to the system, we define <em>grades</em> of support. There are three grades: A-grade, C-grade, and X-grade support.</p>
+<p>Before examining each grade, here are some characteristics useful for defining levels of support.</p>
+<p>Identified vs. Unknown There are over 10,000 browser brands, versions, and configurations and that number is growing. It is possible to group known browsers together.</p>
+<p>Capable vs. Incapable No two browsers have an identical implementation. However, it is possible to group browsers according to their support for most web standards.</p>
+<p>Modern vs. Antiquated As newer browser versions are released, the relevancy of earlier versions decreases.</p>
+<p>Common vs. Rare There are thousands of browsers in use, but only a few dozen are widely used.</p>
+<h3 id="three-grades-of-support"><a id="the-three-grades"></a>Three Grades of Support</h3>
+<ul>
+<li>
+<p><strong><a id="c-grade"></a>C-grade</strong><br />
+C-grade is the base level of support, providing core content and functionality. It is sometimes called core support. Delivered via nothing more than semantic HTML, the content and experience is highly accessible, unenhanced by decoration or advanced functionality, and forward and backward compatible. Layers of style and behavior are omitted.</p>
+<p>C-grade browsers should be identified on a blacklist.</p>
+<p><strong>Summary:</strong> C-grade browsers are identified, incapable, antiquated and rare. QA tests a sampling of C-grade browsers, and bugs are addressed with high priority.</p>
+</li>
+<li>
+<p><strong><a id="a-grade"></a>A-grade</strong><br />
+A-grade support is the highest support level. By taking full advantage of the powerful capabilities of modern web standards, the A-grade experience provides advanced functionality and visual fidelity.</p>
+<p>A-grade browsers should be identified on a whitelist. Approximately 96% of our audience enjoys an A-grade experience.</p>
+<p><strong>Summary:</strong> A-grade browsers are identified, capable, modern and common. QA tests all A-grade browsers, and bugs are addressed with high priority.</p>
+</li>
+<li>
+<p><strong><a id="x-grade"></a>X-grade</strong><br />
+X-grade provides support for unknown, fringe or rare browsers as well as browsers on which development has ceased. Browsers receiving X-grade support are assumed to be capable. (If a browser is shown to be incapable — if it chokes on modern methodologies and its user would be better served without decoration or functionality — then it should considered a C-grade browser.)</p>
+<p>X-grade browsers are all browsers not designated as any other grade.</p>
+<p><strong>Summary:</strong> X-grade browsers are assumed to be capable and modern. QA does not test, and bugs are not opened against X-grade browsers.</p>
+</li>
+</ul>
+<h4 id="the-relationship-between-a-grade-and-x-grade-support"><a id="a-grade-vs-x-grade"></a>The Relationship Between A-grade and X-grade Support</h4>
+<p>A bit more on the relationship between A-grade and X-grade browsers: One unexpected instance of X-grade is a newly released version of an A-grade browser. Since thorough QA testing is an A-grade requirement, a brand-new (and therefore untested) browser does not qualify as an A-grade browser. This example highlights a strength of the Graded Browser Support approach. The only practical difference between A-grade and X-grade browsers is that QA actively tests against A-grade browsers.</p>
+<p>Unlike the C-grade, which receives only HTML, the X-grade receives everything that A-grade does. Though a brand-new browser might be characterized initially as a X-grade browser, we give its users every chance to have the same experience as A-grade browsers.</p>
+<h3 id="beyond-the-three-grades"><a id="beyond-three-grades"></a>Beyond the Three Grades</h3>
+<p>In recent years, we have seen a proliferation in tiers of support above and beyond the three grades identified above, where certain subsets of features are implemented only on certain subsets of browsers. Defining and implementing tiers of user experience should be done by each individual project. Overall, we promote the simplest Progressive Enhancement approach possible and discourage projects from creating new tiers without accounting for the additional costs in development, testing, and maintenance resources.</p>
+<h3 id="quality-assurance-qa-testing"><a id="testing"></a>Quality Assurance (QA) Testing</h3>
+<p>Grading the browser ecosystem enables meaningful, targeted, and cost-effective QA testing. As noted, representative C-grade testing and systematic A-grade testing ensures a usable and verified experience for the vast majority of our audience. A-grade testing must be thorough and complete, while C-grade testing can be accomplished with one or two representative browsers (e.g., Netscape 4.x and <a href="http://lynx.browser.org/">Lynx</a>), or by using a modern browser with CSS and JavaScript disabled.</p>
+<p>It's worth reiterating that testing resources do <em>not</em> examine X-grade browsers.</p>
+<p>Representative testing of the core experience is critical. If you choose to adopt a Graded Browser Support approach for your own projects, be sure your site's core content and functionality are accessible without images, CSS, and JS. Ensure that the keyboard is adequate for task completion and that when your site is accessed by a C-grade browser all advanced functionality prompts are hidden.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Graded Browser Support provides an inclusive definition of support and a framework for taming the ever-expanding world of browsers and frontend technologies.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../upgrade/index.html" rel="prev"><span>Previous</span>Upgrade Guide</a><a class="pager__next" href="../devenvironment/index.html" rel="next"><span>Next</span>Development Environment</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/05-browsersupport.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

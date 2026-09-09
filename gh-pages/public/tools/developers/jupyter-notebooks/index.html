@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jupyter Notebooks · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Jupyter Notebooks Publishing Jupyter Notebooks The Jupyter tool is a useful place to develop code and analyses in a notebook format. Hub users can easily share…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Jupyter Notebooks</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#publishing-jupyter-notebooks">Publishing Jupyter Notebooks</a></li>
+<li class="toc__item toc__item--l3"><a href="#jupyter-version">Jupyter version</a></li>
+<li class="toc__item toc__item--l3"><a href="#to-deploy-a-jupyter-notebook">To deploy a Jupyter notebook:</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Jupyter Notebooks</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Jupyter Notebooks</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        <div class="prose">
+<p>Jupyter Notebooks</p>
+<h2 id="publishing-jupyter-notebooks">Publishing Jupyter Notebooks</h2>
+<p>The <a href="https://help.hubzero.org/resources/jupyter">Jupyter tool</a> is a useful place to develop code and analyses in a notebook format. Hub users can easily share their notebooks with other users by <em>publishing</em> their notebooks as tools. A published Jupyter notebook enables other users to interact with the notebook, stepping through its cells and even changing them. But, when users run your published notebook, any changes they have made to it will not persist.</p>
+<p>This set of instructions takes you through publishing a hub tool based on your existing Jupyter notebook. Here, we'll assume that the short name for your tool is <em>toolname</em> and that you are a registered, logged-in user. To develop the notebook tool, all you need is access to Jupyter. You'll navigate between your Jupyter home directory, the Jupyter terminal, and your tool's status page from the Tool Pipeline (The Tool Pipeline is typically found at yourhub.org/tools/pipeline but this may vary by Hub).</p>
+<h3 id="jupyter-version">Jupyter version</h3>
+<p>When developing Jupyter notebooks or Jupyter based tools, you should use the most recent version of Jupyter deployed on your Hub.</p>
+<h3 id="to-deploy-a-jupyter-notebook">To deploy a Jupyter notebook:</h3>
+<h4 id="1-create-the-tool">1. CREATE THE TOOL</h4>
+<p>To create the tool for your Jupyter notebook, navigate to Tools and click &quot;Create a New Tool&quot; on the upper left. Fill in the Create Tool page that the system displays:</p>
+<ol>
+<li>Give your tool a brief name (no spaces or hyphens), a full title, and the at-a-glance description.</li>
+<li>Select the repository hosting option. If you select the external hosting option be sure to supply the appropriate URL.</li>
+<li>Select &quot;Deploy as Jupyter notebook&quot;, and add your username in the development team.</li>
+<li>The Access section enables you to restrict tool access to a specific hub Group, if you wish.</li>
+<li>For other fields, you may accept the defaults, and submit.</li>
+<li>Finally, flip the tool status to Registered, and click Apply Change.</li>
+</ol>
+<h4 id="2-register-as-a-debian10-tool">2. REGISTER AS A Debian10 TOOL</h4>
+<p>For some hubs, you will need to submit a Hub ticket, indicating the short name of your tool, and asking that it be registered as a Debian10 tool. This will ensure that the new tool uses current packages and kernels. Ask your Hub administrator if this applies to you.</p>
+<h4 id="3-check-out-the-tool-repo">3. CHECK OUT THE TOOL REPO</h4>
+<p>Your notebook tool's code repo should now have status Created and be ready to use. To do so, we must first check out the repo.</p>
+<p>Open the Jupyter tool, navigate to your home notebooks directory, and open a terminal by selecting New, and then Terminal. Using the terminal, check out the newly created tool repo locally. In the section below, <em>toolname</em> is the brief name you gave your tool on the Create Tool page.</p>
+<h5 id="using-subversion-svn">Using Subversion (svn)</h5>
+<p>To use a HUB hosted subversion repository, specify this command:</p>
+<pre><code>svn checkout https://yourhub.org/tools/toolname/svn/trunk toolname
+</code></pre>
+<h5 id="using-git">Using Git</h5>
+<p>To use a HUB hosted git repostitory, specify this command:</p>
+<pre><code>git clone https://yourhub.org/tools/toolname/git/toolname toolname
+</code></pre>
+<p>To use an externally hosted git repository, specify this command:</p>
+<pre><code>git clone https://yourURL toolname
+</code></pre>
+<h4 id="4-add-notebook-code">4. ADD NOTEBOOK CODE</h4>
+<p>It's now time to add the code that will run for your notebook. Back in the Jupyter tool file listing, you should see the <em>toolname</em> directory under your home notebooks directory. Into that directory, copy a working notebook (or develop one in place).</p>
+<p>You can configure your notebook to access additional Python packages by loading an alternate kernel in the Jupyter notebook UI. To do so, consult the Kernel dropdown in the Jupyter interface. Different kernels may be available now on your Hub with additional packages. File a ticket or get in touch to let us know what packages you need.</p>
+<p>You may need additional data files or code to run the notebook. The Hubzero team recommends putting the main notebook in the top level tool directory. Other files your notebook needs (say, pythonfile.py) can be organized in subdirectories such as bin/. Then, you can load any Python files in your notebook as if they were modules. Your notebook will load the Python source data/pythonfile.py this way:</p>
+<pre><code>import bin.pythonfile
+</code></pre>
+<h4 id="5-edit-invoke-script">5. EDIT INVOKE SCRIPT</h4>
+<p>Finally, to tell the hub how to launch the notebook, you need to edit the invoke script that was automatically created at tool creation time. The invoke shell script is found in the <em>toolname</em>/middleware/ directory. To edit it, double-click on the invoke script in the Jupyter file listing, and the editor will launch.</p>
+<p>In the invoke script you specify the filename of your Jupyter notebook, the version of Anaconda to use, and other parameters. Here we suppose that your notebook is called <em>your-jupyter-notebook-name.ipynb</em>.</p>
+<p>For a Jupyter notebook using anaconda-X, your script will look like this :</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t toolname \
+                         -C &quot;start_jupyter -T @tool your-jupyter-notebook-name.ipynb&quot; \
+                         -r none \
+                         -w headless \
+                         -u anaconda-X
+</code></pre>
+<p>If your notebook needs additional modules, list them as -u module pairs. Be sure to add line continuation as needed (\).</p>
+<p>For details on invoke script command line options, refer to the <a href="../invoke/index.html">Hubzero invoke documentation</a>.</p>
+<h4 id="6-testing">6. TESTING</h4>
+<p>Next, you'll test that your working notebook starts properly as a Hub tool. When the notebook passes testing, you are ready to proceed.</p>
+<h4 id="7-commit-changes">7. COMMIT CHANGES</h4>
+<p>Once you have saved your invoke script and your notebook, check them in to the repository management software. You'll use subversion or git.</p>
+<h5 id="using-subversion-svn-2">Using Subversion (svn)</h5>
+<p>From a Jupyter terminal, navigate to your tool's directory (get there as we did in step 3. above). First, add the notebook to svn (similarly, add any other needed files, using &quot;svn add&quot;):</p>
+<pre><code>svn add your-jupyter-notebook-name.ipynb
+</code></pre>
+<p>then, once all files have been added in this way, commit the changes:</p>
+<pre><code>svn commit -m &quot;commit message&quot;
+</code></pre>
+<p>The commit message should briefly indicate why the commit is being done or what the commit accomplishes. Commit messages serve as documentation for your work.</p>
+<h5 id="using-git-2">Using Git</h5>
+<p>From a Jupyter terminal, navigate to your tool's directory (get there as we did in step 3. above). First, add the notebook to git (similarly, add any other needed files, using &quot;git add&quot;):</p>
+<pre><code>git add your-jupyter-notebook-name.ipynb
+</code></pre>
+<p>then, once all files have been added in this way, commit the changes:</p>
+<pre><code>git commit -m &quot;commit message&quot;
+</code></pre>
+<p>The commit message should briefly indicate why the commit is being done or what the commit accomplishes. Commit messages serve as documentation for your work.</p>
+<p>Once all files have added and committed the changes need to be pushed to the repository accessed by yourhub.</p>
+<pre><code>git push
+</code></pre>
+<p>To alert the administrator that your tool is ready for installation, you can now visit your tool's status page, either from the Tool Pipeline, or specifying a URL like this:</p>
+<pre><code>https://yourhub.org/tools/toolname/status
+</code></pre>
+<p>Here, click the link that reads, &quot;My code is committed, working, and ready to be installed.&quot; If you have special instructions, caveats, compile steps, or other dependencies for your installation, enter them in the available text box now. The tool administrators will be alerted about your tool status and perform the installation along with any required steps you describe.</p>
+<h4 id="8-install">8. INSTALL</h4>
+<p>It's time to install the tool source. This action will depend on your access privileges; you may need the help of an administrator. On the hub, visit your tool's status page, either from the Tool Pipeline, or specifying a URL like this:</p>
+<pre><code>https://yourhub.org/tools/toolname/status
+</code></pre>
+<p>Here you can click the Install button and then on success message, flip the status to Installed and apply the change.</p>
+<p>If the Install button is not available to you, this task will be executed by an administrator. You will receive a status email when it is complete.</p>
+<h4 id="9-test-and-publish">9. TEST AND PUBLISH</h4>
+<p>To test your tool, go to the hub's Tool Pipeline and select your tool's link, or specify the tool URL directly:</p>
+<pre><code>https://yourhub.org/tools/toolname
+</code></pre>
+<p>In the status page, click the button to test run the tool. If the tool does not display or otherwise fails your test, there is still work to do. Revisit your development steps, starting with the TEST section above.</p>
+<p>If the notebook test is successful, and it displays and functions as expected, you are almost done! Return to the tool status page. There you can indicate to administrators that you Approve the tool for publication.</p>
+<p>You will receive a status change email when the tool has transitioned to Published. When you receive word that your tool is Published, you should verify again that it works as expected.</p>
+<p>That should do it--your Jupyter notebook is now a published tool available to other Hub users. If you have questions, concerns, or run into a snag, please email the Hub administrator. Include any error messages you see, and we'll give you a hand.</p>
+<h4 id="10-making-changes"><strong>10. MAKING CHANGES</strong></h4>
+<p>To make changes to a published notebook, you must only revisit some of the steps outlined above.</p>
+<p>To make edits to the tool:</p>
+<ul>
+<li>Change your notebook code as necessary, revisiting the TEST and COMMIT CHANGES steps above when complete.</li>
+<li>INSTALL your changed code as above</li>
+<li>TEST AND PUBLISH the notebook tool as above</li>
+</ul>
+<p>Each time you make changes, be sure to test the notebook and confirm that it works properly.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li><a href="pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li><a href="testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li><a href="environment-variables/index.html">Environment Variables</a></li>
+<li><a href="invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li></ul></section>
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../largedatapaths/index.html" rel="prev"><span>Previous</span>Large Data Paths</a><a class="pager__next" href="jupyter-deployment-styles/index.html" rel="next"><span>Next</span>Jupyter Tool Deployment Styles</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/10-jupyter-notebooks/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upgrade Guide · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Directory Structure Files Most notable about the 2.0.0 release will be the new directory structure and reorganization of the various files and extensions…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/upgrade/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Upgrade Guide</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#directory-structure-files">Directory Structure &amp; Files</a></li>
+<li class="toc__item toc__item--l2"><a href="#constants">Constants</a></li>
+<li class="toc__item toc__item--l2"><a href="#common-classes">Common Classes</a></li>
+<li class="toc__item toc__item--l3"><a href="#jroute">JRoute</a></li>
+<li class="toc__item toc__item--l3"><a href="#jtext">JText</a></li>
+<li class="toc__item toc__item--l3"><a href="#jrequest">JRequest</a></li>
+<li class="toc__item toc__item--l3"><a href="#jtoolbarhelper">JToolbarHelper</a></li>
+<li class="toc__item toc__item--l3"><a href="#jsubmenuhelper">JSubMenuHelper</a></li>
+<li class="toc__item toc__item--l3"><a href="#jhtml">JHtml</a></li>
+<li class="toc__item toc__item--l2"><a href="#factory-objects">Factory Objects</a></li>
+<li class="toc__item toc__item--l2"><a href="#dates">Dates</a></li>
+<li class="toc__item toc__item--l3"><a href="#now">Now</a></li>
+<li class="toc__item toc__item--l3"><a href="#specified-date">Specified date</a></li>
+<li class="toc__item toc__item--l2"><a href="#users">Users</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Upgrade Guide</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Upgrade Guide</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/upgrade">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        <div class="prose">
+<h2 id="directory-structure-files">Directory Structure &amp; Files</h2>
+<p>Most notable about the 2.0.0 release will be the new directory structure and reorganization of the various files and extensions comprising the CMS.</p>
+<p>Files are essentially divided between two primary directories: <code>app</code> and <code>core</code>.</p>
+<pre><code>/app
+/core
+index.php
+</code></pre>
+<p>The <code>app</code> directory is where everything concerning a specific hub lives. That is, it's the home to all the logs, cache data, uploads, and extensions unique to a specific instance of a hub.</p>
+<h2 id="constants">Constants</h2>
+<table>
+<thead>
+<tr>
+<th>Joomla</th>
+<th>Hubzero</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JPATH_ROOT</td>
+<td>PATH_ROOT</td>
+</tr>
+<tr>
+<td>JPATH_BASE</td>
+<td>PATH_ROOT</td>
+</tr>
+<tr>
+<td>JPATH_SITE</td>
+<td>PATH_ROOT</td>
+</tr>
+<tr>
+<td>JPATH_ADMINISTRATOR</td>
+<td>PATH_ROOT No files or code should be placed into or read from the <code>administrator</code> directory and it is slated for deletion in a future version.</td>
+</tr>
+<tr>
+<td>JPATH_COMPONENT</td>
+<td><code>Component::path($option)</code></td>
+</tr>
+<tr>
+<td>n/a</td>
+<td>PATH_APP Points to <code>ROOT/app</code> where all hub-specific data resides.</td>
+</tr>
+<tr>
+<td>n/a</td>
+<td>PATH_CORE Points to <code>ROOT/core</code> where the framework and core extensions live.</td>
+</tr>
+<tr>
+<td>_JEXEC</td>
+<td>_HZEXEC_</td>
+</tr>
+</tbody>
+</table>
+<p>It is highly recommended, when including files within the same extension (component, module, plugin), to use the <code>__DIR__</code> and <code>__FILE__</code> PHP constants and relative paths.</p>
+<pre><code class="language-php">&lt;?php
+// This file is example.php, located in:
+// ROOT/app/components/com_example/admin
+
+// dirname(__DIR__) moves up one directory
+// ROOT/app/components/com_example/models
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'foo.php');
+
+// ROOT/app/components/com_example/admin/controllers
+require_once(__DIR__ . DS . 'controllers' . DS . 'example.php');
+</code></pre>
+<h2 id="common-classes">Common Classes</h2>
+<p>To make upgrading an extension a little easier, a number of Joomla classes (and their methods) have equivalent classes in the new framework.</p>
+<h3 id="jroute">JRoute</h3>
+<table>
+<thead>
+<tr>
+<th><code>JRoute::_();</code></th>
+<th><code>Route::url();</code></th>
+</tr>
+</thead>
+</table>
+<h3 id="jtext">JText</h3>
+<p>The <code>JText</code> class, used for translating language keys, was replaced by the <code>Lang</code> facade. Along with this, the <code>_()</code> and <code>sprintf()</code> methods were merged to allow for a single call to <code>Lang::txt()</code> with a variable number of arguments. If more than one argument is passed to the <code>txt()</code> method, the translator will attempt to perform variable replacement in the translated string.</p>
+<pre><code class="language-php">// Language file
+COM_EXAMPLE_HELLO=&quot;Hello!&quot;
+COM_EXAMPLE_HELLO_NAME=&quot;Hello, %s!&quot;
+
+...
+
+// PHP
+
+// Outputs 'Hello!'
+echo Lang::txt('COM_EXAMPLE_HELLO');
+
+// Outputs 'Hello, HUBzero!'
+echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'HUBzero');
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><code>JText::_();</code></th>
+<th><code>Lang::txt();</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>JText::sprintf();</code></td>
+<td><code>Lang::txt();</code></td>
+</tr>
+<tr>
+<td><code>JText::plural();</code></td>
+<td><code>Lang::txts();</code></td>
+</tr>
+<tr>
+<td><code>JText::alt();</code></td>
+<td><code>Lang::alt();</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="jrequest">JRequest</h3>
+<p>To make transitioning easier, all public <code>JRequest</code> methods have been preserved on the global request object, which can be accessed through the application container or the <code>Request</code> facade.</p>
+<pre><code class="language-php">// Via the application container
+$request = App::get('request');
+$foo = $request-&gt;getVar('foo');
+
+// Via the facade
+$foo = Request::getVar('foo');
+</code></pre>
+<p>In the majority of cases, this means simply dropping the 'J' from <code>JRequest</code> will be sufficient for upgrading an extension's code.</p>
+<table>
+<thead>
+<tr>
+<th><code>JRequest::*</code></th>
+<th><code>Request::*</code></th>
+</tr>
+</thead>
+</table>
+<h3 id="jtoolbarhelper">JToolbarHelper</h3>
+<p>Perhaps one of the easier conversions; Simply replace instances of <code>JToolbarHelper</code> with the <code>Toolbar</code> facade. Method names and the arguments passed to them stay the same.</p>
+<pre><code class="language-php">// Joomla
+JToolbarHelper::publishList();
+JToolbarHelper::unpublishList();
+
+// Hubzero
+Toolbar::publishList();
+Toolbar::unpublishList();
+</code></pre>
+<h3 id="jsubmenuhelper">JSubMenuHelper</h3>
+<p>As with <code>JToolbarHelper</code> above, only the class name need be updated. All primary method names stay the same.</p>
+<pre><code class="language-php">// Joomla
+JSubMenuHelper::addEntry(
+	JText::_('COM_COLLECTIONS_POSTS'),
+	'index.php?option=com_collections&amp;controller=posts',
+	$controllerName == 'posts'
+);
+
+// Hubzero
+Submenu::addEntry(
+	Lang::txt('COM_COLLECTIONS_POSTS'),
+	Route::url('index.php?option=com_collections&amp;controller=posts'),
+	$controllerName == 'posts'
+);
+</code></pre>
+<h3 id="jhtml">JHtml</h3>
+<p>Unlike may of the other classes mentioned above, the class, method, and arguments changed for the replacement of <code>Html</code>. Easily enough, the &quot;J&quot; can simply be dropped to have a class name of just <code>Html</code>. The method name and first argument passed to said method is a little more complicated but follows a strict pattern. For <code>Html</code>, all arguments were passed to a method of <code>_()</code>, the first argument being a dot-notation combination of sub library and the function to call within it.</p>
+<pre><code class="language-php">echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this-&gt;filters['sort_Dir'], @$this-&gt;filters['sort']);
+</code></pre>
+<p>For the <code>Html</code> class, the method is now the name of the sub-library and the first argument passed is the name of the function to call.</p>
+<pre><code class="language-php">echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this-&gt;filters['sort_Dir'], @$this-&gt;filters['sort']);
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-php">// Joomla
+JHtml::_('behavior.framework');
+
+// Hubzero
+Html::behavior('framework');
+</code></pre>
+<h2 id="factory-objects">Factory Objects</h2>
+<p>The following is a list of conversions for objects typically acquired from Joomla's <code>JFactory</code>. In most cases, the objects or their equivalents are available for retrieval from the global <code>App</code>. A number of the objects also have associated Facades for quicker access. In the examples below <strong>method()</strong> is variable and implies that the method formerly called on the Joomla object can be called statically on the facade.</p>
+<p>Example 1:</p>
+<pre><code class="language-php">// Joomla
+$user = JFactory::getUser();
+echo $user-&gt;get('name');
+
+// Hubzero
+echo User::get('name');
+</code></pre>
+<p>Example 2:</p>
+<pre><code class="language-php">// Joomla
+$doc = JFactory::getDocument();
+$doc-&gt;addStylesheet('/some/file.css');
+
+// Hubzero
+Document::addStylesheet('/some/file.css');
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Joomla</th>
+<th>Hubzero</th>
+<th>Hubzero Facade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JFactory::getDbo();</td>
+<td>App::get('db');</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>JFactory::getUser(); JUser::getInstance();</td>
+<td>App::get('user'); User::getInstance();</td>
+<td>User::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getSession();</td>
+<td>App::get('session');</td>
+<td>Session::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getDocument();</td>
+<td>App::get('document');</td>
+<td>Document::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getConfig();</td>
+<td>App::get('config');</td>
+<td>Config::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getLanguage();</td>
+<td>App::get('lang');</td>
+<td>Lang::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getCache();</td>
+<td>App::get('cache.store');</td>
+<td>Cache::<strong>method()</strong>;</td>
+</tr>
+<tr>
+<td>JFactory::getLogger();</td>
+<td>App::get('log')-&gt;logger('{log name}');</td>
+<td>Log::<strong>method()</strong>; Note: The facade only interacts with the <code>debug</code> log. Use <code>App::get('log');</code> to interact with any other log.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dates">Dates</h2>
+<p>Along with a replacement class for Joomla's <code>JDate</code>, the CMS includes a global <code>Date</code> class to make handling and formatting of dates a little easier.</p>
+<h3 id="now">Now</h3>
+<p>The <code>Date</code> class will always return an instance of <code>Hubzero\Utility\Date</code>. If no specific time or timestamp is specified, it will default to 'now'.</p>
+<pre><code class="language-php">// Output the current timestamp (UTC) in the database's format. ex: &quot;2015-04-03 12:23:56&quot;
+echo Date::toSql();
+
+// Output the current timestamp (UTC) in Unix format.
+echo Date::toUnix();
+
+// Output the current timestamp (UTC) year. ex: &quot;2015&quot;
+echo Date::format('Y');
+
+// Output the current timestamp adjusted to the timezone of the hub. For example, if the UTC time is &quot;12:23 pm&quot; and the hub's set timezone is Eastern Standard Time (EST), the time outoutted will be &quot;08:23 am&quot;
+echo Date::toLocal('g:i a');
+</code></pre>
+<h3 id="specified-date">Specified date</h3>
+<p>A specific timestamp and timezone can be passed to the <code>of</code> method. If no timezone is provided, the timezone will default to UTC.</p>
+<pre><code class="language-php">// Output the current timestamp (UTC) year. ex: &quot;2013&quot;
+echo Date::of('2013-08-12 17:01:34')-&gt;format('Y');
+
+// Output the current timestamp adjusted to the timezone of the hub. ex: &quot;1:01 pm&quot;
+echo Date::of('2013-08-12 17:01:34')-&gt;toLocal('g:i a');
+</code></pre>
+<h2 id="users">Users</h2>
+<p>The global user object, retrieved from <code>JFactory::getUser()</code> can now be accessed anywhere within the CMS from the <code>User</code> facade. Any method, other than <code>getInstance()</code>, statically called on <code>User</code> will be acted upon the current, global user. This is the same as calling <code>JFactory::getUser()-&gt;method()</code>.</p>
+<pre><code class="language-php">// Joomla
+echo JFactory::getUser()-&gt;get('name');
+
+// Hubzero
+echo User::get('name');
+</code></pre>
+<p>The <code>getInstance()</code> method can be used to retrieve the underlying object (of the facade) and assigned to a variable as needed.</p>
+<pre><code class="language-php">// Joomla
+$user = JFactory::getUser();
+// ... or ...
+$user = JUser::getInstance();
+
+// Hubzero
+$user = User::getInstance();
+</code></pre>
+<p>Obtaining instances of new users can be achieved by calling <code>getInstance($id_or_username)</code> on the <code>User</code> facade in the same manner as calling <code>JUser::getInstance($id_or_username)</code> or <code>JFactory::getUser($id_or_username)</code>.</p>
+<pre><code class="language-php">// Joomla
+$user = JFactory::getUser(1234);
+// ... or ...
+$user = JUser::getInstance(1234);
+
+// Hubzero
+$user = User::getInstance(1234);
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databaseaccess/index.html" rel="prev"><span>Previous</span>Direct Database Access</a><a class="pager__next" href="../browsersupport/index.html" rel="next"><span>Next</span>Browser Support</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/04-upgrade.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

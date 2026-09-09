@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Helpers · Developers · Hubzero Documentation</title>
+  <meta name="description" content="The helper class is where a module does its work. It gathers whatever data the layout needs, exposes it as properties, and requires the layout. By convention…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/modules/helpers/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Helpers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-base-class">The base class</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-minimal-helper">A minimal helper</a></li>
+<li class="toc__item toc__item--l2"><a href="#choosing-a-layout">Choosing a layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#caching">Caching</a></li>
+<li class="toc__item toc__item--l2"><a href="#more-than-one-class">More than one class</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Modules</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Helpers</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Helpers</h1>
+        </header>
+        
+        <div class="prose">
+<p>The helper class is where a module does its work. It gathers whatever data the
+layout needs, exposes it as properties, and requires the layout. By convention
+it lives in <code>helper.php</code> beside the entry file and is named <code>Helper</code>, and it
+extends <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>.</p>
+<h2 id="the-base-class">The base class</h2>
+<p><code>Hubzero\Module\Module</code> extends <code>Hubzero\Base\Obj</code> and mixes in two traits,
+<code>AssetAware</code> and <code>Escapable</code>. It is small enough to hold in your head:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$params</code></td>
+<td><code>Hubzero\Config\Registry</code> of the instance's parameters.</td>
+</tr>
+<tr>
+<td><code>$module</code></td>
+<td>The <code>#__modules</code> row for this instance.</td>
+</tr>
+<tr>
+<td><code>__construct($params, $module)</code></td>
+<td>Stores both. Takes them positionally, in that order.</td>
+</tr>
+<tr>
+<td><code>display()</code></td>
+<td>Requires the layout named by the <code>layout</code> parameter, defaulting to <code>default</code>.</td>
+</tr>
+<tr>
+<td><code>getLayoutPath($layout = 'default')</code></td>
+<td>Resolves a layout name to a file path, honouring template overrides.</td>
+</tr>
+<tr>
+<td><code>getCacheContent()</code></td>
+<td>Returns cached output for this instance, generating it by calling <code>run()</code> if the cache is cold.</td>
+</tr>
+<tr>
+<td><code>css()</code>, <code>js()</code>, <code>img()</code></td>
+<td>From <code>AssetAware</code>. See <a href="../assets/index.html">Assets</a>.</td>
+</tr>
+<tr>
+<td><code>escape($var)</code>, <code>setEscape($spec)</code></td>
+<td>From <code>Escapable</code>. Escapes a value for output; <code>htmlspecialchars</code> by default.</td>
+</tr>
+</tbody>
+</table>
+<p>Because it extends <code>Obj</code>, the class also carries the error bag: <code>setError()</code>,
+<code>getError()</code>, <code>getErrors()</code>.</p>
+<h2 id="a-minimal-helper">A minimal helper</h2>
+<pre><code class="language-php">&lt;?php
+
+namespace Modules\Example;
+
+use Hubzero\Module\Module;
+use User;
+
+class Helper extends Module
+{
+    public function display()
+    {
+        $this-&gt;name = User::get('name');
+
+        require $this-&gt;getLayoutPath();
+    }
+}
+</code></pre>
+<p>Properties set on <code>$this</code> before the <code>require</code> are visible to the layout,
+because the layout is included in the method's scope. There is no separate
+view object and no <code>assign()</code> step.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>use User;</code> is not optional. Inside <code>namespace Modules\Example</code>
+an unqualified <code>User</code> resolves to <code>Modules\Example\User</code>, which does not
+exist, and the call is a fatal error. Import every facade the file names —
+<code>App</code>, <code>Lang</code>, <code>Request</code>, <code>Route</code>, <code>User</code>, <code>Component</code>, <code>Plugin</code>. See
+<a href="../../foundation/facades/index.html">Facades</a>.</p>
+</aside>
+<h2 id="choosing-a-layout">Choosing a layout</h2>
+<p><code>display()</code> on the base class requires the layout named by the <code>layout</code>
+parameter. If you override <code>display()</code>, you choose the layout yourself.
+<code>mod_mygroups</code> switches on a parameter:</p>
+<pre><code class="language-php">$layout = 'default';
+if (!$this-&gt;params-&gt;get('show_recent', 1))
+{
+    $layout = 'simple';
+}
+
+require $this-&gt;getLayoutPath($layout);
+</code></pre>
+<h2 id="parameters">Parameters</h2>
+<p><code>$this-&gt;params</code> is a <code>Registry</code> built from the instance's <code>params</code> column, so
+every field declared in the manifest's <code>&lt;config&gt;</code> block is readable by name,
+with a fallback for the case where an administrator never saved the form:</p>
+<pre><code class="language-php">$this-&gt;limit = intval($this-&gt;params-&gt;get('limit', 100));
+</code></pre>
+<p>Read parameters through <code>get()</code> with a default rather than assuming a value is
+present; a module instance created before you added a field will not have it.</p>
+<h2 id="caching">Caching</h2>
+<p><code>getCacheContent()</code> gives a module an opt-in output cache keyed on the
+instance id. It returns an empty string — meaning &quot;no cached content, do the
+work&quot; — unless a cache store is configured, the instance's <code>cache</code> parameter
+is on, <code>cache_time</code> is non-zero, and the application is not in debug mode. On
+a miss it buffers a call to <code>run()</code>, appends an HTML comment recording when
+the copy was made, stores it, and returns it.</p>
+<p>That contract splits the class in two: <code>run()</code> produces the output, and
+<code>display()</code> decides whether to reuse a stored copy. <code>mod_findresources</code> is the
+pattern in full:</p>
+<pre><code class="language-php">/**
+ * Module class for displaying ways to find resources
+ */
+class Helper extends Module
+{
+	/**
+	 * Generate module contents
+	 *
+	 * @return  void
+	 */
+	public function run()
+	{
+		require_once Component::path('com_tags') . '/models/cloud.php';
+		require_once Component::path('com_resources') . '/models/type.php';
+
+		$this-&gt;tags = Tag::all()
+			-&gt;whereEquals('admin', 0)
+			-&gt;limit((int)$this-&gt;params-&gt;get('limit', 25))
+			-&gt;order('objects', 'desc')
+			-&gt;rows();
+
+		// Get major types
+		$this-&gt;categories = \Components\Resources\Models\Type::getMajorTypes();
+
+		require $this-&gt;getLayoutPath();
+	}
+
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		if ($content = $this-&gt;getCacheContent())
+		{
+			echo $content;
+			return;
+		}
+
+		$this-&gt;run();
+	}
+}
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A module that calls <code>getCacheContent()</code> <strong>must</strong> define <code>run()</code>.
+The base class does not: <code>getCacheContent()</code> calls <code>$this-&gt;run()</code>, and a
+module without one fatals the first time the cache misses.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The cache key is <code>modules.{id}</code> and nothing else. It does not vary
+by user, view level, or menu item. Only cache a module whose output is the
+same for everyone who can see it — <code>mod_findresources</code> lists popular tags,
+<code>mod_mygroups</code> does not cache at all.</p>
+</aside>
+<p><code>cache_time</code> is stored in seconds by the Module Manager but the cache store
+takes minutes, so <code>getCacheContent()</code> divides values above 120 by 60 and
+passes smaller values through unchanged. A <code>cache_time</code> of 900 caches for
+fifteen minutes; a <code>cache_time</code> of 30 caches for thirty minutes, not thirty
+seconds.</p>
+<h2 id="more-than-one-class">More than one class</h2>
+<p>Nothing limits a module to one class. Put additional classes in their own
+files under the module directory and <code>require_once</code> them from <code>helper.php</code>,
+keeping them in the module's namespace so they cannot collide with another
+extension's.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../controllers/index.html" rel="prev"><span>Previous</span>Controllers</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/04-helpers.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuration · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A component has two XML files in its directory. declares the settings an administrator can change; declares the things a group can be allowed to do. Neither is…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/configuration/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Configuration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#config-xml">config.xml</a></li>
+<li class="toc__item toc__item--l2"><a href="#access-xml">access.xml</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-settings-back">Reading settings back</a></li>
+<li class="toc__item toc__item--l2"><a href="#per-record-settings">Per-record settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-manifest-block">The manifest  block</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Configuration</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Configuration</h1>
+        </header>
+        
+        <div class="prose">
+<p>A component has two XML files in its <code>config</code> directory. <code>config.xml</code> declares
+the settings an administrator can change; <code>access.xml</code> declares the things a
+group can be allowed to do. Neither is required, and a component with no
+settings and no permissions of its own needs neither.</p>
+<pre><code>core/components/com_kb/
+    config/
+        config.xml
+        access.xml
+</code></pre>
+<h2 id="config-xml"><code>config.xml</code></h2>
+<p>The root element is <code>&lt;config&gt;</code>. Each <code>&lt;fieldset&gt;</code> becomes a tab on the
+component's Options screen, and each <code>&lt;field&gt;</code> becomes a control. <code>com_kb</code>'s is
+short enough to read whole:</p>
+<pre><code class="language-xml">&lt;config&gt;
+	&lt;fieldset name=&quot;basic&quot;&gt;
+		&lt;field name=&quot;show_date&quot; type=&quot;list&quot; default=&quot;2&quot; label=&quot;COM_KB_SHOW_DATE_LABEL&quot; description=&quot;COM_KB_SHOW_DATE_DESC&quot;&gt;
+			&lt;option value=&quot;0&quot;&gt;COM_KB_SHOW_DATE_HIDE&lt;/option&gt;
+			&lt;option value=&quot;1&quot;&gt;COM_KB_SHOW_DATE_CREATED&lt;/option&gt;
+			&lt;option value=&quot;2&quot;&gt;COM_KB_SHOW_DATE_MODIFIED&lt;/option&gt;
+		&lt;/field&gt;
+		&lt;field name=&quot;allow_comments&quot; type=&quot;list&quot; default=&quot;1&quot; label=&quot;COM_KB_ALLOW_COMMENTS_LABEL&quot; description=&quot;COM_KB_ALLOW_COMMENTS_DESC&quot;&gt;
+			&lt;option value=&quot;0&quot;&gt;COM_KB_DISALLOW&lt;/option&gt;
+			&lt;option value=&quot;1&quot;&gt;COM_KB_ALLOW&lt;/option&gt;
+		&lt;/field&gt;
+		&lt;field name=&quot;close_comments&quot; type=&quot;list&quot; default=&quot;year&quot; label=&quot;COM_KB_CLOSE_COMMENTS_LABEL&quot; description=&quot;COM_KB_CLOSE_COMMENTS_DESC&quot;&gt;
+			&lt;option value=&quot;never&quot;&gt;COM_KB_FEED_CLOSE_NEVER&lt;/option&gt;
+			&lt;option value=&quot;now&quot;&gt;COM_KB_FEED_CLOSE_NOW&lt;/option&gt;
+			&lt;option value=&quot;day&quot;&gt;COM_KB_FEED_CLOSE_DAY&lt;/option&gt;
+			&lt;option value=&quot;week&quot;&gt;COM_KB_FEED_CLOSE_WEEK&lt;/option&gt;
+			&lt;option value=&quot;month&quot;&gt;COM_KB_FEED_CLOSE_MONTH&lt;/option&gt;
+			&lt;option value=&quot;6months&quot;&gt;COM_KB_FEED_CLOSE_6MONTHS&lt;/option&gt;
+			&lt;option value=&quot;year&quot;&gt;COM_KB_FEED_CLOSE_YEAR&lt;/option&gt;
+		&lt;/field&gt;
+		&lt;field name=&quot;feeds_enabled&quot; type=&quot;list&quot; default=&quot;1&quot; label=&quot;COM_KB_FEED_ENABLED_LABEL&quot; description=&quot;COM_KB_FEED_ENABLED_DESC&quot;&gt;
+			&lt;option value=&quot;0&quot;&gt;COM_KB_DISABLED&lt;/option&gt;
+			&lt;option value=&quot;1&quot;&gt;COM_KB_ENABLED&lt;/option&gt;
+		&lt;/field&gt;
+		&lt;field name=&quot;feed_entries&quot; type=&quot;list&quot; default=&quot;partial&quot; label=&quot;COM_KB_FEED_ENTRIES_LABEL&quot; description=&quot;COM_KB_FEED_ENTRIES_DESC&quot;&gt;
+			&lt;option value=&quot;full&quot;&gt;COM_KB_FEED_ENTRIES_FULL&lt;/option&gt;
+			&lt;option value=&quot;partial&quot;&gt;COM_KB_FEED_ENTRIES_PARTIAL&lt;/option&gt;
+		&lt;/field&gt;
+	&lt;/fieldset&gt;
+	&lt;fieldset name=&quot;permissions&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; description=&quot;JCONFIG_PERMISSIONS_DESC&quot;&gt;
+		&lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot; component=&quot;com_kb&quot; section=&quot;component&quot; /&gt;
+	&lt;/fieldset&gt;
+&lt;/config&gt;
+</code></pre>
+<p><code>label</code> and <code>description</code> are language keys, resolved from the component's
+administrator language file. Write them as keys, not as English — a hub
+running in another language sees whatever you put there.</p>
+<p>Field <code>type</code> names a class in <code>core/libraries/Hubzero/Form/Fields</code> —
+<code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkboxes</code>, <code>number</code>, <code>password</code>, <code>filelist</code>,
+<code>folderlist</code>, <code>accesslevel</code>, <code>usergroup</code>, <code>editor</code>, <code>tags</code>, and about thirty
+more. <code>list</code> is the exception: PHP will not allow a class called <code>List</code>, so the
+form aliases it to <code>Select</code>. A <code>list</code> carries <code>&lt;option&gt;</code> children whose bodies
+are language keys too.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A <code>type</code> the form cannot resolve falls back to <code>text</code> silently. A
+misspelled type shows up as a plain text box, not as an error.</p>
+</aside>
+<p>The last fieldset is the same in every component that has permissions:</p>
+<pre><code class="language-xml">&lt;fieldset name=&quot;permissions&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; description=&quot;JCONFIG_PERMISSIONS_DESC&quot;&gt;
+    &lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot;
+           class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot;
+           component=&quot;com_kb&quot; section=&quot;component&quot; /&gt;
+&lt;/fieldset&gt;
+</code></pre>
+<p>The <code>rules</code> field reads <code>access.xml</code> for the component named in its
+<code>component</code> attribute and renders the permission grid. Change the component
+name when you copy this block.</p>
+<p><code>com_config</code> reads <code>config.xml</code> from <code>{component path}/config/config.xml</code>, and
+the administrator reaches the form from the toolbar:</p>
+<pre><code class="language-php">Toolbar::preferences($this-&gt;option, '550');
+</code></pre>
+<h2 id="access-xml"><code>access.xml</code></h2>
+<p>Actions are grouped into sections. The <code>component</code> section applies to the
+component as a whole; further sections apply to individual records.</p>
+<pre><code class="language-xml">&lt;access component=&quot;com_kb&quot;&gt;
+	&lt;section name=&quot;component&quot;&gt;
+		&lt;action name=&quot;core.admin&quot; title=&quot;JACTION_ADMIN&quot; description=&quot;JACTION_ADMIN_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.manage&quot; title=&quot;JACTION_MANAGE&quot; description=&quot;JACTION_MANAGE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.create&quot; title=&quot;JACTION_CREATE&quot; description=&quot;JACTION_CREATE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.delete&quot; title=&quot;JACTION_DELETE&quot; description=&quot;JACTION_DELETE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit&quot; title=&quot;JACTION_EDIT&quot; description=&quot;JACTION_EDIT_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.state&quot; title=&quot;JACTION_EDITSTATE&quot; description=&quot;JACTION_EDITSTATE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.own&quot; title=&quot;JACTION_EDITOWN&quot; description=&quot;JACTION_EDITOWN_COMPONENT_DESC&quot; /&gt;
+	&lt;/section&gt;
+	&lt;section name=&quot;category&quot;&gt;
+		&lt;action name=&quot;core.create&quot; title=&quot;JACTION_CREATE&quot; description=&quot;COM_CATEGORIES_ACCESS_CREATE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.delete&quot; title=&quot;JACTION_DELETE&quot; description=&quot;COM_CATEGORIES_ACCESS_DELETE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit&quot; title=&quot;JACTION_EDIT&quot; description=&quot;COM_CATEGORIES_ACCESS_EDIT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.state&quot; title=&quot;JACTION_EDITSTATE&quot; description=&quot;COM_CATEGORIES_ACCESS_EDITSTATE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.own&quot; title=&quot;JACTION_EDITOWN&quot; description=&quot;COM_CATEGORIES_ACCESS_EDITOWN_DESC&quot; /&gt;
+	&lt;/section&gt;
+	&lt;section name=&quot;article&quot;&gt;
+		&lt;action name=&quot;core.create&quot; title=&quot;JACTION_CREATE&quot; description=&quot;COM_CATEGORIES_ACCESS_CREATE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.delete&quot; title=&quot;JACTION_DELETE&quot; description=&quot;COM_CATEGORIES_ACCESS_DELETE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit&quot; title=&quot;JACTION_EDIT&quot; description=&quot;COM_CATEGORIES_ACCESS_EDIT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.state&quot; title=&quot;JACTION_EDITSTATE&quot; description=&quot;COM_CATEGORIES_ACCESS_EDITSTATE_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.own&quot; title=&quot;JACTION_EDITOWN&quot; description=&quot;COM_CATEGORIES_ACCESS_EDITOWN_DESC&quot; /&gt;
+	&lt;/section&gt;
+&lt;/access&gt;
+</code></pre>
+<p><code>title</code> and <code>description</code> are language keys again; the <code>JACTION_*</code> and
+<code>COM_CATEGORIES_ACCESS_*</code> ones shown here are defined by the platform, so a
+component that only needs the standard actions writes no new strings.</p>
+<p>The action names are conventions the platform relies on:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core.admin</code></td>
+<td>may change this component's permissions</td>
+</tr>
+<tr>
+<td><code>core.manage</code></td>
+<td>may open this component in the administrator</td>
+</tr>
+<tr>
+<td><code>core.create</code></td>
+<td>may add a record</td>
+</tr>
+<tr>
+<td><code>core.edit</code></td>
+<td>may edit any record</td>
+</tr>
+<tr>
+<td><code>core.edit.own</code></td>
+<td>may edit a record they created</td>
+</tr>
+<tr>
+<td><code>core.edit.state</code></td>
+<td>may publish, unpublish, archive, trash</td>
+</tr>
+<tr>
+<td><code>core.delete</code></td>
+<td>may delete a record</td>
+</tr>
+</tbody>
+</table>
+<p>Check them with <code>User::authorise()</code>, against the component or against one
+record:</p>
+<pre><code class="language-php">User::authorise('core.manage', 'com_kb');          // the component
+User::authorise('core.edit', 'com_kb.article.42'); // one article
+</code></pre>
+<p><code>com_kb</code> wraps the component-level checks in a helper so its views can ask
+once and reuse the answer — see <a href="../helpers/index.html">Helpers</a>.</p>
+<h2 id="reading-settings-back">Reading settings back</h2>
+<p><code>Component::params()</code> returns a <code>Hubzero\Config\Registry</code>:</p>
+<pre><code class="language-php">$params = Component::params('com_kb');
+
+echo $params-&gt;get('feed_entries', 'partial');
+</code></pre>
+<p>Inside a controller the same registry is already on hand as <code>$this-&gt;config</code>,
+set by the constructor.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The registry holds only what is stored in the component's
+<code>#__extensions</code> row. The <code>default</code> attributes in <code>config.xml</code> are used to
+populate the <em>form</em>, not the registry, so until an administrator opens
+Options and saves, every setting is absent. Always pass a default to <code>get()</code>
+— and make it the same value as the one in <code>config.xml</code>.</p>
+</aside>
+<h2 id="per-record-settings">Per-record settings</h2>
+<p>A record may carry its own parameters in a <code>params</code> column, overriding the
+component's for that record alone. <code>com_kb</code>'s <code>Article</code> merges them in
+<code>setup()</code>, so a view reads one registry and never has to know which level a
+value came from:</p>
+<pre><code class="language-php">$params = new Registry($this-&gt;get('params'));
+
+$this-&gt;params = Component::params('com_kb');
+$this-&gt;params-&gt;merge($params);
+</code></pre>
+<h2 id="the-manifest-block">The manifest <code>&lt;params&gt;</code> block</h2>
+<p><code>kb.xml</code> and other component manifests still carry a <code>&lt;params&gt;</code> element
+listing settings in an older format. It is not what the Options screen reads —
+that is <code>config.xml</code>. <code>com_kb</code>'s administrator edit form does still parse the
+manifest, through <code>Hubzero\Html\Parameter</code>, to render the per-article
+parameter controls. Do not add one to a new component; put the settings in
+<code>config.xml</code> and the per-record form fields in <code>models/forms/</code>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../routing/index.html" rel="prev"><span>Previous</span>Routing</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/10-configuration.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

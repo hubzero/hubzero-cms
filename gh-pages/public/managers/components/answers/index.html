@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Answers · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Answers is the hub&#x27;s question-and-answer forum. Members post a question, other members answer it, everyone votes answers up or down, and the person who asked…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/answers/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Answers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#questions">Questions</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-question">Creating or editing a question</a></li>
+<li class="toc__item toc__item--l2"><a href="#answers-2">Answers</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-an-answer">Creating or editing an answer</a></li>
+<li class="toc__item toc__item--l2"><a href="#comments">Comments</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#points-and-rewards">Points and rewards</a></li>
+<li class="toc__item toc__item--l2"><a href="#modules-and-plugins">Modules and plugins</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Answers</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Answers</h1>
+        </header>
+        
+        <div class="prose">
+<p>Answers is the hub's question-and-answer forum. Members post a question,
+other members answer it, everyone votes answers up or down, and the person
+who asked picks the answer that helped. On the site it appears as
+<strong>Questions and Answers</strong> at <code>/answers</code>. This chapter covers the
+administrator's side; the <a href="../../../users/questions/index.html">Hub users</a> book covers
+asking and answering.</p>
+<p>Open it in the administrator interface under <strong>Components &gt; Answers</strong>. Two
+sub-menu links sit at the top left: <strong>Questions</strong>, the default list, and
+<strong>Answers</strong>, the responses posted to those questions.</p>
+<h2 id="questions">Questions</h2>
+<p>The Questions screen lists every question with its <strong>ID</strong>, <strong>Subject</strong>,
+<strong>State</strong>, <strong>Created</strong> date, <strong>Author</strong>, and <strong>Answers</strong> count. Click a
+column heading to sort by it; click again to reverse the order. The author
+column links to that member's record in the Members component and notes
+below the name when the question was posted anonymously. The answers count
+links to the Answers list filtered to that question.</p>
+<p>Above the list, type a term in the search box and press <strong>Go</strong> to match it
+against question subjects and bodies, or use <strong>Filter by:</strong> to show <strong>Open
+Questions</strong>, <strong>Closed Questions</strong>, or <strong>All Questions</strong>. <strong>Clear</strong> resets
+the search.</p>
+<p><img src="../../media/answers-newquestion.png" alt="The Answers Manager questions list, with its sub-menu, search box, state filter, and column headings" /></p>
+<p>The toolbar offers:</p>
+<ul>
+<li><strong>Options</strong> — the component's configuration; see <a href="#options">Options</a>
+below. Shown only to administrators.</li>
+<li><strong>New</strong> — open a blank question form.</li>
+<li><strong>Delete</strong> — permanently remove the checked questions after a
+confirmation, along with their answers, comments, tags, and votes. There
+is no trash to recover from.</li>
+<li><strong>Help</strong> — the built-in help screen.</li>
+</ul>
+<p>Click the state icon in a row to toggle a question between open and closed.
+Closing a question is the same act the asker performs on the site by
+accepting an answer, except that no answer is marked as chosen and, when
+banking is on, no points are distributed.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A question a member deleted on the site is not removed from the
+database; it is set to a trashed state. Such rows still appear in this
+list, as do questions reported as abusive, because the <strong>All Questions</strong>
+filter has no separate entry for them.</p>
+</aside>
+<h2 id="creating-or-editing-a-question">Creating or editing a question</h2>
+<p>Click a subject, or <strong>New</strong>, to open the question form.</p>
+<p><strong>Details</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anonymous</td>
+<td>Hides the author's name from other members on the site. Managers still see it here.</td>
+</tr>
+<tr>
+<td>Notify of responses</td>
+<td>Whether the asker is messaged when an answer or comment is posted. Questions asked on the site always have this set.</td>
+</tr>
+<tr>
+<td>Subject</td>
+<td>Required. The one-line question. Maximum 250 characters.</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>Optional. The longer version, with details, written in the editor.</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Required. A comma-separated list. Saving without at least one tag fails with an error and returns you to the form.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Creator</td>
+<td>The numeric user ID of the member credited with the question. Defaults to your own ID on a new question.</td>
+</tr>
+<tr>
+<td>Created</td>
+<td>The timestamp, <code>YYYY-MM-DD hh:mm:ss</code>, picked from the calendar control.</td>
+</tr>
+<tr>
+<td>State</td>
+<td><strong>Open</strong> or <strong>Closed</strong>. Trashed and reported questions cannot be set from this list.</td>
+</tr>
+</tbody>
+</table>
+<p>The panel beside the form shows the question's ID and, for a saved
+question, its creation date and the creator's name.</p>
+<p>Press <strong>Save</strong> to save and stay, <strong>Save &amp; Close</strong> to return to the list, or
+<strong>Cancel</strong> to discard changes.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Tags entered here are attached in your name, not the author's,
+and the tag field is required even on questions that were imported or
+created before tagging was enforced.</p>
+</aside>
+<h2 id="answers-2">Answers</h2>
+<p>The <strong>Answers</strong> sub-menu link lists the responses members have posted. With
+no question chosen it shows <strong>Responses to all questions</strong>; reached from a
+question's answer count it is filtered to that question, whose ID and
+subject head the table and link back to the question.</p>
+<p>Columns are <strong>ID</strong>, <strong>Answer</strong> (the first 75 characters, stripped of
+markup), <strong>Accepted</strong>, <strong>Created</strong>, <strong>Author</strong>, and <strong>Helpful</strong>, which
+shows the up and down vote totals. <strong>Filter by:</strong> offers <strong>All Responses</strong>,
+<strong>Accepted Response</strong>, and <strong>Unaccepted Responses</strong>.</p>
+<p>The toolbar offers <strong>New</strong> (only when the list is filtered to one
+question), <strong>Edit</strong>, <strong>Delete</strong>, and <strong>Help</strong>. Click the accepted icon in a
+row to accept or reject that answer. Accepting marks the answer as chosen,
+clears the mark from any other answer to the same question, and closes the
+question; a question can have only one accepted answer, so checking more
+than one row and accepting is refused.</p>
+<h2 id="creating-or-editing-an-answer">Creating or editing an answer</h2>
+<p><strong>Details</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anonymous</td>
+<td>Hides the responder's name from other members on the site.</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>The subject of the question being answered. Read-only.</td>
+</tr>
+<tr>
+<td>Answer</td>
+<td>Required. The response text, written in the editor.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Publishing</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept</td>
+<td>Marks this response as the chosen answer.</td>
+</tr>
+<tr>
+<td>Creator</td>
+<td>The numeric user ID of the member credited with the answer.</td>
+</tr>
+<tr>
+<td>Created</td>
+<td>The timestamp, picked from the calendar control.</td>
+</tr>
+</tbody>
+</table>
+<p>The panel beside the form shows the answer's ID, its creation date and
+creator, and its <strong>Helpful</strong> totals. When either total is above zero, a
+<strong>Reset Helpful</strong> button appears; it zeroes both counts and deletes the
+vote log for that answer, so members may vote on it again.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Accepting an answer from this screen sets the state directly.
+Unlike accepting on the site, it does not run the points distribution,
+so no bank transactions are created.</p>
+</aside>
+<h2 id="comments">Comments</h2>
+<p>Members can reply to an answer, and reply to those replies, up to three
+levels deep. These comments live in the hub's shared item-comment table and
+have no administrator screen of their own. A comment reported as abusive
+becomes a support ticket and is hidden behind a notice on the site until
+the ticket is resolved; the same is true of a reported question or answer.
+See <a href="../support/index.html">Support</a>.</p>
+<h2 id="options">Options</h2>
+<p>The <strong>Options</strong> button opens four settings, listed with their values in the
+<a href="../../../reference/configuration/components/answers/index.html">configuration reference</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>About points</td>
+<td>The address of the page explaining the point system. Every &quot;What are points?&quot; and &quot;Learn more&quot; link on the site points here. Defaults to <code>/kb/points</code>.</td>
+</tr>
+<tr>
+<td>Users notified on every activity</td>
+<td>A comma-separated list of usernames messaged whenever a question or answer is posted.</td>
+</tr>
+<tr>
+<td>Restrict accounts to create new posts</td>
+<td>Disabled, or Enabled to block new accounts.</td>
+</tr>
+<tr>
+<td>Minimum number of days to post</td>
+<td>With the restriction enabled, how old an account must be before it may post.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The account-age restriction is checked when a member opens the
+new-question form and when they submit an answer, and again in the
+resources plugin, but not when a question is finally saved.</p>
+</aside>
+<p>The <strong>Permissions</strong> tab sets, per access group, who may administer the
+component, manage it (which gates the administrator screens entirely),
+create, delete, edit, edit their own, and change the state of questions and
+answers. On the site these same actions decide who sees the <strong>New
+Question</strong> button, who may save a question, and who may delete one:
+a member can delete their own question with <code>core.delete</code>, and anyone with
+<code>core.manage</code> can delete any of them.</p>
+<h2 id="points-and-rewards">Points and rewards</h2>
+<p>Everything about rewards only appears when banking is switched on in the
+Members component (<strong>Bank accounts</strong>). With it off, no reward field, point
+breakdown, or &quot;Rewards&quot; sort is rendered anywhere.</p>
+<p>With banking on, each question carries a market value calculated from its
+answers, votes, and recommendations, and the asker may put a bonus reward
+on top from their own balance. The reward is held, not spent, until the
+question closes. When the asker accepts an answer, the accumulated value is
+split three ways: a third to the asker, a third to the writer of the
+accepted answer, and a third shared among other answers that drew at least
+three votes with a majority positive — or added to the accepted answer when
+no other answer qualifies. Deleting a question releases the hold and
+adjusts the asker's credit back.</p>
+<h2 id="modules-and-plugins">Modules and plugins</h2>
+<p>Five site modules draw on this component: <strong>mod_answers</strong>,
+<strong>mod_recentquestions</strong>, <strong>mod_popularquestions</strong>, <strong>mod_myquestions</strong>, and
+<strong>mod_featuredquestion</strong>. Two answers plugins add the site's extra filters:
+<code>answers-tools</code> supplies &quot;Questions related to my contributions&quot; and
+notifies tool authors of questions tagged with their tools, and
+<code>answers-members</code> supplies &quot;Questions tagged with my interests&quot;. Without
+them, those filters return nothing. The <code>resources-questions</code> and
+<code>publications-questions</code> plugins put a Questions tab on resource and
+publication pages, <code>tags-answers</code> includes questions in tag results,
+<code>search-questions</code> includes them in site search, and <code>support-answers</code>
+handles abuse reports.</p>
+<h2 id="api">API</h2>
+<p>The component exposes <code>/api/answers/questions</code> for listing, reading,
+creating, updating, and deleting questions; see the
+<a href="../../../reference/api/answers/index.html">API reference</a>. The site also publishes an
+RSS feed of the newest questions at <code>/answers/latest.rss</code>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="../billboards/index.html" rel="next"><span>Next</span>Billboards</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/01-answers.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

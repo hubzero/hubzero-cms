@@ -1,0 +1,89 @@
+name: Build and deploy the documentation
+
+# Builds the static documentation site (docs/ rendered by gh-pages/build_site.py)
+# and publishes it with GitHub Pages. Settings -> Pages -> Source must be
+# "GitHub Actions"; the one-time call that sets it is:
+#
+#   gh api -X POST repos/hubzero/hubzero-cms/pages -f build_type=workflow
+#
+# gh-pages/public/ is committed so the site can be read straight from the repo.
+# That copy can go stale, so this workflow rebuilds from source and FAILS if the
+# committed output differs. What is deployed is always the fresh build. On a
+# pull request the same checks run without deploying.
+
+on:
+  push:
+    branches: [2.4-main]
+    paths:
+      - 'docs/**'
+      - 'gh-pages/**'
+      - 'tools/docs/**'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'gh-pages/**'
+      - 'tools/docs/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install builder dependencies
+        run: python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
+      - name: Builder and importer unit tests
+        run: python3 -m pytest gh-pages/test_build_site.py tools/docs/test_import_help.py -q
+      - name: Generated references must match the source tree
+        run: |
+          for g in config muse events api; do python3 tools/docs/gen_${g}_reference.py; done
+          if ! git diff --quiet -- docs/reference; then
+            echo "::error::docs/reference is stale: rerun tools/docs/gen_*_reference.py and commit the result."
+            git diff --stat -- docs/reference
+            exit 1
+          fi
+      - name: Build the site
+        run: python3 gh-pages/build_site.py
+      - name: No broken internal links
+        run: python3 gh-pages/check_links.py gh-pages/public
+      - name: Committed site must match the sources
+        run: |
+          if ! git diff --quiet -- gh-pages/public; then
+            echo "::error::gh-pages/public is stale: it does not match a fresh build."
+            echo "Run this locally and commit the result:"
+            echo "  python3 gh-pages/build_site.py && git add gh-pages/public"
+            git diff --stat -- gh-pages/public
+            exit 1
+          fi
+          echo "committed site matches a fresh build"
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: gh-pages/public
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

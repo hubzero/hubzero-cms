@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Writing guide · Hubzero Documentation</title>
+  <meta name="description" content="How the Hubzero documentation is written, so that every page reads the same way and builds cleanly. The site is generated from these files by ; pages are also…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/style/">
+  <link rel="icon" href="../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../assets/site.css?v=f51137af">
+</head>
+<body class="site-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <img class="brand__mark" src="../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../search-index.json" data-base="../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../docs/index.html">All books</a>
+      <a href="../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page" tabindex="-1">
+    <article class="article">
+      <header class="article__header">
+        <p class="eyebrow">Hubzero Documentation</p>
+        <h1>Writing guide</h1>
+      </header>
+      
+      <div class="prose">
+<p>How the Hubzero documentation is written, so that every page reads the same
+way and builds cleanly. The site is generated from these files by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/gh-pages/README.md"><code>gh-pages/build_site.py</code></a>; pages are also read
+directly on GitHub, so everything here works in both places.</p>
+<h2 id="files-and-names">Files and names</h2>
+<ul>
+<li>One book per directory under <code>docs/</code>, listed in <code>gh-pages/site.json</code>.</li>
+<li>A book's landing page is its <code>README.md</code>. A section is a subdirectory with
+its own <code>README.md</code>. Every other <code>*.md</code> file is a chapter.</li>
+<li>Name chapters with lowercase words separated by hyphens: <code>access-levels.md</code>.
+Where order matters, add a two-digit prefix: <code>01-requirements.md</code>. The
+prefix is dropped from the published URL.</li>
+<li>Images live in the book's <code>media/</code> directory and are referenced with a
+relative path: <code>![The Members list](../media/members-list.png)</code>.</li>
+</ul>
+<h2 id="the-page">The page</h2>
+<p>Every page has exactly one level-one heading, and it is the page title:</p>
+<pre><code class="language-markdown"># Knowledge base
+
+The knowledge base houses articles and frequently asked questions ...
+</code></pre>
+<p>Sections start at <code>##</code>. Do not skip levels.</p>
+<p>Keep the first paragraph a plain summary of the page; the site uses it as the
+description in search results and on section landing pages. A different
+summary can be given in the metadata header instead.</p>
+<h2 id="metadata-header">Metadata header</h2>
+<p>A page may begin with an HTML comment of <code>key: value</code> lines. The builder reads
+it; GitHub hides it.</p>
+<pre><code class="language-markdown">&lt;!--
+status: reviewed
+reviewed-against: 2.4-main @ 0ebd2294a3
+reviewed: 2026-10-01
+source: https://help.hubzero.org/documentation/240/managers/components/kb
+modified: 2016-03-01
+--&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td><code>imported</code> (converted from help.hubzero.org, unreviewed), <code>merged</code> (imported, with material merged from an older version), <code>draft</code>, <code>reviewed</code> (checked against the code), <code>rewritten</code> (replaced wholesale after review), <code>generated</code> (produced by a script from the source tree)</td>
+</tr>
+<tr>
+<td><code>reviewed-against</code></td>
+<td>The branch and commit the page was checked against</td>
+</tr>
+<tr>
+<td><code>reviewed</code></td>
+<td>Date of that review</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>Where an imported page came from</td>
+</tr>
+<tr>
+<td><code>source-id</code>, <code>modified</code>, <code>imported</code></td>
+<td>Bookkeeping from the import</td>
+</tr>
+<tr>
+<td><code>merged-from</code></td>
+<td>The documentation version merged into an imported page</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>Overrides the first paragraph as the page description</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Overrides the filename prefix for ordering</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Overrides the level-one heading as the page title</td>
+</tr>
+</tbody>
+</table>
+<p>Imported pages show a banner until their status changes. Flip the status to
+<code>reviewed</code> only after checking the page against the code and fixing what has
+drifted; the <code>/status/</code> page counts what is left.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li>Link to other pages with relative paths to the Markdown file:
+<code>[access levels](../users/access-levels.md)</code>. Linking to a directory reaches
+its <code>README.md</code>. Anchors work: <code>access-levels.md#viewing-levels</code>.</li>
+<li>Link to code in the repository with a relative path to the file:
+<code>[</code>Relational<code>](../../core/libraries/Hubzero/Database/Relational.php)</code>. The
+site turns it into a GitHub link.</li>
+<li>External links are ordinary absolute URLs.</li>
+</ul>
+<h2 id="code">Code</h2>
+<p>Fenced code blocks always name a language:</p>
+<pre><code class="language-markdown">```php
+$rows = Article::all()-&gt;whereEquals('state', 1)-&gt;rows();
+```
+</code></pre>
+<p>Prefer showing real files to pasting copies. The include directive inserts
+the current contents of a repository file, optionally a line range:</p>
+<pre><code class="language-markdown">```php
+	 * Build the route for the component.
+	 *
+	 * @param   array  &amp;$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&amp;$query)
+	{
+		$segments = array();
+
+		if (isset($query['task']))
+		{
+			if ($query['task'] == 'article')
+			{
+				unset($query['task']);
+			}
+			else if ($query['task'] == 'vote')
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+		}
+
+		if (isset($query['section']))
+		{
+			if (!empty($query['section']))
+			{
+</code></pre>
+<pre><code>
+## Notes and warnings
+
+A blockquote whose first words are one of the labels below renders as a
+callout:
+
+```markdown
+&gt; **Note:** Menu items are cached; changes appear after the next save.
+
+&gt; **Warning:** This deletes the group's files as well.
+</code></pre>
+<p>Labels: <code>Note</code>, <code>Tip</code>, <code>Warning</code>, <code>Important</code>, <code>Caution</code>.</p>
+<h2 id="style">Style</h2>
+<ul>
+<li>The product is <strong>Hubzero</strong>. Not HUBzero, not HubZero, except when quoting
+something that spells it that way.</li>
+<li>Write to the reader: &quot;you&quot; for the person doing the task, &quot;the user&quot; for a
+hub visitor, &quot;the administrator&quot; for someone in the admin interface.</li>
+<li>Name interface elements as they appear on screen, in bold the first time:
+select <strong>Save &amp; Close</strong>.</li>
+<li>Use the present tense and the active voice. Short sentences beat long ones.</li>
+<li>Tables for parameters and options; numbered lists for steps; bullets for
+everything else that is a list.</li>
+<li>Screenshots show the current template, cropped to the part that matters,
+with alt text that says what the picture shows.</li>
+</ul>
+<h2 id="before-you-commit">Before you commit</h2>
+<pre><code class="language-bash">sh tools/docs/rebuild.sh
+</code></pre>
+<p>That regenerates the references, builds the site, checks every link, and
+runs the tests. Commit the rebuilt <code>gh-pages/public/</code> with the change; the
+Pages workflow refuses a stale copy.</p>
+
+      </div>
+      
+      <footer class="article__footer">
+        <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/STYLE.md">Edit this page on GitHub</a>
+      </footer>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

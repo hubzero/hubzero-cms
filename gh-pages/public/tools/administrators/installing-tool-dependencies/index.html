@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installing Tool Dependencies · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Occasionally additional software needs to be installed in a tool environment to support tool execution. Please follow these instructions in the given order.…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/administrators/installing-tool-dependencies/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installing Tool Dependencies</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#install-a-operating-system-package-in-the-tool-execution-container">Install a operating system package in the tool execution container</a></li>
+<li class="toc__item toc__item--l2"><a href="#manually-install-software-in-the-use-infrastructure">Manually install software in the &#x27;use&#x27; infrastructure</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Installing Tool Dependencies</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Installing Tool Dependencies</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tool-administrators/installing-tool-dependencies">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2018.</aside>
+        <div class="prose">
+<p>Occasionally additional software needs to be installed in a tool environment to support tool execution. Please follow these instructions in the given order. Keep in mind that an environment maybe shared by multiple tools.</p>
+<h2 id="install-a-operating-system-package-in-the-tool-execution-container">Install a operating system package in the tool execution container</h2>
+<p>Tool execution containers are based on Docker images. At minimum Debian 7 (wheezy) and Debian 10 (buster) Docker images are provided. Operating system choice is not limited to Debian. We have used CentOS and Ubuntu images as the basis for images to meet tool requirements. Regardless of operating system choice there is a minimum set of scripts and configuration files that must be included to enable the middleware to manage container related processes.</p>
+<p>The pairing of Docker image and tool is made according to the following convention:</p>
+<ol>
+<li>Find an image tag matching tool name and revision.</li>
+<li>Find an image tag matching the tool name.</li>
+<li>A default image specified in the middleware.</li>
+</ol>
+<p>Multiple Docker tags may be applied to the same image thus reducing the storage requirement for multiple images. Docker images may be modified or created using standard practices based on Dockerfiles. If all Docker images are not made available on all execution hosts, host requirements may be used to aid in execution host selection.</p>
+<h2 id="manually-install-software-in-the-use-infrastructure">Manually install software in the 'use' infrastructure</h2>
+<p>Typically we create and run Hapi (HUBzero Apps Program Installers) scripts to download, configure, compile, and install software in the tool execution environment. This is especially important when multiple versions of the same software must be available to server different tools. For example, Tool A may require R version 3.6.3 while Tool B may require R version 4.2.1. These requirements are the result of an ever evolving software landscape. &quot;Use&quot; is very helpful in this case, among others, providing a way to load specific software versions as requirements demand.</p>
+<p><strong>All operations for manually installing dependent software for tools must be done by the apps user from a workspace terminal.</strong></p>
+<p>As the apps user clone the Hapi repo into the apps home directory:</p>
+<pre><code>git clone https://github.com/hubzero/hapi.git
+</code></pre>
+<p>In the hapi/scripts directory you will find a collection of shell scripts and csv files for software typically installed for use in tool environments. If a script exists for software that you need, just run it! Feel free to add new Hapi scripts of your creation to the GitHub repo by submitting pull requests. We occasionally add scripts as well.</p>
+<p>If, after doing a git update on your repository, a script doesn't exist for the software you need, copy an existing Hapi script and modify it. Hapi scripts make your life much easier by downloading, configuring, compiling, installing and even adding the required 'use' environ.d file to the appropriate location.</p>
+<p>All tool dependencies are installed by the apps user in an operating system specific directory such as /apps/share64/debian7 and should be owned by the apps user and group. All files must be readable by everyone and all directories must be searchable by everyone. No files or directories should be writable by everyone ( seriously don't do this )</p>
+<p>* For a full manual run &quot;man use&quot; from a tool session terminal.</p>
+<blockquote>
+<p>USE(1) User Commands USE(1)</p>
+<p>NAME
+use, unuse - adjust the shell environment</p>
+<p>SYNOPSIS
+use [options]... [ENVIRONMENT]
+unuse [options]... [ENVIRONMENT]</p>
+<p>DESCRIPTION
+The use command incorporates the specified ENVIRONMENT to the current
+shell. The unuse command removes it. It optionally records the selec-
+tion persistently so that subsequent shells will use the ENVIRONMENT.
+These commands are independent of the shell being run.</p>
+<p>An ENVIRONMENT is specified by a configuration file of the same name as
+found in one of the configuration directories. The ENVIRON_CONFIG_DIRS
+environment variable specifies a list of directories in which to search
+for configurations. Each configured ENVIRONMENT specifies a environ-
+ment variables to set or prepend, shell variables to set, and shell
+aliases to set.</p>
+<p>Some environments are configured to conflict with others. The use com-
+mand will ask if conflicting ENVIRONMENT should be replaced.</p>
+<p>With no arguments, the use and unuse commands will print a synopsys of
+options and lists all available environments.</p>
+<p>-h print available help for a named ENVIRONMENT.</p>
+<p>-e environment only. Do not ask about preserving the selection.</p>
+<p>-p modify the environment and preserve selection. Do not ask about
+preserving the selection.</p>
+<p>-k keep any conflicting environment. Do not ask about replacing
+it.</p>
+<p>-r replace any conflicting environment without asking.</p>
+<p>-x quietly ignore the command if the named ENVIRONMENT cannot be
+found.</p>
+<p>MAKING IT WORK
+The following command will describe an environment named xyz:</p>
+<p>use -h xyz</p>
+<p>The following command will incorporate the xyz environment preserving
+the environment for future shell invocations. It will also not over-
+ride any conflicting environments:</p>
+<p>use -p -k xyz</p>
+<p>The following command will remove the xyz environment but retain its
+use for future sessions:</p>
+<p>unuse -e xyz</p>
+<p>INTERNAL OPERATION
+use and unuse are actually implemented as shell functions (or as
+aliases in the case of csh derivatives). The functions pass their
+arguments to the /etc/environ script which determines the commands that
+the shell should execute to satisfy the new environment configuration.
+The script prints these commands, the shell function receives them and
+evals them.</p>
+<p>ENVIRONMENT CONFIGURATION FILES
+Configuration files are interpreted shell scripts. Several predefined
+functions are available to make the the process automatic.</p>
+<p>alias NAME &quot;Replacement&quot;
+Set a command alias in the shell.</p>
+<p>conflict VARNAME
+Define an environment variable to indicate that a type of an
+ENVIRONMENT is in use. All conflicting ENVIRONMENT configura-
+tions should specify the same conflict. An ENVIRONMENT configu-
+ration may specify multiple conflicts.</p>
+<p>desc &quot;A short description...&quot;
+A short description of the ENVIRONMENT.</p>
+<p>help &quot;A lengthy description...&quot;
+A long description of the ENVIRONMENT and how to use it. This
+description will be formatted when printed.</p>
+<p>prepend VARNAME ADDITION
+Prepend ADDITION to the environment variable VARNAME separated
+with a colon.</p>
+<p>setenv VARNAME REPLACEMENT
+Set or replace the environment variable VARNAME with REPLACE-
+MENT.</p>
+<p>shellset VARNAME REPLACEMENT
+Set or replace the shell variable VARNAME with REPLACEMENT.</p>
+</blockquote>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tool Administrators</a><a class="pager__next" href="../jupyter-notebooks/index.html" rel="next"><span>Next</span>Jupyter Notebooks</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/administrators/installing-tool-dependencies.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testing Jupyter-based tools · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Testing Jupyter-based tools The proxied Jupyter tool is a useful place to develop code and analyses in a notebook style. Hub users can easily share their…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/testing-jupyter/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Testing Jupyter-based tools</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#testing-jupyter-based-tools-2">Testing Jupyter-based tools</a></li>
+<li class="toc__item toc__item--l3"><a href="#1-create-the-tool">1. Create the tool</a></li>
+<li class="toc__item toc__item--l3"><a href="#2-test-invoke-the-tool">2. Test invoke the tool</a></li>
+<li class="toc__item toc__item--l3"><a href="#3-check-the-running-notebook">3. Check the running notebook</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Jupyter Notebooks</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Testing Jupyter-based tools</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Testing Jupyter-based tools</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/testing-jupyter">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2022.</aside>
+        <div class="prose">
+<h2 id="testing-jupyter-based-tools-2">Testing Jupyter-based tools</h2>
+<p>The proxied Jupyter tool is a useful place to develop code and analyses in a notebook style. Hub users can easily share their notebooks with other users by publishing notebooks as tools.</p>
+<p>These instructions take you through <em>testing</em> the deployment of a Jupyter notebook based tool. Here, we'll assume that the short name for your tool is <em>toolname</em>. To test the notebook tool, it's handy to use the hub's <a href="https://help.hubzero.org/tools/workspace">Workspace</a> tool, since this allows you to fully test the deployment in the context of the hub.</p>
+<h3 id="1-create-the-tool">1. Create the tool</h3>
+<p>Once you have your notebook working to your satisfaction on the hub, you next create the tool to house it, and edit the invoke script. Once this is done, it is time to test.</p>
+<p>NOTE that any new development, and any updates to existing tools, should make use of Debian10 containers. Develop these using the appropriate Jupyter tool and Workspace10.</p>
+<h3 id="2-test-invoke-the-tool">2. Test invoke the tool</h3>
+<p>From the Workspace10 tool, or the Jupyter terminal tool, navigate to the directory where your tool's repo is located. For a tool you've called <em>toolname</em> and stored in the apps subdirectory of your home, this will be something like:</p>
+<pre><code>~/apps/toolname
+</code></pre>
+<p>Now, navigate to your tool's middleware directory, and call the invoke script for your tool, by typing:</p>
+<pre><code>cd middleware
+./invoke
+</code></pre>
+<p>Check the command line output to determine the success of your tool invoke call. Errors will display here if a problem is encountered. Use these to aid in your troubleshooting. If you see errors, you will need to revisit the tool sources, retesting to see if your fixes have worked, before going on with this procedure. Note that you may also see warnings displayed, as well as informational output. Neither warnings nor information indicate issues that need to be fixed.</p>
+<p>A successful invoke script call will output in part:</p>
+<pre><code>The Jupyter notebook is running
+</code></pre>
+<p>...followed by a lengthy URL that reads, in part:</p>
+<pre><code>https://proxy.yourhub.org/weber/
+</code></pre>
+<p>Congratulations, your notebook-based tool is now running!</p>
+<h3 id="3-check-the-running-notebook">3. Check the running notebook</h3>
+<p>In the Workspace10 tool's command line output, note the informational output, denoted by lines starting in &quot;I&quot;, and warning output, denoted by lines starting in &quot;W&quot;, that is also displayed. These messages can be ignored safely; refer to the figure below.</p>
+<p>Within the Workspace10 tool, you can now start a browser and paste into it the URL of the running Jupyter kernel. This test is not possible from outside your development environment, in order to protect your unreleased tool.</p>
+<h4 id="copy-the-running-kernel-s-url">Copy the running kernel's URL</h4>
+<p>First, locate and highlight the kernel URL provided in the output from the invoke script.</p>
+<h4 id="start-the-workspace10-browser">Start the Workspace10 browser</h4>
+<p>Start the Firefox browser from the Workspace tool's menu. To do so, click the black button at the bottom left of the Workspace10 and access the Firefox menu item.</p>
+<h4 id="navigate-to-the-running-kernel">Navigate to the running kernel</h4>
+<p>A browser window will display, running inside your Workspace tool session on your hub. Finally, click (mouse wheel or both mouse buttons) to paste the running Jupyter kernel's URL into the browser navigation bar, as shown in this graphic</p>
+<p>Now, the Workspace browser will display the running tool. This is the notebook running as a tool, and should be a good indication of how the tool will run once it is deployed.</p>
+<p>One important error type you should watch for is the URL timeout. If there are URLs that your notebook needs access to in order to run, they will likely time out during this test. Collect any such URLs and include them in a support ticket on your hub to your hub administrators. The administrator will need to approve (whitelist) these URLs in order for them to be accessible to your notebook once it is a deployed tool. Be sure to explain this in your ticket, and clearly identify the tool name and the reason each URL is needed.</p>
+<p>To stop testing, close the browser session running inside your Workspace10, then type &quot;control-c&quot; in the terminal where you called the invoke script. Once the prompt returns, your notebook kernel has stopped.</p>
+<p>You can make any adjustments needed to the underlying code before you flag your tool as Uploaded and continue with the deployment process.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../pyton-from-jupyter/index.html" rel="prev"><span>Previous</span>Using Python packages from Jupyter Notebooks</a><a class="pager__next" href="../environment-variables/index.html" rel="next"><span>Next</span>Environment Variables</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/10-jupyter-notebooks/03-testing-jupyter.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

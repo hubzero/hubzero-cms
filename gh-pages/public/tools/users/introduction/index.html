@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Tutorials · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Overview Video tutorials provide step-by-step instructions and walkthroughs of various tools and components that hub users may find useful. How-To Videos The…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/users/introduction/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../developers/prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../developers/prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../developers/process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Video Tutorials</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-to-videos">How-To Videos</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub Users</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Video Tutorials</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Video Tutorials</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/users/introduction">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2011. It was never published there, so read it as a draft.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>Video tutorials provide step-by-step instructions and walkthroughs of various tools and components that hub users may find useful.</p>
+<h2 id="how-to-videos">How-To Videos</h2>
+<p>The HUBzero team is proud to present a growing series of How-to videos hosted on YouTube.</p>
+<hr />
+<p>First, if you are new to our site and would like to know exactly what a Hub is and how Hubzero fits into the scientific community, watch this video produced by Michael McLennan, the former Director of HUBzero Platform for Scientific Collaboration.</p>
+<p>In order to start using Hubzero or any other Hub, learn how to create an account and use your user dashboard by watching this short tutorial.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hub Users</a><a class="pager__next" href="../tools/index.html" rel="next"><span>Next</span>Tools</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/users/01-introduction.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

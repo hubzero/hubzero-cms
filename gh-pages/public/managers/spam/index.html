@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spam · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Overview Things to look for: Unprofessional profile pictures Non-Hub related information in the Bio Unprofessional URLs/links to outside websites Inappropriate…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/spam/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Spam</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#disable-accounts-for-spam">Disable Accounts for Spam</a></li>
+<li class="toc__item toc__item--l2"><a href="#antispam-plugins">Antispam Plugins</a></li>
+<li class="toc__item toc__item--l3"><a href="#how-it-works">How It Works</a></li>
+<li class="toc__item toc__item--l3"><a href="#enabling">Enabling</a></li>
+<li class="toc__item toc__item--l3"><a href="#available-antispam-plugins">Available Antispam Plugins:</a></li>
+<li class="toc__item toc__item--l3"><a href="#testing-content">Testing Content</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Spam</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Spam</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/spam">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>Things to look for:</p>
+<ul>
+<li>Unprofessional profile pictures</li>
+<li>Non-Hub related information in the Bio</li>
+<li>Unprofessional URLs/links to outside websites</li>
+<li>Inappropriate language</li>
+<li>Selling ads or promotional information</li>
+<li>Non-Hub related content</li>
+<li>Components on the Hub with links in the text box</li>
+</ul>
+<h2 id="disable-accounts-for-spam">Disable Accounts for Spam</h2>
+<ol>
+<li>Find the account that created the Spam, and then on the backend of the Hub navigate to <strong>Users</strong> and then click on <strong>Members</strong>. Click on the name to open up account details
+<ol>
+<li><strong>Note:</strong> You can usually be sure that the account is a spammer if they have a Hub nonrelated website link in the URL and an unprofessional profile picture.</li>
+</ol>
+</li>
+<li>If the <strong>Public Profile</strong> box is checked, uncheck it. It is important to make the profile not available to the public incase they have Spam links in their account</li>
+<li>Uncheck the <strong>Confirmed</strong> box if the user had confirmed their account. If it is not checked leave it unchecked</li>
+<li>Change the <strong>Contact me</strong> drop-down to the <strong>Receive email updates?</strong> option</li>
+<li>Change the spam account password by typing into the <strong>New Password</strong> field a long and random password that the spammer could not figure out</li>
+<li>Check the box beside the user’s name and then click <strong>Block</strong> to block the user from the Hub</li>
+<li>Click <strong>save and close</strong></li>
+<li>After disabling the spammer’s account, find the spam that the individual has put on the Hub and delete it</li>
+<li>Make sure that they account has been deactivated prior to deleting the Spam. This way the spammers will not receive emails about their content being deleted</li>
+</ol>
+<h2 id="antispam-plugins">Antispam Plugins</h2>
+<p>To keep your Hub from being abused by spammers, enable these antispam plugins to give your site the fighting edge.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>For most content on the site, when a user presses <strong>save</strong> to submit a new entry—be it a blog post, forum comment, wish, etc.— a <strong>before save</strong> event is triggered. That event allows the system to validate and run any desired pre-processing or checks on the content before it is stored within the database. When any anti-spam plugins are enabled, the content is handed off to each plugin, in their defined order (see the <strong>Plugins Manager</strong>), where the plugin in turn has a chance to evaluate the content for likelihood of being spam. If a plugin flags the content as being spam, the process stops (i.e., the content is not passed along to the next plugin), an error is raised, and the content fails to be stored to the database.</p>
+<h3 id="enabling">Enabling</h3>
+<p>To enable these plugins, follow these steps:</p>
+<ol>
+<li>Navigate to the backend of the Hub and locate the <strong>Extensions</strong> tab</li>
+<li>Click on <strong>Plug-in Manager</strong> from the drop-down</li>
+<li>Inside of the <strong>Plug-in Manager</strong>, locate a plugin through search and click on the title</li>
+<li>Inside the plugin, change the status to <strong>Enabled</strong> and provide any API keys or change the settings then click <strong>Save &amp; Close</strong></li>
+</ol>
+<h3 id="available-antispam-plugins">Available Antispam Plugins:</h3>
+<ul>
+<li>
+<p><strong>Antispam-Akismet</strong>: This plugin uses the remote Akismet service to scan posted content and determine if the content has a high probability of being spam. Akismet digests massive amounts of data from hundreds of sites a day to learn about how to protect sites from spammers. Learn more at: <a href="http://akismet.com">http://akismet.com</a>.</p>
+<p>Usage of this plugin requires API credentials provided by having an Akismet account.</p>
+</li>
+<li>
+<p><strong>Antispam-Baba Ji Spam Detector</strong>: This plugin provides content spam section of the mass spammer Baba Ji.</p>
+</li>
+<li>
+<p><strong>Antispam-Bayesian Filter</strong>: This is a spam detector that employs a basic Bayesian filter which looks for spam headers and character strings.</p>
+</li>
+<li>
+<p><strong>Antispam-Black List</strong>: This is a spam detector that detects black-listed words; inside the plugin words can be added to a list to build the black list inventory.</p>
+</li>
+<li>
+<p><strong>Antispam-Link Rife</strong>: This is a spam detector that detects link frequency in a body of text. This spam detector has three configuration options for determining if submitted content is likely spam:</p>
+<ol>
+<li><strong>Link Frequency</strong> - Maximum number of links allowed in a text before it is considered spam.</li>
+<li><strong>Link to Text Ratio</strong> - Ratio (In Percentage) of the number of links to the number of words in the string. If the percentage ratio is greater than the specified ratio, it is considered a <strong>Link Overflow</strong>.</li>
+<li><strong>Link validation</strong> - Check found links against known blacklists.</li>
+</ol>
+</li>
+<li>
+<p><strong>Antispam-Mollom</strong>: This plugin uses the remote Mollom service to scan posted content and protect a Hub from users who post abusive content like profanity and will learn as it grows. Learn more at: <a href="https://www.mollom.com">https://www.mollom.com</a>.</p>
+<p>Usage of this plugin requires API credentials provided by having a Mollom account.</p>
+</li>
+<li>
+<p><strong>Antispam-SpamAssassin</strong>: This plugin scans posted content with SpamAssassin to determine if the content has a high probability of being spam. SpamAssassin is an Open Source antispam platform which allows administrators to filter and classify bulk spam. Learn more at: <a href="http://spamassassin.apache.org">http://spamassassin.apache.org</a>.</p>
+</li>
+</ul>
+<h3 id="testing-content">Testing Content</h3>
+<p>Sample content may be tested against enabled plugins to further examine which plugin may have flagged content as potential spam and why. The testing interface may be found by:</p>
+<ol>
+<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Components</strong> tab</li>
+<li>Click on <strong>Support</strong> from the drop-down</li>
+<li>Inside of the <strong>Support Manager</strong>, locate the sub-menu item for <strong>Abuse</strong></li>
+<li>Inside of the <strong>Support Manager &gt; Abuse</strong> panel, locate the sub-sub-menu item for <strong>Spam Check</strong></li>
+</ol>
+<p>A form with a single text box will be present. Paste content into the box and click the <strong>Check</strong> button in the toolbar. The interface should update to display a list of all anti-spam plugins the content was passed through and the results of said plugins.</p>
+<p>Not a spammer but a normal user what was flagged as one?</p>
+<p>Sometimes when a user repeats actions on a Hub in a rapid function or tries to submit a flagged item multiple times, they end up in Spam jail. In order to reset the Spam jail count and free them, follow these steps:</p>
+<ol>
+<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Users</strong> tab</li>
+<li>Click on <strong>Members</strong> from the drop-down</li>
+<li>Locate the user and click on their name</li>
+<li>Locate the <strong>Lifetime Spam Incidents</strong> and click <strong>Reset</strong></li>
+<li>Click <strong>Save &amp; Close</strong> and notify the user that they are out of Spam jail</li>
+</ol>
+<p>If this user is a habitual offender and you are tired of bailing them out of Spam Jail or you would like to whitelist the Administrator user group, you can Whitelist a user group or a specific user by completing these steps:</p>
+<ol>
+<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Extensions</strong> tab</li>
+<li>Click on <strong>Plug-in Manager</strong> from the drop-down</li>
+<li>Inside of the <strong>Plug-in Manager</strong>, locate the <strong>Content - Antispam</strong> plugin and click on the plugin's title</li>
+<li>Click on the <strong>Whitelist</strong> section and change the access group or add the user's username to the list in order to Whitelist all users in that access group or that specific user</li>
+<li>Click <strong>Save &amp; Close</strong></li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/extension-manager/index.html" rel="prev"><span>Previous</span>Extension Manager</a><a class="pager__next" href="../security/index.html" rel="next"><span>Next</span>Security Considerations</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/11-spam.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

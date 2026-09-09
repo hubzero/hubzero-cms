@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation · Installation · Hubzero Documentation</title>
+  <meta name="description" content="How to install the Hubzero platform on your own servers from the Hubzero packages, configure it for the first time, and keep it up to date. Hubzero is…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/installation/">
+  <link rel="icon" href="../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <img class="brand__mark" src="../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../search-index.json" data-base="../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../docs/index.html">All books</a>
+      <a href="../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="index.html">Installation</a>
+        <nav aria-label="Installation contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="autohub/index.html">Autohub</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="el8/index.html">Enterprise Linux 8 (RHEL/CentOS/Rocky/etc)</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="el8/linux/index.html">Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/webserver/index.html">Apache HTTP Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/database/index.html">MariaDB Community Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/php/index.html">PHP: Hypertext Preprocessor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/mail/index.html">Mail</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/cms/index.html">CMS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/maxwell-service/index.html">Maxwell Service</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/hzvncproxydws/index.html">VNC Proxy Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/telequotad/index.html">telequotad</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/rappture/index.html">Rappture</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/submit/index.html">Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/upgrade7to8/index.html">Upgrading from EL7 to EL8</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/updates/index.html">Updates</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="el8/addons/index.html">Add-ons</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="el8/addons/solr/index.html">Solr-powered Search</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/addons/shibboleth/index.html">Shibboleth authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/addons/incommon/index.html">InCommon</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="el8/optional-services/index.html">Optional services</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Installation</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Installation</p>
+          <h1>Installation</h1>
+        </header>
+        
+        <div class="prose">
+<p>How to install the Hubzero platform on your own servers from the Hubzero
+packages, configure it for the first time, and keep it up to date.</p>
+<p>Hubzero is installed on Enterprise Linux 8 or a compatible rebuild
+(RHEL, Rocky, AlmaLinux). The packages set up the web server, PHP, the
+database, and the CMS, and the <code>hzcms</code> command configures each piece.
+Optional services such as the mail gateway, LDAP, WebDAV, the tool
+execution hosts, and Solr search are separate packages that you add as
+your hub needs them.</p>
+<h2 id="in-this-book">In this book</h2>
+<ul>
+<li><a href="el8/index.html">Enterprise Linux 8</a> — the installation walk-through:
+operating system, web server, PHP, database, CMS, mail, and then the
+optional services and add-ons.</li>
+<li><a href="el8/upgrade7to8/index.html">Upgrading from EL7 to EL8</a> and
+<a href="el8/updates/index.html">Updates</a> — moving an existing hub forward.</li>
+<li><a href="autohub/index.html">Autohub</a> — the scripted installer.</li>
+</ul>
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li>A server or virtual machine with a clean Enterprise Linux 8 install, root
+access, and a fully qualified hostname that resolves in DNS.</li>
+<li>A TLS certificate for that hostname. Hubs run over HTTPS only.</li>
+<li>Outbound mail delivery, if the hub is to send registration and
+notification email.</li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> These pages were imported from help.hubzero.org and describe the
+EL8 packages as they were documented there. Several of them were never
+published on the old site; each says so at the top. Check the package
+names against the current repository before following them on a
+production system.</p>
+</aside>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="autohub/index.html">Autohub</a></li>
+<li><a href="el8/index.html">Enterprise Linux 8 (RHEL/CentOS/Rocky/etc)</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><span></span><a class="pager__next" href="autohub/index.html" rel="next"><span>Next</span>Autohub</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/installation/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

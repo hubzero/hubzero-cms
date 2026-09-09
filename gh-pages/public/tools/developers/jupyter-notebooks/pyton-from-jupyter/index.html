@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using Python packages from Jupyter Notebooks · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Using Python packages from Jupyter Notebooks The Jupyter tool is a useful place to develop Python, R, or Octave code and analyses in a notebook style. Hub…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/pyton-from-jupyter/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Using Python packages from Jupyter Notebooks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#using-python-packages-from-jupyter-notebooks-2">Using Python packages from Jupyter Notebooks</a></li>
+<li class="toc__item toc__item--l3"><a href="#python-packages">Python packages</a></li>
+<li class="toc__item toc__item--l3"><a href="#selecting-a-kernel">Selecting a kernel</a></li>
+<li class="toc__item toc__item--l3"><a href="#kernel-availability">Kernel availability</a></li>
+<li class="toc__item toc__item--l3"><a href="#example">Example</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-envs-are-available">What envs are available?</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-packages-are-in-this-env">What packages are in this env?</a></li>
+<li class="toc__item toc__item--l3"><a href="#export-current-conda-env">Export current conda env</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Jupyter Notebooks</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Using Python packages from Jupyter Notebooks</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Using Python packages from Jupyter Notebooks</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/pyton-from-jupyter">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2022.</aside>
+        <div class="prose">
+<h2 id="using-python-packages-from-jupyter-notebooks-2">Using Python packages from Jupyter Notebooks</h2>
+<p>The <a href="https://help.hubzero.org/resources/jupyter">Jupyter tool</a> is a useful place to develop Python, R, or Octave code and analyses in a notebook style. Hub users can easily share their notebooks with other users by <em>publishing</em> notebooks as tools. A published Jupyter notebook enables other users to interact with the notebook, stepping through its cells and even changing them. When users run your published notebook, any changes they make to it will not persist.</p>
+<p>Here we assume you are running: anaconda-7; debian10 container.</p>
+<h3 id="python-packages">Python packages</h3>
+<p>Python has been extended to work with hundreds of specialized packages. For example, see the <a href="https://anaconda.org/anaconda/repo">Anaconda package repo</a>. A number of scientific Python packages are installed and accessible on the hub.</p>
+<p>The hub uses Jupyter kernels to safely load needed Python packages. You can select a Jupyter kernel to set paths to a self-contained installation of specified packages, making them available in your notebook. This page will show you how to set access to Python packages from Jupyter Notebooks.</p>
+<p>Note that we must install packages on the hub to make them available as a kernel. Submit a ticket to request new packages or a new kernel.</p>
+<h3 id="selecting-a-kernel">Selecting a kernel</h3>
+<h4 id="new-notebook">New notebook</h4>
+<p>To select the kernel for a new notebook, start a Jupyter tool. In the upper right, select 'New', then the kernel you want from the kernel menu. You can now import and use the kernel's packages in your notebook.</p>
+<p>Be sure to save the notebook after changing the kernel.</p>
+<h4 id="existing-notebook">Existing notebook</h4>
+<p>If you need to change the kernel for an existing notebook, first open the notebook in a Jupyter tool.</p>
+<ol>
+<li>If the notebook is already running, you must first shut it down by selecting Kernel: Shutdown from the menus.</li>
+<li>Then, you can select the kernel of your choice using the menu Kernel: Change Kernel: <em>somekernel</em>. After you have made the selection, check the displayed kernel name on the upper right of the notebook. It should match what you just selected.</li>
+<li>Finally, save the notebook, and your kernel choice will be saved along with it.</li>
+</ol>
+<h3 id="kernel-availability">Kernel availability</h3>
+<p>How do we know what packages are available in what kernels?</p>
+<ol>
+<li>Check the conda env specification file associated with the kernel.</li>
+<li>Run conda commands to interrogate the packages. Read the next section for further information.</li>
+</ol>
+<h4 id="using-conda-to-list-installed-packages">Using conda to list installed packages</h4>
+<p>The kernels we have created to support different sets of Python packages are based on conda environments (&quot;envs&quot;). You can interrogate these conda envs to list the packages a given kernel supports. This is general to Anaconda package manager (more is available <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">here</a>). Below are a few tips.</p>
+<p>Note that creating a conda env is an administrator action. If you need a new env or additional packages, enter a ticket to request them.</p>
+<h3 id="example">Example</h3>
+<p>The kernel named modgrnld-python3 contains the following packages and their dependencies:</p>
+<ul>
+<li>matplotlib</li>
+<li>rasterio</li>
+<li>georaster</li>
+<li>hublib</li>
+<li>python 3.7</li>
+<li>netCDF4</li>
+<li>numpy</li>
+<li>pyproj</li>
+<li>scipy</li>
+</ul>
+<h3 id="what-envs-are-available">What envs are available?</h3>
+<p>To access a conda env, first start a Workspace10 tool. On the command line, type the following command to set the anaconda installation in your path:</p>
+<pre><code>use anaconda-7
+</code></pre>
+<p>Now, to show the names of available envs:</p>
+<pre><code>conda info --envs
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> that we may not have created kernels for all the available envs.</p>
+</aside>
+<h3 id="what-packages-are-in-this-env">What packages are in this env?</h3>
+<p>If you have an env enabled currently, to list packages there, type:</p>
+<pre><code>conda list
+</code></pre>
+<p>Or for an arbitrary env, someenv:</p>
+<pre><code>conda list -n &lt;someenv&gt;
+</code></pre>
+<h3 id="export-current-conda-env">Export current conda env</h3>
+<p>To export a list of the packages and versions installed in the env to a text-based .yml file:</p>
+<pre><code>conda activate &lt;envname&gt;
+conda env export &gt; &lt;filename&gt;.yml
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jupyter-deployment-styles/index.html" rel="prev"><span>Previous</span>Jupyter Tool Deployment Styles</a><a class="pager__next" href="../testing-jupyter/index.html" rel="next"><span>Next</span>Testing Jupyter-based tools</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/10-jupyter-notebooks/02-pyton-from-jupyter.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

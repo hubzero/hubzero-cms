@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Events component is the hub calendar. It holds events with a start and end time, a category, an optional set of extra pages, and optional registration that…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/events/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Events</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#events-2">Events</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-an-event">Creating or editing an event</a></li>
+<li class="toc__item toc__item--l2"><a href="#pages">Pages</a></li>
+<li class="toc__item toc__item--l2"><a href="#respondents">Respondents</a></li>
+<li class="toc__item toc__item--l2"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Events</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Events</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Events component is the hub calendar. It holds events with a start
+and end time, a category, an optional set of extra pages, and optional
+registration that collects respondent details. Events appear on the site
+at <code>/events</code>. This chapter covers the administrator's side; the
+<a href="../../../users/events/index.html">Hub users</a> book covers browsing, submitting, and
+registering.</p>
+<p>Open it in the administrator interface under <strong>Components &gt; Events</strong>.
+Three sub-menu links sit at the top left: <strong>Events</strong>, the list below;
+<strong>Categories</strong>, which opens the shared Categories component filtered to
+Events; and <strong>Configuration</strong>, the component's own settings screen.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Group calendars are a separate feature. They live in the
+<code>core/plugins/groups/calendar</code> plugin and are edited inside a group,
+not here. Group events do appear in the Events Manager list (marked
+with their group name), and opening one on the site redirects to the
+group's calendar.</p>
+</aside>
+<h2 id="events-2">Events</h2>
+<p>The <strong>Events Manager</strong> screen lists every event. Above the list, filter
+by a search term (matched against titles), a category, or a group, then
+press <strong>Go</strong>. The columns are:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>The record's numeric identifier.</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>The event title, linking to its edit form. An event another administrator has open shows the title as plain text with a &quot;Checked out&quot; tooltip and no checkbox.</td>
+</tr>
+<tr>
+<td>Category</td>
+<td>The category the event belongs to.</td>
+</tr>
+<tr>
+<td>State</td>
+<td><strong>Published</strong>, <strong>Unpublished</strong>, <strong>Pending</strong> (published, but the start date has not arrived) or <strong>Expired</strong> (published, but the end date has passed). Click it to toggle between published and unpublished.</td>
+</tr>
+<tr>
+<td>Timesheet</td>
+<td>The From and To dates, or <strong>Always</strong> / <strong>Never</strong> when a date is missing.</td>
+</tr>
+<tr>
+<td>Access</td>
+<td><strong>Public</strong> for hub events, or a link to the owning group for group events.</td>
+</tr>
+<tr>
+<td>Pages</td>
+<td>An &quot;<em>n</em> Page(s)&quot; link to the event's pages.</td>
+</tr>
+</tbody>
+</table>
+<p>The columns do not sort; use the filters and the pager at the bottom.</p>
+<p>The toolbar offers:</p>
+<ul>
+<li><strong>Options</strong> — the component-wide configuration form built from
+<code>config.xml</code>; see <a href="#options">Options</a> below.</li>
+<li><strong>Add Page</strong> — with one event checked, opens a new page form for it.</li>
+<li><strong>View Respondents</strong> — with one event checked, opens its registration
+list.</li>
+<li><strong>Publish</strong> and <strong>Unpublish</strong> — change the state of the checked events.</li>
+<li><strong>New</strong> — create an event.</li>
+<li><strong>Edit</strong> — open the checked event. Clicking a title does the same.</li>
+<li><strong>Delete</strong> — remove the checked events. This is permanent, and it also
+deletes their pages, their respondents, and their tags.</li>
+<li><strong>Help</strong> — the built-in help screen.</li>
+</ul>
+<h2 id="creating-or-editing-an-event">Creating or editing an event</h2>
+<p>The edit screen is titled <strong>Event: New</strong> or <strong>Event: Edit</strong>, with
+<strong>Save</strong>, <strong>Cancel</strong> and <strong>Help</strong> in the toolbar. There is no Save &amp;
+Close; <strong>Save</strong> returns to the list.</p>
+<p><strong>Event</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td>Required. Up to 250 characters.</td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Required. Only categories that belong to Events are listed. At least one must exist, or the form refuses to open.</td>
+</tr>
+<tr>
+<td>Activity</td>
+<td>The event description, in the editor. Stored as the event's body text.</td>
+</tr>
+<tr>
+<td>Where</td>
+<td>The location. Up to 120 characters. Email addresses and URLs in it are turned into links.</td>
+</tr>
+<tr>
+<td>Contact</td>
+<td>Up to 120 characters. An address or a <code>mailto:</code> value becomes an obfuscated mail link. This text is also shown above the registration form as the &quot;For Information Contact&quot; block.</td>
+</tr>
+<tr>
+<td>Website</td>
+<td>Up to 240 characters. <code>http://</code> is prepended if you leave the scheme off.</td>
+</tr>
+<tr>
+<td><em>Custom fields</em></td>
+<td>Any custom fields defined on the Configuration screen appear here as text boxes or checkboxes, marked required where configured.</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Comma-separated. Tags connect the event to searches and to other tagged content.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Publishing</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start date</td>
+<td>Date and time the event begins.</td>
+</tr>
+<tr>
+<td>End date</td>
+<td>Date and time it ends.</td>
+</tr>
+<tr>
+<td>Time Zone</td>
+<td>The event's own zone, chosen from the full IANA list labelled with its current UTC offset. Times are stored in UTC and always displayed in this zone on the site.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recurrence</strong> appears only for group events, and takes an RRULE string.</p>
+<p><strong>Registration</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register by</td>
+<td>The date and time registration closes. Leave it empty and the event has no registration at all: no Register tab appears on the site.</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>The address registration confirmations are copied to.</td>
+</tr>
+<tr>
+<td>Restricted</td>
+<td>A password. Set it and visitors must enter it before the registration form is shown — an invite-only event.</td>
+</tr>
+</tbody>
+</table>
+<p>The right-hand column shows the event's state, and when and by whom it
+was created and last modified. Below that, <strong>Registration Fields</strong>
+toggles each optional part of the registration form for this event
+(affiliation, title, address, phone, fax, email, website, position,
+degree, gender, race, arrival, departure, disability, dietary needs,
+dinner, abstract with its instruction text, and comments).</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The state is not editable on this form. A new event is
+published as soon as you save it; to change the state later, use
+<strong>Publish</strong> / <strong>Unpublish</strong> in the list. The <strong>Email</strong> registration
+field is always shown regardless of the toggle — saving forces it back
+on.</p>
+</aside>
+<h2 id="pages">Pages</h2>
+<p>An event can carry extra pages — an agenda, directions, a speaker list —
+which appear as tabs beside <strong>Overview</strong> on the event's page on the site.
+Reach them with <strong>Add Page</strong>, or by clicking the &quot;<em>n</em> Page(s)&quot; link in
+the Events list.</p>
+<p>The list shows the ID, the title with its alias in parentheses, and
+reorder arrows. The toolbar has <strong>New</strong>, <strong>Edit</strong> and <strong>Delete</strong>. The
+page form asks for a <strong>Title</strong> (required), an <strong>Alias</strong> (the URL segment;
+alphanumeric, no spaces) and <strong>Page text</strong> (required, in the editor), and
+shows the ordering and creation details beside it.</p>
+<h2 id="respondents">Respondents</h2>
+<p><strong>View Respondents</strong> opens the registrations for the checked event. The
+list shows each respondent's <strong>Name</strong> (linking to the full submission),
+<strong>Email</strong>, <strong>Registered</strong> date, <strong>Special needs</strong> (dietary text and a
+note when disability contact was requested) and <strong>Comment</strong>. Search by
+name with the box above the list.</p>
+<p>The toolbar has <strong>Download CSV</strong>, which returns <code>eventrsvp.csv</code> with the
+columns Name, Email, Telephone, Affiliation, Arrival, Departure,
+Disability, Dietary, Dinner and Registered; <strong>Delete</strong>, which permanently
+removes the checked registrations; and <strong>Cancel</strong>.</p>
+<p>Clicking a name shows every field the respondent submitted, including
+affiliation, position, location, phone and fax, website, racial
+background, gender, arrival and departure, disability and dietary needs,
+dinner attendance, abstract and comments. Only fields with a value are
+listed.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Name</strong> and <strong>Special needs</strong> column headings are
+rendered as sort links, but the respondents table has no such columns
+and sorting on them fails. Sort on <strong>Email</strong> or <strong>Registered</strong> instead.</p>
+</aside>
+<h2 id="configuration">Configuration</h2>
+<p>The <strong>Configuration</strong> sub-menu link opens the component's own settings,
+stored separately from the Options form:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin mail</td>
+<td>No effect; the value is stored but never read.</td>
+</tr>
+<tr>
+<td>First day</td>
+<td>Sunday first or Monday first. Sets the day the week view and the mini calendar start on.</td>
+</tr>
+<tr>
+<td>View mail ?</td>
+<td>No effect.</td>
+</tr>
+<tr>
+<td>View &quot;By&quot; ?</td>
+<td>Yes adds a <strong>Submitted by</strong> row to the event page on the site.</td>
+</tr>
+<tr>
+<td>View &quot;Hits&quot; ?</td>
+<td>No effect.</td>
+</tr>
+<tr>
+<td>Date Format ?</td>
+<td>French-English, US or Deutsch. Controls how dates are assembled in the calendar headings.</td>
+</tr>
+<tr>
+<td>Use 12hr time Format ?</td>
+<td>Yes turns the time boxes on the event forms into 12-hour entry with AM/PM radio buttons.</td>
+</tr>
+<tr>
+<td>Start Page ?</td>
+<td>Which view <code>/events</code> opens on. Day, Week, Month and Year all work; there is no Categories view in the component, so do not choose it.</td>
+</tr>
+<tr>
+<td>No. of Events to List per page…</td>
+<td>No effect.</td>
+</tr>
+</tbody>
+</table>
+<p>Below that, <strong>Custom fields</strong> defines up to ten (or more, once ten are
+filled) extra fields for the event form. Each row takes a <strong>Field</strong>
+label, a <strong>Type</strong> of Text or Checkbox, <strong>Required</strong>, and <strong>Show in
+listing</strong> — which puts the field's value on the event's row in the
+calendar listing instead of a description excerpt. Custom field values
+are stored inside the event's description text.</p>
+<h2 id="options">Options</h2>
+<p>The <strong>Options</strong> button on the Events list opens a second, older settings
+form built from <code>config.xml</code>. Every parameter on it is listed in the
+<a href="../../../reference/configuration/components/events/index.html">configuration reference</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Nothing in the component reads those parameters — the
+component reads the <strong>Configuration</strong> screen described above instead.
+Use <strong>Configuration</strong> for anything you want to take effect; the
+Options form is only useful for its <strong>Permissions</strong> tab.</p>
+</aside>
+<p>The <strong>Permissions</strong> tab controls who may configure the component
+(<code>core.admin</code>), access the administrator screens (<code>core.manage</code>), and
+create, delete, edit, change the state of, and edit their own events.
+The same actions can be set on categories, and delete, edit and edit
+state can be set on individual events. On the site, an event's owner may
+edit or delete it when granted <strong>Edit Own</strong>, and an event submitted by
+someone without <strong>Edit State</strong> is saved unpublished and waits for an
+administrator to publish it.</p>
+<h2 id="api">API</h2>
+<p>The component exposes two read-only endpoints: a list of active events
+and a single event by ID. Both are documented in the
+<a href="../../../reference/api/events/index.html">API reference</a>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cron/index.html" rel="prev"><span>Previous</span>Cron</a><a class="pager__next" href="../forum/index.html" rel="next"><span>Next</span>Forum</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/09-events.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debugging · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Two things have to be switched on before a hub tells you anything useful: the global Debug System setting, and the System - Debug plugin that renders what it…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/debugging/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Debugging</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#turning-it-on">Turning it on</a></li>
+<li class="toc__item toc__item--l3"><a href="#restricting-who-sees-it">Restricting who sees it</a></li>
+<li class="toc__item toc__item--l2"><a href="#dumping-variables">Dumping variables</a></li>
+<li class="toc__item toc__item--l2"><a href="#profiling">Profiling</a></li>
+<li class="toc__item toc__item--l2"><a href="#logs">Logs</a></li>
+<li class="toc__item toc__item--l2"><a href="#illegal-variable-passed-to-script">&quot;Illegal variable ... passed to script&quot;</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">The basics</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Debugging</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Debugging</h1>
+        </header>
+        
+        <div class="prose">
+<p>Two things have to be switched on before a hub tells you anything useful:
+the global <strong>Debug System</strong> setting, and the <strong>System - Debug</strong> plugin that
+renders what it collects. Together they give you the queries that ran, how
+long each stage took, which language strings were missing, and a place to
+dump your own variables.</p>
+<h2 id="turning-it-on">Turning it on</h2>
+<p>In the administrator, <strong>System → Global Configuration → System</strong>, under
+<strong>Debug Settings</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Debug System</strong></td>
+<td>Collects query and profiling data, and shows stack traces on error pages</td>
+</tr>
+<tr>
+<td><strong>Profile System</strong></td>
+<td>Records timing marks through the request</td>
+</tr>
+<tr>
+<td><strong>Debug Language</strong></td>
+<td>Marks untranslated strings on the page and stops the default language being loaded first</td>
+</tr>
+<tr>
+<td><strong>Error Reporting</strong></td>
+<td><code>System Default</code>, <code>Maximum</code>, <code>Relaxed</code> or <code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p>Then enable <strong>System - Debug</strong> under <strong>Extensions → Plugins</strong> and open it.
+Its parameters decide what the panel shows — <strong>Show Profiling</strong>, <strong>Show
+Queries</strong>, <strong>Show Memory Usage</strong>, a theme, and separate switches for
+language error files, missing files and unused strings.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Debug output includes every query, with values. Do not leave
+it on for a production hub.</p>
+</aside>
+<h3 id="restricting-who-sees-it">Restricting who sees it</h3>
+<p>The debug plugin has two parameters for exactly this, and on any hub that is
+reachable from outside you should set at least one:</p>
+<ul>
+<li><strong>Allowed Groups</strong> — a user group picker; only members of the chosen
+groups see the panel.</li>
+<li><strong>Allowed Users</strong> — a comma-separated list of usernames.</li>
+</ul>
+<p>With both empty, everyone who loads the page gets the debug panel.</p>
+<h2 id="dumping-variables">Dumping variables</h2>
+<p>Three global functions are defined during bootstrap and are available
+everywhere, unqualified, in namespaced files as well as plain ones:</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dump($var, ...)</code></td>
+<td>Renders each argument and echoes it inline</td>
+</tr>
+<tr>
+<td><code>ddie($var, ...)</code></td>
+<td>The same, then <code>die()</code></td>
+</tr>
+<tr>
+<td><code>dlog($var, ...)</code></td>
+<td>Sends each argument to the debug panel instead of the page</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">dump($fields);
+
+ddie($row-&gt;toArray(), $params-&gt;toArray());
+</code></pre>
+<p>They are thin wrappers over
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Debug/Dumper.php"><code>Hubzero\Debug\Dumper</code></a>,
+whose static <code>dump()</code>, <code>stop()</code> and <code>log()</code> do the same work if you would
+rather name the class. The dumper collects variables and hands them to a
+renderer, so output is formatted rather than a raw <code>print_r()</code>.</p>
+<p><code>dlog()</code> is the one worth remembering. It writes nothing to the page, so it
+does not disturb the layout, a redirect, or a JSON response — the values
+appear in the debug panel afterwards. It needs debug mode and the debug
+plugin to be on; without them the values go nowhere.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There is no <code>Hubzero\Utility\Debug</code> class. Older documentation
+named one; the dumper is <code>Hubzero\Debug\Dumper</code>, and the three global
+functions above are the intended way to reach it.</p>
+</aside>
+<h2 id="profiling">Profiling</h2>
+<p><code>App::get('profiler')</code> is a
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Debug/Profiler.php"><code>Hubzero\Debug\Profiler</code></a>.
+<code>mark($label)</code> records a point in the request; <code>marks()</code>, <code>duration()</code>,
+<code>memory()</code> and <code>summary()</code> read the result. The application marks its own
+stages — <code>afterDispatch</code> and the rest — and the debug panel renders them.</p>
+<pre><code class="language-php">if ($profiler = App::get('profiler'))
+{
+    $profiler-&gt;mark('afterMyExpensiveThing');
+}
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>profiler</code> binding always exists but resolves to <code>null</code>
+unless <code>debug</code> or <code>profile</code> is on, so <code>App::has('profiler')</code> is not the
+test to use. Check the resolved value, as the bootstrap providers do.</p>
+</aside>
+<h2 id="logs">Logs</h2>
+<p><code>App::get('log')</code> is a
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Log/Manager.php"><code>Hubzero\Log\Manager</code></a>
+with three loggers registered at boot, writing to <code>/var/log/hubzero</code> where
+that exists and to the configured <code>log_path</code> otherwise:</p>
+<pre><code class="language-php">			$manager = new Manager($path);
+
+			$manager-&gt;register('debug', array(
+				'file'       =&gt; 'cmsdebug.log',
+				'dispatcher' =&gt; $dispatcher
+			));
+
+			$manager-&gt;register('auth', array(
+				'file'       =&gt; 'cmsauth.log',
+				'level'      =&gt; 'info',
+				'format'     =&gt; &quot;%datetime% %message%\n&quot;,
+				'dispatcher' =&gt; $dispatcher
+			));
+
+			$manager-&gt;register('spam', array(
+				'file'       =&gt; 'cmsspam.log',
+				'dispatcher' =&gt; $dispatcher
+			));
+
+			return $manager;
+</code></pre>
+<pre><code class="language-php">App::get('log')-&gt;logger('debug')-&gt;info('reindexing ' . $count . ' rows');
+</code></pre>
+<p>A logger accepts the PSR levels — <code>debug</code>, <code>info</code>, <code>notice</code>, <code>warning</code>,
+<code>error</code>, <code>critical</code>, <code>alert</code>, <code>emergency</code> — and each call also fires an
+<code>onLog</code> event, so a plugin can watch everything that is logged.</p>
+<p>The <code>Log</code> facade adds two shorthands for the loggers that have a dedicated
+file:</p>
+<pre><code class="language-php">Log::auth($message);   // cmsauth.log
+Log::spam($message);   // cmsspam.log
+</code></pre>
+<p><code>register($name, $settings)</code> adds a logger of your own, with <code>file</code>,
+<code>level</code>, <code>format</code> and <code>dateFormat</code> keys.</p>
+<h2 id="illegal-variable-passed-to-script">&quot;Illegal variable ... passed to script&quot;</h2>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Illegal variable _files or _env or _get or _post or
+_cookie or _server or _session or globals passed to script.</p>
+</aside>
+<p>This means a request variable had a purely numeric key — <code>$_POST[5]</code> — which
+happens when a form has a numerically named field:</p>
+<pre><code class="language-html">&lt;input type=&quot;text&quot; name=&quot;5&quot; /&gt;
+</code></pre>
+<p>Give the field a name with at least one non-numeric character:</p>
+<pre><code class="language-html">&lt;input type=&quot;text&quot; name=&quot;n5&quot; /&gt;
+&lt;input type=&quot;text&quot; name=&quot;field[5]&quot; /&gt;
+</code></pre>
+<p>The second form is the usual fix, since the outer name is not numeric and
+the index survives.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tags/index.html" rel="prev"><span>Previous</span>Tags</a><a class="pager__next" href="../cron/index.html" rel="next"><span>Next</span>Scheduled tasks</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/08-debugging.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses API · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Endpoints under , from the API controllers. Authenticate with an OAuth bearer token or a session cookie; see the developers book for the API basics. Method…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/api/courses/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Courses API</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-delete">POST /courses/asset/delete</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-deletefile">POST /courses/asset/deletefile</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-edit">POST /courses/asset/edit</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-courses-asset-getformanddepid">GET /courses/asset/getformanddepid</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-courses-asset-getformid">GET /courses/asset/getformid</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-handlers">POST /courses/asset/handlers</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-new">POST /courses/asset/new</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-preview">POST /courses/asset/preview</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-reorder">POST /courses/asset/reorder</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-save">POST /courses/asset/save</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-asset-togglepublished">POST /courses/asset/togglepublished</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-assetgroup-reorder">POST /courses/assetgroup/reorder</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-assetgroup-save">POST /courses/assetgroup/save</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-courses-form-image">GET /courses/form/image</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-list">POST /courses/list</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-passport-badge">POST /courses/passport/badge</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-prerequisite-delete">POST /courses/prerequisite/delete</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-prerequisite-new">POST /courses/prerequisite/new</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-unit-save">POST /courses/unit/save</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-courses-unity-save">POST /courses/unity/save</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/plugins/index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">REST API reference</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Courses API</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Courses API</h1>
+        </header>
+        
+        <div class="prose">
+<p>Endpoints under <code>/api/courses</code>, from the <code>com_courses</code> API controllers. Authenticate with an OAuth bearer token or a session cookie; see the developers book for the API basics.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-delete"><code>/courses/asset/delete</code></a></td>
+<td>Deletes an asset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-deletefile"><code>/courses/asset/deletefile</code></a></td>
+<td>Deletes an asset file</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-edit"><code>/courses/asset/edit</code></a></td>
+<td>Retrieves the asset edit page</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-courses-asset-getformanddepid"><code>/courses/asset/getformanddepid</code></a></td>
+<td>Looks up the form id and deployment id based on the asset id</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-courses-asset-getformid"><code>/courses/asset/getformid</code></a></td>
+<td>Looks up the form id based on the asset id</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-handlers"><code>/courses/asset/handlers</code></a></td>
+<td>Gets the asset handlers for a given extension</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-new"><code>/courses/asset/new</code></a></td>
+<td>Creates a new asset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-preview"><code>/courses/asset/preview</code></a></td>
+<td>Previews an asset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-reorder"><code>/courses/asset/reorder</code></a></td>
+<td>Reorders assets</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-save"><code>/courses/asset/save</code></a></td>
+<td>Saves an asset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-asset-togglepublished"><code>/courses/asset/togglepublished</code></a></td>
+<td>Toggles the published state of an asset</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-assetgroup-reorder"><code>/courses/assetgroup/reorder</code></a></td>
+<td>Reorders asset groups</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-assetgroup-save"><code>/courses/assetgroup/save</code></a></td>
+<td>Saves an asset group</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-courses-form-image"><code>/courses/form/image</code></a></td>
+<td>Gets form images</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-list"><code>/courses/list</code></a></td>
+<td>Lists course catalog</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-passport-badge"><code>/courses/passport/badge</code></a></td>
+<td>Passport badges. Placeholder for now.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-prerequisite-delete"><code>/courses/prerequisite/delete</code></a></td>
+<td>Deletes a prerequisite</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-prerequisite-new"><code>/courses/prerequisite/new</code></a></td>
+<td>Adds a new prerequisite</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-unit-save"><code>/courses/unit/save</code></a></td>
+<td>Saves a course unit</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-courses-unity-save"><code>/courses/unity/save</code></a></td>
+<td>Processes grade save from unity app</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-delete">POST /courses/asset/delete</h2>
+<p>Deletes an asset</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L559"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>asset_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to delete</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Asset scope</td>
+</tr>
+<tr>
+<td><code>scope_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Asset scope ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-deletefile">POST /courses/asset/deletefile</h2>
+<p>Deletes an asset file</p>
+<p>API version 1.0, task <code>deletefile</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L667"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset owning file</td>
+</tr>
+<tr>
+<td><code>filename</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Name of file to delete</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-edit">POST /courses/asset/edit</h2>
+<p>Retrieves the asset edit page</p>
+<p>API version 1.0, task <code>edit</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L173"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to edit</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-courses-asset-getformanddepid">GET /courses/asset/getformanddepid</h2>
+<p>Looks up the form id and deployment id based on the asset id</p>
+<p>API version 1.0, task <code>getformanddepid</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L893"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to look up</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-courses-asset-getformid">GET /courses/asset/getformid</h2>
+<p>Looks up the form id based on the asset id</p>
+<p>API version 1.0, task <code>getformid</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L841"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to look up</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-handlers">POST /courses/asset/handlers</h2>
+<p>Gets the asset handlers for a given extension</p>
+<p>API version 1.0, task <code>handlers</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L32"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Name of file to be uploaded</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-new">POST /courses/asset/new</h2>
+<p>Creates a new asset</p>
+<p>API version 1.0, task <code>new</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L90"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>files</code></td>
+<td>array</td>
+<td>no</td>
+<td>—</td>
+<td>Files to upload</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Content type being created</td>
+</tr>
+<tr>
+<td><code>handler</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>The file handler to use</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-preview">POST /courses/asset/preview</h2>
+<p>Previews an asset</p>
+<p>API version 1.0, task <code>preview</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L215"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to preview</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-reorder">POST /courses/asset/reorder</h2>
+<p>Reorders assets</p>
+<p>API version 1.0, task <code>reorder</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L727"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>asset</code></td>
+<td>array</td>
+<td>yes</td>
+<td>—</td>
+<td>Array of IDs of assets to reorder</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Asset scope</td>
+</tr>
+<tr>
+<td><code>scope_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Asset scope ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-save">POST /courses/asset/save</h2>
+<p>Saves an asset</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L257"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>ID of asset to save</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>no</td>
+<td>New asset</td>
+<td>Asset title</td>
+</tr>
+<tr>
+<td><code>published</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Asset state</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Asset state</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-asset-togglepublished">POST /courses/asset/togglepublished</h2>
+<p>Toggles the published state of an asset</p>
+<p>API version 1.0, task <code>togglepublished</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetv1_0.php#L788"><code>assetv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of asset to toggle state</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-assetgroup-reorder">POST /courses/assetgroup/reorder</h2>
+<p>Reorders asset groups</p>
+<p>API version 1.0, task <code>reorder</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetgroupv1_0.php#L194"><code>assetgroupv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assetgroupitem</code></td>
+<td>array</td>
+<td>yes</td>
+<td>—</td>
+<td>Asset group items, in desired order</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-assetgroup-save">POST /courses/assetgroup/save</h2>
+<p>Saves an asset group</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/assetgroupv1_0.php#L33"><code>assetgroupv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Asset group ID to edit</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>no</td>
+<td>New asset group</td>
+<td>Asset group title</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>State of asset group</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Short description</td>
+</tr>
+<tr>
+<td><code>unit_id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>ID of parent unit</td>
+</tr>
+<tr>
+<td><code>parent</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>ID of parent asset group</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td>array</td>
+<td>no</td>
+<td>—</td>
+<td>Parameters related to the asset group</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-courses-form-image">GET /courses/form/image</h2>
+<p>Gets form images</p>
+<p>API version 1.0, task <code>image</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/formv1_0.php#L22"><code>formv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Form ID</td>
+</tr>
+<tr>
+<td><code>form_version</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Form version number</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Image filename</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Session authentication token</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-list">POST /courses/list</h2>
+<p>Lists course catalog</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/coursesv1_0.php#L31"><code>coursesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>limit</code></td>
+<td>integer</td>
+<td>no</td>
+<td>25</td>
+<td>Number of records to return</td>
+</tr>
+<tr>
+<td><code>limitstart</code></td>
+<td>integer</td>
+<td>no</td>
+<td>0</td>
+<td>Offset of Records to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-passport-badge">POST /courses/passport/badge</h2>
+<p>Passport badges. Placeholder for now.</p>
+<p>API version 1.0, task <code>badge</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/passportv1_0.php#L27"><code>passportv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Badge action</td>
+</tr>
+<tr>
+<td><code>badge_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Passport badge ID</td>
+</tr>
+<tr>
+<td><code>user_email</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Email address to which the badge was asserted</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-prerequisite-delete">POST /courses/prerequisite/delete</h2>
+<p>Deletes a prerequisite</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/prerequisitev1_0.php#L84"><code>prerequisitev1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Prerequisite ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-prerequisite-new">POST /courses/prerequisite/new</h2>
+<p>Adds a new prerequisite</p>
+<p>API version 1.0, task <code>new</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/prerequisitev1_0.php#L22"><code>prerequisitev1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>item_scope</code></td>
+<td>string</td>
+<td>no</td>
+<td>asset</td>
+<td>Items having prerequisites</td>
+</tr>
+<tr>
+<td><code>item_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Item ID</td>
+</tr>
+<tr>
+<td><code>requisite_scope</code></td>
+<td>string</td>
+<td>no</td>
+<td>asset</td>
+<td>Items that are prerequisites</td>
+</tr>
+<tr>
+<td><code>requisite_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Requisite ID</td>
+</tr>
+<tr>
+<td><code>section_id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Section ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-unit-save">POST /courses/unit/save</h2>
+<p>Saves a course unit</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/unitv1_0.php#L28"><code>unitv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Unit ID to edit</td>
+</tr>
+<tr>
+<td><code>section_id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Section ID of unit</td>
+</tr>
+<tr>
+<td><code>offering_id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Offering ID of unit</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>no</td>
+<td>New Unit</td>
+<td>Unit title</td>
+</tr>
+<tr>
+<td><code>publish_up</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Start publishing date</td>
+</tr>
+<tr>
+<td><code>publish_down</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Stop publishing date</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-courses-unity-save">POST /courses/unity/save</h2>
+<p>Processes grade save from unity app</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/api/controllers/unityv1_0.php#L26"><code>unityv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>referrer</code></td>
+<td>string</td>
+<td>no</td>
+<td>$_SERVER['HTTP_REFERER']</td>
+<td>Host page</td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Score notes/content</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../content/index.html" rel="prev"><span>Previous</span>Content API</a><a class="pager__next" href="../developer/index.html" rel="next"><span>Next</span>Developer API</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/api/courses.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

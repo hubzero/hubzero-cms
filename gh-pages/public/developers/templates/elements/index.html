@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elements &amp; Typography · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Grid (Columns) For laying out content on a page, the core hub framework includes styles for a 12-column grid. ... ... ... ... ... ... ... ... ... ... ... ...…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/elements/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Elements &amp; Typography</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#grid-columns">Grid (Columns)</a></li>
+<li class="toc__item toc__item--l3"><a href="#spanning-columns">Spanning Columns</a></li>
+<li class="toc__item toc__item--l3"><a href="#offsets">Offsets</a></li>
+<li class="toc__item toc__item--l3"><a href="#helper-classes">Helper Classes</a></li>
+<li class="toc__item toc__item--l3"><a href="#nesting-grids">Nesting Grids</a></li>
+<li class="toc__item toc__item--l2"><a href="#notifications">Notifications</a></li>
+<li class="toc__item toc__item--l2"><a href="#sections-asides">Sections &amp; Asides</a></li>
+<li class="toc__item toc__item--l2"><a href="#buttons">Buttons</a></li>
+<li class="toc__item toc__item--l3"><a href="#states">States</a></li>
+<li class="toc__item toc__item--l3"><a href="#size">Size</a></li>
+<li class="toc__item toc__item--l3"><a href="#type">Type</a></li>
+<li class="toc__item toc__item--l3"><a href="#color">Color</a></li>
+<li class="toc__item toc__item--l3"><a href="#icons">Icons</a></li>
+<li class="toc__item toc__item--l3"><a href="#groups">Groups</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Elements &amp; Typography</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Elements &amp; Typography</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/elements">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2013.</aside>
+        <div class="prose">
+<h2 id="grid-columns">Grid (Columns)</h2>
+<p>For laying out content on a page, the core hub framework includes styles for a 12-column grid.</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>The grid supports up to 12 columns with <code>span#</code> and <code>offset#</code> classes.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Each column <strong>must</strong> have a <code>.col</code> class. The last column in a set must have the <code>.omega</code> class added for IE 7 to work properly. No clearing div is required.</p>
+</aside>
+<p>For example, a four column grid would look like:</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3 omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Output:</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<h3 id="spanning-columns">Spanning Columns</h3>
+<p>Columns can be spanned to easier portion content on the page. In the following example, we span the first 6 columns in a container, then follow with two, smaller 3 column containers for a 3-column layout where the first column takes up 50% of the space.</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span6&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3 omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Output:</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<h3 id="offsets">Offsets</h3>
+<p>Columns may also be offset or 'pushed' over.</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span3 offset3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3 omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Output:</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<h3 id="helper-classes">Helper Classes</h3>
+<ul>
+<li><strong><code>.span-quarter</code></strong><br />
+Span 3 columns. This is equivalent to <code>.span3</code></li>
+<li><strong><code>.span-third</code></strong><br />
+Span 4 columns. This is equivalent to <code>.span4</code></li>
+<li><strong><code>.span-half</code></strong><br />
+Span 6 columns. This is equivalent to <code>.span6</code></li>
+<li><strong><code>.span-two-thirds</code></strong><br />
+Span 8 columns. This is equivalent to <code>.span8</code></li>
+<li><strong><code>.span-three-quarters</code></strong><br />
+Span 9 columns. This is equivalent to <code>.span9</code></li>
+</ul>
+<p>A four column grid with the helper classes:</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span-quarter&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span-quarter&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span-quarter&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span-quarter omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>There are equivalent <code>.offset-</code> classes as well:</p>
+<ul>
+<li><strong><code>.offset-quarter</code></strong><br />
+Offset 3 columns. This is equivalent to <code>.offset3</code></li>
+<li><strong><code>.offset-third</code></strong><br />
+Offset 4 columns. This is equivalent to <code>.offset4</code></li>
+<li><strong><code>.offset-half</code></strong><br />
+Offset 6 columns. This is equivalent to <code>.offset6</code></li>
+<li><strong><code>.offset-two-thirds</code></strong><br />
+Offset 8 columns. This is equivalent to <code>.offset8</code></li>
+<li><strong><code>.offset-three-quarters</code></strong><br />
+Offset 9 columns. This is equivalent to <code>.offset9</code></li>
+</ul>
+<p>Markup for a four column grid with the offset helper class:</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span-quarter&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col offset-quarter span-quarter&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span-quarter omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Output:</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<h3 id="nesting-grids">Nesting Grids</h3>
+<p>The following is an example of a 3 column grid nested inside the first column of <em>another</em> 3 column grid.</p>
+<pre><code class="language-html">&lt;div class=&quot;grid&quot;&gt;
+	&lt;div class=&quot;col span6&quot;&gt;
+		&lt;div class=&quot;grid&quot;&gt;
+			&lt;div class=&quot;col span4&quot;&gt;
+				...
+			&lt;/div&gt;
+			&lt;div class=&quot;col span4&quot;&gt;
+				...
+			&lt;/div&gt;
+			&lt;div class=&quot;col span4 omega&quot;&gt;
+				...
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3&quot;&gt;
+		...
+	&lt;/div&gt;
+	&lt;div class=&quot;col span3 omega&quot;&gt;
+		...
+	&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Output:</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<p>...</p>
+<h2 id="notifications">Notifications</h2>
+<p>The core framework provides some base styles for alter and notifications.</p>
+<pre><code class="language-html">&lt;p class=&quot;passed&quot;&gt;Success message&lt;/p&gt;
+</code></pre>
+<p>Success message</p>
+<pre><code class="language-html">&lt;p class=&quot;info&quot;&gt;Info message&lt;/p&gt;
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Info message</p>
+</aside>
+<pre><code class="language-html">&lt;p class=&quot;help&quot;&gt;Help message&lt;/p&gt;
+</code></pre>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Help message</p>
+</aside>
+<pre><code class="language-html">&lt;p class=&quot;warning&quot;&gt;Warning message&lt;/p&gt;
+</code></pre>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Warning message</p>
+</aside>
+<pre><code class="language-html">&lt;p class=&quot;error&quot;&gt;Error message&lt;/p&gt;
+</code></pre>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Error message</p>
+</aside>
+<h2 id="sections-asides">Sections &amp; Asides</h2>
+<p>The majority of hub components have content laid out in a primary content column with secondary navigation or metadata in a smaller side column to the right. This is done by first wrapping the entire content in a <code>div</code> with a class of <code>.section</code>. The content intended for the side column is wrapped in a <code>&lt;div class=&quot;aside&quot;&gt;</code> tag. The primary content is wrapped in a <code>&lt;div class=&quot;subject&quot;&gt;</code> tag and immediately follows the <code>.aside</code> column.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>.aside</code> column must come first in order for the content to be positioned properly. If, unfortunately, this poses a semantic problem, we recommend using the grid system as a potential alternative.</p>
+</aside>
+<p>Using aside &amp; subject differs from the grid system in that the <code>.aside</code> column has a fixed width with the <code>.subject</code> column taking up the available left-over space. In the grid system, <strong>every</strong> column is flexible (uses a percentage of the screen) and cannot have a specified, fixed width.</p>
+<p>Example usage:</p>
+<pre><code class="language-html">&lt;section class=&quot;section&quot;&gt;
+	&lt;div class=&quot;section-inner&quot;&gt;
+		&lt;div class=&quot;aside&quot;&gt;
+			Side column content ...
+		&lt;/div&gt;
+		&lt;div class=&quot;subject&quot;&gt;
+			Primary content ...
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+<h2 id="buttons">Buttons</h2>
+<p>{xhub:include type=&quot;stylesheet&quot; filename=&quot;/media/system/css/buttons.css&quot;}</p>
+<h3 id="states">States</h3>
+<p><a href="#">default</a> <a href="#">disabled</a> <a href="#">active</a></p>
+<pre><code class="language-html">&lt;a class=&quot;btn&quot; href=&quot;#&quot;&gt;default&lt;/a&gt;
+
+&lt;a class=&quot;btn disabled&quot; href=&quot;#&quot;&gt;disabled&lt;/a&gt;
+
+&lt;a class=&quot;btn active&quot; href=&quot;#&quot;&gt;active&lt;/a&gt;
+</code></pre>
+<h3 id="size">Size</h3>
+<p><a href="#">primary</a> <a href="#">secondary</a></p>
+<pre><code class="language-html">&lt;a class=&quot;btn btn-primary&quot; href=&quot;#&quot;&gt;primary&lt;/a&gt;
+
+&lt;a class=&quot;btn btn-secondary&quot; href=&quot;#&quot;&gt;secondary&lt;/a&gt;
+</code></pre>
+<h3 id="type">Type</h3>
+<p><a href="#">link</a> button</p>
+<pre><code class="language-html">&lt;a class=&quot;btn&quot; href=&quot;#&quot;&gt;link&lt;/a&gt;
+
+&lt;button class=&quot;btn&quot; href=&quot;#&quot;&gt;button&lt;/button&gt;
+
+&lt;input type=&quot;submit&quot; class=&quot;btn&quot; value=&quot;input&quot; /&gt;
+</code></pre>
+<h3 id="color">Color</h3>
+<p><a href="#">danger</a> <a href="#">warning</a> <a href="#">info</a> <a href="#">success</a></p>
+<pre><code class="language-html">&lt;a class=&quot;btn btn-danger&quot; href=&quot;#&quot;&gt;danger&lt;/a&gt;
+
+&lt;a class=&quot;btn btn-warning&quot; href=&quot;#&quot;&gt;warning&lt;/a&gt;
+
+&lt;a class=&quot;btn btn-info&quot; href=&quot;#&quot;&gt;info&lt;/a&gt;
+
+&lt;a class=&quot;btn btn-success&quot; href=&quot;#&quot;&gt;success&lt;/a&gt;
+</code></pre>
+<h3 id="icons">Icons</h3>
+<p><a href="#">danger</a></p>
+<p><a href="#">warning</a></p>
+<p><a href="#">info</a></p>
+<p><a href="#">success</a></p>
+<p><a href="#">edit</a></p>
+<p><a href="#">delete</a></p>
+<p><a href="#">delete</a></p>
+<p><a href="#">secondary</a></p>
+<pre><code class="language-html">&lt;a class=&quot;btn btn-danger icon-danger&quot; href=&quot;#&quot;&gt;danger&lt;/a&gt;
+
+&lt;a class=&quot;btn btn-warning icon-warning&quot; href=&quot;#&quot;&gt;warning&lt;/a&gt;
+
+...
+</code></pre>
+<h3 id="groups">Groups</h3>
+<p><a href="#">Dropdown</a></p>
+<ul>
+<li><a href="#">Action</a></li>
+<li><a href="#">Another action</a></li>
+<li><a href="#">Something else here</a></li>
+<li></li>
+<li><a href="#">Separated link</a></li>
+</ul>
+<pre><code class="language-html">&lt;div class=&quot;btn-group dropdown&quot;&gt;
+          &lt;a class=&quot;btn&quot; href=&quot;#&quot;&gt;Dropdown&lt;/a&gt;
+          &lt;span class=&quot;btn dropdown-toggle&quot;&gt;&lt;/span&gt;
+          &lt;ul class=&quot;dropdown-menu&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Another action&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;divider&quot;&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<ul>
+<li><a href="#">Action</a></li>
+<li><a href="#">Another action</a></li>
+<li><a href="#">Something else here</a></li>
+<li></li>
+<li><a href="#">Separated link</a></li>
+</ul>
+<pre><code class="language-html">&lt;div class=&quot;btn-group dropup&quot;&gt;
+          ...
+&lt;/div&gt;
+</code></pre>
+<ul>
+<li><a href="#">Action</a></li>
+<li><a href="#">Another action</a></li>
+<li><a href="#">Something else here</a></li>
+<li></li>
+<li><a href="#">Separated link</a></li>
+</ul>
+<pre><code class="language-html">&lt;div class=&quot;btn-group btn-secondary dropdown&quot;&gt;
+          ...
+&lt;/div&gt;
+</code></pre>
+<p><a href="#">prev</a> <a href="#">all</a> <a href="#">next</a></p>
+<pre><code class="language-html">&lt;div class=&quot;btn-group&quot;&gt;
+          &lt;a class=&quot;btn icon-prev&quot; href=&quot;#&quot;&gt;prev&lt;/a&gt;
+          &lt;a class=&quot;btn&quot; href=&quot;#&quot;&gt;all&lt;/a&gt;
+          &lt;a class=&quot;btn icon-next opposite&quot; href=&quot;#&quot;&gt;next&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../fontcons/index.html" rel="prev"><span>Previous</span>Fontcons</a><a class="pager__next" href="../../muse/index.html" rel="next"><span>Next</span>Muse</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/13-elements.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

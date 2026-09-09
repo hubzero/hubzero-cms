@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Launching tools with invoke scripts · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Overview Invoke scripts are small programs, usually written in sh or bash, used to setup the application container environment so the tool can run properly.…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/invoke/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Launching tools with invoke scripts</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#invoke-app-and-its-options">invoke_app and its options</a></li>
+<li class="toc__item toc__item--l2"><a href="#using-invoke-app-with-rappture-tools">Using invoke_app with Rappture tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#using-invoke-app-with-jupyter-notebook-tools">Using invoke_app with Jupyter Notebook tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#using-invoke-app-with-gui-tools">Using invoke_app with GUI tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#other-invoke-script-examples">Other invoke script examples</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Launching tools with invoke scripts</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Launching tools with invoke scripts</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/invoke">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2011.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>Invoke scripts are small programs, usually written in sh or bash, used to setup the application container environment so the tool can run properly. More specifically, invoke scripts are responsible for:</p>
+<ul>
+<li>Locating tool.xml for Rappture applications</li>
+<li>Setting up the PATH and other optional environment variables</li>
+<li>Starting the window manager</li>
+<li>Starting optional subprograms, like filexfer</li>
+<li>Starting the application</li>
+</ul>
+<p>For most applications, the invoke script is a single command that calls the default HUBzero invoke script, named invoke_app, with a few options set. In some rare situations, the tool needs the application container setup in a manner that invoke_app cannot handle. In these cases, the tool developer can modify the tool's invoke script to appropriately setup the application container.</p>
+<p>The sections below list out details regarding the options of invoke_app, how to launch Rappture tools using an invoke script that calls invoke_app, and how to launch non-Rappture tools using an invoke script that calls invoke_app.</p>
+<h2 id="invoke-app-and-its-options">invoke_app and its options</h2>
+<p>HUBZero's default tool invocation script is called invoke_app. It is a bash script, usually located in /usr/bin. When called with no options, the script tries to automatically find the needed information to start the applications. There are a number of options that can be provided to alter the script's behavior.</p>
+<p>invoke_app accepts the following options:</p>
+<pre><code> -A tool arguments
+ -c execute command in background
+ -C command to execute for starting the tool
+ -d working directory
+ -e environment variable (${VERSION} substituted with $TOOL_VERSION)
+ -f No FULLSCREEN
+ -S No submit
+ -n nanowhim version
+ -p add to path          (${VERSION} substituted with $TOOL_VERSION)
+ -r rappture version
+ -t tool name
+ -T tool root directory
+ -u use environment packages
+ -w specify alternate window manager
+</code></pre>
+<p>Here is a detailed description of the options:</p>
+<table>
+<tbody>
+<tr>
+<td>-A</td>
+<td>Pass the provided enquoted arguments onto the tool.
+			<p>Example usage:</p>
+<pre>
+-A "-q blah1 -w blah2"</pre>
+			The options -q and -w are not parsed by invoke_app, but are passed on to the tool</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>Commands to run in the background before the tool launches.
+			<p>Example usage:</p>
+<pre>
+-c "echo hi" -c "filexfer"</pre>
+			This prints "hi" to stdout and starts filexfer</td>
+</tr>
+<tr>
+<td>-C</td>
+<td>Command to execute for starting tool. Tool's command line arguments can be included in this option, or can be placed in the -A option.
+			<p>Example usage:</p>
+<p>Call a program, named myprog, located in the tool's bin directory:</p>
+<pre>
+-C @tool/bin/myprog</pre>
+<p>Call a program, named myprog, located in the tool's bin directory, with program arguments "-e val1" and "-b val2":</p>
+<pre>
+-C "@tool/bin/myprog -e val1 -b val2"</pre>
+<p>Call a program, named myprog, located in the tool's bin directory with arguments -e val1 and -b val2, used in conjunction with invoke_app's -A option:</p>
+<pre>
+-C @tool/bin/myprog -A "-e val1 -b val2"</pre>
+<p>Call a program, named myprog, located in the tool's bin directory. We can omit the path of the program if it is an executable and located in the tool's bin directory because the tool's bin directory is added to the PATH environment variable. This would not work for calling a Perl script in a fashion similar to <b>perl myscript.pl</b> because in this case, <b>perl</b> is executable and <b>myscript.pl</b> is the argument.:</p>
+<pre>
+-C myprog</pre>
+<p>Call simsim with no arguments:</p>
+<pre>
+-C simsim</pre>
+<p>Call simsim with the options -tool and -values, to be parsed by simsim:</p>
+<pre>
+-C "simsim -tool driver.xml -values random"</pre>
+<p>Call simsim with the options -tool and -values, to be parsed by simsim:</p>
+<pre>
+-C simsim -A "-tool driver.xml -values random"</pre>
+</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>Change to this working directory. By default change to session directory.</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>Set an environment variable.
+			<p>Example usage:</p>
+<pre>
+-e LD_LIBRARY_PATH=@tool/../${VERSION}/lib:${LD_LIBRARY_PATH}</pre>
+			Within the value part of this option's argument, the text ${VERSION} is automatically substituted with the value of the variable ${TOOL_VERSION}. Similarly, the text @tool is substituted with the value of ${TOOLDIR}. By setting the environment variable, you are overwritting its previous value.</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>no full screen - disable FULLSCREEN environment variable, used by Rappture, to expand the window to the full available size of the screen.</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>Prepend to the PATH environment variable.
+			<p>Example usage:</p>
+<pre>
+-p @tool/../${VERSION}/bin</pre>
+<p>Within the value part of this option's argument, the text ${VERSION} is automatically substituted with the value of the variable ${TOOL_VERSION}. Similarly, the text @tool is substituted with the value of ${TOOLDIR}. By setting this option the PATH environment variable is adjusted, but not overwritten.  The directory @tool/bin is automatically added to the PATH environment variable.</p>
+</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>Sets ${rappture_version} which dictates which version of Rappture is used. If left blank the version will default to the special keyword "system", which represents whichever version is pointed to by the default Rappture environment in "use". A "use -e -r rappture" will be performed to figure out where Rappture is installed.
+			<p>If set to the special keyword "none", searching for Rappture executables (rappture, simsim, about) will be skipped and use of these executables will be disabled.</p>
+<p>This flag works well on hubs where multiple versions of rappture are installed. Users can specify their own version of Rappture to use by updating the PATH environment variable to include the directory where the "rappture" executable is installed.</p>
+</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>Disable submit client and run job locally. This flag takes no arguments and is used for debugging. It disables the use of submit client from the -C command that will be executed. The default behavior, when the flag is not given, is to run the command through the submit client unless the command is "rappture", "simsim", "getrappturexml", or "nanowhim", none of which are run through the submit client. Setting the flag on the command line will add your command to the list of commands that do not run with the submit client.</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>sets ${toolname} which is used while setting up tool paths for TOOLDIR and TOOLXML. ${toolname} is the short name (or project name) of the tool. It is the same as the name used in the source code repository. With respect to the tool contribution process, it is the "toolname" in the path /apps/toolname/version/rappture/tool.xml. Setting this option will change the paths searched while trying to locate tool.xml and the bin directory.</td>
+</tr>
+<tr>
+<td>-T</td>
+<td>Tool root directory. This is the directory holding a checked out version of the code from the source code repository. It typically has the src, bin, middleware, rappture, docs, data, and examples directories underneath it. With respect to the tool contribution process, it is the "/apps/toolname/version" in the path /apps/toolname/version/rappture/tool.xml. Setting this option will change the paths searched while trying to locate tool.xml and the bin directory. Typically when testing this option is used to specify where the tool directory is. In this case, its the present working directory:
+			<pre>
+-T $PWD</pre>
+</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>Set use scripts to invoke before running the tool.
+			<p>Example usage:</p>
+<pre>
+-u octave-3.2.4 -u petsc-3.1-real-gnu</pre>
+			These would setup octave-3.2.4 and petsc-3.1 in the environment that your tool would launch in.</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>Set the window manager. The default value is to use the ratpoison window manager if it exists. If ratpoison is not installed on the system, look for the icewm captive window manager setup. Use this flag to choose an alternative window manager. If your application does not require a window manager specify headless. The possible options are headless, ratpoison, captive, and icewm. If multiple options are specified the first one listed is selected.
+			<p>Examples:</p>
+<p>Use the icewm captive window manager.</p>
+<pre>
+-w captive</pre>
+<p>Use no window manager.</p>
+<pre>
+-w headless</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>invoke_app is called from within a tool's invoke script. The invoke script is stored in the middleware directory of the tool's source code repository.</p>
+<h2 id="using-invoke-app-with-rappture-tools">Using invoke_app with Rappture tools</h2>
+<p>Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a Rappture application looks similar to this:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C rappture
+</code></pre>
+<p>In the invoke script above, invoke_app, located in the directory /usr/bin, is called with &quot;$@&quot; , &quot;-t calc&quot;, and &quot;-C rappture&quot;. &quot;$@&quot; represents all options that the invoke script itself received. &quot;-t calc&quot; tells invoke_app that the toolname is &quot;calc&quot;. &quot;-C rappture&quot; tell invoke_app to execute the rappture command. This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed.</p>
+<p>For most Rappture applications, the invoke script is very simple. The above is enough for invoke_app to start looking for a tool.xml file. invoke_app looks for the file named tool.xml. It uses the TOOLDIR variable to help decide where to look. If the tool.xml file is not found in the ${TOOLDIR}/rappture directory, invoke_app will exit explaining that it could not find the tool.xml file. The TOOLDIR variable can be set from the command line using the -T flag:</p>
+<pre><code>/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C rappture \
+                         -T ${PWD}
+</code></pre>
+<p>Actually, it is more common to see the -T flag provided to a tool's invoke script, and the option is forwarded to invoke_app by &quot;$@&quot;:</p>
+<pre><code>./middleware/invoke -T ${PWD}
+</code></pre>
+<p>In the above example, the TOOLDIR variable is set to the present working directory, which is stored in the variable PWD. Specifying the -T option is usually not needed, but can help when invoke_app is confused on what it is supposed to be launching.</p>
+<h2 id="using-invoke-app-with-jupyter-notebook-tools">Using invoke_app with Jupyter Notebook tools</h2>
+<p>Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a Jupyter Notebook application looks similar to this:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C &quot;start_jupyter -t -A -T @tool/bin calc.ipynb&quot; \
+                         -u anaconda-7 \
+                         -r none \
+                         -w headless
+</code></pre>
+<p>In the invoke script above, invoke_app, located in the directory /usr/bin, is called with &quot;$@&quot;, &quot;-t calc&quot;, &quot;-C start_jupyter ...&quot;, &quot;-c filexfer&quot;, &quot;-w captive&quot;. &quot;$@&quot; represents all options that the invoke script itself received. &quot;-t calc&quot; tells invoke_app that the toolname is &quot;calc&quot;. This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed. &quot;-C start_jupyter ...&quot; tells invoke_app that the command to run to start the tool is &quot;start_jupyter&quot;. &quot;start_jupyter has several typical arguments as shown. &quot;-r none&quot; tells invoke_app that Rappture is not required. &quot;-w headless&quot; tells invoke_app not to start a window manager.</p>
+<h2 id="using-invoke-app-with-gui-tools">Using invoke_app with GUI tools</h2>
+<p>Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a non-Rappture GUI application looks similar to this:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C calc \
+                         -c filexfer \
+                         -w captive
+</code></pre>
+<p>In the invoke script above, invoke_app, located in the directory /usr/bin, is called with &quot;$@&quot;, &quot;-t calc&quot;, &quot;-C calc&quot;, &quot;-c filexfer&quot;, &quot;-w captive&quot;. &quot;$@&quot; represents all options that the invoke script itself received. &quot;-t calc&quot; tells invoke_app that the toolname is &quot;calc&quot;. This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed. &quot;-C calc&quot; tells invoke_app that the command to run to start the tool is &quot;calc&quot;. In this case calc is UI program built using something other than Rappture. Possible GUI builders include but are not limited to PyQt and MATLAB. &quot;-c filexfer&quot; tells invoke_app to start up the filexfer program before starting the tool's graphical user interface. &quot;-w captive&quot; tells invoke_app to use the icewm captive window manager. For non-rappture applications the icewm captive window manager may be preferred over the ratpoison window manager if there are multiple graphical user interface windows that could popup.</p>
+<p>The invoke script above could be made more svelte if the we did not want to start filexfer and we wanted to use the ratpoison window manager. After all, not all applications require files from the user, so they don't need the filexfer program. Here's an example of the tool named calc (the &quot;-t calc&quot; option), that is started by the executable named calc (the &quot;-C calc&quot; option), and uses the default window manager which is ratpoison.</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C calc
+</code></pre>
+<h2 id="other-invoke-script-examples">Other invoke script examples</h2>
+<p>Here are a few common invoke scripts examples that demonstrate using invoke_app options.</p>
+<p>Use the -u option to setup Octave-3.2.4 in the path before starting the tool's graphical user interface. The -u option sources a &quot;use&quot; script (octave-3.2.4 in this example) from the /apps/environ directory.</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C calc \
+                         -u octave-3.2.4
+</code></pre>
+<p>Use the -A option to send additional arguments to the command to be executed:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C calc \
+                         -A &quot;-value 13 -value 5 -op add&quot;
+</code></pre>
+<p>Or:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t calc \
+                         -C &quot;calc -value 13 -value 5 -op add&quot;
+</code></pre>
+<p>Launching a Matlab tool (named app-fermi) with a Rappture graphical user interface:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t app-fermi \
+                         -C rappture
+</code></pre>
+<p>Launching a Python tool (named app-fermi) with a Rappture graphical user interface:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t app-fermi \
+                         -C rappture
+</code></pre>
+<p>Launching a Java tool (named app-fermi) with a Rappture graphical user interface:</p>
+<pre><code>#!/bin/sh
+
+/usr/bin/invoke_app &quot;$@&quot; -t app-fermi \
+                         -C rappture
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../overview/index.html" rel="prev"><span>Previous</span>Overview</a><a class="pager__next" href="../nanowhim/index.html" rel="next"><span>Next</span>Combining Tools</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/03-invoke.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

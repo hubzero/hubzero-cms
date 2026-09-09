@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contribution Guide · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="Overview Bug Fixes Patches The HUBzero Foundation accepts bug fixes and core patches . Submissions are reviewed by Foundation technical staff and, if accepted,…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/contributions/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Contribution Guide</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l3"><a href="#bug-fixes-patches">Bug Fixes &amp; Patches</a></li>
+<li class="toc__item toc__item--l3"><a href="#adherence-to-standards">Adherence to Standards</a></li>
+<li class="toc__item toc__item--l3"><a href="#hosted-hubs">Hosted Hubs</a></li>
+<li class="toc__item toc__item--l3"><a href="#guidelines">Guidelines</a></li>
+<li class="toc__item toc__item--l3"><a href="#subjective-requirements">Subjective Requirements</a></li>
+<li class="toc__item toc__item--l2"><a href="#code-guidelines">Code Guidelines</a></li>
+<li class="toc__item toc__item--l3"><a href="#standards-and-code-styling">Standards and Code Styling</a></li>
+<li class="toc__item toc__item--l3"><a href="#php-codesniffer">PHP CodeSniffer</a></li>
+<li class="toc__item toc__item--l3"><a href="#suggested-workflow">Suggested Workflow</a></li>
+<li class="toc__item toc__item--l3"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l2"><a href="#external-contribution-process">External Contribution Process</a></li>
+<li class="toc__item toc__item--l3"><a href="#advanced-workflows">Advanced Workflows</a></li>
+<li class="toc__item toc__item--l3"><a href="#development-workflow-on-an-aws-centos-image">Development Workflow on an AWS CentOS Image</a></li>
+<li class="toc__item toc__item--l2"><a href="#general-tips">General Tips</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Style Guide</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../conventions/phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/commits/index.html">Commit Messages</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../documentation/index.html">Working on the documentation</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Contribution Guide</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>Contribution Guide</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/contributions">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<h3 id="bug-fixes-patches">Bug Fixes &amp; Patches</h3>
+<p>The HUBzero Foundation <a href="https://github.com/hubzero/hubzero-cms">accepts bug fixes and core patches</a>. Submissions are reviewed by Foundation technical staff and, if accepted, they will become part of the HUBzero core distribution. When contributions are offered to the HUBzero Foundation, the copyright for the software must be reassigned to the HUBzero Foundation so that the changes can be managed as an indistinguishable part of the core distribution. The HUBzero Foundation reserves the right to reject submissions for any reason.</p>
+<h3 id="adherence-to-standards">Adherence to Standards</h3>
+<p>The HUBzero Foundation has established <a href="../conventions/index.html">coding conventions and guidelines</a> for developing HUBzero components. All submissions to the core must adhere to the guidelines, coding patterns, and styles laid forth in the documentation. Contributions are reviewed by the Foundation team before being incorporated into the core distribution and those that do not meet the standards may be tweaked or rewritten as needed, or may be accepted pending required changes. Any contribution known to contain security vulnerabilities may be rejected entirely.</p>
+<h3 id="hosted-hubs">Hosted Hubs</h3>
+<p>All code extensions and alterations must adhere to the aforementioned coding conventions and guidelines for hubs hosted and maintained by HUBzero. Third-party extensions are allowable but must first be reviewed and accepted to ensure compatibility, functionality, and security concerns are addressed.</p>
+<h3 id="guidelines">Guidelines</h3>
+<ul>
+<li>Be sure that the code follows the <a href="../conventions/index.html">development styles and conventions</a></li>
+<li>Make sure it works.</li>
+<li>If it requires internationalization, documentation, or help to be written, be sure you've done that before submission.</li>
+<li>Variables, subroutines, and comments in the code should be made in English. While the talents of the worldwide community is greatly appreciated, we cannot support code that we cannot read.</li>
+</ul>
+<h3 id="subjective-requirements">Subjective Requirements</h3>
+<p>Below are some subjective requirements that should be taken into consideration.</p>
+<ol>
+<li><strong>Is this feature useful?</strong>
+Consider whether this feature is useful to the current or future users. If there are relatively few people for who this is useful: what other reasons are there to include this? If this feature is useful only to some, can it be made in a way that it can be switched off or easily removed, so that it's out of the way of the average user.</li>
+<li><strong>Is this feature usable by the target audience?</strong>
+Consider who is the target audience? Is it user-friendly for regular users, does a content manager in an avarage business environment have the skills to use it? Or is this directed to system administrators?</li>
+<li><strong>What are the maintenance costs of it?</strong>
+Strongly consider the time and effort spent in maintaining it.</li>
+<li><strong>Does this fit in the direction HUBzero is going?</strong>
+This may be something you want to discuss on the <a href="https://help.hubzero.org/forum">forum</a> with other hub owners and users, but you can also submit <a href="https://help.hubzero.org/support">inquiries</a> to the HUBzero team.</li>
+<li><strong>Is there already a similar feature?</strong>
+If so: could this similar feature be adapted to suit you needs? Or does your contribution have all the features of the existing feature? And if so, is there a way to upgrade?</li>
+</ol>
+<h2 id="code-guidelines">Code Guidelines</h2>
+<p>Hubzero maintains a set of guidelines and rules for code contributions. These are aimed at</p>
+<p>creating a consistent, readable, security-minded, and maintainable codebase.</p>
+<p><a href="https://help.hubzero.org/resources/1589/download/The_HUBzero_Git_Flow.pdf">HUBzero Git Flow Slides</a></p>
+<h3 id="standards-and-code-styling">Standards and Code Styling</h3>
+<p>All code contributions must adhere to the style and conventions outlined in the following: <a href="../conventions/index.html">Developer Conventions</a></p>
+<h3 id="php-codesniffer">PHP CodeSniffer</h3>
+<p>You can check your code using PHP CodeSniffer. This should be available in most repositories.</p>
+<p>On the Amazon Instance or CentOS 6.5 installations, you may install this using <code>sudo yum install phpcs</code>Alternatively, you may install this from source:<a href="https://github.com/squizlabs/PHP_CodeSniffer">Code Sniffer - GitHUB</a></p>
+<p>Once installed on your system you can clone the HUBzero Standards Repository from <a href="https://github.com/hubzero/standards">Hubzero Standards</a>. It’s recommended to install the standards outside of the hub installation directory.</p>
+<p><code>git clone -b hubzero-cms-2.1 https://github.com/hubzero/standards /home/&lt;username&gt;/standards</code></p>
+<p>To run PHPCS, you would run an incantation similar to:</p>
+<p><code>phpcs -np --standard=/home/&lt;username&gt;/standards/Php/ruleset.xml --ignore=*/test/*,*/assets/*,*/views/*,*/tmpl/*./path/to/code</code></p>
+<p>Where <code>&lt;username&gt;</code> is in your Linux username (centos, more than likely if you're on an AWS instance).</p>
+<p>Due to the size of the hubzero-cms codebase, it is recommended that you only run the check against files you’ve modified. Each file can be specified at the end of the command, replacing (./path/to/code), separated by spaces.</p>
+<h3 id="suggested-workflow">Suggested Workflow</h3>
+<p>Hubzero Web Developers have a couple of workflows which have developed organically over the years. In the future, we would like to use tooling to automate the development environment. Due to the complex configuration of all the hub software, starting from the VMware Image available for <a href="https://hubzero.org/download">download</a>.</p>
+<p>A couple of developers have gotten together to put together a CMS-only environment using Vagrant: <a href="https://github.com/kevinwojo/hubzero-vagrant">CMS-only Vagrant Environment</a>. Instructions for using this environment are available in the repository’s README file.</p>
+<h3 id="configuration">Configuration</h3>
+<p>The configuration necessary for web development is outlined below. There may be some variables such as login username, file locations, and users depending on the operating system. A person familiar with a LAMP environment should be able to ascertain these variables with relative ease. In all cases configuration secrets, such as MySQL root user password and admin user password are located in <code>/etc/hubzero.secrets</code>. The Hubzero command-line utility, <code>hzcms</code>, will create this file upon installation of the HUB.</p>
+<h2 id="external-contribution-process">External Contribution Process</h2>
+<h3 id="advanced-workflows">Advanced Workflows</h3>
+<p>Unless you are confident in your Linux system administration skills, the Hub can be built via Debian and RedHat packages. In the future, we anticipate moving to support RedHat / CentOS over Debian. In our effort to increase our presence on cloud service providers, RedHat / CentOS has been chosen to be implemented first.</p>
+<h3 id="development-workflow-on-an-aws-centos-image">Development Workflow on an AWS CentOS Image</h3>
+<p>Another approach, which is used internally at HUBzero, is to use the <a href="https://aws.amazon.com/marketplace/pp/B00THHMFEQ">Amazon Marketplace Image</a>.</p>
+<ol>
+<li>Create a GitHub account and Fork the hubzero cms repository</li>
+<li><code>ssh centos@hostname.aws.hubzero.org</code>
+<ol>
+<li>Log into the development environment.</li>
+</ol>
+</li>
+<li><code>cd /var/www</code>
+<ol>
+<li>Go to the web root directory.</li>
+</ol>
+</li>
+<li><code>cv hub hub.bak</code>
+<ol>
+<li>Backup the existing code which will be necessary to preserve the configuration files.</li>
+</ol>
+</li>
+<li><code>git clone https://github.com/gitusername/hubzero-cms.git hub</code>
+<ol>
+<li>Clone the development repository, naming it “hub” to preserve the preconfigured location that the web server (Apache) expects.</li>
+</ol>
+</li>
+<li><code>git remote add upstream https://github.com/hubzero-cms</code>
+<ol>
+<li>This adds the HUBzero repository as your upstream remote. This allows you to pull down the latest history.</li>
+</ol>
+</li>
+<li><code>cp hub.bak/app hub/</code>
+<ol>
+<li>Copy the configuration, contained within the app directory, to the new installation.</li>
+</ol>
+</li>
+<li><code>cd hub/core</code>
+<ol>
+<li>a. Go to the core directory.</li>
+</ol>
+</li>
+<li><code>php composer install</code>
+<ol>
+<li>Pull in external dependencies (including the HUBzero Framework).</li>
+</ol>
+</li>
+<li><code>cd . . /</code>
+<ol>
+<li>Go back to the /var/www/hub directory.</li>
+</ol>
+</li>
+<li><code>php muse migration -i -f</code>
+<ol>
+<li>Run database migrations.</li>
+</ol>
+</li>
+<li><code>cd /var/www</code>
+<ol>
+<li>Go to the /var/www/ directory</li>
+</ol>
+</li>
+<li><code>chown apache:apahce hub - R</code>
+<ol>
+<li>Change the owner and group of the hub directory to something that the web server agrees with.</li>
+</ol>
+</li>
+<li><code>chmod 775 hub - R</code>
+<ol>
+<li>Change the file mode back to something permissible for development purposes. In production environments this is a little more locked down.</li>
+</ol>
+</li>
+<li><code>git checkout &lt;branch&gt;</code>
+<ol>
+<li>At the time of writing: 2.1.0 is the stable branch.
+<ol>
+<li>This branch really should have been called 2.1 and is treated as such. Each minor release is branched from a point in time on 2.1.0.</li>
+</ol>
+</li>
+<li>master is the unstable branch.</li>
+</ol>
+</li>
+<li><code>git fetch --all</code>
+<ol>
+<li>Pull the latest code.</li>
+</ol>
+</li>
+<li><code>git pull --rebase upstream/&lt;branch&gt;</code>
+<ol>
+<li>Merges the latest changes from upstream into your local branch.</li>
+</ol>
+</li>
+<li><code>git checkout -b &lt;feature-branch&gt;</code>
+<ol>
+<li>This creates a feature branch. This is something completely arbitrary that means something useful to you as a developer.</li>
+<li>This will create a branch from whatever branch you select in step 14 and will have the latest history from steps 15 and 16.</li>
+</ol>
+</li>
+<li><code>&lt;make some valid changes to the code&gt;</code>
+<ol>
+<li>Fix a bug, for instance.</li>
+</ol>
+</li>
+<li><code>git add &lt;file&gt;</code>
+<ol>
+<li>Add the file(s) to the commit.</li>
+</ol>
+</li>
+<li><code>git commit -m &quot;Descriptive message&quot;</code>
+<ol>
+<li>Form the commit and add a descriptive message meeting the standardized message formatting requirements.</li>
+</ol>
+</li>
+<li><code>git push origin &lt;feature-branch&gt;</code>
+<ol>
+<li>Push your changes to your repository.</li>
+</ol>
+</li>
+<li>Open Pull Request on GitHub
+<ol>
+<li>This starts the code review process. Another developer must approve the code submission(s) before they enter the mainline.</li>
+<li>It is highly recommended that you run PHPCS against your code before opening pull request. Styling errors may lead to a rejection of your code.</li>
+</ol>
+</li>
+<li>For further contributions, repeat steps 15 - 23</li>
+</ol>
+<h2 id="general-tips">General Tips</h2>
+<ul>
+<li>Explore your dev environment. It’s yours! You should have your own personal development environment. Use it to explore the Hubzero platform as a whole. Most of the Hubzero code is written in PHP or Python, which can be read via a text editor.</li>
+<li>Don’t be afraid to “trash” your development environment. Development environments should be messy. They’re your workspace to make, break, and create cool stuff. In VMware and other virtual machine applications, creating snapshots is a convenient way to return the machine to a working state.</li>
+<li>Ask questions. Feel free to ask Hubzero Developers questions through support tickets or our Contributor’s channel at <a href="https://hubzerocontributors.slack.com">https://hubzerocontributors.slack.com</a>.</li>
+<li>Read the documentation. We try to do our best to keep the essentials in our documentation up-to-date. If something doesn’t seem to be working for you, let us know! We’ll help you out.</li>
+<li>Use Muse. Muse is the CMS’s command-line interface. There is a lot of functionality it brings to the table.</li>
+<li>Submit Bug Fixes. Come across an issue in core? Submit a ticket or contribute a fix ! The Hubzero codebase is extensive and there are a lot of features that need upkeep.</li>
+<li>Create Portable Code. Use relative paths, environment variables, and DNS entries (no IP addresses) to reference files and assets to ensure your project does not break when your code is migrated to another machine during maintenance.</li>
+</ul>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Contributing</a><a class="pager__next" href="../conventions/index.html" rel="next"><span>Next</span>Style Guide</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/contributions.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

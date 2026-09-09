@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project File Connectors · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Project File Connectors HUBzero allows for files to be shared either on a repository owned by the Hub or connect to other file management platforms. Project…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/projects/projectfileconnect/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Project File Connectors</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#project-file-connectors-2">Project File Connectors</a></li>
+<li class="toc__item toc__item--l2"><a href="#setting-up-an-external-application-dropbox-google-drive-aws-s3">Setting up an External Application (Dropbox, Google Drive, AWS S3)</a></li>
+<li class="toc__item toc__item--l3"><a href="#creating-an-application-on-dropbox">[Creating an application on Dropbox]</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Projects</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Project File Connectors</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Project File Connectors</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/projects/projectfileconnect">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2017.</aside>
+        <div class="prose">
+<h2 id="project-file-connectors-2">Project File Connectors</h2>
+<p>HUBzero allows for files to be shared either on a repository owned by the Hub or connect to other file management platforms. Project File Connectors allow for these third-party file management systems to enable files uploaded on the Hub yet stored in their system. Follow these instructions to set-up and provide Project File Connectors to your users:</p>
+<ol>
+<li>Navigate to the third party file management system of your choosing, such as <strong>Google Drive</strong> or <strong>Dropbox</strong></li>
+<li>Set-up either a new project or application and fill in information about the Hub in order to obtain an <strong>API key</strong> and <strong>API secret</strong> upon saving</li>
+<li>Make sure you set the callback address to your Hub and indicate the appropriate file system
+<ol>
+<li><strong>Example:</strong> When setting up a Google Drive API connector to redirect to YourHub, the following callback should be used - *https://yourhub.org/*developer/callback/googledriveAuthorize</li>
+</ol>
+</li>
+<li>Once the <strong>API key</strong> and <strong>API secret</strong> have been created successfully, navigate back to the <strong>/administrator</strong> interface and <strong>login</strong></li>
+<li>Hover over <strong>Extensions</strong> and select from the dropdown <strong>Plug-in Manager</strong></li>
+<li>Search or locate the appropriate plugin connected to the file system
+<ol>
+<li><strong>Example:</strong> If the file system chosen is Google Drive, one would select the <strong>Filesystem - Google Drive</strong> plugin</li>
+</ol>
+</li>
+<li>Click on the title of the plugin and change the status to <strong>Enabled</strong></li>
+<li>Insert the <strong>API Key</strong> in the <strong>Client ID</strong> and the <strong>API Secret</strong> in the <strong>Client Secret</strong></li>
+<li>Fill in an further information as necessary then click <strong>Save &amp; Close</strong></li>
+<li>While still at the <strong>Plug-in Manager</strong>, search for and click the <strong>Projects - Files</strong> plugin.</li>
+<li>Scroll down until you see an option for <strong>Default Action</strong>, and set it to <strong>Connections (view available connections)</strong>.</li>
+<li>Navigate to a <strong>Project</strong> you would like to setup a new file system
+<ol>
+<li><strong>Note:</strong> You must be a manager of the Project in order for you to set-up the File System</li>
+</ol>
+</li>
+<li>Click on <strong>Files</strong> and then click on <strong>New Connection</strong> and choose the file system from the dropdown</li>
+<li>Choose to bypass the secondary step of connecting to the same API.....</li>
+</ol>
+<h2 id="setting-up-an-external-application-dropbox-google-drive-aws-s3">Setting up an External Application (Dropbox, Google Drive, AWS S3)</h2>
+<p>For using external services via OAuth2 the Hub needs a client identifier and secret for use with that service. The methods of obtaining these values vary from service to service and are subject to change at the provider's discretion. Below are the instructions for setting up a developer application on some services (adapting the instructions with some searching should yield similar results for other services or services that have changed their process in the future).</p>
+<h3 id="creating-an-application-on-dropbox">[Creating an application on Dropbox]</h3>
+<ol>
+<li>Navigate to https://www.dropbox.com/developers</li>
+<li>Sign in using the Dropbox credentials that you would like your Hub (the server itself) to authenticate against, this is usually an account owned by the group or organization.</li>
+<li>On the left menu, click &quot;My Apps&quot;.</li>
+<li>On the top right, click &quot;Create App&quot;.</li>
+<li>Select the access level you would like to grant your Hub to your users Dropbox accounts.</li>
+<li>Give the application a name (this name will be displayed to users when they authorize access to their Dropbox account).</li>
+<li>Read and agree (or disagree) to Dropbox's terms.</li>
+<li>Click &quot;Enable additional users&quot;.</li>
+<li>In the redirect URIs section, add the URI of &quot;https://&amp;lt;yourhub.org&gt;/developer/callback/dropboxAuthorize&quot;.</li>
+<li>At this point you should save the &quot;App key&quot; and show and save your &quot;App secret&quot;, you will need to input these on cdmHUB in a later step.</li>
+<li>You can now click on the branding tab and brand the application to your Hub's needs (adding icons, links to the website, etc.). These are all used when a user is asked to enter their Dropbox credentials on behalf of your Hub.</li>
+</ol>
+<p><strong>Dropbox currently limits development accounts to 500 users per id/key, this can be raised by contacting Dropbox support and applying for a production key once that limit has been reached.</strong></p>
+<p><strong>[Creating an application on Dropbox]</strong></p>
+<ol>
+<li>Log in to your Google account and go to the APIs &amp; services</li>
+<li>Navigate to &quot;Credentials&quot; using the left-hand menu</li>
+<li>On the &quot;Credentials&quot; page, click &quot;Create credentials&quot; and choose &quot;OAuth client ID&quot;</li>
+<li>Create &quot;New Credentials&quot;</li>
+<li>On the &quot;Create client id&quot; page, select &quot;Web application&quot;. In the new fields that display, set the following parameters:
+<ol>
+<li>Field: Description</li>
+<li>Name: The name of your web app</li>
+<li>Authorized JavaScript origins:
+<ol>
+<li>https://yourhub.org</li>
+</ol>
+</li>
+<li>Authorized redirect URIs:
+<ol>
+<li>https://yourhub.org/projects/auth</li>
+<li>https://yourhub.org/developer/callback/googledriveAuthorize</li>
+</ol>
+</li>
+<li>Web App Credentials: Configuration</li>
+</ol>
+</li>
+<li>Click &quot;Create&quot; to proceed
+<ol>
+<li>Your &quot;Client Id&quot; and &quot;Client Secret&quot; will be displayed</li>
+</ol>
+</li>
+<li>Save your Client Id and Client Secret to enter into the Connection settings into &quot;Filesystems - Google Drive&quot; plugin
+<ol>
+<li>Additional documentation can be found here:
+<ol>
+<li>https://cloud.google.com/docs/authentication/api-keys</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Projects</a><a class="pager__next" href="../../publications/index.html" rel="next"><span>Next</span>Publications</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/15-projects/projectfileconnect.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fontcons · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Overview In a single collection, Fontcons is a pictographic language designed for a full array of web-related actions and content. Although originally inspired…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/fontcons/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Fontcons</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#integration">Integration</a></li>
+<li class="toc__item toc__item--l2"><a href="#use">Use</a></li>
+<li class="toc__item toc__item--l2"><a href="#icon-list">Icon List</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Fontcons</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Fontcons</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/fontcons">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2012.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>In a single collection, Fontcons is a pictographic language designed for a full array of web-related actions and content. Although originally inspired by <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>, we've heavily modified and added to the available icons; Fontcons brings over 250 icons for use in a package equivalent in file size to just one or two bitmapped icons!</p>
+<h2 id="integration">Integration</h2>
+<p>The <a href="https://hubzero.org/download">open source</a> package contains several bootstrap CSS files for inclusion in your template. These stylesheets can be found in the web root's <code>/media/system/css</code> directory. Here, our attention is on <code>fontcons.css</code> which contains the necessary <code>@font-face</code> rules to start using Fontcons.</p>
+<pre><code class="language-css">@font-face {
+	font-family: 'Fontcons';
+	src: url('/media/system/css/fonts/fontcons-webfont.eot');
+	src: url('/media/system/css/fonts/fontcons-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('/media/system/css/fonts/fontcons-webfont.woff') format('woff'),
+		 url('/media/system/css/fonts/fontcons-webfont.ttf') format('truetype'),
+		 url('/media/system/css/fonts/fontcons-webfont.svg#FontconsRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+</code></pre>
+<p>While you can include Fontcons on a per use basis (e.g., individual components), due to it being relatively light-weight and several Hubzero components making use of it, we recommend including the stylesheet into your site template.</p>
+<p>In the <code>&lt;head&gt;</code> of your template's html, reference the location to <code>fontcons.css</code>:</p>
+<pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;/media/system/css/fontcons.css&quot; /&gt;
+</code></pre>
+<p>Or import fontcons.css into your site's CSS:</p>
+<pre><code class="language-css">/* Note: import rules MUST come first */
+@import &quot;/media/system/css/fontcons.css&quot;;
+
+/* Other styles here */
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A word of caution on using <code>@import</code>: Internet Explorer 8 and older will download stylesheets in sequence rather than in parallel. This can have effects on page speed and flashes of un-styled content before the CSS files have finished downloading. See Steve Souder's <a href="http://www.stevesouders.com/blog/2009/04/09/dont-use-import/">&quot;donâ€™t use @import&quot;</a> for more details.</p>
+</aside>
+<h2 id="use">Use</h2>
+<p>There are two primary ways to use the font, both with advantages and disadvantages. The first, is to include the necessary HTML and unicode character directly into your markup.</p>
+<p>The HTML:</p>
+<pre><code class="language-html">&lt;a href=&quot;#&quot;&gt;&lt;span class=&quot;edit&quot;&gt;&amp;#x270E;&lt;/span&gt; edit&lt;/a&gt;
+</code></pre>
+<p>The CSS:</p>
+<pre><code class="language-css">.edit {
+    font-family: &quot;Fontcons&quot;
+}
+</code></pre>
+<p>The advantage here is greater browser compatibility. <code>@font-face</code> is supported by even Internet Explorer 6. The disadvantage, however, is that you now have to edit the HTML wherever you wish to insert an icon which could change depending upon the styling and theme of your template. That could quickly become a headache!</p>
+<p>The alternative is to use the CSS pseudo-elements <code>:before</code> and <code>:after</code>. This takes a little more setup in your styles but offers greater flexibility and ease of change. Unfortunately, pseudo-elements are <strong>not</strong> supported in Internet Explorer 7 or older. There is, however, a solution which we'll get to in a moment.</p>
+<p>The HTML:</p>
+<pre><code class="language-html">&lt;a class=&quot;edit&quot; href=&quot;#&quot;&gt;edit&lt;/a&gt;
+</code></pre>
+<p>The CSS:</p>
+<pre><code class="language-css">/* Note the :before pseudo-element */
+small.edit,  /* for IE 7, more on that below */
+.edit:before {
+    font-family: &quot;Fontcons&quot;
+    content: &quot;\\270E&quot;; /* unicode characters must start with a backslash */
+}
+</code></pre>
+<p>What about Internet Explorer 7?</p>
+<pre><code class="language-css">.edit {
+    *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='&lt;small class=&quot;edit&quot;&gt;&amp;#x270E;&lt;/small&gt;' + this.innerHTML);
+}
+</code></pre>
+<p>We use <code>&lt;small&gt;</code> in the example above since it's a relatively unused tag and lessens the potential for styling conflicts. It should be noted that over-use of this technique can slow down IE 7 as it has to process and dynamically include content into the page upon render.</p>
+<h2 id="icon-list">Icon List</h2>
+<ul>
+<li>
+<p>\\f000</p>
+</li>
+<li>
+<p>\\266B</p>
+</li>
+<li>
+<p>\\f002</p>
+</li>
+<li>
+<p>\\2709</p>
+</li>
+<li>
+<p>\\2665</p>
+</li>
+<li>
+<p>\\2605</p>
+</li>
+<li>
+<p>\\2606</p>
+</li>
+<li>
+<p>\\f007</p>
+</li>
+<li>
+<p>\\f008</p>
+</li>
+<li>
+<p>\\f009</p>
+</li>
+<li>
+<p>\\f00a</p>
+</li>
+<li>
+<p>\\f00b</p>
+</li>
+<li>
+<p>\\2714</p>
+</li>
+<li>
+<p>\\2716</p>
+</li>
+<li>
+<p>\\f00e</p>
+</li>
+<li>
+<p>\\f010</p>
+</li>
+<li>
+<p>\\f011</p>
+</li>
+<li>
+<p>\\f012</p>
+</li>
+<li>
+<p>\\2699</p>
+</li>
+<li>
+<p>\\f014</p>
+</li>
+<li>
+<p>\\2302</p>
+</li>
+<li>
+<p>\\f016</p>
+</li>
+<li>
+<p>\\f017</p>
+</li>
+<li>
+<p>\\2641</p>
+</li>
+<li>
+<p>\\f01e</p>
+</li>
+<li>
+<p>\\f018</p>
+</li>
+<li>
+<p>\\f019</p>
+</li>
+<li>
+<p>\\f01a</p>
+</li>
+<li>
+<p>\\f01b</p>
+</li>
+<li>
+<p>\\f01c</p>
+</li>
+<li>
+<p>\\f01d</p>
+</li>
+<li>
+<p>\\21BB</p>
+</li>
+<li>
+<p>\\f083</p>
+</li>
+<li>
+<p>\\f092</p>
+</li>
+<li>
+<p>\\f085</p>
+</li>
+<li>
+<p>\\f08e</p>
+</li>
+<li>
+<p>\\f08d</p>
+</li>
+<li>
+<p>\\f077</p>
+</li>
+<li>
+<p>\\23F0</p>
+</li>
+<li>
+<p>\\f071</p>
+</li>
+<li>
+<p>\\f081</p>
+</li>
+<li>
+<p>\\260E</p>
+</li>
+<li>
+<p>\\f056</p>
+</li>
+<li>
+<p>\\f067</p>
+</li>
+<li>
+<p>\\f062</p>
+</li>
+<li>
+<p>\\f044</p>
+</li>
+<li>
+<p>\\f061</p>
+</li>
+<li>
+<p>\\f069</p>
+</li>
+<li>
+<p>\\f07f</p>
+</li>
+<li>
+<p>\\f01f</p>
+</li>
+<li>
+<p>\\269B</p>
+</li>
+<li>
+<p>\\f09c</p>
+</li>
+<li>
+<p>\\f095</p>
+</li>
+<li>
+<p>\\f0a1</p>
+</li>
+<li>
+<p>\\f0a2</p>
+</li>
+<li>
+<p>\\f0a3</p>
+</li>
+<li>
+<p>\\f0ad</p>
+</li>
+<li>
+<p>\\f0ae</p>
+</li>
+<li>
+<p>\\f0b0</p>
+</li>
+<li>
+<p>\\f0b2</p>
+</li>
+<li>
+<p>\\f0e3</p>
+</li>
+<li>
+<p>\\f0d0</p>
+</li>
+<li>
+<p>\\f0ea</p>
+</li>
+<li>
+<p>\\f021</p>
+</li>
+<li>
+<p>\\f022</p>
+</li>
+<li>
+<p>\\f023</p>
+</li>
+<li>
+<p>\\2691</p>
+</li>
+<li>
+<p>\\f025</p>
+</li>
+<li>
+<p>\\f026</p>
+</li>
+<li>
+<p>\\f027</p>
+</li>
+<li>
+<p>\\f028</p>
+</li>
+<li>
+<p>\\f029</p>
+</li>
+<li>
+<p>\\f02a</p>
+</li>
+<li>
+<p>\\f02b</p>
+</li>
+<li>
+<p>\\f02c</p>
+</li>
+<li>
+<p>\\f02d</p>
+</li>
+<li>
+<p>\\f02e</p>
+</li>
+<li>
+<p>\\2399</p>
+</li>
+<li>
+<p>\\f030</p>
+</li>
+<li>
+<p>\\f031</p>
+</li>
+<li>
+<p>\\f032</p>
+</li>
+<li>
+<p>\\f033</p>
+</li>
+<li>
+<p>\\f034</p>
+</li>
+<li>
+<p>\\f035</p>
+</li>
+<li>
+<p>\\f036</p>
+</li>
+<li>
+<p>\\f037</p>
+</li>
+<li>
+<p>\\f038</p>
+</li>
+<li>
+<p>\\f039</p>
+</li>
+<li>
+<p>\\f03a</p>
+</li>
+<li>
+<p>\\f03b</p>
+</li>
+<li>
+<p>\\f03c</p>
+</li>
+<li>
+<p>\\f03d</p>
+</li>
+<li>
+<p>\\f03e</p>
+</li>
+<li>
+<p>\\f082</p>
+</li>
+<li>
+<p>\\2692</p>
+</li>
+<li>
+<p>\\25F7</p>
+</li>
+<li>
+<p>\\f080</p>
+</li>
+<li>
+<p>\\f084</p>
+</li>
+<li>
+<p>\\26DF</p>
+</li>
+<li>
+<p>\\f004</p>
+</li>
+<li>
+<p>\\26D3</p>
+</li>
+<li>
+<p>\\f00c</p>
+</li>
+<li>
+<p>\\237E</p>
+</li>
+<li>
+<p>\\f072</p>
+</li>
+<li>
+<p>\\231B</p>
+</li>
+<li>
+<p>\\f068</p>
+</li>
+<li>
+<p>\\f005</p>
+</li>
+<li>
+<p>\\f05c</p>
+</li>
+<li>
+<p>\\f054</p>
+</li>
+<li>
+<p>\\f063</p>
+</li>
+<li>
+<p>\\f053</p>
+</li>
+<li>
+<p>\\f07d</p>
+</li>
+<li>
+<p>\\f07e</p>
+</li>
+<li>
+<p>\\f05f</p>
+</li>
+<li>
+<p>\\f09a</p>
+</li>
+<li>
+<p>\\f08f</p>
+</li>
+<li>
+<p>\\f0a4</p>
+</li>
+<li>
+<p>\\f0a5</p>
+</li>
+<li>
+<p>\\f0a6</p>
+</li>
+<li>
+<p>\\f0a7</p>
+</li>
+<li>
+<p>\\f0ca</p>
+</li>
+<li>
+<p>\\f0cb</p>
+</li>
+<li>
+<p>\\f0cc</p>
+</li>
+<li>
+<p>\\f0cd</p>
+</li>
+<li>
+<p>\\f0ce</p>
+</li>
+<li>
+<p>\\f0db</p>
+</li>
+<li>
+<p>\\270E</p>
+</li>
+<li>
+<p>\\f041</p>
+</li>
+<li>
+<p>\\f043</p>
+</li>
+<li>
+<p>\\25D1</p>
+</li>
+<li>
+<p>\\270D</p>
+</li>
+<li>
+<p>\\f045</p>
+</li>
+<li>
+<p>\\2611</p>
+</li>
+<li>
+<p>\\f047</p>
+</li>
+<li>
+<p>\\21E4</p>
+</li>
+<li>
+<p>\\f049</p>
+</li>
+<li>
+<p>\\219E</p>
+</li>
+<li>
+<p>\\25B6</p>
+</li>
+<li>
+<p>\\f04c</p>
+</li>
+<li>
+<p>\\2588</p>
+</li>
+<li>
+<p>\\21A0</p>
+</li>
+<li>
+<p>\\21E4</p>
+</li>
+<li>
+<p>\\f049</p>
+</li>
+<li>
+<p>\\f052</p>
+</li>
+<li>
+<p>\\2039</p>
+</li>
+<li>
+<p>\\203A</p>
+</li>
+<li>
+<p>\\2295</p>
+</li>
+<li>
+<p>\\2296</p>
+</li>
+<li>
+<p>\\f057</p>
+</li>
+<li>
+<p>\\f058</p>
+</li>
+<li>
+<p>\\f059</p>
+</li>
+<li>
+<p>\\f05a</p>
+</li>
+<li>
+<p>\\f05b</p>
+</li>
+<li>
+<p>\\2297</p>
+</li>
+<li>
+<p>\\f05d</p>
+</li>
+<li>
+<p>\\2298</p>
+</li>
+<li>
+<p>\\f087</p>
+</li>
+<li>
+<p>\\f088</p>
+</li>
+<li>
+<p>\\f086</p>
+</li>
+<li>
+<p>\\f091</p>
+</li>
+<li>
+<p>\\f093</p>
+</li>
+<li>
+<p>\\270B</p>
+</li>
+<li>
+<p>\\f00d</p>
+</li>
+<li>
+<p>\\f08a</p>
+</li>
+<li>
+<p>\\f006</p>
+</li>
+<li>
+<p>\\f003</p>
+</li>
+<li>
+<p>\\f001</p>
+</li>
+<li>
+<p>\\f094</p>
+</li>
+<li>
+<p>\\f078</p>
+</li>
+<li>
+<p>\\f040</p>
+</li>
+<li>
+<p>\\f060</p>
+</li>
+<li>
+<p>\\f05e</p>
+</li>
+<li>
+<p>\\f08c</p>
+</li>
+<li>
+<p>\\f079</p>
+</li>
+<li>
+<p>\\f097</p>
+</li>
+<li>
+<p>\\f098</p>
+</li>
+<li>
+<p>\\f03f</p>
+</li>
+<li>
+<p>\\f096</p>
+</li>
+<li>
+<p>\\f09d</p>
+</li>
+<li>
+<p>\\f0a8</p>
+</li>
+<li>
+<p>\\f0a9</p>
+</li>
+<li>
+<p>\\f0aa</p>
+</li>
+<li>
+<p>\\f0ab</p>
+</li>
+<li>
+<p>\\f0b1</p>
+</li>
+<li>
+<p>\\f0c1</p>
+</li>
+<li>
+<p>\\f0c2</p>
+</li>
+<li>
+<p>\\f0c3</p>
+</li>
+<li>
+<p>\\2622</p>
+</li>
+<li>
+<p>\\2746</p>
+</li>
+<li>
+<p>\\2190</p>
+</li>
+<li>
+<p>\\2192</p>
+</li>
+<li>
+<p>\\2191</p>
+</li>
+<li>
+<p>\\2193</p>
+</li>
+<li>
+<p>\\f064</p>
+</li>
+<li>
+<p>\\f065</p>
+</li>
+<li>
+<p>\\f066</p>
+</li>
+<li>
+<p>\\271A</p>
+</li>
+<li>
+<p>\\2010</p>
+</li>
+<li>
+<p>\\273D</p>
+</li>
+<li>
+<p>\\f06b</p>
+</li>
+<li>
+<p>\\f06c</p>
+</li>
+<li>
+<p>\\f06d</p>
+</li>
+<li>
+<p>\\2601</p>
+</li>
+<li>
+<p>\\f046</p>
+</li>
+<li>
+<p>\\f06e</p>
+</li>
+<li>
+<p>\\f070</p>
+</li>
+<li>
+<p>\\26A0</p>
+</li>
+<li>
+<p>\\2757</p>
+</li>
+<li>
+<p>\\2708</p>
+</li>
+<li>
+<p>\\f073</p>
+</li>
+<li>
+<p>\\f074</p>
+</li>
+<li>
+<p>\\f075</p>
+</li>
+<li>
+<p>\\f0e5</p>
+</li>
+<li>
+<p>\\f0e6</p>
+</li>
+<li>
+<p>\\f02f</p>
+</li>
+<li>
+<p>\\2303</p>
+</li>
+<li>
+<p>\\2304</p>
+</li>
+<li>
+<p>\\267B</p>
+</li>
+<li>
+<p>\\f07a</p>
+</li>
+<li>
+<p>\\f07b</p>
+</li>
+<li>
+<p>\\f07c</p>
+</li>
+<li>
+<p>\\2195</p>
+</li>
+<li>
+<p>\\2194</p>
+</li>
+<li>
+<p>\\f076</p>
+</li>
+<li>
+<p>\\f090</p>
+</li>
+<li>
+<p>\\f08b</p>
+</li>
+<li>
+<p>\\f089</p>
+</li>
+<li>
+<p>\\2661</p>
+</li>
+<li>
+<p>\\26A1</p>
+</li>
+<li>
+<p>\\2702</p>
+</li>
+<li>
+<p>\\22EF</p>
+</li>
+<li>
+<p>\\f055</p>
+</li>
+<li>
+<p>\\f042</p>
+</li>
+<li>
+<p>\\2693</p>
+</li>
+<li>
+<p>\\275D</p>
+</li>
+<li>
+<p>\\275E</p>
+</li>
+<li>
+<p>\\f04a</p>
+</li>
+<li>
+<p>\\f048</p>
+</li>
+<li>
+<p>\\f04d</p>
+</li>
+<li>
+<p>\\f04e</p>
+</li>
+<li>
+<p>\\f06f</p>
+</li>
+<li>
+<p>\\f04f</p>
+</li>
+<li>
+<p>\\f09b</p>
+</li>
+<li>
+<p>\\f0a0</p>
+</li>
+<li>
+<p>\\f0d7</p>
+</li>
+<li>
+<p>\\f0d8</p>
+</li>
+<li>
+<p>\\f0d9</p>
+</li>
+<li>
+<p>\\f0da</p>
+</li>
+<li>
+<p>\\f0d6</p>
+</li>
+<li>
+<p>\\f0ea</p>
+</li>
+<li>
+<p>\\f0c5</p>
+</li>
+</ul>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../socicons/index.html" rel="prev"><span>Previous</span>Socicons</a><a class="pager__next" href="../elements/index.html" rel="next"><span>Next</span>Elements &amp; Typography</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/12-fontcons.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Tool Development Process Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/overview/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Overview</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#tool-development-process">Tool Development Process</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-graphical-user-interfaces">Creating Graphical User Interfaces</a></li>
+<li class="toc__item toc__item--l2"><a href="#learn-more-about-hubzero-tools">Learn more about HUBzero Tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#material-from-the-2-2-documentation">Material from the 2.2 documentation</a></li>
+<li class="toc__item toc__item--l2"><a href="#tool-development-process-2">Tool Development Process</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-publishing">What is Publishing?</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-kinds-of-content-can-you-publish">What Kinds of Content Can You Publish?</a></li>
+<li class="toc__item toc__item--l2"><a href="#rappture-tools">Rappture Tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#traditional-desktop-applications">Traditional Desktop Applications</a></li>
+<li class="toc__item toc__item--l2"><a href="#jupyter-notebooks">Jupyter Notebooks</a></li>
+<li class="toc__item toc__item--l2"><a href="#jupyter-tools">Jupyter Tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#r-studio-and-shiny">R Studio and Shiny</a></li>
+<li class="toc__item toc__item--l2"><a href="#plotly-dash">Plotly Dash</a></li>
+<li class="toc__item toc__item--l2"><a href="#web-applications-and-pages-html-css-and-javascript">Web Applications and Pages (HTML, CSS, and Javascript)</a></li>
+<li class="toc__item toc__item--l2"><a href="#hubzero-development-team-custom-software-tool-projects">HUBzero Development Team: Custom Software &amp; Tool Projects</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Overview</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Overview</h1>
+        </header>
+        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/overview">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2009. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        <div class="prose">
+<h2 id="tool-development-process">Tool Development Process</h2>
+<p>Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a source code repository, and typically develops the code within a workspace or Jupyter Notebook. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the &quot;published&quot; state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.</p>
+<p>The complete process is explained in the <a href="../../../managers/maintenance/tools/index.html">tool maintenance documentation for hub managers</a>. Additional details about this process can be found in the following seminars:</p>
+<ul>
+<li><a href="https://nanohub.org/resources/14671">Bootcamp Course for New Developers</a></li>
+<li><a href="https://nanohub.org/resources/14668">Overview of Tool Development Process</a></li>
+<li><a href="http://nanohub.org/resources/3081">Using Workspaces</a></li>
+<li><a href="https://nanohub.org/resources/14669">Using Subversion for Source Code Control</a></li>
+</ul>
+<p>The tool contribution process currently supports use of <a href="https://svnbook.red-bean.com/">Subversion</a> and <a href="https://git-scm.com">Git</a> repositories.</p>
+<h2 id="creating-graphical-user-interfaces">Creating Graphical User Interfaces</h2>
+<p>If a tool already has a graphical user interface that runs under Linux/X11, then it can be published as-is, usually in a matter of hours. There are two caveats:</p>
+<ul>
+<li><strong>If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.</strong> Our containers run in cluster nodes without graphics cards, and are therefore configured with MESA for software emulation of OpenGL. This has much poorer performance than ordinary desktop computers with a decent graphics card, so frame rates are much lower. Also, all graphics are transmitted to the user's web browser after rendering, again lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below 100 frames/sec that you would normally see on a desktop computer.</li>
+<li><strong>Tools running within the hub have access to the hub's local file system--not the user's desktop.</strong> Many tools have a <em>File</em> menu with an <em>Open</em> option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's <code>importfile</code> command.</li>
+</ul>
+<p>The graphical user interface for any tool published in the hub environment can be created using standard toolkits for desktop applications--including Java, Matlab, Python/QT, etc.</p>
+<p>If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the <a href="http://rappture.org">Rappture Toolkit</a> that is included as part of HUBzero. Rappture reads a simple XML-based description of a tool and generates a graphical user interface automatically. It interfaces naturally with many programming languages, including C/C++, Fortran, Matlab, Python, Perl, Tcl/Tk, and Ruby. It creates tools that look something like the following:</p>
+<p><img src="../../media/overview-rappture-01.png" alt="example of a Rappture-based tool" /></p>
+<p>Rappture was designed for the hub environment and therefore addresses the caveats listed above. All Rappture-based tools have integrated visualization capabilities that take advantage of hardware-accelerated rendering available on the HUBzero rendering farm. Rappture-based tools also include options to upload/download data from the end user's desktop via the <code>importfile</code>/<code>exportfile</code> commands available within HUBzero.</p>
+<p>For more details about Rappture, see the following links:</p>
+<ul>
+<li><a href="https://nanohub.org/infrastructure/rappture/wiki/whatIsRappture">Rappture Quick Overview</a></li>
+<li><a href="https://help.hubzero.org/resources/tooldev">Developing Scientific Tools for the HUBzero Platform</a> (introductory course with 7 lectures)</li>
+<li><a href="https://nanohub.org/infrastructure/rappture/wiki/Documentation">Rappture Reference Manual</a></li>
+</ul>
+<h2 id="learn-more-about-hubzero-tools">Learn more about HUBzero Tools</h2>
+<p>Discover the power of HUBzero tools and how easy it is to visualize research using the HUBzero platform.</p>
+<p>Jupyter Notebooks:</p>
+<p>RStudio:</p>
+<h2 id="material-from-the-2-2-documentation">Material from the 2.2 documentation</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.</p>
+</aside>
+<h2 id="tool-development-process-2">Tool Development Process</h2>
+<p>Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a <a href="https://subversion.apache.org">Subversion</a> or github source code repository, and develops the code within a workspace or using Jupyter or RStudio. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the &quot;published&quot; state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.</p>
+<h2 id="what-is-publishing">What is Publishing?</h2>
+<p>Publishing a notebook is similar to publishing anything on the hub platform. By publishing your work you will:</p>
+<ul>
+<li>Make your work available to others.</li>
+<li>Allow others to cite your work.</li>
+</ul>
+<p>To do this, you will have to go to <a href="https://help.hubzero.org/tools/create">https://help.hubzero.org/tools/create</a> (on other hubs, use the appropriate hubname) and follow the process described there.</p>
+<h2 id="what-kinds-of-content-can-you-publish">What Kinds of Content Can You Publish?</h2>
+<p>Previously, HUBzero was limited to publishing Rappture Tools. However, you can now publish many different types of computational content on HUBzero.</p>
+<h2 id="rappture-tools">Rappture Tools</h2>
+<p>If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the <a href="http://rappture.org">Rappture Toolkit</a> that is included as part of HUBzero. It works well for tools with simple inputs and outputs. You document the inputs and outputs in an XML file and the GUI is generated for you. When you run the tool, you simply set the inputs and click &quot;Simulate&quot;.</p>
+<p>It works with many programming languages, including C/C++, Fortran, Matlab, Python, Tcl/Tk, and Ruby. It creates tools that look something like the following:</p>
+<p><img src="../../media/overview-rappture-01.png" alt="example of a Rappture-based tool" /></p>
+<h2 id="traditional-desktop-applications">Traditional Desktop Applications</h2>
+<p>If you have a traditional desktop application running under Linux/X11, you can publish it and have the X output appear in a VNC window on the users browser. There are two caveats:</p>
+<ul>
+<li><strong>If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.</strong> All graphics are transmitted as images to the user's web browser after rendering, lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below what you would normally see on a desktop computer.</li>
+<li><strong>Tools running within the hub have access to the hub's local file system--not the user's desktop.</strong> Many tools have a <em>File</em> menu with an <em>Open</em> option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's <code>importfile</code> command.</li>
+</ul>
+<h2 id="jupyter-notebooks">Jupyter Notebooks</h2>
+<p>Notebooks work best for education, documenting workflows, and highly-interactive or exploratory work. Jupyter notebooks on the hubs can be written in Python, R, and Octave/Matlab. Other languages can be installed if required. And notebooks can run external programs written in any language. So some Python code in a notebook can prepare input, send it to a simulation, and then postprocess the ouputs.</p>
+<h2 id="jupyter-tools">Jupyter Tools</h2>
+<p>Jupyter tools are Jupyter notebooks. When published, only the graphical components (UI widgets, visualizations, etc) are displayed. The notebook is automatically run and the IDE is hidden and cannot be accessed. Jupyter tools will be easier to write in Python due to the large collection of available widgets. If necessary, just the GUI can be written in Python.</p>
+<h2 id="r-studio-and-shiny">R Studio and Shiny</h2>
+<p>HUBzero also supports R Shiny tools for R developers. https://shiny.rstudio.com/</p>
+<h2 id="plotly-dash">Plotly Dash</h2>
+<p>Dash is a Python framework for building analytical web applications. No JavaScript required. Built on top of Plotly.js, React, and Flask, Dash ties modern UI elements like dropdowns, sliders, and graphs to your analytical Python code.</p>
+<p><a href="https://plot.ly/products/dash/">https://plot.ly/products/dash/</a>
+<a href="https://plot.ly/dash/gallery">https://plot.ly/dash/gallery</a></p>
+<h2 id="web-applications-and-pages-html-css-and-javascript">Web Applications and Pages (HTML, CSS, and Javascript)</h2>
+<p>If you have a web application that runs on Linux or just some web pages and javascript, then you can publish them as a tool on HUBzero.</p>
+<hr />
+<p>Discover different ways the HUBzero team has incorporated new tool creation systems such as Jupyter Notebooks and RStudio.</p>
+<p>Jupyter Notebooks:</p>
+<p>RStudio:</p>
+<h2 id="hubzero-development-team-custom-software-tool-projects">HUBzero Development Team: Custom Software &amp; Tool Projects</h2>
+<p>Check out custom software and tool projects the HUBzero development team has helped design and implement on sites using the HUBzero platform.</p>
+<p>REMEDI Central:</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../toolrepostructure/index.html" rel="prev"><span>Previous</span>Tool Repository Structure</a><a class="pager__next" href="../invoke/index.html" rel="next"><span>Next</span>Launching tools with invoke scripts</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/02-overview.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

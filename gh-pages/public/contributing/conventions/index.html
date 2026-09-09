@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Style Guide · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="Overview This document provides guidelines for code formatting and documentation to individuals and teams contributing to HUBzero CMS. Topics covered: PHP File…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../contributions/index.html">Contribution Guide</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Style Guide</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="commits/index.html">Commit Messages</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../documentation/index.html">Working on the documentation</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Style Guide</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>Style Guide</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>This document provides guidelines for code formatting and documentation to individuals and teams contributing to HUBzero CMS.</p>
+<p>Topics covered:</p>
+<ul>
+<li>PHP File Formatting
+<ul>
+<li>
+<p>PHP and Database Naming Conventions</p>
+<ul>
+<li>
+<p>PHP, CSS Coding Style</p>
+</li>
+<li>
+<p>PHP Inline Documentation</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li><a href="phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li><a href="csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li><a href="databaseschema/index.html">Database Schema Conventions</a></li>
+<li><a href="commits/index.html">Commit Messages</a></li></ul></section>
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../contributions/index.html" rel="prev"><span>Previous</span>Contribution Guide</a><a class="pager__next" href="phpcodingstyles/index.html" rel="next"><span>Next</span>PHP Coding Styles</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

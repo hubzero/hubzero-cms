@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Environment · Tools · Hubzero Documentation</title>
+  <meta name="description" content="The Tool Session Tools sessions on hubs run in a container. Each tool session runs in the environment of the user who started the tool. Because it is in a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/prerequisites/environment/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Environment</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-tool-session">The Tool Session</a></li>
+<li class="toc__item toc__item--l2"><a href="#environment-variables">Environment Variables</a></li>
+<li class="toc__item toc__item--l2"><a href="#session-session-id">SESSION=&quot;session id&quot;</a></li>
+<li class="toc__item toc__item--l2"><a href="#sessiondir-home-hub-hostname-username-data-sessions-session-id">SESSIONDIR=/home/&quot;hub hostname&quot;/&quot;username&quot;/data/sessions/&quot;session id&quot;</a></li>
+<li class="toc__item toc__item--l2"><a href="#resultsdir-home-hub-hostname-username-data-results-session-id">RESULTSDIR=/home/&quot;hub hostname&quot;/&quot;username/data/results/&quot;session id&quot;</a></li>
+<li class="toc__item toc__item--l2"><a href="#user-username">USER=&quot;username&quot;</a></li>
+<li class="toc__item toc__item--l2"><a href="#pwd-present-working-directory">PWD=/&quot;present working directory&quot;</a></li>
+<li class="toc__item toc__item--l2"><a href="#home-home-hub-hostname-username">HOME=/home/&quot;hub hostname&quot;/&quot;username&quot;</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Prerequisites</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Environment</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Environment</h1>
+        </header>
+        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/22/toolsnewdocs/prerequisites/environment">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025. It was never published there, so read it as a draft. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        <div class="prose">
+<h2 id="the-tool-session">The Tool Session</h2>
+<p>Tools sessions on hubs run in a container. Each tool session runs in the environment of the user who started the tool. Because it is in a container, you will not be able to see or interact with other users.</p>
+<p>If you have workspace or ssh access, you can open a terminal and look around...</p>
+<pre><code>mmh@HUBzero:~$ w
+ 14:36:37 up 3 days, 22 min,  0 users,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+
+mmh@HUBzero:~$ ps
+  PID TTY          TIME CMD
+ 2113 pts/0    00:00:00 bash
+ 2201 pts/0    00:00:00 ps
+
+mmh@HUBzero:~$ pwd
+/home/hubzero/mmh
+
+mmh@HUBzero:~$ echo $SESSION
+19245
+
+mmh@HUBzero:~$ echo $SESSIONDIR
+/home/hubzero/mmh/data/sessions/19245
+</code></pre>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>A number of environment variables are available in a tool session. A few are discussed here. A full list can be viewed by running the &quot;env&quot; command from a terminal in the workspace tool.</p>
+<p>*Note: tools are invoked by the user's account and permissions set accordingly. A tool can save files to a user's home directory because the tool runs as that user.</p>
+<h2 id="session-session-id">SESSION=&quot;session id&quot;</h2>
+<p>This variable stores the session ID or session number that is currently active. It's the ID of the session you are currently using.</p>
+<h2 id="sessiondir-home-hub-hostname-username-data-sessions-session-id">SESSIONDIR=/home/&quot;hub hostname&quot;/&quot;username&quot;/data/sessions/&quot;session id&quot;</h2>
+<p>This variable stores the current session directory of the open tool. This session directory is a separate directory created for each new tool session. It is readable and writable by the tool and the user. This is a good place for temporary files generated by your tool. Ideally, these temporary files should be removed when the tool no longer need them. Users will be prompted to remove these directories when they get low on disk space.</p>
+<p>*This is the default path for a Rappture tool on invoke.</p>
+<h2 id="resultsdir-home-hub-hostname-username-data-results-session-id">RESULTSDIR=/home/&quot;hub hostname&quot;/&quot;username/data/results/&quot;session id&quot;</h2>
+<p>This variable stores the results directory located in the user's home directory. This is a good place to place simulation results for the user to access later. This is the default directory for Jupyter tools. Rappture xml output files are automatically placed here.</p>
+<p>*Be mindful of the user's quota limits. Users will be prompted to remove these directories when they get low on disk space.</p>
+<h2 id="user-username">USER=&quot;username&quot;</h2>
+<p>This variable stores the current username of the user running the tool.</p>
+<h2 id="pwd-present-working-directory">PWD=/&quot;present working directory&quot;</h2>
+<p>This variable stores the present working directory.</p>
+<h2 id="home-home-hub-hostname-username">HOME=/home/&quot;hub hostname&quot;/&quot;username&quot;</h2>
+<p>This variable stores the path of the user's home directory. This is useful if a tool provided an option to save the user's current work. Please create a directory for the tool to save files here, to prevent cluttering the user's home directory too much. A best practice would be to create a new directory for a tool in the user's data directory. For example, &quot;$HOME/data/toolname&quot;.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Prerequisites</a><a class="pager__next" href="../../process/index.html" rel="next"><span>Next</span>Process</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/prerequisites/environment.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

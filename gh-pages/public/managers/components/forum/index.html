@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forum · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The forum is the hub&#x27;s message board. Discussions are organised into sections , which hold categories , which hold threads ; a thread is an opening post and…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/forum/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Forum</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#scope">Scope</a></li>
+<li class="toc__item toc__item--l2"><a href="#sections">Sections</a></li>
+<li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l2"><a href="#threads">Threads</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-section">Editing a section</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-category">Editing a category</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-post">Editing a post</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
+<li class="toc__item toc__item--l2"><a href="#group-and-course-forums">Group and course forums</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Forum</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Forum</h1>
+        </header>
+        
+        <div class="prose">
+<p>The forum is the hub's message board. Discussions are organised into
+<strong>sections</strong>, which hold <strong>categories</strong>, which hold <strong>threads</strong>; a thread is
+an opening post and the replies to it. The site-wide forum lives at <code>/forum</code>.
+This chapter covers the administrator's side; the
+<a href="../../../users/forum/index.html">Hub users</a> book covers reading and posting.</p>
+<p>Open it in the administrator interface under <strong>Components &gt; Forum</strong>. Three
+sub-menu links sit at the top left — <strong>Sections</strong>, <strong>Categories</strong>, and
+<strong>Threads</strong> — one for each level of the hierarchy.</p>
+<h2 id="scope">Scope</h2>
+<p>Every section, category, and post carries a <strong>Scope</strong> and a <strong>Scope ID</strong>.
+Together they say which forum the record belongs to: <code>site</code> with an ID of <code>0</code>
+is the site-wide forum, <code>group</code> with a group's ID number is that group's
+forum, <code>course</code> with a course ID is a course's forum. All of them share the
+same tables and the same three administrator screens, so the lists you see
+here contain every forum on the hub, not only the site one. The <strong>Scope</strong>
+filter on each screen narrows the list to one forum; the site forum is listed
+as <strong>(none)</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Scope and Scope ID are free-text fields on the edit forms.
+Changing them moves a record into a different forum. A category is forced to
+take its section's scope when you save it, and a post is forced to take its
+category's scope, so in practice you only set the scope on a section.</p>
+</aside>
+<h2 id="sections">Sections</h2>
+<p>The Sections screen lists <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>, <strong>Access</strong>,
+<strong>Scope</strong>, and the number of <strong>Categories</strong> in the section. Click a column
+heading to sort by it, click again to reverse the order. Click the category
+count to jump to that section's categories.</p>
+<p>Filter the list with the search box (matched against titles; press <strong>Go</strong>, or
+<strong>Clear</strong> to reset), the <strong>Scope</strong>, <strong>State</strong>, and <strong>Access</strong> menus.</p>
+<p>The toolbar offers <strong>Options</strong>, <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>New</strong>,
+<strong>Delete</strong>, and <strong>Help</strong>.</p>
+<h2 id="categories">Categories</h2>
+<p>The Categories screen lists <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>, <strong>Access</strong>,
+<strong>Scope</strong>, <strong>Threads</strong>, and <strong>Posts</strong>. The thread and post counts link to the
+Threads screen filtered to that category.</p>
+<p>Filter by <strong>Scope</strong>; once a scope is chosen a <strong>Section</strong> menu appears, and
+<strong>State</strong> and <strong>Access</strong> menus are always present. This screen has no search
+box. The toolbar is the same as the Sections screen.</p>
+<h2 id="threads">Threads</h2>
+<p>The Threads screen lists thread-starting posts: <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>,
+<strong>Sticky</strong>, <strong>Access</strong>, <strong>Scope</strong>, <strong>Creator</strong>, and <strong>Created</strong>. Click a
+title to open the thread's posts. Click the <strong>Sticky</strong> icon to pin or unpin a
+thread — sticky threads sort to the top of a category regardless of age.</p>
+<p>Filter by <strong>Scope</strong>, then <strong>Section</strong>, then <strong>Category</strong>, plus <strong>State</strong> and
+<strong>Access</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Creator</strong> column shows the author's numeric user ID rather
+than a name, and <strong>Created</strong> shows the raw database timestamp.</p>
+</aside>
+<p>Opening a thread shows the posts it contains — <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>,
+<strong>Scope</strong>, <strong>Creator</strong>, <strong>Created</strong> — with a <strong>Category</strong> filter and the same
+State and Access filters. A post saved without a title is given one built
+from the first 70 characters of its text.</p>
+<h2 id="editing-a-section">Editing a section</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope</td>
+<td>Which kind of forum the section belongs to: <code>site</code>, <code>group</code>, or <code>course</code>. New sections default to <code>site</code>.</td>
+</tr>
+<tr>
+<td>Scope ID</td>
+<td>The ID of the group or course. <code>0</code> for the site forum.</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>The URL segment. Left blank, it is generated from the title in lowercase with hyphens for spaces.</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Unpublished, Published, or Trashed. Only published sections appear on the site.</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>The viewing level a visitor needs.</td>
+</tr>
+</tbody>
+</table>
+<p>The panel beside the form shows the <strong>Creator</strong> and <strong>Created</strong> date. If you
+have the component's Admin permission, a <strong>Rules</strong> fieldset at the foot of the
+form sets permissions for this one section.</p>
+<p>Press <strong>Save</strong> to stay on the form, <strong>Save &amp; Close</strong> to return to the list, or
+<strong>Cancel</strong>.</p>
+<h2 id="editing-a-category">Editing a category</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope, Scope ID</td>
+<td>As above, but overwritten with the parent section's values on save.</td>
+</tr>
+<tr>
+<td>Section</td>
+<td>Required. Sections are grouped by scope in the menu, with the site forum shown as <code>[ site ]</code>. Saving with no valid section fails with &quot;Section was not specified or does not exist.&quot;</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>As above.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>A line or two shown under the category title on the site.</td>
+</tr>
+<tr>
+<td>Lock Category (no new posts)</td>
+<td>Locked categories accept no new threads. Existing content stays readable.</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Unpublished, Published, or Trashed.</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>The viewing level a visitor needs.</td>
+</tr>
+</tbody>
+</table>
+<p>The side panel shows the creator and creation date, and the modifier and
+modification date once the category has been edited. This screen's toolbar
+offers <strong>Save &amp; Close</strong> and <strong>Cancel</strong> only; unlike the section and post
+forms it has no <strong>Save</strong> button that keeps you on the form.</p>
+<h2 id="editing-a-post">Editing a post</h2>
+<p>The same form edits a thread-starting post and a reply; which fields appear
+depends on which it is.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope, Scope ID</td>
+<td>Overwritten with the parent category's values on save.</td>
+</tr>
+<tr>
+<td>Object ID</td>
+<td>An optional ID linking the post to another item on the hub.</td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Thread starters only. Required; the menu nests categories under their sections.</td>
+</tr>
+<tr>
+<td>Parent</td>
+<td>Replies only. Which post in the thread this one answers.</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Optional. Left blank, it is built from the first 70 characters of the post.</td>
+</tr>
+<tr>
+<td>Comments</td>
+<td>Required. The body of the post.</td>
+</tr>
+<tr>
+<td>Your tags</td>
+<td>Thread starters only.</td>
+</tr>
+<tr>
+<td>File, Description</td>
+<td>One attachment per post. Uploading a new file replaces the current one. Existing attachments are listed above with a delete link.</td>
+</tr>
+<tr>
+<td>Post Anonymously</td>
+<td>Hides the author's name on the site.</td>
+</tr>
+<tr>
+<td>Make discussion sticky</td>
+<td>Thread starters only.</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Unpublished, Published, or Trashed. A fourth state, reported, is set when a member reports the post as abusive; the post then shows a warning in place of its text on the site.</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>The viewing level a visitor needs.</td>
+</tr>
+</tbody>
+</table>
+<p>The toolbar has <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Cancel</strong>, and <strong>Help</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> on any of these screens removes the record
+permanently and takes its children with it — deleting a section deletes its
+categories, their threads, every reply, and every attached file. There is no
+trash to recover from. Setting the state to Trashed instead hides the record
+while keeping it.</p>
+</aside>
+<h2 id="options">Options</h2>
+<p>The <strong>Options</strong> button opens the component-wide settings: where uploaded
+files are stored, which forums feed the site's discussion listings, whether
+members may post anonymously, whether threads are flat or nested, and how
+deep nesting may go. Every option is listed with its values in the
+<a href="../../../reference/configuration/components/forum/index.html">configuration reference</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Threading</strong> option ships with a stored default of <code>both</code>,
+which is not one of its two choices. Until you set it to <strong>Nested threads</strong>
+the forum renders flat, one-level threads.</p>
+</aside>
+<h2 id="permissions">Permissions</h2>
+<p>The <strong>Permissions</strong> tab of Options controls who may access, administer, and
+manage the component, and who may create, delete, edit, change the state of,
+and edit their own entries. Alongside the general actions, the component
+defines separate create, delete, edit, edit-state, and edit-own actions for
+each level — Section, Category, Thread, and Comment — so a group can be
+allowed to start threads without being allowed to add categories. Permissions
+can also be set on an individual section, category, or thread through the
+<strong>Rules</strong> fieldset on its edit form, and the site-facing forum honours those:
+a member with the section create permission gets a <strong>New Section</strong> form on the
+forum's home page.</p>
+<h2 id="group-and-course-forums">Group and course forums</h2>
+<p>A group's forum is provided by the <strong>Groups - Forum</strong> plugin, which reuses
+these models and tables with a scope of <code>group</code>. Its plugin settings set the
+default access level for the tab and the display limit; a group's own managers
+set threading, default sort order, and anonymous posting from the forum's
+<strong>Settings</strong> page inside the group. Group forums also offer per-member email
+notifications, described in
+<a href="../../../users/groups/groupforum/index.html">Group forum</a>.</p>
+<h2 id="api">API</h2>
+<p>The forum exposes endpoints for listing sections, categories, and threads,
+reading a single thread, creating threads and posts, and managing a member's
+category subscriptions. See the
+<a href="../../../reference/api/forum/index.html">API reference</a>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../kb/index.html" rel="next"><span>Next</span>Knowledge base</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/11-forum.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

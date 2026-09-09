@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cascading Style Sheets · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Overview CSS stands for Cascading Style Sheet. HTML tags specify the graphical flow of the elements, be it text, images or flash animations, on a webpage. CSS…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/css/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Cascading Style Sheets</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#implementation">Implementation</a></li>
+<li class="toc__item toc__item--l3"><a href="#definitions-for-this-section">Definitions for this section:</a></li>
+<li class="toc__item toc__item--l3"><a href="#guidelines">Guidelines</a></li>
+<li class="toc__item toc__item--l3"><a href="#directory-files">Directory &amp; Files</a></li>
+<li class="toc__item toc__item--l2"><a href="#bootstrap">Bootstrap</a></li>
+<li class="toc__item toc__item--l2"><a href="#typical-main-css-structure">Typical main.css Structure</a></li>
+<li class="toc__item toc__item--l2"><a href="#print-css">print.css</a></li>
+<li class="toc__item toc__item--l2"><a href="#error-css">error.css</a></li>
+<li class="toc__item toc__item--l2"><a href="#internet-explorer">Internet Explorer</a></li>
+<li class="toc__item toc__item--l3"><a href="#conditional-comments">Conditional Comments</a></li>
+<li class="toc__item toc__item--l2"><a href="#loading-from-an-extension">Loading From An Extension</a></li>
+<li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
+<li class="toc__item toc__item--l3"><a href="#modules">Modules</a></li>
+<li class="toc__item toc__item--l3"><a href="#plugins">Plugins</a></li>
+<li class="toc__item toc__item--l3"><a href="#view-helpers-all-extensions">View Helpers (all extensions)</a></li>
+<li class="toc__item toc__item--l2"><a href="#further-help">Further Help</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Cascading Style Sheets</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Cascading Style Sheets</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/css">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2012.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>CSS stands for Cascading Style Sheet. HTML tags specify the graphical flow of the elements, be it text, images or flash animations, on a webpage. CSS allows us to define the appearances of those HTML tags with their content, somewhere, so that other pages, if want be, may adhere to. This brings along consistency throughout a website. The cascading effect stipulates that the style of a tag (parent) may be inherited by other tags (children) inside it.</p>
+<p>Professional websites separate styling from content. There are many reasons for this, the most obvious (to a developer) being the ability to control the appearance of many pages by changing one file. Styling information includes: fonts, backgrounds, images (that recur on every page), position and dimensions of elements on the page. Your HTML file will now be left with: header information; a series of elements; the text of your website. Because you are creating a Joomla! template, you will actually have: some header information, PHP code to request the rest of the header information, a series of elements, PHP code to request each module position, and PHP code to request the main content.</p>
+<p>Style information is coded in CSS and usually stored in files with the suffix <code>.css</code>. A webpage contains a link to the associated <code>.css</code> file so a browser can find the appropriate style information to apply to the page. CSS can also be placed inside a HTML file between <code>&lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;</code> tags. This is, however, discouraged as it is mixing style and content elements which can make future changes more difficult.</p>
+<h2 id="implementation">Implementation</h2>
+<h3 id="definitions-for-this-section">Definitions for this section:</h3>
+<ul>
+<li>
+<p><strong>External CSS files</strong><br />
+using &amp;lt;link&gt; in the &amp;lt;head&gt;</p>
+<p>Document head CSS</p>
+<p>using &amp;lt;style&gt; in the &amp;lt;head&gt;</p>
+<p>Inline CSS</p>
+<p>using the style attribute on a tag, i.e. &amp;lt;div style=&quot;color:red;&quot;&gt;</p>
+</li>
+</ul>
+<h3 id="guidelines">Guidelines</h3>
+<ol>
+<li>External CSS files should be used in preference to document head CSS and document head CSS should be used in preference to inline CSS.</li>
+<li>CSS files MUST have the file extension <code>.css</code> and should be stored in the relevant includes directory in the site structure, usually /style/.</li>
+<li>The file size of CSS files should be kept as low as possible, especially on high demand pages.</li>
+<li>External CSS must be linked to using the &amp;lt;link&gt; element which must be placed in the head section of the document. This is the preferred method of using CSS. It offers the best experience for the user as it helps prevent FOUC (flash of unstyled content), promotes code reuse across a site and is cacheable.</li>
+<li>External style sheets should not be imported (i.e. using <code>@import</code>) as it impairs caching. In IE <code>@import</code> behaves the same as using &amp;lt;link&gt; at the bottom of the page (preventing progressive rendering), so it's best not to use it. Mixing &amp;lt;link&gt; and <code>@import</code> has a negative effect on browsers' ability to asynchronously download the files.</li>
+<li>Document head CSS may be used where a style rule is only required for a specific page.</li>
+<li>Inline styles should not be used.</li>
+<li>Query string data (e.g. &quot;style.css?v=0.1&quot;) should not be used on an external CSS file. Use of query strings on CSS files prevents them from caching in some browsers. Whilst this may be desirable for testing, and of course may be used for that, it is very undesirable for production sites.</li>
+</ol>
+<h3 id="directory-files">Directory &amp; Files</h3>
+<p>Convention places CSS files within a directory named <code>css</code> inside the template directory. While developers are not restricted to this convention, we do recommend it as it helps keep the layout and structure of HUBzero templates consistent. A developer from one project will instantly know where to find certain files and be familiar with the directory structure when working on a project originally developed by someone else.</p>
+<p>There are a handful of common CSS files found among most HUBzero. While none of these are required, it is encouraged to follow the convention of including them as it promotes consistency among HUBzero templates and comes with the advantage that certain files, such as <code>main.css</code> are auto-loaded, thus reducing some work on the developer's part.</p>
+<p>Here's the standard directory and files for CSS found in a HUBzero template:</p>
+<pre><code>/hubzero
+  /templates
+    /{TemplateName}
+      /css
+        error.css
+        browser/ie7.css
+        browser/ie8.css
+        browser/ie9.css
+        main.css
+        print.css
+        component.css
+</code></pre>
+<p>File details:</p>
+<ul>
+<li><strong><code>error.css</code></strong><br />
+This is the primary stylesheet loaded by <code>error.php</code>.</li>
+<li><strong><code>ie8.css</code></strong><br />
+Style fixes for Internet Explorer 8.</li>
+<li><strong><code>ie7.css</code></strong><br />
+Style fixes for Internet Explorer 7.</li>
+<li><strong><code>ie9.css</code></strong><br />
+Style fixes for Internet Explorer 9.</li>
+<li><strong><code>main.css</code></strong><br />
+This is the primary stylesheet loaded by <code>index.php</code>. The majority of your styles will be in here.</li>
+<li><strong><code>print.css</code></strong><br />
+Styles used when printing a page.</li>
+<li><strong><code>component.css</code></strong><br />
+This file is meant to be included <strong>before</strong> any other CSS file. Its purpose is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on.</li>
+</ul>
+<h2 id="bootstrap">Bootstrap</h2>
+<p>Several bootstrap styles are available in the core, broken into individual stylesheets to make it easier for you to decide what styles you do and do not want to incorporate into your template.</p>
+<p>The bootstrap stylesheets can be found in the <code>/core/assets/css</code> directory and can be linked to or imported like any other stylesheet. However, for sake of site performance, we recommend using the <code>Hubzero\Document\Assets::getSystemStylesheet()</code> method. This method accepts wither a comma-separated string or array of core stylesheets to include and then compiles them into a single file with comments and white-space stripped out. The resulting file is saved in the cache with a timestamp. Should any of the core files change, the resulting compiled stylesheet will automatically be updated. This has two immediate advantages of 1) fewer http requests (improves page load time) and 2) ensures browsers re-cache the CSS whenever it has changed.</p>
+<p>Example usage:</p>
+<pre><code class="language-php">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo Hubzero\Document\Assets::getSystemStylesheet(array(
+	'reset',
+	'fontcons',
+	'columns',
+	'notifications',
+	'pagination',
+	'tabs',
+	'tags',
+	'comments',
+	'voting',
+	'layout'
+)); ?&gt;&quot; /&gt;
+</code></pre>
+<ul>
+<li>
+<p><strong><code>reset.css</code></strong><br />
+This file is meant to be included <strong>before</strong> any other CSS file. Its purpose is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on.</p>
+<p>The reset styles given here are intentionally very generic. There isn't any default color or background set for the <code>&lt;body&gt;</code> element, for example. Colors and any other styling should be addressed in the template's primary stylesheet after loading <code>reset.css</code>.</p>
+</li>
+<li>
+<p><strong><code>fontcons.css</code></strong><br />
+This is a custom created icon (dingbat) font used for many of the icons found throughout a hub.</p>
+</li>
+<li>
+<p><strong><code>columns.css</code></strong><br />
+This sets up basic structure for generating layouts that use columns. It supports up to twelve columns and any combination there in. See <a href="../elements/index.html">usage</a>.</p>
+</li>
+<li>
+<p><strong><code>notifications.css</code></strong><br />
+Default styles for warning, error, help, and info messages.</p>
+</li>
+<li>
+<p><strong><code>pagination.css</code></strong><br />
+Basic styling for pagination.</p>
+</li>
+<li>
+<p><strong><code>tabs.css</code></strong><br />
+Default styles for a menu (list) displayed as tabs.</p>
+</li>
+<li>
+<p><strong><code>tags.css</code></strong><br />
+Tag styles. Tags are used frequently throughout a hub and this stylesheet helps ensure the look consistent.</p>
+</li>
+<li>
+<p><strong><code>comments.css</code></strong><br />
+Comments appear on many items such as KB articles, Questions and Answers, Support tickets, Forums, Blog posts, and more. This is a stylesheet for handling basic layout and styles of a list of (nested) comments and the form for submitting comments.</p>
+</li>
+<li>
+<p><strong><code>voting.css</code></strong><br />
+Basic styles for thumbs-up and thumbs-down voting buttons.</p>
+</li>
+<li>
+<p><strong><code>layout.css</code></strong><br />
+Default styles for containers, result lists, and other basic structural items used frequently in a hub.</p>
+</li>
+</ul>
+<h2 id="typical-main-css-structure">Typical <code>main.css</code> Structure</h2>
+<p><code>main.css</code> controls base styling for your HUB, which is usually further extended by individual component CSS.</p>
+<p>We took every effort to organize the <code>main.css</code> in a manner allowing you to easily find a section and a class name to modify. E.g. if you want to change the way headers are displayed, look for &quot;headers&quot; section as indicated by CSS comments. Although you can modify all existing classes, depending on your objectives, it is recommended to avoid modifications to certain sections, as indicated below. While you can add new classes as needed, we caution strongly about removing or renaming any of the existing IDs and classes. Many HUBzero components take advantage of these code styles and any alterations made risk breaking the template display.</p>
+<p>Some sections that you are likely to modify:</p>
+<pre><code>Body - may want to change site background or font family.
+Links - pick colors for hyperlinks
+Headers - pick colors and font size of headings
+Lists - may want to change general list style
+Header - you will definitely want to change this
+Toolbar - display of username, login/logout links etc.
+Navigation - display of main menu
+Breadcrumbs - navigation under menu on secondary pages
+Extra nav - links that appear on the right-hand side in multiple components
+Footer
+</code></pre>
+<p>Sections where you would want to avoid serious modifications:</p>
+<pre><code>Core classes
+Site notices, warnings, errors
+Primary Content Columns
+Flexible Content Columns
+Sub menu - display of tabs in multiple components
+</code></pre>
+<h2 id="print-css"><code>print.css</code></h2>
+<p>This is a style sheet that is used only for printing. It removes unnecessary elements such as menus and search boxes, adjusts any background and font colors as needed to improve readability, and can expose link URLs through generated content (advanced browsers only, e.g. Safari, Firefox).</p>
+<h2 id="error-css"><code>error.css</code></h2>
+<p>This is a style sheet that is used only by the <code>error.php</code> layout. It allows for a more custom styling to error pages such as &quot;404 - Page Not Found&quot;.</p>
+<h2 id="internet-explorer">Internet Explorer</h2>
+<p>We strongly encourage developers to test their templates in as many browsers and on as many operating systems as possible. Most modern browsers will have little differences in rendering, however, Internet Explorer deserves special mention here.</p>
+<p>The most widely used browser, Internet Explorer, is also one of the most lacking in terms of CSS support. Internet Explorer has also, traditionally, handled rendering of block elements, element positioning, and other common tasks a bit differently than many other browsers. As can be expected, this has led to much controversy and discussion on how best to handle such differences. We strongly recommend designing for and testing your templates in alternate browsers such as Safari, Firefox, Chrome, or Opera and then applying fixes to Internet Explorer afterwards. We recommend the use of conditional comments to apply special Internet Explorer only stylesheets.</p>
+<h3 id="conditional-comments">Conditional Comments</h3>
+<p>Conditional comments only work in Internet Explorer on Windows, and are thus excellently suited to give special instructions meant only for Internet Explorer on Windows. They are supported from Internet Explorer 5 onwards, and it is even possible to distinguish between versions of the browser.</p>
+<p>Conditional comments work as follows:</p>
+<pre><code>&lt;!--[if IE 6]&gt;
+	Special instructions for IE 6 here
+&lt;![endif]--&gt;
+</code></pre>
+<p>Their basic structure is the same as an HTML comment (<code>&lt;!-- --&gt;</code>). Therefore all other browsers will see them as normal comments and will ignore them entirely. Internet Explorer, however, recognizes the special syntax and parses the content of the conditional comment as if it were normal page content. As such, they can contain any web content you wish to display only to Internet Explorer. While we're using this feature to load CSS files, it can also be used to load JavaScript or display Internet Explorer specific HTML.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Since conditional comments use the HTML comment structure, they can only be included in HTML, and not in CSS files.</p>
+</aside>
+<p>Conditional comments support some variation in syntax. For example, it is possible to target a specific browser version as demonstrated above or target multiple versions such as &quot;all versions of Internet Explorer lower than 7&quot;. This can be done with a couple handy operators:</p>
+<ul>
+<li><code>gt</code> = greater than</li>
+<li><code>gte</code> = greater than or equal to</li>
+<li><code>lt</code> = less than</li>
+<li><code>lte</code> = less than or equal to</li>
+</ul>
+<pre><code>&lt;!--[if IE]&gt;
+	According to the conditional comment this is Internet Explorer
+&lt;![endif]--&gt;
+&lt;!--[if IE 5]&gt;
+	According to the conditional comment this is Internet Explorer 5
+&lt;![endif]--&gt;
+&lt;!--[if IE 5.0]&gt;
+	According to the conditional comment this is Internet Explorer 5.0
+&lt;![endif]--&gt;
+&lt;!--[if IE 5.5]&gt;
+	According to the conditional comment this is Internet Explorer 5.5
+&lt;![endif]--&gt;
+&lt;!--[if IE 6]&gt;
+	According to the conditional comment this is Internet Explorer 6
+&lt;![endif]--&gt;
+&lt;!--[if IE 7]&gt;
+	According to the conditional comment this is Internet Explorer 7
+&lt;![endif]--&gt;
+&lt;!--[if IE 8]&gt;
+	According to the conditional comment this is Internet Explorer 8
+&lt;![endif]--&gt;
+&lt;!--[if gte IE 5]&gt;
+	According to the conditional comment this is Internet Explorer 5 and up
+&lt;![endif]--&gt;
+&lt;!--[if lt IE 6]&gt;
+	According to the conditional comment this is Internet Explorer lower than 6
+&lt;![endif]--&gt;
+&lt;!--[if lte IE 5.5]&gt;
+	According to the conditional comment this is Internet Explorer lower or equal to 5.5
+&lt;![endif]--&gt;
+&lt;!--[if gt IE 6]&gt;
+	According to the conditional comment this is Internet Explorer greater than 6
+&lt;![endif]--&gt;
+</code></pre>
+<p>So, to load stylesheets to specific versions of Internet Explorer in our template we do something like the following:</p>
+<pre><code class="language-html">&lt;html&gt;
+  &lt;head&gt;
+    ... other CSS files ...
+    &lt;!--[if IE 7]&gt;
+      &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;{TemplatePath}/{TemplateName}/css/ie7.css&quot; /&gt;
+    &lt;![endif]--&gt;
+    &lt;!--[if lte IE 6]&gt;
+      &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;{TemplatePath}/{TemplateName}/css/ie6.css&quot; /&gt;
+    &lt;![endif]--&gt;
+  &lt;/head&gt;
+  ...
+&lt;/html&gt;
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Conditional comments used CSS for should be placed inside the <code>&lt;head&gt;</code> tag of a template <em>after</em> all other CSS have been linked for their affects to properly take place.</p>
+</aside>
+<h2 id="loading-from-an-extension">Loading From An Extension</h2>
+<h3 id="components">Components</h3>
+<p>Often a component will have a style sheet of its own. Pushing CSS to the template from a component is quite easy and involves only two lines of code.</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addComponentStylesheet('com_example');
+</code></pre>
+<p>First, we load the <code>Hubzero\Document\Assets</code> class. Next we call the static method <code>addComponentStylesheet</code>, passing it the name of the component as the first (and only) argument. This will first check for the presence of the style sheet in the active template's <a href="../overrides/index.html">overrides</a>. If found, the path to the overridden style sheet will be added to the array of style sheets the template needs to include in the <code>&lt;head&gt;</code>. If no override is found, the code then checks for the existence of the CSS in the component's directory. Once again, if found, it gets pushed to the template.</p>
+<h3 id="modules">Modules</h3>
+<p>Loading CSS from a module works virtually the same as loading from a component save one minor difference in code. Instead of calling the <code>addComponentStylesheet</code> method, we call the <code>addModuleStylesheet</code> method and pass it the name of the module.</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addModuleStylesheet('mod_example');
+</code></pre>
+<h3 id="plugins">Plugins</h3>
+<p>Loading CSS from a plugin works similarly to loading from a component or module but instead we call the <code>addPluginStylesheet</code> method and pass it the name of the plugin group <strong>and</strong> the name of the plugin.</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addPluginStylesheet('examples', 'test');
+</code></pre>
+<p>Plugin CSS must be named the same as the plugin and located within a directory of the same name as the plugin inside the plugin group directory.</p>
+<pre><code>/plugins
+  /examples
+    /test
+      test.css
+    test.php
+    test.xml
+</code></pre>
+<h3 id="view-helpers-all-extensions">View Helpers (all extensions)</h3>
+<p>Modules, Component, and plugin views now have helpers for pushing Cascading StyleSheets and JavaScript assets to the document. Each method automatically looks for overrides within the current, active template, taking out the busy work of checking yourself each time assets are added. The method names are short, accept a range of options, and allow for method chaining, all tailored for brevity and ease of use.</p>
+<p>The css() method provides a quick and convenient way to attach stylesheets. For components, it accepts two arguments:</p>
+<ol>
+<li>The name of the stylesheet to be pushed to the document (file extension is optional). If no name is provided, the name of the component or plugin will be used. For instance, if called within a view of the component &quot;com_tags&quot;, the system will look for a stylesheet named &quot;tags.css&quot;.</li>
+<li>The name of the extension to look for the stylesheet. For components, this will be the component name (e.g., com_tags). For plugins, this is the name of the plugin folder and requires the third argument of plugin group (type) be passed to the method.</li>
+<li>*Plugin views only.* The name of the plugin.</li>
+</ol>
+<p>Example:</p>
+<pre><code class="language-php">&lt;?php
+// Push a stylesheet to the document
+$this-&gt;css()
+      -&gt;css('another')  // Extension (.css) is optional
+      -&gt;css('tags.css', 'com_tags');  // Load CSS from another component
+?&gt;
+... view HTML ...
+</code></pre>
+<p>Along with file names, the method also accepts style declarations:</p>
+<pre><code class="language-php">&lt;?php
+// Push a stylesheet to the document
+$this-&gt;css('.foo {
+	color: #000;
+}');
+?&gt;
+... view HTML ...
+</code></pre>
+<p>Similarly, a js() method is available for pushing javascript assets to the document. The arguments accepted are the same as the css() method described above.</p>
+<pre><code class="language-php">&lt;?php
+// Push some javascript to the document
+$this-&gt;js()
+      -&gt;js('another');
+?&gt;
+... view HTML ...
+</code></pre>
+<p>And, just as the css() method accepts style declarations, the js() method accepts script declarations:</p>
+<pre><code class="language-php">&lt;?php
+// Push some javascript to the document
+$this-&gt;js('
+	jQuery(document).ready(function($){
+		$(&quot;a&quot;).on(&quot;click&quot;, function(e){
+			console.log($(this).attr(&quot;href&quot;));
+		});
+	});
+');
+?&gt;
+... view HTML ...
+</code></pre>
+<h2 id="further-help">Further Help</h2>
+<p>Resources for learning and sharpening CSS skills:</p>
+<ul>
+<li><a href="http://www.csszengarden.com/">CSS Zen Garden</a></li>
+<li><a href="http://www.wpdfd.com/issues/70/css_from_the_ground_up/">CSS From The Ground Up</a></li>
+<li><a href="http://www.htmlhelp.com/reference/css/">Guide to Cascading StyleSheets</a></li>
+<li><a href="http://www.w3schools.com/css/">CSS School</a></li>
+</ul>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../layouts/index.html" rel="prev"><span>Previous</span>Page Layout</a><a class="pager__next" href="../javascript/index.html" rel="next"><span>Next</span>JavaScript</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/07-css.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

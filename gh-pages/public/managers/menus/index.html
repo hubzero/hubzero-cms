@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menus · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Overview A Hub menu is a website navigation menu where users go to navigate around the Hub. The Main Menu is the first navigation path that users interact with…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/menus/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Menus</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#organizing-your-articles-using-menus">Organizing Your Articles Using Menus</a></li>
+<li class="toc__item toc__item--l2"><a href="#redirecting-a-url-to-another-existing-hub-component">Redirecting a URL to Another Existing Hub Component</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-new-menu">Creating a New Menu</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Menus</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Menus</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/menus">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>A Hub menu is a website navigation menu where users go to navigate around the Hub. The Main Menu is the first navigation path that users interact with from your landing page and usually lives in your template header. Additional menus can be added to content pages on the Hub in order to link like pages together for easier navigation. The general rule of thumb is that if a content page is not linked to a menu, the likelihood of the page being discovered by users is diminished.</p>
+<h2 id="organizing-your-articles-using-menus">Organizing Your Articles Using Menus</h2>
+<p>If you have a set of articles that you would like to group together, you can use menus to organize those articles in an easy-to-navigate fashion.</p>
+<p>An example of this can be found on the default hub under the About section (see also below).</p>
+<ol>
+<li>To begin, find the URLs of the articles that you're interested in grouping together
+<ol>
+<li><strong>Note:</strong> If you can't find, or don't know the URL, it comes from the article alias, the section, and the category (see below and view these documentation pages: <a href="../content/articlemanager/index.html">Categories</a>, <a href="../content/urls/index.html">URLs</a>).</li>
+</ol>
+</li>
+<li>With your article pages created, you'll need to make the menu structure</li>
+<li>Navigate to <strong>Menus -&gt; Menu Manager</strong> on the <em>Joomla!</em> backend and select <strong>New</strong></li>
+<li>Give your new menu a unique name and title, then click <strong>Save</strong></li>
+<li>Now you will see your new menu in the list</li>
+<li>Click the icon indicated below to start adding menu items to your new menu
+<ul>
+<li><strong>Note:</strong> It is important to realize, for clarity's sake, that there is a difference between <strong>Menu</strong> and <strong>Menu Item</strong>.
+<ol>
+<li><strong>Menu Item:</strong> represents an instance, or individual menu link</li>
+<li><strong>Menu:</strong> represents the entity as a whole</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>Now click the <strong>New</strong> button to add new menu items to your menu</li>
+<li>After clicking <strong>New</strong>, scroll down and select <strong>Link</strong></li>
+<li>Next, fill in the necessary information:
+<ul>
+<li>This is where you'll need to remember the URLs for the articles that you've created (you'll add the URL to the <strong>Link</strong> field)</li>
+<li>After creating this menu item, you'll be able to access this article page via the URL for the article, or the Alias of the menu item
+<ul>
+<li><strong>For example:</strong> according the screenshot below, both <code>http://yourhub.org/example/examplearticle1</code> &amp; <code>http://yourhub.org/article1</code> will work when trying to access this page via the browser (See <a href="../content/urls/index.html">URL Redirects</a> for more details). For the navigational menus to display properly, though, you'll want to use the menu item alias when trying to access your article page.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong> in the upper right-hand corner</li>
+<li>If you switch over to the front-end and navigate to your article page (via the menu item URL), you should see a page similar to this one:</li>
+<li>At this point, simply repeat the previous steps to create menu items for all of the articles that you want to use together</li>
+<li>The final step in this process is to assign the menu items that you've created to display on the article pages</li>
+<li>To do this, navigate to <strong>Extensions -&gt; Module Manager</strong> on the backend <em>Joomla!</em> interface</li>
+<li>Next, select <strong>New</strong></li>
+<li>Scroll down and select <strong>Menu</strong> from the list (either click on the link, or select the radio button then scroll back up and click <strong>Next</strong>)</li>
+</ol>
+<p>Now fill in the correct information...make sure to:​​</p>
+<ul>
+<li>Give it a <strong>Title</strong></li>
+<li>Be sure <strong>Enabled</strong> is set to <strong>Yes</strong></li>
+<li>Give it the position <strong>Left</strong></li>
+<li>Set it to display on the correct pages
+<ul>
+<li>Under menu assignment, <strong>control click</strong> the menus items that we made in the preceding steps. This is what tells <em>Joomla!</em> which pages to display our new menu on.</li>
+</ul>
+</li>
+<li>Under <strong>Module Parameters</strong>, <strong>Menu Name</strong> should be the title of the menu that we created earlier (<strong>example</strong> in this case)</li>
+<li><strong>Menu Style</strong> should be <strong>List</strong> ​</li>
+</ul>
+<ol start="17">
+<li>When all of this has been done, click <strong>Save</strong></li>
+</ol>
+<h2 id="redirecting-a-url-to-another-existing-hub-component">Redirecting a URL to Another Existing Hub Component</h2>
+<p>Redirecting a URL to Another Existing Hub Component Previously created groups and other components can have URL redirects added to other components instead of transferring all the files and data that live in the previous area to a new section. For example, a professor can redirect a group called <strong>Mainclass</strong> to another group called <strong>Springclass</strong>. In order to set up a redirect, follow these steps:</p>
+<ol>
+<li>Navigate to <strong>/administrator</strong>, locate the tab <strong>Menus</strong> and select <strong>Menu Manager</strong> from the drop-down</li>
+<li>Locate the <strong>Default</strong> menu group</li>
+<li>Click on the <strong>Default</strong> group to enter its menu interface</li>
+<li>Try and locate the <strong>Parent</strong> group</li>
+<li>In this case we want groups, however, this is not listed, so let’s create it by clicking the <strong>New</strong> in the top right corner</li>
+<li>Create the “groups” part of the URL **/groups/**<strong>mainclass</strong></li>
+<li>Click the <strong>Select</strong> button next to the field <em>Menu Item Type Select External URL</em></li>
+<li>To create the groups part of the URL, fill in the form as follows:
+<ol>
+<li><em>Menu Item Type: External URL Menu Title: Groups Link: groups</em></li>
+</ol>
+</li>
+<li>Click <strong>Save &amp; Close</strong> from the top right corner</li>
+<li>To create the redirect portion, follow step 5 again except fill out the Menu Title as mainclass and the link as spring2016class</li>
+<li>This will redirect users from */groups/*<em>mainclass</em> <em>to /groups/springdefaultclass</em></li>
+<li>Nest mainclass under groups to create the end result from the redirect</li>
+<li>This is done in the <strong>Menu Item Details</strong> under <strong>Parent</strong></li>
+<li>Set the <strong>Parent</strong> to <strong>Groups</strong></li>
+<li>Click <strong>Save &amp; Close</strong></li>
+</ol>
+<h2 id="creating-a-new-menu">Creating a New Menu</h2>
+<ol>
+<li>Navigate to <strong>/administrator</strong></li>
+<li>Hover over <strong>Menus</strong> -&gt; <strong>Menu Manager</strong> and click on <strong>Add New Menu</strong></li>
+<li>Fill out the new menu information</li>
+<li>Click <strong>Save &amp; Close</strong></li>
+<li>From <strong>Menu Manager: Menus</strong>, locate your new menu and click on <strong>Add a module for this menu type</strong> under <em>Modules linked to the menu</em></li>
+<li>Create the new module for your menu by filling in the module configuration information
+<ol>
+<li><strong>Note:</strong> Most menu modules are left aligned</li>
+</ol>
+</li>
+<li>Click <strong>Save &amp; Close</strong></li>
+<li>Create new menu items, either linked to articles you have created or linked to various components, by navigating to <strong>Menus</strong> and clicking on your new menu</li>
+<li>Click on the <strong>Menu Items</strong> tab and click the <strong>New</strong> button to create menu items
+<ol>
+<li><strong>Note:</strong> Once you have linked menu items to your new menu, navigate back to &quot;<strong>Extensions</strong>&quot; -&gt; <strong>Module Manage</strong>r -&gt; Click on your new menu module -&gt; Confirm the <strong>Menu Assignment</strong> for your module is affiliated with the new menu items you created</li>
+</ol>
+</li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../users/user-notes/index.html" rel="prev"><span>Previous</span>User notes</a><a class="pager__next" href="../content/index.html" rel="next"><span>Next</span>Content</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/07-menus.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

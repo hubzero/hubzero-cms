@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publications (com_publications) · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Manage publications Parameters from , as shown on the component&#x27;s Options screen in the administrator interface. Basic Parameter Label Type Default Description…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/components/publications/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Publications (com_publications)</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#curation">Curation</a></li>
+<li class="toc__item toc__item--l2"><a href="#doi">Doi</a></li>
+<li class="toc__item toc__item--l2"><a href="#sections">Sections</a></li>
+<li class="toc__item toc__item--l2"><a href="#aip">Aip</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Component options</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Publications (com_publications)</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Publications (com_publications)</h1>
+        </header>
+        
+        <div class="prose">
+<p>Manage publications</p>
+<p>Parameters from <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/config/config.xml"><code>core/components/com_publications/config/config.xml</code></a>, as shown on the component's <strong>Options</strong> screen in the administrator interface.</p>
+<h2 id="basic">Basic</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>Component ON/OFF</td>
+<td>list</td>
+<td><code>0 (Off)</code></td>
+<td>Enable Publications component, or redirect to Resources component. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>contribute</code></td>
+<td>User Contributions Outside of Projects</td>
+<td>list</td>
+<td><code>1 (Allow)</code></td>
+<td>Allow users to work on drafts from within Publications component without starting a project. Options: <code>0</code> Do not allow, <code>1</code> Allow.</td>
+</tr>
+<tr>
+<td><code>contribute_default</code></td>
+<td>Default master type</td>
+<td>mastertype</td>
+<td><code>files</code></td>
+<td>The master types to offer when 'User Contributions Outside of Projects' is set to 'Allow'. You may choose a specific master type or allow for selecting from a list of all contributable types.</td>
+</tr>
+<tr>
+<td><code>forks</code></td>
+<td>Allow Forks</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Allow entries to be forked. A fork is a copy of an entry that allows the user to use the source materials as a starting point for a derivation. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>Email Notifications</td>
+<td>list</td>
+<td><code>0 (Off)</code></td>
+<td>Allow component to send out emails. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>default_category</code></td>
+<td>Default Category</td>
+<td>text</td>
+<td><code>dataset</code></td>
+<td>Optionally set the category of newly created publications to the specified value if exists</td>
+</tr>
+<tr>
+<td><code>defaultpic</code></td>
+<td>Default Publication Thumbnail</td>
+<td>text</td>
+<td><code>/components/com_publications/site/assets/img/resource_thumb.gif</code></td>
+<td>Default placeholder image for all publications</td>
+</tr>
+<tr>
+<td><code>video_thumb</code></td>
+<td>Default Video Thumbnail</td>
+<td>text</td>
+<td><code>/components/com_publications/site/assets/img/video_thumb.gif</code></td>
+<td>Default placeholder thumbnail image for video-type files in publication gallery</td>
+</tr>
+<tr>
+<td><code>gallery_thumb</code></td>
+<td>Default Image Thumbnail</td>
+<td>text</td>
+<td><code>/components/com_publications/site/assets/img/gallery_thumb.gif</code></td>
+<td>Default placeholder thumbnail image for image-type files in publication gallery</td>
+</tr>
+<tr>
+<td><code>masterimage</code></td>
+<td>Default Master Image</td>
+<td>text</td>
+<td>—</td>
+<td>Default image for publication page cover (experimental layout)</td>
+</tr>
+<tr>
+<td><code>webpath</code></td>
+<td>Publication Files Directory</td>
+<td>text</td>
+<td><code>/site/publications</code></td>
+<td>Master path for storing published data</td>
+</tr>
+<tr>
+<td><code>bundle_max_bytes</code></td>
+<td>Bundle Max Size (bytes)</td>
+<td>text</td>
+<td><code>4294967296</code></td>
+<td>Maximum total source size for on-demand bundle.zip creation. Above this, the bundle download is suppressed and users get individual file downloads. Default 4 GB. Set to 0 to disable the limit.</td>
+</tr>
+<tr>
+<td><code>bundle_async</code></td>
+<td>Asynchronous bundle building</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Build download bundles out-of-request in a background worker (download shows 'preparing' until ready) instead of synchronously on the web request. Recommended for sites with large datasets. Requires the 'Build publication download bundles' cron job to be scheduled. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>bundle_max_concurrent</code></td>
+<td>Max concurrent bundle builds</td>
+<td>text</td>
+<td><code>1</code></td>
+<td>How many bundle builds may run at once when asynchronous building is enabled. Default 1 (serial).</td>
+</tr>
+<tr>
+<td><code>sftppath</code></td>
+<td>SFTP Directory</td>
+<td>text</td>
+<td><code>/site/publications/ftp</code></td>
+<td>Path for storing SFTP accessible publication bundle links</td>
+</tr>
+<tr>
+<td><code>sftpsize</code></td>
+<td>FTP-Enabling File Size</td>
+<td>text</td>
+<td><code>5000</code></td>
+<td>The file size limit, in MB, that enforces a file can only be downloaded via sFTP. The default is 5000 (5 GB).</td>
+</tr>
+<tr>
+<td><code>ftpdoc</code></td>
+<td>FTP download guide</td>
+<td>text</td>
+<td>—</td>
+<td>A guide regarding how to download large dataset using ftp client</td>
+</tr>
+<tr>
+<td><code>sftptypeblacklist</code></td>
+<td>FTP File Type Blacklist</td>
+<td>text</td>
+<td>—</td>
+<td>Comma Separated List of Publication Types that shouldn't/ can't be downloaded via sFTP</td>
+</tr>
+<tr>
+<td><code>documentation</code></td>
+<td>URL to Documentation</td>
+<td>text</td>
+<td>—</td>
+<td>URL to a page with information on publications and contribution process (leave blank if no such page exists)</td>
+</tr>
+<tr>
+<td><code>deposit_terms</code></td>
+<td>URL to  Terms of Deposit</td>
+<td>text</td>
+<td>—</td>
+<td>URL to a page with information on Terms of Deposit</td>
+</tr>
+<tr>
+<td><code>include_author_name_in_search</code></td>
+<td>Include Author Name in Search</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Should publications' authors' names be included when searching?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>contact_email</code></td>
+<td>Contact Email Address</td>
+<td>text</td>
+<td>—</td>
+<td>The email address that user reaches out to for help</td>
+</tr>
+<tr>
+<td><code>search_category</code></td>
+<td>Search category</td>
+<td>list</td>
+<td><code>1 (On)</code></td>
+<td>Search category in tag section of publication submission. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>data_publishing_self_assessment_guide</code></td>
+<td>Data Publishing Self Assessment Guide</td>
+<td>text</td>
+<td>—</td>
+<td>A self assessment guide for user to understand what is required in data publishing</td>
+</tr>
+<tr>
+<td><code>accessdoc</code></td>
+<td>Accessibility document</td>
+<td>text</td>
+<td>—</td>
+<td>File accessibility document</td>
+</tr>
+<tr>
+<td><code>department</code></td>
+<td>School and department</td>
+<td>textarea</td>
+<td>—</td>
+<td>All schools and departments in the organization. Enter school or department separated by a comma</td>
+</tr>
+</tbody>
+</table>
+<h2 id="curation">Curation</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>curatorreplyto</code></td>
+<td>Reply Email Address</td>
+<td>text</td>
+<td>—</td>
+<td>Set the email address that curation emails appear to come from. If left blank, the address will default to the site's global configuration 'From email' address.</td>
+</tr>
+<tr>
+<td><code>curatorgroup</code></td>
+<td>Name of Curators Group</td>
+<td>text</td>
+<td>—</td>
+<td>(Hub) group of members authorized to perform pre-publication curation (all publication types) and manage curation assignment.</td>
+</tr>
+<tr>
+<td><code>graceperiod</code></td>
+<td>Grace Period for Changes</td>
+<td>list</td>
+<td><code>0 (None)</code></td>
+<td>Allow authors to make changes to a published resource within the grace period after approval. Options: <code>0</code> None, <code>1</code> 1 month.</td>
+</tr>
+<tr>
+<td><code>autoapprove</code></td>
+<td>Auto-approve</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new submissions. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>autoapproved_users</code></td>
+<td>Auto-approved Users</td>
+<td>textarea</td>
+<td>—</td>
+<td>A comma-separated list of usernames to be auto-approved</td>
+</tr>
+</tbody>
+</table>
+<h2 id="doi">Doi</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aboutdoi</code></td>
+<td>About DOI link</td>
+<td>text</td>
+<td>—</td>
+<td>A link to an explanation of what Digital Object Identifiers (DOI) are [optional]</td>
+</tr>
+<tr>
+<td><code>datacite_ezid_doi_service_switch</code></td>
+<td>DOI Service</td>
+<td>doiservicetype</td>
+<td><code>1</code></td>
+<td>Enable DataCite or EZID DOI Service</td>
+</tr>
+<tr>
+<td><code>doi_shoulder</code></td>
+<td>DOI Namespace Start</td>
+<td>text</td>
+<td>—</td>
+<td>First part of DOI namespace (what goes right after doi: and before /, e.g. 10.5072 )</td>
+</tr>
+<tr>
+<td><code>doi_prefix</code></td>
+<td>DOI Namespace End</td>
+<td>text</td>
+<td>—</td>
+<td>Hub-specific DOI namespace end (usually 2-3 characters going after /, e.g. F2K)</td>
+</tr>
+<tr>
+<td><code>datacite_doi_service</code></td>
+<td>DataCite DOI Service Url</td>
+<td>text</td>
+<td>—</td>
+<td>DataCite DOI service address</td>
+</tr>
+<tr>
+<td><code>datacite_doi_userpw</code></td>
+<td>DataCite DOI Service User:Password</td>
+<td>text</td>
+<td>—</td>
+<td>DataCite DOI Service User:Password</td>
+</tr>
+<tr>
+<td><code>ezid_doi_service</code></td>
+<td>EZID DOI Service Url</td>
+<td>text</td>
+<td>—</td>
+<td>EIZD DOI service address</td>
+</tr>
+<tr>
+<td><code>ezid_doi_userpw</code></td>
+<td>EZID DOI Service User:Password</td>
+<td>text</td>
+<td>—</td>
+<td>EZID DOI Service User:Password</td>
+</tr>
+<tr>
+<td><code>doi_xmlschema</code></td>
+<td>DOI XML Schema</td>
+<td>text</td>
+<td>—</td>
+<td>URL of XML schema to validate against</td>
+</tr>
+<tr>
+<td><code>doi_publisher</code></td>
+<td>DOI Publisher</td>
+<td>text</td>
+<td>—</td>
+<td>Publisher name (may use full HUB name) for DOI service</td>
+</tr>
+<tr>
+<td><code>doi_publisher_identifier</code></td>
+<td>Publisher Identifier</td>
+<td>text</td>
+<td>—</td>
+<td>The publisher identifier on https://www.re3data.org</td>
+</tr>
+<tr>
+<td><code>doi_publisher_identifier_scheme</code></td>
+<td>Publisher Identifier Scheme</td>
+<td>text</td>
+<td>—</td>
+<td>re3data</td>
+</tr>
+<tr>
+<td><code>doi_publisher_identifier_scheme_uri</code></td>
+<td>Publisher Identifier Scheme URI</td>
+<td>text</td>
+<td>—</td>
+<td>https://www.re3data.org/</td>
+</tr>
+<tr>
+<td><code>doi_resolve</code></td>
+<td>DOI Resolve Url</td>
+<td>text</td>
+<td><code>https://doi.org/</code></td>
+<td>URL for resolving DOIs</td>
+</tr>
+<tr>
+<td><code>doi_verify</code></td>
+<td>DOI Verification Url</td>
+<td>text</td>
+<td><code>http://n2t.net/ezid/id/</code></td>
+<td>URL for verifying DOIs</td>
+</tr>
+<tr>
+<td><code>master_doi</code></td>
+<td>Issue master DOI for publication?</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Master DOI links to /main page listing all previously published versions. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sections">Sections</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_authors</code></td>
+<td>Contributors</td>
+<td>list</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the list of authors on publication page. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>format_authors</code></td>
+<td>Format Author Display</td>
+<td>list</td>
+<td><code>0 (Unformatted)</code></td>
+<td>Format list of authors on publication page. Options: <code>0</code> Unformatted, <code>1</code> APA format.</td>
+</tr>
+<tr>
+<td><code>show_ranking</code></td>
+<td>Ranking</td>
+<td>list</td>
+<td><code>0 (Hide)</code></td>
+<td>Show/Hide the ranking. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_rating</code></td>
+<td>Rating</td>
+<td>list</td>
+<td><code>0 (Hide)</code></td>
+<td>Show/Hide the rating. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_date</code></td>
+<td>Date</td>
+<td>list</td>
+<td><code>3 (Published)</code></td>
+<td>Show/Hide publication date on publication page. Options: <code>0</code> Hide, <code>3</code> Published.</td>
+</tr>
+<tr>
+<td><code>show_notes</code></td>
+<td>Notes</td>
+<td>list</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide publication release notes on publication page. Options: <code>1</code> Show, <code>0</code> Hide.</td>
+</tr>
+<tr>
+<td><code>show_tags</code></td>
+<td>Tags</td>
+<td>list</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide publication tags on publication page. Options: <code>1</code> Show, <code>0</code> Hide.</td>
+</tr>
+<tr>
+<td><code>show_series</code></td>
+<td>Series</td>
+<td>list</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide series that publication belongs to on publication page. Options: <code>1</code> Show, <code>0</code> Hide.</td>
+</tr>
+<tr>
+<td><code>show_linked_data</code></td>
+<td>Linked Data</td>
+<td>list</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide a link to an OAI-ORE compliant linked data representation in the HTML source for each publication. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_citation</code></td>
+<td>Citation</td>
+<td>list</td>
+<td><code>1 (Manual And Auto)</code></td>
+<td>Show example/instructions for citing this publications. Options: <code>0</code> Hide All, <code>1</code> Manual And Auto, <code>2</code> Auto Generated, <code>3</code> Manually Inputed.</td>
+</tr>
+<tr>
+<td><code>suggest_licence</code></td>
+<td>Suggest License</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Allow users to suggest licenses. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>citation_format</code></td>
+<td>Citation Format</td>
+<td>list</td>
+<td><code>apa (APA)</code></td>
+<td>Choose format for citations. Options: <code>apa</code> APA, <code>ieee</code> IEEE.</td>
+</tr>
+<tr>
+<td><code>supportedtag</code></td>
+<td>Supported Tag</td>
+<td>text</td>
+<td>—</td>
+<td>A tag to display to indicate Org supported tools</td>
+</tr>
+<tr>
+<td><code>supportedlink</code></td>
+<td>Supported Link</td>
+<td>text</td>
+<td>—</td>
+<td>A link to display to describe Org supported tools</td>
+</tr>
+<tr>
+<td><code>audiencelink</code></td>
+<td>Audience Link</td>
+<td>text</td>
+<td>—</td>
+<td>URL to a page describing audience levels</td>
+</tr>
+</tbody>
+</table>
+<h2 id="aip">Aip</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repository</code></td>
+<td>Trusted Digital Repository</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Trusted Digital Repository. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>aip_path</code></td>
+<td>AIP Path</td>
+<td>text</td>
+<td><code>/srv/AIP</code></td>
+<td>AIP path (for trusted digital repos)</td>
+</tr>
+<tr>
+<td><code>aip_group</code></td>
+<td>MkAIP Admin Group</td>
+<td>text</td>
+<td>—</td>
+<td>Group of administrators to get notifications about archived datasets</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../projects/index.html" rel="prev"><span>Previous</span>Projects (com_projects)</a><a class="pager__next" href="../redirect/index.html" rel="next"><span>Next</span>Redirect (com_redirect)</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/components/publications.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

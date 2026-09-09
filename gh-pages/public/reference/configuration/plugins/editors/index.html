@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editors plugins · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Parameters of every plugin in the group, from each plugin&#x27;s manifest. Set them under Extensions Plugins in the administrator interface. Editor - CKEditor ( )…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/plugins/editors/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Editors plugins</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#editor-ckeditor-plg-editors-ckeditor">Editor - CKEditor (plg_editors_ckeditor)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-ckeditor-5-plg-editors-ckeditor5">Editor - CKEditor 5 (plg_editors_ckeditor5)</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-codemirror-plg-editors-codemirror">Editor - CodeMirror (plg_editors_codemirror)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-2">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-none-plg-editors-none">Editor - None (plg_editors_none)</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-pagedown-plg-editors-pagedown">Editor - PageDown (plg_editors_pagedown)</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-tinymce-plg-editors-tinymce">Editor - TinyMCE (plg_editors_tinymce)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-3">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#advanced-parameters">Advanced parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-wikietoolbar-plg-editors-wikitoolbar">Editor - Wikietoolbar (plg_editors_wikitoolbar)</a></li>
+<li class="toc__item toc__item--l2"><a href="#editor-wikiwyg-plg-editors-wikiwyg">Editor - Wikiwyg (plg_editors_wikiwyg)</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugin parameters</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Editors plugins</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Editors plugins</h1>
+        </header>
+        
+        <div class="prose">
+<p>Parameters of every plugin in the <code>editors</code> group, from each plugin's manifest. Set them under <strong>Extensions &gt; Plugins</strong> in the administrator interface.</p>
+<h2 id="editor-ckeditor-plg-editors-ckeditor">Editor - CKEditor (<code>plg_editors_ckeditor</code>)</h2>
+<p>WYSIWYG Editor built on CKEditor</p>
+<h3 id="basic">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>startupMode</code></td>
+<td>Start-up Mode</td>
+<td>radio</td>
+<td><code>wysiwyg</code></td>
+<td>The mode to start the plugin in. Options: <code>wysiwyg</code>, <code>source</code>.</td>
+</tr>
+<tr>
+<td><code>sourceViewButton</code></td>
+<td>Source View</td>
+<td>radio</td>
+<td><code>0 (Off)</code></td>
+<td>Display a source view button. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>colorButton</code></td>
+<td>Allow buttons for changing text or backgorund colors</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Allow colors?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>fontSize</code></td>
+<td>Allow option for changing font size</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Allow font size?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>autoGrowAutoStart</code></td>
+<td>Auto-grow</td>
+<td>radio</td>
+<td><code>0 (Off)</code></td>
+<td>Auto Grow content area. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>autoGrowMinHeight</code></td>
+<td>Auto-grow Min Height</td>
+<td>text</td>
+<td><code>5em</code></td>
+<td>Minimum height for the auto-grow</td>
+</tr>
+<tr>
+<td><code>autoGrowMaxHeight</code></td>
+<td>Auto-grow Max Height</td>
+<td>text</td>
+<td><code>500em</code></td>
+<td>Maximum height for the auto-grow</td>
+</tr>
+<tr>
+<td><code>spellCheckAutoStart</code></td>
+<td>Spellcheck Auto Start</td>
+<td>radio</td>
+<td><code>0 (Off)</code></td>
+<td>Spellcheck Auto Start. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>allowScriptTags</code></td>
+<td>Allow Javascript Tags</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Allow javascript tags?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>skin</code></td>
+<td>Editor Skin</td>
+<td>list</td>
+<td><code>0</code></td>
+<td>Editor Skin. Options: <code>moono</code> Moono, <code>moono-lisa</code> Moono-Lisa, <code>moonocolor</code> Moono Color, <code>moono-dark</code> Moono Dark, <code>bootstrapck</code> BootstrapCK4, <code>office2013</code> Office 2013.</td>
+</tr>
+<tr>
+<td><code>filebrowserBrowseUrl</code></td>
+<td>File Browser URL</td>
+<td>text</td>
+<td>—</td>
+<td>The location of an external file browser that should be launched when the Browse Server button is pressed.</td>
+</tr>
+<tr>
+<td><code>filebrowserImageBrowseUrl</code></td>
+<td>Image Browser URL</td>
+<td>text</td>
+<td>—</td>
+<td>The location of an external file browser that should be launched when the Browse Server button is pressed in the Image dialog window.</td>
+</tr>
+<tr>
+<td><code>filebrowserUploadUrl</code></td>
+<td>File Upload URL</td>
+<td>text</td>
+<td>—</td>
+<td>The location of the script that handles file uploads.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="editor-ckeditor-5-plg-editors-ckeditor5">Editor - CKEditor 5 (<code>plg_editors_ckeditor5</code>)</h2>
+<p>WYSIWYG Editor built on CKEditor5</p>
+<p>This plugin has no parameters.</p>
+<h2 id="editor-codemirror-plg-editors-codemirror">Editor - CodeMirror (<code>plg_editors_codemirror</code>)</h2>
+<p>This plugin loads the CodeMirror editor.</p>
+<h3 id="basic-2">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>linenumbers</code></td>
+<td>Line numbers</td>
+<td>radio</td>
+<td><code>0 (Off)</code></td>
+<td>Display line numbers. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>tabmode</code></td>
+<td>Tab mode</td>
+<td>radio</td>
+<td><code>indent (Indent)</code></td>
+<td>Indent - causes tab to adjust the indentation of the selection or current line using the parser's rules . Shift - Pressing tab indents the current line (or selection) one indent Unit  deeper, pressing shift-tab, un-indents it. Options: <code>indent</code> Indent, <code>shift</code> Shift.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="editor-none-plg-editors-none">Editor - None (<code>plg_editors_none</code>)</h2>
+<p>This loads a basic text entry field.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="editor-pagedown-plg-editors-pagedown">Editor - PageDown (<code>plg_editors_pagedown</code>)</h2>
+<p>Editor built on StackExchange/pagedown</p>
+<p>This plugin has no parameters.</p>
+<h2 id="editor-tinymce-plg-editors-tinymce">Editor - TinyMCE (<code>plg_editors_tinymce</code>)</h2>
+<p>TinyMCE is a platform-independent Web-based JavaScript HTML WYSIWYG Editor control.</p>
+<h3 id="basic-3">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode</code></td>
+<td>Functionality</td>
+<td>list</td>
+<td><code>2 (Extended)</code></td>
+<td>Select Functionality. Options: <code>0</code> Simple, <code>1</code> Advanced, <code>2</code> Extended.</td>
+</tr>
+<tr>
+<td><code>skin</code></td>
+<td>Skin</td>
+<td>list</td>
+<td><code>0 (Default)</code></td>
+<td>Select skin. Options: <code>0</code> Default, <code>1</code> Office2007 Blue, <code>2</code> Office2007 Silver, <code>3</code> Office2007 Black.</td>
+</tr>
+<tr>
+<td><code>entity_encoding</code></td>
+<td>Entity Encoding</td>
+<td>list</td>
+<td><code>raw</code></td>
+<td>Controls how HTML entities are encoded. Recommended setting is 'raw'. 'named' = used named entity encoding (for example, '&lt;'). 'numeric' = use numeric HTML encoding (for example, '%03c'). raw = Do not encode HTML entities. Note that searching content may not work properly if setting is not 'raw'. Options: <code>named</code>, <code>numeric</code>, <code>raw</code>.</td>
+</tr>
+<tr>
+<td><code>lang_mode</code></td>
+<td>Automatic Language Selection</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>If Yes, editor language will automatically match selected UI language. Do not activate if appropriate editor languages are not installed. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>lang_code</code></td>
+<td>Language Code</td>
+<td>text</td>
+<td><code>en</code></td>
+<td>Editor UI Language. A value here is mandatory if manual language selection is set.</td>
+</tr>
+<tr>
+<td><code>text_direction</code></td>
+<td>Text Direction</td>
+<td>list</td>
+<td><code>ltr (Left to Right)</code></td>
+<td>Choose default text direction. Options: <code>ltr</code> Left to Right, <code>rtl</code> Right to Left.</td>
+</tr>
+<tr>
+<td><code>content_css</code></td>
+<td>Template CSS classes</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>By default the Plug-in looks for an editor.css file. If it cannot find one in the default template css folder, it loads the editor.css file from the system template. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>content_css_custom</code></td>
+<td>Custom CSS classes</td>
+<td>text</td>
+<td>—</td>
+<td>Optional CSS file that will override the standard editor.css file. Enter a file name to point to a file in the CSS folder of the default template (for example, templates/beez_20/css/). Or enter a full URL path to the custom CSS file. If you enter a value in this field, this file will be used instead of the editor.css file.</td>
+</tr>
+<tr>
+<td><code>relative_urls</code></td>
+<td>URLs</td>
+<td>list</td>
+<td><code>1 (Relative)</code></td>
+<td>URL behaviour. Options: <code>0</code> Absolute, <code>1</code> Relative.</td>
+</tr>
+<tr>
+<td><code>newlines</code></td>
+<td>New Lines</td>
+<td>list</td>
+<td><code>0 (P Elements)</code></td>
+<td>New lines will be created using the selected option. Options: <code>1</code> BR Elements, <code>0</code> P Elements.</td>
+</tr>
+<tr>
+<td><code>invalid_elements</code></td>
+<td>Prohibited Elements</td>
+<td>textarea</td>
+<td><code>script,applet,iframe</code></td>
+<td>Elements that will be cleaned from the text. Do not leave empty - if you do not want to prohibit anything enter dummy text e.g.cms</td>
+</tr>
+<tr>
+<td><code>extended_elements</code></td>
+<td>Extended Valid Elements</td>
+<td>textarea</td>
+<td>—</td>
+<td>Allows the addition of specific valid elements to the existing rule set.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-parameters">Advanced parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>toolbar</code></td>
+<td>Toolbar</td>
+<td>list</td>
+<td><code>top (Top)</code></td>
+<td>Position of the toolbar. Options: <code>top</code> Top, <code>bottom</code> Bottom.</td>
+</tr>
+<tr>
+<td><code>toolbar_align</code></td>
+<td>Toolbar align</td>
+<td>list</td>
+<td><code>left (Left)</code></td>
+<td>Alignment of the toolbar. Options: <code>left</code> Left, <code>center</code> Center, <code>right</code> Right.</td>
+</tr>
+<tr>
+<td><code>html_height</code></td>
+<td>HTML Height</td>
+<td>text</td>
+<td><code>550</code></td>
+<td>Height of HTML mode pop-up window. Only works in Extended mode.</td>
+</tr>
+<tr>
+<td><code>html_width</code></td>
+<td>HTML Width</td>
+<td>text</td>
+<td><code>750</code></td>
+<td>Width of HTML mode pop-up window. Only works in Extended mode.</td>
+</tr>
+<tr>
+<td><code>resizing</code></td>
+<td>Resizing</td>
+<td>radio</td>
+<td><code>true (On)</code></td>
+<td>Enable/disable the resizing button. Options: <code>false</code> Off, <code>true</code> On.</td>
+</tr>
+<tr>
+<td><code>resize_horizontal</code></td>
+<td>Horizontal resizing</td>
+<td>radio</td>
+<td><code>false (Off)</code></td>
+<td>Enable/disable the horizontal resizing. Options: <code>false</code> Off, <code>true</code> On.</td>
+</tr>
+<tr>
+<td><code>element_path</code></td>
+<td>Element Path</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>If set to ON, it displays the set classes for the marked text. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Fonts</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Fonts control selectors. Only applies in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>paste</code></td>
+<td>Paste</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Paste buttons. Only applies in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>searchreplace</code></td>
+<td>Search-Replace</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Search &amp; Replace button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>insertdate</code></td>
+<td>Insert Date</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Insert Date button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>format_date</code></td>
+<td>Date Format</td>
+<td>text</td>
+<td><code>%Y-%m-%d</code></td>
+<td>Format of inserted date. Only works in Extended Mode.</td>
+</tr>
+<tr>
+<td><code>inserttime</code></td>
+<td>Insert Time</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Insert Time button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>format_time</code></td>
+<td>Time Format</td>
+<td>text</td>
+<td><code>%H:%M:%S</code></td>
+<td>Format of inserted time. Only works in Extended Mode</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td>Colours</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Colours control buttons. Only applies in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td>Table</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the table control buttons. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>smilies</code></td>
+<td>Smilies</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the smilies buttons. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>media</code></td>
+<td>Media</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Media button. Only applies in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>hr</code></td>
+<td>Horizontal Rule</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Horizontal Rule button. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>directionality</code></td>
+<td>Directionality</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Select whether to display the RTL button. Only Works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>fullscreen</code></td>
+<td>Fullscreen</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Fullscreen button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Style</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the CSS Style control button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>layer</code></td>
+<td>Layer</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Add new Layer button. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>xhtmlxtras</code></td>
+<td>XHTMLxtras</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the additional XHTML features. Only works in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>visualchars</code></td>
+<td>Visualchars</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Possibility to see invisible characters, specifically non-breaking spaces. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>visualblocks</code></td>
+<td>Visualblocks</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Possibility to see the outline of HTML block elements. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>nonbreaking</code></td>
+<td>Nonbreaking</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Insert nonbreaking space entities. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>template</code></td>
+<td>Template</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Insert predefined template content button. Only applies in Extended mode. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>blockquote</code></td>
+<td>Blockquote</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off Blockquotes. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>wordcount</code></td>
+<td>Wordcount</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off Wordcount. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>advimage</code></td>
+<td>Advanced image</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off a more advanced image dialog. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>advlink</code></td>
+<td>Advanced link</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off a more advanced link dialog. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>advlist</code></td>
+<td>Advanced List</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off to enable to set number formats and bullet types in ordered and unordered lists. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>autosave</code></td>
+<td>Save Warning</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Save Warning: gives warning if you cancel without saving changes. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>contextmenu</code></td>
+<td>Context menu</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>Turn on/off Context menu. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>inlinepopups</code></td>
+<td>Inline popups</td>
+<td>radio</td>
+<td><code>1 (On)</code></td>
+<td>All dialogs to open as floating DIV layers instead of popup windows. This option can be very useful in order to get around popup blockers. Options: <code>0</code> Off, <code>1</code> On.</td>
+</tr>
+<tr>
+<td><code>custom_plugin</code></td>
+<td>Custom plugin</td>
+<td>text</td>
+<td>—</td>
+<td>Add custom plugin(s)</td>
+</tr>
+<tr>
+<td><code>custom_button</code></td>
+<td>Custom button</td>
+<td>text</td>
+<td>—</td>
+<td>Add custom button(s)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="editor-wikietoolbar-plg-editors-wikitoolbar">Editor - Wikietoolbar (<code>plg_editors_wikitoolbar</code>)</h2>
+<p>PLG_EDITORS_WIKITOOLBAR_XML_DESCRIPTION</p>
+<p>This plugin has no parameters.</p>
+<h2 id="editor-wikiwyg-plg-editors-wikiwyg">Editor - Wikiwyg (<code>plg_editors_wikiwyg</code>)</h2>
+<p>PLG_EDITORS_WIKIWYG_XML_DESCRIPTION</p>
+<p>This plugin has no parameters.</p>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../editors-xtd/index.html" rel="prev"><span>Previous</span>Editors-xtd plugins</a><a class="pager__next" href="../filesystem/index.html" rel="next"><span>Next</span>Filesystem plugins</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/plugins/editors.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

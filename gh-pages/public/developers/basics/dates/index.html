@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dates · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A hub has members in every time zone, so it keeps one rule: store and compare in UTC, convert only for display. Every column in the schema holds UTC. Every…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/dates/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Dates</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#creating-a-date">Creating a date</a></li>
+<li class="toc__item toc__item--l2"><a href="#storing">Storing</a></li>
+<li class="toc__item toc__item--l2"><a href="#displaying">Displaying</a></li>
+<li class="toc__item toc__item--l2"><a href="#moving-a-date">Moving a date</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">The basics</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Dates</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Dates</h1>
+        </header>
+        
+        <div class="prose">
+<p>A hub has members in every time zone, so it keeps one rule: <strong>store and
+compare in UTC, convert only for display.</strong> Every <code>datetime</code> column in the
+schema holds UTC. Every date that reaches a member's screen has been
+converted on the way out.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Date.php"><code>Hubzero\Utility\Date</code></a>
+extends PHP's <code>DateTime</code> and enforces that rule. The <code>Date</code> facade is the
+short way to build one.</p>
+<h2 id="creating-a-date">Creating a date</h2>
+<pre><code class="language-php">use Date;
+
+$now     = Date::of('now');
+$created = Date::of($row-&gt;get('created'));
+</code></pre>
+<p><code>Date::of($date = 'now', $tz = null)</code> returns a new object each time; there
+is no shared instance. <code>Date::getRoot()</code> is <code>Date::of('now')</code>.</p>
+<p><strong>When <code>$tz</code> is omitted the string is read as UTC.</strong> That is the important
+default. <code>Date::of('2015-06-01 09:00:00')</code> is nine in the morning UTC, not
+nine in the morning wherever the server is. A value that came out of the
+database is already UTC, so reading it back needs no time zone:</p>
+<pre><code class="language-php">$created = Date::of($row-&gt;get('created'));
+</code></pre>
+<p>A value that came from a <strong>member typing into a form</strong> is in their time zone,
+and has to be told so:</p>
+<pre><code class="language-php">$fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))-&gt;toSql();
+</code></pre>
+<p><code>Config::get('offset')</code> is the hub's configured zone. <code>$tz</code> accepts a
+<code>DateTimeZone</code>, an identifier string such as <code>America/New_York</code>, or a
+numeric offset resolved through the class's own table of common zones.</p>
+<p>The constructor accepts anything <code>strtotime()</code> does, and treats a purely
+numeric argument as a Unix timestamp:</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MySQL datetime</td>
+<td><code>2009-10-02 15:25:00</code></td>
+</tr>
+<tr>
+<td>Unix timestamp</td>
+<td><code>1254497100</code></td>
+</tr>
+<tr>
+<td>RFC 2822</td>
+<td><code>Fri, 2 Oct 2009 15:25:00 +0000</code></td>
+</tr>
+<tr>
+<td>RFC 3339 / ISO 8601</td>
+<td><code>2009-10-02T15:25:00+00:00</code></td>
+</tr>
+<tr>
+<td>Plain English</td>
+<td><code>2 October 2009</code>, <code>now</code>, <code>-1 year</code></td>
+</tr>
+</tbody>
+</table>
+<p>Where the input carries its own offset, that offset is honoured and the
+result still represents the same instant.</p>
+<h2 id="storing">Storing</h2>
+<pre><code class="language-php">$row-&gt;set('modified', Date::of('now')-&gt;toSql());
+</code></pre>
+<p><code>toSql($local = false, $dbo = null)</code> formats for the database using the
+driver's own date format, in UTC unless <code>$local</code> is true. Leave <code>$local</code>
+alone. Every comparison the CMS makes — <code>publish_up &lt;= now</code>, a cron job's
+<code>next_run</code> — assumes UTC on both sides, and one row written in local time
+sorts and filters wrongly against all the others.</p>
+<h2 id="displaying">Displaying</h2>
+<p><code>toLocal($format = '')</code> converts to the viewing member's zone and formats:</p>
+<pre><code class="language-php">echo Date::of($row-&gt;get('created'))-&gt;toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+</code></pre>
+<p>It reads <code>User::getParam('timezone', Config::get('offset'))</code> — the member's
+own preference where they have set one, the hub's offset otherwise — so the
+same row renders differently for two members, which is the point.</p>
+<p>The format is a <strong>PHP <code>date()</code> format string</strong>, not a <code>strftime()</code> one:
+<code>'d M Y'</code>, not <code>'%d %b %Y'</code>. Put it in a language key rather than a view so
+a hub can change it:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DATE_FORMAT_HZ1</code></td>
+<td><code>d M Y</code></td>
+</tr>
+<tr>
+<td><code>DATE_FORMAT_LC</code></td>
+<td><code>l, d F Y</code></td>
+</tr>
+<tr>
+<td><code>DATE_FORMAT_LC2</code></td>
+<td><code>l, d F Y H:i</code></td>
+</tr>
+<tr>
+<td><code>DATE_FORMAT_LC3</code></td>
+<td><code>d F Y</code></td>
+</tr>
+<tr>
+<td><code>DATE_FORMAT_LC4</code></td>
+<td><code>Y-m-d</code></td>
+</tr>
+<tr>
+<td><code>TIME_FORMAT_HZ1</code></td>
+<td><code>g:i a</code></td>
+</tr>
+</tbody>
+</table>
+<p>Called with no format, <code>toLocal()</code> uses <code>Date::$format</code>, which is
+<code>Y-m-d H:i:s</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>toLocal($format = '')</code></td>
+<td>Formatted in the viewer's time zone</td>
+</tr>
+<tr>
+<td><code>toTimeZone($tz, $format = null)</code></td>
+<td>Formatted in a zone you name</td>
+</tr>
+<tr>
+<td><code>format($format, $local = false, $translate = true)</code></td>
+<td>Formatted; <strong>UTC unless <code>$local</code></strong></td>
+</tr>
+<tr>
+<td><code>toSql($local = false, $dbo = null)</code></td>
+<td>Database datetime</td>
+</tr>
+<tr>
+<td><code>toISO8601($local = false)</code></td>
+<td><code>2009-10-06T12:54:37+00:00</code></td>
+</tr>
+<tr>
+<td><code>toRFC822($local = false)</code></td>
+<td><code>Tue, 06 Oct 2009 12:54:37 +0000</code></td>
+</tr>
+<tr>
+<td><code>toUnix()</code></td>
+<td>Seconds since the epoch</td>
+</tr>
+<tr>
+<td><code>relative($unit = null, $time = null)</code></td>
+<td><code>3 days ago</code>, <code>2 weeks ago</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>format()</code> defaults to UTC, so it is what a machine-readable attribute
+wants and <code>toLocal()</code> is what the human-readable text beside it wants:</p>
+<pre><code class="language-php">&lt;time datetime=&quot;&lt;?php echo Date::of($row-&gt;get('created'))-&gt;format('Y-m-d\TH:i:s\Z'); ?&gt;&quot;&gt;
+    &lt;?php echo Date::of($row-&gt;get('created'))-&gt;toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?&gt;
+&lt;/time&gt;
+</code></pre>
+<p><code>format()</code> also translates day and month names by default: <code>D</code>, <code>l</code>, <code>M</code> and
+<code>F</code> are resolved through <code>Lang::txt()</code> against <code>MONDAY</code>, <code>MON</code>, <code>JANUARY</code>,
+<code>JANUARY_SHORT</code> and their siblings. Pass <code>false</code> as the third argument where
+you need the raw PHP output — <code>toSql()</code>, <code>toISO8601()</code> and <code>toRFC822()</code>
+already do.</p>
+<p><code>relative()</code> renders an age rather than a date, using the
+<code>JLIB_HTML_DATE_RELATIVE_*</code> keys under a month and <code>&quot;%d %s ago&quot;</code> above it.
+<code>format('relative')</code> is a shorthand for it.</p>
+<h2 id="moving-a-date">Moving a date</h2>
+<p><code>add($modifier)</code> and <code>subtract($modifier)</code> prefix the string with <code>+</code> or <code>-</code>
+and pass it to <code>modify()</code>. They are marked deprecated; use <code>modify()</code>, or
+<code>DateTime</code>'s own <code>add()</code>/<code>sub()</code> with a <code>DateInterval</code>, in new code.</p>
+<pre><code class="language-php">$cutoff = Date::of('now')-&gt;modify('-30 days')-&gt;toSql();
+</code></pre>
+<p><code>setTimezone($tz)</code> accepts a string as well as a <code>DateTimeZone</code> and records
+the zone on the object, so subsequent <code>format($f, true)</code> calls use it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>toTimeZone()</code> and <code>toLocal()</code> change the object's own time
+zone as a side effect, because <code>toTimeZone()</code> calls <code>setTimezone()</code>.
+Formatting the same object first for display and then for storage gives
+the wrong answer for the second. Build a fresh <code>Date::of(...)</code> for each
+output, as the views in the tree do.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Legacy rows can hold <code>0000-00-00 00:00:00</code>. Test the column
+before constructing a date from it; <code>Date::of('0000-00-00 00:00:00')</code> does
+not represent a date anybody wants to show.</p>
+</aside>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cron/index.html" rel="prev"><span>Previous</span>Scheduled tasks</a><a class="pager__next" href="../redirect/index.html" rel="next"><span>Next</span>Redirect</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/10-dates.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

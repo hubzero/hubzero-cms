@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System plugins · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Parameters of every plugin in the group, from each plugin&#x27;s manifest. Set them under Extensions Plugins in the administrator interface. System - Activity ( )…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/plugins/system/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">System plugins</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#system-activity-plg-system-activity">System - Activity (plg_system_activity)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-authfactors-plg-system-authfactors">System - Authfactors (plg_system_authfactors)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-cache-plg-system-cache">System - Cache (plg_system_cache)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-2">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-cac-plg-system-certificate">System - CAC (plg_system_certificate)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-3">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-hubzero-plg-system-content">System - HUBzero (plg_system_content)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-content-security-policy-plg-system-csp">System - Content Security Policy (plg_system_csp)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-4">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#policy">Policy</a></li>
+<li class="toc__item toc__item--l3"><a href="#report">Report</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-debug-plg-system-debug">System - Debug (plg_system_debug)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-5">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#language-options">Language Options</a></li>
+<li class="toc__item toc__item--l3"><a href="#logging">Logging</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-highlight-plg-system-highlight">System - Highlight (plg_system_highlight)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-hubzero-plg-system-hubzero">System - HUBzero (plg_system_hubzero)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-6">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-incomplete-plg-system-incomplete">System - Incomplete (plg_system_incomplete)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-7">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-jquery-plg-system-jquery">System - jQuery (plg_system_jquery)</a></li>
+<li class="toc__item toc__item--l3"><a href="#jquery">Jquery</a></li>
+<li class="toc__item toc__item--l3"><a href="#jquery-ui">Jquery ui</a></li>
+<li class="toc__item toc__item--l3"><a href="#jquery-fb">Jquery fb</a></li>
+<li class="toc__item toc__item--l3"><a href="#advanced">Advanced</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-language-code-plg-system-languagecode">System - Language Code (plg_system_languagecode)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-language-filter-plg-system-languagefilter">System - Language Filter (plg_system_languagefilter)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-8">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-log-plg-system-log">System - Log (plg_system_log)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-9">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-logout-plg-system-logout">System - Logout (plg_system_logout)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-member-home-page-plg-system-memberhome">System - Member Home Page (plg_system_memberhome)</a></li>
+<li class="toc__item toc__item--l3"><a href="#customize">Customize</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-mobile-plg-system-mobile">System - Mobile (plg_system_mobile)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-p3p-policy-plg-system-p3p">System - P3P Policy (plg_system_p3p)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-10">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-password-plg-system-password">System - Password (plg_system_password)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-redirect-plg-system-redirect">System - Redirect (plg_system_redirect)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-referrer-policy-plg-system-referrerpolicy">System - Referrer Policy (plg_system_referrerpolicy)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-11">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-remember-me-plg-system-remember">System - Remember Me (plg_system_remember)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-sef-plg-system-sef">System - SEF (plg_system_sef)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-spamjail-plg-system-spamjail">System - Spamjail (plg_system_spamjail)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-12">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-super-group-plg-system-supergroup">System - Super Group (plg_system_supergroup)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-unapproved-plg-system-unapproved">System - Unapproved (plg_system_unapproved)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-unconfirmed-plg-system-unconfirmed">System - Unconfirmed (plg_system_unconfirmed)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-userconsent-plg-system-userconsent">System - Userconsent (plg_system_userconsent)</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-xfeed-plg-system-xfeed">System - xFeed (plg_system_xfeed)</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugin parameters</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">System plugins</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>System plugins</h1>
+        </header>
+        
+        <div class="prose">
+<p>Parameters of every plugin in the <code>system</code> group, from each plugin's manifest. Set them under <strong>Extensions &gt; Plugins</strong> in the administrator interface.</p>
+<h2 id="system-activity-plg-system-activity">System - Activity (<code>plg_system_activity</code>)</h2>
+<p>Log activity</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-authfactors-plg-system-authfactors">System - Authfactors (<code>plg_system_authfactors</code>)</h2>
+<p>Routing plugin to check for necessary authentication factors</p>
+<h3 id="basic">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clients</code></td>
+<td>Client enforcement</td>
+<td>checkboxes</td>
+<td><code>1 (Administrator)</code></td>
+<td>Which client types should this factor be enforced on?. Options: <code>0</code> Site, <code>1</code> Administrator.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-cache-plg-system-cache">System - Cache (<code>plg_system_cache</code>)</h2>
+<p>Provides various cache functions such as page caching, cache cleaning, etc.</p>
+<h3 id="basic-2">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pagecache</code></td>
+<td>Use Page Caching</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>This will cache the entire contents of the page instead of re-rendering on every page hit. This can gain significant performance improvements for high-traffic sites. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>browsercache</code></td>
+<td>Use Browser Caching</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>If yes, use mechanism for storing page cache in the browser. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>cacheexempt</code></td>
+<td>Exempt Pages</td>
+<td>textarea</td>
+<td><code>/about/contact</code></td>
+<td>Add a line for each URL of the site that should not be cached.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-cac-plg-system-certificate">System - CAC (<code>plg_system_certificate</code>)</h2>
+<p>Enables client side certificate based route limiting</p>
+<h3 id="basic-3">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>failure_location</code></td>
+<td>Failure location</td>
+<td>text</td>
+<td><code>/invalidcert.php</code></td>
+<td>A static page to display when no certificate is present</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-hubzero-plg-system-content">System - HUBzero (<code>plg_system_content</code>)</h2>
+<p>Allows for search indexing once content has been saved.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-content-security-policy-plg-system-csp">System - Content Security Policy (<code>plg_system_csp</code>)</h2>
+<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks.</p>
+<h3 id="basic-4">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode</code></td>
+<td>Mode</td>
+<td>list</td>
+<td><code>0 (Report only)</code></td>
+<td>CSP can be deployed in report-only mode. The policy is not enforced, but any violations are reported to a provided URI. Additionally, a report-only header can be used to test a future revision to a policy without actually deploying it. Options: <code>0</code> Report only, <code>1</code> Enforce policy, <code>2</code> Send both enforcement and reporting policy.</td>
+</tr>
+<tr>
+<td><code>report-uri</code></td>
+<td>base-uri</td>
+<td>text</td>
+<td><code>https://{host}/api/csp/cms</code></td>
+<td>Policy for base URI.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="policy">Policy</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base-uri</code></td>
+<td>base-uri</td>
+<td>textarea</td>
+<td><code>'self'</code></td>
+<td>Policy for base URI.</td>
+</tr>
+<tr>
+<td><code>object-src</code></td>
+<td>object-src</td>
+<td>textarea</td>
+<td><code>'self' https://fpdownload.adobe.com</code></td>
+<td>Policy for object source.</td>
+</tr>
+<tr>
+<td><code>child-src</code></td>
+<td>child-src</td>
+<td>textarea</td>
+<td><code>'self' https://*.youtube.com</code></td>
+<td>Policy for child source.</td>
+</tr>
+<tr>
+<td><code>connect-src</code></td>
+<td>connect-src</td>
+<td>textarea</td>
+<td><code>'self' wss://*.{host}.org wss://{host}.org https://www.google-analytics.com https://stats.g.doubleclick.net https://www.dropbox.com https://graph.facebook.com</code></td>
+<td>Policy for connect source.</td>
+</tr>
+<tr>
+<td><code>default-src</code></td>
+<td>default-src</td>
+<td>textarea</td>
+<td><code>'self' https://*.{host}.org</code></td>
+<td>Policy for default source.</td>
+</tr>
+<tr>
+<td><code>font-src</code></td>
+<td>font-src</td>
+<td>textarea</td>
+<td><code>'self' https://fonts.gstatic.com data: safari-extension: chrome-extension: https://maxcdn.bootstrapcdn.com</code></td>
+<td>Policy for font source.</td>
+</tr>
+<tr>
+<td><code>form-action</code></td>
+<td>form-action</td>
+<td>textarea</td>
+<td><code>'self' https://platform.twitter.com https://syndication.twitter.com</code></td>
+<td>Policy for form action.</td>
+</tr>
+<tr>
+<td><code>frame-src</code></td>
+<td>frame-src</td>
+<td>textarea</td>
+<td><code>'self' https://*.{host}.org https://*.google.com https://*.youtube.com https://content.googleapis.com https://*.facebook.com https://*.twitter.com</code></td>
+<td>Policy for frame source.</td>
+</tr>
+<tr>
+<td><code>img-src</code></td>
+<td>img-src</td>
+<td>textarea</td>
+<td><code>* data: image:</code></td>
+<td>Policy for image source.</td>
+</tr>
+<tr>
+<td><code>script-src</code></td>
+<td>script-src</td>
+<td>textarea</td>
+<td><code>'self' 'unsafe-eval' 'unsafe-inline' https://*.google-analytics.com https://*.google.com https://connect.facebook.net https://www.linkedin.com https://platform.twitter.com https://cdn.syndication.twimg.com https://www.gstatic.com https://*.googleapis.com https://platform.linkedin.com https://cdnjs.cloudflare.com https://*.cloudfront.net</code></td>
+<td>Policy for script source.</td>
+</tr>
+<tr>
+<td><code>style-src</code></td>
+<td>style-src</td>
+<td>textarea</td>
+<td><code>'self' 'unsafe-inline' https://platform.twitter.com https://ton.twimg.com https://*.googleapis.com https://www.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com</code></td>
+<td>Policy for style source.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="report">Report</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>report-base-uri</code></td>
+<td>base-uri</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for base URI.</td>
+</tr>
+<tr>
+<td><code>report-object-src</code></td>
+<td>object-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for object source.</td>
+</tr>
+<tr>
+<td><code>report-child-src</code></td>
+<td>child-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for child source.</td>
+</tr>
+<tr>
+<td><code>report-connect-src</code></td>
+<td>connect-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for connect source.</td>
+</tr>
+<tr>
+<td><code>report-default-src</code></td>
+<td>default-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for default source.</td>
+</tr>
+<tr>
+<td><code>report-font-src</code></td>
+<td>font-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for font source.</td>
+</tr>
+<tr>
+<td><code>report-form-action</code></td>
+<td>form-action</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for form action.</td>
+</tr>
+<tr>
+<td><code>report-frame-src</code></td>
+<td>frame-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for frame source.</td>
+</tr>
+<tr>
+<td><code>report-img-src</code></td>
+<td>img-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for image source.</td>
+</tr>
+<tr>
+<td><code>report-script-src</code></td>
+<td>script-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for script source.</td>
+</tr>
+<tr>
+<td><code>report-style-src</code></td>
+<td>style-src</td>
+<td>textarea</td>
+<td>—</td>
+<td>Policy for style source.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-debug-plg-system-debug">System - Debug (<code>plg_system_debug</code>)</h2>
+<p>This plugin provides a variety of system information as well as assistance for the creation of translation files.</p>
+<h3 id="basic-5">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filter_groups</code></td>
+<td>Allowed Groups</td>
+<td>usergroup</td>
+<td>—</td>
+<td>Optionally restrict users that can see debug information to those in the selected user groups. If none selected, all users see the debug information.</td>
+</tr>
+<tr>
+<td><code>filter_users</code></td>
+<td>Allowed Users</td>
+<td>textarea</td>
+<td>—</td>
+<td>Optionally restrict users that can see debug information to those in the comma-separated list of usernames. If none entered, all users see the debug information.</td>
+</tr>
+<tr>
+<td><code>profile</code></td>
+<td>Show Profiling</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display the profiling waypoints. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>queries</code></td>
+<td>Show Queries</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display a list the queries executed while displaying the page. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>query_types</code></td>
+<td>Show Query Types</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display a list of unique query types and their number of occurrences for the current page. Useful for finding out about repeated queries that are either redundant or which can be grouped into a single, more efficient query. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>memory</code></td>
+<td>Show Memory Usage</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display the total memory usage. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td>Color Theme</td>
+<td>list</td>
+<td><code>dark</code></td>
+<td>Choose between a dark or light color the for the debug output. Options: <code>dark</code>, <code>light</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="language-options">Language Options</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>language_errorfiles</code></td>
+<td>Show errors when parsing language files</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display a list of the language files that are in error according to the HUBzero INI specification. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>language_files</code></td>
+<td>Show Language Files</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display a list of the language files that the CMS has tried to load. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>language_strings</code></td>
+<td>Show Language String</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display a list of the untranslated language strings. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>strip-first</code></td>
+<td>Strip First Word</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>In multi-word strings, always strip the first word. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>strip-prefix</code></td>
+<td>Strip From Start</td>
+<td>textarea</td>
+<td>—</td>
+<td>Strip words from the beginning of the string. For multiple words, use the format: (word1|word2)</td>
+</tr>
+<tr>
+<td><code>strip-suffix</code></td>
+<td>Strip From End</td>
+<td>textarea</td>
+<td>—</td>
+<td>Strip words from the end of the string. For multiple words, use the format: (word1|word2)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logging">Logging</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log-database-queries</code></td>
+<td>Log database queries</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>If enabled, database queries will be logged. Only use this setting for short periods of time as it will create LARGE files with sensitive data. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-highlight-plg-system-highlight">System - Highlight (<code>plg_system_highlight</code>)</h2>
+<p>System plugin to highlight specified terms.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-hubzero-plg-system-hubzero">System - HUBzero (<code>plg_system_hubzero</code>)</h2>
+<p>Enables HUBzero support</p>
+<h3 id="basic-6">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search</code></td>
+<td>Search Component</td>
+<td>text</td>
+<td><code>search</code></td>
+<td>The name of the component to default searches to.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-incomplete-plg-system-incomplete">System - Incomplete (<code>plg_system_incomplete</code>)</h2>
+<p>Routing plugin to check user registration status for missing/required fields</p>
+<h3 id="basic-7">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exceptions</code></td>
+<td>Routing Exceptions</td>
+<td>textarea</td>
+<td>—</td>
+<td>A list of routes to be allowed even when the user's profile is incomplete. One rule per line, composed of dot notation: component.controller.task</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-jquery-plg-system-jquery">System - jQuery (<code>plg_system_jquery</code>)</h2>
+<p>This plugin allows to embed jQuery, jQueryUI and Fancybox into your website.Built-in versions:jQuery: 1.11.1jQuery UI: 1.10.0Fancybox: 2.1.5</p>
+<h3 id="jquery">Jquery</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jquery</code></td>
+<td>Embed jQuery</td>
+<td>list</td>
+<td><code>4</code></td>
+<td>Selects, whether the plugin should attach jQuery to page, and what source is to be used. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jquery-ui">Jquery ui</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jqueryui</code></td>
+<td>Embed jQuery UI</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Selects, whether the plugin should attach jQuery UI to page, and what source is to be used. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jquery-fb">Jquery fb</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jqueryfb</code></td>
+<td>Embed fancyBox</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Selects, whether the plugin should attach fancyBox to page, and what source is to be used. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced">Advanced</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activateSite</code></td>
+<td>Activate at site (frontend)</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Allows to embed the libraries into the frontend site. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>noconflictSite</code></td>
+<td>jQuery noConflict mode</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Allows to activate jQuery().noConflict() mode. Make sure you scripts are adapted. Use carefully, together with the option below this mode can disable dropdown menu in adminpanel. Improved in v1.2. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-language-code-plg-system-languagecode">System - Language Code (<code>plg_system_languagecode</code>)</h2>
+<p>Provides the ability to change the language code in the generated HTML document to improve SEO.The fields will appear when the plugin is enabled and saved.More information at W3.org</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-language-filter-plg-system-languagefilter">System - Language Filter (<code>plg_system_languagefilter</code>)</h2>
+<p>This plugin filters the displayed content depending on language.This plugin is to be enabled only when the Language Switcher module is published.If this plugin is activated, it is suggested to publish the administrator multilanguage status module.</p>
+<h3 id="basic-8">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detect_browser</code></td>
+<td>Language Selection for new Visitors.</td>
+<td>list</td>
+<td><code>1 (Browser Settings)</code></td>
+<td>Choose Site default language or try to detect the browser settings language. It will default to site language if browser settings can't be found. Options: <code>0</code> Site Language, <code>1</code> Browser Settings.</td>
+</tr>
+<tr>
+<td><code>automatic_change</code></td>
+<td>Automatic Language Change</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>This option will automatically change the content language used in the frontend when a user site language is changed. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>menu_associations</code></td>
+<td>Menu associations</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>This option will allow menu associations when switching from one language to another. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>remove_default_prefix</code></td>
+<td>Remove URL Language Code</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Remove the defined URL Language Code of the Content Language that corresponds to the default site language when Search Engine Friendly URLs is set to 'Yes'. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>lang_cookie</code></td>
+<td>Cookie Lifetime</td>
+<td>radio</td>
+<td><code>1 (Year)</code></td>
+<td>Language cookies can be set to expire at the end of the session or after a year. Default is a year. Options: <code>0</code> Session, <code>1</code> Year.</td>
+</tr>
+<tr>
+<td><code>alternate_meta</code></td>
+<td>Add alternate meta tags</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Add alternate meta tags for menu items with associated menu items in other languages. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-log-plg-system-log">System - Log (<code>plg_system_log</code>)</h2>
+<p>Provides System Logging</p>
+<h3 id="basic-9">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_username</code></td>
+<td>Log user names</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>This option will log used user names when an authentication failed. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-logout-plg-system-logout">System - Logout (<code>plg_system_logout</code>)</h2>
+<p>The system logout plug-in enables the CMS to redirect the user to the home page if he chooses to logout while he is on a protected access page.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-member-home-page-plg-system-memberhome">System - Member Home Page (<code>plg_system_memberhome</code>)</h2>
+<p>This plugin redirects your members to a pre-defined homepage if they are logged in. Every link on your website that directs to your homepage, will now be redirected to the new member homepage.</p>
+<h3 id="customize">Customize</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>menuId</code></td>
+<td>Redirect to Menu</td>
+<td>menuitem</td>
+<td><code>0 (--Select a Menu Item--)</code></td>
+<td>Select the menu item that will be used for the alternate Home Page if user is logged in. (This list only includes Published menu items). Options: <code>0</code> --Select a Menu Item--.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-mobile-plg-system-mobile">System - Mobile (<code>plg_system_mobile</code>)</h2>
+<p>System plugin for Mobile template</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-p3p-policy-plg-system-p3p">System - P3P Policy (<code>plg_system_p3p</code>)</h2>
+<p>The system P3P policy plugin allows for sending a customised string of P3P policy tags in the HTTP header. This is required for the sessions to work on certain browsers, i.e. Internet Explorer 6 and 7.</p>
+<h3 id="basic-10">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>header</code></td>
+<td>P3P Tags</td>
+<td>text</td>
+<td><code>NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM</code></td>
+<td>Enter your P3P policy tags. For more information consult The Platform for Privacy Preferences specification, http://www.w3.org/TR/P3P/</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-password-plg-system-password">System - Password (<code>plg_system_password</code>)</h2>
+<p>Routing plugin to check user password expiration and validation rules</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-redirect-plg-system-redirect">System - Redirect (<code>plg_system_redirect</code>)</h2>
+<p>The system redirect plug-in enables the Redirect system to catch missing pages and redirect users.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-referrer-policy-plg-system-referrerpolicy">System - Referrer Policy (<code>plg_system_referrerpolicy</code>)</h2>
+<p>The system Referrer Policy plugin allows for sending a referrer policy in the HTTP header. This is recommended to better guard against Cross-Site Scripting.</p>
+<h3 id="basic-11">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>policy</code></td>
+<td>Referrer Policy</td>
+<td>list</td>
+<td><code>same-origin</code></td>
+<td>PLG_SYSTEM_REFERRERPOLICY_POLICY_DESC. Options: `` (none), <code>no-referrer</code>, <code>no-referrer-when-downgrade</code>, <code>same-origin</code>, <code>origin</code>, <code>strict-origin</code>, <code>origin-when-cross-origin</code>, <code>strict-origin-when-cross-origin</code>, <code>unsafe-url</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-remember-me-plg-system-remember">System - Remember Me (<code>plg_system_remember</code>)</h2>
+<p>Provides remember me functionality</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-sef-plg-system-sef">System - SEF (<code>plg_system_sef</code>)</h2>
+<p>Adds Search Engine Friendly (SEF) support to links in the document. It operates directly on the HTML.</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-spamjail-plg-system-spamjail">System - Spamjail (<code>plg_system_spamjail</code>)</h2>
+<p>Routing plugin to check spam violators and throw them in spam jail</p>
+<h3 id="basic-12">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session_count</code></td>
+<td>Session count</td>
+<td>text</td>
+<td><code>5</code></td>
+<td>The number of allowed spam incidents per session.</td>
+</tr>
+<tr>
+<td><code>user_count</code></td>
+<td>User count</td>
+<td>text</td>
+<td><code>10</code></td>
+<td>The number of allowed spam incidents per user, over all time.</td>
+</tr>
+<tr>
+<td><code>spam_video</code></td>
+<td>Jail video</td>
+<td>text</td>
+<td>—</td>
+<td>ID of Youtube video to be displayed on spam jail page.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-super-group-plg-system-supergroup">System - Super Group (<code>plg_system_supergroup</code>)</h2>
+<p>Super group support</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-unapproved-plg-system-unapproved">System - Unapproved (<code>plg_system_unapproved</code>)</h2>
+<p>Routing plugin to check user approval status</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-unconfirmed-plg-system-unconfirmed">System - Unconfirmed (<code>plg_system_unconfirmed</code>)</h2>
+<p>Routing plugin to check user email confirmation status</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-userconsent-plg-system-userconsent">System - Userconsent (<code>plg_system_userconsent</code>)</h2>
+<p>Routing plugin to get user consent to monitor</p>
+<p>This plugin has no parameters.</p>
+<h2 id="system-xfeed-plg-system-xfeed">System - xFeed (<code>plg_system_xfeed</code>)</h2>
+<p>This will force links that end in .rss or .atom to raw document mode, allowing the respective component to output XML.</p>
+<p>This plugin has no parameters.</p>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../support/index.html" rel="prev"><span>Previous</span>Support plugins</a><a class="pager__next" href="../tags/index.html" rel="next"><span>Next</span>Tags plugins</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/plugins/system.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

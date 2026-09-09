@@ -22,3 +22,5 @@ hubconfiguration.php
 .phpunit.result.cache
 .phpunit.cache/
 *.sqlite3
+/docs/_import/
+__pycache__/

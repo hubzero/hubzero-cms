@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facades · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Overview Facades serve as static proxies to underlying classes in the service container. This provides flexibility over traditional static methods with the…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/facades/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Facades</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#use">Use</a></li>
+<li class="toc__item toc__item--l2"><a href="#class-reference">Class Reference</a></li>
+<li class="toc__item toc__item--l2"><a href="#importing-a-facade">Importing a facade</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-facades">The facades</a></li>
+<li class="toc__item toc__item--l2"><a href="#testing">Testing</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Foundation</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Facades</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Facades</h1>
+        </header>
+        
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>Facades serve as &quot;static proxies&quot; to underlying classes in the service container. This provides flexibility over traditional static methods with the benefit of terser syntax.</p>
+<h2 id="use">Use</h2>
+<p>In the context of a hub, a facade is a class that provides access to an object from the container. For this to work, all facades extend the base <code>Hubzero\Facades\Facade</code> class.</p>
+<p>A facade class only needs to implement a single method: <code>getAccessor</code>, which defines what to resolve from the container. The base Facade class makes use of the <code>__callStatic()</code> magic-method to defer calls from the facade to the resolved object.</p>
+<p>Below is the facade for the Filesystem wherein the <code>getAccessor()</code> method returns the string 'filesystem', which is the key that the Filesystem service is registered with on the application.</p>
+<pre><code class="language-php">class Filesystem extends Facade
+{
+    /**
+     * Get the registered name.
+     *
+     * @return  string
+     */
+    protected static function getAccessor()
+    {
+        return 'filesystem';
+    }
+}
+</code></pre>
+<p>In the example below, a call is made to Filesystem to check that a file exists. Looking quickly at the code, one might assume that the static method <code>exists()</code> is being called on the <code>Filesystem</code> class:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace Components\Blog\Site\Controllers;
+
+use Hubzero\Component\Site\Controller;
+use Filesystem;
+use App;
+
+class Media extends SiteController
+{
+    public function downloadTask()
+    {
+        //...
+
+        if ( ! Filesystem::exists($file))
+        {
+            App::abort(404, 'File not found');
+        }
+
+        //...
+    }
+}
+</code></pre>
+<p>This facade serves as a proxy to accessing the underlying implementation of the <code>Hubzero\Filesystem\Filesystem</code> interface. So, when any static method on the facade is referenced, the application resolves the binding from the service container and runs the requested method against that object. In short, any calls made using the facade will be passed to the underlying instance of the filesystem service.</p>
+<h2 id="class-reference">Class Reference</h2>
+<p>Below is a list of every facade, its underlying class, and the service container binding key where applicable.</p>
+<table>
+<thead>
+<tr>
+<th>Facade</th>
+<th>Class</th>
+<th>Service Key</th>
+<th>Client</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App</td>
+<td>Hubzero\Base\Application</td>
+<td>app</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Hubzero\Auth\Manager</td>
+<td>auth</td>
+<td>admin, site, api</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td>Hubzero\Cache\Manager</td>
+<td>cache</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Component</td>
+<td>Hubzero\Component\Loader</td>
+<td>component</td>
+<td>admin, site, api</td>
+</tr>
+<tr>
+<td>Config</td>
+<td>Hubzero\Config\Repository</td>
+<td>config</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>Hubzero\Utility\Date</td>
+<td></td>
+<td>all</td>
+</tr>
+<tr>
+<td>Document</td>
+<td>Hubzero\Document\Manager</td>
+<td>document</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>Hubzero\Events\Dispatcher</td>
+<td>dispatcher</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Filesystem</td>
+<td>Hubzero\Filesystem\Filesystem</td>
+<td>filesystem</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Html</td>
+<td>Hubzero\Html\Builder</td>
+<td>html.builder</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Lang</td>
+<td>Hubzero\Language\Translator</td>
+<td>language</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Log</td>
+<td>Hubzero\Log\Writer</td>
+<td>log.debug</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Module</td>
+<td>Hubzero\Module\Loader</td>
+<td>module</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Notify</td>
+<td>Hubzero\Notification\Handler</td>
+<td>notification</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Pathway</td>
+<td>Hubzero\Pathway\Trail</td>
+<td>pathway</td>
+<td>site</td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td>Hubzero\Plugin\Loader</td>
+<td>plugin</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Hubzero\Http\Request</td>
+<td>request</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Response</td>
+<td>Hubzero\Http\Response</td>
+<td>response</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Router</td>
+<td>Hubzero\Routing\Router</td>
+<td>router</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Hubzero\Session\Manager</td>
+<td>session</td>
+<td>admin, site</td>
+</tr>
+<tr>
+<td>Toolbar</td>
+<td>Hubzero\Html\Toolbar</td>
+<td>toolbar</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>Submenu</td>
+<td>Hubzero\Html\Toolbar</td>
+<td>submenu</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>User</td>
+<td>Hubzero\User\Manager</td>
+<td>user</td>
+<td>all</td>
+</tr>
+</tbody>
+</table>
+<h2 id="importing-a-facade">Importing a facade</h2>
+<p>This is the one thing to get right. The facades are registered as aliases in
+the <strong>root</strong> namespace, in <code>core/bootstrap/&lt;client&gt;/aliases.php</code>. Almost every
+file you write is namespaced, and inside a namespace an unqualified name
+resolves against that namespace first:</p>
+<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
+
+class Entries extends SiteController
+{
+    public function displayTask()
+    {
+        // resolves to Components\Blog\Site\Controllers\Route, which does not
+        // exist: &quot;Class not found&quot;, fatal, the moment this line runs
+        $url = Route::url('index.php?option=com_blog');
+    }
+}
+</code></pre>
+<p>Import each facade you use, and the name resolves to the alias:</p>
+<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
+
+use Route;
+use App;
+use Lang;
+</code></pre>
+<p>Writing <code>\Route::url(...)</code> works too, but the import is the house style.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing catches a missing import before the line runs. The file
+parses, autoloading has nothing to complain about, and an error path that is
+rarely taken can carry the fault for years.
+<code>php tools/lint/missing-facade-imports.php</code> finds them; it runs in
+continuous integration on every push.</p>
+</aside>
+<h2 id="the-facades">The facades</h2>
+<table>
+<thead>
+<tr>
+<th>Facade</th>
+<th>Container key</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App</code></td>
+<td><code>app</code></td>
+<td><code>App::get('db')</code>, <code>App::abort()</code>, <code>App::redirect()</code></td>
+</tr>
+<tr>
+<td><code>Cache</code></td>
+<td><code>cache.store</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>component</code></td>
+<td><code>Component::params('com_blog')</code></td>
+</tr>
+<tr>
+<td><code>Config</code></td>
+<td><code>config</code></td>
+<td><code>Config::get('sitename')</code></td>
+</tr>
+<tr>
+<td><code>Date</code></td>
+<td><code>date</code></td>
+<td><code>Date::of('now')-&gt;toSql()</code></td>
+</tr>
+<tr>
+<td><code>Document</code></td>
+<td><code>document</code></td>
+<td>titles, stylesheets, scripts, feeds</td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td><code>dispatcher</code></td>
+<td><code>Event::trigger('content.onContentSave', [...])</code></td>
+</tr>
+<tr>
+<td><code>Filesystem</code></td>
+<td><code>filesystem</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Html</code></td>
+<td><code>html.builder</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Lang</code></td>
+<td><code>language</code></td>
+<td><code>Lang::txt('COM_BLOG_TITLE')</code></td>
+</tr>
+<tr>
+<td><code>Log</code></td>
+<td><code>log</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Notify</code></td>
+<td><code>notification</code></td>
+<td><code>Notify::success()</code>, <code>Notify::error()</code></td>
+</tr>
+<tr>
+<td><code>Pathway</code></td>
+<td><code>pathway</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Plugin</code></td>
+<td><code>plugin</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Request</code></td>
+<td><code>request</code></td>
+<td><code>Request::getInt('id', 0)</code></td>
+</tr>
+<tr>
+<td><code>Response</code></td>
+<td><code>response</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Route</code></td>
+<td><code>router</code></td>
+<td><code>Route::url('index.php?option=com_blog')</code></td>
+</tr>
+<tr>
+<td><code>Session</code></td>
+<td><code>session</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>Submenu</code></td>
+<td><code>submenu</code></td>
+<td>administrator only</td>
+</tr>
+<tr>
+<td><code>Toolbar</code></td>
+<td><code>toolbar</code></td>
+<td>administrator only</td>
+</tr>
+<tr>
+<td><code>User</code></td>
+<td><code>user</code></td>
+<td><code>User::get('id')</code>, <code>User::isGuest()</code>, <code>User::authorise()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Not every client registers every one. The site and administrator applications
+register the full set above; the API and command-line applications register
+fewer, so <code>Toolbar</code> and <code>Submenu</code> are meaningless outside the administrator.
+Each client's list is its own <code>aliases.php</code>.</p>
+<h2 id="testing">Testing</h2>
+<p>Because a facade resolves through the container, a test can put a double in
+the container under the same key and the facade will return it. That is the
+practical reason to prefer a facade over calling the underlying class
+directly.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../providers/index.html" rel="prev"><span>Previous</span>Service providers</a><a class="pager__next" href="../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/04-facades.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

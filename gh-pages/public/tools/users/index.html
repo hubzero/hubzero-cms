@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hub Users · Tools · Hubzero Documentation</title>
+  <meta name="description" content="A hub is a single community place for your colleagues, peers, and collaborators. Your community will interact with the HUBzero® platform through the user…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/users/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../developers/prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../developers/prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../developers/process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Hub Users</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#every-hubzero-platform-offers-the-following-core-features">Every HUBzero® platform offers the following core features.</a></li>
+<li class="toc__item toc__item--l2"><a href="#run-applications-users-22-tools-md">[Run Applications](../../users/22-tools.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#collaborate">Collaborate</a></li>
+<li class="toc__item toc__item--l2"><a href="#groups-users-11-groups-readme-md">[Groups](../../users/11-groups/README.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#projects-users-16-projects-readme-md">[Projects](../../users/16-projects/README.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#wiki-users-23-wiki-md">[Wiki](../../users/23-wiki.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#collections-users-01-collections-md">[Collections](../../users/01-collections.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#publish">Publish</a></li>
+<li class="toc__item toc__item--l2"><a href="#publications-users-18-publications-readme-md">[Publications](../../users/18-publications/README.md)</a></li>
+<li class="toc__item toc__item--l2"><a href="#curation-users-18-publications-curation-md">[Curation](../../users/18-publications/curation.md)</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Hub Users</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Hub Users</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/users">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2017.</aside>
+        <div class="prose">
+<p>A hub is a single community place for your colleagues, peers, and collaborators. Your community will interact with the HUBzero® platform through the user interface, enabling access to analytical tools, publishing data, sharing resources, collaborating, and building community spaces.</p>
+<ul>
+<li><a href="../../users/registration/index.html">How to create an account on a hub</a></li>
+<li><a href="../../users/profile/index.html">Filling out your member profile</a></li>
+<li><a href="../../users/dashboard/index.html">Customizing your member dashboard</a></li>
+</ul>
+<h2 id="every-hubzero-platform-offers-the-following-core-features">Every HUBzero® platform offers the following core features.</h2>
+<h2 id="run-applications-users-22-tools-md"><a href="../../users/tools/index.html">Run Applications</a></h2>
+<p>Every instance of HUBzero® has the ability for online applications, otherwise known as &quot;tools,&quot; to be hosted on the hub. These interactive computations and analytical tools can use Linux, Jupyter, RStudio, and other Web Applications.</p>
+<p>The process starts with a member filling out a web form to register their intent to submit a tool. The member then uploads code into a subversion source code repository and develops the code within a workspace. The member can work alone or with their team to build the tool and design a graphical user interface. With a little help from the managers of the hub, tools can be installed and published for either a limited group of colleagues or for the entire community.</p>
+<p><img src="../media/users-tools2.gif" alt="Animation of a simulation" /></p>
+<h2 id="collaborate">Collaborate</h2>
+<p>HUBzero<sup>®</sup> instances provide multiple spaces for research teams and collaborators to discuss data concepts, track progress and share files by using the services you already know, such as <a href="https://www.google.com/drive/">Google Drive</a>, <a href="https://github.com">GitHub</a>, or <a href="https://dropbox.com">Dropbox</a>.</p>
+<h2 id="groups-users-11-groups-readme-md"><a href="../../users/groups/index.html">Groups</a></h2>
+<p>Groups are an easy way to share content and conversation, either privately or with the world. Each group comes with the ability to create group-specific content pages, invite and manage group membership, send announcements, publish a blog, add events through a calendar, share ideas through collections, discuss methods through forums, work on tasks through projects, share information through wikis, manage files, and much more.</p>
+<h2 id="projects-users-16-projects-readme-md"><a href="../../users/projects/index.html">Projects</a></h2>
+<p>Whether working on a new funding proposal, research paper or developing an application, projects are a great way to manage your data, workflow, and communication. Each project space comes with a wiki area, to-do list management, the ability to connect to Google Drive, Dropbox and other file management systems, and publishing data straight from a project space.</p>
+<h2 id="wiki-users-23-wiki-md"><a href="../../users/wiki/index.html">Wiki</a></h2>
+<p>Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create new articles, and there can be multiple articles on the same wiki, each written by a different author. Any member can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.</p>
+<h2 id="collections-users-01-collections-md"><a href="../../users/collections/index.html">Collections</a></h2>
+<p>A quick and easy way to share, favorite, and organize information on a hub. Start with an image, link, or file you would like to share with your community. Share the collected content in a post by uploading the materials or collecting the materials from around the hub. Fellow community members can collect and follow your collections and individual posts, which allows for any updates to appear in their collection feed.</p>
+<h2 id="publish">Publish</h2>
+<p>HUBzero<sup>®</sup> offers several ways to publish information on a hub. Step–by–step guided systems walk you through publishing research products, including datasets and white papers. All research can be published with a minted DOI, a license, and an opportunity for peer review.</p>
+<p>While most publishing features come with predefined categories, administrators can manage categories and master types through a configuration interface along with adding new licenses, batch creates materials, and administer all drafted to published versions of data.</p>
+<h2 id="publications-users-18-publications-readme-md"><a href="../../users/publications/index.html">Publications</a></h2>
+<p>Contributors are guided through the publishing process in easy, manageable steps. Whether uploading files, writing an abstract, or managing authorship, the member is always kept up-to-date on what has been done and what's left to do. Every step can be re-visited at a later time, allowing members to work at their own pace.</p>
+<h2 id="curation-users-18-publications-curation-md"><a href="../../users/publications/curation/index.html">Curation</a></h2>
+<p>Site members can be designated as curators to ensure quality content before final publishing. Curators can review all the parts of the publication and make notes on areas of improvement before the publication is officially published. Curation helps ensure your visitors are treated to the highest caliber content.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="introduction/index.html">Video Tutorials</a></li>
+<li><a href="tools/index.html">Tools</a></li>
+<li><a href="simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li><a href="usage/index.html">Usage</a></li>
+<li><a href="gettingstarted/index.html">Getting Started</a></li></ul></section>
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../developers/process/index.html" rel="prev"><span>Previous</span>Process</a><a class="pager__next" href="introduction/index.html" rel="next"><span>Next</span>Video Tutorials</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/users/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

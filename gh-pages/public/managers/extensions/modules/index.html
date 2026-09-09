@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modules Manager · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Overview The Module Manager is where you add and edit Modules. In HUBzero, Modules are used to display content and/or media around the main content. The Module…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/extensions/modules/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Modules Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l3"><a href="#module-facts">Module Facts:</a></li>
+<li class="toc__item toc__item--l2"><a href="#column-headers">Column Headers</a></li>
+<li class="toc__item toc__item--l2"><a href="#toolbars">Toolbars</a></li>
+<li class="toc__item toc__item--l3"><a href="#primary-toolbar">**Primary Toolbar**</a></li>
+<li class="toc__item toc__item--l3"><a href="#site-and-administrator-links-at-the-top-left-above-the-filter">**Site and Administrator Links:** At the top left, above the Filter.</a></li>
+<li class="toc__item toc__item--l2"><a href="#list-filters">List Filters</a></li>
+<li class="toc__item toc__item--l3"><a href="#filter-by-template-position-type-and-published-state">**Filter by Template, Position, Type, and Published State**</a></li>
+<li class="toc__item toc__item--l3"><a href="#filter-by-template-position-type-and-published-state-2">**Filter by Template, Position, Type and Published State**</a></li>
+<li class="toc__item toc__item--l2"><a href="#create-edit-modules">Create/Edit Modules</a></li>
+<li class="toc__item toc__item--l3"><a href="#module-type-this-displays-the-system-name-of-the-module-no-entry-is-allowed">**Module Type:** This displays the system name of the module. No entry is allowed.</a></li>
+<li class="toc__item toc__item--l3"><a href="#menu-assignment">Menu Assignment</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-on-site-notices">Turning on Site Notices</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Modules Manager</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Modules Manager</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/extensions/modules">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2009.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>The Module Manager is where you add and edit Modules. In HUBzero, Modules are used to display content and/or media around the main content.</p>
+<p>The Module Manager can be found by selecting <strong>Extensions</strong> &gt; <strong>Module Manager</strong> from the drop-down menu on the back-end of your HUB installation.</p>
+<h3 id="module-facts">Module Facts:</h3>
+<ol>
+<li>All hubs require at least 1 Menu Module</li>
+<li>All Other Module Types are Optional. (Examples: News, Banner, Latest News, Polls)</li>
+<li>Every Menu is accompanied by a menu module. (Example mod_mainmenu)</li>
+<li>Multiple occurrences of similar module types.</li>
+<li>Some Modules are linked to components. For example, each Menu Module is related to one Menu component. To define a Menu, you need to create the Menu and Menu Items using the Menus screens and then create the Module for the Menu using this screen. Other Modules, such as Custom HTML and Breadcrumbs, do not depend on any other content.</li>
+</ol>
+<p>An installation is accompanied with over 20 default module types.</p>
+<h2 id="column-headers">Column Headers</h2>
+<p>Click on the column heading to sort the list by that column's value.</p>
+<ul>
+<li><strong>Number (#):</strong> An indexing number automatically assigned by Joomla! for ease of reference.</li>
+<li><strong>Checkbox:</strong> Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
+<li><strong>Module Name:</strong> The name of the Module. You can click on the name to open the Module for editing.</li>
+<li><strong>Enabled:</strong> A green tick or a red X showing whether the use of the component is enabled/disabled. Click the icon to toggle the item between enabled and disabled.</li>
+<li><strong>Order:</strong> The order to display modules within a Position. If the list is sorted by this column, you can change the display order of modules within a Position by selecting a Position in the <strong>Select Position</strong> filter and then clicking the arrows or by entering the sequential order and clicking <strong>Save Order</strong>.</li>
+<li><strong>Access Level:</strong> Who has access to this item. You can change an item's Access Level by clicking on the icon in the column. Current options are:
+<ul>
+<li>Special: Only users with author status or higher have access</li>
+<li>Registered: Only registered users have access</li>
+<li>Public: Everyone has access</li>
+</ul>
+</li>
+<li><strong>Position:</strong> The position on the page where this module is displayed. Positions are locations on the page where modules can be placed (for example, <strong>left</strong> or <strong>right</strong>). Positions are defined in the Template in use for the page. Positions can also be used to insert a Module inside an Article using the syntax <strong>{loadposition xxx}</strong>, where <strong>xxx</strong> is a unique position for the module.</li>
+<li><strong>Pages:</strong> The Menu Items where this Module will be displayed. Options are <strong>All</strong> for all Menu Items, <strong>None</strong> for no Menu Items, and <strong>Varies</strong> for selected Menu Items. A Module will only display on Menu Items where it is selected.</li>
+<li><strong>Type:</strong> The system name of the Module. Joomla! installs 20 standard Modules. Many Joomla! Extensions contribute additional Modules.</li>
+<li><strong>ID:</strong> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
+<li><strong>Display Number:</strong> The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (<em>where applicable</em>).</li>
+</ul>
+<h2 id="toolbars">Toolbars</h2>
+<h3 id="primary-toolbar"><strong>Primary Toolbar</strong></h3>
+<ul>
+<li><strong>Enable:</strong> To enable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
+<li><strong>Disable:</strong> To disable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
+<li><strong>Copy:</strong> To copy one or more Modules, select them using the Checkbox and press this button. A new Module will be created for each selected Module. The new Module will have the name <strong>Copy of</strong> plus the original Module name. Note that the new copies are initially disabled.</li>
+<li><strong>Delete:</strong> To delete one or more items, select them and click this button. The selected items will be deleted. <strong>Note</strong>: <em>only empty items can be deleted.</em></li>
+<li><strong>Edit:</strong> Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name.</li>
+<li><strong>New:</strong> To create a new instance of a Module, press this button. You will be taken to a screen that lists all of the available Modules. See <a href="#section-7034">Create/Edit Modules</a> for information about adding Modules.</li>
+<li><strong>Help:</strong> Opens this Help Screen.</li>
+<li>
+<h3 id="site-and-administrator-links-at-the-top-left-above-the-filter"><strong>Site and Administrator Links:</strong> At the top left, above the Filter.</h3>
+</li>
+<li><strong>Site:</strong> Opens the Site tab. This is the default tab and allows you to manage the Modules for the front end of the web site.</li>
+<li><strong>Administrator:</strong> This tab allows you to manage the Modules for the back end administration of the web site. If you do not need to change the Joomla! administrator menus, no modifications are required here.</li>
+</ul>
+<h2 id="list-filters">List Filters</h2>
+<h3 id="filter-by-template-position-type-and-published-state"><strong>Filter by Template, Position, Type, and Published State</strong></h3>
+<p>You can filter the list of items by typing part of the title or the ID number. Or, you can select a combination of Category and Published State.</p>
+<ul>
+<li><strong>Filter:</strong> In the upper left corner just above the column headings is a Filter field and two buttons, as shown below:
+<ul>
+<li>If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either part of the title or an ID number and press <strong>Go</strong> to display the matching items. You can enter in whole words or part of a word. For example, <strong>ero</strong> will match all titles with the word <strong>Hubzero</strong> in them.</li>
+</ul>
+</li>
+</ul>
+<h3 id="filter-by-template-position-type-and-published-state-2"><strong>Filter by Template, Position, Type and Published State</strong></h3>
+<p>In the upper right area, above the column headings, are following drop-down list boxes as shown below. The selections may be combined. Only items matching both selections will display in the list.</p>
+<ul>
+<li><strong>Site</strong></li>
+<li><strong>Select Status</strong></li>
+<li><strong>Select Template:</strong> Select the Template from the drop-down list box of available Templates. Only Templates that are enabled for this site will display.</li>
+<li>**Select Position:**Select a Position from the drop-down list box of available Positions.</li>
+<li><strong>Select Type:</strong> Select the Module Type from the drop-down list box of available Module Types. HUBzero installs with 20 available Module types. Additional ones may be available if you have installed any Extensions.</li>
+<li><strong>Select State:</strong> Use the drop-down list box to select the published state: Enabled or Disabled.</li>
+<li><strong>Select Access</strong></li>
+<li><strong>Select Language</strong></li>
+</ul>
+<p><a id="section-7034"></a></p>
+<h2 id="create-edit-modules">Create/Edit Modules</h2>
+<p>When you create a new Module, you will select the Module Type. This will determine what type of content this Module can display. If you edit an existing Module, the Module Type will already be determined.</p>
+<ul>
+<li><strong>Note:</strong> You cannot change the Module Type of an existing Module.</li>
+</ul>
+<p>All Modules have two sections that are the same: Details and Menu Assignment. The Parameters are different for each Module Type.</p>
+<ul>
+<li>
+<h3 id="module-type-this-displays-the-system-name-of-the-module-no-entry-is-allowed"><strong>Module Type:</strong> This displays the system name of the module. No entry is allowed.</h3>
+</li>
+<li><strong>Title:</strong> The Title of the Module.</li>
+<li><strong>Show Title:</strong> Whether or not to show the Title of the Module.</li>
+<li><strong>Enabled:</strong> Whether or not the Module is enabled. If <strong>No</strong>, the Module will not be shown on the page.</li>
+<li><strong>Position:</strong> The Position on the page to show the Module. There are two types of Positions you can use.
+<ul>
+<li>You can select a Position from the drop-down list box. The Positions in the list box are those provided by your Template. You can see the available Positions on the page by adding the letters <strong>?tp=1</strong> to the end of any front-end URL. For example, if your home page is <strong>www.mysite.com</strong>, you can type the URL <strong>www.mysite.com?tp=1</strong>. The page will display with labeled rectangles indicating each pre-defined Position for the current Template.</li>
+<li>You can type in a Position that is different from the pre-defined positions (for example, <strong>myposition1</strong>). This type of Position can be used to insert a Module into an Article. If you enter the code <strong>{loadposition xxx}</strong> inside the text of an Article, where <strong>xxx</strong> matches the Position of a Module, and if the Module is assigned to the the Menu Selection where the Article is displayed (see <strong>Menu Assignment</strong> below), then the Module will be displayed at that point in the Article.</li>
+</ul>
+</li>
+<li><strong>Order:</strong> The Order that this Module will be displayed within the Position. If more than one Module is displayed at the same position, this will determine the order of display. The drop-down list box shows all Modules displaying at the current Position. Select the Module that you want the current Module to <em>follow</em>.
+<ul>
+<li>You can also change the order of display in the Module Manager. The Module Order is only important when two or more Modules are displaying at the <em>same Position</em> and on the s<em>ame Menu Selections</em>.</li>
+</ul>
+</li>
+<li><strong>Access Level:</strong> Who has access to this item. Enter the desired level using the drop-down list box. Current options are:
+<ul>
+<li>Public: Everyone has access</li>
+<li>Registered: Only registered users have access</li>
+<li>Special: Only users with author status or higher have access</li>
+</ul>
+</li>
+<li><strong>ID:</strong> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
+<li><strong>Description:</strong> A description of what the Module does. No entry is allowed.</li>
+</ul>
+<h3 id="menu-assignment">Menu Assignment</h3>
+<p>This is where you tell the CMS which pages to show this Module on. This Module will show on the page when this Menu Item is selected. If the Menu Item allows the user to navigate to sub-pages, then this Module will also show on these sub-pages. For example, if the Menu item is a Blog Layout, the Module will also show when the user clicks on a <strong>Read more...</strong> link, an Article Link, or a Page Navigation link from that Blog Layout.</p>
+<ul>
+<li><strong>Menus:</strong> <strong>All</strong> means show the current Module on all Menu Items. <strong>None</strong> means don't show the Module on any Menu Items. <strong>Select Menu Item(s) from the List</strong> allows you to select which Menu Items to show the Module on.</li>
+<li><strong>Menu Selection:</strong> If <strong>Select Menu Items(s) from the List</strong> above is selected, select individual Menu Items that will display the Module.
+<ul>
+<li>Use Ctrl+Click to select multiple Menu Items.</li>
+<li>Use Shift+Click to select a range of Menu Items.</li>
+<li>If you want to select most of the Menu Items, first click <strong>All</strong> above under Menus and then click <strong>Select Menu Items(s) from the List</strong>. All of the Menu Items will be selected. Then use Ctrl+Click to deselect the Menu Items you don't want to include.</li>
+</ul>
+</li>
+<li><strong>Parameters:</strong> This will vary between modules.</li>
+</ul>
+<h2 id="turning-on-site-notices">Turning on Site Notices</h2>
+<p>Use this module to announce Hub wide events or scheduled upgrade dates.</p>
+<ol>
+<li>Navigate to the <strong>/administrator</strong> interface</li>
+<li>Hover over <strong>Extensions</strong> and from the drop-down select <strong>Module Manager</strong></li>
+<li>Click New and look for &quot;mod_notices&quot;</li>
+<li>Click on the title of &quot;mod_notices&quot; to open up this new module
+<ol>
+<li>Only complete steps 3 - 4 if you have not created this module previously</li>
+</ol>
+</li>
+<li>Fill in the needed information:
+<ol>
+<li>Title: Add the title for this module, Example - &quot;Upgrade Notices&quot;</li>
+<li>Position: Set the position to &quot;notices&quot;</li>
+<li>Ordering: Set the ordering to &quot;Site Notices&quot;</li>
+<li>Status: Set the status to &quot;Publish&quot;</li>
+<li>Access: Set to the user access level this announcement pertains to</li>
+<li>Start Publishing: Select the date to start publishing this announcement</li>
+<li>Finish Publishing: Select the date to finish publishing this announcement</li>
+<li>Languages: Set lanugages to &quot;All&quot;</li>
+<li>Alert Level: Determine the alert level (Low, Medium, High)</li>
+<li>Message: Add the message you want to announce to your users</li>
+</ol>
+</li>
+<li>Scroll to the bottom of the form to check what pages you want this message appearing on through out the site</li>
+<li>Click <strong>Save &amp; Close</strong> once you are done</li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../templates/index.html" rel="next"><span>Next</span>Templates Manager</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/01-modules.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

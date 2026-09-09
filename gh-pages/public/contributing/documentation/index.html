@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Working on the documentation · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="The documentation is Markdown under in the hubzero-cms repository, built into the site you are reading by the scripts under . It is edited the same way as the…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/documentation/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../contributions/index.html">Contribution Guide</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Style Guide</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../conventions/phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/commits/index.html">Commit Messages</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Working on the documentation</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#editing-a-page">Editing a page</a></li>
+<li class="toc__item toc__item--l2"><a href="#reviewing-an-imported-page">Reviewing an imported page</a></li>
+<li class="toc__item toc__item--l2"><a href="#committing">Committing</a></li>
+</ol></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Working on the documentation</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>Working on the documentation</h1>
+        </header>
+        
+        <div class="prose">
+<p>The documentation is Markdown under <code>docs/</code> in the hubzero-cms repository,
+built into the site you are reading by the scripts under <code>gh-pages/</code>. It is
+edited the same way as the code: on a branch, in a pull request, with the
+site rebuilt and checked before it merges.</p>
+<h2 id="editing-a-page">Editing a page</h2>
+<p>Every page has an <strong>Edit this page on GitHub</strong> link in its footer. For
+anything larger than a typo, clone the repository and work locally:</p>
+<pre><code class="language-bash">python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
+sh tools/docs/rebuild.sh
+python3 -m http.server -d gh-pages/public 8000
+</code></pre>
+<p>Then open http://localhost:8000/. Rebuild after each change; the build
+takes a few seconds.</p>
+<p>The <a href="../../style/index.html">writing guide</a> covers file naming, the metadata header,
+links, code blocks, callouts, and house style.</p>
+<h2 id="reviewing-an-imported-page">Reviewing an imported page</h2>
+<p>Most pages were imported from help.hubzero.org and carry a banner until
+someone checks them against the code. To review one:</p>
+<ol>
+<li>Read the page against the current code on <code>2.4-main</code>: the controllers,
+views, and <code>config.xml</code> of the component it describes. Fix or rewrite
+what has drifted. Replace pasted code with an include directive that
+pulls the real file.</li>
+<li>Regenerate any screenshots from a current hub.</li>
+<li>Change the header to <code>status: reviewed</code>, add <code>reviewed-against</code> with the
+branch and commit you checked, and <code>reviewed</code> with the date.</li>
+<li>Rebuild, commit <code>gh-pages/public/</code> with the change, and open a pull
+request.</li>
+</ol>
+<p>The <a href="https://hubzero.github.io/hubzero-cms/status/">status page</a> shows what
+is left in each book.</p>
+<h2 id="committing">Committing</h2>
+<p>Commit <code>gh-pages/public/</code> together with the source change. The Pages
+workflow rebuilds the site from source on every push and fails if the
+committed copy does not match, so a stale copy cannot be deployed by
+accident.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../conventions/commits/index.html" rel="prev"><span>Previous</span>Commit Messages</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/documentation.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

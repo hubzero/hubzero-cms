@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controllers · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A plugin has one class, in the file named after it, extending . It has no tasks and no routing. Its public methods are its interface: each one is registered…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/controllers/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Controllers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-class">The class</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-base-class-gives-you">What the base class gives you</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-constructor">The constructor</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-methods-become-listeners">How methods become listeners</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-arguments-arrive">How arguments arrive</a></li>
+<li class="toc__item toc__item--l2"><a href="#events-the-cms-triggers">Events the CMS triggers</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugins</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Controllers</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Controllers</h1>
+        </header>
+        
+        <div class="prose">
+<p>A plugin has one class, in the file named after it, extending
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Plugin.php"><code>Hubzero\Plugin\Plugin</code></a>. It
+has no tasks and no routing. Its public methods are its interface: each one is
+registered under its own name as an event listener, and is called when an
+event of that name fires.</p>
+<h2 id="the-class">The class</h2>
+<pre><code class="language-php">// No direct access
+defined('_HZEXEC_') or die;
+
+/**
+ * Wiki formatted Content Plugin
+ */
+class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
+{
+</code></pre>
+<p><code>plgContentFormatwiki</code> answers two events, <code>onContentBeforeSave</code> and
+<code>onContentPrepare</code>, and keeps its two helpers, <code>_isWiki()</code> and <code>_key()</code>,
+private.</p>
+<h2 id="what-the-base-class-gives-you">What the base class gives you</h2>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$params</code></td>
+<td><code>Hubzero\Config\Registry</code> of the plugin's parameters, built in the constructor.</td>
+</tr>
+<tr>
+<td><code>$event</code></td>
+<td>The <code>Hubzero\Events\Event</code> currently being dispatched to this plugin.</td>
+</tr>
+<tr>
+<td><code>$option</code></td>
+<td><code>com_</code> plus the group name. Legacy; do not rely on it.</td>
+</tr>
+<tr>
+<td><code>$_name</code>, <code>$_type</code></td>
+<td>The plugin's element and group, both <code>protected</code>.</td>
+</tr>
+<tr>
+<td><code>$_autoloadLanguage</code></td>
+<td>Set <code>true</code> to load the language file in the constructor.</td>
+</tr>
+<tr>
+<td><code>loadLanguage($extension = '', $basePath = PATH_APP)</code></td>
+<td>Loads a language file. See <a href="../languages/index.html">Languages</a>.</td>
+</tr>
+<tr>
+<td><code>view($layout = 'default', $name = '')</code></td>
+<td>Returns a <code>Hubzero\Plugin\View</code>. See <a href="../views/index.html">Views</a>.</td>
+</tr>
+<tr>
+<td><code>css()</code>, <code>js()</code>, <code>img()</code></td>
+<td>Asset helpers. See <a href="../assets/index.html">Assets</a>.</td>
+</tr>
+<tr>
+<td><code>Plugin::getParams($name, $folder)</code></td>
+<td>Static; reads one plugin's params straight from the database.</td>
+</tr>
+</tbody>
+</table>
+<p>Because <code>Plugin</code> extends <code>Hubzero\Base\Obj</code>, <code>setError()</code>, <code>getError()</code>, and
+<code>getErrors()</code> are available too, and plugins use them to hand a message back
+to the component that triggered them.</p>
+<h2 id="the-constructor">The constructor</h2>
+<p>You rarely need one. If you write one, call the parent — it is what populates
+<code>$params</code>, <code>$_name</code>, and <code>$_type</code>, and what loads the language file:</p>
+<pre><code class="language-php">public function __construct(&amp;$subject, $config)
+{
+    parent::__construct($subject, $config);
+
+    // Extra initialisation
+}
+</code></pre>
+<p><code>$subject</code> is the dispatcher the plugin was created with, retained only for
+backward compatibility. <code>$config</code> is the plugin's <code>#__extensions</code> row cast to
+an array, so <code>$config['name']</code>, <code>$config['type']</code>, and <code>$config['params']</code> are
+what the parent reads.</p>
+<p>The constructor runs when the group is imported, whether or not any of the
+plugin's events ever fire. Keep it cheap: no queries, no HTTP.</p>
+<h2 id="how-methods-become-listeners">How methods become listeners</h2>
+<p><code>Hubzero\Events\Dispatcher::addListener()</code> calls <code>get_class_methods()</code> on the
+plugin instance and registers it once per public method name. There is no
+list of events to declare and no annotation to write — the method name <em>is</em>
+the registration.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Every public method is registered, inherited ones included. A
+public <code>display()</code> will be called for any event named <code>display</code>, and a
+public helper named after nothing in particular is harmless only until
+someone triggers an event with that name. Name your event handlers
+<code>onSomething</code> and make everything else <code>protected</code> or <code>private</code>.</p>
+</aside>
+<h2 id="how-arguments-arrive">How arguments arrive</h2>
+<p>The dispatcher does not call your method with the raw arguments. It calls the
+listener with the <code>Event</code> object, and <code>Hubzero\Events\WrappedListener</code> unpacks
+it: it assigns the event to <code>$this-&gt;event</code> on your plugin, takes
+<code>$event-&gt;getArguments()</code>, re-indexes it if the keys are associative, and
+spreads the values across your method's parameters in order.</p>
+<p>So a trigger of</p>
+<pre><code class="language-php">Event::trigger('content.onContentPrepare', array($context, &amp;$article, &amp;$params, $page));
+</code></pre>
+<p>reaches</p>
+<pre><code class="language-php">public function onContentPrepare($context, &amp;$article, &amp;$params, $page = 0)
+</code></pre>
+<p>with the four values in the order they were given. Give every parameter after
+the ones you require a default, because a caller may pass fewer.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Arguments are passed by value through <code>call_user_func_array</code> for
+five or more arguments, and positionally for four or fewer. A <code>&amp;$article</code>
+parameter still works because the argument is an object, and objects are
+handles; do not expect to modify a scalar argument in place.</p>
+</aside>
+<p>Whatever the method returns is collected into the event's response array. See
+<a href="../loading/index.html">Loading</a>.</p>
+<h2 id="events-the-cms-triggers">Events the CMS triggers</h2>
+<p>Event names are prefixed with the plugin group when triggered, in
+<code>group.eventName</code> form. The lifecycle events, all in the <code>system</code> group, are:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>system.onAfterInitialise</code></td>
+<td>The application is built, before routing.</td>
+</tr>
+<tr>
+<td><code>system.onAfterRoute</code></td>
+<td>The route has been resolved to a component.</td>
+</tr>
+<tr>
+<td><code>system.onAfterDispatch</code></td>
+<td>The component has run.</td>
+</tr>
+<tr>
+<td><code>system.onBeforeRender</code></td>
+<td>Before the document is rendered into the template.</td>
+</tr>
+<tr>
+<td><code>system.onAfterRender</code></td>
+<td>After rendering, before the response is sent.</td>
+</tr>
+</tbody>
+</table>
+<p>Content plugins see <code>content.onContentPrepare</code>, <code>onContentBeforeSave</code>,
+<code>onContentAfterSave</code>, <code>onContentBeforeDelete</code>, <code>onContentAfterDelete</code>,
+<code>onContentBeforeDisplay</code>, <code>onContentAfterDisplay</code>, <code>onContentAfterTitle</code>, and
+<code>onAfterContentSubmission</code>. User plugins see <code>user.onUserBeforeSave</code>,
+<code>onUserAfterSave</code>, <code>onUserBeforeDelete</code>, <code>onUserAfterDelete</code>, <code>onUserLogin</code>,
+<code>onUserLogout</code>, <code>onUserLogoutFailure</code>, <code>onUserDeidentify</code>, and the profile and
+password variants. <code>cron.onCronEvents</code> registers scheduled jobs;
+<code>antispam.onAntispamDetector</code> and <code>onAntispamTrain</code> drive spam filtering.</p>
+<p>Component groups define their own: <code>groups.onGroupAreas</code> and <code>groups.onGroup</code>,
+<code>members.onMembersAreas</code> and <code>members.onMembers</code>, <code>projects.onProject</code>,
+<code>resources.onResourcesSub</code>, <code>search.onIndex</code>, <code>wiki.onWikiParseText</code>, and so
+on. The authoritative list is the code: search for <code>Event::trigger(</code> in the
+component you are extending.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A plugin is not restricted to its group's events. All imported
+plugins are registered with the same dispatcher, so a <code>system</code> plugin can
+implement <code>onContentPrepare</code> and it will fire. The converse is the hazard:
+two groups that pick the same event name will hear each other's triggers.</p>
+</aside>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/03-controllers.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

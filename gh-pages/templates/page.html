@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }} · {{ site_title }}</title>
+  <meta name="description" content="{{ page_summary }}">
+  {{ canonical_tag }}
+  <link rel="icon" href="{{ logo_href }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="{{ assets_href }}">
+</head>
+<body class="site-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="{{ home_href }}">
+      <img class="brand__mark" src="{{ logo_href }}" alt="" aria-hidden="true">
+      <span class="brand__name">{{ site_name }}</span>
+      <span class="brand__version">{{ version }}</span>
+    </a>
+    <form class="search" role="search" data-index="{{ search_index_href }}" data-base="{{ root_href }}">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="{{ docs_href }}">All books</a>
+      <a href="{{ status_href }}">Status</a>
+      <a href="{{ github_href }}">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main-content" class="page" tabindex="-1">
+    <article class="article">
+      <header class="article__header">
+        <p class="eyebrow">{{ site_title }}</p>
+        <h1>{{ page_title }}</h1>
+      </header>
+      {{ banner }}
+      <div class="prose">
+{{ content }}
+      </div>
+      {{ stamp }}
+      <footer class="article__footer">
+        {{ edit_link }}
+      </footer>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>© {{ year }} {{ copyright }}. The documentation is <a href="{{ license_href }}">MIT-licensed</a>, like the code. Built from the <a href="{{ github_href }}">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="{{ search_js_href }}" defer></script>
+</body>
+</html>

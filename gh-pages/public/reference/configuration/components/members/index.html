@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Members (com_members) · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Manage members Parameters from , as shown on the component&#x27;s Options screen in the administrator interface. Component Parameter Label Type Default Description…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/components/members/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Members (com_members)</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#component">Component</a></li>
+<li class="toc__item toc__item--l2"><a href="#login">Login</a></li>
+<li class="toc__item toc__item--l2"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#password">Password</a></li>
+<li class="toc__item toc__item--l2"><a href="#registration">Registration</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Component options</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Members (com_members)</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Members (com_members)</h1>
+        </header>
+        
+        <div class="prose">
+<p>Manage members</p>
+<p>Parameters from <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/config/config.xml"><code>core/components/com_members/config/config.xml</code></a>, as shown on the component's <strong>Options</strong> screen in the administrator interface.</p>
+<h2 id="component">Component</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allowUserRegistration</code></td>
+<td>Allow User Registration</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If set to Yes, new Users allowed to self-register. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>new_usertype</code></td>
+<td>New User Registration Group</td>
+<td>usergroup</td>
+<td><code>2</code></td>
+<td>The default group that will be applied to New Users Registering via the frontend.</td>
+</tr>
+<tr>
+<td><code>guest_usergroup</code></td>
+<td>Guest Access Group</td>
+<td>usergroup</td>
+<td><code>1</code></td>
+<td>The default Group that will be applied to guest (not logged-in) Users.</td>
+</tr>
+<tr>
+<td><code>sendpassword</code></td>
+<td>Send Password</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If set to Yes the user's initial password will be emailed to the user as part of the registration mail. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>useractivation</code></td>
+<td>New User Account Activation</td>
+<td>list</td>
+<td><code>1 (Self)</code></td>
+<td>If set to None, the user will be registered right away. If set to Self, the User will be emailed a link to activate their account before they can log in. If set to Admin, the user will be emailed a link to verify their email address, and an administrator must manually review and approve the new user account. Options: <code>0</code> None, <code>1</code> Self, <code>2</code> Admin.</td>
+</tr>
+<tr>
+<td><code>useractivation_email</code></td>
+<td>Email On Account Activation</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Send an email to the user, notifying them that their account has been activated. Note: This only applies when 'New User Account Activation' is set to 'Admin'. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>simple_registration</code></td>
+<td>Simple Registration</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Allow simple registration for members coming in through 3rd party authentication providers.  WARNING: this will not allow users to choose their username or prompt them to link to an existing account.  If this is an issue, do not use this option.  This option typically only makes sense for new hubs, or hubs that do not use tools. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>allow_duplicate_emails</code></td>
+<td>Allow Duplicate Emails (DON'T DO IT!)</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>If set to Yes, multiple users are allowed to have the same email address (REALLY, DON'T ALLOW THIS, BAD THINGS MAY HAPPEN). If set to grandfathered, existing accounts will not be rejected, but new accounts cannot be created with duplicate emails. Options: <code>0</code> No, <code>1</code> Yes, <code>2</code> Grandfathered.</td>
+</tr>
+<tr>
+<td><code>mail_to_admin</code></td>
+<td>Notification Mail to Administrators</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If 'New User Account Activation' is set to 'None' or 'Self', allows or not a notification mail to be sent to administrators. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>captcha</code></td>
+<td>Captcha</td>
+<td>plugins</td>
+<td>—</td>
+<td>Select the captcha plugin that will be used in the registration, password and username reminder forms. You may need to enter required information for your captcha plugin in the Plugin Manager.If 'Use Default' is selected, make sure a captcha plugin is selected in Global Configuration. Options: `` - Use Default -, <code>0</code> - None Selected -.</td>
+</tr>
+<tr>
+<td><code>frontend_userparams</code></td>
+<td>Frontend User Parameters</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, Users will be able to select their language, editor, and Help Site preferences on their details screen when logged-in to the frontend. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>site_language</code></td>
+<td>Frontend Language</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>If 'Frontend User Parameters' is set to 'Show', users will be able to select their frontend language preference when registering. This is specially handy in a multilanguage setting. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="login">Login</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reset_count</code></td>
+<td>Maximum Reset Count</td>
+<td>integer</td>
+<td><code>10</code></td>
+<td>The maximum number of password resets allowed within the time period. Zero indicates no limit.</td>
+</tr>
+<tr>
+<td><code>reset_time</code></td>
+<td>Time in Hours</td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>The time period, in hours, for the reset counter.</td>
+</tr>
+<tr>
+<td><code>login_attempts_limit</code></td>
+<td>Maximum Failed Login Attempts</td>
+<td>integer</td>
+<td><code>10</code></td>
+<td>The maximum number of failed login attempts allowed within the time period. Zero indicates no limit.</td>
+</tr>
+<tr>
+<td><code>login_attempts_timeframe</code></td>
+<td>Time in Hours</td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>The time period, in hours, for the failed login attempts counter.</td>
+</tr>
+<tr>
+<td><code>login_log_timeframe</code></td>
+<td>Purge Log After</td>
+<td>list</td>
+<td>—</td>
+<td>The time period to retain login attempts in the log. Records older than the selected value will automatically be purged. This can keep the log from becoming so large it affects performance. Options: `` Never, <code>1 week</code>, <code>2 weeks</code>, <code>3 weeks</code>, <code>1 month</code> 1 Month, <code>2 months</code> 2 Months, <code>3 months</code> 3 Months, <code>6 months</code> 6 Months, <code>1 year</code> 1 Year.</td>
+</tr>
+<tr>
+<td><code>fail2ban</code></td>
+<td>Fail2Ban</td>
+<td>list</td>
+<td><code>0 (Off)</code></td>
+<td>Trigger Fail2Ban when the threshold of blocked accounts per IP address is met. Options: <code>1</code> On, <code>0</code> Off.</td>
+</tr>
+<tr>
+<td><code>blocked_accounts_limit</code></td>
+<td>Maximum Number Blocked Accounts</td>
+<td>integer</td>
+<td><code>10</code></td>
+<td>The maximum number of blocked accounts per IP address.</td>
+</tr>
+<tr>
+<td><code>blocked_accounts_timeframe</code></td>
+<td>Time in Hours</td>
+<td>integer</td>
+<td><code>1</code></td>
+<td>The time period, in hours, for the failed login attempts counter.</td>
+</tr>
+<tr>
+<td><code>fail2ban-jail</code></td>
+<td>Fail2Ban Jail</td>
+<td>text</td>
+<td><code>hub-login</code></td>
+<td>The jail used to control login failure banning.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="basic">Basic</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>privacy</code></td>
+<td>Default Privacy</td>
+<td>list</td>
+<td><code>0 (Private)</code></td>
+<td>Set the default privacy for new profiles. Options: <code>0</code> Private, <code>1</code> Public.</td>
+</tr>
+<tr>
+<td><code>bankAccounts</code></td>
+<td>Bank Accounts</td>
+<td>list</td>
+<td><code>0 (Off)</code></td>
+<td>Enable Bank Accounts. Options: <code>1</code> On, <code>0</code> Off.</td>
+</tr>
+<tr>
+<td><code>manage_quotas</code></td>
+<td>Manage Quotas</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Use the CMS to manage user disk quotas?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>rorApi</code></td>
+<td>Research Organization Registry API</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Uses ROR API to retrieve list of organizations. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>rorApiVersion</code></td>
+<td>Research Organization Registry API Version Number</td>
+<td>text</td>
+<td>—</td>
+<td>The version number of Research Organization Registry API, such as 'v2'.</td>
+</tr>
+<tr>
+<td><code>orcid_service</code></td>
+<td>ORCID Service</td>
+<td>list</td>
+<td><code>members (Members)</code></td>
+<td>Select the service to use for ORCID. Sandbox is for testing and debugging purposes. The Public service only allows for searching records, new ID creation is not allowed. Options: <code>public</code> Public (search only), <code>members</code> Members, <code>sandbox</code> Sandbox.</td>
+</tr>
+<tr>
+<td><code>orcid_sandbox_client_id</code></td>
+<td>ORCID Sandbox Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization client ID for the sandbox members ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_members_client_id</code></td>
+<td>ORCID Members Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization client ID for the production members ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_sandbox_token</code></td>
+<td>ORCID Sandbox Token</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization token for the sandbox ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_members_token</code></td>
+<td>ORCID Members Token</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization token for the members ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_sandbox_redirect_uri</code></td>
+<td>ORCID Sandbox Authentication Redirect URI</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization redirect URI for the sandbox ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_members_redirect_uri</code></td>
+<td>ORCID Members Authentication Redirect URI</td>
+<td>text</td>
+<td>—</td>
+<td>Authorization redirect URI for the members ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_sandbox_permission_uri</code></td>
+<td>ORCID Sandbox Grant Permission URI</td>
+<td>text</td>
+<td>—</td>
+<td>Grant ORCID Management Permission URI for the sandbox ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_members_permission_uri</code></td>
+<td>ORCID Members Grant Permission URI</td>
+<td>text</td>
+<td>—</td>
+<td>Grant ORCID Management Permission URI for the members ORCID service.</td>
+</tr>
+<tr>
+<td><code>orcid_institution_field_option</code></td>
+<td>ORCID Institution Option</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Enable searching by institution name. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>orcid_user_institution_name</code></td>
+<td>Institution name of ORCID user</td>
+<td>text</td>
+<td>—</td>
+<td>The field for setting the institution name.</td>
+</tr>
+<tr>
+<td><code>defaultpic</code></td>
+<td>Default picture</td>
+<td>text</td>
+<td><code>/core/components/com_members/site/assets/img/profile.gif</code></td>
+<td>Default placeholder image for user pictures</td>
+</tr>
+<tr>
+<td><code>picture</code></td>
+<td>Picture Handler</td>
+<td>list</td>
+<td>—</td>
+<td>Select a handler for user pictures. Options: `` Default, <code>initialcon</code> User's Initiials, <code>identicon</code> Identicon (visual representation of a hash of unique info), <code>gravatar</code> Gravatar.</td>
+</tr>
+<tr>
+<td><code>identicon_color</code></td>
+<td>Random Picture Color</td>
+<td>text</td>
+<td>—</td>
+<td>Specify a color to use when generating random pictures. Otherwise, the color is auto-determined from the string (email) passed to the generator.</td>
+</tr>
+<tr>
+<td><code>gravatar</code></td>
+<td>Gravatar Picture</td>
+<td>list</td>
+<td><code>0 (Off)</code></td>
+<td>Enable Gravatar user pictures. Options: <code>1</code> On, <code>0</code> Off.</td>
+</tr>
+<tr>
+<td><code>webpath</code></td>
+<td>Upload path</td>
+<td>text</td>
+<td><code>/site/members</code></td>
+<td>File path for pictures</td>
+</tr>
+<tr>
+<td><code>homedir</code></td>
+<td>Home directory path</td>
+<td>text</td>
+<td>—</td>
+<td>Hub users' home directory path (typically '/home/{hubname}')</td>
+</tr>
+<tr>
+<td><code>user_messaging</code></td>
+<td>User-To-User Messaging</td>
+<td>list</td>
+<td><code>1 (Users with common groups)</code></td>
+<td>Allow/Disallow user-to-user messaging. Options: <code>0</code> None, <code>1</code> Users with common groups, <code>2</code> Any User.</td>
+</tr>
+<tr>
+<td><code>employeraccess</code></td>
+<td>Allow Employer Access</td>
+<td>list</td>
+<td><code>0 (Disallow)</code></td>
+<td>Determine whether to show resume on a private profile to subscribed employers (if Jobs Component is active). Options: <code>0</code> Disallow, <code>1</code> Allow.</td>
+</tr>
+<tr>
+<td><code>gidNumber</code></td>
+<td>Group ID number</td>
+<td>text</td>
+<td><code>100</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>gid</code></td>
+<td>Group ID</td>
+<td>text</td>
+<td><code>users</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="password">Password</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>passhash_mechanism</code></td>
+<td>Password Hashing/Encryption Mechanism</td>
+<td>list</td>
+<td><code>sha512</code></td>
+<td>Options: <code>CRYPT_SHA512</code> SHA-512, <code>MD5</code>.</td>
+</tr>
+<tr>
+<td><code>shadowMax</code></td>
+<td>Shadow Maximum</td>
+<td>text</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td><code>shadowMin</code></td>
+<td>Shadow Minimum</td>
+<td>text</td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>shadowWarning</code></td>
+<td>Shadow Warning</td>
+<td>text</td>
+<td><code>7</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="registration">Registration</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConfirmationReturn</code></td>
+<td>Confirmation Return URL</td>
+<td>text</td>
+<td>—</td>
+<td>Redirect here after confirming email...</td>
+</tr>
+<tr>
+<td><code>registrationUsername</code></td>
+<td>Username</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationPassword</code></td>
+<td>Password</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationConfirmPassword</code></td>
+<td>Password Confirmation</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationFullname</code></td>
+<td>Full Name</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationEmail</code></td>
+<td>Email</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationConfirmEmail</code></td>
+<td>Email Confirmation</td>
+<td>text</td>
+<td><code>RRUU</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationOptIn</code></td>
+<td>OptIn</td>
+<td>text</td>
+<td><code>HHHO</code></td>
+<td>Receieve Emails. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationCAPTCHA</code></td>
+<td>CAPTCHA</td>
+<td>text</td>
+<td><code>RHHH</code></td>
+<td>In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+<tr>
+<td><code>registrationTOU</code></td>
+<td>TOU</td>
+<td>text</td>
+<td><code>RHRH</code></td>
+<td>Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../media/index.html" rel="prev"><span>Previous</span>Media (com_media)</a><a class="pager__next" href="../menus/index.html" rel="next"><span>Next</span>Menus (com_menus)</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/components/members.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

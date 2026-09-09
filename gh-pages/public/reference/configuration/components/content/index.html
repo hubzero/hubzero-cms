@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content (com_content) · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Article management component Parameters from , as shown on the component&#x27;s Options screen in the administrator interface. Articles These settings apply for…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/components/content/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Content (com_content)</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#articles">Articles</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-layout">Editing Layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#category">Category</a></li>
+<li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l2"><a href="#blog-featured-layouts">Blog / Featured Layouts</a></li>
+<li class="toc__item toc__item--l2"><a href="#list-layouts">List Layouts</a></li>
+<li class="toc__item toc__item--l2"><a href="#shared-options">Shared Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#integration">Integration</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Component options</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Content (com_content)</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Content (com_content)</h1>
+        </header>
+        
+        <div class="prose">
+<p>Article management component</p>
+<p>Parameters from <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_content/config/config.xml"><code>core/components/com_content/config/config.xml</code></a>, as shown on the component's <strong>Options</strong> screen in the administrator interface.</p>
+<h2 id="articles">Articles</h2>
+<p>These settings apply for article layouts unless they are changed for a specific menu item.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>article_layout</code></td>
+<td>Choose a layout</td>
+<td>componentlayout</td>
+<td>—</td>
+<td>Default layout to use for articles</td>
+</tr>
+<tr>
+<td><code>show_title</code></td>
+<td>Show Title</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the article title is shown. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>link_titles</code></td>
+<td>Linked Titles</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If set to Yes, the article title will be a link to the article. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_intro</code></td>
+<td>Show Intro Text</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the Intro Text of the article will show when you drill down to the article. If set to Hide, only the part of the article after the &quot;Read More&quot; break will show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_category</code></td>
+<td>Show Category</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the title of the article’s category will show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>link_category</code></td>
+<td>Link Category</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If set to Yes, and if Show Category is set to 'Show', the Category Title will link to a layout showing articles in that Category. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_parent_category</code></td>
+<td>Show Parent</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the title of the article’s parent category will show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>link_parent_category</code></td>
+<td>Link Parent</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>If set to Yes, and if Show Parent is set to 'Show', the Parent Category Title will link to a layout showing articles in that Category. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_author</code></td>
+<td>Show Author</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the Name of the article's Author will be displayed.  This is a global setting but can be changed at the Category, Menu and Article levels. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>link_author</code></td>
+<td>Link Author</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>If set to Yes, the Name of the article's Author will be linked to its contact page. You must create a contact linked to the author's user record for this to be ineffect.  This is a global setting but can be changed at the Category, Menu and Article levels. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_create_date</code></td>
+<td>Show Create Date</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the date and time an Article was created will be displayed. This a global setting but can be changed at Menu and Article levels. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_modify_date</code></td>
+<td>Show Modify Date</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the date and time an Article was last modified will be displayed. This is a global setting but can be changed at the Category, Menu and Article levels. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_publish_date</code></td>
+<td>Show Publish Date</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the date and time an Article was published will be displayed. This is a global setting but can be changed at the Category, Menu and Article levels. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_item_navigation</code></td>
+<td>Show Navigation</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, shows a navigation link (Next, Previous) between articles. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_vote</code></td>
+<td>Show Voting</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>If set to show, a voting system will be enabled for Articles. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_readmore</code></td>
+<td>Show &quot;Read More&quot;</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the Read more... Link will show if Main text has been provided for the Article. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_readmore_title</code></td>
+<td>Show Title with Read More</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to show the Title of the Article will be shown on the Read More button. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>readmore_limit</code></td>
+<td>Read More Limit</td>
+<td>text</td>
+<td><code>100</code></td>
+<td>Set a limit of number of characters in Article Title to show in Read More button</td>
+</tr>
+<tr>
+<td><code>show_icons</code></td>
+<td>Show Icons</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Print and email will utilise Icons or Text. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_print_icon</code></td>
+<td>Show Print Icon</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the Item Print button. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_email_icon</code></td>
+<td>Show Email Icon</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the email icon. This allows you to email an article. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_hits</code></td>
+<td>Show Hits</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If set to Show, the number of Hits on a particular Article will be displayed. This is a global setting but can be changed at the Category, Menu and Article levels. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_noauth</code></td>
+<td>Show Unauthorised Links</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>If set to Yes, links to registered content will be shown even if you are not logged-in. You will need to log in to access the full item. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>urls_position</code></td>
+<td>Positioning of the Links</td>
+<td>radio</td>
+<td><code>0 (Above)</code></td>
+<td>Display the links above or below the content. Options: <code>0</code> Above, <code>1</code> Below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="editing-layout">Editing Layout</h2>
+<p>These options control the layout of the article editing page.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_publishing_options</code></td>
+<td>Show Publishing Options</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display or hide the publishing options slider in the article edit view. These options allow changes in dates and author identities. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_article_options</code></td>
+<td>Show Article Options</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Display or hide article options slider in the backend article edit view. These options allow overriding of the global options. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_urls_images_frontend</code></td>
+<td>Frontend Images and Links</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Display or hide fields to insert standardized images and links when front end editing. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>show_urls_images_backend</code></td>
+<td>Administrator Images and Links</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Display or hide fields to insert standardized images and links in the administrator. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>targeta</code></td>
+<td>URL A Target Window</td>
+<td>list</td>
+<td><code>Parent</code></td>
+<td>Target browser window when the menu item is clicked. Options: <code>0</code> Open in parent window, <code>1</code> Open in new window, <code>2</code> Open in popup, <code>3</code> Modal.</td>
+</tr>
+<tr>
+<td><code>targetb</code></td>
+<td>URL B Target Window</td>
+<td>list</td>
+<td><code>Parent</code></td>
+<td>Target browser window when the menu item is clicked. Options: <code>0</code> Open in parent window, <code>1</code> Open in new window, <code>2</code> Open in popup, <code>3</code> Modal.</td>
+</tr>
+<tr>
+<td><code>targetc</code></td>
+<td>URL C Target Window</td>
+<td>list</td>
+<td><code>Parent</code></td>
+<td>Target browser window when the menu item is clicked. Options: <code>0</code> Open in parent window, <code>1</code> Open in new window, <code>2</code> Open in popup, <code>3</code> Modal.</td>
+</tr>
+<tr>
+<td><code>float_intro</code></td>
+<td>Intro Image Float</td>
+<td>list</td>
+<td>—</td>
+<td>Controls placement of the image. Options: <code>right</code> Right, <code>left</code> Left, <code>none</code> None.</td>
+</tr>
+<tr>
+<td><code>float_fulltext</code></td>
+<td>Full Text Image Float</td>
+<td>list</td>
+<td>—</td>
+<td>Controls placement of the image. Options: <code>right</code> Right, <code>left</code> Left, <code>none</code> None.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="category">Category</h2>
+<p>These settings apply for Articles Category Options unless they are changed by the individual category or menu settings.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category_layout</code></td>
+<td>Choose a layout</td>
+<td>componentlayout</td>
+<td>—</td>
+<td>Default layout to use for articles</td>
+</tr>
+<tr>
+<td><code>show_category_heading_title_text</code></td>
+<td>Show Subcategories Text</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If Show, the &quot;Subcategories&quot; will show as a subheading on the page. The subheading is usually displayed inside the &quot;H3&quot; tag. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_category_title</code></td>
+<td>Category Title</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If Show, the Category Title will show as a subheading on the page. The subheading is usually displayed inside the &quot;H2&quot; tag. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_description</code></td>
+<td>Category Description</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show or hide the description of the selected Category. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_description_image</code></td>
+<td>Category Image</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>Show or hide the image of the selected Category. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>maxLevel</code></td>
+<td>Subcategory Levels</td>
+<td>list</td>
+<td><code>-1 (All)</code></td>
+<td>The number of subcategory levels to display. Options: <code>0</code> None, <code>-1</code> All, <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>.</td>
+</tr>
+<tr>
+<td><code>show_empty_categories</code></td>
+<td>Empty Categories</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>If Show, empty categories will display. A category is only empty - if it has no articles or subcategories. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_no_articles</code></td>
+<td>No Articles Message</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If Show, the message 'There are no articles in this category' will display when there are no articles in the category or when 'Empty Categories' is set to show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_subcat_desc</code></td>
+<td>Subcategories Descriptions</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the subcategories descriptions. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_cat_num_articles</code></td>
+<td># Articles in Category</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If Show, the number of articles in the category will show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="categories">Categories</h2>
+<p>These settings apply for Articles Categories Options, unless they are changed by the individual category or menu settings.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_base_description</code></td>
+<td>Top Level Category Description</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show description of the top level category or optionally override with the text from the description field found in menu item. If using Root as top level category, the description field has to be filled. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>maxLevelcat</code></td>
+<td>Subcategory Levels</td>
+<td>list</td>
+<td><code>-1 (All)</code></td>
+<td>The number of subcategory levels to display. Options: <code>-1</code> All, <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>.</td>
+</tr>
+<tr>
+<td><code>show_empty_categories_cat</code></td>
+<td>Empty Categories</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>If Show, empty categories will display. A category is only empty - if it has no articles or subcategories. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_subcat_desc_cat</code></td>
+<td>Subcategories Descriptions</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show/Hide the subcategories descriptions. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>show_cat_num_articles_cat</code></td>
+<td># Articles in Category</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>If Show, the number of articles in the category will show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="blog-featured-layouts">Blog / Featured Layouts</h2>
+<p>These settings apply for blog or featured layouts unless they are changed for a specific menu item.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>num_leading_articles</code></td>
+<td># Leading Articles</td>
+<td>text</td>
+<td><code>1</code></td>
+<td>Number of leading articles to display as full-width at the beginning of the page.</td>
+</tr>
+<tr>
+<td><code>num_intro_articles</code></td>
+<td># Intro Articles</td>
+<td>text</td>
+<td><code>4</code></td>
+<td>Number of articles to show after the leading article. Articles will be shown in columns.</td>
+</tr>
+<tr>
+<td><code>num_columns</code></td>
+<td># Columns</td>
+<td>text</td>
+<td><code>2</code></td>
+<td>The number of columns in which to show Intro Articles. Normally 1, 2, or 3.</td>
+</tr>
+<tr>
+<td><code>num_links</code></td>
+<td># Links</td>
+<td>text</td>
+<td><code>4</code></td>
+<td>Number of articles to display as links, normally below the Intro Articles.</td>
+</tr>
+<tr>
+<td><code>multi_column_order</code></td>
+<td>Multi Column Order</td>
+<td>radio</td>
+<td><code>0 (Down)</code></td>
+<td>Order articles down or across columns. Options: <code>0</code> Down, <code>1</code> Across.</td>
+</tr>
+<tr>
+<td><code>show_subcategory_content</code></td>
+<td>Include Subcategories</td>
+<td>list</td>
+<td><code>0 (None)</code></td>
+<td>If None, only articles from this category will show. If a number, all articles from the category and the subcategories up to and including that level will show in the blog. Options: <code>0</code> None, <code>-1</code> All, <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="list-layouts">List Layouts</h2>
+<p>These settings apply for List Layouts Options unless they are changed for a specific menu item or category.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_pagination_limit</code></td>
+<td>Display Select</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Whether to show or hide the Display Select dropdown listbox. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>filter_field</code></td>
+<td>Filter Field</td>
+<td>list</td>
+<td><code>hide (Hide)</code></td>
+<td>Whether to show a Filter field for the list of articles. Select Hide to hide the filter field, or select which field you wish to filter on. Options: <code>hide</code> Hide, <code>title</code> Title, <code>author</code> Author, <code>hits</code> Hits.</td>
+</tr>
+<tr>
+<td><code>show_headings</code></td>
+<td>Table Headings</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show or Hide the headings in list layouts. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>list_show_date</code></td>
+<td>Show Date</td>
+<td>list</td>
+<td><code>0 (Hide)</code></td>
+<td>Whether to show a date column in the list of articles. Select Hide to hide the date, or select which date you wish to show. Options: <code>0</code> Hide, <code>created</code> Created, <code>modified</code> Modified, <code>published</code> Published.</td>
+</tr>
+<tr>
+<td><code>date_format</code></td>
+<td>Date Format</td>
+<td>text</td>
+<td>—</td>
+<td>Optional format string for showing the date. If left blank, it uses DATE_FORMAT_LC1 from your language file (for example, D M Y for day month year or you can use d-m-y for a short version eg. 10-07-10. See http://www.php.net/manual/en/function.date.php).</td>
+</tr>
+<tr>
+<td><code>list_show_hits</code></td>
+<td>Show Hits in List</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Whether to show article hits in the list of articles. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>list_show_author</code></td>
+<td>Show Author in List</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Whether to show article author in the list of articles. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="shared-options">Shared Options</h2>
+<p>These settings apply for Shared Options in List, Blog and Featured unless they are changed by the menu settings.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orderby_pri</code></td>
+<td>Category Order</td>
+<td>list</td>
+<td><code>none (No Order)</code></td>
+<td>The order that categories will show in. Options: <code>none</code> No Order, <code>alpha</code> Title Alphabetical, <code>ralpha</code> Title Reverse Alphabetical, <code>order</code> Category Manager Order.</td>
+</tr>
+<tr>
+<td><code>orderby_sec</code></td>
+<td>Article Order</td>
+<td>list</td>
+<td><code>rdate (Most recent first)</code></td>
+<td>The order that articles will show in. Options: <code>rdate</code> Most recent first, <code>date</code> Oldest first, <code>alpha</code> Title Alphabetical, <code>ralpha</code> Title Reverse Alphabetical, <code>author</code> Author Alphabetical, <code>rauthor</code> Author Reverse Alphabetical, <code>hits</code> Most Hits, <code>rhits</code> Least Hits, <code>order</code> Ordering.</td>
+</tr>
+<tr>
+<td><code>order_date</code></td>
+<td>Date for Ordering</td>
+<td>list</td>
+<td><code>published (Published)</code></td>
+<td>If articles are ordered by date, which date to use. Options: <code>created</code> Created, <code>modified</code> Modified, <code>published</code> Published.</td>
+</tr>
+<tr>
+<td><code>show_pagination</code></td>
+<td>Pagination</td>
+<td>list</td>
+<td><code>2 (Auto)</code></td>
+<td>Show or hide Pagination support. Pagination provides page links at the bottom of the page that allow the User to navigate to additional pages. These are needed if the Information will not fit on one page. Options: <code>0</code> Hide, <code>1</code> Show, <code>2</code> Auto.</td>
+</tr>
+<tr>
+<td><code>show_pagination_results</code></td>
+<td>Pagination Results</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show or hide pagination results information, for example, &quot;Page 1 of 4&quot;. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="integration">Integration</h2>
+<p>These settings determine how the Article Component will integrate with other extensions.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_feed_link</code></td>
+<td>Show Feed Link</td>
+<td>radio</td>
+<td><code>1 (Show)</code></td>
+<td>Show or hide an RSS Feed Link. (A Feed Link will show up as a feed icon in the address bar of most modern browsers). Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+<tr>
+<td><code>feed_summary</code></td>
+<td>For each feed item show</td>
+<td>radio</td>
+<td><code>0 (Intro Text)</code></td>
+<td>If set to Intro Text, only the Intro Text of each article will show in the newsfeed. If set to Full Text, the whole article will show in the newsfeed. Options: <code>0</code> Intro Text, <code>1</code> Full Text.</td>
+</tr>
+<tr>
+<td><code>feed_show_readmore</code></td>
+<td>Show &quot;Read More&quot;</td>
+<td>radio</td>
+<td><code>0 (Hide)</code></td>
+<td>Displays a &quot;Read More&quot; link in the newsfeeds if Intro Text is set to Show. Options: <code>0</code> Hide, <code>1</code> Show.</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../collections/index.html" rel="prev"><span>Previous</span>Collections (com_collections)</a><a class="pager__next" href="../courses/index.html" rel="next"><span>Next</span>Courses (com_courses)</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/components/content.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

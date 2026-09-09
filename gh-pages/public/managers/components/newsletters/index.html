@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newsletters · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The newsletter component composes HTML or plain-text newsletters, mails them to a list of addresses, and tracks what recipients do with them. Newsletters you…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/newsletters/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Newsletters</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#newsletters-2">Newsletters</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-newsletter">Creating or editing a newsletter</a></li>
+<li class="toc__item toc__item--l3"><a href="#stories">Stories</a></li>
+<li class="toc__item toc__item--l2"><a href="#sending">Sending</a></li>
+<li class="toc__item toc__item--l2"><a href="#mailings">Mailings</a></li>
+<li class="toc__item toc__item--l2"><a href="#lists">Lists</a></li>
+<li class="toc__item toc__item--l2"><a href="#templates">Templates</a></li>
+<li class="toc__item toc__item--l2"><a href="#tools">Tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#campaigns">Campaigns</a></li>
+<li class="toc__item toc__item--l2"><a href="#options-and-permissions">Options and permissions</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Newsletters</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Newsletters</h1>
+        </header>
+        
+        <div class="prose">
+<p>The newsletter component composes HTML or plain-text newsletters, mails them
+to a list of addresses, and tracks what recipients do with them. Newsletters
+you mark public are also readable on the site at <code>/newsletter</code>. This chapter
+covers the administrator's side; the
+<a href="../../../users/newsletters/index.html">Hub users</a> book covers reading and subscribing.</p>
+<p>Open it under <strong>Components &gt; Newsletters</strong>. Six sub-menu links run across the
+top: <strong>Newsletters</strong>, <strong>Mailings</strong>, <strong>Lists</strong>, <strong>Templates</strong>, <strong>Tools</strong>, and
+<strong>Campaigns</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Mail is not sent by the browser request that starts it. The
+component queues recipients and the <code>newsletter</code> cron plugin's
+<strong>processMailings</strong> job sends them in batches. If that job is missing or
+disabled, the Newsletters screen shows a warning and a link to the Cron
+component; nothing you send will ever leave the hub.</p>
+</aside>
+<h2 id="newsletters-2">Newsletters</h2>
+<p>The list shows <strong>Name</strong>, <strong>Format</strong>, <strong>Template</strong>, <strong>Public</strong>, <strong>Sent</strong>, and
+<strong>Tracking</strong>. Click a heading to sort. Filter by a search term matched
+against the name, and by format with the <strong>- Select Type -</strong> menu (HTML or
+Plain). The <strong>Public</strong> cell is a toggle: click it to publish or unpublish.</p>
+<p>The toolbar offers <strong>New</strong>, <strong>Copy</strong> (duplicates the checked newsletters and
+their stories, appending &quot;(copy)&quot; to the name), <strong>Edit</strong>, <strong>Delete</strong>,
+<strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Preview</strong> (renders the newsletter in a
+lightbox), <strong>Send Test</strong>, <strong>Send</strong>, and <strong>Options</strong>.</p>
+<p>Deleting is a soft delete: the record is flagged and disappears from every
+screen, but is not removed from the database.</p>
+<h2 id="creating-or-editing-a-newsletter">Creating or editing a newsletter</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Required. Also used as the subject line of the mailing.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>The last segment of the newsletter's URL, for example <code>january2013update</code>.</td>
+</tr>
+<tr>
+<td>Issue</td>
+<td>Free text, substituted into the template as <code>{{ISSUE}}</code>.</td>
+</tr>
+<tr>
+<td>Format</td>
+<td><strong>HTML</strong> or <strong>Plain Text</strong>. An HTML newsletter is also sent with a generated plain-text part.</td>
+</tr>
+<tr>
+<td>Template</td>
+<td>A saved template, or <strong>No Template (If HTML format, content includes template)</strong> to write the whole message yourself.</td>
+</tr>
+<tr>
+<td>Show Newsletter on HUB</td>
+<td><strong>Show</strong> or <strong>Don't Show</strong>. Hidden newsletters are not listed at <code>/newsletter</code>.</td>
+</tr>
+<tr>
+<td>Email Tracking</td>
+<td>Yes or No. See <a href="#mailings">Mailings</a>.</td>
+</tr>
+<tr>
+<td>Scheduled Digest</td>
+<td>Disabled, Daily, Weekly, or Monthly. Turns the newsletter into an auto-generated digest.</td>
+</tr>
+</tbody>
+</table>
+<p>Save once before adding content — until the newsletter has an ID, the form
+says so and offers nothing else. After saving, a <strong>Mailing Details</strong> panel
+appears with <strong>From Name</strong>, <strong>From Email</strong>, <strong>Reply-To Name</strong>, and
+<strong>Reply-To Email</strong>. Each falls back to the component-wide option of the same
+purpose, and that falls back to the site name and the request host.</p>
+<h3 id="stories">Stories</h3>
+<p>With a template selected, the lower half of the form holds
+<strong>Newsletter Primary Stories</strong> and <strong>Newsletter Secondary Stories</strong>, which the
+template drops in at <code>{{PRIMARY_STORIES}}</code> and <code>{{SECONDARY_STORIES}}</code>. Use
+<strong>Add Primary Story</strong> or <strong>Add Secondary Story</strong>; each story has a <strong>Title</strong>,
+a read-only <strong>Order</strong>, a <strong>Story</strong> body (line breaks become <code>&lt;br /&gt;</code>), and a
+<strong>Read More Link</strong> with its own link text and URL. Reorder a story with the
+<strong>Move Up</strong> and <strong>Move Down</strong> links beside it.</p>
+<p>With <strong>Scheduled Digest</strong> set to Daily, Weekly, or Monthly, the secondary
+stories section disappears and the primary one becomes <strong>Auto-Generated
+Stories</strong>. Such a story asks for a <strong>Data Source</strong>, an <strong>Item Count</strong>
+(capped at 20), and a <strong>Story Layout Template</strong>, and is stored as a
+placeholder that is expanded with current content each time the digest is
+built. Sources come from enabled plugins in the <code>newsletter</code> group; the
+shipped ones are <code>event</code>, <code>resource</code>, and <code>feedaggregator</code>.</p>
+<p>Choosing <strong>No Template</strong> replaces both story sections with plain
+<strong>HTML Content</strong> and <strong>Plain Text Content</strong> text areas.</p>
+<h2 id="sending">Sending</h2>
+<p>Check one newsletter and press <strong>Send Test</strong> to mail it to up to five
+comma-separated addresses. Test messages go out immediately, with
+<code>[SENDING TEST] - </code> in front of the subject; anything past the fifth address
+is reported as failed.</p>
+<p><strong>Send</strong> opens the distribution screen. It shows any previous mailings with
+their state (Scheduled, In Progress, or Sent), a <strong>Schedule</strong> choice of
+<strong>Send Now</strong> or <strong>Send Later</strong> with a date, hour, minute and AM/PM, and a
+<strong>Mailing List</strong> menu. That menu lists your public and private lists plus
+<strong>Default List</strong>, which means every hub member whose email preference is set,
+who is not blocked, is approved and activated, together with the guest
+sign-up list. The count of recipients appears under the menu as you choose.</p>
+<p>Pressing <strong>Send</strong> in the toolbar creates the mailing, queues one recipient
+row per address in batches of 10,000, and marks the newsletter as sent. The
+cron job takes it from there.</p>
+<h2 id="mailings">Mailings</h2>
+<p>The Mailings screen lists every mailing by newsletter name, <strong>Date
+Sent/Scheduled</strong>, <strong>% Complete</strong> (sent versus queued), and <strong>Re-occur</strong>
+(the newsletter's digest frequency, or N/A). Search matches the mailing
+subject.</p>
+<p><strong>Stop/Cancel</strong> flags the checked mailing as deleted, which removes its
+remaining queued messages from processing and cancels a scheduled send.</p>
+<p><strong>Stats</strong> opens the tracking report: <strong>Open Rate</strong>, <strong>Bounce Rate</strong>,
+<strong>Forwards</strong>, <strong>Prints</strong>, <strong>Opens By Location</strong> with a table of top countries
+and clickable world and US maps, and <strong>Click Throughs</strong> listing each URL and
+its click count. Tracking works by embedding a one-pixel image and rewriting
+links through the hub; if the newsletter had <strong>Email Tracking</strong> set to No,
+the screen refuses to open and says so.</p>
+<h2 id="lists">Lists</h2>
+<p>Mailing lists hold addresses that need not belong to hub members. The list
+shows <strong>Name</strong>, <strong>Public/Private</strong>, <strong>Active Subscribers</strong>, and <strong>Total
+Subscribers</strong>. A list has only a <strong>Name</strong>, a <strong>Public/Private</strong> setting, and
+a <strong>Description</strong>; public lists appear on the site for anyone to join,
+private ones do not.</p>
+<p><strong>Manage</strong> opens one list's addresses, filtered by <strong>Status</strong>: All Statuses,
+Active, Removed by Admin, Unsubscribed, or Inactive (Awaiting Confirmation).
+Columns are <strong>Email</strong>, <strong>Status</strong>, <strong>Confirmed?</strong>, <strong>Date Added</strong>, and
+<strong>Date Confirmed</strong>; an unconfirmed row carries a link that resends the
+confirmation email, and an unsubscribed row shows the reason the person gave.
+<strong>Remove</strong> marks the checked addresses as removed rather than deleting them.</p>
+<p><strong>Add Emails</strong> takes addresses three ways at once, and merges them:
+an uploaded <code>txt</code>, <code>csv</code>, <code>xls</code> or <code>xlsx</code> file, a hub group whose members'
+addresses are imported, and a text area you paste into. The parser accepts
+one address per line, comma-separated, tab-separated, or
+<code>&quot;Name&quot; &lt;address&gt;</code> form. Invalid and duplicate addresses are reported and
+skipped. <strong>Confirmation Email</strong> decides whether each new address is asked to
+confirm.</p>
+<p><strong>Export List</strong> downloads the active addresses of the checked list as a CSV
+of email and status.</p>
+<h2 id="templates">Templates</h2>
+<p>A template is the HTML frame a newsletter is poured into. The list shows
+template names; templates shipped with the hub are marked not editable and
+not deletable, so <strong>Copy</strong> one to start your own.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Primary Stories: Title Styles, Text Styles</td>
+<td>Inline CSS applied to primary story titles and bodies, for example <code>font-family:arial;font-size:12px;color:#FF0000;</code></td>
+</tr>
+<tr>
+<td>Secondary Stories: Title Styles, Text Styles</td>
+<td>The same for secondary stories.</td>
+</tr>
+<tr>
+<td>Template</td>
+<td>The HTML of the message.</td>
+</tr>
+</tbody>
+</table>
+<p>The placeholders the builder replaces are <code>{{LINK}}</code> (a link to the hub),
+<code>{{ALIAS}}</code>, <code>{{TITLE}}</code>, <code>{{ISSUE}}</code>, <code>{{PRIMARY_STORIES}}</code>,
+<code>{{SECONDARY_STORIES}}</code>, <code>{{COPYRIGHT}}</code> (the current year), and
+<code>{{UNSUBSCRIBE_LINK}}</code>, which becomes a one-click unsubscribe URL unique to
+each recipient and mailing list. Two links beside the editor point at
+whatever guides and example galleries the Options name.</p>
+<h2 id="tools">Tools</h2>
+<p>The Tools screen holds one utility, <strong>Mozify Image</strong>: upload an image or give
+its URL, pick a mosaic size, and get back an HTML table that approximates the
+image. Mail clients that block images still show something.</p>
+<h2 id="campaigns">Campaigns</h2>
+<p>Campaigns generate and hold a 32-character secret used to build signed URLs
+that let a person reach a hub feature from an email without logging in. They
+live under Newsletters but are otherwise unrelated to newsletters and
+mailings. A campaign has a <strong>Campaign Name</strong>, an <strong>Expiration Date</strong>
+(90 days out by default), and a <strong>Campaign Description</strong>; the secret is never
+displayed. Editing offers <strong>Reset Campaign Secret</strong>, which invalidates every
+URL already built from that campaign. Deleting one does the same.</p>
+<h2 id="options-and-permissions">Options and permissions</h2>
+<p>The <strong>Options</strong> button opens the component's settings: the default from and
+reply-to names and addresses for mailings, and the URLs used for the email
+tracking explanation and for the template guide links. Every option is listed
+in the
+<a href="../../../reference/configuration/components/newsletter/index.html">configuration reference</a>.</p>
+<p>The <strong>Permissions</strong> tab sets, per user group, who may configure the component
+(<code>core.admin</code>), reach the administrator screens (<code>core.manage</code>), and create,
+delete, edit, change the state of, or edit their own newsletters. There are
+no per-list or per-template permissions.</p>
+<h2 id="api">API</h2>
+<p>Three read-only endpoints return newsletters as JSON:
+<code>GET /api/newsletters/current</code>, <code>/api/newsletters/list</code>, and
+<code>/api/newsletters/archive</code>. See the
+<a href="../../../reference/api/newsletter/index.html">API reference</a>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../kb/index.html" rel="prev"><span>Previous</span>Knowledge base</a><a class="pager__next" href="../projects/index.html" rel="next"><span>Next</span>Projects</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/14-newsletters.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

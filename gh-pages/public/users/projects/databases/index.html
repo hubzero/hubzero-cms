@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Databases · Hub users · Hubzero Documentation</title>
+  <meta name="description" content="DataStore Lite Creating a searchable hub database from a spreadsheet with data is made possible by DataStore Lite within Projects. Note: You must be logged in…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/projects/databases/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub users</a>
+        <nav aria-label="Hub users contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../collections/index.html">Collections</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../courses/index.html">Courses</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../courses/course-manager-features/index.html">Course Manager Features</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../courses/student-features/index.html">Student Features</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../blog/index.html">Blog</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../forum/index.html">Forum</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../groups/index.html">Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../groups/createdeleteagroup/index.html">Creating/Deleting Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../groups/groupmembers/index.html">Member Functions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../groups/groupcustom/index.html">Customization</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../groups/groupcitations/index.html">Group Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../groups/groupforum/index.html">Group Forum</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../knowledgebase/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../dashboard/index.html">Member Dashboard</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../profile/index.html">Member Profile</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projectfiles/index.html">Project Files</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Databases</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#datastore-lite">DataStore Lite</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-database">Creating a Database</a></li>
+<li class="toc__item toc__item--l2"><a href="#create-the-database-step-1-select-the-file">**Create the Database - Step 1: Select the File**</a></li>
+<li class="toc__item toc__item--l2"><a href="#create-the-database-step-2-verify-data">**Create the Database – Step 2: Verify Data**</a></li>
+<li class="toc__item toc__item--l2"><a href="#create-the-database-step-3-title-description-finish">**Create the Database - Step 3: Title &amp; Description, Finish**</a></li>
+<li class="toc__item toc__item--l2"><a href="#updating-a-database">Updating a Database</a></li>
+<li class="toc__item toc__item--l2"><a href="#change-the-database-file">**Change the Database File**</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../publications/curation/index.html">Curation</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../questions/index.html">Questions and answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../search/index.html">Search</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../wishlist/index.html">Wish list</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../gettingstarted/index.html">Getting Started</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub users</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Projects</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Databases</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub users</p>
+          <h1>Databases</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/users/projects/databases">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        <div class="prose">
+<h2 id="datastore-lite">DataStore Lite</h2>
+<p>Creating a searchable hub database from a spreadsheet with data is made possible by DataStore Lite within Projects.
+<strong>Note:</strong> You must be logged in on the hub and inside a project in order to use this feature.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> A .csv (comma separated values) file containing the data is required to create the database. A spreadsheet program such as Excel can be used as long as the file is saved in the .csv format. The first row should contain the labels for each data field/column. Each row below represents a unique data entry. If the database is to contain links to files stored in the project, provide a column with the case sensitive name and extension of each file (e.g. “projectstep1.png”).</p>
+</aside>
+<h2 id="creating-a-database">Creating a Database</h2>
+<p><strong>Upload the File to the Project</strong></p>
+<ol>
+<li>Navigate to <strong>https://yourhub.org/projects</strong></li>
+<li>Locate the project where the database is to be added in the <em>My Projects</em> section, or use the <strong>Start a project</strong> button to create a new project (for help with creating a project, go to: <a href="../index.html">https://hubzero.org/documentation/1.3.0/users/projects</a>)</li>
+<li>Click <strong>Files</strong> underneath <em>Assets</em> on the left project menu</li>
+<li>Click <strong>Upload</strong></li>
+<li>Drag and drop the .csv file as well as any files that are to be linked in the database into the <strong>click or drop file</strong> textbox. Alternately, click the <strong>Click or drop file</strong> box and select the .csv file as well as any additional files to add (ctrl + click to select multiple) and click <strong>Open</strong></li>
+<li>Click &quot;Upload now!&quot; and the file(s) will be uploaded</li>
+</ol>
+<h2 id="create-the-database-step-1-select-the-file"><strong>Create the Database - Step 1: Select the File</strong></h2>
+<ol>
+<li>Click <strong>Databases</strong> underneath <em>Assets</em> on the left project menu</li>
+<li>Click <strong>Create a database</strong> in the upper right</li>
+<li>Select the .csv file that contains the data for the Database from the list</li>
+<li>Click <strong>Next</strong></li>
+</ol>
+<h2 id="create-the-database-step-2-verify-data"><strong>Create the Database – Step 2: Verify Data</strong></h2>
+<ol>
+<li>
+<p>Click the pencil <strong>Edit</strong> icon underneath a column heading to make changes to it</p>
+</li>
+<li>
+<p>On the <strong>General</strong> tab of the <em>Column Properties</em> window, several values can be set:</p>
+<p><strong>Label (Required)</strong> ­– This is the title that is shown for the column.</p>
+<p><strong>Description</strong> – A column description can be provided here. The user will see this description when clicking on the column title.</p>
+<p><strong>Width</strong> – This column accepts a numeric pixel value. With this set, the column will remain fixed at the specified width.</p>
+<p><strong>Units</strong> <em>–</em> This column accepts a unit of measure (e.g. inches, meters, liters) and will show underneath the column heading.</p>
+</li>
+<li>
+<p>On the <strong>Column Type</strong> tab of the <em>Column Properties</em> window, select the appropriate column type from the drop down list:</p>
+<p><strong>Text [small]</strong> – This column type should be used to display a title or short description of the entry.</p>
+<p><strong>Text [large]</strong> – This column type should be used for a long description or text that is more than one sentence.</p>
+<p>On either text Column Type, check “<strong>Limit text to a single line</strong>” to prevent the provided text from wrapping. If the length of the text exceeds the width of the column, it will truncate what displays and the user can click on the text to view the entire content of that particular field.</p>
+<p><strong>Image</strong> – This column type will display a preview of the image directly in the data field. This can be either a URL to an image on the web, or the name of an image contained in the Project files.</p>
+<p><strong>Link</strong> - This column type will provide a hyperlink to the file specified. It can either be a full URL link to the page, or the name of a file contained in Project files.</p>
+<p>Check <strong>Repository Files?</strong> and choose the Repository Path from the drop down if the images or files are contained within the Project.</p>
+</li>
+<li>
+<p>On the <strong>Other</strong> tab of the <em>Column Properties</em> window the content alignment, text color, and background color can be configured</p>
+</li>
+<li>
+<p>Click <strong>Update Column</strong> to save all changes made</p>
+</li>
+<li>
+<p>When you have verified all the columns look as intended, click <strong>Next</strong></p>
+</li>
+</ol>
+<h2 id="create-the-database-step-3-title-description-finish"><strong>Create the Database - Step 3: Title &amp; Description, Finish</strong></h2>
+<ol>
+<li>Type a title and description to the Database in the text boxes provided</li>
+<li>Click <strong>Finish</strong> to finalize all changes and make the database available</li>
+</ol>
+<h2 id="updating-a-database">Updating a Database</h2>
+<h2 id="change-the-database-file"><strong>Change the Database File</strong></h2>
+<ol>
+<li>Navigate to <strong>https://yourhub.org/projects</strong></li>
+<li>Click on the Project that contains the Database that needs updating</li>
+<li>Click on <strong>Databases</strong> underneath <em>Assets</em> on the left project menu</li>
+<li>Click the name of the .csv file being used by the database in the <strong>Files</strong> column to download the file</li>
+<li>Open the file on your local machine using a spreadsheet application or text editor</li>
+<li>Make the changes to the file that are required and save, ensuring that the file name remains the same name as the original source file</li>
+<li>Navigate to <strong>Files</strong> underneath <em>Assets</em> on the left project menu</li>
+<li>On the Files page within the project, click <strong>Upload</strong></li>
+<li>Drag and drop the updated .csv file into the <strong>click or drop file</strong> box and click <strong>Upload now!</strong> Alternately, click the <strong>Click or drop file</strong> box, select the file, click <strong>Open</strong> and then click <strong>Upload now!</strong></li>
+<li>The .csv file contained on the project files has been updated, but additional steps will need to be taken in order to update the database, as discussed in the next step</li>
+</ol>
+<p><strong>Update the Database</strong></p>
+<ol>
+<li>Within the project, click on <strong>Databases</strong> underneath <em>Assets</em> on the left project menu</li>
+<li>Click <strong>Update Database</strong> next to the database that requires updates since changes have been made to its original .csv file</li>
+<li>Verify the columns shown are correct, especially if changes were made to the data and/or additional columns were added</li>
+<li>Also click <strong>Edit</strong> below the column label to change its column type as well as add optional information to the column (such as a column description)</li>
+<li>Click <strong>Next</strong> when finished</li>
+<li>Provide a title and description (perhaps indicate an update was made) and click <strong>Finish</strong></li>
+</ol>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../projectfiles/index.html" rel="prev"><span>Previous</span>Project Files</a><a class="pager__next" href="../../newsletters/index.html" rel="next"><span>Next</span>Newsletters</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/16-projects/05-databases.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

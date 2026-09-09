@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sFTP · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Accessing your home directory via sFTP sFTP, or secure FTP, is a program that uses SSH to transfer files. Unlike standard FTP, it encrypts both commands and…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/sftp/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">sFTP</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#accessing-your-home-directory-via-sftp">Accessing your home directory via sFTP</a></li>
+<li class="toc__item toc__item--l3"><a href="#graphical-clients">Graphical Clients</a></li>
+<li class="toc__item toc__item--l3"><a href="#command-line">Command-line</a></li>
+<li class="toc__item toc__item--l2"><a href="#material-from-the-2-2-documentation">Material from the 2.2 documentation</a></li>
+<li class="toc__item toc__item--l2"><a href="#sftp-2">SFTP</a></li>
+<li class="toc__item toc__item--l3"><a href="#graphical-clients-2">Graphical Clients</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accesing your home directory</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">sFTP</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>sFTP</h1>
+        </header>
+        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/accesshomedir/sftp">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        <div class="prose">
+<h2 id="accessing-your-home-directory-via-sftp">Accessing your home directory via sFTP</h2>
+<p>sFTP, or secure FTP, is a program that uses SSH to transfer files. Unlike standard FTP, it encrypts both commands and data, preventing passwords and sensitive information from being transmitted in the clear over the network. It is functionally similar to FTP, but because it uses a different protocol, you can't use a standard FTP client to talk to an sFTP server, nor can you connect to an FTP server with a client that supports only sFTP.</p>
+<p>The following tutorial should help you in using sFTP to connect to and from your HUBzero server(s).</p>
+<h3 id="graphical-clients">Graphical Clients</h3>
+<p>Using graphical SFTP clients simplifies file transfers by allowing you to transmit files simply by dragging and dropping icons between windows. When you open the program, you will have to enter the name of the host (e.g., yourhub.org) and your HUB username and password.</p>
+<h4 id="windows-clients">Windows Clients</h4>
+<ul>
+<li><a href="http://winscp.net/">WinSCP</a></li>
+<li><a href="http://www.bitkinex.com/sftpclient/">BitKinex</a></li>
+<li><a href="http://filezilla-project.org/">FileZilla</a></li>
+<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a></li>
+</ul>
+<h4 id="mac-osx-clients">Mac OSX Clients</h4>
+<ul>
+<li><a href="http://www.panic.com/transmit/">Transmit</a></li>
+<li><a href="http://fetchsoftworks.com/">Fetch</a></li>
+<li><a href="http://cyberduck.ch/">Cyberduck</a></li>
+<li><a href="http://extendmac.com/flow/">Flow</a></li>
+<li><a href="http://rsug.itd.umich.edu/software/fugu/">Fugu</a></li>
+</ul>
+<h3 id="command-line">Command-line</h3>
+<p>You can use command line SFTP from your Unix account, or from your Mac OS X or Unix workstation. To start an SFTP session, at the command prompt, enter:</p>
+<pre><code>yourmachine:~ you$ sftp username@host
+yourmachine:~ you$ username@host password:
+
+host ~
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd</code></td>
+<td>Change the directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>chmod</code></td>
+<td>Change the permissions of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>chown</code></td>
+<td>Change the owner of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>dir</code> (or <code>ls</code>)</td>
+<td>List the files in the current directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>exit</code> (or <code>quit</code>)</td>
+<td>Close the connection to the remote computer and exit SFTP</td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>Copy a file from the remote computer to the local computer</td>
+</tr>
+<tr>
+<td><code>help</code> (or <code>?</code>)</td>
+<td>Get help on the use of SFTP commands</td>
+</tr>
+<tr>
+<td><code>lcd</code></td>
+<td>Change the directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lls</code></td>
+<td>See a list of the files in the current directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lmkdir</code></td>
+<td>Create a directory on the local computer</td>
+</tr>
+<tr>
+<td><code>ln</code> (or <code>symlink</code>)</td>
+<td>Create a symbolic link for a file on the remote computer</td>
+</tr>
+<tr>
+<td><code>lpwd</code></td>
+<td>Show the current directory (present working directory) on the local computer</td>
+</tr>
+<tr>
+<td><code>lumask</code></td>
+<td>Change the local umask value</td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>Create a directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td>Copy a file from the local computer to the remote computer</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>Show the current directory (present working directory) on the remote computer</td>
+</tr>
+<tr>
+<td><code>rename</code></td>
+<td>Rename a file on the remote host</td>
+</tr>
+<tr>
+<td><code>rm</code></td>
+<td>Delete files from the remote computer</td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td>Remove a directory on the remote host (the directory usually has to be empty)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Display the SFTP version</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>In Unix, exit to the shell prompt, where you can enter commands. Enter <code>exit</code> to get back to SFTP. If you follow <code>!</code> with a command (e.g., <code>!pwd</code>), SFTP will execute the command without dropping you to the Unix prompt.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="material-from-the-2-2-documentation">Material from the 2.2 documentation</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.</p>
+</aside>
+<h2 id="sftp-2">SFTP</h2>
+<p>SFTP, or Secure FTP, is a program that uses SSH to transfer files. Unlike standard FTP, it encrypts both commands and data, preventing passwords and sensitive information from being transmitted in the clear over the network. It is functionally similar to FTP, but because it uses a different protocol, you can't use a standard FTP client to talk to an SFTP server, nor can you connect to an FTP server with a client that supports only SFTP.</p>
+<p>The following tutorial should help you in using SFTP to connect to and from your HUBzero server(s).</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Most accounts do <strong>not</strong> have SSH/SFTP access initially. Your system administrator must grant your account access before you will be able to connect.</p>
+</aside>
+<h3 id="graphical-clients-2">Graphical Clients</h3>
+<p>Using graphical SFTP clients simplifies file transfers by allowing you to transmit files simply by dragging and dropping icons between windows. When you open the program, you will have to enter the name of the host (e.g., yourhub.org) and your HUB username and password. The use of graphical SFTP clients is highly recommended if you have access to it. Done properly they allow you to quickly and easily access your HUB files as if they are local files on your desktop.</p>
+<h4 id="linux">Linux</h4>
+<ul>
+<li>From the file browser, type &quot;sftp://yourhub.org&quot;. Use the name of your hub instead of &quot;yourhub.org&quot;. If you don't see the location field at the top of the file browser window, hit Ctrl+L to toggle it. Your files will now be available through the file browser like local files.</li>
+</ul>
+<h4 id="windows-clients-2">Windows Clients</h4>
+<ul>
+<li><a href="http://winscp.net/">WinSCP</a></li>
+<li><a href="http://www.bitkinex.com/sftpclient/">BitKinex</a></li>
+<li><a href="http://filezilla-project.org/">FileZilla</a></li>
+<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a></li>
+</ul>
+<h4 id="mac-osx-clients-2">Mac OSX Clients</h4>
+<ul>
+<li><a href="http://www.panic.com/transmit/">Transmit</a></li>
+<li><a href="http://fetchsoftworks.com/">Fetch</a></li>
+<li><a href="http://cyberduck.ch/">Cyberduck</a></li>
+<li><a href="http://extendmac.com/flow/">Flow</a></li>
+<li><a href="https://www.binarynights.com/forklift/">Forklift</a>Version2 is available for free through the app store.</li>
+</ul>
+<h4 id="command-line-2">Command-line</h4>
+<p>You can use command line SFTP from Linux, or from your Mac OS X terminal. To start an SFTP session, at the command prompt, enter:</p>
+<pre><code>yourmachine:~ you$ sftp username@host
+yourmachine:~ you$ username@host password:
+
+host ~
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd</code></td>
+<td>Change the directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>chmod</code></td>
+<td>Change the permissions of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>chown</code></td>
+<td>Change the owner of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>dir</code> (or <code>ls</code>)</td>
+<td>List the files in the current directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>exit</code> (or <code>quit</code>)</td>
+<td>Close the connection to the remote computer and exit SFTP</td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>Copy a file from the remote computer to the local computer</td>
+</tr>
+<tr>
+<td><code>help</code> (or <code>?</code>)</td>
+<td>Get help on the use of SFTP commands</td>
+</tr>
+<tr>
+<td><code>lcd</code></td>
+<td>Change the directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lls</code></td>
+<td>See a list of the files in the current directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lmkdir</code></td>
+<td>Create a directory on the local computer</td>
+</tr>
+<tr>
+<td><code>ln</code> (or <code>symlink</code>)</td>
+<td>Create a symbolic link for a file on the remote computer</td>
+</tr>
+<tr>
+<td><code>lpwd</code></td>
+<td>Show the current directory (present working directory) on the local computer</td>
+</tr>
+<tr>
+<td><code>lumask</code></td>
+<td>Change the local umask value</td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>Create a directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td>Copy a file from the local computer to the remote computer</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>Show the current directory (present working directory) on the remote computer</td>
+</tr>
+<tr>
+<td><code>rename</code></td>
+<td>Rename a file on the remote host</td>
+</tr>
+<tr>
+<td><code>rm</code></td>
+<td>Delete files from the remote computer</td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td>Remove a directory on the remote host (the directory usually has to be empty)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Display the SFTP version</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>In Unix, exit to the shell prompt, where you can enter commands. Enter <code>exit</code> to get back to SFTP. If you follow <code>!</code> with a command (e.g., <code>!pwd</code>), SFTP will execute the command without dropping you to the Unix prompt.</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Accesing your home directory</a><a class="pager__next" href="../webdav/index.html" rel="next"><span>Next</span>WebDAV</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/06-accesshomedir/01-sftp.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

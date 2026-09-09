@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assets · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A plugin that renders a screen usually needs a stylesheet and a script. They live beside the plugin&#x27;s code and are pushed to the document by helpers named , ,…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/assets/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Assets</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-assets-live">Where assets live</a></li>
+<li class="toc__item toc__item--l2"><a href="#default-names">Default names</a></li>
+<li class="toc__item toc__item--l2"><a href="#on-the-plugin-class">On the plugin class</a></li>
+<li class="toc__item toc__item--l2"><a href="#on-a-plugin-view">On a plugin view</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-file-is-looked-for">Where the file is looked for</a></li>
+<li class="toc__item toc__item--l2"><a href="#declarations">Declarations</a></li>
+<li class="toc__item toc__item--l2"><a href="#images">Images</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugins</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Assets</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Assets</h1>
+        </header>
+        
+        <div class="prose">
+<p>A plugin that renders a screen usually needs a stylesheet and a script. They
+live beside the plugin's code and are pushed to the document by helpers named
+<code>css()</code>, <code>js()</code>, and <code>img()</code> — available both on the plugin class and on a
+plugin view, though the two are different methods with different third
+arguments.</p>
+<h2 id="where-assets-live">Where assets live</h2>
+<pre><code>core/plugins/members/blog/
+    assets/
+        css/blog.css
+        img/
+        js/blog.js
+</code></pre>
+<p>The directory under <code>assets</code> matches the helper: <code>css/</code>, <code>js/</code>, <code>img/</code>. Files
+placed directly under the plugin directory (<code>blog/css/blog.css</code>) are found
+too, but every core plugin uses <code>assets/</code>.</p>
+<h2 id="default-names">Default names</h2>
+<p>Called with no arguments, the helpers work out both the extension and the file
+name for you:</p>
+<ul>
+<li>the extension defaults to <code>plg_{group}_{name}</code> — for the members blog,
+<code>plg_members_blog</code>;</li>
+<li>the file name defaults to the plugin's <em>element</em>, the third segment of that
+string — <code>blog</code>.</li>
+</ul>
+<p>So <code>blog.css</code> and <code>blog.js</code> are what <code>$this-&gt;css()-&gt;js()</code> loads, and
+<code>forum.css</code> is what the groups forum plugin loads. Name your files after the
+plugin and you never have to pass an argument.</p>
+<h2 id="on-the-plugin-class">On the plugin class</h2>
+<p><code>Hubzero\Plugin\Plugin</code> mixes in the <code>AssetAware</code> trait:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Signature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>css</code></td>
+<td><code>css($stylesheet = '', $extension = null, $attributes = array())</code></td>
+</tr>
+<tr>
+<td><code>js</code></td>
+<td><code>js($asset = '', $extension = null, $attributes = array())</code></td>
+</tr>
+<tr>
+<td><code>img</code></td>
+<td><code>img($asset, $extension = null)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>css()</code> and <code>js()</code> return <code>$this</code>, so they chain. The third argument is a
+tag-attribute array: <code>media</code>, <code>type</code>, and <code>attribs</code> for a stylesheet; <code>type</code>,
+<code>defer</code>, and <code>async</code> for a script.</p>
+<pre><code class="language-php">$this-&gt;css()
+     -&gt;js('blog');
+</code></pre>
+<h2 id="on-a-plugin-view">On a plugin view</h2>
+<p>Inside a layout, <code>$this</code> is a <code>Hubzero\Plugin\View</code>, and <code>css()</code>, <code>js()</code>, and
+<code>img()</code> are resolved as <em>view helpers</em>
+(<code>Hubzero\View\Helper\Css</code> and friends). Their signature differs:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Signature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>css</code></td>
+<td><code>css($stylesheet = '', $extension = null, $element = null)</code></td>
+</tr>
+<tr>
+<td><code>js</code></td>
+<td><code>js($asset = '', $extension = null, $element = null)</code></td>
+</tr>
+<tr>
+<td><code>img</code></td>
+<td><code>img($asset = '', $extension = null, $element = null)</code></td>
+</tr>
+</tbody>
+</table>
+<p>The third argument is not attributes: passing it makes the second and third be
+read as a plugin group and element, and the pair is assembled into
+<code>plg_{group}_{element}</code>. These two lines load the same file:</p>
+<pre><code class="language-php">$this-&gt;css('like', 'plg_groups_forum');
+$this-&gt;css('like', 'groups', 'forum');
+</code></pre>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Passing an attributes array as the third argument in a layout —
+the signature that works on the plugin class — makes the helper treat it as
+an element name and splice it into the extension string. The result matches
+no directory, so nothing loads; all you get is an array-to-string conversion
+notice.</p>
+</aside>
+<p>Layouts in <code>plg_groups_forum</code> and <code>plg_members_blog</code> call these with one
+argument or none:</p>
+<pre><code class="language-php">$this-&gt;css()
+     -&gt;js();
+
+$this-&gt;css('jquery.datepicker.css', 'system');
+</code></pre>
+<p><code>system</code> resolves against the top-level <code>core/assets</code> directory, which is
+where the shared jQuery plugins and icon sets live.</p>
+<h2 id="where-the-file-is-looked-for">Where the file is looked for</h2>
+<p><code>Hubzero\Document\Asset\File</code> builds this list for a plugin and takes the
+first path that exists:</p>
+<pre><code>app/plugins/{group}/{name}/assets/css/file.css
+app/plugins/{group}/{name}/css/file.css
+core/plugins/{group}/{name}/assets/css/file.css
+core/plugins/{group}/{name}/css/file.css
+</code></pre>
+<p>Every <code>app/</code> path is tried before any <code>core/</code> path, so a hub replaces a
+shipped plugin's stylesheet by putting a file in <code>app/plugins</code>. A template can
+override any of them with <code>{template}/html/plg_{group}_{name}/file.css</code>, which
+is checked afterwards and wins.</p>
+<p>The returned URL carries a cache-buster from the file's modification time:
+<code>/core/plugins/members/blog/assets/css/blog.css?v=1568392841</code>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> When the file cannot be found, nothing happens — no exception,
+no warning, no tag in the document. A stylesheet that &quot;isn't loading&quot; is
+nearly always a name that does not match a file, or a file outside
+<code>assets/</code>.</p>
+</aside>
+<h2 id="declarations">Declarations</h2>
+<p>Passing <code>css()</code> a string containing <code>{</code> or <code>@</code> makes it a declaration: the
+string is added with <code>addStyleDeclaration()</code> rather than resolved to a path.
+Useful for a rule computed from a parameter; not a way to build a stylesheet.</p>
+<h2 id="images">Images</h2>
+<p><code>img()</code> returns a URL for a file under <code>assets/img</code> and keeps the extension
+you give it:</p>
+<pre><code class="language-html">&lt;img src=&quot;&lt;?php echo $this-&gt;img('icon.png'); ?&gt;&quot; alt=&quot;&quot; /&gt;
+</code></pre>
+<p>Only <code>png</code>, <code>gif</code>, <code>jpg</code>, <code>jpeg</code>, and <code>jpe</code> are recognised. For an SVG, build
+the path from <code>Request::root(true)</code> yourself.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../views/index.html" rel="prev"><span>Previous</span>Views</a><a class="pager__next" href="../configuration/index.html" rel="next"><span>Next</span>Configuration</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/06-assets.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Database · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Hubzero talks to the database through three layers, each built on the one below it. The driver ( ) wraps PDO and runs prepared statements. The query builder…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/database/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Database</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l2"><a href="#getting-a-connection">Getting a connection</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-table-prefix">The table prefix</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-a-statement">Running a statement</a></li>
+<li class="toc__item toc__item--l3"><a href="#binding-values">Binding values</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-results">Reading results</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-rows">Writing rows</a></li>
+<li class="toc__item toc__item--l2"><a href="#transactions-and-locks">Transactions and locks</a></li>
+<li class="toc__item toc__item--l2"><a href="#inspecting-the-schema">Inspecting the schema</a></li>
+<li class="toc__item toc__item--l2"><a href="#debugging">Debugging</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-go-next">Where to go next</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Database</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Database</h1>
+        </header>
+        
+        <div class="prose">
+<p>Hubzero talks to the database through three layers, each built on the one
+below it. The driver (<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Driver.php"><code>Hubzero\Database\Driver</code></a>)
+wraps PDO and runs prepared statements. The
+<a href="queries/index.html">query builder</a> assembles statements without you writing SQL
+strings. The <a href="orm/index.html">ORM</a> maps table rows to model objects. Schema changes
+are made by <a href="migrations/index.html">migrations</a>.</p>
+<p>This page covers the bottom layer: how a connection is configured, how to
+get one, and what the driver can do once you have it.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The connection settings live in <code>app/config/database.php</code>, which returns a
+plain array:</p>
+<pre><code class="language-php">return array(
+    'dbtype'   =&gt; 'mysql',
+    'host'     =&gt; '127.0.0.1',
+    'user'     =&gt; 'hubzero',
+    'password' =&gt; 'secret',
+    'db'       =&gt; 'hubzero',
+    'dbprefix' =&gt; 'jos_',
+    'port'     =&gt; '3306',
+);
+</code></pre>
+<p><code>Hubzero\Database\DatabaseServiceProvider</code> reads those values at boot and
+registers the resulting driver in the application container under <code>db</code>:</p>
+<pre><code class="language-php">	public function register()
+	{
+		$this-&gt;app['db'] = function($app)
+		{
+			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql library calls from php
+			$driver = (Config::get('dbtype') == 'mysql') ? 'pdo' : Config::get('dbtype');
+
+			$options = [
+				'driver'   =&gt; $driver,
+				'host'     =&gt; Config::get('host'),
+				'user'     =&gt; Config::get('user'),
+				'password' =&gt; Config::get('password'),
+				'database' =&gt; Config::get('db'),
+				'prefix'   =&gt; Config::get('dbprefix')
+			];
+
+			return Driver::getInstance($options);
+		};
+</code></pre>
+<p>Note the shim on the first line of the closure. A <code>dbtype</code> of <code>mysql</code> is
+turned into the <code>pdo</code> driver, and <code>Driver::getInstance()</code> then turns <code>pdo</code>
+back into <code>mysql</code>. Both names reach <code>Hubzero\Database\Driver\Mysql</code>, which
+extends <code>Hubzero\Database\Driver\Pdo</code>. The drivers that ship are <code>mysql</code>,
+<code>mariadb</code>, <code>percona</code>, <code>pgsql</code> and <code>sqlite</code>; every one of them is a PDO
+driver.</p>
+<h2 id="getting-a-connection">Getting a connection</h2>
+<p>Inside the application, ask the container:</p>
+<pre><code class="language-php">$db = App::get('db');
+</code></pre>
+<p>That is the connection the query builder and the ORM use by default, and
+almost all code should use it too. To open a second connection — a
+reporting database, a middleware database — call the factory directly:</p>
+<pre><code class="language-php">$mydb = Hubzero\Database\Driver::getInstance([
+    'driver'   =&gt; 'mysql',
+    'host'     =&gt; 'example.org',
+    'user'     =&gt; 'example',
+    'password' =&gt; '******',
+    'database' =&gt; 'mystuff',
+    'prefix'   =&gt; 'hub_'
+]);
+</code></pre>
+<p><code>getInstance()</code> hashes the options array and caches the resulting object, so
+two calls with identical options hand back the same instance. An unknown
+<code>driver</code> value raises <code>Hubzero\Error\Exception\RuntimeException</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There is no <code>getInstance()</code> call that returns &quot;the current&quot;
+connection with no arguments. With an empty array it builds a <code>mysql</code>
+driver against whatever defaults the driver class supplies, which is not
+the hub's database. Use <code>App::get('db')</code> for the hub connection.</p>
+</aside>
+<h2 id="the-table-prefix">The table prefix</h2>
+<p>Tables are written with the placeholder prefix <code>#__</code> rather than the real
+one. <code>Driver::replacePrefix()</code> swaps it for the configured <code>dbprefix</code> when
+the statement is prepared, so <code>#__blog_entries</code> becomes <code>jos_blog_entries</code>
+on a hub whose prefix is <code>jos_</code>. Write <code>#__</code> everywhere — in raw SQL, in
+query builder calls, in migrations — and the same code runs on a hub with
+any prefix.</p>
+<h2 id="running-a-statement">Running a statement</h2>
+<p><code>setQuery()</code> prepares a statement; a load method or <code>query()</code> executes it.</p>
+<pre><code class="language-php">$db = App::get('db');
+
+$db-&gt;setQuery(&quot;SELECT COUNT(*) FROM `#__blog_entries` WHERE `state` = 1&quot;);
+
+$total = $db-&gt;loadResult();
+</code></pre>
+<p><code>setQuery()</code> takes the statement and nothing else. <code>query()</code> is an alias for
+<code>execute()</code> and returns the driver object, not a result resource, so chain a
+load method rather than testing its return value.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A failed statement does not return <code>false</code>. The PDO driver
+converts the <code>PDOException</code> into
+<code>Hubzero\Database\Exception\QueryFailedException</code>. Catch that if you need
+to handle a failure.</p>
+</aside>
+<h3 id="binding-values">Binding values</h3>
+<p>Never interpolate user input into a statement. Prepare it with <code>?</code>
+placeholders and bind:</p>
+<pre><code class="language-php">$db-&gt;prepare(&quot;SELECT * FROM `#__blog_entries` WHERE `scope` = ? AND `state` = ?&quot;)
+   -&gt;bind(['site', 1]);
+
+$rows = $db-&gt;loadObjectList();
+</code></pre>
+<p><code>bind()</code> infers a PDO type for each value, and takes an optional second
+array of explicit types (<code>bool</code>, <code>null</code>, <code>int</code>, <code>str</code>) keyed the same way.
+<code>setQuery()</code> is <code>prepare()</code> without the binding step.</p>
+<p>Where a value genuinely cannot be bound — an identifier, say — quote it:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quote($text, $escape = true)</code></td>
+<td>Wrap a value in single quotes, escaping it first</td>
+</tr>
+<tr>
+<td><code>quoteName($name, $as = null)</code></td>
+<td>Wrap an identifier in backticks, honouring dot notation and an optional alias</td>
+</tr>
+<tr>
+<td><code>wrap($value)</code></td>
+<td>Quote a dot-notated identifier, understanding a trailing <code>AS</code> and leaving <code>*</code> alone</td>
+</tr>
+</tbody>
+</table>
+<p><code>q()</code>, <code>qn()</code> and <code>nq()</code> are deprecated aliases handled by <code>__call()</code>.
+<code>nameQuote()</code> is not one of them and does not exist.</p>
+<h2 id="reading-results">Reading results</h2>
+<p>Every method below prepares nothing itself; call <code>setQuery()</code> or
+<code>prepare()</code> first.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>loadResult()</code></td>
+<td>The first column of the first row</td>
+</tr>
+<tr>
+<td><code>loadRow()</code></td>
+<td>One row as a numerically indexed array</td>
+</tr>
+<tr>
+<td><code>loadAssoc()</code></td>
+<td>One row as an associative array</td>
+</tr>
+<tr>
+<td><code>loadObject($class = 'stdClass')</code></td>
+<td>One row as an object</td>
+</tr>
+<tr>
+<td><code>loadColumn($offset = 0)</code></td>
+<td>One column from every row, as a flat array</td>
+</tr>
+<tr>
+<td><code>loadRowList($key = null)</code></td>
+<td>Every row as a numeric array, optionally keyed by column <code>$key</code></td>
+</tr>
+<tr>
+<td><code>loadAssocList($key = null, $column = null)</code></td>
+<td>Every row as an associative array, optionally keyed by <code>$key</code> and reduced to <code>$column</code></td>
+</tr>
+<tr>
+<td><code>loadObjectList($key = '', $class = 'stdClass')</code></td>
+<td>Every row as an object, optionally keyed by <code>$key</code></td>
+</tr>
+<tr>
+<td><code>loadNextRow()</code> / <code>loadNextObject($class)</code></td>
+<td>The next row from an already executed statement, or <code>false</code> at the end</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">$db-&gt;setQuery(&quot;SELECT `id`, `title`, `alias` FROM `#__kb_articles` ORDER BY `title`&quot;);
+
+foreach ($db-&gt;loadObjectList('alias') as $alias =&gt; $article)
+{
+    echo $article-&gt;title;
+}
+</code></pre>
+<p>Each of the <code>load*</code> methods executes the statement, reads the whole result,
+and frees it. Calling two of them in a row re-runs the statement. If the
+execute fails they return <code>null</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>getNumRows()</code> reports the row count of the statement that is
+still open. The <code>load*</code> methods free the result when they finish, so call
+<code>getNumRows()</code> after <code>query()</code> and before any <code>load*</code> call.</p>
+</aside>
+<h2 id="writing-rows">Writing rows</h2>
+<p>For a single row built from an object, the driver has two helpers that
+compose the statement for you:</p>
+<pre><code class="language-php">$entry = new stdClass;
+$entry-&gt;title = 'Release notes';
+$entry-&gt;state = 1;
+
+$db-&gt;insertObject('#__blog_entries', $entry, 'id');   // sets $entry-&gt;id
+$db-&gt;updateObject('#__blog_entries', $entry, 'id');   // $nulls = false skips null fields
+</code></pre>
+<p>Both skip array and object properties and any property whose name starts
+with an underscore. <code>insertid()</code> returns the last auto-increment value.
+<code>getAffectedRows()</code> returns the row count of the last statement.</p>
+<p>For anything more involved, use the <a href="queries/index.html">query builder</a>, which
+builds and binds the statement for you.</p>
+<h2 id="transactions-and-locks">Transactions and locks</h2>
+<p><code>transactionStart()</code>, <code>transactionCommit()</code> and <code>transactionRollback()</code> wrap
+the PDO equivalents. <code>lockTable($table)</code> and <code>unlockTables()</code> are available
+for the cases transactions do not cover. Since the driver throws on failure,
+the natural shape is a <code>try</code>/<code>catch</code> around the body with a rollback in the
+<code>catch</code>.</p>
+<h2 id="inspecting-the-schema">Inspecting the schema</h2>
+<p>Migrations lean on these heavily, and so should any code that has to cope
+with more than one schema version:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tableExists($table)</code></td>
+<td>Whether the table is present</td>
+</tr>
+<tr>
+<td><code>tableHasField($table, $field)</code></td>
+<td>Whether the column is present</td>
+</tr>
+<tr>
+<td><code>tableHasKey($table, $key)</code></td>
+<td>Whether the index is present</td>
+</tr>
+<tr>
+<td><code>getTableList()</code></td>
+<td>Every table in the database</td>
+</tr>
+<tr>
+<td><code>getTableColumns($table, $typeOnly = true)</code></td>
+<td>Column names mapped to types, or to full definitions when <code>$typeOnly</code> is <code>false</code></td>
+</tr>
+<tr>
+<td><code>getTableKeys($table)</code></td>
+<td>Index definitions</td>
+</tr>
+<tr>
+<td><code>getTableCreate($tables)</code></td>
+<td><code>CREATE TABLE</code> statements</td>
+</tr>
+<tr>
+<td><code>getPrimaryKey($table)</code></td>
+<td>The primary key column</td>
+</tr>
+<tr>
+<td><code>getEngine($table)</code> / <code>setEngine($table, $engine)</code></td>
+<td>The storage engine</td>
+</tr>
+<tr>
+<td><code>getAutoIncrement($table)</code></td>
+<td>The next auto-increment value</td>
+</tr>
+<tr>
+<td><code>dropTable($table, $ifExists = true)</code></td>
+<td>Drops a table</td>
+</tr>
+<tr>
+<td><code>renameTable($old, $new)</code></td>
+<td>Renames a table</td>
+</tr>
+</tbody>
+</table>
+<h2 id="debugging">Debugging</h2>
+<p><code>enableDebugging()</code> turns on timing and statement logging;
+<code>disableDebugging()</code> turns it off again. <code>getLog()</code> returns the recorded
+statements, <code>getCount()</code> the number run, and <code>getTimer()</code> the accumulated
+time. <code>toString()</code> on the driver interpolates the bound values back into the
+prepared statement, which is the fastest way to see what actually ran.</p>
+<h2 id="where-to-go-next">Where to go next</h2>
+<ul>
+<li><a href="queries/index.html">Query builder</a> — building statements without SQL strings.</li>
+<li><a href="orm/index.html">ORM</a> — <code>Relational</code> models, relationships, and saving rows.</li>
+<li><a href="migrations/index.html">Migrations</a> — changing the schema in a repeatable way.</li>
+</ul>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="queries/index.html">Query builder</a></li>
+<li><a href="migrations/index.html">Migrations</a></li>
+<li><a href="orm/index.html">ORM</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../basics/redirect/index.html" rel="prev"><span>Previous</span>Redirect</a><a class="pager__next" href="queries/index.html" rel="next"><span>Next</span>Query builder</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/06-database/README.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

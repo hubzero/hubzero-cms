@@ -1,5 +1,5 @@
 # The HUBzero® Platform for Scientific Collaboration
-[![Build Status](https://travis-ci.org/hubzero/hubzero-cms.svg?branch=master)](https://travis-ci.org/hubzero/hubzero-cms)
+[![Documentation](https://img.shields.io/badge/docs-hubzero.github.io-0fa1ca)](https://hubzero.github.io/hubzero-cms/)
 
 ## What is HUBzero?
 
@@ -9,25 +9,24 @@ For more information about HUBzero, visit https://hubzero.org.
 
 ## Installation
 
-### Packages
-
-Instructions for installing the HUBzero platform from packages can be found at https://help.hubzero.org/documentation/current/installation.
+Instructions for installing the Hubzero platform from packages are in the
+[Installation](https://hubzero.github.io/hubzero-cms/installation/) book.
 
 ## Documentation
 
-Both user and developer documentation for the CMS can be found at https://help.hubzero.org/documentation/current.
+Documentation for hub managers, hub users, tool developers, and CMS developers
+is published at https://hubzero.github.io/hubzero-cms/ and written as Markdown
+under [`docs/`](docs/README.md) in this repository. See the
+[writing guide](docs/STYLE.md) to contribute a page.
 
 ## Contributing
 
-HUBzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the Contribution Guidelines found at https://help.hubzero.org/documentation/current/webdevs/index/contributions.
+Hubzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the
+[Contributing](https://hubzero.github.io/hubzero-cms/contributing/) book.
 
 ## Issues
 
 Please report any bugs or issues at https://help.hubzero.org/support.
-
-## Roadmap
-
-Checkout what is on our development roadmap at https://help.hubzero.org/documentation/roadmap.
 
 ## Testing
 

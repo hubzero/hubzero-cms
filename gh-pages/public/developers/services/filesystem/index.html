@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filesystem · Developers · Hubzero Documentation</title>
+  <meta name="description" content="is the file API. It holds an adapter, delegates every operation to it, and adds a virus scan, path normalisation, and a macro mechanism. Because the adapter is…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/services/filesystem/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Filesystem</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-the-facade-resolves-to">What the facade resolves to</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-and-writing">Reading and writing</a></li>
+<li class="toc__item toc__item--l2"><a href="#inspecting">Inspecting</a></li>
+<li class="toc__item toc__item--l2"><a href="#directories">Directories</a></li>
+<li class="toc__item toc__item--l2"><a href="#cleaning-names">Cleaning names</a></li>
+<li class="toc__item toc__item--l2"><a href="#macros">Macros</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Services</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Filesystem</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Filesystem</h1>
+        </header>
+        
+        <div class="prose">
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Filesystem.php"><code>Hubzero\Filesystem\Filesystem</code></a>
+is the file API. It holds an adapter, delegates every operation to it, and
+adds a virus scan, path normalisation, and a macro mechanism. Because the
+adapter is chosen at boot, the same calls work whether the hub writes to
+local disk or over FTP.</p>
+<h2 id="what-the-facade-resolves-to">What the facade resolves to</h2>
+<pre><code class="language-php">	public function register()
+	{
+		$this-&gt;app['filesystem'] = function($app)
+		{
+			if ($app['config']-&gt;get('ftp_enable'))
+			{
+				$adapter = new Ftp(array(
+					'host'     =&gt; $app['config']-&gt;get('ftp_host'),
+					'port'     =&gt; $app['config']-&gt;get('ftp_port'),
+					'username' =&gt; $app['config']-&gt;get('ftp_user'),
+					'password' =&gt; $app['config']-&gt;get('ftp_pass'),
+					'root'     =&gt; $app['config']-&gt;get('ftp_root'),
+				));
+			}
+			else
+			{
+				$adapter = new Local($app['config']-&gt;get('virus_scanner', &quot;clamscan -i --no-summary --block-encrypted&quot;));
+			}
+
+			$filesystem = new Filesystem($adapter);
+			$filesystem-&gt;addMacro(new EmptyDirectory)
+			           -&gt;addMacro(new Directories)
+			           -&gt;addMacro(new Files)
+			           -&gt;addMacro(new DirectoryTree);
+
+			return $filesystem;
+		};
+	}
+</code></pre>
+<p>With <code>ftp_enable</code> set in the global configuration the adapter is
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Adapter/Ftp.php"><code>Ftp</code></a>,
+configured from the <code>ftp_*</code> values; otherwise it is
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Adapter/Local.php"><code>Local</code></a>,
+constructed with the shell command used for virus scanning. A third
+adapter, <code>None</code>, exists for tests. Four macros are registered on the way
+out; see below.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There is no filesystem manager to go through, despite the name.
+<code>Hubzero\Filesystem\Manager</code> is an empty class left over from an earlier
+design. The <code>Filesystem</code> facade, or <code>App::get('filesystem')</code>, is the entry
+point.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Paths are real paths, not paths relative to some configured
+root. Build them from the <a href="../../foundation/constants/index.html">constants</a> —
+<code>PATH_APP . DS . 'site' . DS . 'wiki'</code> — and pass them whole.</p>
+</aside>
+<h2 id="reading-and-writing">Reading and writing</h2>
+<pre><code class="language-php">use Filesystem;
+
+if (!Filesystem::exists($path))
+{
+    throw new Exception(Lang::txt('File not found.'));
+}
+
+$contents = Filesystem::read($path);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exists($path)</code></td>
+<td>Whether the path exists</td>
+</tr>
+<tr>
+<td><code>read($path)</code></td>
+<td>File contents as a string; throws <code>FileNotFoundException</code> if absent</td>
+</tr>
+<tr>
+<td><code>write($path, $contents)</code></td>
+<td>Write, replacing what is there</td>
+</tr>
+<tr>
+<td><code>prepend($path, $data)</code> / <code>append($path, $data)</code></td>
+<td>Add to the start or end</td>
+</tr>
+<tr>
+<td><code>delete($path)</code></td>
+<td>Remove a file</td>
+</tr>
+<tr>
+<td><code>copy($path, $target)</code> / <code>rename($path, $target)</code></td>
+<td>Copy or rename; <code>move()</code> is an alias for <code>rename()</code></td>
+</tr>
+<tr>
+<td><code>upload($path, $target)</code></td>
+<td>Move an uploaded temporary file into place</td>
+</tr>
+</tbody>
+</table>
+<p><code>copy()</code> and <code>rename()</code> call <code>assertPresent()</code> on the source first, so a
+missing source raises
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Exception/FileNotFoundException.php"><code>FileNotFoundException</code></a>
+rather than returning <code>false</code>.</p>
+<h2 id="inspecting">Inspecting</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name($path)</code></td>
+<td>The filename without its extension</td>
+</tr>
+<tr>
+<td><code>extension($path)</code></td>
+<td>The extension, without the dot</td>
+</tr>
+<tr>
+<td><code>type($path)</code></td>
+<td><code>file</code> or <code>dir</code></td>
+</tr>
+<tr>
+<td><code>size($path)</code></td>
+<td>Size in bytes</td>
+</tr>
+<tr>
+<td><code>mimetype($path)</code></td>
+<td>The detected MIME type</td>
+</tr>
+<tr>
+<td><code>lastModified($path)</code></td>
+<td>Modification time</td>
+</tr>
+<tr>
+<td><code>isFile($path)</code> / <code>isDirectory($path)</code> / <code>isWritable($path)</code></td>
+<td>Booleans</td>
+</tr>
+<tr>
+<td><code>isSafe($path)</code></td>
+<td>Runs the configured virus scanner over the file</td>
+</tr>
+<tr>
+<td><code>find($paths, $file)</code></td>
+<td>Full path to <code>$file</code> in the first of <code>$paths</code> that has it, or <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>isSafe()</code> is the one to remember. Everything a member uploads goes through
+it, and a failure means the file is deleted rather than kept:</p>
+<pre><code class="language-php">if (!Filesystem::isSafe($path . DS . $file['name']))
+{
+    Filesystem::delete($path . DS . $file['name']);
+
+    throw new Exception(Lang::txt('File rejected because the anti-virus scan failed.'));
+}
+</code></pre>
+<h2 id="directories">Directories</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>makeDirectory($path, $mode = 0755, $recursive = true, $force = false)</code></td>
+<td>Create a directory</td>
+</tr>
+<tr>
+<td><code>deleteDirectory($path, $preserve = false)</code></td>
+<td>Remove it, optionally keeping the directory itself</td>
+</tr>
+<tr>
+<td><code>copyDirectory($path, $target, $options = null)</code></td>
+<td>Copy a tree</td>
+</tr>
+<tr>
+<td><code>setPermissions($path, $filemode = '0644', $foldermode = '0755')</code></td>
+<td>Chmod a tree</td>
+</tr>
+<tr>
+<td><code>listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = [...])</code></td>
+<td>Entries as arrays with <code>type</code> and <code>path</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cleaning-names">Cleaning names</h2>
+<p>Never build a path out of an uploaded filename without normalising it
+first:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clean($file)</code></td>
+<td>Strip a filename down to safe characters</td>
+</tr>
+<tr>
+<td><code>cleanPath($path)</code></td>
+<td>Normalise separators and collapse <code>..</code></td>
+</tr>
+<tr>
+<td><code>cleanDirectory($directory)</code></td>
+<td>The same, for a directory name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="macros">Macros</h2>
+<p>A macro adds one method to the filesystem object. It implements
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/MacroInterface.php"><code>MacroInterface</code></a>
+— usually by extending <code>Hubzero\Filesystem\Macro\Base</code>, which supplies
+<code>setFilesystem()</code> — and provides <code>getMethod()</code> and <code>handle()</code>:</p>
+<pre><code class="language-php">class Files extends Base
+{
+	/**
+	 * Get the method name.
+	 *
+	 * @return  string
+	 */
+	public function getMethod()
+	{
+		return 'files';
+	}
+
+	/**
+	 * List all files in the directory.
+	 *
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
+	 * @return  array
+	 */
+	public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	{
+		$result = array();
+
+		$contents = $this-&gt;filesystem-&gt;listContents($path, $filter, $recursive, $full, $exclude);
+
+		foreach ($contents as $object)
+		{
+			if ($object['type'] === 'file')
+			{
+				$result[] = $object['path'];
+			}
+		}
+
+		return $result;
+	}
+</code></pre>
+<p><code>getMethod()</code> names the call; <code>handle()</code> receives whatever arguments the
+call was given, with <code>$this-&gt;filesystem</code> already set. Register it and call
+it:</p>
+<pre><code class="language-php">$filesystem = App::get('filesystem');
+
+$filesystem-&gt;addMacro(new Example);
+
+$content = $filesystem-&gt;examplify($path);
+</code></pre>
+<p><code>addMacro()</code> refuses a macro without a <code>handle()</code> method, <code>hasMacro($name)</code>
+tests for one, and calling a name that is neither a real method nor a
+registered macro raises <code>BadMethodCallException</code>.</p>
+<p>Four macros are registered at boot and are therefore always available on
+the <code>Filesystem</code> facade:</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>files($path, $filter, $recursive, $full, $exclude)</code></td>
+<td>Paths of the files in a directory</td>
+</tr>
+<tr>
+<td><code>directories($path, $filter, $recursive, $full, $exclude)</code></td>
+<td>Paths of the sub-directories</td>
+</tr>
+<tr>
+<td><code>emptyDirectory($path)</code></td>
+<td>Deletes everything inside a directory, keeping the directory</td>
+</tr>
+<tr>
+<td><code>directoryTree($path, $filter, $maxLevel, $level, $parent)</code></td>
+<td>A nested array describing the tree</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">$num_files = count(Filesystem::files(PATH_APP . DS . $folder));
+</code></pre>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cache/index.html" rel="prev"><span>Previous</span>Cache</a><a class="pager__next" href="../session/index.html" rel="next"><span>Next</span>Session</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/02-filesystem.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

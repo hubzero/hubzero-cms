@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PHP Naming Conventions · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="Classes HUBzero Library HUBzero Core Library uses the PSR-0 class naming convention whereby the names of the classes directly map to the directories in which…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/phpnamingconventions/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../contributions/index.html">Contribution Guide</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Style Guide</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">PHP Naming Conventions</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#classes">Classes</a></li>
+<li class="toc__item toc__item--l3"><a href="#hubzero-library">HUBzero Library</a></li>
+<li class="toc__item toc__item--l3"><a href="#extensions">Extensions</a></li>
+<li class="toc__item toc__item--l3"><a href="#namespaced">Namespaced</a></li>
+<li class="toc__item toc__item--l3"><a href="#non-pseudo-namespaced">non/pseudo-Namespaced</a></li>
+<li class="toc__item toc__item--l2"><a href="#filenames">Filenames</a></li>
+<li class="toc__item toc__item--l2"><a href="#functions-and-methods">Functions and Methods</a></li>
+<li class="toc__item toc__item--l2"><a href="#variables">Variables</a></li>
+<li class="toc__item toc__item--l2"><a href="#constants">Constants</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../commits/index.html">Commit Messages</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../documentation/index.html">Working on the documentation</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Style Guide</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">PHP Naming Conventions</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>PHP Naming Conventions</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions/phpnamingconventions">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        <div class="prose">
+<h2 id="classes">Classes</h2>
+<h3 id="hubzero-library">HUBzero Library</h3>
+<p>HUBzero Core Library uses the <a href="https://gist.github.com/Thinkscape/1234504">PSR-0</a> class naming convention whereby the names of the classes directly map to the directories in which they are stored. The root level directory ofHUBzero’s standard library is the “Hubzero/” directory. All HUBzero core library classes are stored hierarchically under these root directories.</p>
+<p>Class names may only contain alphanumeric characters. Numbers are permitted in class names but are discouraged in most cases. Underscores are only permitted in place of the path separator; the filename “Hubzero/User/Profile.php” must map to the class name “Hubzero\User\Profile”.</p>
+<p>If a class name is comprised of more than one word, the first letter of each new word must be capitalized. Successive capitalized letters are not allowed, e.g. a class “Hubzero\PDF” is not allowed while “Hubzero\Pdf” is acceptable.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Code that must be deployed alongside Hubzero and Joomla libraries but is not part of the standard or extras libraries (e.g. application code or libraries that are not distributed by Hubzero) must never start with “Hubzero\”.</p>
+</aside>
+<h3 id="extensions">Extensions</h3>
+<p>Classes should be given descriptive names. Avoid using abbreviations where possible. Class names should always begin with an uppercase letter and be written in CamelCase even if using traditionally uppercase acronyms (such as XML, HTML).</p>
+<h3 id="namespaced">Namespaced</h3>
+<p>While namespacing an extension is not required, it is encouraged.</p>
+<h4 id="controllers">Controllers</h4>
+<p>For components, such as the Blog in the Administrator, the convention is <code>Components\[Component]\Controllers\[Name]</code>.</p>
+<pre><code class="language-php">namespace Components\Blog\Controllers;
+
+use Hubzero\Component\AdminController;
+
+class Entries extends AdminController
+{
+    // Methods
+}
+</code></pre>
+<h4 id="models">Models</h4>
+<p>The naming convention is <code>Components\[Component]\Models\[Name]</code>.</p>
+<pre><code class="language-php">namespace Components\Blog\Models;
+
+use Hubzero\Base\Model;
+
+class Entry extends Model
+{
+    // Methods
+}
+</code></pre>
+<h4 id="plugins">Plugins</h4>
+<p>Currently, plugin naming must follow the pseudo-namespace conventions.</p>
+<h3 id="non-pseudo-namespaced">non/pseudo-Namespaced</h3>
+<p>These conventions define a pseudo-namespace mechanism for extensions in the framework. Third-party developers are to avoid beginning names with ‘Hubzero’ as it is reserved. It is advisable for developers to name classes with their own unique prefix.</p>
+<h4 id="controllers-2">Controllers</h4>
+<p>For single controller components, the naming convention is <code>[Component]Controller</code>.</p>
+<pre><code class="language-php">class ContentController extends Hubzero\Component\SiteController
+{
+    // Methods
+}
+</code></pre>
+<p>For a multi-controller components, such as the Blog in the Administrator, the convention is <code>[Component]Controller[Name]</code>.</p>
+<pre><code class="language-php">class BlogControllerEntries extends Hubzero\Component\AdminController
+{
+    // Methods
+}
+</code></pre>
+<h4 id="models-2">Models</h4>
+<p>The naming convention is <code>[Component]Model[Name]</code>.</p>
+<pre><code class="language-php">class BlogModelEntry extends Hubzero\Base\Model
+{
+    // Methods
+}
+</code></pre>
+<h4 id="plugins-2">Plugins</h4>
+<p>The naming convention is <code>plg[Folder][Element]</code></p>
+<pre><code class="language-php">class plgContentPagebreak extends Hubzero\Plugin\Plugin
+{
+    // Methods
+}
+</code></pre>
+<h2 id="filenames">Filenames</h2>
+<p>Only alphanumeric characters, underscores, and the dash character (”-”) are permitted. Spaces are strictly prohibited.</p>
+<p>Any file that contains PHP code should end with the extension “.php”. The following examples show acceptable filenames:</p>
+<pre><code>Hubzero/Session/Helper.php
+
+Hubzero/View/Helper/Html.php
+</code></pre>
+<h4 id="controllers-3">Controllers</h4>
+<p>For single controller components, the naming convention of <code>Components\[Component]\[Client]\Controller</code> will map to a file name of <code>controller.php</code> and be located in the component folder.</p>
+<pre><code>com_content
+.. /site
+.. .. controller.php
+</code></pre>
+<p>For a multi-controller components, the convention of <code>Components\[Component]\[Client]\Controllers\[Name]</code> will map to files located in a <code>/controllers</code> folder under the component folder. The file names will reflect the name of the controller.</p>
+<pre><code>com_blog
+.. /site
+.. .. /controllers
+.. .. .. entries.php
+.. .. .. media.php
+</code></pre>
+<h4 id="models-3">Models</h4>
+<p>The naming convention of <code>[Component]Model[Name]</code> will map to a similar file structure. The files will be located in a <code>/models</code> folder under the component folder. The file names will reflect the name of the model.</p>
+<pre><code>com_blog
+.. /models
+.. .. entry.php
+.. .. comment.php
+</code></pre>
+<h4 id="layouts">Layouts</h4>
+<p>Components may support different Layouts to render the data supplied by a View and its Models. A Layout file usually contains markup and some PHP code for display logic only: no functions, no classes.</p>
+<p>A Layout consists of at least one <code>.php</code> file and an equally named <code>.xml</code> manifest file located in the /tmpl/ folder of a View, both reflect the internal name of the Layout. The standard Layout is called “display”.</p>
+<pre><code>com_blog
+.. /site
+.. .. /views
+.. .. .. /entries
+.. .. .. .. /tmpl
+.. .. .. .. .. display.php
+.. .. .. .. .. display.xml
+.. .. .. .. .. edit.php
+.. .. .. .. .. edit.xml
+.. .. .. .. .. entry.php
+.. .. .. .. .. entry.xml
+</code></pre>
+<h2 id="functions-and-methods">Functions and Methods</h2>
+<p>Function names may only contain alphanumeric characters. Underscores are not permitted except as a prefix to indicate protected or private methods. Numbers are permitted in function names but are discouraged in most cases.</p>
+<p>Function names must always start with a lowercase letter. When a function name consists of more than one word, the first letter of each new word must be capitalized. This is commonly called “camelCase” formatting.</p>
+<p>Verbosity is generally encouraged. Function names should be as verbose as is practical to fully describe their purpose and behavior.</p>
+<p>These are examples of acceptable names for functions:</p>
+<pre><code class="language-php">filterInput()
+
+getElementById()
+
+widgetFactory()
+
+_myPrivateMethod()
+</code></pre>
+<p>For object-oriented programming, accessors for instance or static variables should always be prefixed with “get” or “set”. In implementing design patterns, such as the singleton or factory patterns, the name of the method should contain the pattern name where practical to more thoroughly describe behavior.</p>
+<p>For methods on objects that are declared with the “private” or “protected” modifier, the first character of the method name must be an underscore. This is the only acceptable application of an underscore in a method name. Methods declared “public” should never contain an underscore.</p>
+<p>Functions in the global scope (a.k.a “floating functions”) are permitted but discouraged in most cases. Consider wrapping these functions in a static class.</p>
+<h2 id="variables">Variables</h2>
+<p>Variable names may only contain alphanumeric characters. Underscores and numbers are permitted in variable names but are discouraged in most cases.</p>
+<p>For instance variables that are declared with the “private” or “protected” modifier, the first character of the variable name must be a single underscore. Member variables declared “public” should never start with an underscore.</p>
+<p>As with function names (see above) variable names must always start with a lowercase letter and follow the “camelCaps” capitalization convention.</p>
+<p>Verbosity is generally encouraged. Variables should always be as verbose as practical to describe the data that the developer intends to store in them. Terse variable names such as “$i” and “$n” are discouraged for all but the smallest loop contexts. If a loop contains more than 20 lines of code, the index variables should have more descriptive names.</p>
+<p>Names should be descriptive, but concise. We don’t want huge sentences as our variable names, but typing an extra couple of characters is always better than wondering what exactly a certain variable is for.</p>
+<pre><code class="language-php">namespace Hubzero\Base;
+
+class Example
+{
+    private $_status = null;
+
+    protected $_fieldName = null;
+
+    protected function _sortNames()
+    {
+        $someNames = array();
+    }
+}
+</code></pre>
+<h2 id="constants">Constants</h2>
+<p>Constants may contain both alphanumeric characters and underscores. Numbers are permitted in constant names.</p>
+<p>All letters used in a constant name must be capitalized, while all words in a constant name must be separated by underscore characters.</p>
+<p>For example, EMBED_SUPPRESS_EMBED_EXCEPTION is permitted but EMBED_SUPPRESSEMBEDEXCEPTION is not.</p>
+<p>Prefix constant names with the uppercase name of the class/package they are used in. For example, the constants used by the JError class all begin with “JERROR_”.</p>
+<p>Constants must be defined as class members with the “const” modifier. Defining constants in the global scope with the “define” function is permitted but strongly discouraged.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../phpcodingstyles/index.html" rel="prev"><span>Previous</span>PHP Coding Styles</a><a class="pager__next" href="../csscodingstyles/index.html" rel="next"><span>Next</span>CSS Coding Styles</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/02-phpnamingconventions.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

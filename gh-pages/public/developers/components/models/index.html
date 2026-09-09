@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Models · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A model represents one thing the component stores: an article, a category, a comment. It owns the table, the validation rules, the relationships to other…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/models/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Models</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-orm-model">The ORM model</a></li>
+<li class="toc__item toc__item--l2"><a href="#relationships">Relationships</a></li>
+<li class="toc__item toc__item--l2"><a href="#querying">Querying</a></li>
+<li class="toc__item toc__item--l2"><a href="#plain-model-classes">Plain model classes</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-older-base-class">The older base class</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Models</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Models</h1>
+        </header>
+        
+        <div class="prose">
+<p>A model represents one thing the component stores: an article, a category, a
+comment. It owns the table, the validation rules, the relationships to other
+models, and any behaviour that belongs to the record rather than to a screen.</p>
+<p>Models live in <code>com_{componentname}/models/</code>, above the client directories,
+because the site, the administrator, and the API all use the same ones. A file
+<code>models/article.php</code> holds <code>Components\Kb\Models\Article</code>, and the class loader
+finds it from the class name alone — no <code>require</code> is needed.</p>
+<h2 id="the-orm-model">The ORM model</h2>
+<p>New models extend
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Hubzero\Database\Relational</code></a>.
+The class declares what makes it different from every other model and inherits
+the rest:</p>
+<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
+{
+	/**
+	 * The table namespace
+	 *
+	 * @var  string
+	 */
+	protected $namespace = 'kb';
+
+	/**
+	 * Default order by for model
+	 *
+	 * @var  string
+	 */
+	public $orderBy = 'title';
+
+	/**
+	 * Default order direction for select queries
+	 *
+	 * @var  string
+	 */
+	public $orderDir = 'asc';
+
+	/**
+	 * Fields and their validation criteria
+	 *
+	 * @var  array
+	 */
+	protected $rules = array(
+		'title'    =&gt; 'notempty',
+		'category' =&gt; 'positive|nonzero',
+		'fulltxt'  =&gt; 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias',
+		'modified',
+		'modified_by'
+	);
+
+	/**
+	 * Automatic fields to populate every time a row is created
+	 *
+	 * @var  array
+	 */
+	public $initiate = array(
+		'created',
+		'created_by'
+	);
+
+	/**
+	 * Fields to be parsed
+	 *
+	 * @var  array
+	 **/
+	protected $parsed = array(
+		'fulltxt'
+	);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$namespace</code></td>
+<td>the table prefix after <code>#__</code></td>
+</tr>
+<tr>
+<td><code>$table</code></td>
+<td>the table name, when the derived one is wrong</td>
+</tr>
+<tr>
+<td><code>$orderBy</code>, <code>$orderDir</code></td>
+<td>the default sort</td>
+</tr>
+<tr>
+<td><code>$rules</code></td>
+<td>per-field validation, checked on save</td>
+</tr>
+<tr>
+<td><code>$always</code></td>
+<td>fields recomputed on every save</td>
+</tr>
+<tr>
+<td><code>$initiate</code></td>
+<td>fields filled once, when the row is created</td>
+</tr>
+<tr>
+<td><code>$parsed</code></td>
+<td>fields the content parser may be run over</td>
+</tr>
+</tbody>
+</table>
+<p>The table name is derived, not declared. The constructor pluralises the
+lowercased class name and prefixes it with <code>#__</code> and the namespace, so
+<code>Article</code> with <code>$namespace = 'kb'</code> is <code>#__kb_articles</code>. Set <code>$table</code>
+explicitly when a legacy table does not fit that pattern.</p>
+<p><code>$rules</code> names a validator per field — <code>notempty</code>, <code>positive|nonzero</code>, and so
+on. <code>save()</code> returns false and fills the error bag when one fails, which is
+why a save task reads:</p>
+<pre><code class="language-php">if (!$row-&gt;save())
+{
+    Notify::error($row-&gt;getError());
+    return $this-&gt;editTask($row);
+}
+</code></pre>
+<p><code>$always</code> and <code>$initiate</code> are filled by convention: a field named <code>alias</code> in
+either list looks for an <code>automaticAlias($data)</code> method on the model, <code>created</code>
+for <code>automaticCreated()</code>, and so on. <code>com_kb</code>'s <code>Article</code> defines
+<code>automaticAlias()</code> to slugify the title, so the alias is maintained without a
+controller ever setting it.</p>
+<p><code>setup()</code> runs after construction. <code>com_kb</code> uses it to merge the article's own
+<code>params</code> over the component's, giving <code>$article-&gt;params</code> as one registry.</p>
+<h2 id="relationships">Relationships</h2>
+<p>Relationships are methods that return a relation object:</p>
+<pre><code class="language-php">	/**
+	 * Get parent category
+	 *
+	 * @return  object
+	 */
+	public function parentCategory()
+	{
+		return $this-&gt;belongsToOne('Components\Categories\Models\Category', 'category');
+	}
+
+	/**
+	 * Get a list of comments
+	 *
+	 * @return  object
+	 */
+	public function comments()
+	{
+		return $this-&gt;oneToMany('Comment', 'entry_id');
+	}
+</code></pre>
+<p><code>belongsToOne()</code>, <code>oneToMany()</code>, <code>manyToMany()</code>, <code>oneShiftsToMany()</code>, and <code>oneToManyThrough()</code> are
+the ones in common use. Call the method to get the related rows,
+<code>$article-&gt;comments()-&gt;rows()</code>, or read it as a property,
+<code>$article-&gt;creator-&gt;get('name')</code>, and the query runs lazily.</p>
+<h2 id="querying">Querying</h2>
+<p><code>Relational</code> is also the query builder. Static calls start a query and instance
+calls chain onto it:</p>
+<pre><code class="language-php">$rows = Article::all()
+    -&gt;whereEquals('category', $id)
+    -&gt;whereEquals('state', Article::STATE_PUBLISHED)
+    -&gt;ordered('filter_order', 'filter_order_Dir')
+    -&gt;paginated('limitstart', 'limit')
+    -&gt;rows();
+
+$one = Article::oneOrNew($id);       // existing row, or a blank one
+$one = Article::oneOrFail($id);      // or throw
+</code></pre>
+<p><code>ordered()</code> and <code>paginated()</code> take the <em>names</em> of request variables, read the
+sort column, direction, and page from the request, and remember them in model
+state — which is why an administrator list controller passes
+<code>'filter_order'</code> and <code>'limitstart'</code> rather than values. Full details are in the
+<a href="../../database/orm/index.html">ORM</a> chapter.</p>
+<h2 id="plain-model-classes">Plain model classes</h2>
+<p>Not everything that lives in <code>models/</code> is a <code>Relational</code>. <code>com_kb</code>'s
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/models/archive.php"><code>Archive</code></a> is an ordinary
+class that assembles cross-model queries — the category list with article
+counts, the most popular articles — and has no table of its own. Controllers
+build one in <code>execute()</code> and hand it to the view.</p>
+<p>That is the right shape whenever the thing you are modelling is a view over
+several tables rather than a row in one.</p>
+<h2 id="the-older-base-class">The older base class</h2>
+<p><code>Hubzero\Base\Model</code> predates the ORM and is still present; older components
+extend it. It wraps a <code>Hubzero\Database\Table</code> object, exposes state constants,
+and offers <code>get()</code>/<code>set()</code> through <code>Hubzero\Base\Obj</code>. Do not use it for new
+work — <code>Relational</code> does the same job with far less code, and new tables should
+be modelled with it.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../helpers/index.html" rel="prev"><span>Previous</span>Helpers</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/05-models.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

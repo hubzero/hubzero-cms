@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controllers · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A controller answers a request. It reads the incoming variables, asks a model for data or tells it to change, and either hands the result to a view or…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/controllers/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Controllers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#tasks">Tasks</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-site-controller">A site controller</a></li>
+<li class="toc__item toc__item--l2"><a href="#properties">Properties</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-view">The view</a></li>
+<li class="toc__item toc__item--l2"><a href="#remapping-tasks">Remapping tasks</a></li>
+<li class="toc__item toc__item--l2"><a href="#administrator-controllers">Administrator controllers</a></li>
+<li class="toc__item toc__item--l2"><a href="#api-controllers">API controllers</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Controllers</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Controllers</h1>
+        </header>
+        
+        <div class="prose">
+<p>A controller answers a request. It reads the incoming variables, asks a model
+for data or tells it to change, and either hands the result to a view or
+redirects. There are three base classes —
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/SiteController.php"><code>SiteController</code></a>,
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/AdminController.php"><code>AdminController</code></a>,
+and <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/ApiController.php"><code>ApiController</code></a> —
+and all three implement <code>Hubzero\Component\ControllerInterface</code>, whose single
+method is <code>execute()</code>.</p>
+<h2 id="tasks">Tasks</h2>
+<p>A controller's public methods whose names end in <code>Task</code> are its tasks, and
+nothing else is callable from the outside. The constructor reflects over the
+class and builds a map of task name to method name, dropping the suffix and
+lowercasing the key. Methods inherited from <code>SiteController</code> are excluded, with
+one exception: <code>displayTask</code> stays available.</p>
+<p>So <code>otherTask()</code> is reached by <code>task=other</code>, and <code>savecommentTask()</code> by
+<code>task=savecomment</code>. Lookup is case-insensitive.</p>
+<p><code>execute()</code> reads the task from the request, preferring <code>task</code> and falling
+back to <code>layout</code>:</p>
+<pre><code class="language-php">$this-&gt;_task = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
+</code></pre>
+<p>If the task is not in the map, the controller runs <code>__default</code>, which is
+<code>display</code> unless you change it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An unknown task therefore renders the default view rather than
+returning 404. Call <code>$this-&gt;disableDefaultTask()</code> if you would rather an
+unrecognised task fail; with <code>__default</code> unregistered, <code>execute()</code> throws
+<code>InvalidTaskException</code> with a 404 status.</p>
+</aside>
+<h2 id="a-site-controller">A site controller</h2>
+<pre><code class="language-php">namespace Components\Kb\Site\Controllers;
+
+use Components\Kb\Models\Archive;
+use Components\Kb\Models\Category;
+use Components\Kb\Models\Article;
+use Components\Kb\Models\Comment;
+use Components\Kb\Models\Vote;
+use Hubzero\Component\SiteController;
+use Exception;
+use Document;
+use Pathway;
+use Request;
+use Config;
+use Event;
+use Lang;
+use User;
+use App;
+use Route;
+
+/**
+ * Knowledge Base controller
+ */
+class Articles extends SiteController
+</code></pre>
+<p>The facade imports at the top are not decoration. Inside a namespace an
+unqualified <code>Route</code> resolves to
+<code>Components\Kb\Site\Controllers\Route</code> first, which does not exist, and the
+call is a fatal error the moment it runs. Import every facade the file uses,
+or fully qualify it as <code>\Route::url()</code>. See
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
+<p>A task takes no arguments and returns nothing; it produces output or a
+redirect:</p>
+<pre><code class="language-php">	/**
+	 * Displays an overview of categories and articles in the knowledge base
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$this-&gt;view
+			-&gt;set('archive', $this-&gt;archive)
+			-&gt;setLayout('display')
+			-&gt;display();
+	}
+</code></pre>
+<h2 id="properties">Properties</h2>
+<p>Each controller has:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$this-&gt;_name</code></td>
+<td>the component name without the prefix, e.g. <code>kb</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;_option</code></td>
+<td>the full component name, e.g. <code>com_kb</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;_controller</code></td>
+<td>the lowercased short class name, e.g. <code>articles</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;_task</code></td>
+<td>the task as it arrived in the request</td>
+</tr>
+<tr>
+<td><code>$this-&gt;_basePath</code></td>
+<td>the client directory, e.g. <code>.../com_kb/site</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;view</code></td>
+<td>the <code>Hubzero\Component\View</code> built for this task</td>
+</tr>
+<tr>
+<td><code>$this-&gt;config</code></td>
+<td>the component's parameters, a <code>Hubzero\Config\Registry</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>SiteController</code> extends <code>Hubzero\Base\Obj</code>, so <code>get()</code>, <code>set()</code>,
+<code>setError()</code>, <code>getErrors()</code>, and the rest of that class are available. Any
+other property you assign is stored in an internal array through <code>__set()</code> and
+read back through <code>__get()</code>, which is why <code>$this-&gt;archive = new Archive()</code> in
+<code>execute()</code> above works without a declared property.</p>
+<p><code>$this-&gt;juser</code> and <code>$this-&gt;database</code> are still set by the constructor and are
+still marked deprecated. Use the <code>User</code> facade and <code>App::get('db')</code>.</p>
+<h2 id="the-view">The view</h2>
+<p><code>execute()</code> builds the view before calling the task. Its name is the
+controller name and its layout is the task name, so a controller <code>Articles</code>
+running task <code>category</code> renders
+<code>site/views/articles/tmpl/category.php</code>. The view is pre-loaded with
+<code>option</code>, <code>task</code>, and <code>controller</code>.</p>
+<p>Change the layout when a task needs to render something other than its own
+name — most often when <code>saveTask()</code> fails validation and falls through to the
+edit form:</p>
+<pre><code class="language-php">$this-&gt;view
+    -&gt;set('row', $row)
+    -&gt;setLayout('edit')
+    -&gt;display();
+</code></pre>
+<p>Assigned data survives a <code>setLayout()</code> call. To change the view directory as
+well, call <code>$this-&gt;setView($name, $layout)</code>, which replaces <code>$this-&gt;view</code>
+entirely — assign your data after that call, not before.</p>
+<p>Override <code>_onBeforeDoTask()</code> to run something between building the view and
+calling the task.</p>
+<h2 id="remapping-tasks">Remapping tasks</h2>
+<p><code>registerTask($task, $method)</code> points one more task name at a method that is
+already a task. <code>com_kb</code>'s administrator controller uses it so that <strong>New</strong>
+reuses the edit form, <strong>Apply</strong> reuses the save method, and <strong>Publish</strong> and
+<strong>Unpublish</strong> share one state method. The calls go in an overridden
+<code>execute()</code>, because the constructor has already built the map by the time it
+runs:</p>
+<pre><code class="language-php">	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this-&gt;registerTask('add', 'edit');
+		$this-&gt;registerTask('apply', 'save');
+		$this-&gt;registerTask('unpublish', 'state');
+		$this-&gt;registerTask('publish', 'state');
+
+		parent::execute();
+	}
+</code></pre>
+<p><code>registerDefaultTask($method)</code> is the same call with a task of <code>__default</code>,
+and <code>unregisterTask($task)</code> removes a mapping.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>registerTask()</code> only acts if <code>$method</code> is already a value in the
+task map, compared case-sensitively. The values are method names with the
+<code>Task</code> suffix removed and their original case kept, so
+<code>registerTask('add', 'edit')</code> works for <code>editTask()</code> but
+<code>registerTask('add', 'editEntry')</code> does nothing at all for <code>editEntryTask()</code>:
+the check is <code>in_array(strtolower($method), $this-&gt;_taskMap)</code>, which
+lowercases the argument but not the stored value. The call fails silently.</p>
+</aside>
+<h2 id="administrator-controllers">Administrator controllers</h2>
+<p><code>AdminController</code> extends <code>SiteController</code> and adds exactly one thing, a
+cancel task that returns to the controller's default view:</p>
+<pre><code class="language-php">class AdminController extends SiteController
+{
+	/**
+	 * Cancels a task and redirects to default view
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		// Set the redirect
+		\App::redirect(
+			\Route::url('index.php?option=' . $this-&gt;_option . ($this-&gt;_controller ? '&amp;controller=' . $this-&gt;_controller : ''), false)
+		);
+	}
+}
+</code></pre>
+<p>Everything else — the toolbar, the sub-menu, permission checks — is written by
+the component. Administrator tasks conventionally check <code>User::authorise()</code>
+before doing anything and call <code>Request::checkToken()</code> on anything that
+writes.</p>
+<h2 id="api-controllers">API controllers</h2>
+<p><code>ApiController</code> is a separate base class, not a <code>SiteController</code>. Its
+constructor takes the response object, its default task is <code>index</code> rather
+than <code>display</code>, and there is no view — a task calls <code>$this-&gt;send($data)</code> and,
+optionally, a status code.</p>
+<p>Controller files are versioned. The API loader takes the controller name from
+the request or the third URL segment and appends <code>v{major}_{minor}</code>; with no
+<code>version</code> variable in the request it globs
+<code>api/controllers/{controller}v*.php</code> and takes the highest. So
+<code>api/controllers/entriesv1_0.php</code> defines
+<code>Components\Kb\Api\Controllers\Entriesv1_0</code> and answers <code>/api/kb/list</code>.</p>
+<p>Tasks are documented in their docblock, and the base <code>indexTask()</code> reads those
+docblocks back with reflection to publish the endpoint list:</p>
+<pre><code class="language-php">	/**
+	 * Get a list of Knowledge Base Articles 
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /kb/list
+	 * @apiParameter {
+	 * 		&quot;name&quot;:          &quot;limit&quot;,
+	 * 		&quot;description&quot;:   &quot;Number of result to return.&quot;,
+	 * 		&quot;type&quot;:          &quot;integer&quot;,
+	 * 		&quot;required&quot;:      false,
+	 * 		&quot;default&quot;:       25
+	 * }
+	 * @apiParameter {
+	 * 		&quot;name&quot;:          &quot;limitstart&quot;,
+	 * 		&quot;description&quot;:   &quot;Number of where to start returning results.&quot;,
+	 * 		&quot;type&quot;:          &quot;integer&quot;,
+	 * 		&quot;required&quot;:      false,
+	 * 		&quot;default&quot;:       0
+	 * }
+	 * @return    void
+	 */
+	public function listTask()
+</code></pre>
+<p>A task that changes anything should call <code>$this-&gt;requiresAuthentication()</code>
+first; it aborts with 403 when the request carries no authenticated user.</p>
+<p><code>ApiController</code> also ships generic <code>listTask()</code>, <code>createTask()</code>, <code>readTask()</code>,
+<code>updateTask()</code>, and <code>deleteTask()</code> implementations that work off a
+<code>Hubzero\Database\Relational</code> model — by default the singular of the
+controller name, in <code>Components\{Name}\Models</code>. Set <code>$_model</code> to a fully
+qualified class name to point them somewhere else.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../helpers/index.html" rel="next"><span>Next</span>Helpers</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/03-controllers.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

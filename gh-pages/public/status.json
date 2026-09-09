@@ -1,0 +1,95 @@
+{
+ "books": [
+  {
+   "slug": "getting-started",
+   "title": "Getting started",
+   "pages": 3,
+   "counts": {
+    "draft": 2,
+    "imported": 1
+   }
+  },
+  {
+   "slug": "installation",
+   "title": "Installation",
+   "pages": 22,
+   "counts": {
+    "rewritten": 1,
+    "merged": 2,
+    "imported": 19
+   }
+  },
+  {
+   "slug": "managers",
+   "title": "Hub managers",
+   "pages": 78,
+   "counts": {
+    "rewritten": 18,
+    "imported": 55,
+    "merged": 5
+   }
+  },
+  {
+   "slug": "users",
+   "title": "Hub users",
+   "pages": 39,
+   "counts": {
+    "rewritten": 16,
+    "imported": 23
+   }
+  },
+  {
+   "slug": "tools",
+   "title": "Tools",
+   "pages": 43,
+   "counts": {
+    "draft": 1,
+    "imported": 34,
+    "merged": 8
+   }
+  },
+  {
+   "slug": "developers",
+   "title": "Developers",
+   "pages": 103,
+   "counts": {
+    "rewritten": 60,
+    "imported": 43
+   }
+  },
+  {
+   "slug": "contributing",
+   "title": "Contributing",
+   "pages": 9,
+   "counts": {
+    "draft": 1,
+    "imported": 7,
+    "rewritten": 1
+   }
+  },
+  {
+   "slug": "reference",
+   "title": "Reference",
+   "pages": 184,
+   "counts": {
+    "rewritten": 1,
+    "generated": 183
+   }
+  },
+  {
+   "slug": "releases",
+   "title": "Releases",
+   "pages": 1,
+   "counts": {
+    "draft": 1
+   }
+  }
+ ],
+ "totals": {
+  "draft": 5,
+  "imported": 182,
+  "rewritten": 97,
+  "merged": 15,
+  "generated": 183
+ }
+}

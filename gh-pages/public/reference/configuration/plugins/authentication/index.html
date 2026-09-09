@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authentication plugins · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Parameters of every plugin in the group, from each plugin&#x27;s manifest. Set them under Extensions Plugins in the administrator interface. Authentication -…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/plugins/authentication/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Authentication plugins</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#authentication-certificate-plg-authentication-certificate">Authentication - Certificate (plg_authentication_certificate)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-cilogon-plg-authentication-cilogon">Authentication - CILogon (plg_authentication_cilogon)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-2">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-email-token-plg-authentication-emailtoken">Authentication - Email Token (plg_authentication_emailtoken)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-3">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-facebook-plg-authentication-facebook">Authentication - Facebook (plg_authentication_facebook)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-4">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-globus-plg-authentication-globus">Authentication - Globus (plg_authentication_globus)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-5">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-google-plg-authentication-google">Authentication - Google (plg_authentication_google)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-6">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-hubzero-plg-authentication-hubzero">Authentication - HUBzero (plg_authentication_hubzero)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-7">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-linkedin-plg-authentication-linkedin">Authentication - LinkedIn (plg_authentication_linkedin)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-8">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-orcid-plg-authentication-orcid">Authentication - ORCID (plg_authentication_orcid)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-9">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-purdue-university-cas-plg-authentication-pucas">Authentication - Purdue University CAS (plg_authentication_pucas)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-10">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#profile">Profile</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-scistarter-plg-authentication-scistarter">Authentication - SciStarter (plg_authentication_scistarter)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-11">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-shibboleth-plg-authentication-shibboleth">Authentication - Shibboleth (plg_authentication_shibboleth)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-12">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#debug">Debug</a></li>
+<li class="toc__item toc__item--l3"><a href="#links">Links</a></li>
+<li class="toc__item toc__item--l3"><a href="#institutions">Institutions</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication-twitter-plg-authentication-twitter">Authentication - Twitter (plg_authentication_twitter)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-13">Basic</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugin parameters</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Authentication plugins</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Authentication plugins</h1>
+        </header>
+        
+        <div class="prose">
+<p>Parameters of every plugin in the <code>authentication</code> group, from each plugin's manifest. Set them under <strong>Extensions &gt; Plugins</strong> in the administrator interface.</p>
+<h2 id="authentication-certificate-plg-authentication-certificate">Authentication - Certificate (<code>plg_authentication_certificate</code>)</h2>
+<p>Handles user authentication against client side SSL certificates</p>
+<h3 id="basic">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Client Certificate</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-cilogon-plg-authentication-cilogon">Authentication - CILogon (<code>plg_authentication_cilogon</code>)</h2>
+<p>Handles user authentication against CILogon</p>
+<h3 id="basic-2">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's CILogon App ID</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Client Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Client Secret provided when your hub is registered on CILogon</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>CILogon</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-email-token-plg-authentication-emailtoken">Authentication - Email Token (<code>plg_authentication_emailtoken</code>)</h2>
+<p>Handles user authentication from email tokens</p>
+<h3 id="basic-3">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>remember_me_default</code></td>
+<td>Remember me default state</td>
+<td>list</td>
+<td><code>0 (Unchecked)</code></td>
+<td>Select whether or not remember me option is checked by default. Options: <code>0</code> Unchecked, <code>1</code> Checked.</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td>—</td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-facebook-plg-authentication-facebook">Authentication - Facebook (<code>plg_authentication_facebook</code>)</h2>
+<p>Handles user authentication against Facebook</p>
+<h3 id="basic-4">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Consumer Key</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's Facebook App consumer key</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Consumer Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Consumer Secret provided when your hub is registered on Facebook</td>
+</tr>
+<tr>
+<td><code>graph_version</code></td>
+<td>Facebook Graph Version</td>
+<td>text</td>
+<td><code>v2.9</code></td>
+<td>PLG_AUTHENTICATION_FACEBOOK_GRAPH_VERSION_DESC</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Facebook</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-globus-plg-authentication-globus">Authentication - Globus (<code>plg_authentication_globus</code>)</h2>
+<p>Handles user authentication against Globus</p>
+<h3 id="basic-5">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's Globus App ID</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Client Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Client Secret provided when your hub is registered on Globus</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Globus</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-google-plg-authentication-google">Authentication - Google (<code>plg_authentication_google</code>)</h2>
+<p>Handles user authentication against Google</p>
+<h3 id="basic-6">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Consumer Key</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's Google App consumer key</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Consumer Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Consumer Secret provided when your hub is registered on Google</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Google</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-hubzero-plg-authentication-hubzero">Authentication - HUBzero (<code>plg_authentication_hubzero</code>)</h2>
+<p>Handles HUBzero default user authentication</p>
+<h3 id="basic-7">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>remember_me_default</code></td>
+<td>Remember me default state</td>
+<td>list</td>
+<td><code>0 (Unchecked)</code></td>
+<td>Select whether or not remember me option is checked by default. Options: <code>0</code> Unchecked, <code>1</code> Checked.</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td>—</td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-linkedin-plg-authentication-linkedin">Authentication - LinkedIn (<code>plg_authentication_linkedin</code>)</h2>
+<p>Handles user authentication against LinkedIn</p>
+<h3 id="basic-8">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api_key</code></td>
+<td>Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Your LinkedIn App client ID</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Client Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Client secret from your LinkedIn App settings</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>LinkedIn</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-orcid-plg-authentication-orcid">Authentication - ORCID (<code>plg_authentication_orcid</code>)</h2>
+<p>Handles user authentication against ORCID</p>
+<h3 id="basic-9">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authoritative</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_AUTHORITATIVE_LABEL</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_AUTHORITATIVE_DESC. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>use_sandbox</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_USE_SANDBOX_LABEL</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_USE_SANDBOX_DESC. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>use_member_api</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_USE_MEMBER_API_LABEL</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_USE_MEMBER_API_DESC. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>client_id</code></td>
+<td>Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's ORCID Client ID</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td>Client Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Client Secret provided when your hub is registered on ORCID</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>ORCID</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>name_required</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_NAME_REQUIRED_LABEL</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_NAME_REQUIRED_DESC. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>email_required</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_EMAIL_REQUIRED_LABEL</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>PLG_AUTHENTICATION_ORCID_PARAM_EMAIL_REQUIRED_DESC. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-purdue-university-cas-plg-authentication-pucas">Authentication - Purdue University CAS (<code>plg_authentication_pucas</code>)</h2>
+<p>Handles user authentication against Purdue's CAS</p>
+<h3 id="basic-10">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain</code></td>
+<td>Domain</td>
+<td>text</td>
+<td><code>Purdue Career Account (CAS)</code></td>
+<td>Domain name</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Purdue Career</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>auto_logoff</code></td>
+<td>End CAS Session Automatically?</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Prompt user with choice to end Purdue CAS session, or perform this action automatically. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>debug_location</code></td>
+<td>Debug location</td>
+<td>text</td>
+<td><code>/var/log/apache2/php/phpCAS.log</code></td>
+<td>Location where debugging log will be sent (only applicable when site debug is enabled).</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>passive_sso</code></td>
+<td>Passive SSO detection (CAS gateway)</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>When enabled, transparently checks for an existing Purdue SSO session on the login page using a CAS gateway (SAML IsPassive) request, logging the user in automatically if they already have a session. Leave disabled if the identity provider mishandles passive requests: Purdue's Entra ID returns a 'Stale Request' error page instead of silently responding, which breaks login. Only enable once the IdP handles gateway/IsPassive correctly. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="profile">Profile</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>profile_i2a2</code></td>
+<td>I2A2 Characteristics</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Choose whether or not to collect this data from the user's Purdue profile. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-scistarter-plg-authentication-scistarter">Authentication - SciStarter (<code>plg_authentication_scistarter</code>)</h2>
+<p>Handles user authentication against SciStarter. See https://scistarter.com/api.html or contact info@scistarter.com for more info.</p>
+<h3 id="basic-11">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Consumer Key</td>
+<td>text</td>
+<td>—</td>
+<td>Your Hub's SciStarter App consumer key. Contct info@scistarter.com to acquire a key.</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Consumer Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Consumer Secret provided when your hub is registered on SciStarter. This will most likely be your SciStarter API key. Contact info@scistarter.com for more info.</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>SciStarter</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>Environment</td>
+<td>list</td>
+<td><code>production (Production)</code></td>
+<td>Environment to use. The sandbox environment should be used for testing only. Options: <code>production</code> Production, <code>sandbox</code> Sandbox.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-shibboleth-plg-authentication-shibboleth">Authentication - Shibboleth (<code>plg_authentication_shibboleth</code>)</h2>
+<p>Handles user authentication with Shibboleth/InCommon</p>
+<h3 id="basic-12">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>DNS Address</td>
+<td>text</td>
+<td><code>8.8.8.8</code></td>
+<td>IP address of DNS to use to get user hostnames to potentially match hosts with authentication participants</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="debug">Debug</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>debug_enabled</code></td>
+<td>Enable debugging</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable to log debugging info to the log file specified directly below. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>debug_location</code></td>
+<td>Debug Log</td>
+<td>text</td>
+<td><code>/var/log/apache2/php/shibboleth.log</code></td>
+<td>The location where debug info should be written.</td>
+</tr>
+<tr>
+<td><code>testkey</code></td>
+<td>Testing mode key</td>
+<td>text</td>
+<td>—</td>
+<td>Enter a key here to hide the plugin unless that key is set in the URL parameters (for example, at https://yourhub.org/login?yourkey). Useful if you would like to test your installation before opening it up to all your users. Clear this field to show the form for everyone.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="links">Links</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>links</code></td>
+<td></td>
+<td>links</td>
+<td><code>[]</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="institutions">Institutions</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>institutions</code></td>
+<td></td>
+<td>institutions</td>
+<td><code>{&quot;xmlPath&quot;: &quot;/etc/shibboleth/metadata/federation-metadata.xml&quot;, &quot;activeIdps&quot;: []}</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-twitter-plg-authentication-twitter">Authentication - Twitter (<code>plg_authentication_twitter</code>)</h2>
+<p>Handles user authentication against Twitter/X</p>
+<h3 id="basic-13">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_id</code></td>
+<td>Client ID</td>
+<td>text</td>
+<td>—</td>
+<td>Your X/Twitter App client ID (OAuth 2.0)</td>
+</tr>
+<tr>
+<td><code>app_secret</code></td>
+<td>Client Secret</td>
+<td>text</td>
+<td>—</td>
+<td>Client secret from your X/Twitter App settings (OAuth 2.0)</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+<td>text</td>
+<td><code>Twitter</code></td>
+<td>Text to display on the site when referencing this plugin</td>
+</tr>
+<tr>
+<td><code>site_login</code></td>
+<td>Site login</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Enable this plugin for frontend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>admin_login</code></td>
+<td>Admin login</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../antispam/index.html" rel="prev"><span>Previous</span>Antispam plugins</a><a class="pager__next" href="../authfactors/index.html" rel="next"><span>Next</span>Authfactors plugins</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/plugins/authentication.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

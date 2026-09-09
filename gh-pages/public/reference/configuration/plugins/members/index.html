@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Members plugins · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Parameters of every plugin in the group, from each plugin&#x27;s manifest. Set them under Extensions Plugins in the administrator interface. Members - Account ( )…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/plugins/members/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Members plugins</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#members-account-plg-members-account">Members - Account (plg_members_account)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#activity-plg-members-activity">Activity (plg_members_activity)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-2">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#blog-plg-members-blog">Blog (plg_members_blog)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-3">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#citations-plg-members-citations">Citations (plg_members_citations)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-4">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#collections-plg-members-collections">Collections (plg_members_collections)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-5">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#contributions-plg-members-contributions">Contributions (plg_members_contributions)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-6">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-courses-plg-members-courses">Members - Courses (plg_members_courses)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-7">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#dashboard-plg-members-dashboard">Dashboard (plg_members_dashboard)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-8">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-groups-plg-members-groups">Members - Groups (plg_members_groups)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-9">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#impact-plg-members-impact">Impact (plg_members_impact)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-10">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-messages-plg-members-messages">Members - Messages (plg_members_messages)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-11">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#points-plg-members-points">Points (plg_members_points)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-12">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-profile-plg-members-profile">Members - Profile (plg_members_profile)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-13">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#projects-plg-members-projects">Projects (plg_members_projects)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-14">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-contributions-publications-plg-members-publications">Members - Contributions - Publications (plg_members_publications)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-15">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-contributions-resources-plg-members-resources">Members - Contributions - Resources (plg_members_resources)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-16">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-resume-plg-members-resume">Members - Resume (plg_members_resume)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-17">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-todo-plg-members-todo">Members - Todo (plg_members_todo)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-18">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-usage-plg-members-usage">Members - Usage (plg_members_usage)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-19">Basic</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-contributions-wiki-plg-members-wiki">Members - Contributions - Wiki (plg_members_wiki)</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic-20">Basic</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../events/index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../events/activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/cron/index.html">Cron events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../events/xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Configuration reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Plugin parameters</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Members plugins</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Members plugins</h1>
+        </header>
+        
+        <div class="prose">
+<p>Parameters of every plugin in the <code>members</code> group, from each plugin's manifest. Set them under <strong>Extensions &gt; Plugins</strong> in the administrator interface.</p>
+<h2 id="members-account-plg-members-account">Members - Account (<code>plg_members_account</code>)</h2>
+<p>Display a member's account information</p>
+<h3 id="basic">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>ssh_key_upload</code></td>
+<td>Show local services details</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Enabling this options allows users to upload their public ssh key via the members account plugin, and shows them their local services account details. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="activity-plg-members-activity">Activity (<code>plg_members_activity</code>)</h2>
+<p>Display a list of activity on the site relevant to a user.</p>
+<h3 id="basic-2">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>email_digests</code></td>
+<td>Enable Email Digests</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Allow users to receieve email digests of activity. NOTE: This may require the activation of other plugins to process the emails. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="blog-plg-members-blog">Blog (<code>plg_members_blog</code>)</h2>
+<p>Display a blog</p>
+<h3 id="basic-3">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>uploadpath</code></td>
+<td>Upload path</td>
+<td>text</td>
+<td><code>/site/members/{{uid}}/blog</code></td>
+<td>File path for uploads</td>
+</tr>
+<tr>
+<td><code>cleanintro</code></td>
+<td>Clean Introtext</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Strip tags from the introtext or show as is in lists of entries. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>introlength</code></td>
+<td>Intro Length</td>
+<td>text</td>
+<td><code>300</code></td>
+<td>The length of text the intros should be in lists of entries.</td>
+</tr>
+<tr>
+<td><code>feeds_enabled</code></td>
+<td>Feeds</td>
+<td>list</td>
+<td><code>1 (Enabled)</code></td>
+<td>PLG_MEMBERS_BLOG_PARAM_FEEDSENABLED_DESCs. Options: <code>0</code> Disabled, <code>1</code> Enabled.</td>
+</tr>
+<tr>
+<td><code>feed_entries</code></td>
+<td>Feed Entries</td>
+<td>list</td>
+<td><code>partial (Partial)</code></td>
+<td>The length of RSS feed entries. Options: <code>full</code> Full, <code>partial</code> Partial.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="citations-plg-members-citations">Citations (<code>plg_members_citations</code>)</h2>
+<p>Displays member citations</p>
+<h3 id="basic-4">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="collections-plg-members-collections">Collections (<code>plg_members_collections</code>)</h2>
+<p>Display collections</p>
+<h3 id="basic-5">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>maxWidth</code></td>
+<td>Max Image Width</td>
+<td>text</td>
+<td><code>290</code></td>
+<td>Max Image Width for tile listing</td>
+</tr>
+<tr>
+<td><code>defaultView</code></td>
+<td>Default View</td>
+<td>list</td>
+<td><code>0</code></td>
+<td>Default view for the tab. Options: <code>feed</code> Activity feed, <code>collections</code> User's Collections.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="contributions-plg-members-contributions">Contributions (<code>plg_members_contributions</code>)</h2>
+<p>Display contributions for a member</p>
+<h3 id="basic-6">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-courses-plg-members-courses">Members - Courses (<code>plg_members_courses</code>)</h2>
+<p>Display courses for a member</p>
+<h3 id="basic-7">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dashboard-plg-members-dashboard">Dashboard (<code>plg_members_dashboard</code>)</h2>
+<p>Display a dashboard of arrangable modules</p>
+<h3 id="basic-8">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>allow_customization</code></td>
+<td>Allow Customization</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Allow users to customize the page or not. Options: <code>1</code> Yes, <code>0</code> No.</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>Module position</td>
+<td>text</td>
+<td><code>memberDashboard</code></td>
+<td>The module position to use to gather draggable modules</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td>Defaults</td>
+<td>text</td>
+<td>—</td>
+<td>The default list of modules to show</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-groups-plg-members-groups">Members - Groups (<code>plg_members_groups</code>)</h2>
+<p>Display a member's groups</p>
+<h3 id="basic-9">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="impact-plg-members-impact">Impact (<code>plg_members_impact</code>)</h2>
+<p>Display a member's impact as a publication author</p>
+<h3 id="basic-10">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+<tr>
+<td><code>show_impact</code></td>
+<td>Show Impact</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>Show author impact section. Options: <code>0</code> No, <code>2</code> Yes, show publicly, <code>1</code> Yes, show to author only.</td>
+</tr>
+<tr>
+<td><code>contributions</code></td>
+<td>Include Contributions</td>
+<td>list</td>
+<td><code>0 (No)</code></td>
+<td>List publications by user. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-messages-plg-members-messages">Members - Messages (<code>plg_members_messages</code>)</h2>
+<p>Site message manager for members.</p>
+<h3 id="basic-11">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>default_method</code></td>
+<td>Default Method</td>
+<td>list</td>
+<td><code>email (Email)</code></td>
+<td>The default messaging method. Options: <code>email</code> Email, <code>internal</code> Internal.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="points-plg-members-points">Points (<code>plg_members_points</code>)</h2>
+<p>Display a member's points and transaction history</p>
+<h3 id="basic-12">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-profile-plg-members-profile">Members - Profile (<code>plg_members_profile</code>)</h2>
+<p>Display a member's Profile</p>
+<h3 id="basic-13">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>access_email</code></td>
+<td>Email</td>
+<td>list</td>
+<td><code>2 (Private)</code></td>
+<td>Show/Hide the user email. Options: <code>0</code> Public, <code>1</code> Registered users, <code>2</code> Private.</td>
+</tr>
+<tr>
+<td><code>access_optin</code></td>
+<td>E-mail Updates</td>
+<td>list</td>
+<td><code>2 (Private)</code></td>
+<td>Show/Hide if the user has elected to receive updates or newsletters by email. Options: <code>0</code> Public, <code>1</code> Registered users, <code>2</code> Private.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="projects-plg-members-projects">Projects (<code>plg_members_projects</code>)</h2>
+<p>Display a member's projects</p>
+<h3 id="basic-14">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+<tr>
+<td><code>show</code></td>
+<td>Project privacy level to show</td>
+<td>list</td>
+<td><code>none (No projects (show to only the profile owner))</code></td>
+<td>What projects can other site members see?. Options: <code>none</code> No projects (show to only the profile owner), <code>public</code> Public projects, <code>all</code> Public and private projects.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-contributions-publications-plg-members-publications">Members - Contributions - Publications (<code>plg_members_publications</code>)</h2>
+<p>Display a member's publications</p>
+<h3 id="basic-15">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-contributions-resources-plg-members-resources">Members - Contributions - Resources (<code>plg_members_resources</code>)</h2>
+<p>Display a member's resources</p>
+<h3 id="basic-16">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-resume-plg-members-resume">Members - Resume (<code>plg_members_resume</code>)</h2>
+<p>Display user uploaded resume(s)</p>
+<h3 id="basic-17">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-todo-plg-members-todo">Members - Todo (<code>plg_members_todo</code>)</h2>
+<p>Display to do items from member projects</p>
+<h3 id="basic-18">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-usage-plg-members-usage">Members - Usage (<code>plg_members_usage</code>)</h2>
+<p>Display usage information for a member</p>
+<h3 id="basic-19">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_tab</code></td>
+<td>Show in menu</td>
+<td>list</td>
+<td><code>1 (Yes)</code></td>
+<td>Show a link to this plugin in the Member menu?. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="members-contributions-wiki-plg-members-wiki">Members - Contributions - Wiki (<code>plg_members_wiki</code>)</h2>
+<p>Display a member's wiki pages</p>
+<h3 id="basic-20">Basic</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>display_limit</code></td>
+<td>Display Limit</td>
+<td>text</td>
+<td><code>50</code></td>
+<td>Number of items to return</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../hubzero/index.html" rel="prev"><span>Previous</span>Hubzero plugins</a><a class="pager__next" href="../metadata/index.html" rel="next"><span>Next</span>Metadata plugins</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/configuration/plugins/members.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrations · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A migration is a small PHP class with an method and a method that makes and reverses one change to a hub — a table, a column, an extension entry, a data fix.…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/database/migrations/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Migrations</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-migrations-live">Where migrations live</a></li>
+<li class="toc__item toc__item--l2"><a href="#naming">Naming</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-one">Writing one</a></li>
+<li class="toc__item toc__item--l2"><a href="#working-with-the-database">Working with the database</a></li>
+<li class="toc__item toc__item--l2"><a href="#working-with-extensions">Working with extensions</a></li>
+<li class="toc__item toc__item--l2"><a href="#reporting-what-happened">Reporting what happened</a></li>
+<li class="toc__item toc__item--l2"><a href="#failing-and-skipping">Failing and skipping</a></li>
+<li class="toc__item toc__item--l2"><a href="#hooks">Hooks</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-migrations">Running migrations</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-migrations-table">The migrations table</a></li>
+<li class="toc__item toc__item--l2"><a href="#related">Related</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Database</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Migrations</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Migrations</h1>
+        </header>
+        
+        <div class="prose">
+<p>A migration is a small PHP class with an <code>up()</code> method and a <code>down()</code> method
+that makes and reverses one change to a hub — a table, a column, an extension
+entry, a data fix. <a href="../../muse/index.html">Muse</a> finds them, works out which
+have not run yet, runs them, and records each run in <code>#__migrations</code> so it
+never runs the same one twice.</p>
+<p>The runner is
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration.php"><code>Hubzero\Content\Migration</code></a>;
+every migration extends
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration/Base.php"><code>Hubzero\Content\Migration\Base</code></a>.</p>
+<h2 id="where-migrations-live">Where migrations live</h2>
+<p>The runner searches a <code>migrations</code> directory under <code>core</code> and <code>app</code>, and under
+every extension directory in both trees:</p>
+<ul>
+<li><code>core/migrations</code> and <code>app/migrations</code></li>
+<li><code>core/components/com_blog/migrations</code></li>
+<li><code>core/modules/mod_login/migrations</code></li>
+<li><code>core/plugins/system/cache/migrations</code></li>
+<li><code>core/templates/hzadmin/migrations</code></li>
+</ul>
+<p>Passing <code>--vendor</code> adds <code>app/vendor/&lt;namespace&gt;/&lt;package&gt;/src/migrations</code> to
+the search. <code>-r=/some/path</code> replaces the whole search with the <code>migrations</code>
+directory under that path.</p>
+<h2 id="naming">Naming</h2>
+<p>A migration file must be named <code>Migration</code> + a fourteen-digit timestamp +
+the extension name in studly case, with the <code>com_</code>, <code>mod_</code>, <code>plg_</code> or <code>tpl_</code>
+prefix expanded into words:</p>
+<pre><code>Migration20170901000000ComBlog.php
+Migration20190221000000ComKb.php
+Migration20130101000000PlgMembersDashboard.php
+</code></pre>
+<p>Anything that does not match <code>Migration[0-9]{14}[[:alnum:]]+\.php</code> is ignored,
+silently. The class name must equal the file name; if the class is namespaced,
+the runner derives the expected namespace from the path — <code>Components\Blog\Migrations</code>
+for a file in <code>core/components/com_blog/migrations</code> — and looks for it there.
+A file whose class it cannot find is logged as a warning and skipped.</p>
+<p>Files are run in sorted order, which is why the timestamp comes first.</p>
+<h2 id="writing-one">Writing one</h2>
+<p><code>muse scaffolding create migration -e=com_example</code> writes a stub from the
+template and opens it in <code>$EDITOR</code>. The result is:</p>
+<pre><code class="language-php">&lt;?php
+
+use Hubzero\Content\Migration\Base;
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+/**
+ * Migration script for ...
+ **/
+class Migration20260901120000ComExample extends Base
+{
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Changes to be made ...
+    }
+
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // Reverse the changes ...
+    }
+}
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>-e</code> only decides the suffix on the class name. The file is
+written to <code>core/migrations</code> regardless. Pass <code>--app</code> to write into <code>app</code>
+instead, and <code>--install-dir=components/com_example</code> to put it in the
+extension's own directory — which is where an extension's migrations
+belong.</p>
+</aside>
+<p><code>muse scaffolding create migration for jos_example_things -e=com_example</code>
+writes the migration for you, filling <code>up()</code> with a <code>CREATE TABLE</code> taken from
+the live table, with the prefix replaced by <code>#__</code> and <code>AUTO_INCREMENT</code> reset
+to zero, and <code>down()</code> with the matching drop.</p>
+<h2 id="working-with-the-database">Working with the database</h2>
+<p><code>$this-&gt;db</code> is a <a href="../index.html">database driver</a>. Anything the driver can do, a
+migration can do:</p>
+<pre><code class="language-php">$this-&gt;db-&gt;setQuery(&quot;ALTER TABLE `#__blog_entries` ADD `summary` TEXT&quot;);
+$this-&gt;db-&gt;query();
+</code></pre>
+<p>Migrations run against hubs at different versions and are re-run in testing,
+so guard every change with the schema checks rather than assuming a starting
+state. <code>tableExists()</code>, <code>tableHasField()</code> and <code>tableHasKey()</code> are the three
+that matter, and a real migration reads like this:</p>
+<pre><code class="language-php">	public function up()
+	{
+		foreach (self::$tables as $table =&gt; $fields)
+		{
+			foreach ($fields as $field)
+			{
+				if ($this-&gt;db-&gt;tableExists($table)
+				 &amp;&amp; $this-&gt;db-&gt;tableHasField($table, $field))
+				{
+					$query = &quot;ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL&quot;;
+
+					$this-&gt;db-&gt;setQuery($query);
+					$this-&gt;db-&gt;query();
+
+					$query = &quot;UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'&quot;;
+
+					$this-&gt;db-&gt;setQuery($query);
+					$this-&gt;db-&gt;query();
+				}
+			}
+		}
+	}
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The methods are <code>tableExists()</code>, <code>tableHasField()</code> and
+<code>tableHasKey()</code>. Older documentation mentions <code>ifTableExists()</code>,
+<code>ifTableHasField()</code> and <code>ifTableHasKey()</code>; those have never existed on this
+driver and calling them raises a <code>BadMethodCallException</code>.</p>
+</aside>
+<p><code>Base</code> also has protected helpers that build the statement for you:
+<code>_generateSafeAddColumns($table, $columns)</code> and <code>_generateSafeDropColumns()</code>
+produce an <code>ALTER TABLE</code> containing only the columns that are actually missing
+or actually present, and <code>_queryIfTableExists($table, $query)</code> runs a
+statement only when the table is there.</p>
+<h2 id="working-with-extensions">Working with extensions</h2>
+<p>Registering a component, module, plugin or template is common enough that
+<code>Base</code> resolves those calls to macro classes in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Content/Migration/Macros"><code>Hubzero\Content\Migration\Macros</code></a>.
+The whole of <code>com_blog</code>'s first migration is one call each way:</p>
+<pre><code class="language-php">class Migration20170831000000ComBlog extends Base
+{
+	/**
+	 * Up
+	 **/
+	public function up()
+	{
+		$this-&gt;addComponentEntry('blog');
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		$this-&gt;deleteComponentEntry('blog');
+	}
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Signature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>addComponentEntry</code></td>
+<td><code>($name, $option = null, $enabled = 1, $params = '', $createMenuItem = true)</code></td>
+</tr>
+<tr>
+<td><code>deleteComponentEntry</code></td>
+<td><code>($name)</code></td>
+</tr>
+<tr>
+<td><code>enableComponent</code> / <code>disableComponent</code></td>
+<td><code>($element)</code></td>
+</tr>
+<tr>
+<td><code>addPluginEntry</code></td>
+<td><code>($folder, $element, $enabled = 1, $params = '')</code></td>
+</tr>
+<tr>
+<td><code>deletePluginEntry</code></td>
+<td><code>($folder, $element = null)</code></td>
+</tr>
+<tr>
+<td><code>enablePlugin</code> / <code>disablePlugin</code></td>
+<td><code>($folder, $element)</code></td>
+</tr>
+<tr>
+<td><code>renamePluginEntry</code></td>
+<td><code>($folder, $element, $name)</code></td>
+</tr>
+<tr>
+<td><code>addModuleEntry</code></td>
+<td><code>($element, $enabled = 1, $params = '', $client = 0)</code></td>
+</tr>
+<tr>
+<td><code>installModule</code></td>
+<td><code>($module, $position, $always = true, $params = '', $client = 0, $menus = 0)</code></td>
+</tr>
+<tr>
+<td><code>deleteModuleEntry</code></td>
+<td><code>($element, $client = null)</code></td>
+</tr>
+<tr>
+<td><code>enableModule</code> / <code>disableModule</code></td>
+<td><code>($element)</code></td>
+</tr>
+<tr>
+<td><code>addTemplateEntry</code></td>
+<td><code>($element, $name = null, $client = 1, $enabled = 1, $home = 0, $styles = null, $protected = 0)</code></td>
+</tr>
+<tr>
+<td><code>installTemplateEntry</code></td>
+<td><code>($element, $name = null, $client = 1, $styles = null, $protected = 0)</code></td>
+</tr>
+<tr>
+<td><code>deleteTemplateEntry</code></td>
+<td><code>($element, $client = 1)</code></td>
+</tr>
+<tr>
+<td><code>enableTemplate</code></td>
+<td><code>($element)</code></td>
+</tr>
+<tr>
+<td><code>getParams</code></td>
+<td><code>($element, $returnRaw = false)</code></td>
+</tr>
+<tr>
+<td><code>saveParams</code></td>
+<td><code>($element, $params)</code></td>
+</tr>
+<tr>
+<td><code>savePluginParams</code></td>
+<td><code>($folder, $element, $params)</code></td>
+</tr>
+<tr>
+<td><code>setAssetRules</code></td>
+<td><code>($element, $rules)</code></td>
+</tr>
+</tbody>
+</table>
+<p>A component or plugin can add macros of its own with
+<code>Base::registerMacroNamespace($namespace, $paths)</code>, or register a single one
+with <code>Base::macro($name, $macro)</code>.</p>
+<h2 id="reporting-what-happened">Reporting what happened</h2>
+<p><code>$this-&gt;log($message, $type = 'info')</code> writes a line to the migration log,
+which muse prints and, with <code>--email</code>, mails. The types are <code>info</code>,
+<code>success</code>, <code>warning</code> and <code>error</code>, and each is coloured differently in the
+terminal.</p>
+<p>For a migration that takes a while, drive the progress indicator through the
+<code>progress</code> callback:</p>
+<pre><code class="language-php">$this-&gt;callback('progress', 'init', ['Running ' . __CLASS__ . ':']);
+
+foreach ($rows as $i =&gt; $row)
+{
+    // ... work ...
+    $this-&gt;callback('progress', 'setProgress', [$i]);
+}
+
+$this-&gt;callback('progress', 'done');
+</code></pre>
+<p><code>init</code> also takes a style and a total for a ratio rather than a percentage:
+<code>['Running …:', 'ratio', 25]</code>, then <code>setProgress</code> with <code>[4, 25]</code>. The
+callbacks are only registered when muse is running interactively, and are
+no-ops otherwise.</p>
+<h2 id="failing-and-skipping">Failing and skipping</h2>
+<p><code>$this-&gt;setError($message, $type = 'fatal')</code> records an error. The type
+decides what the runner does with it:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fatal</code></td>
+<td>Logged as an error, recorded as <code>fatal</code>, and the whole run stops</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td>Logged, recorded as <code>warning</code>; the run continues</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>Logged only</td>
+</tr>
+<tr>
+<td><code>skipped</code></td>
+<td>Logged, recorded as <code>skipped</code></td>
+</tr>
+</tbody>
+</table>
+<p>A migration whose preconditions are simply absent — an optional database that
+is not configured, say — should throw instead:</p>
+<pre><code class="language-php">throw new \Hubzero\Content\Migration\SkipMigrationException('Metrics database not available');
+</code></pre>
+<p>The runner records the migration as <code>skipped</code> rather than run, so it is tried
+again on the next migration run. Any <code>QueryFailedException</code> or <code>PDOException</code>
+that escapes <code>up()</code> stops the run with the message printed.</p>
+<h2 id="hooks">Hooks</h2>
+<p>A PHP file in a <code>migrations/hooks</code> directory is a hook: a class named after
+the file, with a <code>fire()</code> method and a <code>$options</code> array declaring its
+<code>timing</code> — <code>onBeforeMigrate</code>, <code>onAfterMigrate</code> or <code>onAll</code>. Hooks run on every
+full migration, before or after the migrations themselves, and are skipped on
+a dry run or a log-only run. <code>core/migrations/hooks/UpdateTimezoneDatabase.php</code>
+is the one that ships.</p>
+<h2 id="running-migrations">Running migrations</h2>
+<pre><code class="language-bash">php core/bin/muse migration
+</code></pre>
+<p>With no options this is a dry run: it lists what would happen and changes
+nothing. Add <code>-f</code> to actually run it:</p>
+<pre><code class="language-bash">php core/bin/muse migration -f
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-f</code></td>
+<td>Full run. Without it, everything is a dry run</td>
+</tr>
+<tr>
+<td><code>-d=up</code> / <code>-d=down</code></td>
+<td>Direction; <code>up</code> is the default</td>
+</tr>
+<tr>
+<td><code>-e=com_example</code></td>
+<td>Restrict to one extension: <code>com_*</code>, <code>mod_*</code>, <code>plg_group_name</code>, <code>tpl_*</code> or <code>core</code></td>
+</tr>
+<tr>
+<td><code>--file=Migration…php</code></td>
+<td>Run exactly one file</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>List every migration found, not only the pending ones</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>Deprecated; now identical to <code>-a</code></td>
+</tr>
+<tr>
+<td><code>-m</code></td>
+<td>Log only — record the migration as run without running its SQL. Requires <code>-e</code> or <code>--file</code></td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Run even if the log says it has already been run. Requires <code>-e</code> or <code>--file</code></td>
+</tr>
+<tr>
+<td><code>-r=/path</code></td>
+<td>Use an alternative document root for the search</td>
+</tr>
+<tr>
+<td><code>--group=name</code></td>
+<td>Run a super group's migrations against its own database</td>
+</tr>
+<tr>
+<td><code>--vendor</code></td>
+<td>Also search <code>app/vendor</code> packages</td>
+</tr>
+<tr>
+<td><code>--email=you@example.org</code></td>
+<td>Mail the output, if any files were affected</td>
+</tr>
+</tbody>
+</table>
+<p><code>php core/bin/muse migration history</code> prints the contents of the migrations
+table, and <code>php core/bin/muse migration help</code> prints the full option list.</p>
+<h2 id="the-migrations-table">The migrations table</h2>
+<p>Runs are recorded in <code>#__migrations</code>, which the runner creates on first use:
+<code>file</code>, <code>scope</code>, <code>hash</code>, <code>direction</code>, <code>date</code>, <code>action_by</code> and <code>status</code>. The
+scope is the path to the migration relative to the document root
+(<code>core/migrations</code>, <code>core/components/com_blog/migrations</code>), so the same file
+name in two extensions is tracked separately.</p>
+<p>A migration is considered done when the most recent row for that file and
+scope has the same direction as the run and a status of <code>success</code>. That is
+why running <code>down</code> before an <code>up</code> is refused, and why a <code>skipped</code> or
+<code>warning</code> migration is offered again on the next run.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Down migrations are only as good as you write them. Nothing
+verifies that <code>down()</code> undoes <code>up()</code>, and the runner will happily record a
+<code>down</code> that did nothing.</p>
+</aside>
+<h2 id="related">Related</h2>
+<ul>
+<li><a href="../../extensions/extreqs/index.html">Extension requirements</a> and
+<a href="../../extensions/deployext/index.html">deploying an extension</a> — where a
+migration fits into shipping an extension.</li>
+<li><a href="../../muse/index.html">Muse</a> and the
+<a href="../../../reference/muse/migration/index.html">migration command reference</a>.</li>
+</ul>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../queries/index.html" rel="prev"><span>Previous</span>Query builder</a><a class="pager__next" href="../orm/index.html" rel="next"><span>Next</span>ORM</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/06-database/02-migrations.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

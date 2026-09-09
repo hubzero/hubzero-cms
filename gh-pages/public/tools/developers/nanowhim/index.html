@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combining Tools · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Overview Some of the tools on any hub are really a collection of 3-5 programs acting like a workbench for a particular application. Berkeley Computational…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/nanowhim/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Combining Tools</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#flipping-between-tools">Flipping between tools</a></li>
+<li class="toc__item toc__item--l2"><a href="#configuring-nanowhim">Configuring nanoWhim</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-nanowhimrc-file">The nanowhimrc File</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-invoke-file">The invoke File</a></li>
+<li class="toc__item toc__item--l3"><a href="#testing-your-tool">Testing Your Tool</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Combining Tools</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Combining Tools</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/nanowhim">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2010.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>Some of the tools on any hub are really a collection of 3-5 programs acting like a &quot;workbench&quot; for a particular application. <a href="http://www.nanohub.org/tools/ucb_compnano/">Berkeley Computational Nanoscience Class Tools</a> is one such example. It is really a collection of several separate <a href="http://rappture.org">Rappture</a>-based applications, all running on the same desktop, in the same tool session.</p>
+<p>We've created a simple window manager called <strong>nanoWhim</strong> that makes it easy to switch back and forth between several applications on a desktop--without all of the fuss and bother associated with a typical window manager. A tool using nanoWhim looks like this:</p>
+<p><img src="../../media/nanowhim-nanowhim-01.png" alt="parts of a composite tool" /></p>
+<p>The combobox at the top lets users switch between applications. Each window that pops up within an application is managed by a set of tabs.</p>
+<p>nanoWhim is based on the <a href="http://whim.linuxsys.net/site/0">Whim</a> window manager written in Tcl/Tk. We needed something like this for nanoHUB to create a very simple tabbed interface, so users could easily switch between a couple of tools within the same tool session. A more comprehensive workflow interface is under development, but this simple solution is sometimes useful.</p>
+<h2 id="flipping-between-tools">Flipping between tools</h2>
+<p>The following example shows a <a href="http://rappture.org">Rappture</a>-based application that popped up a separate <a href="http://jmol.sourceforge.net/">Jmol</a> application for molecular visualization. Jmol pops up in its own tab, and you can easily switch back and forth between the original application and the Jmol popup by clicking on the tabs, as shown below:</p>
+<p><img src="../../media/nanowhim-nanowhim-ucb-01.png" alt="screen shot of main app" /> <img src="../../media/nanowhim-nanowhim-ucb-02.png" alt="screen shot of Jmol tab" /></p>
+<p>You can click on the <strong>x</strong> on the Jmol tab to close that application.</p>
+<p>You can select another application by using the combobox at the very top of the window. That brings up another <a href="http://rappture.org">Rappture</a>-based application, with a different set of inputs and outputs.</p>
+<p><img src="../../media/nanowhim-nanowhim-ucb-03.png" alt="another app within the tool" /></p>
+<p>You can run each program independently, and the outputs stay separate. If you flip back to the previous application, it will be sitting just the way you left it.</p>
+<h2 id="configuring-nanowhim">Configuring nanoWhim</h2>
+<p>To use nanoWhim, you'll need to create two files in the &quot;middleware&quot; directory for your tool: <strong>nanowhimrc</strong> and <strong>invoke</strong>.</p>
+<h3 id="the-nanowhimrc-file">The nanowhimrc File</h3>
+<p>This file configures the various applications that pop up within the tool session. Here's a very simple example:</p>
+<pre><code># set an icon
+set.config controls_icon header.gif
+
+# first app is an xterm
+start.app &quot;Terminal Window&quot; xterm
+
+# second app is a web browser
+start.app &quot;Web Browser&quot; firefox
+</code></pre>
+<p>Any line that starts with a pound sign (<code>#</code>) is treated as a comment.</p>
+<p>The <code>set.config</code> command configures various aspects of the window manager. Right now, the only useful option is <code>controls_icon</code>, which sets the icon shown in the top-left corner of the window. Note that a relative file name is interpreted with respect to the location of the <code>nanowhimrc</code> file itself. In this case, we've assumed that the image <code>header.gif</code> is sitting in the same directory as <code>nanowhimrc</code>.</p>
+<p>The rest of the file contains a series of <code>start.app</code> commands for each application that you want to offer. In this case, the first application is called &quot;Terminal Window&quot; and is just an xterm application. The second application is the Firefox web browser, which we label &quot;Web Browser&quot;.</p>
+<p>Here's a more realistic example:</p>
+<pre><code>#
+# Customize the nanoWhim window manager
+#
+set.config controls_icon header.gif
+
+start.app &quot;Average&quot; \
+  /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/avg
+
+start.app &quot;Molecular Dynamics (Lennard-Jones)&quot; \
+  /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/ljmd
+
+start.app &quot;Molecular Dynamics (LAMMPS)&quot; \
+  /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/lammps -u lammps-12Feb07
+
+start.app &quot;Monte Carlo (Hard Sphere)&quot; \
+  /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/hsmc
+
+start.app &quot;Ising Simulations&quot; \
+  /usr/bin/invoke_app -t ucb_compnano -C &quot;java -jar $dir/../bin/ising-1.0.jar&quot;
+</code></pre>
+<p>Each <code>start.app</code> command starts a different Rappture-based application. The first argument in quotes is the title of the application, which is displayed in the combobox at the top of the window. The remaining arguments are treated as the Unix command that is invoked to start the application.</p>
+<p>The commands shown here all use the <code>/usr/bin/invoke_app</code> script to invoke a Rappture-based application. The <code>-t</code> argument for that script indicates the toolname. The <code>-T</code> argument indicates which directory contains the Rappture tool.xml file. You can use <code>$dir</code> here to locate the directory relative to the <code>nanowhimrc</code> file.</p>
+<h3 id="the-invoke-file">The invoke File</h3>
+<p>The <code>nanowhimrc</code> file configures the window manager, but the <code>middleware/invoke</code> script actually invokes it. Every tool on nanoHUB has its own <code>invoke</code> script sitting in the middleware directory. Your invoke script should look like this if you want to use nanoWhim:</p>
+<pre><code>#!/bin/sh
+
+/apps/share/nanowhim/invoke_app &quot;$@&quot; -t ucb_compnano
+</code></pre>
+<p>This script invokes the nanoWhim window manager for the tool specified by the <code>-t</code> argument. This is the short name that you gave when you registered your tool. This script looks for the <code>middleware/nanowhimrc</code> file within your source code, and launches nanoWhim with that configuration.</p>
+<h3 id="testing-your-tool">Testing Your Tool</h3>
+<p>Normally, you develop and test tools within a workspace in your hub. If you're using nanoWhim, that's still true for the individual applications. In other words, you can test each application individually within a workspace. But to get the full effect of the nanoWhim manager running all applications at once, you'll have to get your tool to &quot;installed&quot; status, and then launch the application in test mode. For details about doing this, see the <a href="../../../managers/maintenance/tools/index.html">tool maintenance documentation for hub managers</a> or the lecture on <a href="https://help.hubzero.org/resources/173">Uploading and Publishing New Tools</a>. Look at the tool status page for your own tool project and find the <em>Launch Tool</em> button. This is what you would normally do to test any tool before approving it. Once you're in the &quot;installed&quot; stage and you're able to click <em>Launch Tool</em>, the nanoWhim configuration should take effect and you'll be able to test the overall combined tool.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../invoke/index.html" rel="prev"><span>Previous</span>Launching tools with invoke scripts</a><a class="pager__next" href="../grid/index.html" rel="next"><span>Next</span>Accessing Outside Computing Resources</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/04-nanowhim.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

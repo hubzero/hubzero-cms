@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invoke scripts for Jupyter notebooks · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Invoke scripts for Jupyter notebooks The hub tool invoke script is located in the tool&#x27;s middleware/ subdirectory. When you first create a tool, the basic…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/invoke-jupyter/">
+  <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../../index.html">
+      <img class="brand__mark" src="../../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../../search-index.json" data-base="../../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../../docs/index.html">All books</a>
+      <a href="../../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../../index.html">Tools</a>
+        <nav aria-label="Tools contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../administrators/index.html">Tool Administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Jupyter Notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Invoke scripts for Jupyter notebooks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#invoke-scripts-for-jupyter-notebooks-2">Invoke scripts for Jupyter notebooks</a></li>
+<li class="toc__item toc__item--l3"><a href="#invoke-app-and-start-jupyter">invoke_app and start_jupyter</a></li>
+<li class="toc__item toc__item--l3"><a href="#invoke-app-starting-point">invoke_app: starting point</a></li>
+<li class="toc__item toc__item--l3"><a href="#start-jupyter-arguments">start_jupyter arguments</a></li>
+<li class="toc__item toc__item--l3"><a href="#errors">errors</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../users/gettingstarted/index.html">Getting Started</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Jupyter Notebooks</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Invoke scripts for Jupyter notebooks</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Tools</p>
+          <h1>Invoke scripts for Jupyter notebooks</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/invoke-jupyter">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2022.</aside>
+        <div class="prose">
+<h2 id="invoke-scripts-for-jupyter-notebooks-2">Invoke scripts for Jupyter notebooks</h2>
+<p>The hub tool invoke script is located in the tool's middleware/ subdirectory. When you first create a tool, the basic invoke script provided must be edited to work with Jupyter notebook tools.</p>
+<p>This writeup shows you how to create Jupyter tools with three different appearances: notebook, App, and Tool mode.</p>
+<h3 id="invoke-app-and-start-jupyter">invoke_app and start_jupyter</h3>
+<p>To deploy a Jupyter notebook as a tool on your hub, you call the invoke_app executable, which in turn calls start_jupyter. Each have their own arguments:</p>
+<p>arguments for start_jupyter</p>
+<pre><code>  -h, --help  show this help message and exit.
+  -d          Show debug (verbose) output.
+  -t          Run as a Tool with no notebook controls.
+  -c          Copy instead of link notebook files.
+  -A          Run in AppMode.
+  -T dir      Search for notebook starting in dir.
+  --themes    Enable notebook themes
+
+arguments for invoke_app
+
+  -t Tool name
+  -C command to execute
+  -r Rappture version to use (normally specify none for notebook tools)
+  -w headless
+  -u environment package (repeat as necessary)
+</code></pre>
+<h3 id="invoke-app-starting-point">invoke_app: starting point</h3>
+<p>The basic invoke script for Jupyter notebooks looks like this:</p>
+<pre><code>/usr/bin/invoke_app &quot;$@&quot; -t TOOLNAME \
+	                 -C &quot;start_jupyter -T @tool APP.ipynb&quot; \
+	                 -r none \
+                         -w headless \
+	                 -u anaconda-X
+</code></pre>
+<p>Invoking a Jupyter tool this way gives a notebook with all its code cells displayed to the user.</p>
+<p>Where:</p>
+<ul>
+<li>TOOLNAME is the short name of the tool</li>
+<li>APP is the name of the main notebook that runs the tool</li>
+<li>anaconda-X is the current anaconda installation</li>
+</ul>
+<h3 id="start-jupyter-arguments">start_jupyter arguments</h3>
+<p>Control the way the notebook appears when run as a tool, using the arguments passed to the start_jupyter executable.</p>
+<p>You can run a Jupyter tool in three ways:</p>
+<ul>
+<li>notebook mode, in which all code cells are displayed to the user (shown above)</li>
+<li>app mode, in which code cells are initially hidden but can be displayed</li>
+<li>tool mode, in which code cells are hidden and cannot be displayed</li>
+</ul>
+<h4 id="for-app-mode">for App Mode</h4>
+<p>For a notebook tool that hides its code cells and shows only the UI and markdown elements on initial run, add the -A argument in the start_jupyter call:</p>
+<pre><code>/usr/bin/invoke_app &quot;$@&quot; -t TOOLNAME \
+	                 -C &quot;start_jupyter -A -T @tool APP.ipynb&quot; \
+	                 -u anaconda-X \
+                         -w headless \
+	                 -r none
+</code></pre>
+<p>The tool user can toggle the tool's &quot;Edit App&quot; button to show the underlying code cells, making this a great teaching/demo option.</p>
+<p>NOTE that this differs from the invoke_app -A argument.</p>
+<h4 id="for-tool-mode">for Tool Mode</h4>
+<p>To permanently hide code cells from the user in App Mode, specify the -A and -t arguments in the start_jupyter call:</p>
+<pre><code>/usr/bin/invoke_app &quot;$@&quot; -t TOOLNAME \
+	                 -C &quot;start_jupyter -A -t -T @tool APP.ipynb&quot; \
+	                 -u anaconda-X \
+                         -w headless \
+	                 -r none
+</code></pre>
+<p>The Edit App button will not be displayed to the tool user.</p>
+<p>NOTE that this differs from the invoke_app -t argument.</p>
+<h3 id="errors">errors</h3>
+<h4 id="specify-no-rappture">specify no rappture</h4>
+<pre><code>/usr/bin/invoke_app &quot;$@&quot; -t TOOLNAME \
+	                 -C &quot;start_jupyter -T @tool APP.ipynb&quot; \
+	                 -u anaconda-X \
+                         -w headless \
+	                 -r none
+</code></pre>
+<h5 id="error"><strong>Error:</strong></h5>
+<p>Running the tool's invoke script from a workspace, returns:</p>
+<pre><code>&quot;could not find a rappture installation: RAPPTURE_PATH=,&quot;
+</code></pre>
+<h5 id="fix"><strong>Fix:</strong></h5>
+<p>Be sure to supply the &quot;-r none&quot; argument in the invoke_app call, as above. No quotation marks are needed.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../environment-variables/index.html" rel="prev"><span>Previous</span>Environment Variables</a><a class="pager__next" href="../../prerequisites/index.html" rel="next"><span>Next</span>Prerequisites</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/10-jupyter-notebooks/05-invoke-jupyter.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

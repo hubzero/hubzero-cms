@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scheduled tasks · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Work that has to happen on a schedule — closing stale tickets, sending digests, cleaning up temporary uploads — is written as a cron plugin . The plugin…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/cron/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Scheduled tasks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-the-plugin-goes">Where the plugin goes</a></li>
+<li class="toc__item toc__item--l2"><a href="#declaring-tasks">Declaring tasks</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-the-task">Writing the task</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-it-runs">How it runs</a></li>
+<li class="toc__item toc__item--l2"><a href="#registering-the-job">Registering the job</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">The basics</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Scheduled tasks</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Scheduled tasks</h1>
+        </header>
+        
+        <div class="prose">
+<p>Work that has to happen on a schedule — closing stale tickets, sending
+digests, cleaning up temporary uploads — is written as a <strong>cron plugin</strong>.
+The plugin declares the tasks it can perform; an administrator creates a
+job that names one of them and says how often to run it; the cron runner
+triggers it.</p>
+<p>Nothing in the plugin decides when it runs. That is the job's business, and
+the same task can back several jobs with different parameters.</p>
+<h2 id="where-the-plugin-goes">Where the plugin goes</h2>
+<p>In the <code>cron</code> group, one directory per plugin:</p>
+<pre><code>core/plugins/cron/support/support.php
+core/plugins/cron/support/support.xml
+core/plugins/cron/support/language/en-GB/en-GB.plg_cron_support.ini
+</code></pre>
+<p>A hub's own plugins go under <code>app/plugins/cron/</code> instead, and are found the
+same way.</p>
+<h2 id="declaring-tasks">Declaring tasks</h2>
+<p>The plugin answers <code>onCronEvents</code> with a <code>stdClass</code> carrying a <code>plugin</code>
+name and an <code>events</code> array:</p>
+<pre><code class="language-php">	/**
+	 * Return a list of events
+	 *
+	 * @return  array
+	 */
+	public function onCronEvents()
+	{
+		$this-&gt;loadLanguage();
+
+		$obj = new stdClass();
+		$obj-&gt;plugin = 'support';
+
+		$obj-&gt;events = array(
+			array(
+				'name'   =&gt; 'onClosePending',
+				'label'  =&gt; Lang::txt('PLG_CRON_SUPPORT_CLOSE_PENDING'),
+				'params' =&gt; 'ticketpending'
+			),
+			array(
+				'name'   =&gt; 'sendTicketsReminder',
+				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
+				'params' =&gt; 'ticketreminder'
+			),
+			array(
+				'name'   =&gt; 'sendTicketList',
+				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_LIST'),
+				'params' =&gt; 'ticketlist'
+			),
+			array(
+				'name'   =&gt; 'cleanTempUploads',
+				'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
+				'params' =&gt; 'tickettemp'
+			)
+		);
+
+		return $obj;
+	}
+</code></pre>
+<p>Each entry has three keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The method to call. It must match a public method on the plugin <strong>exactly</strong></td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>What the administrator sees in the job's <strong>Event</strong> list. Translate it</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td>Optional. The name of a fieldset in the plugin's manifest whose fields become the job's own parameters</td>
+</tr>
+</tbody>
+</table>
+<p><code>loadLanguage()</code> is the first line for a reason. Cron plugins do not set
+<code>$_autoloadLanguage</code>, so without it the labels come back as raw keys in the
+administrator's job form.</p>
+<p><code>params</code> is what lets one task back several jobs. The support plugin's
+<code>sendTicketsReminder</code> names the <code>ticketreminder</code> fieldset:</p>
+<pre><code class="language-xml">&lt;fieldset group=&quot;ticketreminder&quot;&gt;
+    &lt;field name=&quot;support_ticketreminder_severity&quot; type=&quot;list&quot; default=&quot;all&quot;
+        label=&quot;Tickets with severity&quot; description=&quot;Ticket severity to message users about.&quot;&gt;
+        &lt;option value=&quot;all&quot;&gt;PLG_CRON_SUPPORT_ALL&lt;/option&gt;
+        &lt;option value=&quot;critical,major&quot;&gt;PLG_CRON_SUPPORT_HIGH&lt;/option&gt;
+        &lt;option value=&quot;normal&quot;&gt;PLG_CRON_SUPPORT_NORMAL&lt;/option&gt;
+        &lt;option value=&quot;minor&quot;&gt;PLG_CRON_SUPPORT_LOW&lt;/option&gt;
+    &lt;/field&gt;
+    &lt;field name=&quot;support_ticketreminder_group&quot; type=&quot;text&quot; menu=&quot;hide&quot;
+        label=&quot;For users in group&quot; default=&quot;&quot; description=&quot;Only users within the group specified will be messaged.&quot; /&gt;
+&lt;/fieldset&gt;
+</code></pre>
+<p>An administrator can then have one job mailing reminders for all open
+tickets weekly and another mailing only the critical ones daily, both
+running the same method.</p>
+<h2 id="writing-the-task">Writing the task</h2>
+<p>The runner triggers <code>cron.&lt;event name&gt;</code> with the job as its only argument,
+so the method signature is fixed:</p>
+<pre><code class="language-php">/**
+ * Delete temporary ticket uploads older than the configured age
+ *
+ * @param   object   $job  \Components\Cron\Models\Job
+ * @return  boolean
+ */
+public function cleanTempUploads(\Components\Cron\Models\Job $job)
+{
+    $params = $job-&gt;params;
+
+    $days = intval($params-&gt;get('support_tickettemp_age', '7'));
+
+    // ... do the work ...
+
+    return true;
+}
+</code></pre>
+<p><code>$job-&gt;params</code> is a <code>Registry</code> of the values the administrator entered on
+that job, which is why two jobs on one method can behave differently. Return
+<code>true</code> on completion.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Because the group prefix on the trigger is <code>cron</code>, the whole
+<code>cron</code> plugin group is loaded when the runner fires — including plugins
+whose tasks no job uses. Keep the constructor and <code>onCronEvents()</code> cheap;
+do the work in the task method.</p>
+</aside>
+<h2 id="how-it-runs">How it runs</h2>
+<p>The runner is a <a href="../../muse/index.html">muse</a> command:</p>
+<pre><code class="language-bash">muse cron:jobs run
+</code></pre>
+<p>It selects published jobs whose <code>next_run</code> has passed and which are inside
+their publish window, claims each one atomically so two runners cannot take
+the same job, triggers the event, and records the run:</p>
+<pre><code class="language-php">Event::trigger('cron.' . $job-&gt;get('event'), array($job));
+</code></pre>
+<p>The claim is what makes it safe to run the command on a short interval. A
+job left <code>active</code> by a process that died is reclaimed once its pid is gone,
+and a job whose recurrence cannot be parsed keeps its <code>next_run</code> and is
+retried rather than wedging. <code>--job=&lt;id&gt;</code> force-runs one job regardless of
+its schedule, which is how you test a new task.</p>
+<p>A thrown exception is caught and logged against the job; the job is released
+either way, so one failing task does not stop the rest of the run.</p>
+<h2 id="registering-the-job">Registering the job</h2>
+<p>Administrators create jobs in <strong>Components → Cron</strong>, choosing the event from
+the list your <code>onCronEvents</code> produced, setting a recurrence, and filling in
+whatever fields your <code>params</code> fieldset declared. See the
+<a href="../../../managers/maintenance/cron/index.html">managers documentation</a> for that
+side of it.</p>
+<p>Until a job exists, a declared task never runs. Rather than asking every
+hub's administrator to create one, ship a
+<a href="../../database/migrations/index.html">migration</a> that inserts the row — check for the
+job first so re-running the migration does not duplicate it:</p>
+<pre><code class="language-php">class Migration20260810000000PlgCronGroups extends Base
+{
+	/**
+	 * event =&gt; (title, recurrence)
+	 *
+	 * @var  array
+	 **/
+	protected static $jobs = array(
+		'expireGroupMemberships' =&gt; array(
+			'Group Membership Expiration',
+			'*/15 * * * *'
+		),
+		'notifyExpiringMemberships' =&gt; array(
+			'Group Membership Expiration Warnings',
+			'0 7 * * *'
+		)
+	);
+
+	/**
+	 * Up
+	 **/
+	public function up()
+	{
+		if (!$this-&gt;db-&gt;tableExists('#__cron_jobs'))
+		{
+			return;
+		}
+
+		foreach (self::$jobs as $event =&gt; $job)
+		{
+			list($title, $recurrence) = $job;
+
+			$query = &quot;SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=&quot; . $this-&gt;db-&gt;quote($event) . &quot;;&quot;;
+			$this-&gt;db-&gt;setQuery($query);
+
+			if ($this-&gt;db-&gt;loadResult())
+			{
+				continue;
+</code></pre>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../debugging/index.html" rel="prev"><span>Previous</span>Debugging</a><a class="pager__next" href="../dates/index.html" rel="next"><span>Next</span>Dates</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/09-cron.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concepts · Getting started · Hubzero Documentation</title>
+  <meta name="description" content="The words that come up in every book. The hub A hub is one installation of the Hubzero CMS: a website with its own members, content, and configuration. One…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/getting-started/concepts/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">All books</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">Getting started</a>
+        <nav aria-label="Getting started contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Concepts</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-hub">The hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#extensions">Extensions</a></li>
+<li class="toc__item toc__item--l2"><a href="#people">People</a></li>
+<li class="toc__item toc__item--l2"><a href="#content">Content</a></li>
+<li class="toc__item toc__item--l2"><a href="#tools">Tools</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Concepts</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Getting started</p>
+          <h1>Concepts</h1>
+        </header>
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
+        <div class="prose">
+<p>The words that come up in every book.</p>
+<h2 id="the-hub">The hub</h2>
+<p>A <strong>hub</strong> is one installation of the Hubzero CMS: a website with its own
+members, content, and configuration. One codebase can serve one hub. The
+site has two faces: the <strong>site</strong>, which members and visitors use, and the
+<strong>administrator</strong> interface at <code>/administrator</code>, which hub managers use to
+configure it.</p>
+<h2 id="extensions">Extensions</h2>
+<p>Everything a hub does is provided by extensions of three kinds.</p>
+<ul>
+<li>A <strong>component</strong> is a whole feature with its own URL space, database
+tables, and administrator screens: resources, groups, publications, the
+wiki, support tickets. Component code lives under
+<code>core/components/com_&lt;name&gt;/</code>, split into <code>site/</code>, <code>admin/</code>, and <code>api/</code>
+sides.</li>
+<li>A <strong>plugin</strong> hooks into an event that a component fires. Plugins are
+grouped by the event family they answer to: <code>groups</code> plugins add tabs to a
+group page, <code>resources</code> plugins add tabs to a resource page, <code>search</code>
+plugins index content, <code>authentication</code> plugins log people in. Plugin code
+lives under <code>core/plugins/&lt;group&gt;/&lt;name&gt;/</code>.</li>
+<li>A <strong>module</strong> is a box of content placed in a template position: a login
+form, a list of recent questions, a menu. Module code lives under
+<code>core/modules/mod_&lt;name&gt;/</code>.</li>
+</ul>
+<p>A <strong>template</strong> decides how the whole page looks and which positions modules
+can occupy. Templates live under <code>core/templates/</code> and a hub can override
+any extension's views inside its template.</p>
+<h2 id="people">People</h2>
+<p>A <strong>member</strong> is a registered account. Members belong to <strong>access groups</strong>,
+which decide what they may do in the administrator interface, and to
+<strong>groups</strong>, which are collaboration spaces with their own pages, files,
+forums, and membership roles. A <strong>super group</strong> is a group with its own
+template and extensions, effectively a site within the hub.</p>
+<h2 id="content">Content</h2>
+<p>A <strong>resource</strong> is a published item in the hub's catalogue: a tool, a
+dataset, a presentation, a course. <strong>Publications</strong> are versioned,
+citable resources that go through a curation workflow. A <strong>project</strong> is a
+private workspace where a team prepares files, notes, and publications
+before releasing them. Wiki pages, blog entries, forum posts, questions,
+knowledge base articles, and events are content as well, each managed by
+its own component.</p>
+<h2 id="tools">Tools</h2>
+<p>A <strong>tool</strong> is a simulation program that runs in a session on the hub's
+execution hosts and is displayed in the member's browser. Tools are
+developed in a repository, built and tested through the tool pipeline, and
+published as resources. The <a href="../../tools/index.html">Tools</a> book covers that
+side of the platform.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Getting started</a><a class="pager__next" href="../introduction/index.html" rel="next"><span>Next</span>Introduction</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/getting-started/concepts.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

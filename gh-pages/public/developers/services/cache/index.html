@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cache · Developers · Hubzero Documentation</title>
+  <meta name="description" content="The cache holds expensive results — rendered wiki text, a tag cloud, a statistics query — so the next request does not have to compute them again. It is a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/services/cache/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Cache</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-the-facade-resolves-to">What the facade resolves to</a></li>
+<li class="toc__item toc__item--l2"><a href="#storing-and-reading">Storing and reading</a></li>
+<li class="toc__item toc__item--l2"><a href="#groups">Groups</a></li>
+<li class="toc__item toc__item--l2"><a href="#drivers">Drivers</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Services</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Cache</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Cache</h1>
+        </header>
+        
+        <div class="prose">
+<p>The cache holds expensive results — rendered wiki text, a tag cloud, a
+statistics query — so the next request does not have to compute them again.
+It is a plain key/value store with a time to live, and nothing in the CMS
+depends on a value being there.</p>
+<h2 id="what-the-facade-resolves-to">What the facade resolves to</h2>
+<p>Two keys are registered, and they are not the same object:</p>
+<pre><code class="language-php">	public function register()
+	{
+		$this-&gt;app['cache'] = function($app)
+		{
+			return new Manager($app);
+		};
+
+		$this-&gt;app['cache.store'] = function($app)
+		{
+			$handler = !$app['config']-&gt;get('caching') ? 'none' : $app['config']-&gt;get('cache_handler');
+
+			if ($app-&gt;isAdmin())
+			{
+				$handler = 'none';
+			}
+
+			return $app['cache']-&gt;storage($handler);
+		};
+	}
+</code></pre>
+<p><code>cache</code> is the <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Cache/Manager.php"><code>Hubzero\Cache\Manager</code></a>,
+which resolves and caches storage instances. <code>cache.store</code> is one storage
+instance, chosen from the hub's configuration. <strong>The <code>Cache</code> facade resolves
+<code>cache.store</code></strong> — so a call on the facade lands on a
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Cache/Storage/StorageInterface.php"><code>StorageInterface</code></a>
+implementation, not on the manager.</p>
+<p>Note the two switches in the closure. With <code>caching</code> off in
+<code>app/config/cache.php</code> the handler is forced to <code>none</code>, and in the
+administrator it is forced to <code>none</code> unconditionally. Both <code>None</code> stores
+accept every write and return <code>null</code> from every read, so code that caches
+still runs; it just never gets a hit.</p>
+<h2 id="storing-and-reading">Storing and reading</h2>
+<pre><code class="language-php">use Cache;
+
+// 15 is minutes, not seconds
+Cache::put('wiki.r' . $revision-&gt;get('id'), $rendered, 15);
+
+$rendered = Cache::get('wiki.r' . $revision-&gt;get('id'));
+</code></pre>
+<p>That is the shape of nearly every use in the tree — write with a TTL, read
+back, recompute on a miss:</p>
+<pre><code class="language-php">		if (intval($this-&gt;book-&gt;config('cache', 1)))
+		{
+			// Caching
+			if (!($rendered = Cache::get('wiki.r' . $revision-&gt;get('id'))))
+			{
+				$rendered = $revision-&gt;content($this-&gt;page);
+
+				Cache::put('wiki.r' . $revision-&gt;get('id'), $rendered, intval($this-&gt;book-&gt;config('cache_time', 15)));
+			}
+			$revision-&gt;set('pagehtml', $rendered);
+		}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get($key)</code></td>
+<td>The value, or <code>null</code> on a miss or an expired entry</td>
+</tr>
+<tr>
+<td><code>has($key)</code></td>
+<td>Whether a live entry exists</td>
+</tr>
+<tr>
+<td><code>put($key, $value, $minutes)</code></td>
+<td>Store, replacing anything already there</td>
+</tr>
+<tr>
+<td><code>add($key, $value, $minutes)</code></td>
+<td>Store only if <code>has()</code> is false; returns <code>false</code> otherwise</td>
+</tr>
+<tr>
+<td><code>forever($key, $value)</code></td>
+<td><code>put()</code> with an expiry far in the future</td>
+</tr>
+<tr>
+<td><code>forget($key)</code></td>
+<td>Remove one entry</td>
+</tr>
+<tr>
+<td><code>clean($group = null)</code></td>
+<td>Remove one group, or everything</td>
+</tr>
+<tr>
+<td><code>gc($group = null)</code></td>
+<td>Remove entries that have expired</td>
+</tr>
+<tr>
+<td><code>all()</code></td>
+<td>A per-group summary of what is stored</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>get()</code> takes a key and nothing else. Writing
+<code>Cache::get('key', 'default')</code> is not an error — PHP discards the extra
+argument — but the default is silently ignored and you get <code>null</code> on a
+miss. Test the return value instead. <code>Hubzero\Cache\Manager::get()</code> does
+accept a default (and a closure), but the facade does not go through the
+manager; reach it with <code>App::get('cache')-&gt;get('key', $default)</code>.</p>
+</aside>
+<p>Values are serialized, so anything <code>serialize()</code> can round-trip is a legal
+value. Store the rendered string, not the model that produced it.</p>
+<h2 id="groups">Groups</h2>
+<p>The key is dotted, and the first segment is the <strong>group</strong>. The file store
+turns the group into a directory under <code>app/cache/&lt;client&gt;/</code> and hashes the
+rest of the key into the filename. That is what makes selective clearing
+work:</p>
+<pre><code class="language-php">// everything the wiki cached
+Cache::clean('wiki');
+
+// the whole cache
+Cache::clean();
+</code></pre>
+<p>Components use their own name or a short label for the group — <code>wiki</code>,
+<code>tags</code>, <code>groups</code>, <code>members</code>, <code>com_templates</code>, <code>_system</code>. Pick one and prefix
+every key with it, or your entries end up in the root of the cache
+directory where only a full <code>clean()</code> reaches them.</p>
+<p><code>all()</code> returns one <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Cache/Auditor.php"><code>Auditor</code></a>
+per group, carrying <code>group</code>, <code>count</code> and <code>size</code> (in kilobytes). The
+administrator's cache screen is built from it.</p>
+<h2 id="drivers">Drivers</h2>
+<p>The driver comes from <code>cache_handler</code> in <code>app/config/cache.php</code>. The classes
+live in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Cache/Storage"><code>core/libraries/Hubzero/Cache/Storage/</code></a>:
+<code>File</code> (the default), <code>Memcache</code>, <code>Memcached</code>, <code>Apc</code>, <code>WinCache</code>, <code>XCache</code>,
+<code>Memory</code> (per-request only) and <code>None</code>. Each has a static <code>isAvailable()</code>,
+and <code>Hubzero\Cache\Manager::getStores()</code> returns the lowercased names of the
+ones this server can actually use.</p>
+<p>To add one, implement <code>StorageInterface</code> and register a resolver on the
+<strong>manager</strong>:</p>
+<pre><code class="language-php">App::get('cache')-&gt;extend('example', function($config)
+{
+    return new ExampleStore($config);
+});
+</code></pre>
+<p>The name matches a <code>cache_handler</code> value; the closure receives the merged
+configuration array, which always carries <code>hash</code> and <code>cachebase</code>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The cache is not storage. A file store can be emptied by any
+administrator from the Cache screen, a memcached instance can evict an
+entry at any moment, and the administrator application never caches at
+all. Never put anything in it that you cannot recompute.</p>
+</aside>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Services</a><a class="pager__next" href="../filesystem/index.html" rel="next"><span>Next</span>Filesystem</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/01-cache.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

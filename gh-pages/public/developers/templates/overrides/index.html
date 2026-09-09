@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Output Overrides · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Overview There are many competing requirements for web designers ranging from accessibility to legislative to personal preferences. Rather than trying to…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/overrides/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Output Overrides</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#component-overrides">Component Overrides</a></li>
+<li class="toc__item toc__item--l3"><a href="#layouts">Layouts</a></li>
+<li class="toc__item toc__item--l3"><a href="#sub-layouts">Sub-Layouts</a></li>
+<li class="toc__item toc__item--l3"><a href="#cascading-style-sheets">Cascading Style Sheets</a></li>
+<li class="toc__item toc__item--l2"><a href="#module-overrides">Module Overrides</a></li>
+<li class="toc__item toc__item--l3"><a href="#layouts-2">Layouts</a></li>
+<li class="toc__item toc__item--l3"><a href="#cascading-style-sheets-2">Cascading Style Sheets</a></li>
+<li class="toc__item toc__item--l2"><a href="#plugin-overrides">Plugin Overrides</a></li>
+<li class="toc__item toc__item--l3"><a href="#layouts-3">Layouts</a></li>
+<li class="toc__item toc__item--l3"><a href="#cascading-style-sheets-3">Cascading Style Sheets</a></li>
+<li class="toc__item toc__item--l2"><a href="#pagination-links-overrides">Pagination Links Overrides</a></li>
+<li class="toc__item toc__item--l2"><a href="#quick-reference">Quick Reference</a></li>
+<li class="toc__item toc__item--l3"><a href="#component-output">Component Output</a></li>
+<li class="toc__item toc__item--l3"><a href="#module-output">Module Output</a></li>
+<li class="toc__item toc__item--l3"><a href="#plugin-output">Plugin Output</a></li>
+<li class="toc__item toc__item--l3"><a href="#customise-the-pagination-links">Customise the Pagination Links</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Output Overrides</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Output Overrides</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/overrides">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        <div class="prose">
+<h2 id="overview">Overview</h2>
+<p>There are many competing requirements for web designers ranging from accessibility to legislative to personal preferences. Rather than trying to over-parameterise views, or trying to aim for some sort of line of best fit, or worse, sticking its head in the sand, the CMS gives the potential for the designer to take over control of virtually all of the output that is generated.</p>
+<p>Except for files that are provided in the distribution itself, these methods for customization eliminate the need for designers and developers to &quot;hack&quot; core files that could change when the site is updated to a new version. Because they are contained within the template, they can be deployed to the Web site without having to worry about changes being accidentally overwritten when your System Administrator upgrades the site.</p>
+<p>HUBzero allows for overriding not only views but CSS and Javascript as well. This allows for even more individualistic styling of components and modules on HUBs.</p>
+<h2 id="component-overrides">Component Overrides</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not all HUBzero modules will have layouts or CSS that can be overridden.</p>
+</aside>
+<h3 id="layouts">Layouts</h3>
+<p>Layout overrides only work within the active template and are located under the <code>/html/</code> directory in the template. For example, the overrides for &quot;corenil&quot; are located under <code>/app/templates/corenil/html/</code>.</p>
+<p>It is important to understand that if you create overrides in one template, they will not be available in other templates.</p>
+<p>The layout overrides must be placed in particular way. Using &quot;kimera&quot; as an example you will see the following structure:</p>
+<pre><code>/templates
+.. /kimera
+.. .. /html
+.. .. .. /com_content  (this directory matches the component directory name)
+.. .. .. .. /articles        (this directory matches the view directory name)
+.. .. .. .. .. default.php (this file matches the layout file name)
+.. .. .. .. .. form.php
+</code></pre>
+<p>The structure for component overrides is quite simple: <code>/html/com_{ComponentName}/{ViewName}/{LayoutName}.php</code>.</p>
+<h3 id="sub-layouts">Sub-Layouts</h3>
+<p>In some views you will see that some of the layouts have a group of files that start with the same name. The category view has an example of this. The blog layout actually has three parts: the main layout file <code>blog.php</code> and two sub-layout files, <code>blog_item.php</code> and <code>blog_links.php</code>. You can see where these sub-layouts are loaded in the <code>blog.php</code> file using the <code>loadTemplate</code> method, for example:</p>
+<pre><code class="language-php">echo $this-&gt;loadTemplate('item');
+// or
+echo $this-&gt;loadTemplate('links');
+</code></pre>
+<p>When loading sub-layouts, the view already knows what layout you are in, so you don't have to provide the prefix (that is, you load just 'item', not 'blog_item').</p>
+<p>What is important to note here is that it is possible to override just a sub-layout without copying the whole set of files. For example, if you were happy with the default output for the blog layout, but just wanted to customize the item sub-layout, you could just copy:</p>
+<pre><code>/components/com_content/views/category/tmpl/blog_item.php
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/kimera/html/com_content/category/blog_item.php
+</code></pre>
+<p>When the CMS is parsing the view, it will automatically know to load <code>blog.php</code> from <code>com_content</code> natively and <code>blog_item.php</code> from your template overrides.</p>
+<h3 id="cascading-style-sheets">Cascading Style Sheets</h3>
+<p>Over-ridding CSS is a little more straight-forward over-ridding layouts. Take the <code>com_groups</code> component for example:</p>
+<pre><code>/components
+  /com_groups
+    ...
+    com_groups.css   (the component CSS file)
+</code></pre>
+<p>To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:</p>
+<pre><code>/templates
+.. /corenil
+.. .. /html
+.. .. .. /com_groups   (this directory matches the component directory name)
+.. .. .. .. groups.css   (this file matches the CSS file name)
+</code></pre>
+<p>To push CSS from a component to the template, add the following somewhere in the component:</p>
+<pre><code class="language-php">$this-&gt;css('example.css');
+</code></pre>
+<h2 id="module-overrides">Module Overrides</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not all HUBzero modules will have layouts or CSS that can be overridden.</p>
+</aside>
+<h3 id="layouts-2">Layouts</h3>
+<p>Modules, like components, are set up in a particular directory structure.</p>
+<pre><code>/modules
+.. /mod_latest_news
+.. .. /tmpl
+.. .. .. default.php   (the layout)
+.. .. .. helper.php   (a helper file containing data logic)
+.. .. mod_latest_news.php   (the main module file)
+.. .. mod_latest_news.xml   (the installation XML file)
+</code></pre>
+<p>Similar to components, under the main module directory (in the example, <code>mod_latest_news</code>) there is a <code>/tmpl/</code> directory. There is usually only one layout file but depending on who wrote the module, and how it is written, there could be more.</p>
+<p>As for components, the layout override for a module must be placed in particular way. Using &quot;corenil&quot; as an example again, you will see the following structure:</p>
+<pre><code>/templates
+.. /corenil
+.. .. /html
+.. .. .. /mod_latest_news   (this directory matches the module directory name)
+.. .. .. .. default.php   (this file matches the layout file name)
+</code></pre>
+<p>Take care with overriding module layout because there are a number of different ways that modules can or have been designed so you need to treat each one individually.</p>
+<h3 id="cascading-style-sheets-2">Cascading Style Sheets</h3>
+<p>Over-ridding CSS files works in precisely the same way as over-ridding layouts. Take the <code>mod_reportproblems</code> module for example:</p>
+<pre><code>/modules
+  /mod_reportproblems
+    ...
+    mod_reportproblems.css   (the module CSS file)
+</code></pre>
+<p>To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:</p>
+<pre><code>/templates
+.. /corenil
+.. .. /html
+.. .. .. /mod_reportproblems   (this directory matches the module directory name)
+.. .. .. .. mod_reportproblems.css   (this file matches the CSS file name)
+</code></pre>
+<p>To push CSS from a module to the template, add the following somewhere in the module:</p>
+<pre><code class="language-php">$this-&gt;css('mod_example.css');
+</code></pre>
+<h2 id="plugin-overrides">Plugin Overrides</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not all HUBzero plugins will have layouts or CSS that can be overridden.</p>
+</aside>
+<h3 id="layouts-3">Layouts</h3>
+<p>Plugins, like components and modules, are set up in a particular directory structure.</p>
+<pre><code>/plugins
+.. /groups
+.. .. /forum
+.. .. .. forum.php   (the main plugin file)
+.. .. .. forum.xml   (the installation XML file)
+.. .. .. /views
+.. .. .. .. /browse
+.. .. .. .. .. /tmpl
+.. .. .. .. .. .. default.php   (the layout)
+.. .. .. .. .. .. default.xml   (the layout installation XML file)
+</code></pre>
+<p>Similar to components, under the <code>views</code> directory of the plugin's self-titled directory (in the example, <code>forum</code>) there are directories for each view name. Within each view directory is a <code>/tmpl/</code> directory. There is usually only one layout file but depending on who wrote the plugin, and how it is written, there could be more.</p>
+<p>As with components and modules, the layout override for a plugin must be placed in a particular way. Using &quot;corenil&quot; as an example again, you will see the following structure:</p>
+<pre><code>/templates
+.. /corenil
+.. .. /html
+.. .. .. /plg_groups_forum   (this directory follows the naming pattern of plg_{group}_{plugin})
+.. .. .. .. /browse   (this file matches the layout directory name)
+.. .. .. .. .. default.php   (this file matches the layout file name)
+</code></pre>
+<p>Take care with overriding plugin layout because there are a number of different ways that plugins can or have been designed so you need to treat each one individually.</p>
+<h3 id="cascading-style-sheets-3">Cascading Style Sheets</h3>
+<p>Over-ridding CSS files works in precisely the same way as over-ridding layouts. Take the <code>forum</code> plugin for groups for example:</p>
+<pre><code>/plugins
+.. /groups
+.. .. /forum
+.. .. .. /assets
+.. .. .. .. /css
+.. .. .. .. .. forum.css   (the plugin CSS file)
+</code></pre>
+<p>To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:</p>
+<pre><code>/templates
+.. /corenil
+.. .. /html
+.. .. .. /plg_groups_forum   (this directory follows the naming pattern of plg_{group}_{plugin})
+.. .. .. .. forum.css   (this file matches the CSS file name)
+</code></pre>
+<p>To push CSS from a module to the template, add the following somewhere in the module:</p>
+<pre><code class="language-php">$this-&gt;css('forum.css');
+</code></pre>
+<h2 id="pagination-links-overrides">Pagination Links Overrides</h2>
+<p>This override can control the display of items-per-page and the pagination links that are used with lists of information. Most HUBzero templates will come with a pagination override that outputs what we feel is a good standard for displaying pagination links and controls. However, feel free to alter this as you see fit. The override can be found here:</p>
+<pre><code>/templates/{TemplateName}/html/pagination.php
+</code></pre>
+<p>When the pagination list is required, Joomla! will look for this file in the default templates. If it is found it will be loaded and the display functions it contains will be used. There are four functions that can be used:</p>
+<ul>
+<li><strong><code>pagination_list_footer</code></strong><br />
+This function is responsible for showing the select list for the number of items to display per page.</li>
+<li><strong><code>pagination_list_render</code></strong><br />
+This function is responsible for showing the list of page number links as well at the Start, End, Previous and Next links.</li>
+<li><strong><code>pagination_item_active</code></strong><br />
+This function displays the links to other page numbers other than the &quot;current&quot; page.</li>
+<li><strong><code>pagination_item_inactive</code></strong><br />
+This function displays the current page number, usually not hyperlinked.</li>
+</ul>
+<h2 id="quick-reference">Quick Reference</h2>
+<p>Using the <code>corenil</code> template as an example, here is a brief summary of the principles that have been discussed.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not all HUBzero components, plugins, and modules will have layouts that can be overridden.</p>
+</aside>
+<h3 id="component-output">Component Output</h3>
+<p>To override a component layout (for example the default layout in the article view), copy:</p>
+<pre><code>/components/com_content/views/article/tmpl/default.php
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/com_content/article/default.php
+</code></pre>
+<p>To override a component CSS (for example the stylesheet in the <code>com_groups</code>), copy:</p>
+<pre><code>/components/com_groups/site/assets/css/com_groups.css
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/com_groups/groups.css
+</code></pre>
+<p>To push CSS from a component to the template, add the following somewhere in the component:</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addComponentStylesheet('com_example');
+</code></pre>
+<h3 id="module-output">Module Output</h3>
+<p>To override a module layout (for example the Latest News module), copy:</p>
+<pre><code>/modules/mod_latest_news/tmpl/default.php
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/mod_latest_news/default.php
+</code></pre>
+<p>To override a module CSS (for example the stylesheet in the <code>mod_reportproblems</code>), copy:</p>
+<pre><code>/modules/mod_reportproblems/assets/css/mod_reportproblems.css
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/mod_reportproblems/mod_reportproblems.css
+</code></pre>
+<p>To push CSS from a module to the template, add the following somewhere in the module:</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addModuleStylesheet('mod_example');
+</code></pre>
+<h3 id="plugin-output">Plugin Output</h3>
+<p>To override a plugin layout (for example the Forum plugin for groups), copy:</p>
+<pre><code>/plugins/groups/forum/views/browse/tmpl/default.php
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/plg_groups_forum/browse/default.php
+</code></pre>
+<p>To override a plugin CSS (for example the stylesheet for the <code>forum</code> plugin for groups), copy:</p>
+<pre><code>/plugins/groups/forum/forum.css
+</code></pre>
+<p>to:</p>
+<pre><code>/templates/corenil/html/plg_groups_forum/assets/css/forum.css
+</code></pre>
+<p>To push CSS from a plugin to the template, add the following somewhere in the plugin:</p>
+<pre><code class="language-php">Hubzero\Document\Assets::addPluginStylesheet('groups', 'forum');
+</code></pre>
+<h3 id="customise-the-pagination-links">Customise the Pagination Links</h3>
+<p>To customize the way the items-per-page selector and pagination links display, edit the following file:</p>
+<pre><code>/templates/corenil/html/pagination.php
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../javascript/index.html" rel="prev"><span>Previous</span>JavaScript</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/09-overrides.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

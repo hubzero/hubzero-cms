@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS Coding Styles · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="Terminology Concise terminology used in these standards: Selectors Selectors should: be on a single line end in an opening brace be closed with a closing brace…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/csscodingstyles/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Contributing</a>
+        <nav aria-label="Contributing contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../contributions/index.html">Contribution Guide</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Style Guide</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../phpnamingconventions/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">CSS Coding Styles</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#terminology">Terminology</a></li>
+<li class="toc__item toc__item--l2"><a href="#selectors">Selectors</a></li>
+<li class="toc__item toc__item--l3"><a href="#multiple-selectors">Multiple selectors</a></li>
+<li class="toc__item toc__item--l2"><a href="#properties">Properties</a></li>
+<li class="toc__item toc__item--l3"><a href="#multiple-values">Multiple values</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseschema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../commits/index.html">Commit Messages</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../documentation/index.html">Working on the documentation</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Style Guide</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">CSS Coding Styles</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Contributing</p>
+          <h1>CSS Coding Styles</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions/csscodingstyles">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        <div class="prose">
+<h2 id="terminology">Terminology</h2>
+<p>Concise terminology used in these standards:</p>
+<pre><code class="language-css">selector {
+    property: value;
+}
+</code></pre>
+<h2 id="selectors">Selectors</h2>
+<p>Selectors should:</p>
+<ul>
+<li>be on a single line</li>
+<li>end in an opening brace</li>
+<li>be closed with a closing brace on a separate line</li>
+</ul>
+<p>A blank line should be placed between each group, section, or block of multiple selectors of logically related styles.</p>
+<p>Were appropriate, blocks of related styles should be commented to facilitate understanding of their use.</p>
+<pre><code class="language-css">/* Book Navigation */
+    .book-navigation .page-next {
+    }
+    .book-navigation .page-previous {
+    }
+
+/* Book Forms */
+    .book-admin-form {
+        border: 1px solid #000;
+    }
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Indentation is optional but encouraged when commenting blocks of related styles.</p>
+</aside>
+<h3 id="multiple-selectors">Multiple selectors</h3>
+<p>Multiple selectors should each be on a single line, with no space after each comma:</p>
+<pre><code class="language-css">#forum td.posts,
+#forum td.topics,
+#forum td.replies,
+#forum td.pager {
+}
+</code></pre>
+<h2 id="properties">Properties</h2>
+<p>All properties should be on the following line after the opening brace. Each property should:</p>
+<ul>
+<li>be on its own line</li>
+<li>be indented one tab relative to the selector line</li>
+<li>have a colon immediately after (no spaces permitted) the property name</li>
+<li>have a single space after the property and before the property value</li>
+<li>end in a semi-colon</li>
+</ul>
+<pre><code class="language-css">#forum .description {
+    color: #EFEFEF;
+    font-size: 0.9em;
+    margin: 0.5em;
+}
+</code></pre>
+<h3 id="multiple-values">Multiple values</h3>
+<p>Where properties can have multiple values, each value should be separated with a space.</p>
+<pre><code>font-family: helvetica, sans-serif;
+</code></pre>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../phpnamingconventions/index.html" rel="prev"><span>Previous</span>PHP Naming Conventions</a><a class="pager__next" href="../databaseschema/index.html" rel="next"><span>Next</span>Database Schema Conventions</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/03-csscodingstyles.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

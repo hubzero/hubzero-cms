@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Languages · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Every string a member sees comes out of an INI file through . Doing it that way is not only about translation: it is what lets an administrator reword a page…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/languages/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Languages</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-the-files-live">Where the files live</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-the-file">Writing the file</a></li>
+<li class="toc__item toc__item--l2"><a href="#naming-keys">Naming keys</a></li>
+<li class="toc__item toc__item--l2"><a href="#translating">Translating</a></li>
+<li class="toc__item toc__item--l2"><a href="#overrides">Overrides</a></li>
+<li class="toc__item toc__item--l2"><a href="#checking-your-work">Checking your work</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">The basics</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Languages</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Languages</h1>
+        </header>
+        
+        <div class="prose">
+<p>Every string a member sees comes out of an INI file through <code>Lang::txt()</code>.
+Doing it that way is not only about translation: it is what lets an
+administrator reword a page without editing a view, and what lets a hub keep
+its wording through an upgrade.</p>
+<p>The <code>Lang</code> facade resolves
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Language/Translator.php"><code>Hubzero\Language\Translator</code></a>.</p>
+<h2 id="where-the-files-live">Where the files live</h2>
+<p>One file per extension, per language, named for the language tag and the
+extension:</p>
+<pre><code>core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini
+core/components/com_blog/admin/language/en-GB/en-GB.com_blog.ini
+core/plugins/cron/support/language/en-GB/en-GB.plg_cron_support.ini
+core/modules/mod_login/language/en-GB/en-GB.mod_login.ini
+core/bootstrap/Site/language/en-GB/en-GB.ini
+</code></pre>
+<p>The last is the shared set — <code>JYES</code>, <code>JACTION_DELETE</code>, <code>DATE_FORMAT_HZ1</code>
+and the rest — loaded for every request. The others are loaded on demand,
+and you do not have to ask:</p>
+<ul>
+<li>A controller extending <code>Hubzero\Component\SiteController</code> or
+<code>AdminController</code> loads its component's file in its constructor, unless
+something already did.</li>
+<li>A module's file is loaded by <code>Hubzero\Module\Loader</code> before the module
+renders.</li>
+<li>A plugin's file is <strong>not</strong> loaded automatically unless the plugin sets
+<code>protected $_autoloadLanguage = true;</code>. Otherwise call
+<code>$this-&gt;loadLanguage()</code> — cron plugins do this first thing in
+<code>onCronEvents()</code>, because their labels have to be translated before the
+administrator ever sees them.</li>
+</ul>
+<p><code>Lang::load($extension, $basePath, $lang = null, $reload = false, $default = true)</code> is the underlying call if you need a file the framework will not
+fetch for you.</p>
+<h2 id="writing-the-file">Writing the file</h2>
+<p>Key/value pairs, values always double-quoted:</p>
+<pre><code class="language-ini">; @package  hubzero-cms
+; Note : All ini files need to be saved as UTF-8 - No BOM
+
+COM_BLOG_ENTRIES = &quot;Entries&quot;
+COM_BLOG_ENTRY_SAVED = &quot;Entry saved&quot;
+COM_BLOG_POSTED_BY = &quot;Posted by %s on %s&quot;
+</code></pre>
+<p>The parser is PHP's, so its rules apply. <code>NULL</code>, <code>yes</code>, <code>no</code>, <code>TRUE</code> and
+<code>FALSE</code> are reserved and must not be used as keys. The characters
+<code>{}|&amp;~![()&quot;</code> have meaning inside an unquoted value; quoting every value
+avoids the question. Comments start with <code>;</code>.</p>
+<h2 id="naming-keys">Naming keys</h2>
+<p>Prefix by extension type and extension name:</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Prefix</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td><code>COM_</code></td>
+<td><code>COM_BLOG_ENTRY_SAVED</code></td>
+</tr>
+<tr>
+<td>Module</td>
+<td><code>MOD_</code></td>
+<td><code>MOD_LOGIN_REMEMBER_ME</code></td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td><code>PLG_</code></td>
+<td><code>PLG_CRON_SUPPORT_CLOSE_PENDING</code></td>
+</tr>
+<tr>
+<td>Template</td>
+<td><code>TPL_</code></td>
+<td><code>TPL_SYSTEM_LOGOUT</code></td>
+</tr>
+</tbody>
+</table>
+<p>The prefix is not cosmetic. All loaded strings share one flat array, and a
+file loaded later overwrites a key already in it. A component whose view
+renders a module — and the module's file loads at that point — will find its
+own unprefixed <code>MYLINE</code> replaced by the module's. Prefixed keys cannot
+collide.</p>
+<h2 id="translating">Translating</h2>
+<pre><code class="language-php">use Lang;
+
+echo Lang::txt('COM_BLOG_ENTRIES');
+</code></pre>
+<p>A key with no entry in any loaded file is returned unchanged, so a typo
+shows up as a shouting constant on the page rather than an empty space.</p>
+<p>Extra arguments are passed to <code>sprintf()</code>, after the string has been looked
+up:</p>
+<pre><code class="language-php">// COM_BLOG_POSTED_BY = &quot;Posted by %s on %s&quot;
+echo Lang::txt('COM_BLOG_POSTED_BY', $author, $date);
+</code></pre>
+<p>Numbered placeholders in the form <code>[[%1:name]]</code> are rewritten to <code>%1$s</code>
+before the <code>sprintf()</code>, so a translator can reorder arguments that English
+happens to put in a particular order.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>txt($string, ...)</code></td>
+<td>Translate, then <code>sprintf()</code> any extra arguments</td>
+</tr>
+<tr>
+<td><code>txts($string, $n, ...)</code></td>
+<td>Plural form: tries <code>KEY_&lt;n&gt;</code> and the language's plural suffixes, falls back to <code>KEY</code></td>
+</tr>
+<tr>
+<td><code>alt($string, $alt, ...)</code></td>
+<td>Uses <code>KEY_ALT</code> if that key exists, else <code>KEY</code></td>
+</tr>
+<tr>
+<td><code>hasKey($string)</code></td>
+<td>Whether a key is loaded</td>
+</tr>
+<tr>
+<td><code>script($string)</code></td>
+<td>Queue a string for the JavaScript translation object</td>
+</tr>
+<tr>
+<td><code>getTag()</code> / <code>getName()</code> / <code>isRTL()</code></td>
+<td>About the current language</td>
+</tr>
+<tr>
+<td><code>transliterate($string)</code></td>
+<td>ASCII-fold a string, using the language's own rules</td>
+</tr>
+</tbody>
+</table>
+<p><code>txts()</code> is the one to reach for wherever a count appears:</p>
+<pre><code class="language-ini">COM_BLOG_COMMENTS_1 = &quot;1 comment&quot;
+COM_BLOG_COMMENTS = &quot;%s comments&quot;
+</code></pre>
+<pre><code class="language-php">echo Lang::txts('COM_BLOG_COMMENTS', $total);
+</code></pre>
+<h2 id="overrides">Overrides</h2>
+<p>A hub can replace any string without touching the extension. Overrides are
+per client, and live in:</p>
+<pre><code>app/bootstrap/site/language/overrides/en-GB.override.ini
+app/bootstrap/administrator/language/overrides/en-GB.override.ini
+app/bootstrap/cli/language/overrides/en-GB.override.ini
+app/bootstrap/api/language/overrides/en-GB.override.ini
+</code></pre>
+<p>The translator reads the override file in its constructor and re-applies it
+after <strong>every</strong> extension file it loads. An override therefore always wins,
+whatever loads afterwards.</p>
+<p>To change a string, find its key and add a line:</p>
+<pre><code class="language-bash">grep -rn &quot;Just one more thing&quot; core/components/
+# core/components/com_projects/site/language/en-GB/en-GB.com_projects.ini:193:COM_PROJECTS_SETUP_BEFORE_COMPLETE=&quot;Just one more thing...&quot;
+</code></pre>
+<pre><code class="language-ini">; app/bootstrap/site/language/overrides/en-GB.override.ini
+COM_PROJECTS_SETUP_BEFORE_COMPLETE = &quot;One more thing before you start.&quot;
+</code></pre>
+<p>The administrator can do the same from <strong>Extensions → Language Manager →
+Overrides</strong>, which writes the same file. Its <strong>Search Text You Want to
+Change</strong> box resolves a piece of wording back to the key that produced it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Language overrides are the right answer to &quot;we want this worded
+differently&quot;. A view override for a wording change duplicates a file that
+will then drift from the original at the next upgrade.</p>
+</aside>
+<h2 id="checking-your-work">Checking your work</h2>
+<p>Two things go wrong: a key used in a view but never defined, and a file that
+does not parse. <code>php tools/lint/undefined-language-keys.php</code> catches the
+first across the tree. For the second, <code>Lang::debugFile($path)</code> returns a
+count of parse errors in one file, and turning on <code>debug_lang</code> in the global
+configuration marks untranslated strings on the rendered page —
+<code>getOrphans()</code> and <code>getUsed()</code> back the report.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../config/index.html" rel="prev"><span>Previous</span>Config</a><a class="pager__next" href="../user/index.html" rel="next"><span>Next</span>Users &amp; profiles</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/04-languages.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

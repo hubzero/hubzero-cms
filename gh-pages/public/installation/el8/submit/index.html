@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit · Installation · Hubzero Documentation</title>
+  <meta name="description" content="Introduction The submit command provides a means for HUB end users to execute applications on remote resources. The end user is not required to have knowledge…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/installation/el8/submit/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Installation</a>
+        <nav aria-label="Installation contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../autohub/index.html">Autohub</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Enterprise Linux 8 (RHEL/CentOS/Rocky/etc)</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../linux/index.html">Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../webserver/index.html">Apache HTTP Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/index.html">MariaDB Community Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php/index.html">PHP: Hypertext Preprocessor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mail/index.html">Mail</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cms/index.html">CMS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../webdav/index.html">WebDAV</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maxwell-service/index.html">Maxwell Service</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hzvncproxydws/index.html">VNC Proxy Server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../telequotad/index.html">telequotad</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../rappture/index.html">Rappture</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Submit</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#introduction">Introduction</a></li>
+<li class="toc__item toc__item--l2"><a href="#installation">Installation</a></li>
+<li class="toc__item toc__item--l2"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l2"><a href="#hub-configuration">HUB Configuration</a></li>
+<li class="toc__item toc__item--l3"><a href="#sites">Sites</a></li>
+<li class="toc__item toc__item--l3"><a href="#tools">Tools</a></li>
+<li class="toc__item toc__item--l3"><a href="#monitors">Monitors</a></li>
+<li class="toc__item toc__item--l3"><a href="#multi-processor-managers">Multi-processor managers</a></li>
+<li class="toc__item toc__item--l3"><a href="#file-access-controls">File access controls</a></li>
+<li class="toc__item toc__item--l3"><a href="#environment-variables">Environment variables</a></li>
+<li class="toc__item toc__item--l3"><a href="#tunnels">Tunnels</a></li>
+<li class="toc__item toc__item--l2"><a href="#initialization-scripts-and-log-files">Initialization Scripts and Log Files</a></li>
+<li class="toc__item toc__item--l3"><a href="#initialize-daemon-scripts">Initialize daemon scripts</a></li>
+<li class="toc__item toc__item--l3"><a href="#log-files">Log files</a></li>
+<li class="toc__item toc__item--l2"><a href="#remote-domain-configuration">Remote Domain Configuration</a></li>
+<li class="toc__item toc__item--l3"><a href="#job-monitor-daemon">Job monitor daemon</a></li>
+<li class="toc__item toc__item--l3"><a href="#file-transfer-and-batch-job-scripts">File transfer and batch job scripts</a></li>
+<li class="toc__item toc__item--l2"><a href="#access-control-mechanisms">Access Control Mechanisms</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrade7to8/index.html">Upgrading from EL7 to EL8</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../updates/index.html">Updates</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../addons/index.html">Add-ons</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../addons/solr/index.html">Solr-powered Search</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../addons/shibboleth/index.html">Shibboleth authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../addons/incommon/index.html">InCommon</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../optional-services/index.html">Optional services</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Installation</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Enterprise Linux 8 (RHEL/CentOS/Rocky/etc)</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Submit</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Installation</p>
+          <h1>Submit</h1>
+        </header>
+        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/installation/el8/install/submit">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016. It was never published there, so read it as a draft.</aside>
+        <div class="prose">
+<h2 id="introduction">Introduction</h2>
+<p>The submit command provides a means for HUB end users to execute applications on remote resources. The end user is not required to have knowledge of remote job submission mechanics. Jobs can be submitted to traditional queued batch systems including PBS and Condor or executed directly on remote resources.</p>
+<h2 id="installation">Installation</h2>
+<pre><code>sudo yum install -y hubzero-submit-pegasus
+sudo yum install -y hubzero-submit-condor
+sudo yum install -y hubzero-submit-common
+sudo yum install -y hubzero-submit-server
+sudo yum install -y hubzero-submit-distributor
+sudo yum install -y hubzero-submit-monitors
+
+sudo hzcms configure submit-server --enable
+sudo service submit-server start
+sudo chkconfig submit-server on
+</code></pre>
+<p>At completion of the <code>yum install</code> commands several files will be located in the directory <code>/opt/submit</code>. Excluding python files, the directory listing should like the following:</p>
+<p><img src="../../media/submit-submit-directory.png" alt="Submit directory listing" /></p>
+<h2 id="configuration">Configuration</h2>
+<p>Submit provides a mechanism to execute jobs on machines outside the HUB domain. To accomplish this feat, some configuration is required on the HUB and some additional software must be installed and configured on hosts in remote domains. Before attempting to configure submit it is necessary to obtain access to the target remote domain(s). The premise is that a single account on the remote domain will serve as an execution launch point for all HUB end users. It is further assumes that access to this account can be made by direct ssh login or using an ssh tunnel (port forwarding).</p>
+<p><img src="../../media/submit-submit-remote-requirements.png" alt="Remote site requirements" /></p>
+<p>Having attained account access to one or more remote domains, it is possible to proceed with submit configuration. To get started, the ssh public generated by the installation should be transferred to the remote domain host(s).</p>
+<p><img src="../../media/submit-submit-sshkey.png" alt="ssh key installation" /></p>
+<h2 id="hub-configuration">HUB Configuration</h2>
+<p>The behavior of submit is controlled through a set of configuration files. The configuration files contain descriptions of the various parameters required to connect to a remote domain, exchange files, and execute simulation codes. There are separate files for defining remote sites, staged tools, multiprocessor managers, file access controls, permissible environment variables, remote job monitors, and ssh tunneling. Most parameters have default values and it is not required that all parameters be explicitly defined in the configuration files. A simple example is given for each category of configuration file.</p>
+<p><img src="../../media/submit-submit-local-configuration.png" alt="Local submit configuration" /></p>
+<h3 id="sites">Sites</h3>
+<p>Remote sites are defined in the file <code>sites.dat</code>. Each remote site is defined by a stanza indicating an access mechanism and other account and venue specific information. Defined keywords are</p>
+<ul>
+<li>[name] - site name. Used as command line argument (-v/--venue) and in tools.dat (destinations)</li>
+<li>venues - comma separated list of hostnames. If multiple hostnames are listed one site will chosen at random.</li>
+<li>tunnelDesignator - name of tunnel defined in tunnels.dat.</li>
+<li>siteMonitorDesignator - name of site monitor defined in monitors.dat.</li>
+<li>venueMechanism - possible mechanisms are ssh and local.</li>
+<li>remoteUser - login user at remote site.</li>
+<li>remoteBatchAccount - some batch systems requirement that an account be provided in addition to user information.</li>
+<li>remoteBatchSystem - the possible batch submission systems include CONDOR, PBS, SGE, and LSF. SCRIPT may also be specified to specify that a script will be executed directly on the remote host.</li>
+<li>remoteBatchQueue - when remoteBatchSystem is PBS the queue name may be specified.</li>
+<li>remoteBatchPartition - slurm parameter to define partition for remote job</li>
+<li>remoteBatchPartitionSize - slurm parameter to define partition size, currently for BG machines.</li>
+<li>remoteBatchConstraints - slurm parameter to define constraints for remote job</li>
+<li>parallelEnvironment - sge parameter</li>
+<li>remoteBinDirectory - define directory where shell scripts related to the site should be kept.</li>
+<li>remoteApplicationRootDirectory - define directory where application executables are located.</li>
+<li>remoteScratchDirectory - define the top level directory where jobs should be executed. Each job will create a subdirectory under remoteScratchDirectory to isolated jobs from each other.</li>
+<li>remotePpn - set the number of processors (cores) per node. The PPN is applied to PBS and LSF job description files. The user may override the value defined here from the command line.</li>
+<li>remoteManager - site specific multi-processor manager. Refers to definition in managers.dat.</li>
+<li>remoteHostAttribute - define host attributes. Attributes are applied to PBS description files.</li>
+<li>stageFiles - A True/False value indicating whether or not files should be staged to remote site. If the the job submission host and remote host share a file system file staging may not be necessary. Default is True.</li>
+<li>passUseEnvironment - A True/False value indicating whether or not the HUB 'use' environment should passed to the remote site. Default is False. True only makes sense if the remote site is within the HUB domain.</li>
+<li>arbitraryExecutableAllowed - A True/False value indicating whether or not execution of arbitrary scripts or binaries are allowed on the remote site. Default is True. If set to False the executable must be staged or emanate from /apps. (deprecated)</li>
+<li>executableClassificationsAllowed - classifications accepted by site. Classifications are set in appaccess.dat</li>
+<li>members - a list of site names. Providing a member list gives a layer of abstraction between the user facing name and a remote destination. If multiple members are listed one will be randomly selected for each job.</li>
+<li>state - possible values are enabled or disabled. If not explicitly set the default value is enabled.</li>
+<li>failoverSite - specify a backup site if site is not available. Site availability is determined by site probes.</li>
+<li>checkProbeResult - A True/False value indicating whether or not probe results should determine site availability. Default is True.</li>
+<li>restrictedToUsers - comma separated list of user names. If the list is empty all users may garner site access. User restrictions are applied before group restrictions.</li>
+<li>restrictedToGroups - comma separated list of group names. If the list is empty all groups may garner site access.</li>
+<li>logUserRemotely - maintain log on remote site mapping HUB id, user to remote batch job id. If not explicitly set the default value is False.</li>
+<li>undeclaredSiteSelectionWeight - used when no site is specified to choose between sites where selection weight &gt; 0.</li>
+<li>minimumWallTime - minimum walltime allowed for site or queue. Time should be expressed in minutes.</li>
+<li>maximumWallTime - maximum walltime allowed for site or queue. Time should be expressed in minutes.</li>
+<li>minimumCores - minimum number of cores allowed for site or queue.</li>
+<li>maximumCores - maximum number of cores allowed for site or queue.</li>
+<li>pegasusTemplates - pertinent pegasus templates for site, rc, and transaction files.</li>
+</ul>
+<p>An example stanza is presented for a site that is accessed through ssh.</p>
+<p><img src="../../media/submit-submit-remote-sites.png" alt="Remote site description" /></p>
+<pre><code>[cluster]
+venues = cluster.campus.edu
+remotePpn = 8
+remoteBatchSystem = PBS
+remoteBatchQueue = standby
+remoteUser = yourhub
+remoteManager = mpich-intel64
+venueMechanism = ssh
+remoteScratchDirectory = /scratch/yourhub
+siteMonitorDesignator = clusterPBS
+</code></pre>
+<h3 id="tools">Tools</h3>
+<p>Staged tools are defined in the file <code>tools.dat</code>. Each staged tool is defined by a stanza indicating an where a tool is staged and any access restrictions. The existence of a staged tool at multiple sites can be expressed with multiple stanzas or multiple destinations within a single stanza. If the tool requires multiprocessors a manager can also be indicated. Defined keywords are</p>
+<ul>
+<li>[name] - tool name. Used as command line argument to execute staged tools. Repeats are permitted to indicate staging at multiple sites.</li>
+<li>destinations - comma separated list of destinations. Destination may exist in sites.dat or be a grid site defined by a ClassAd file.</li>
+<li>executablePath - path to executable at remote site. The path may be given as an absolute path on the remote site or a path relative to remoteApplicationRootDirectory defined in sites.dat.</li>
+<li>restrictedToUsers - comma separated list of user names. If the list is empty all users may garner tool access. User restrictions are applied before group restrictions.</li>
+<li>restrictedToGroups - comma separated list of group names. If the list is empty all groups may garner tool access.</li>
+<li>environment - comma separated list of environment variables in the form e=v.</li>
+<li>remoteManager - tool specific multi-processor manager. Refers to definition in managers.dat. Overrides value set by site definition.</li>
+<li>state - possible values are enabled or disabled. If not explicitly set the default value is enabled.</li>
+</ul>
+<p>An example stanza is presented for a staged tool maintained in the yourhub account on a remote site.</p>
+<p><img src="../../media/submit-submit-remote-tools.png" alt="Remote tool description" /></p>
+<pre><code>[earth]
+destinations = cluster
+executablePath = ${HOME}/apps/planets/bin/earth.x
+remoteManager = mpich-intel
+
+[sun]
+destinations = cluster
+executablePath = ${HOME}/apps/stars/bin/sun.x
+remoteManager = mpich-intel
+</code></pre>
+<h3 id="monitors">Monitors</h3>
+<p>Remote job monitors are defined in the file <code>monitors.dat</code>. Each remote monitor is defined by a stanza indicating where the monitor is located and to be executed. Defined keywords are</p>
+<ul>
+<li>[name] - monitor name. Used in sites.dat (siteMonitorDesignator)</li>
+<li>venue - hostname upon which to launch monitor daemon. Typically this is a cluster headnode.</li>
+<li>venueMechanism - monitoring job launch process. The default is ssh.</li>
+<li>tunnelDesignator - name of tunnel defined in tunnels.dat.</li>
+<li>remoteUser - login user at remote site.</li>
+<li>remoteBinDirectory - define directory where shell scripts related to the site should be kept.</li>
+<li>remoteMonitorCommand - command to launch monitor daemon process.</li>
+<li>state - possible values are enabled or disabled. If not explicitly set the default value is enabled.</li>
+</ul>
+<p>An example stanza is presented for a remote monitor tool used to report status of PBS jobs.</p>
+<p><img src="../../media/submit-submit-remote-monitors.png" alt="Remote queue status" /></p>
+<pre><code>[clusterPBS]
+venue = cluster.campus.edu
+remoteUser = yourhub
+remoteMonitorCommand = ${HOME}/SubmitMonitor/monitorPBS.py
+</code></pre>
+<h3 id="multi-processor-managers">Multi-processor managers</h3>
+<p>Multiprocessor managers are defined in the file <code>managers.dat</code>. Each manager is defined by a stanza indicating the set of commands used to execute a multiprocessor simulation run. Defined keywords are</p>
+<ul>
+<li>[name] - manager name. Used in sites.dat and tools.dat.</li>
+<li>computationMode - indicate how to use multiple processors for a single job. Recognized values are mpi, parallel, and matlabmpi. Parallel application request multiprocess have there own mechanism for inter process communication. Matlabmpi is used to enable the an Matlab implementation of MPI.</li>
+<li>preManagerCommands - comma separated list of commands to be executed before the manager command. Typical use of pre manager commands would be to define the environment to include a particular version of MPI amd/or compiler, or setup MPD.</li>
+<li>managerCommand - manager command commonly mpirun. It is possible to include strings that will be sustituted with values defined from the command line.</li>
+<li>postManagerCommands - comma separated list of commands to be executed when the manager command completes. A typical use would be to terminate an MPD setup.</li>
+<li>mpiRankVariable - define environment variable set by manager command to define process rank. Recognized values are: MPIRUN_RANK, GMPI_ID, RMS_RANK, MXMPI_ID, MSTI_RANK, PMI_RANK, and OMPI_MCA_ns_nds_vpid. If no variable is given an attempt is made to determine process rank from command line arguments.</li>
+<li>environment - comma separated list of environment variables in the form e=v.</li>
+<li>moduleInitialize - initialize module script for sh</li>
+<li>modulesUnload - modules to be unloaded clearing way for replacement modules</li>
+<li>modulesLoad - modules to load to define mpi and other libraries</li>
+<li>state - possible values are enabled or disabled. If not explicitly set the default value is enabled.</li>
+</ul>
+<p>An example stanza is presented for a typical MPI instance. The given command should be suitable for <code>/bin/sh</code> execution. <img src="../../media/submit-submit-remote-managers.png" alt="Remote MPI manager" /></p>
+<pre><code>[mpich-intel]
+preManagerCommands = . ${MODULESHOME}/init/sh, module load mpich-intel/11.1.038
+managerCommand = mpirun -machinefile ${PBS_NODEFILE} -np NPROCESSORS
+</code></pre>
+<p>The token NPROCESSORS is replaced by an actual value at runtime.</p>
+<h3 id="file-access-controls">File access controls</h3>
+<p>Application or file level access control is described by entries listed in the file <code>appaccess.dat</code>. The ability to transfer files from the HUB to remote sites is granted on a group basis as defined by white and black lists. Each list is given a designated priority and classification. In cases where a file appears on multiple lists, the highest priority takes precedence. Simple wildcard operators are allowed the in the filename declaration allowing for easy listing of entire directories. Each site lists acceptable classification(s) in <code>sites.dat. Defined keywords are</code></p>
+<ul>
+<li><code>[group] - group name.</code></li>
+<li><code>whitelist - comma separated list of paths. Wildcards allowed.</code></li>
+<li><code>blacklist - comma separated list of paths. Wildcards allowed.</code></li>
+<li><code>priority - higher priority wins</code></li>
+<li><code>classification - apps or user. user class are treated are arbitrary executables.</code></li>
+<li><code>state - possible values are enabled or disabled. If not explicitly set the default value is enabled.</code></li>
+</ul>
+<p><code>An example file giving permissions reminiscent of those defined in earlier submit releases is presented here</code></p>
+<pre><code>[public]
+whitelist = /apps/.*
+priority = 0
+classification = apps
+
+[submit]
+whitelist = ${HOME}/.*
+priority = 0
+classification = home
+</code></pre>
+<p><code>The group public is intended to include all users. Your system may use a different group such as users for this purpose. The definitions shown here allow all users access to files in /apps where applications are published. Additionally members of the submit group are allowed to send files from their $HOME directory.</code></p>
+<h3 id="environment-variables"><code>Environment variables</code></h3>
+<p><code>Legal environment variables are listed in the file environmentwhitelist.dat. The objective is to prevent end users from setting security sensitive environment variables while allowing application specific variables to be passed to the remote site. Environment variables required to define multiprocessor execution should also be included. The permissible environment variables should be entered as a simple list - one entry per line. An example file allowing use of a variables used by openmp and mpich is presenter here.</code></p>
+<pre><code># environment variables listed here can be specified from the command line with -e/--env option. Attempts to specify other environment variables will be ignored and the values will not be passed to the remote site.
+
+OMP_NUM_THREADS
+MPICH_HOME
+</code></pre>
+<h3 id="tunnels"><code>Tunnels</code></h3>
+<p><code>In some circumstances, access to clusters is restricted such that only a select list of machines is allowed to communicate with the cluster job submission node. The machines that are granted such access are sometimes referred to as gateways. In such circumstances, ssh tunneling or port forwarding can be used to submit HUB jobs through the gateway machine. Tunnel definition is specified in the file tunnels.dat. Each tunnel is defined by a stanza indicating gateway host and port information. Defined keywords are</code></p>
+<ul>
+<li><code>[name] - tunnel name.</code></li>
+<li><code>venue - tunnel target host.</code></li>
+<li><code>venuePort - tunnel target port.</code></li>
+<li><code>gatewayHost - name of the intermediate host.</code></li>
+<li><code>gatewayUser - login user on gatewayHost.</code></li>
+<li><code>localPortOffset - local port offset used for forwarding. Actual port is localPortMinimum + localPortOffset</code></li>
+</ul>
+<p><code>An example stanza is presented for a tunnel between the HUB and a remote venue by way of an accepted gateway host.</code></p>
+<pre><code>[cluster]
+venue = cluster.campus.edu
+venuePort = 22
+gatewayHost = gateway.campus.edu
+gatewayUser = yourhub
+localPortOffset = 1
+</code></pre>
+<h2 id="initialization-scripts-and-log-files">Initialization Scripts and Log Files</h2>
+<p>The submit server and job monitoring server must be started as daemon processes running on the the submit host. If ssh tunneling is going to be used an addition server must be started as a daemon process. Each daemon process writes to a centralized log file facilitating error recording and debugging.</p>
+<h3 id="initialize-daemon-scripts">Initialize daemon scripts</h3>
+<p>Scripts for starting the server daemons are provided and installed in <code>/etc/init.d</code>. The default settings for when to start and terminate the scripts are adequate.</p>
+<h3 id="log-files">Log files</h3>
+<p>Submit processes log information to files located in the <code>/var/log/submit</code> directory tree. The exact location varies depending on the vintage of the installation. Each process has its own log file. The three most important log files are <code>submit-server.log</code>, <code>distributor.log</code>, and <code>monitorJob.log</code>.</p>
+<h4 id="submit-log">submit.log</h4>
+<p>The <code>submit-server.log</code> file tracks when the submit server is started and stopped. Each connection from the submit client is logged with the command line and client ip address reported. All log entries are timestamped and reported by submit-server process ID (PID) or submit ID (ID:) once one has been assigned. Entries from all jobs are simultaneously reported and intermingled. The submit ID serves as a good search key when tracing problems. Examples of startup, job execution, and termination are given here. The job exit status and time metrics are also recorded in the MyQSL database JobLog table.</p>
+<pre><code>[Sun Aug 26 17:28:24 2012] 0: ###################################################
+[Sun Aug 26 17:28:24 2012] 0: Backgrounding process.
+[Sun Aug 26 17:28:24 2012] 0: Listening: protocol='tcp', host='', port=830
+</code></pre>
+<pre><code>[Sun Sep 23 12:33:28 2012] (1154) ====================================================
+[Sun Sep 23 12:33:28 2012] (1154) Connection to tcp://:830 from ('192.168.224.14', 38770)
+[Sun Sep 23 12:33:28 2012] 0: Server will time out in 60 seconds.
+[Sun Sep 23 12:33:28 2012] 0: Cumulative job load is 0.84.  (Max: 510.00)
+[Sun Sep 23 12:33:28 2012] 1670: Args are:['/usr/bin/submit', '--local', '-p', '@@iv=-3:1.5:3', '/home/hubzero/user/hillclimb/bin/hillclimb1.py', '--seed', '10', '--initialvalue', '@@iv', '--lowerbound', '-3', '--upperbound', '3', '--function', 'func2', '--solutionslog', 'solutions.dat', '--bestresultlog', 'best.dat']
+[Sun Sep 23 12:33:28 2012] 1670: Server stopping.
+[Sun Sep 23 12:33:28 2012] 1670: Server(JobExecuter) exiting(2).
+[Sun Sep 23 12:33:38 2012] (1154) ====================================================
+[Sun Sep 23 12:33:38 2012] (1154) Connection to tcp://:830 from ('192.168.224.14', 38774)
+[Sun Sep 23 12:33:38 2012] 0: Server will time out in 60 seconds.
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue=1:local status=0 cpu=0.030000 real=0.000000 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue=2:local status=0 cpu=0.040000 real=0.000000 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue=3:local status=0 cpu=7.050000 real=7.000000 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue=4:local status=0 cpu=0.080000 real=0.000000 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue=5:local status=0 cpu=0.020000 real=1.000000 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Job Status: venue= status=0 cpu=10.428651 real=9.561828 wait=0.000000
+[Sun Sep 23 12:33:38 2012] 1670: Server(JobExecuter) exiting(0).
+[Sun Sep 23 12:48:44 2012] (1154) ====================================================
+</code></pre>
+<pre><code>[Sun Aug 26 17:28:17 2012] 0: Server(10836) was terminated by a signal 2.
+[Sun Aug 26 17:28:17 2012] 0: Server(Listener) exiting(130).
+</code></pre>
+<h4 id="distributor-log">distributor.log</h4>
+<p>The <code>distributor.log</code> file tracks each job as it progresses from start to finish. Details of remote site assignment, queue status, exit status, and command execution are all reported. All entries are timestamped and reported by submit ID. The submit ID serves as the key to join data reported in <code>submit-server.log</code>. An example for submit ID 1659 is listed here. Again the data for all jobs are intermingled.</p>
+<pre><code>[Sun Sep 23 00:04:21 2012] 0: quotaCommand = quota -w | tail -n 1
+[Sun Sep 23 00:04:21 2012] 1659: command = tar vchf 00001659_01_input.tar --exclude='*.svn*' -C /home/hubzero/user/data/sessions/3984L .__local_jobid.00001659_01 sayhiinquire.dax
+[Sun Sep 23 00:04:21 2012] 1659: remoteCommand pegasus-plan --dax ./sayhiinquire.dax
+[Sun Sep 23 00:04:21 2012] 1659: workingDirectory /home/hubzero/user/data/sessions/3984L
+[Sun Sep 23 00:04:21 2012] 1659: command = tar vrhf 00001659_01_input.tar --exclude='*.svn*' -C /home/hubzero/user/data/sessions/3984L/00001659/01 00001659_01.sh
+[Sun Sep 23 00:04:21 2012] 1659: command = nice -n 19 gzip 00001659_01_input.tar
+[Sun Sep 23 00:04:21 2012] 1659: command = /opt/submit/bin/receiveinput.sh /home/hubzero/user/data/sessions/3984L/00001659/01 /home/hubzero/user/data/sessions/3984L/00001659/01/.__timestamp_transferred.00001659_01
+[Sun Sep 23 00:04:21 2012] 1659: command = /opt/submit/bin/submitbatchjob.sh /home/hubzero/user/data/sessions/3984L/00001659/01 ./00001659_01.pegasus
+[Sun Sep 23 00:04:23 2012] 1659: remoteJobId = 2012.09.23 00:04:22.996 EDT:   Submitting job(s).
+2012.09.23 00:04:23.002 EDT:   1 job(s) submitted to cluster 946.
+2012.09.23 00:04:23.007 EDT:
+2012.09.23 00:04:23.012 EDT:   -----------------------------------------------------------------------
+2012.09.23 00:04:23.017 EDT:   File for submitting this DAG to Condor           : sayhi_inquire-0.dag.condor.sub
+2012.09.23 00:04:23.023 EDT:   Log of DAGMan debugging messages                 : sayhi_inquire-0.dag.dagman.out
+2012.09.23 00:04:23.028 EDT:   Log of Condor library output                     : sayhi_inquire-0.dag.lib.out
+2012.09.23 00:04:23.033 EDT:   Log of Condor library error messages             : sayhi_inquire-0.dag.lib.err
+2012.09.23 00:04:23.038 EDT:   Log of the life of condor_dagman itself          : sayhi_inquire-0.dag.dagman.log
+2012.09.23 00:04:23.044 EDT:
+2012.09.23 00:04:23.049 EDT:   -----------------------------------------------------------------------
+2012.09.23 00:04:23.054 EDT:
+2012.09.23 00:04:23.059 EDT:   Your Workflow has been started and runs in base directory given below
+2012.09.23 00:04:23.064 EDT:
+2012.09.23 00:04:23.070 EDT:   cd /home/hubzero/user/data/sessions/3984L/00001659/01/work/pegasus
+2012.09.23 00:04:23.075 EDT:
+2012.09.23 00:04:23.080 EDT:   *** To monitor the workflow you can run ***
+2012.09.23 00:04:23.085 EDT:
+2012.09.23 00:04:23.090 EDT:   pegasus-status -l /home/hubzero/user/data/sessions/3984L/00001659/01/work/pegasus
+2012.09.23 00:04:23.096 EDT:
+2012.09.23 00:04:23.101 EDT:   *** To remove your workflow run ***
+2012.09.23 00:04:23.106 EDT:   pegasus-remove /home/hubzero/user/data/sessions/3984L/00001659/01/work/pegasus
+2012.09.23 00:04:23.111 EDT:
+2012.09.23 00:04:23.117 EDT:   Time taken to execute is 0.993 seconds
+[Sun Sep 23 00:04:23 2012] 1659: confirmation: S(1):N Job
+[Sun Sep 23 00:04:23 2012] 1659: status:Job N WF-DiaGrid
+[Sun Sep 23 00:04:38 2012] 1659: status:DAG R WF-DiaGrid
+[Sun Sep 23 00:10:42 2012] 0: quotaCommand = quota -w | tail -n 1
+[Sun Sep 23 00:10:42 2012] 1660: command = tar vchf 00001660_01_input.tar --exclude='*.svn*' -C /home/hubzero/clarksm .__local_jobid.00001660_01 noerror.sh
+[Sun Sep 23 00:10:42 2012] 1660: remoteCommand ./noerror.sh
+[Sun Sep 23 00:10:42 2012] 1660: workingDirectory /home/hubzero/clarksm
+[Sun Sep 23 00:10:42 2012] 1660: command = tar vrhf 00001660_01_input.tar --exclude='*.svn*' -C /home/hubzero/clarksm/00001660/01 00001660_01.sh
+[Sun Sep 23 00:10:42 2012] 1660: command = nice -n 19 gzip 00001660_01_input.tar
+[Sun Sep 23 00:10:42 2012] 1660: command = /opt/submit/bin/receiveinput.sh /home/hubzero/clarksm/00001660/01 /home/hubzero/clarksm/00001660/01/.__timestamp_transferred.00001660_01
+[Sun Sep 23 00:10:42 2012] 1660: command = /opt/submit/bin/submitbatchjob.sh /home/hubzero/clarksm/00001660/01 ./00001660_01.condor
+[Sun Sep 23 00:10:42 2012] 1660: remoteJobId = Submitting job(s).
+1 job(s) submitted to cluster 953.
+[Sun Sep 23 00:10:42 2012] 1660: confirmation: S(1):N Job
+[Sun Sep 23 00:10:42 2012] 1660: status:Job N DiaGrid
+[Sun Sep 23 00:11:47 2012] 1660: status:Simulation I DiaGrid
+[Sun Sep 23 00:12:07 2012] 1660: Received SIGINT!
+[Sun Sep 23 00:12:07 2012] 1660: waitForBatchJobs: nCompleteRemoteJobIndexes = 0, nIncompleteJobs = 1, abortGlobal = True
+[Sun Sep 23 00:12:07 2012] 1660: command = /opt/submit/bin/killbatchjob.sh 953.0 CONDOR
+[Sun Sep 23 00:12:07 2012] 1660: Job 953.0 marked for removal
+
+[Sun Sep 23 00:12:07 2012] 1660: status:Simulation I DiaGrid
+[Sun Sep 23 00:12:52 2012] 1660: status:Simulation D DiaGrid
+[Sun Sep 23 00:12:52 2012] 1660: venue=1:localCONDOR:953.0:DiaGrid status=258 cputime=0.000000 realtime=0.000000 waittime=0.000000 ncpus=1
+[Sun Sep 23 00:28:14 2012] 1659: status:DAG D WF-DiaGrid
+[Sun Sep 23 00:28:14 2012] 1659: waitForBatchJobs: nCompleteRemoteJobIndexes = 1, nIncompleteJobs = 0, abortGlobal = False
+[Sun Sep 23 00:28:14 2012] 1659: command = /opt/submit/bin/cleanupjob.sh /home/hubzero/user/data/sessions/3984L/00001659/01
+[Sun Sep 23 00:28:15 2012] 1659:
+**********************************************SUMMARY***********************************************
+
+Job instance statistics           : /home/hubzero/user/data/sessions/3984L/00001659/01/work/pegasus/statistics/jobs.txt
+
+****************************************************************************************************
+
+[Sun Sep 23 00:28:15 2012] 1659: venue=1:localPEGASUS:946.0:WF-DiaGrid status=0 cputime=1.430000 realtime=2.000000 waittime=0.000000 ncpus=1
+[Sun Sep 23 00:28:15 2012] 1659: venue=2:PEGASUS:952.0:DiaGrid status=0 cputime=0.003000 realtime=0.000000 waittime=681.000000 ncpus=1 event=/sayhi_inquire-sayhi-1.0
+[Sun Sep 23 00:28:15 2012] 1659: venue=3:PEGASUS:954.0:DiaGrid status=0 cputime=0.003000 realtime=0.000000 waittime=631.000000 ncpus=1 event=/sayhi_inquire-inquire-1.0
+</code></pre>
+<h4 id="monitorjob-log">monitorJob.log</h4>
+<p>The <code>monitorJob.log</code> file tracks the invocation and termination of each remotely executed job monitor. The remote job monitors are started on demand when job are submitted to remote sites. The remote job monitors terminate when all jobs complete at a remote site and no new activity has been initiated for a specified amount of time - typically thirty minutes. A typical report should look like:</p>
+<pre><code>[Sun Aug 26 17:29:16 2012] (1485) ***********************************
+[Sun Aug 26 17:29:16 2012] (1485) * distributor job monitor started *
+[Sun Aug 26 17:29:16 2012] (1485) ***********************************
+[Sun Aug 26 17:29:16 2012] (1485) loading active jobs
+[Sun Aug 26 17:29:16 2012] (1485) 15 jobs loaded from DB file
+[Sun Aug 26 17:29:16 2012] (1485) 15 jobs loaded from dump file
+[Sun Aug 26 17:29:16 2012] (1485) 4 jobs purged
+[Sun Aug 26 17:29:16 2012] (1485) 11 monitored jobs
+[Sun Aug 26 18:02:04 2012] (24250) Launching wf-diagrid
+[Sun Aug 26 18:02:04 2012] (1485) 12 monitored jobs
+[Sun Aug 26 18:02:15 2012] (1485) Update message received from wf-diagrid
+[Sun Aug 26 18:03:15 2012] (1485) Update message received from wf-diagrid
+[Sun Aug 26 18:06:43 2012] (1485) 13 monitored jobs
+...
+[Thu Sep 17 17:32:51 2011] (21095) Received SIGTERM!
+[Thu Sep 17 17:32:51 2011] (21095) Send TERM to child ssh process
+[Thu Sep 17 17:32:51 2011] (21095) distributor site monitor stopped
+[Thu Sep 17 17:32:51 2011] (17348) Send TERM to child site steele process
+[Thu Sep 17 17:32:51 2011] (17348) ***********************************
+[Thu Sep 17 17:32:51 2011] (17348) * distributor job monitor stopped *
+[Thu Sep 17 17:32:51 2011] (17348) ***********************************
+</code></pre>
+<p>It is imperative that the job monitor be running in order for notification of job progress to occur. If users report that their job appears to hang check to make sure the job monitor is running. If necessary take corrective action and restart the daemon.</p>
+<h4 id="monitortunnel-log">monitorTunnel.log</h4>
+<p>The <code>monitorTunnel.log</code> file tracks invocation and termination of each ssh tunnel connection. If users report problems with job submission to sites accessed via an ssh tunnel this log file should be checked for indication of any possible problems.</p>
+<h2 id="remote-domain-configuration">Remote Domain Configuration</h2>
+<p>For job submission to remote sites via ssh it is necessary to configure a remote job monitor and a set of scripts to perform file transfer and batch job related functions. A set of scripts can be used for each different batch submission system or in some cases they may be combined with appropriate switching based on command line arguments. A separate job monitor is need for each batch submission system. Communication between the HUB and remote resource via ssh requires inclusion of a public key in the authorized_keys file. <img src="../../media/submit-submit-remote-configuration.png" alt="Remote submit configuration" /></p>
+<h3 id="job-monitor-daemon">Job monitor daemon</h3>
+<p>A remote job monitor runs a daemon process and reports batch job status to a central job monitor located on the HUB. The daemon process is started by the central job monitor on demand. The daemon terminates after a configurable amount of inactivity time. The daemon code needs to be installed in the location declared in the monitors.dat file. The daemon requires some initial configuration to declare where it will store log and history files. The daemon does not require any special privileges any runs as a standard user. Typical configuration for the daemon looks like this:</p>
+<p><img src="../../media/submit-submit-monitor-setup.png" alt="Coordinated monitor setup" /></p>
+<p>The directory defined by MONITORLOGLOCATION needs to be created before the daemon is started. Sample daemon scripts used for PBS, LSF, SGE, Condor, Load Leveler, and Slurm batch systems are included in directory <code>BatchMonitors</code>.</p>
+<h3 id="file-transfer-and-batch-job-scripts">File transfer and batch job scripts</h3>
+<p>The simple scripts are used to manage file transfer and batch job launching and termination. The location of the scripts is entered in <code>sites.dat</code>.</p>
+<p><img src="../../media/submit-submit-remote-bin-setup.png" alt="Remote bin directory setup" /></p>
+<p>Examples scripts suitable for use with PBS, LSF, Condor, Load Leveler, and Slurm are included in directory <code>Scripts</code>. After modifications are made to <code>monitors.dat</code> the central job monitor must be notified. This can be accomplished by stopping and starting the <code>submon</code> daemon or a <code>HUP</code> signal can be sent to the <code>monitorJob.py</code> process.</p>
+<h4 id="file-transfer-input-files">File transfer - input files</h4>
+<p>Receive compressed tar file containing input files required for the job on <code>stdin</code>. The file transferredTimestampFile is used to determine what newly created or modified files should be returned to the HUB.</p>
+<pre><code>receiveinput.sh jobWorkingDirectory jobScratchDirectory  transferredTimestampFile
+</code></pre>
+<h4 id="batch-job-script-submission">Batch job script - submission</h4>
+<p>Submit batch job using supplied description file. If arguments beyond job working directory and batch description file are supplied an entry is added to the remote site log file. The log file provides a record relating the HUB end user to the remote batch job identifier. The log file should be placed at a location agreed upon by the remote site and HUB.</p>
+<pre><code>submitbatchjob.sh jobWorkingDirectory jobScratchDirectory jobDescriptionFile
+</code></pre>
+<p>The <code>jobId</code> is returned on <code>stdout</code> if job submission is successful. For an unsuccessful job submission the returned <code>jobId</code> should be <code>-1</code>.</p>
+<h4 id="file-transfer-output-files">File transfer - output files</h4>
+<p>Return compressed tar file containing job output files on <code>stdout</code>.</p>
+<pre><code>transmitresults.sh jobWorkingDirectory
+</code></pre>
+<h4 id="file-transfer-cleanup">File transfer - cleanup</h4>
+<p>Remove job specific directory and any other dangling files</p>
+<pre><code>cleanupjob.sh jobWorkingDirectory jobScratchDirectory jobClass
+</code></pre>
+<h4 id="batch-job-script-termination">Batch job script - termination</h4>
+<p>Terminate given remote batch job. Command line arguments specify job identifier and batch system type.</p>
+<pre><code>killbatchjob.sh jobId jobClass
+</code></pre>
+<h4 id="batch-job-script-post-process">Batch job script - post process</h4>
+<p>For some jobClassses it is appropriate to preform standard post processing actions. An example of such a jobClass is Pegasus.</p>
+<pre><code>postprocessjob.sh jobWorkingDirectory jobScratchDirectory jobClass
+</code></pre>
+<h2 id="access-control-mechanisms">Access Control Mechanisms</h2>
+<p>By default tools and sites are configured so that access is granted to all HUB members. In some cases it is desired to restrict access to either a tool or site to a subset of the HUB membership. The keywords restrictedToUsers and restrictedToGroups provide a mechanism to apply restrictions accordingly. Each keyword should be followed by a list of comma separated values of userids (logins) or groupids (as declared when creating a new HUB group). If user or group restrictions have been declared upon invocation of submit a comparison is made between the restrictions and userid and group memberships. If both user and group restrictions are declared the user restriction will be applied first, followed by the group restriction.</p>
+<p>In addition to applying user and group restrictions another mechanism is provided by the <code>executableClassificationsAllowed</code> keyword in the sites configuration file. In cases where the executable program is not pre-staged at the remote sites the executable needs to be transferred along with the user supplied inputs to the remote site. Published tools will have their executable program located in the <code>/apps/tools/revision/bin</code> directory. For this reason submitted programs that reside in <code>/apps</code> are assumed to be validated and approved for execution. The same cannot be said for programs in other directories. The common case where such a situation arises is when a tool developer is building and testing within the HUB workspace environment. To grant a tool developer the permission to submit such arbitrary applications the site configuration must allow arbitrary executables and the tool developer must be granted permission to send files from their <code>$HOME</code> directory. Discrete permission can be granted on a file by file basis in <code>appaccess.dat</code>.</p>
+
+        </div>
+        
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../rappture/index.html" rel="prev"><span>Previous</span>Rappture</a><a class="pager__next" href="../upgrade7to8/index.html" rel="next"><span>Next</span>Upgrading from EL7 to EL8</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/installation/el8/12-submit.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

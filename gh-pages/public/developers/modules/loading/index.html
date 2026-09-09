@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loading · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Modules reach the page in three ways: a template asks for a position, a component or plugin renders one inline, or an article contains a tag that expands into…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/modules/loading/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Loading</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-the-loader-knows">What the loader knows</a></li>
+<li class="toc__item toc__item--l2"><a href="#in-a-template">In a template</a></li>
+<li class="toc__item toc__item--l3"><a href="#collapsing-empty-regions">Collapsing empty regions</a></li>
+<li class="toc__item toc__item--l2"><a href="#in-a-component-plugin-or-view">In a component, plugin, or view</a></li>
+<li class="toc__item toc__item--l2"><a href="#chrome">Chrome</a></li>
+<li class="toc__item toc__item--l2"><a href="#in-article-content">In article content</a></li>
+<li class="toc__item toc__item--l2"><a href="#assigning-a-module-to-a-position">Assigning a module to a position</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Modules</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Loading</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Loading</h1>
+        </header>
+        
+        <div class="prose">
+<p>Modules reach the page in three ways: a template asks for a position, a
+component or plugin renders one inline, or an article contains a tag that
+expands into one. All three end at the same place —
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>,
+reachable through the <code>Module</code> facade.</p>
+<h2 id="what-the-loader-knows">What the loader knows</h2>
+<p><code>Loader::all()</code> runs one query per request and caches the result. It returns
+the published instances that pass every one of these filters:</p>
+<ul>
+<li><code>m.published = 1</code> and the matching <code>#__extensions</code> row has <code>e.enabled = 1</code></li>
+<li><code>publish_up</code> is null or past, <code>publish_down</code> is null or future</li>
+<li><code>m.access</code> is one of the current user's authorised view levels</li>
+<li><code>m.client_id</code> matches the current client</li>
+<li>the instance is assigned to the current <code>Itemid</code>, or to all menu items</li>
+<li>with language filtering on, <code>m.language</code> is the current tag or <code>*</code></li>
+</ul>
+<p>An instance assigned negatively to the current menu item is then removed, and
+duplicates are collapsed. The result is ordered by position, then by
+<code>ordering</code>.</p>
+<h2 id="in-a-template">In a template</h2>
+<p>The template declares a position with a <code>jdoc</code> tag, which the document parser
+replaces with the rendered output of every module in that position:</p>
+<pre><code class="language-html">&lt;jdoc:include type=&quot;modules&quot; name=&quot;footer&quot; /&gt;
+</code></pre>
+<p><code>type=&quot;modules&quot;</code> renders the whole position; <code>type=&quot;module&quot;</code> renders one
+named module. Either accepts <code>style</code>, naming the chrome function that wraps
+each module, and <code>params</code>, an inline parameter override.</p>
+<h3 id="collapsing-empty-regions">Collapsing empty regions</h3>
+<p><code>countModules()</code> on the document tells a template whether a position has
+anything in it, so that the markup around it can be omitted:</p>
+<pre><code class="language-php">&lt;?php if ($this-&gt;countModules('helppane')) : ?&gt;
+	&lt;div id=&quot;help&quot;&gt;
+		&lt;jdoc:include type=&quot;modules&quot; name=&quot;helppane&quot; /&gt;
+	&lt;/div&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+<p>The argument is an expression. <code>Hubzero\Document\Type\Html::countModules()</code>
+splits it on <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>==</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>,
+<code>&lt;=</code>, <code>&gt;=</code>, <code>and</code>, <code>or</code>, and <code>xor</code>, replaces each position name with
+the number of modules in it, and evaluates the result:</p>
+<pre><code class="language-php">$this-&gt;countModules('left or right')
+$this-&gt;countModules('user1 + user2')
+</code></pre>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The operator must be surrounded by single spaces. <code>'left+right'</code>
+is treated as one position name and counts zero. And quoting each name
+separately — <code>countModules('left' and 'right')</code> — evaluates the <code>and</code> in PHP
+before the call, so the function receives <code>true</code>, counts a position named
+<code>1</code>, and returns zero every time. Write the whole expression as one string.</p>
+</aside>
+<h2 id="in-a-component-plugin-or-view">In a component, plugin, or view</h2>
+<p><code>Hubzero\Module\Helper</code> is a static wrapper over the same loader, and is what
+component views use:</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Helper::renderModules($position)</code></td>
+<td>Returns the combined output of every module in <code>$position</code>.</td>
+</tr>
+<tr>
+<td><code>Helper::renderModule($name)</code></td>
+<td>Returns the output of one module, by element name or by name without the prefix.</td>
+</tr>
+<tr>
+<td><code>Helper::displayModules($position)</code></td>
+<td>Echoes the same.</td>
+</tr>
+<tr>
+<td><code>Helper::displayModule($name)</code></td>
+<td>Echoes the same.</td>
+</tr>
+<tr>
+<td><code>Helper::countModules($condition)</code></td>
+<td>The count expression, as above.</td>
+</tr>
+<tr>
+<td><code>Helper::getParams($id)</code></td>
+<td>A <code>Registry</code> of one instance's parameters, by id or element name.</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">echo \Hubzero\Module\Helper::renderModules('extracontent');
+</code></pre>
+<p>The <code>Module</code> facade exposes the loader itself, which is the same thing with
+more control: <code>Module::position()</code>, <code>Module::name()</code>, <code>Module::byName()</code>,
+<code>Module::byPosition()</code>, <code>Module::isEnabled()</code>, <code>Module::params()</code>,
+<code>Module::count()</code>, <code>Module::render()</code>, <code>Module::path()</code>, and
+<code>Module::canonical()</code>.</p>
+<pre><code class="language-php">echo Module::position('notices');
+echo Module::name('mod_login', 'xhtml');
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>renderModules()</code> and <code>displayModules()</code> default to a style of
+<code>-2</code>, which matches no chrome function, so the module's output is returned
+unwrapped. Pass <code>'xhtml'</code> if you want the <code>&lt;div class=&quot;module&quot;&gt;</code> wrapper.
+<code>renderModule()</code> and <code>displayModule()</code> default to <code>-1</code>, which the wrapper
+translates to <code>none</code> — also unwrapped, but deliberately.</p>
+</aside>
+<h2 id="chrome">Chrome</h2>
+<p>The style names a function <code>modChrome_{style}</code>, loaded from
+<code>core/templates/system/html/modules.php</code> and, if it exists, from
+<code>{template}/html/modules.php</code>. The shipped set is <code>none</code>, <code>table</code>, <code>xhtml</code>,
+<code>outline</code>, <code>sliders</code>, and <code>tabs</code>. A template adds its own by defining another
+function in its <code>html/modules.php</code>.</p>
+<p><code>none</code> echoes the module's content and nothing else. <code>xhtml</code> wraps it in a
+<code>&lt;div class=&quot;module{moduleclass_sfx}&quot;&gt;</code> with an <code>&lt;h3&gt;</code> title when the
+instance's <strong>Show Title</strong> is on, and emits nothing at all when the content is
+empty. Multiple styles may be given, space-separated.</p>
+<h2 id="in-article-content">In article content</h2>
+<p>With the <strong>Content — xHub Tags</strong> plugin enabled, article text can carry a tag
+that renders a position where it stands:</p>
+<pre><code>{xhub:module position=&quot;footer&quot;}
+</code></pre>
+<p><code>style</code> and <code>params</code> attributes are accepted; the plugin defaults the style to
+<code>xhtml</code>, and translates the legacy numeric values <code>-1</code> and <code>-2</code> to <code>none</code> and
+<code>xhtml</code>.</p>
+<h2 id="assigning-a-module-to-a-position">Assigning a module to a position</h2>
+<p>None of this happens without an instance. In the administrative interface, go
+to the Module Manager, create a new instance of the module, give it a title,
+choose a position from the template's declared positions, set the access level
+and menu assignment, and publish it. The position name is arbitrary text: a
+position no template asks for renders nowhere, and a <code>jdoc</code> tag for a position
+with no modules renders as nothing.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="../../components/index.html" rel="next"><span>Next</span>Components</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/09-loading.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

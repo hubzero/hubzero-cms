@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cron events · Reference · Hubzero Documentation</title>
+  <meta name="description" content="Events in the group. A plugin in receives an event by defining a public method with the event&#x27;s name; the arguments are those the call site passes, in order.…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/events/cron/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Reference</a>
+        <nav aria-label="Reference contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../api/index.html">REST API reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../api/activity/index.html">Activity API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/answers/index.html">Answers API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/billboards/index.html">Billboards API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/blog/index.html">Blog API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/cache/index.html">Cache API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/checkin/index.html">Checkin API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/citations/index.html">Citations API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/collections/index.html">Collections API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/content/index.html">Content API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/courses/index.html">Courses API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/developer/index.html">Developer API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/events/index.html">Events API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/forum/index.html">Forum API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/groups/index.html">Groups API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/jobs/index.html">Jobs API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/kb/index.html">Kb API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/members/index.html">Members API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/news/index.html">News API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/newsletter/index.html">Newsletter API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/plugins/index.html">Plugins API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/projects/index.html">Projects API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/publications/index.html">Publications API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/resources/index.html">Resources API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/search/index.html">Search API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/support/index.html">Support API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/system/index.html">System API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/tags/index.html">Tags API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/tools/index.html">Tools API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/users/index.html">Users API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/whatsnew/index.html">Whatsnew API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/wiki/index.html">Wiki API</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/index.html">Configuration reference</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/components/index.html">Component options</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/answers/index.html">Answers (com_answers)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/billboards/index.html">Billboards (com_billboards)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/blog/index.html">Blog (com_blog)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/cart/index.html">Cart (com_cart)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/citations/index.html">Citations (com_citations)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/collections/index.html">Collections (com_collections)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/content/index.html">Content (com_content)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/courses/index.html">Courses (com_courses)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/cron/index.html">Cron (com_cron)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/dataviewer/index.html">Dataviewer (com_dataviewer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/developer/index.html">Developer (com_developer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/events/index.html">Events (com_events)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/feedback/index.html">Feedback (com_feedback)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/forum/index.html">Forum (com_forum)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/groups/index.html">Groups (com_groups)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/newsletter/index.html">Newsletter (com_newsletter)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/oaipmh/index.html">Oaipmh (com_oaipmh)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/projects/index.html">Projects (com_projects)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/publications/index.html">Publications (com_publications)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/redirect/index.html">Redirect (com_redirect)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/resources/index.html">Resources (com_resources)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/saml/index.html">Saml (com_saml)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/search/index.html">Search (com_search)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/services/index.html">Services (com_services)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/storefront/index.html">Storefront (com_storefront)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/support/index.html">Support (com_support)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/system/index.html">System (com_system)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/tags/index.html">Tags (com_tags)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/templates/index.html">Templates (com_templates)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/tools/index.html">Tools (com_tools)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/usage/index.html">Usage (com_usage)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/wiki/index.html">Wiki (com_wiki)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuration/plugins/index.html">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/answers/index.html">Answers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/antispam/index.html">Antispam plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/authentication/index.html">Authentication plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/authfactors/index.html">Authfactors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/blog/index.html">Blog plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/captcha/index.html">Captcha plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/cart/index.html">Cart plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/citation/index.html">Citation plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/content/index.html">Content plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/courses/index.html">Courses plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/cron/index.html">Cron plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/editors-xtd/index.html">Editors-xtd plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/editors/index.html">Editors plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/filesystem/index.html">Filesystem plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/geocode/index.html">Geocode plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/groups/index.html">Groups plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/handlers/index.html">Handlers plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/hubzero/index.html">Hubzero plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/members/index.html">Members plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/metadata/index.html">Metadata plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/newsletter/index.html">Newsletter plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/oaipmh/index.html">Oaipmh plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/projects/index.html">Projects plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/publications/index.html">Publications plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/resources/index.html">Resources plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/search/index.html">Search plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/support/index.html">Support plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/system/index.html">System plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/tags/index.html">Tags plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/tools/index.html">Tools plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/update/index.html">Update plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/usage/index.html">Usage plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/user/index.html">User plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/whatsnew/index.html">Whatsnew plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/wiki/index.html">Wiki plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/plugins/xmessage/index.html">Xmessage plugins</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Events reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../antispam/index.html">Antispam events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../authfactors/index.html">Authfactors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../captcha/index.html">Captcha events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citation/index.html">Citation events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../content/index.html">Content events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses events</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Cron events</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#cron-onclosepending">cron.onClosePending</a></li>
+<li class="toc__item toc__item--l2"><a href="#cron-oncronevents">cron.onCronEvents</a></li>
+<li class="toc__item toc__item--l2"><a href="#cron-onpointroyalties">cron.onPointRoyalties</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors-xtd/index.html">Editors-xtd events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../editors/index.html">Editors events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extension/index.html">Extension events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filesystem/index.html">Filesystem events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../geocode/index.html">Geocode events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../handlers/index.html">Handlers events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hubzero/index.html">Hubzero events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mail/index.html">Mail events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../metadata/index.html">Metadata events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mw/index.html">Mw events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletter/index.html">Newsletter events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">Oaipmh events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../system/index.html">System events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../update/index.html">Update events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../user/index.html">User events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">Whatsnew events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wishlist events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../xmessage/index.html">Xmessage events</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse console reference</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app-package/index.html">muse app:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app-repository/index.html">muse app:repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/app/index.html">muse app</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/cache-css/index.html">muse cache:css</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/cache/index.html">muse cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration-aliases/index.html">muse configuration:aliases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration-hooks/index.html">muse configuration:hooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/configuration/index.html">muse configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/database/index.html">muse database</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/environment/index.html">muse environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/extension/index.html">muse extension</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/group/index.html">muse group</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/help/index.html">muse help</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/htmx/index.html">muse htmx</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/inertia/index.html">muse inertia</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/install/index.html">muse install</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-post/index.html">muse log:post</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-profile/index.html">muse log:profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log-sql/index.html">muse log:sql</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/log/index.html">muse log</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/migration/index.html">muse migration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository-flavor/index.html">muse repository:flavor</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository-package/index.html">muse repository:package</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/repository/index.html">muse repository</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/resources/index.html">muse resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/scaffolding/index.html">muse scaffolding</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/searchmigration/index.html">muse searchmigration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/test/index.html">muse test</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/user-terms/index.html">muse user:terms</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/user/index.html">muse user</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Reference</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Events reference</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Cron events</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Reference</p>
+          <h1>Cron events</h1>
+        </header>
+        
+        <div class="prose">
+<p>Events in the <code>cron</code> group. A plugin in <code>core/plugins/cron/</code> receives an event by defining a public method with the event's name; the arguments are those the call site passes, in order.</p>
+<h2 id="cron-onclosepending"><code>cron.onClosePending</code></h2>
+<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Listeners:</p>
+<ul>
+<li><code>plg_cron_support</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/support/support.php"><code>onClosePending(\Components\Cron\Models\Job $job)</code></a></li>
+</ul>
+<h2 id="cron-oncronevents"><code>cron.onCronEvents</code></h2>
+<p>Fired from:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_cron/admin/controllers/jobs.php#L145"><code>core/components/com_cron/admin/controllers/jobs.php:145</code></a></li>
+</ul>
+<p>Listeners:</p>
+<ul>
+<li><code>plg_cron_activity</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/activity/activity.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_cache</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/cache/cache.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_courses</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/courses/courses.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_forum</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/forum/forum.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_groups</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/groups/groups.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_members</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/members/members.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_newsletter</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/newsletter/newsletter.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_projects</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/projects/projects.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_publications</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/publications/publications.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_resources</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/resources/resources.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_search</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/search/search.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_storefront</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/storefront/storefront.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_support</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/support/support.php"><code>onCronEvents()</code></a></li>
+<li><code>plg_cron_users</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/users/users.php"><code>onCronEvents()</code></a></li>
+</ul>
+<h2 id="cron-onpointroyalties"><code>cron.onPointRoyalties</code></h2>
+<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Listeners:</p>
+<ul>
+<li><code>plg_cron_members</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/members/members.php"><code>onPointRoyalties(\Components\Cron\Models\Job $job)</code></a></li>
+</ul>
+
+        </div>
+        <p class="stamp">Generated from the source tree.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../courses/index.html" rel="prev"><span>Previous</span>Courses events</a><a class="pager__next" href="../editors-xtd/index.html" rel="next"><span>Next</span>Editors-xtd events</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/events/cron.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>
