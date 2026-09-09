@@ -165,7 +165,7 @@ $this->css()
 							if (end($field) == '1') {
 								$html .= '  <tr>'."\n";
 								$html .= '   <th scope="row">'.$field[1].':</th>'."\n";
-								$html .= '   <td>'.Lang::txt('YES').'</td>'."\n";
+								$html .= '   <td>'.Lang::txt('EVENTS_YES').'</td>'."\n";
 								$html .= '  </tr>'."\n";
 							} else {
 								$html .= '  <tr>'."\n";

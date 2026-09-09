@@ -122,6 +122,10 @@ class Pages extends AdminController
 			// Load the article
 			$page = Page::oneOrNew($id);
 		}
+		else
+		{
+			$page = $row;
+		}
 
 		if ($page->isNew())
 		{
@@ -231,7 +235,7 @@ class Pages extends AdminController
 
 		if ($removed)
 		{
-			Notify::success(Lang::txt('EVENTS_PAGES_REMOVED'));
+			Notify::success(Lang::txt('COM_EVENTS_PAGES_REMOVED'));
 		}
 
 		// Set the redirect
@@ -275,7 +279,7 @@ class Pages extends AdminController
 		$pid = Request::getInt('event_id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id || !is_int($id))
+		if (!$id || !is_numeric($id))
 		{
 			Notify::warning(Lang::txt('COM_EVENTS_PAGE_NO_ID'));
 			return $this->cancelTask();

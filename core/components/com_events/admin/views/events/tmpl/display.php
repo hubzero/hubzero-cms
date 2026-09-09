@@ -132,7 +132,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						if (!$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 						} else {
-							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
+							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
 						}
 					}
 

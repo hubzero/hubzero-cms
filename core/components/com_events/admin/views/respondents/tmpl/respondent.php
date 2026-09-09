@@ -91,7 +91,7 @@ $resp = $this->resp;
 				<td><?php echo $this->escape($resp->arrival); ?></td>
 			</tr>
 		<?php endif; ?>
-		<?php if (!empty($resp->arrival)): ?>
+		<?php if (!empty($resp->departure)): ?>
 			<tr>
 				<th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_DEPARTURE'); ?></th>
 				<td><?php echo $this->escape($resp->departure); ?></td>
