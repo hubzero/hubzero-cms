@@ -92,7 +92,7 @@ class Message extends Relational
      */
     public function from()
     {
-        return $this->belongsToOne('Hubzero\User\User', 'user_id_from');
+        return $this->belongsToOne('Hubzero\User\User', 'user_id_from', 'id');
     }
 
     /**
@@ -102,7 +102,7 @@ class Message extends Relational
      */
     public function to()
     {
-        return $this->belongsToOne('Hubzero\User\User', 'user_id_to');
+        return $this->belongsToOne('Hubzero\User\User', 'user_id_to', 'id');
     }
 
     /**
