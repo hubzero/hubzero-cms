@@ -156,7 +156,14 @@ class Types extends AdminController
 			$removed++;
 		}
 
-		Notify::success(Lang::txt('CITATION_TYPE_REMOVED'));
+		if ($removed)
+		{
+			Notify::success(Lang::txt('CITATION_TYPE_REMOVED'));
+		}
+		else
+		{
+			Notify::error(Lang::txt('CITATION_NO_TYPE'));
+		}
 
 		// Redirect
 		$this->cancelTask();

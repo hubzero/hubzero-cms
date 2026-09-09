@@ -530,7 +530,7 @@ class Citations extends SiteController
 		// are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);
 		if ($allowImport == 0
-		|| ($allowImport == 2 && User::get('usertype') == 'Super Administrator'))
+		|| ($allowImport == 2 && !User::authorise('core.manage', $this->_option)))
 		{
 			// Redirect
 			App::redirect(
@@ -589,7 +589,9 @@ class Citations extends SiteController
 		$this->view->assocs = $associations;
 
 		// Is user authorized to edit citations?
-		if (!$isAdmin && !$citation->canEdit())
+		// A brand new citation has no owner yet; submission is gated above by
+		// the citation_import setting.
+		if (!$isAdmin && !$citation->isNew() && !$citation->canEdit())
 		{
 			App::abort(404, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
 		}

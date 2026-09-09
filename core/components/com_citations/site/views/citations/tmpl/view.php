@@ -93,8 +93,8 @@ $params = new \Hubzero\Config\Registry($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges
-$tags   = \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
-$badges = \Components\Citations\Helpers\Format::citationBadges($citation, $database, false);
+$tags   = \Components\Citations\Helpers\Format::citationTags($citation, false);
+$badges = \Components\Citations\Helpers\Format::citationBadges($citation, false);
 
 //are we allowed to show tags and badges
 $showTags   = $config->get('citation_show_tags', 'yes');
@@ -468,10 +468,10 @@ $area = Request::getString('area', 'about');
 					</tr>
 				<?php endif;?>
 
-				<?php if ($citation->notes) : ?>
+				<?php if ($citation->note) : ?>
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_NOTES'); ?></th>
-						<td><?php echo nl2br($citation->notes); ?></td>
+						<td><?php echo nl2br($citation->note); ?></td>
 					</tr>
 				<?php endif;?>
 
@@ -493,7 +493,7 @@ $area = Request::getString('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_TAGS'); ?></th>
 						<td>
-							<?php echo \Components\Citations\Helpers\Format::citationTags($citation, App::get('db')); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationTags($citation); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -502,7 +502,7 @@ $area = Request::getString('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
 						<td>
-							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation, App::get('db')); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation); ?>
 						</td>
 					</tr>
 				<?php endif; ?>

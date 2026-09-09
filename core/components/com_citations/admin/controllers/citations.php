@@ -493,6 +493,10 @@ class Citations extends AdminController
 
 		if ($removed)
 		{
+			Notify::success(Lang::txt('CITATION_REMOVED', $removed));
+		}
+		else
+		{
 			Notify::error(Lang::txt('NO_SELECTION'));
 		}
 

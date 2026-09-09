@@ -43,7 +43,7 @@ Toolbar::help('sponsors');
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |
 							<?php } ?>
 							<?php if ($canDo->get('core.delete')) { ?>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $sponsor['id'] . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
 							<?php } ?>
 						</td>
 					</tr>
