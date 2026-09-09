@@ -37,7 +37,7 @@ class DefaultRouter extends Base
 			}
 		}
 
-		return array();
+		return $segments;
 	}
 
 	/**

@@ -217,7 +217,7 @@ class SiteController extends Obj implements ControllerInterface
 		// Load language file if we dont have one yet
 		if (!isset($loaded) || empty($loaded))
 		{
-			$lang->load($this->_option, $this->_basePath . '/../..');
+			$lang->load($this->_option, $this->_basePath);
 		}
 
 		// Set some commonly used vars

@@ -234,7 +234,7 @@ class Loader
 			{
 				$found = true;
 				$path = $react_path;
-				$ype = 'react';
+				$type = 'react';
 
 				// Load local language files
 				$lang->load($option, PATH_COMPONENT, null, false, true);
