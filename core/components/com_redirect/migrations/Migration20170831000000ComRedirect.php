@@ -21,13 +21,8 @@ class Migration20170831000000ComRedirect extends Base
     public function up()
     {
         // Create component entry but do NOT create a menu item as
-        // com_redirect is purposely separate from the 'components' list.
-        //
-        // string  $name            Component name
-        // string  $option          com_xyz
-        // int     $enabled         Whether or not the component should be enabled
-        // string  $params          Component params (if already known)
-        // bool    $createMenuItem  Create an admin menu item for this component
+        // com_redirect was originally separate from the 'components' list.
+        // See Migration20250417000000Redirect for the menu item addition.
         $this->addComponentEntry('redirect', null, 1, '', false);
     }
 

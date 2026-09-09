@@ -27,6 +27,19 @@ use Hubzero\Facades\App;
  */
 class Redirect extends SiteController
 {
+    /**
+     * View engines accepted by this controller
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
     private function extractBaseDomain($host)
     {
         $host = preg_replace('/^www\./', '', $host);

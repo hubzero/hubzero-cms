@@ -11,8 +11,7 @@ namespace Components\Redirect\Migrations;
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for adding component entry for com_redirect
- * Add to menu this time
+ * Migration script for making com_redirect visible in admin menu
  **/
 class Migration20250417000000Redirect extends Base
 {
