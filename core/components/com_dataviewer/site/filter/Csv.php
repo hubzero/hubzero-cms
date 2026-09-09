@@ -33,7 +33,7 @@ class Csv
         //Header
         $h_arr = $data[0] ?? null;
         if (!$h_arr) {
-            print 'No data available';
+            print \Hubzero\Facades\Lang::txt('COM_DATAVIEWER_ERROR_NO_DATA');
             return;
         }
 

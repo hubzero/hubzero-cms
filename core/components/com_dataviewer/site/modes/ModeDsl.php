@@ -1,50 +1,72 @@
 <?php
 
 /**
+ * Project Dataset mode for the Dataviewer component.
+ *
+ * Resolves database connections and data definitions from
+ * project databases plugin configuration.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Site\Modes;
 
 use Components\Dataviewer\Site\DvConfig;
+use Components\Dataviewer\Site\Helpers\DataQuery;
+use Components\Dataviewer\Site\Helpers\ModeInterface;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
-class ModeDsl
+class ModeDsl implements ModeInterface
 {
-    public static function getConf($db_id)
+    /**
+     * Get database connection config for this mode.
+     *
+     * @param   array  $dbId    Database identifier array
+     * @param   array  $config  Base config array (modified by reference)
+     * @return  array  Updated config array
+     */
+    public function getConfig(array $dbId, array &$config): array
     {
         $params = \Hubzero\Facades\Plugin::params('projects', 'databases');
+        $config['db']['host'] = $params->get('db_host');
+        $config['db']['user'] = $params->get('db_ro_user');
+        $config['db']['password'] = $params->get('db_ro_password');
 
-        DvConfig::$dv_conf['db']['host'] = $params->get('db_host');
-        DvConfig::$dv_conf['db']['user'] = $params->get('db_ro_user');
-        DvConfig::$dv_conf['db']['password'] = $params->get('db_ro_password');
-
-        return DvConfig::$dv_conf;
+        return $config;
     }
 
-    public static function getDd($db_id, $dv_id = false, $version = false)
-    {
-        $dd = false;
+    /**
+     * Get the data definition for the requested dataview.
+     *
+     * @param   array       $dbId     Database identifier array
+     * @param   array       $config   Config array (may be modified)
+     * @param   string|null $dvIdArg  Optional explicit dv ID
+     * @param   int|null    $versionArg  Optional explicit version
+     * @return  array|null  Data definition array, or null if not found
+     */
+    public function getDataDefinition(
+        array $dbId,
+        array &$config,
+        ?string $dvIdArg = null,
+        ?int $versionArg = null
+    ): ?array {
+        $dd = null;
         $db = \Hubzero\Facades\App::get('db');
 
-        if (!$dv_id) {
-            $dv_id = \Hubzero\Facades\Request::getString('dv');
-        }
-
-        if (!$version) {
-            $version = \Hubzero\Facades\Request::getInt('v', false);
-        }
-
-        $name = $dv_id;
-
+        $dvId = $dvIdArg ?? Request::getString('dv');
+        $version = $versionArg ?? Request::getInt('v', 0);
+        $name = $dvId;
 
         // Curators
         $curator = '';
-        $curator_groups = array();
+        $curatorGroups = [];
 
         if (!$version) {
-            $sql = 'SELECT data_definition FROM `#__project_databases` WHERE `database_name` = ' . $db->quote($name);
+            $sql = 'SELECT data_definition FROM `#__project_databases`'
+                . ' WHERE `database_name` = ' . $db->quote($name);
             $db->setQuery($sql);
             $database = $db->loadAssoc();
 
@@ -54,8 +76,9 @@ class ModeDsl
 
             $dd = json_decode($database['data_definition'] ?? '', true);
         } else {
-            $sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name) .
-                ' AND version=' . $db->quote($version);
+            $sql = 'SELECT data_definition FROM #__project_database_versions'
+                . ' WHERE database_name=' . $db->quote($name)
+                . ' AND version=' . $db->quote($version);
             $db->setQuery($sql);
             $ver = $db->loadAssoc();
 
@@ -66,173 +89,197 @@ class ModeDsl
             $dd = json_decode($ver['data_definition'], true);
 
             // Check publication state
-            $sql = 'SELECT state, curator FROM #__publication_versions ' .
-                'LEFT JOIN #__publication_attachments ON ' .
-                    '(#__publication_versions.publication_id=#__publication_attachments.publication_id ' .
-                    'AND #__publication_versions.id=#__publication_attachments.publication_version_id) ' .
-                'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
-
+            $sql = 'SELECT state, curator FROM #__publication_versions '
+                . 'LEFT JOIN #__publication_attachments ON '
+                . '(#__publication_versions.publication_id'
+                . '=#__publication_attachments.publication_id '
+                . 'AND #__publication_versions.id'
+                . '=#__publication_attachments.publication_version_id) '
+                . 'WHERE object_name=' . $db->quote($name)
+                . ' AND object_revision=' . $db->quote($version);
             $db->setQuery($sql);
-            $pub_version = $db->loadAssoc();
+            $pubVersion = $db->loadAssoc();
 
-            $state = $pub_version['state'];
-
+            $state = $pubVersion['state'];
             $dd['version'] = $version;
             $dd['publication_state'] = $state;
 
             if ($state != 1) {
-                // curator groups
-                $curation_enabled = \Hubzero\Facades\Component::params('com_publications')->get('curation');
+                $curationEnabled = \Hubzero\Facades\Component::params(
+                    'com_publications'
+                )->get('curation');
 
-                $curator_group = trim(\Hubzero\Facades\Component::params('com_publications')->get('curatorgroup'));
+                $curatorGroup = trim(
+                    \Hubzero\Facades\Component::params(
+                        'com_publications'
+                    )->get('curatorgroup')
+                );
 
-                if ($curation_enabled && $curator_group != '') {
-                    $curator_groups[] = $curator_group;
+                if ($curationEnabled && $curatorGroup != '') {
+                    $curatorGroups[] = $curatorGroup;
                 }
 
                 $sql = "SELECT cn FROM #__xgroups g "
-                    . "LEFT JOIN #__publication_master_types t ON (g.gidNumber = t.curatorgroup) "
+                    . "LEFT JOIN #__publication_master_types t "
+                    . "ON (g.gidNumber = t.curatorgroup) "
                     . "WHERE t.type = 'Databases'";
-                $db = \Hubzero\Facades\App::get('db');
                 $db->setQuery($sql);
-                $dsl_curators = $db->loadResult();
+                $dslCurators = $db->loadResult();
 
-                if ($curation_enabled && $dsl_curators != '') {
-                    $curator_groups[] = $dsl_curators;
+                if ($curationEnabled && $dslCurators != '') {
+                    $curatorGroups[] = $dslCurators;
                 }
 
-                if ($curation_enabled && $curator != '') {
-                    $curator = $pub_version['curator'];
-                    $curator = \Hubzero\Facades\User::getInstance($curator)->get('username');
+                if ($curationEnabled && isset($pubVersion['curator'])
+                    && $pubVersion['curator']
+                ) {
+                    $curator = User::getInstance(
+                        $pubVersion['curator']
+                    )->get('username');
                 }
             }
         }
 
         // Access control
-        if (!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
+        if (!isset($dd['publication_state'])
+            || $dd['publication_state'] != 1
+        ) {
             // Project owners
             $sql = "SELECT username FROM #__project_owners po "
                 . "JOIN #__users u ON (u.id = po.userid) "
-                . "WHERE projectid = {$dd['project']}";
-            $db = \Hubzero\Facades\App::get('db');
+                . "WHERE projectid = " . $db->quote($dd['project']);
             $db->setQuery($sql);
             $dd['acl']['allowed_users'] = $db->loadColumn();
 
             // Curators
             if (isset($dd['publication_state'])) {
-                $dd['acl']['allowed_groups'] = $curator_groups;
+                $dd['acl']['allowed_groups'] = $curatorGroups;
 
-                if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users'])) {
+                if (isset($dd['acl']['allowed_users'])
+                    && is_array($dd['acl']['allowed_users'])
+                ) {
                     $dd['acl']['allowed_users'][] = $curator;
                 }
             }
-        } elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1) {
+        } elseif ($dd['publication_state'] == 1) {
             $dd['acl']['allowed_users'] = false;
             $dd['acl']['allowed_groups'] = false;
             $dd['acl']['public'] = true;
         }
 
+        $config['db']['database'] = $dd['database'];
 
-        DvConfig::$dv_conf['db']['database'] = $dd['database'];
-
-        $dd['db_id'] = $db_id;
-        $dd['dv_id'] = $dv_id;
+        $dd['db_id'] = $dbId;
+        $dd['dv_id'] = $dvId;
 
         self::ddPost($dd);
 
-        /* Dynamically set processing mode */
-        $link = \Components\Dataviewer\Site\Lib\Db::getDb(DvConfig::$dv_conf['db']);
-        $hasThreshold = isset(DvConfig::$dv_conf['proc_switch_threshold'])
-            && DvConfig::$dv_conf['proc_switch_threshold'] != 0;
-        $cell_count_threshold = $hasThreshold ? DvConfig::$dv_conf['proc_switch_threshold'] : 20000;
-        $link->setQuery(\Components\Dataviewer\Site\Lib\Db::queryGenTotal($dd));
-        $link->loadAssoc();
-        $link->setQuery('SELECT FOUND_ROWS() AS total');
-        $total = $link->loadAssoc();
-        $total = isset($total['total']) ? $total['total'] : 0;
+        // Dynamically set processing mode
+        $driver = DataQuery::createDriver($config['db']);
+        $query = new DataQuery($driver);
+        $hasThreshold = !empty($config['proc_switch_threshold']);
+        $cellCountThreshold = $hasThreshold
+            ? $config['proc_switch_threshold']
+            : 20000;
+        $driver->setQuery($query->buildCountQuery($dd));
+        $driver->loadAssoc();
+        $driver->setQuery('SELECT FOUND_ROWS() AS total');
+        $total = $driver->loadAssoc();
+        $total = $total['total'] ?? 0;
         $dd['total_records'] = $total;
 
-        $vis_col_count = count(array_filter($dd['cols'], function ($col) {
-            return !isset($col['hide']);
-        }));
+        $visColCount = count(array_filter(
+            $dd['cols'],
+            function ($col) {
+                return !isset($col['hide']);
+            }
+        ));
 
-        if ($cell_count_threshold < ($total * $vis_col_count)) {
+        if ($cellCountThreshold < ($total * $visColCount)) {
             $dd['serverside'] = true;
         }
 
         return $dd;
     }
 
-    public static function ddPost($dd)
+    /**
+     * Set breadcrumb pathway.
+     *
+     * @param   array  $dd  Data definition array
+     * @return  void
+     */
+    public function setPathway(array $dd): void
     {
-        $id = \Hubzero\Facades\Request::getString('id', false);
-
-        if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
-            $dd['single'] = true;
-        }
-
-        $custom_field =  \Hubzero\Facades\Request::getString('custom_field', false);
-        if ($custom_field) {
-            $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
-            $dd['single'] = true;
-        }
-
-        // Data for Custom Views
-        $custom_view = \Hubzero\Facades\Request::getArray('custom_view', array());
-        if (count($custom_view) > 0) {
-            unset($dd['customizer']);
-
-            // Custom Title
-            $custom_title = \Hubzero\Facades\Request::getString('custom_title', '');
-            if ($custom_title !== '') {
-                $dd['title'] = htmlspecialchars($custom_title);
-            }
-
-            // Custom Group by
-            $group_by = \Hubzero\Facades\Request::getString('group_by', '');
-            if ($group_by !== '') {
-                $dd['group_by'] = htmlspecialchars($group_by);
-            }
-
-            // Ordering
-            $order_cols = $dd['cols'];
-            $dd['cols'] = array();
-            foreach ($custom_view as $cv_col) {
-                $dd['cols'][$cv_col] = $order_cols[$cv_col];
-            }
-
-            // Hiding
-            foreach ($order_cols as $id => $prop) {
-                if (!in_array($id, $custom_view)) {
-                    $dd['cols'][$id] = $prop;
-
-                    if (!isset($dd['cols'][$id]['hide'])) {
-                        $dd['cols'][$id]['hide'] = 'custom';
-                    }
-                }
-            }
-        }
-
-        return $dd;
-    }
-
-    public static function pathway($dd)
-    {
-        $db_id = $dd['db_id'];
+        $dbId = $dd['db_id'];
 
         \Hubzero\Facades\Document::setTitle($dd['title']);
 
-        if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
-            $ref_title = "Datastore";
-            \Hubzero\Facades\Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+        if (isset($dbId['extra']) && $dbId['extra'] == 'table') {
+            \Hubzero\Facades\Pathway::append(
+                'Datastore',
+                '/datastores/' . $dbId['name'] . '#tables'
+            );
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
-            $ref_title = \Hubzero\Facades\Request::getString('ref_title', $dd['title'] . " Resource");
-            $ref_title = htmlentities($ref_title);
-            \Hubzero\Facades\Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
+            $refTitle = Request::getString(
+                'ref_title',
+                $dd['title'] . " Resource"
+            );
+            $refTitle = htmlentities($refTitle);
+            \Hubzero\Facades\Pathway::append(
+                $refTitle,
+                $_SERVER['HTTP_REFERER']
+            );
         }
 
         \Hubzero\Facades\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
+    }
+
+    // ---------------------------------------------------------------
+    // Static BC shims — used by the legacy Controller::dispatch() path
+    // and com_publications cross-component calls
+    // ---------------------------------------------------------------
+
+    /**
+     * @deprecated Use instance method getConfig() instead
+     */
+    public static function getConf($db_id)
+    {
+        $mode = new static();
+        $mode->getConfig($db_id, DvConfig::$dv_conf);
+        return DvConfig::$dv_conf;
+    }
+
+    /**
+     * @deprecated Use instance method getDataDefinition() instead
+     */
+    public static function getDd($db_id, $dv_id = false, $version = false)
+    {
+        $mode = new static();
+        return $mode->getDataDefinition(
+            $db_id,
+            DvConfig::$dv_conf,
+            $dv_id ?: null,
+            $version ?: null
+        );
+    }
+
+    /**
+     * @deprecated Use instance method setPathway() instead
+     */
+    public static function pathway($dd)
+    {
+        $mode = new static();
+        $mode->setPathway($dd);
+    }
+
+    /**
+     * Apply post-processing to a data definition.
+     *
+     * @param   array  $dd  Data definition
+     * @return  array
+     */
+    public static function ddPost($dd)
+    {
+        return ModeDb::ddPost($dd);
     }
 }

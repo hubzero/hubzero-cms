@@ -1,226 +1,296 @@
 <?php
 
 /**
+ * Database mode for the Dataviewer component.
+ *
+ * Resolves database connections and data definitions from
+ * filesystem-based JSON config files (com_databases).
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Site\Modes;
 
 use Components\Dataviewer\Site\DvConfig;
+use Components\Dataviewer\Site\Helpers\DataQuery;
+use Components\Dataviewer\Site\Helpers\ModeInterface;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
-class ModeDb
+class ModeDb implements ModeInterface
 {
-    public static function getConf($db_id)
+    /**
+     * Get database connection config for this mode.
+     *
+     * @param   array  $dbId    Database identifier array
+     * @param   array  $config  Base config array (modified by reference)
+     * @return  array  Updated config array
+     */
+    public function getConfig(array $dbId, array &$config): array
     {
-        $db_dv_conf = array();
+        $dbName = $dbId['name'] ?? '';
 
-        $db_name = isset($db_id['name']) ? $db_id['name'] : '';
-
-        if (empty($db_name)) {
-            return array();
+        if (empty($dbName)) {
+            return $config;
         }
 
-        // Base directory
-        DvConfig::$dv_conf['db_base_dir'] = \Hubzero\Facades\Component::params('com_databases')->get('base_dir');
-        if (!DvConfig::$dv_conf['db_base_dir'] || DvConfig::$dv_conf['db_base_dir'] == '') {
-            DvConfig::$dv_conf['db_base_dir'] = '/db/databases';
+        // Base directory from com_databases params
+        $baseDir = \Hubzero\Facades\Component::params('com_databases')->get('base_dir');
+        if (!$baseDir || $baseDir == '') {
+            $baseDir = '/db/databases';
         }
+        $config['db_base_dir'] = $baseDir;
 
-        $db_conf_file = DvConfig::$dv_conf['db_base_dir'] . "/$db_name/database.json";
-        $db_conf = json_decode(file_get_contents($db_conf_file), true);
-        DvConfig::$dv_conf['db'] = array_merge(DvConfig::$dv_conf['db'], $db_conf['database_ro']);
+        // Read database connection config
+        $dbConfFile = "$baseDir/$dbName/database.json";
+        $dbConf = json_decode(file_get_contents($dbConfFile), true);
+        $config['db'] = array_merge($config['db'], $dbConf['database_ro']);
 
-        $dv_conf_file = DvConfig::$dv_conf['db_base_dir'] . "/$db_name/applications/"
-            . DvConfig::$com_name . "/config.json";
+        // Read optional dataviewer-specific config
+        $comName = $config['com_name'] ?? 'dataviewer';
+        $dvConfFile = "$baseDir/$dbName/applications/$comName/config.json";
 
-        if (file_exists($dv_conf_file)) {
-            $db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
-            if (!is_array($db_dv_conf)) {
-                $db_dv_conf = array();
-            } if (isset($db_dv_conf['settings'])) {
-                $db_dv_conf['settings'] = array_merge(DvConfig::$dv_conf['settings'], $db_dv_conf['settings']);
+        if (file_exists($dvConfFile)) {
+            $dbDvConf = json_decode(file_get_contents($dvConfFile), true);
+            if (!is_array($dbDvConf)) {
+                $dbDvConf = [];
             }
+            if (isset($dbDvConf['settings'])) {
+                $dbDvConf['settings'] = array_merge(
+                    $config['settings'],
+                    $dbDvConf['settings']
+                );
+            }
+            $config = array_merge($config, $dbDvConf);
         }
 
-        if (!isset(DvConfig::$dv_conf['base_path'])) {
-            DvConfig::$dv_conf['base_path'] = '';
+        if (!isset($config['base_path'])) {
+            $config['base_path'] = '';
         }
 
-        DvConfig::$dv_conf = array_merge(DvConfig::$dv_conf, $db_dv_conf);
-
-        return DvConfig::$dv_conf;
+        return $config;
     }
 
-    public static function getDd($db_id)
+    /**
+     * Get the data definition for the requested dataview.
+     *
+     * @param   array  $dbId    Database identifier array
+     * @param   array  $config  Config array (may be modified)
+     * @return  array|null  Data definition array, or null if not found
+     */
+    public function getDataDefinition(array $dbId, array &$config): ?array
     {
-        $dd = false;
-        $dv_id = \Hubzero\Facades\Request::getString('dv');
-        $db_name = $db_id['name'];
+        $dd = null;
+        $dvId = Request::getString('dv');
+        $dbName = $dbId['name'];
 
-        $ddBase = DvConfig::$dv_conf['db_base_dir'];
-        DvConfig::$dv_conf['dd_json'] = "$ddBase/$db_name/applications/dataviewer/datadefinitions";
+        $ddBase = $config['db_base_dir'];
+        $ddPath = "$ddBase/$dbName/applications/dataviewer/datadefinitions";
+        $config['dd_json'] = $ddPath;
 
-        $dd_json_file = false;
-        $jsonPath = DvConfig::$dv_conf['dd_json'] . DS . $dv_id . '.json';
-        if (isset(DvConfig::$dv_conf['dd_json']) && file_exists($jsonPath)) {
-            $dd_json_file = $jsonPath;
-        }
+        $jsonFile = $ddPath . DS . $dvId . '.json';
+        $phpFile = $ddPath . DS . $dvId . '.php';
 
-        $dd_php_file = false;
-        $phpPath = DvConfig::$dv_conf['dd_json'] . DS . $dv_id . '.php';
-        if (isset(DvConfig::$dv_conf['dd_json']) && file_exists($phpPath)) {
-            $dd_php_file = $phpPath;
-        }
+        if (isset($dbId['extra']) && $dbId['extra'] == 'table') {
+            $dd = [];
+            $dd['title'] = 'Table : ' . $dvId;
+            $dd['table'] = $dvId;
 
-        if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
-            $dd['title'] = 'Table : ' . $dv_id;
-            $dd['table'] = $dv_id;
-
-            $hasManagers = isset(DvConfig::$dv_conf['_managers']) && DvConfig::$dv_conf['_managers'] !== false;
-            if (!\Hubzero\Facades\User::isGuest() && $hasManagers) {
-                $dd['acl']['allowed_groups'] = DvConfig::$dv_conf['_managers'];
-            } elseif (!\Hubzero\Facades\User::isGuest() && \Hubzero\Facades\User::authorise('login', 'administrator')) {
-                // Remove access restrictions for managers
+            $hasManagers = isset($config['_managers'])
+                && $config['_managers'] !== false;
+            if (!User::isGuest() && $hasManagers) {
+                $dd['acl']['allowed_groups'] = $config['_managers'];
+            } elseif (!User::isGuest()
+                && User::authorise('login', 'administrator')
+            ) {
                 $dd['acl']['allowed_users'] = false;
                 $dd['acl']['allowed_groups'] = false;
             }
         } else {
-            if ($dd_json_file) {
-                $dd = json_decode(file_get_contents($dd_json_file), true);
-            } elseif ($dd_php_file) {
-                require_once($dd_php_file);
-                $dd_func = 'get_' . $dv_id;
-                if (function_exists($dd_func)) {
-                    $dd = $dd_func();
+            if (file_exists($jsonFile)) {
+                $dd = json_decode(file_get_contents($jsonFile), true);
+            } elseif (file_exists($phpFile)) {
+                require_once $phpFile;
+                $ddFunc = 'get_' . $dvId;
+                if (function_exists($ddFunc)) {
+                    $dd = $ddFunc();
                 }
             } else {
-                \Hubzero\Facades\App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
-                exit;
+                \Hubzero\Facades\App::abort(
+                    404,
+                    'Invalid or Missing Dataview'
+                );
+                return null;
             }
 
-
-            $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
+            $dd['conf'] = $dd['conf'] ?? [];
 
             if (isset($dd['conf']['proc_mode_switch'])) {
-                DvConfig::$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
+                $config['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
             }
-
             if (isset($dd['conf']['proc_switch_threshold'])) {
-                DvConfig::$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
+                $config['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
             }
 
-            // Database override form dd
+            // Database override from dd
             if (isset($dd['db']) && is_array($dd['db'])) {
-                DvConfig::$dv_conf['db'] = array_merge(DvConfig::$dv_conf['db'], $dd['db']);
+                $config['db'] = array_merge($config['db'], $dd['db']);
             }
 
             $dd = self::ddPost($dd);
         }
 
-        /* Dynamically set processing mode */
-        if (isset(DvConfig::$dv_conf['proc_mode_switch']) && DvConfig::$dv_conf['proc_mode_switch']) {
-            $link = \Components\Dataviewer\Site\Lib\Db::getDb();
-            $link->setQuery(\Components\Dataviewer\Site\Lib\Db::queryGenTotal($dd));
-            $link->loadAssoc();
-            $link->setQuery('SELECT FOUND_ROWS() AS total');
-            $total = $link->loadAssoc();
+        // Dynamically set processing mode
+        if (!empty($config['proc_mode_switch'])) {
+            $driver = DataQuery::createDriver($config['db']);
+            $query = new DataQuery($driver);
+            $driver->setQuery($query->buildCountQuery($dd));
+            $driver->loadAssoc();
+            $driver->setQuery('SELECT FOUND_ROWS() AS total');
+            $total = $driver->loadAssoc();
             $total = isset($total['total']) ? $total['total'] : 0;
             $dd['total_records'] = $total;
 
-            $vis_col_count = 0;
+            $visColCount = 0;
             if (isset($dd['cols'])) {
-                $vis_col_count = count(array_filter($dd['cols'], function ($col) {
+                $visColCount = count(array_filter($dd['cols'], function ($col) {
                     return !isset($col['hide']);
                 }));
-            } elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
+            } elseif (isset($dbId['extra']) && $dbId['extra'] == 'table') {
                 $sql = "SELECT COUNT(*) AS cols FROM information_schema.columns"
-                    . " WHERE table_name = " . $link->quote($dd['table']);
-                $link->setQuery($sql);
-                $cols = $link->loadAssoc();
-                $vis_col_count = $cols['cols'];
+                    . " WHERE table_name = " . $driver->quote($dd['table']);
+                $driver->setQuery($sql);
+                $cols = $driver->loadAssoc();
+                $visColCount = $cols['cols'];
             }
 
-            if (DvConfig::$dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
+            if ($config['proc_switch_threshold'] < ($total * $visColCount)) {
                 $dd['serverside'] = true;
             }
         }
 
-        $dd['db_id'] = $db_id;
-        $dd['dv_id'] = $dv_id;
+        $dd['db_id'] = $dbId;
+        $dd['dv_id'] = $dvId;
 
         return $dd;
     }
 
+    /**
+     * Set breadcrumb pathway.
+     *
+     * @param   array  $dd  Data definition array
+     * @return  void
+     */
+    public function setPathway(array $dd): void
+    {
+        $document = \Hubzero\Facades\App::get('document');
+        $document->setTitle($dd['title']);
+
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $refTitle = Request::getString(
+                'ref_title',
+                $dd['title'] . " Resource"
+            );
+            $refTitle = htmlentities($refTitle);
+            \Hubzero\Facades\Pathway::append(
+                $refTitle,
+                $_SERVER['HTTP_REFERER']
+            );
+        }
+
+        \Hubzero\Facades\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
+    }
+
+    // ---------------------------------------------------------------
+    // Static BC shims — used by the legacy Controller::dispatch() path
+    // ---------------------------------------------------------------
+
+    /**
+     * @deprecated Use instance method getConfig() instead
+     */
+    public static function getConf($db_id)
+    {
+        $mode = new static();
+        $mode->getConfig($db_id, DvConfig::$dv_conf);
+        return DvConfig::$dv_conf;
+    }
+
+    /**
+     * @deprecated Use instance method getDataDefinition() instead
+     */
+    public static function getDd($db_id)
+    {
+        $mode = new static();
+        return $mode->getDataDefinition($db_id, DvConfig::$dv_conf);
+    }
+
+    /**
+     * @deprecated Use instance method setPathway() instead
+     */
+    public static function pathway($dd)
+    {
+        $mode = new static();
+        $mode->setPathway($dd);
+    }
+
+    /**
+     * Apply post-processing to a data definition (custom views, filters).
+     *
+     * @param   array  $dd  Data definition
+     * @return  array  Modified data definition
+     */
     public static function ddPost($dd)
     {
-        $id = \Hubzero\Facades\Request::getString('id', false);
+        $id = Request::getString('id', false);
 
         if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
+            $dd['where'][] = ['field' => $dd['pk'], 'value' => $id];
             $dd['single'] = true;
         }
 
-        $custom_field =  \Hubzero\Facades\Request::getString('custom_field', false);
-        if ($custom_field) {
-            $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
+        $customField = Request::getString('custom_field', false);
+        if ($customField) {
+            $parts = explode('|', $customField);
+            $dd['where'][] = ['field' => $parts[0], 'value' => $parts[1]];
             $dd['single'] = true;
         }
 
-        // Data for Custom Views
-        $custom_view = \Hubzero\Facades\Request::getString('custom_view', '');
-
-        if ($custom_view != '') {
-            $custom_view = explode(',', $custom_view);
+        // Custom Views
+        $customView = Request::getString('custom_view', '');
+        if ($customView != '') {
+            $customView = explode(',', $customView);
             unset($dd['customizer']);
 
-            // Custom Title
-            $custom_title = \Hubzero\Facades\Request::getString('custom_title', '');
-            if ($custom_title !== '') {
-                $dd['title'] = htmlspecialchars($custom_title);
+            $customTitle = Request::getString('custom_title', '');
+            if ($customTitle !== '') {
+                $dd['title'] = htmlspecialchars($customTitle);
             }
 
-            // Custom Group by
-            $group_by = \Hubzero\Facades\Request::getString('group_by', '');
-            if ($group_by !== '') {
-                $dd['group_by'] = htmlspecialchars($group_by);
+            $groupBy = Request::getString('group_by', '');
+            if ($groupBy !== '') {
+                $dd['group_by'] = htmlspecialchars($groupBy);
             }
 
-            // Ordering
-            $order_cols = $dd['cols'];
-            $dd['cols'] = array();
-            foreach ($custom_view as $cv_col) {
-                $dd['cols'][$cv_col] = $order_cols[$cv_col];
+            // Reorder columns
+            $orderCols = $dd['cols'];
+            $dd['cols'] = [];
+            foreach ($customView as $cvCol) {
+                $dd['cols'][$cvCol] = $orderCols[$cvCol];
             }
 
-            // Hiding
-            foreach ($order_cols as $id => $prop) {
-                if (!in_array($id, $custom_view)) {
-                    $dd['cols'][$id] = $prop;
-
-                    if (!isset($dd['cols'][$id]['hide'])) {
-                        $dd['cols'][$id]['hide'] = 'custom';
+            // Hide non-selected columns
+            foreach ($orderCols as $colId => $prop) {
+                if (!in_array($colId, $customView)) {
+                    $dd['cols'][$colId] = $prop;
+                    if (!isset($dd['cols'][$colId]['hide'])) {
+                        $dd['cols'][$colId]['hide'] = 'custom';
                     }
                 }
             }
         }
 
         return $dd;
-    }
-
-    public static function pathway($dd)
-    {
-        $document = \Hubzero\Facades\App::get('document');
-        $document->setTitle($dd['title']);
-
-        if (isset($_SERVER['HTTP_REFERER'])) {
-            $ref_title = \Hubzero\Facades\Request::getString('ref_title', $dd['title'] . " Resource");
-            $ref_title = htmlentities($ref_title);
-            \Hubzero\Facades\Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
-        }
-
-        \Hubzero\Facades\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
     }
 }

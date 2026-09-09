@@ -19,51 +19,35 @@ class Spreadsheet
         $document = \Hubzero\Facades\App::get('document');
 
 
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('util.js');
+        // Component-specific vendor libraries
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/vendor/datatables/jquery.dataTables.min.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddCss('js/vendor/datatables/css/jquery.dataTables_themeroller.css');
+        \Components\Dataviewer\Site\Lib\Html::dvAddCss('js/vendor/datatables/css/jquery.dataTables_dv.css');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/vendor/jqplot/jquery.jqplot.min.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/vendor/jqplot/plugins.dev');
+        \Components\Dataviewer\Site\Lib\Html::dvAddCss('js/vendor/jqplot/jquery.jqplot.css');
 
-        /* jQuery */
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jquery.js');
+        // Component JS
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/util.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/dv-config-init.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/datatables-plugins.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/spreadsheet.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/dv-spreadsheet-charts.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/dv-spreadsheet-charts-dl.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/custom-views.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/jquery.lazyload.min.js');
 
-        /* Bootstrap */
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('bootstrap/bootstrap.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('bootstrap/css/bootstrap.css');
-
-        /* jQuery-UI */
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jquery-ui/jquery-ui.min.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('jquery-ui/smoothness/jquery-ui.min.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('font-awesome/css/font-awesome.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('excanvas.js');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jquery-datatables/jquery.dataTables.min.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('jquery-datatables/css/jquery.dataTables_themeroller.css');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('jquery-datatables/css/jquery.dataTables_dv.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('datatables.plugins.js');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jqplot/jquery.jqplot.min.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jqplot/plugins.dev');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('jqplot/jquery.jqplot.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('spreadsheet.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('spreadsheet.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('dv-spreadsheet-charts.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('dv-spreadsheet-charts-dl.js');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('dv_custom_views.js');
-        \Components\Dataviewer\Site\Lib\Html::dvAddCss('dv_custom_views.css');
-
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jquery.lazyload.min.js');
+        // Component CSS
+        \Components\Dataviewer\Site\Lib\Html::dvAddCss('css/spreadsheet.css');
+        \Components\Dataviewer\Site\Lib\Html::dvAddCss('css/custom-views.css');
 
         if (isset($dd['show_maps'])) {
-            \Components\Dataviewer\Site\Lib\Html::dvAddScript('/leaflet/leaflet.js');
-            \Components\Dataviewer\Site\Lib\Html::dvAddCss('/leaflet/leaflet.css');
-            \Components\Dataviewer\Site\Lib\Html::dvAddScript('dv_maps.js');
+            \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/vendor/leaflet/leaflet.js');
+            \Components\Dataviewer\Site\Lib\Html::dvAddCss('js/vendor/leaflet/leaflet.css');
+            \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/maps.js');
         }
 
-        \Components\Dataviewer\Site\Lib\Html::dvAddScript('jquery.dv.js');
+        \Components\Dataviewer\Site\Lib\Html::dvAddScript('js/dv-core.js');
 
 
         DvConfig::$dv_conf['settings']['view']['id'] = $dd['dv_id'];
@@ -124,9 +108,13 @@ class Spreadsheet
             $isServerside = (isset($dd['serverside']) && $dd['serverside']);
             DvConfig::$dv_conf['settings']['serverside'] = $isServerside;
 
-            $sql = \Components\Dataviewer\Site\Lib\Db::queryGen($dd);
+            $dbConfig = isset($dd['db']) ? $dd['db'] : DvConfig::$dv_conf['db'];
+            $driver = \Components\Dataviewer\Site\Helpers\DataQuery::createDriver($dbConfig);
+            $limit = DvConfig::$dv_conf['settings']['limit'] ?? 10;
+            $query = new \Components\Dataviewer\Site\Helpers\DataQuery($driver, $limit);
 
-            $res = \Components\Dataviewer\Site\Lib\Db::getResults($sql, $dd);
+            $sql = $query->buildQuery($dd);
+            $res = $query->execute($sql, $dd);
 
 
             // Customizer View

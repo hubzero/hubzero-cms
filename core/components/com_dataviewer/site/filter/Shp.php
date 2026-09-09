@@ -62,7 +62,13 @@ class Shp
 
         file_put_contents("$file_name.vrt", $vrt);
         file_put_contents("$file_name.csv", $csv);
-        system("ogr2ogr $path $file_name.vrt");
+        // Use escapeshellarg() to prevent shell injection
+        $cmd = 'ogr2ogr '
+            . escapeshellarg($path) . ' '
+            . escapeshellarg($file_name . '.vrt');
+        $returnCode = 0;
+        $output = [];
+        exec($cmd, $output, $returnCode);
 
         header('Content-Description: File Transfer');
         header('Content-Type: ' . 'application/zip');

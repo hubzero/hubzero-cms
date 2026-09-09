@@ -135,7 +135,7 @@ class Json
                     $link_base = '/' . DvConfig::$com_name . '/view/' . $dd['db_id']['id'] . '/' . $cfl['data']
                         . '/?custom_field=' . $cfl['field'] . '|';
                     $keyId = str_replace('.', '_', $key);
-                    $imgSrc = DvConfig::$html_path . '/download-m.png';
+                    $imgSrc = DvConfig::$html_path . '/img/download-m.png';
                     $tool_bar .= '<a style="text-decoration: none; display: none; margin-left: 5px;" '
                         . 'class="dv-multi-link" id="dv-' . $keyId . '" data-link-base="' . $link_base
                         . '" title="Load filtered view" target="_blank" href="">'
@@ -148,13 +148,13 @@ class Json
 
                     $noMultiLaunch = !isset($dd['cols'][$key]['multi_launch']);
                     if ($noMultiLaunch || $dd['cols'][$key]['multi_launch'] != false) {
-                        $runImg = DvConfig::$html_path . '/run-m.png';
+                        $runImg = DvConfig::$html_path . '/img/run-m.png';
                         $tool_bar .= '<a style="text-decoration: none; margin-left: 2px;" '
                             . 'class="dv_tools_launch_multi" title="Launch ' . $name . ' with selected files" '
                             . 'target="_blank" href="' . $link_format[0] . '">'
                             . '<img src="' . $runImg . '" />&nbsp;</a>';
                     }
-                    $downImg = DvConfig::$html_path . '/download-m.png';
+                    $downImg = DvConfig::$html_path . '/img/download-m.png';
                     $tool_bar .= '<a style="text-decoration: none;" class="dv_tools_down_multi" '
                         . 'title="Download selected files" target="_blank" href="/' . $link_zip . '">'
                         . '<img src="' . $downImg . '" />&nbsp;</a>';
@@ -409,13 +409,13 @@ class Json
                             $hash = \Components\Dataviewer\Site\Lib\Dl::getDlHash($path, 'gallery');
                             $gal_url = "/" . DvConfig::$com_name . '/gallery/' . $hash;
                             $imgTag = '<img class="dv_image lazy-load dv_img_preview" '
-                                . 'src="' . DvConfig::$html_path . '/1x1.png" data-original="' . $small_img
+                                . 'src="' . DvConfig::$html_path . '/img/1x1.png" data-original="' . $small_img
                                 . '" data-preview-img="' . $medium_img . '" />';
                             $val = '<a target="_blank" class="dv_gallery_link" href="'
                                 . $gal_url . '">' . $imgTag . '</a>';
                         } else {
                             $imgTag = '<img class="dv_image lazy-load dv_img_preview" '
-                                . 'src="' . DvConfig::$html_path . '/1x1.png" data-original="' . $small_img
+                                . 'src="' . DvConfig::$html_path . '/img/1x1.png" data-original="' . $small_img
                                 . '" data-preview-img="' . $medium_img . '" />';
                             $val = '<a target="_blank" href="' . $original_img . '">'
                                 . $imgTag . '</a>';
@@ -501,7 +501,7 @@ class Json
                             for ($i = 0; $i < count($param); $i++) {
                                 $tl .= $link_format[$i] . $rec[trim($param[$i])];
                             }
-                            $runImg = DvConfig::$html_path . '/run.png';
+                            $runImg = DvConfig::$html_path . '/img/run.png';
                             $tool_link = '<a class="dv_tools_launch_link" title="Launch ' . $name
                                 . '" target="_blank" href="' . $tl . '">'
                                 . '<img src="' . $runImg . '" /></a>';
@@ -515,7 +515,7 @@ class Json
                                     $hash = \Components\Dataviewer\Site\Lib\Dl::getDlHash($path);
                                     $link = DvConfig::$com_name . '/file/' . $db_id . '/?hash=' . $hash;
                                 }
-                                $downImg = DvConfig::$html_path . '/download.png';
+                                $downImg = DvConfig::$html_path . '/img/download.png';
                                 $dl .= '<a title="Download File" data-data-file="' . $path
                                     . '" class="dv_tools_dl_link" target="_blank" href="/' . $link
                                     . '"><img src="' . $downImg . '" /></a>';
@@ -530,8 +530,8 @@ class Json
                                 . '" value="' . $path . '" style="float: right;" />';
                         } else {
                             $missingTitle = 'File is missing or not uploaded yet.';
-                            $runImg = DvConfig::$html_path . '/run.png';
-                            $downImg = DvConfig::$html_path . '/download.png';
+                            $runImg = DvConfig::$html_path . '/img/run.png';
+                            $downImg = DvConfig::$html_path . '/img/download.png';
                             $tool_link = '<span class="hand" title="' . $missingTitle . '">'
                                 . '<img src="' . $runImg . '" /></span>';
                             $dl = '<span class="hand" title="' . $missingTitle . '">'

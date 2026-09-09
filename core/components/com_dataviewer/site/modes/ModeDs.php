@@ -1,74 +1,96 @@
 <?php
 
 /**
+ * DataStore mode for the Dataviewer component.
+ *
+ * Resolves database connections and data definitions from
+ * com_datastores configuration.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Site\Modes;
 
 use Components\Dataviewer\Site\DvConfig;
+use Components\Dataviewer\Site\Helpers\DataQuery;
+use Components\Dataviewer\Site\Helpers\ModeInterface;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
 
-class ModeDs
+class ModeDs implements ModeInterface
 {
-    public static function getConf($db_id)
+    /**
+     * Get database connection config for this mode.
+     *
+     * @param   array  $dbId    Database identifier array
+     * @param   array  $config  Base config array (modified by reference)
+     * @return  array  Updated config array
+     */
+    public function getConfig(array $dbId, array &$config): array
     {
         $params = \Hubzero\Facades\Component::params('com_datastores');
-        DvConfig::$dv_conf['db']['host'] = $params->get('db_host');
-        DvConfig::$dv_conf['db']['user'] = $params->get('db_ro_user');
-        DvConfig::$dv_conf['db']['password'] = $params->get('db_ro_pass');
-
-        DvConfig::$dv_conf['db']['database'] = 'ds_' . $db_id['name'];
+        $config['db']['host'] = $params->get('db_host');
+        $config['db']['user'] = $params->get('db_ro_user');
+        $config['db']['password'] = $params->get('db_ro_pass');
+        $config['db']['database'] = 'ds_' . $dbId['name'];
 
         // DataStores base directory
-        $ds_base_dir = $params->get('base_dir');
-        if ($ds_base_dir == '') {
-            $ds_base_dir = '/data/datastores'; // Switch the default to /db when it's created
+        $dsBaseDir = $params->get('base_dir');
+        if ($dsBaseDir == '') {
+            $dsBaseDir = '/data/datastores';
         }
+        $config['base_path'] = $dsBaseDir . '/' . $dbId['name'];
 
-        DvConfig::$dv_conf['base_path'] = $ds_base_dir . '/' . $db_id['name'];
-
-        return DvConfig::$dv_conf;
+        return $config;
     }
 
-    public static function getDd($db_id)
+    /**
+     * Get the data definition for the requested dataview.
+     *
+     * @param   array  $dbId    Database identifier array
+     * @param   array  $config  Config array (may be modified)
+     * @return  array|null  Data definition array, or null if not found
+     */
+    public function getDataDefinition(array $dbId, array &$config): ?array
     {
-        $dd = false;
+        $dd = null;
         $db = \Hubzero\Facades\App::get('db');
+        $dvId = Request::getVar('dv');
 
-        $dv_id = \Hubzero\Facades\Request::getVar('dv');
-
-        if ($db_id['extra']) {
-            $sql = "SELECT * FROM `#__datastore_tables` WHERE datastore_id = " . $db_id['name']
-                . " AND id = " . $db->quote($dv_id);
+        if ($dbId['extra']) {
+            $sql = "SELECT * FROM `#__datastore_tables` WHERE datastore_id = "
+                . $dbId['name'] . " AND id = " . $db->quote($dvId);
             $db->setQuery($sql);
             $r = $db->loadAssoc();
 
             $td = json_decode($r['table_definition'], true);
 
-            $dd['db'] = DvConfig::$dv_conf['db'];
+            $dd = [];
+            $dd['db'] = $config['db'];
             $dd['db']['name'] = 'ds_' . $r['datastore_id'];
             $dd['table'] = $td['name'];
             $dd['title'] = $r['name'];
 
-            if (isset($db_id['extra']) && ($db_id['extra'] == 'table' || $db_id['extra'] == 'update')) {
-                if ($db_id['extra'] == 'update') {
-                    $update_link = '/datastores/' . $db_id['name']
-                        . '/table/data_record_update/?table=' . $dv_id . '&__ds_rec_id=';
+            if ($dbId['extra'] == 'table' || $dbId['extra'] == 'update') {
+                if ($dbId['extra'] == 'update') {
+                    $updateLink = '/datastores/' . $dbId['name']
+                        . '/table/data_record_update/?table=' . $dvId
+                        . '&__ds_rec_id=';
 
-                    $dd['cols'][$td['name'] . '.__ds_rec_id'] = array(
-                        'label' => 'Select <br />Record',
-                        'raw' => "CONCAT('$update_link', __ds_rec_id)",
-                        'type' => 'link',
-                        'relative' => 'true',
+                    $dd['cols'][$td['name'] . '.__ds_rec_id'] = [
+                        'label'      => 'Select <br />Record',
+                        'raw'        => "CONCAT('$updateLink', __ds_rec_id)",
+                        'type'       => 'link',
+                        'relative'   => 'true',
                         'link_label' => 'Edit',
                         'link_title' => 'Click here to update or remove this record',
-                        'popup' => array(
-                            'window' => 'Edit_Record',
-                            'features' => 'width=1175px,resizable,scrollbars,status'
-                        )
-                    );
+                        'popup'      => [
+                            'window'   => 'Edit_Record',
+                            'features' => 'width=1175px,resizable,scrollbars,status',
+                        ],
+                    ];
                 }
 
                 foreach ($td['columns'] as $col) {
@@ -80,227 +102,241 @@ class ModeDs
                             $dd['cols'][$colKey]['ds-repo-path'] = "/file_repo/{$td['name']}/{$col['name']}";
                             $dd['cols'][$colKey]['file-verify'] = true;
                         }
-
                         if ($col['type'] == 'url') {
                             $dd['cols'][$colKey]['type'] = 'url';
                             $dd['cols'][$colKey]['url-display'] = 'full_link';
                         }
-
                         $isLargeText = $col['type'] == 'txt'
-                            && ($col['type_extra'] == 'medium' || $col['type_extra'] == 'large');
+                            && ($col['type_extra'] == 'medium'
+                                || $col['type_extra'] == 'large');
                         if ($isLargeText) {
                             $dd['cols'][$colKey]['width'] = '150';
                             $dd['cols'][$colKey]['truncate'] = 'truncate';
                         }
-
                         $dd['cols'][$colKey]['label'] = $col['label'];
                     }
                 }
             }
         } else {
-            $dsid = $db_id['name'];
-            $path = DvConfig::$dv_conf['base_path'] . "/datadefinitions";
-            $dd_file = "$dv_id.json";
-            if (file_exists("$path/$dd_file")) {
-                $dd = json_decode(file_get_contents("$path/$dd_file"), true);
+            $path = $config['base_path'] . "/datadefinitions";
+            $ddFile = "$dvId.json";
+            if (file_exists("$path/$ddFile")) {
+                $dd = json_decode(file_get_contents("$path/$ddFile"), true);
             } else {
-                return false;
+                return null;
             }
         }
 
-
-
-        $dd['db_id'] = $db_id;
-        $dd['dv_id'] = $dv_id;
+        $dd['db_id'] = $dbId;
+        $dd['dv_id'] = $dvId;
 
         $dd = self::ddPost($dd);
 
-        $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
+        $dd['conf'] = $dd['conf'] ?? [];
 
         if (isset($dd['conf']['proc_mode_switch'])) {
-            DvConfig::$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
+            $config['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
         }
-
         if (isset($dd['conf']['proc_switch_threshold'])) {
-            DvConfig::$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
+            $config['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
         }
 
-        /* Dynamically set processing mode */
-        if (isset(DvConfig::$dv_conf['proc_mode_switch']) && DvConfig::$dv_conf['proc_mode_switch']) {
-            $link = \Components\Dataviewer\Site\Lib\Db::getDb();
-            $link->setQuery(\Components\Dataviewer\Site\Lib\Db::queryGenTotal($dd));
-            $link->loadAssoc();
-            $link->setQuery('SELECT FOUND_ROWS() AS total');
-            $total = $link->loadAssoc();
+        // Dynamically set processing mode
+        if (!empty($config['proc_mode_switch'])) {
+            $driver = DataQuery::createDriver($config['db']);
+            $query = new DataQuery($driver);
+            $driver->setQuery($query->buildCountQuery($dd));
+            $driver->loadAssoc();
+            $driver->setQuery('SELECT FOUND_ROWS() AS total');
+            $total = $driver->loadAssoc();
             if ($total) {
-                $total = isset($total['total']) ? $total['total'] : 0;
+                $total = $total['total'] ?? 0;
                 $dd['total_records'] = $total;
 
-                $vis_col_count = 0;
+                $visColCount = 0;
                 if (isset($dd['cols'])) {
-                    $vis_col_count = count(array_filter($dd['cols'], function ($col) {
+                    $visColCount = count(array_filter(
+                        $dd['cols'],
+                        function ($col) {
                             return !isset($col['hide']);
-                    }));
+                        }
+                    ));
                 }
 
-                if (DvConfig::$dv_conf['proc_switch_threshold'] < ($total * $vis_col_count)) {
+                if ($config['proc_switch_threshold'] < ($total * $visColCount)) {
                     $dd['serverside'] = true;
                 }
             }
         }
 
-
         // Record Filters
         if (isset($dd['record_filters']) && is_array($dd['record_filters'])) {
             foreach ($dd['record_filters'] as $f) {
-                switch ($f['type']) {
-                    case 'E':
-                        $dd['where'][] = array('raw' => $f['col'] . " = '" . $f['val'] . "'");
-                        break;
-                    case 'NE':
-                        $dd['where'][] = array('raw' => $f['col'] . " <> '" . $f['val'] . "'");
-                        break;
-                    case 'LT':
-                        $dd['where'][] = array('raw' => $f['col'] . " < '" . $f['val'] . "'");
-                        break;
-                    case 'GT':
-                        $dd['where'][] = array('raw' => $f['col'] . " > '" . $f['val'] . "'");
-                        break;
-                    case 'LK':
-                        $dd['where'][] = array('raw' => $f['col'] . " LIKE '%" . $f['val'] . "%'");
-                        break;
-                    case 'NLK':
-                        $dd['where'][] = array('raw' => $f['col'] . " NOT LIKE '%" . $f['val'] . "%'");
-                        break;
-                    case 'NULL':
-                        $dd['where'][] = array('raw' => $f['col'] . " IS NULL");
-                        break;
-                    case 'NNULL':
-                        $dd['where'][] = array('raw' => $f['col'] . " IS NOT NULL");
-                        break;
+                $clause = $this->buildRecordFilterClause($f, $db);
+                if ($clause) {
+                    $dd['where'][] = ['raw' => $clause];
                 }
             }
         }
 
-
-        /* ACL */
-
-        // Dataviews attached to resources & publised
-        $sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path
-			FROM `#__datastore_resources` AS dr
-				LEFT JOIN (`#__resources` AS r, `#__resource_assoc` ra, `#__resources` AS dv)
-				ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id)
-			WHERE r.id IS NOT NULL
-				AND r.published = 1
-				AND dr.datastore_id = {$db_id['name']}
-				AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
+        // ACL — check resource association
+        $sql = "SELECT r.id, r.published, r.access, r.group_owner, "
+            . "r.group_access, dv.path "
+            . "FROM `#__datastore_resources` AS dr "
+            . "LEFT JOIN (`#__resources` AS r, `#__resource_assoc` ra, "
+            . "`#__resources` AS dv) "
+            . "ON (r.id = dr.resource_id AND ra.parent_id = r.id "
+            . "AND ra.child_id = dv.id) "
+            . "WHERE r.id IS NOT NULL AND r.published = 1 "
+            . "AND dr.datastore_id = " . $db->quote($dbId['name'])
+            . " AND dv.path = " . $db->quote(
+                "/dataviewer/view/{$dbId['name']}:ds/$dvId/"
+            );
         $db->setQuery($sql);
         $res = $db->loadAssoc();
 
         if (isset($res['id'])) {
-            $dd['acl'] = array();
-
-            // Public
+            $dd['acl'] = [];
             if ($res['access'] == 0) {
                 $dd['acl']['public'] = true;
             }
         }
 
+        // DataStore managers
         $sql = "SELECT username FROM `#__datastore_users` ds "
             . "LEFT JOIN `#__users` u ON (u.id = ds.value AND ds.type='user') "
-            . "WHERE ds.id = " . $db_id['name'];
+            . "WHERE ds.id = " . $db->quote($dbId['name']);
         $db->setQuery($sql);
         $managers = $db->loadColumn();
 
         if (!isset($dd['acl'])) {
             $dd['acl']['allowed_users'] = $managers;
-        } elseif (!isset($dd['acl']['registered']) || !isset($dd['acl']['public'])) {
-            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
-            $dd['acl']['allowed_users'] = array_merge($dd['acl']['allowed_users'], $managers);
+        } elseif (!isset($dd['acl']['registered'])
+            && !isset($dd['acl']['public'])
+        ) {
+            $dd['acl']['allowed_users'] = $dd['acl']['allowed_users'] ?? [];
+            $dd['acl']['allowed_users'] = array_merge(
+                $dd['acl']['allowed_users'],
+                $managers
+            );
         }
 
-        // Giving Hub admins full access to the DataStore dataviews
-        if (\Hubzero\Access\Access::check(\Hubzero\Facades\User::get('id'), 'core.admin')) {
-            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
-            $dd['acl']['allowed_users'][] = \Hubzero\Facades\User::get('username');
-        }
-
-        return $dd;
-    }
-
-    public static function ddPost($dd)
-    {
-        $id = \Hubzero\Facades\Request::getString('id', false);
-
-        if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
-            $dd['single'] = true;
-        }
-
-        $custom_field =  \Hubzero\Facades\Request::getString('custom_field', false);
-        if ($custom_field) {
-            $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
-            $dd['single'] = true;
-        }
-
-        // Data for Custom Views
-        $custom_view = \Hubzero\Facades\Request::getString('custom_view', '');
-
-        if ($custom_view != '') {
-            $custom_view = explode(',', $custom_view);
-            unset($dd['customizer']);
-
-            // Custom Title
-            $custom_title = \Hubzero\Facades\Request::getString('custom_title', '');
-            if ($custom_title !== '') {
-                $dd['title'] = htmlspecialchars($custom_title);
-            }
-
-            // Custom Group by
-            $group_by = \Hubzero\Facades\Request::getString('group_by', '');
-            if ($group_by !== '') {
-                $dd['group_by'] = htmlspecialchars($group_by);
-            }
-
-            // Ordering
-            $order_cols = $dd['cols'];
-            $dd['cols'] = array();
-            foreach ($custom_view as $cv_col) {
-                $dd['cols'][$cv_col] = $order_cols[$cv_col];
-            }
-
-            // Hiding
-            foreach ($order_cols as $id => $prop) {
-                if (!in_array($id, $custom_view)) {
-                    $dd['cols'][$id] = $prop;
-
-                    if (!isset($dd['cols'][$id]['hide'])) {
-                        $dd['cols'][$id]['hide'] = 'custom';
-                    }
-                }
-            }
+        // Hub admins get full access
+        if (\Hubzero\Access\Access::check(User::get('id'), 'core.admin')) {
+            $dd['acl']['allowed_users'] = $dd['acl']['allowed_users'] ?? [];
+            $dd['acl']['allowed_users'][] = User::get('username');
         }
 
         return $dd;
     }
 
-    public static function pathway($dd)
+    /**
+     * Set breadcrumb pathway.
+     *
+     * @param   array  $dd  Data definition array
+     * @return  void
+     */
+    public function setPathway(array $dd): void
     {
-        $db_id = $dd['db_id'];
+        $dbId = $dd['db_id'];
 
         $document = \Hubzero\Facades\App::get('document');
         $document->setTitle($dd['title']);
 
-        if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
-            $ref_title = "Datastore";
-            \Hubzero\Facades\Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+        if (isset($dbId['extra']) && $dbId['extra'] == 'table') {
+            \Hubzero\Facades\Pathway::append(
+                'Datastore',
+                '/datastores/' . $dbId['name'] . '#tables'
+            );
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
-            $ref_title = \Hubzero\Facades\Request::getString('ref_title', $dd['title'] . " Resource");
-            $ref_title = htmlentities($ref_title);
-            \Hubzero\Facades\Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
+            $refTitle = Request::getString(
+                'ref_title',
+                $dd['title'] . " Resource"
+            );
+            $refTitle = htmlentities($refTitle);
+            \Hubzero\Facades\Pathway::append(
+                $refTitle,
+                $_SERVER['HTTP_REFERER']
+            );
         }
 
         \Hubzero\Facades\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
+    }
+
+    /**
+     * Build a WHERE clause from a record filter definition.
+     *
+     * @param   array   $f   Filter definition with 'type', 'col', 'val'
+     * @param   object  $db  Database driver for quoting
+     * @return  string|null
+     */
+    protected function buildRecordFilterClause(array $f, $db): ?string
+    {
+        $col = $f['col'];
+        $val = $db->quote($f['val']);
+
+        switch ($f['type']) {
+            case 'E':
+                return "$col = $val";
+            case 'NE':
+                return "$col <> $val";
+            case 'LT':
+                return "$col < $val";
+            case 'GT':
+                return "$col > $val";
+            case 'LK':
+                return "$col LIKE " . $db->quote('%' . $f['val'] . '%');
+            case 'NLK':
+                return "$col NOT LIKE " . $db->quote('%' . $f['val'] . '%');
+            case 'NULL':
+                return "$col IS NULL";
+            case 'NNULL':
+                return "$col IS NOT NULL";
+        }
+
+        return null;
+    }
+
+    // ---------------------------------------------------------------
+    // Static BC shims — used by the legacy Controller::dispatch() path
+    // ---------------------------------------------------------------
+
+    /**
+     * @deprecated Use instance method getConfig() instead
+     */
+    public static function getConf($db_id)
+    {
+        $mode = new static();
+        $mode->getConfig($db_id, DvConfig::$dv_conf);
+        return DvConfig::$dv_conf;
+    }
+
+    /**
+     * @deprecated Use instance method getDataDefinition() instead
+     */
+    public static function getDd($db_id)
+    {
+        $mode = new static();
+        return $mode->getDataDefinition($db_id, DvConfig::$dv_conf);
+    }
+
+    /**
+     * @deprecated Use instance method setPathway() instead
+     */
+    public static function pathway($dd)
+    {
+        $mode = new static();
+        $mode->setPathway($dd);
+    }
+
+    /**
+     * Apply post-processing to a data definition.
+     *
+     * @param   array  $dd  Data definition
+     * @return  array
+     */
+    public static function ddPost($dd)
+    {
+        return ModeDb::ddPost($dd);
     }
 }

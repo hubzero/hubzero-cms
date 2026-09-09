@@ -1,78 +1,149 @@
 <?php
 
 /**
+ * Download helper for file streaming and ZIP bundling.
+ *
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Dataviewer\Site\Lib;
 
+use Hubzero\Facades\Session;
+
 class Dl
 {
+    /**
+     * Generate an HMAC-signed token for a file path.
+     *
+     * Stores the path in the Hubzero session keyed by the token,
+     * so the download/gallery endpoint can retrieve it.
+     *
+     * @param   string  $path  File path to sign
+     * @param   string  $type  Download type identifier
+     * @return  string  HMAC token
+     */
     public static function getDlHash($path, $type = 'file_download')
     {
-        $salt = "Ju   st( in c4s3.........:-0()";
-        $hash = md5($salt . $path);
+        $secret = \Hubzero\Facades\App::get('config')->get('secret', '');
+        $token = hash_hmac('sha256', $type . '|' . $path, $secret);
 
-        if (!isset($_SESSION['dv'])) {
-            $_SESSION['dv'] = array();
-        }
+        // Store in session so the endpoint can look up the path by token
+        $list = Session::get('dv.' . $type . '.list', []);
+        $list[$token] = $path;
+        Session::set('dv.' . $type . '.list', $list);
 
-        $_SESSION['dv'][$type]['list'][$hash] = $path;
-
-        return $hash;
+        return $token;
     }
 
+    /**
+     * Verify an HMAC-signed download token.
+     *
+     * @param   string  $token  Token to verify
+     * @param   string  $path   Expected file path
+     * @param   string  $type   Download type identifier
+     * @return  bool
+     */
+    public static function verifyHash(
+        string $token,
+        string $path,
+        string $type = 'file_download'
+    ): bool {
+        $secret = \Hubzero\Facades\App::get('config')->get('secret', '');
+        $expected = hash_hmac('sha256', $type . '|' . $path, $secret);
+
+        return hash_equals($expected, $token);
+    }
+
+    /**
+     * Stream a file to the browser.
+     *
+     * @param   string  $hash  Download token
+     * @return  void
+     */
     public static function streamFile($hash)
     {
         $fullpath = '';
-        if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
-            $fullpath = $_SESSION['dv']['file_download']['list'][$hash];
+        $list = Session::get('dv.file_download.list', []);
+        if (isset($list[$hash])) {
+            $fullpath = $list[$hash];
 
-            //TODO: Better mimetype detection
-            if (strstr($fullpath, '.csv')) {
-                $mimetype = 'text/csv';
-            } elseif (strstr($fullpath, '.zip')) {
-                $mimetype = 'application/zip';
-            } else {
-                $mimetype = 'application/octet-stream';
-            }
+            $ext = strtolower(pathinfo($fullpath, PATHINFO_EXTENSION));
+            $mimeMap = [
+                'csv' => 'text/csv',
+                'zip' => 'application/zip',
+                'pdf' => 'application/pdf',
+            ];
+            $mimetype = $mimeMap[$ext] ?? 'application/octet-stream';
 
             if (file_exists($fullpath)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: ' . $mimetype);
                 header('Content-Length: ' . filesize($fullpath));
-                header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', basename($fullpath)));
+                $safeName = str_replace(' ', '_', basename($fullpath));
+                header(
+                    'Content-Disposition: attachment; filename="'
+                    . $safeName . '"'
+                );
                 ob_end_flush();
                 readfile($fullpath);
                 exit(0);
             }
         }
-        print "Invalid (or Missing) file : $fullpath";
+        print \Hubzero\Facades\Lang::txt('COM_DATAVIEWER_ERROR_INVALID_FILE', htmlspecialchars($fullpath));
     }
 
-    public static function zipFiles($hash_list)
+    /**
+     * Create a ZIP of multiple files and stream it.
+     *
+     * Uses ZipArchive instead of shell `zip` command.
+     *
+     * @param   string  $hashList  Comma-separated hash tokens
+     * @return  void
+     */
+    public static function zipFiles($hashList)
     {
-        $hash_list = explode(',', $hash_list);
+        $hashes = explode(',', $hashList);
+        $files = [];
 
-        $fl = '';
-
-        foreach ($hash_list as $hash) {
-            if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
-                $fullpath = '"' . $_SESSION['dv']['file_download']['list'][$hash] . '"';
-                $fl .= $fullpath . ' ';
+        $list = Session::get('dv.file_download.list', []);
+        foreach ($hashes as $hash) {
+            if (isset($list[$hash])) {
+                $path = $list[$hash];
+                if (file_exists($path)) {
+                    $files[] = $path;
+                }
             }
         }
 
+        if (empty($files)) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+            exit;
+        }
+
+        $tmp = tempnam(sys_get_temp_dir(), 'dv_zip_');
+        $zip = new \ZipArchive();
+
+        if ($zip->open($tmp, \ZipArchive::OVERWRITE) !== true) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
+            exit;
+        }
+
+        foreach ($files as $file) {
+            $zip->addFile($file, basename($file));
+        }
+
+        $zip->close();
+
         header('Content-Description: File Transfer');
         header('Content-Type: application/zip');
-        header('Content-Disposition: attachment; filename=selected_files.zip');
+        header('Content-Disposition: attachment; filename="selected_files.zip"');
+        header('Content-Length: ' . filesize($tmp));
 
         ob_end_flush();
-
-        print `zip -qj - $fl`;
-
+        readfile($tmp);
+        unlink($tmp);
         exit(0);
     }
 }

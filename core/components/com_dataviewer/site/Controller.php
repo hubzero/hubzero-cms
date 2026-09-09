@@ -82,11 +82,13 @@ class Controller
         $filterClass = __NAMESPACE__ . '\\Filter\\' . ucfirst($filter);
 
         if ($dd) {
-            $link = Lib\Db::getDb();
+            $dbConfig = isset($dd['db']) ? $dd['db'] : DvConfig::$dv_conf['db'];
+            $driver = Helpers\DataQuery::createDriver($dbConfig);
+            $limit = DvConfig::$dv_conf['settings']['limit'] ?? 10;
+            $query = new Helpers\DataQuery($driver, $limit);
 
-            $sql = Lib\Db::queryGen($dd);
-
-            $res = Lib\Db::getResults($sql, $dd);
+            $sql = $query->buildQuery($dd);
+            $res = $query->execute($sql, $dd);
 
             $filteredResults = $filterClass::filter($res, $dd);
 
