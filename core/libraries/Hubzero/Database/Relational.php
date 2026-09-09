@@ -1496,7 +1496,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
 		if (isset($columns[$col]))
 		{
-			return $column[$col]['default'];
+			return $columns[$col]['default'];
 		}
 
 		return null;
