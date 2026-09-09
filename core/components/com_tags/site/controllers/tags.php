@@ -768,6 +768,9 @@ class Tags extends SiteController
      */
     public function deleteTask()
     {
+        // Check for request forgeries
+        Request::checkToken();
+
         // Check that the user is authorized
         if (!$this->config->get('access-delete-tag')) {
             App::abort(403, Lang::txt('ALERTNOTAUTH'));
