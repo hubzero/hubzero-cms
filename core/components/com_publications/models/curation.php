@@ -233,7 +233,29 @@ class Curation extends Obj
         }
 
         $this->_manifest = $manifest;
-        $this->_blocks   = $manifest->blocks;
+        $blocks = $manifest->blocks;
+        // Normalize: if blocks is a 0-indexed array/object, re-index starting at 1
+        if (is_array($blocks)) {
+            $reindexed = new \stdClass();
+            foreach (array_values($blocks) as $i => $b) {
+                $key = $i + 1;
+                $reindexed->$key = is_array($b) ? (object)$b : $b;
+            }
+            $this->_blocks = $reindexed;
+        } else {
+            // stdClass — check if first key is 0
+            $keys = array_keys((array)$blocks);
+            if (!empty($keys) && $keys[0] === 0) {
+                $reindexed = new \stdClass();
+                foreach (array_values((array)$blocks) as $i => $b) {
+                    $key = $i + 1;
+                    $reindexed->$key = $b;
+                }
+                $this->_blocks = $reindexed;
+            } else {
+                $this->_blocks = $blocks;
+            }
+        }
 
         return true;
     }
@@ -1276,7 +1298,7 @@ class Curation extends Obj
         $manifest = $this->_blocks->$blockId;
 
         // Get element status
-        if ($manifest->elements) {
+        if (!empty($manifest->elements)) {
             $i          = 0;
             $success    = 0;
             $failed     = 0;

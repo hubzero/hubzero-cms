@@ -809,19 +809,10 @@ class Data extends Base
             return false;
         }
 
-        mb_internal_encoding('UTF-8');
-
-        \Components\Dataviewer\Site\DvConfig::init();
-        $dd = \Components\Dataviewer\Site\Modes\ModeDsl::getDd(null, $db_name, $version);
-        $dd['serverside'] = false;
-
-        $sql = \Components\Dataviewer\Site\Lib\Db::queryGen($dd);
-        $result = \Components\Dataviewer\Site\Lib\Db::getResults($sql, $dd);
-
-        ob_start();
-        \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
-        $csv = ob_get_contents();
-        ob_end_clean();
+        $csv = \Components\Dataviewer\Site\Helpers\DataviewerApi::exportCsv(
+            $db_name,
+            (int) $version
+        );
 
         if ($csv && $tmpFile) {
             $handle = fopen($tmpFile, 'w');
