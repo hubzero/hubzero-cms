@@ -28,7 +28,7 @@ if ($canDo->get('core.delete'))
 
 $this->css();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cotnroller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>

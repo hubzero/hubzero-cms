@@ -306,7 +306,7 @@ class Publication extends Table
 				if ($componentParams->get('include_author_name_in_search'))
 				{
 					$query .= " OR (V.id in (SELECT publication_version_id"
-						.	" from jos_publication_authors as A where lower(A.name) like '%$escapedtext%'))";
+						.	" from #__publication_authors as A where lower(A.name) like '%$escapedtext%'))";
 				}
 		}
 
