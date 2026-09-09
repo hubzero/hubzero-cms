@@ -18,6 +18,10 @@ use Route;
 use Lang;
 use User;
 use App;
+use Date;
+use Event;
+use Log;
+use Plugin;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'vnc.php';

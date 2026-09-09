@@ -13,6 +13,8 @@ require_once "$resourceComponentPath/models/type.php";
 
 use Components\Resources\Models\Type;
 use Hubzero\Utility\Arr;
+use Component;
+use Lang;
 
 class TypeOptionsHelper
 {

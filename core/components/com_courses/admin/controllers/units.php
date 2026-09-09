@@ -16,6 +16,7 @@ use User;
 use Date;
 use Lang;
 use App;
+use Config;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';

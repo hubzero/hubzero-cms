@@ -10,6 +10,7 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Fields\Select;
 use Html;
 use Lang;
+use Document;
 
 /**
  * Renders a list of DOI service types

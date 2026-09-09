@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Date;
 
 require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 require_once Component::path('com_resources') . DS . 'helpers' . DS . 'utilities.php';

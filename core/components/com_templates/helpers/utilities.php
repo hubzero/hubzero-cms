@@ -15,6 +15,8 @@ use Route;
 use Html;
 use Lang;
 use User;
+use App;
+use Filesystem;
 
 /**
  * Templates component helper.

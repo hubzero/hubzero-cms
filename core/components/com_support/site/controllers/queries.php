@@ -17,6 +17,7 @@ use Request;
 use Route;
 use Lang;
 use User;
+use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 

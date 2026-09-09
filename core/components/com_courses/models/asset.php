@@ -15,6 +15,7 @@ use Date;
 use User;
 use Lang;
 use App;
+use Filesystem;
 
 require_once Component::path('com_courses') . '/tables/asset.association.php';
 require_once Component::path('com_courses') . '/tables/asset.php';

@@ -31,6 +31,9 @@ use Config;
 use Lang;
 use stdClass;
 use Components\Resources\Models\Entry;
+use Component;
+use Event;
+use User;
 
 /**
  * Search controller class

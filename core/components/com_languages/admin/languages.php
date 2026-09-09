@@ -10,6 +10,8 @@ namespace Components\Languages\Admin;
 use Submenu;
 use Lang;
 use App;
+use Request;
+use Route;
 
 // Access check.
 if (!\User::authorise('core.manage', 'com_languages'))

@@ -16,6 +16,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use Notify;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'link.php';

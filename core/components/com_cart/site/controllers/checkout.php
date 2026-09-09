@@ -17,6 +17,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Event;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';

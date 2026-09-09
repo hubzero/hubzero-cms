@@ -10,6 +10,13 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
+use App;
+use Config;
+use Date;
+use Lang;
+use Request;
+use Route;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'role.php';
 

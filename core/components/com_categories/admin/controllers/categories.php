@@ -22,6 +22,7 @@ use User;
 use Lang;
 use Date;
 use App;
+use Cache;
 
 /**
  * Categories controller

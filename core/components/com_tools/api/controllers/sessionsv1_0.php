@@ -15,6 +15,9 @@ use stdClass;
 use Request;
 use Lang;
 use User;
+use App;
+use Event;
+use Plugin;
 
 $componentPath = Component::path('com_tools');
 

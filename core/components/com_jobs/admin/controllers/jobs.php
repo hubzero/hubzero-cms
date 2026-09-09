@@ -22,6 +22,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Event;
 
 /**
  * Controller class for job postings

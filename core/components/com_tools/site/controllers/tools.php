@@ -15,6 +15,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Config;
 
 /**
  * Controller class for tools (default)

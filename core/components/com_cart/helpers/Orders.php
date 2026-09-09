@@ -7,6 +7,8 @@
 
 namespace Components\Cart\Helpers;
 
+use User;
+
 /**
  * Cart orders helpers
  */

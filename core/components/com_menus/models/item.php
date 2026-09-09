@@ -15,6 +15,9 @@ use Filesystem;
 use Lang;
 use User;
 use Date;
+use App;
+use Event;
+use Notify;
 
 /**
  * Menu item model

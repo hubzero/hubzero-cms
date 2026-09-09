@@ -10,6 +10,8 @@ namespace Components\Publications\Helpers\Economy;
 use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Config;
+use Lang;
+use User;
 
 /**
  * Reviews Economy class:

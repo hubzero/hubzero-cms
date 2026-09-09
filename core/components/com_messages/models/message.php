@@ -10,6 +10,7 @@ namespace Components\Messages\Models;
 use Hubzero\Database\Relational;
 use User;
 use Date;
+use Lang;
 
 /**
  * Model class for a message

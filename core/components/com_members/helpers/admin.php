@@ -14,6 +14,7 @@ use Route;
 use Lang;
 use Html;
 use User;
+use Document;
 
 /**
  * Members admin helper

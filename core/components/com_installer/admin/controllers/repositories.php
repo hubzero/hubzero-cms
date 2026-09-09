@@ -16,6 +16,8 @@ use Event;
 use StdClass;
 use Route;
 use App;
+use Lang;
+use User;
 
 /**
  * Repositories Controller

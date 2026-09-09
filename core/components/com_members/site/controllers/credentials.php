@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Log;
 
 /**
  * Members controller class for profiles

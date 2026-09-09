@@ -14,6 +14,8 @@ use stdClass;
 use Request;
 use Event;
 use Lang;
+use App;
+use User;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'plugin.php';
 

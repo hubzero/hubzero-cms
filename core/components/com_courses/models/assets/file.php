@@ -10,6 +10,10 @@ namespace Components\Courses\Models\Assets;
 use Components\Courses\Tables;
 use Component;
 use Request;
+use App;
+use Date;
+use Filesystem;
+use Route;
 
 /**
  * Default file asset handler class

@@ -8,6 +8,9 @@
 namespace Components\Storefront\Site\Controllers;
 
 use Components\Content\Models\Article;
+use Lang;
+use Pathway;
+use Request;
 
 /**
  * Courses controller class

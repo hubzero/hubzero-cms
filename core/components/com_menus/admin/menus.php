@@ -7,6 +7,8 @@
 
 namespace Components\Menus\Admin;
 
+use Request;
+
 // Access check.
 if (!\User::authorise('core.manage', 'com_menus'))
 {

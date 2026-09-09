@@ -17,6 +17,7 @@ use Request;
 use Date;
 use User;
 use Lang;
+use Component;
 
 require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'item.php';

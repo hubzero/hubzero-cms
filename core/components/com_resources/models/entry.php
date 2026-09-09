@@ -17,6 +17,9 @@ use Lang;
 use User;
 use App;
 use stdClass;
+use Filesystem;
+use Request;
+use Route;
 
 require_once __DIR__ . DS . 'association.php';
 require_once __DIR__ . DS . 'type.php';

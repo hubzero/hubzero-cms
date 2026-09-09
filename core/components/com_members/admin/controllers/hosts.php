@@ -13,6 +13,7 @@ use Components\Members\Models\Host;
 use Request;
 use Event;
 use Lang;
+use User;
 
 /**
  * Manage host entries for a member

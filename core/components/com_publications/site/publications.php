@@ -7,6 +7,9 @@
 
 namespace Components\Publications\Site;
 
+use Component;
+use Request;
+
 // Include publication model
 $componentPath = Component::path('com_publications');
 $sitePath = "$componentPath/site";

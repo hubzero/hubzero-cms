@@ -14,6 +14,8 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use Config;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'license.php';
 

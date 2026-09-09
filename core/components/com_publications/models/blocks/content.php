@@ -9,6 +9,9 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Date;
+use Lang;
+use Request;
 
 /**
  * Content block

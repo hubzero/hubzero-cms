@@ -18,6 +18,8 @@ use Route;
 use Lang;
 use User;
 use App;
+use Filesystem;
+use Log;
 
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';

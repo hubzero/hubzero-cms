@@ -9,6 +9,7 @@ namespace Components\Wiki\Models\Adapters;
 
 use Request;
 use Route;
+use Component;
 
 require_once Component::path('com_wiki') . '/models/adapters/base.php';
 

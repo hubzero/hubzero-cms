@@ -9,6 +9,7 @@ namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 use Components\Members\Models\Member;
+use App;
 
 require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 

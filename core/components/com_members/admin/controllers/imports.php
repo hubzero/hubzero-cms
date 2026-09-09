@@ -24,6 +24,8 @@ use User;
 use Date;
 use Lang;
 use App;
+use Notify;
+use Session;
 
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';

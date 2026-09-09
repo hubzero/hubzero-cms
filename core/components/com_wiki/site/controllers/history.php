@@ -17,6 +17,8 @@ use Request;
 use User;
 use Lang;
 use App;
+use Route;
+use Event;
 
 /**
  * Wiki controller class for page history

@@ -12,6 +12,7 @@ use Components\Citations\Models\Citation;
 use stdClass;
 use Request;
 use Route;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'citation.php';
 

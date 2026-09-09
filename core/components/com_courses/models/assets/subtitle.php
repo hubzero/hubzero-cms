@@ -14,6 +14,8 @@ use Component;
 use User;
 use Date;
 use stdClass;
+use App;
+use Route;
 
 /**
  * Subtitle Asset handler class

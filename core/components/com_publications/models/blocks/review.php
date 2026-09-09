@@ -9,6 +9,11 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Component;
+use Date;
+use Lang;
+use Request;
+use User;
 
 /**
  * Review block

@@ -20,6 +20,10 @@ use Event;
 use User;
 use Lang;
 use Date;
+use App;
+use Route;
+use Document;
+use Cache;
 
 /**
  * Wiki controller class for pages

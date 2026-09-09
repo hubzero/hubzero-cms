@@ -9,6 +9,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Filesystem;
 
 /**
  * Cache command class

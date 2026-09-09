@@ -16,6 +16,9 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use Cache;
+use Event;
+use User;
 
 /**
  * Templates controller for styles

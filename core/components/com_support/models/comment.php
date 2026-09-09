@@ -12,6 +12,7 @@ use Hubzero\Utility\Validate;
 use Route;
 use User;
 use Lang;
+use Date;
 
 require_once __DIR__ . DS . 'attachment.php';
 require_once __DIR__ . DS . 'changelog.php';

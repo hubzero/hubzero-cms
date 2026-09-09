@@ -17,6 +17,7 @@ use Lang;
 use Date;
 use User;
 use App;
+use Config;
 
 /**
  * Controller class for service subscriptions

@@ -14,6 +14,8 @@ use Request;
 use User;
 use Lang;
 use App;
+use Event;
+use Route;
 
 /**
  * Controller class for contributing a tool

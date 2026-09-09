@@ -13,6 +13,7 @@ use Hubzero\Base\Obj;
 use ReflectionClass;
 use Iterator;
 use Plugin;
+use App;
 
 /**
  * Search result set

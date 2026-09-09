@@ -12,6 +12,7 @@ use Hubzero\Item\Vote;
 use Request;
 use Lang;
 use Date;
+use User;
 //use User;
 
 require_once __DIR__ . DS . 'comment.php';

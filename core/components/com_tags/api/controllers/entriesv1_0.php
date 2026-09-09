@@ -16,6 +16,7 @@ use Request;
 use Route;
 use Event;
 use Lang;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'cloud.php';
 

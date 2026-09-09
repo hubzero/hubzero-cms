@@ -13,6 +13,7 @@ require_once "$componentPath/helpers/mockProxy.php";
 
 use Components\Search\Helpers\MockProxy;
 use Hubzero\Utility\Arr;
+use Component;
 
 class BoostDocumentTypeMap
 {

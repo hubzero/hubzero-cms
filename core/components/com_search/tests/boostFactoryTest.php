@@ -15,6 +15,9 @@ require_once "$componentPath/tests/traits/canMock.php";
 use Components\Search\Helpers\BoostFactory;
 use Components\Search\Tests\Traits\canMock;
 use Hubzero\Test\Basic;
+use Component;
+use Date;
+use Lang;
 
 class BoostFactoryTest extends Basic
 {

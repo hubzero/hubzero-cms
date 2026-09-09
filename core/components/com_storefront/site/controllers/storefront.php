@@ -8,6 +8,9 @@
 namespace Components\Storefront\Site\Controllers;
 
 use Components\Storefront\Models\Warehouse;
+use Lang;
+use Pathway;
+use Request;
 
 
 /**

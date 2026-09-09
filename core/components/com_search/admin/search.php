@@ -7,6 +7,8 @@
 
 namespace Components\Search\Admin;
 
+use Request;
+
 // Authorization check
 if (!\User::authorise('core.manage', 'com_search'))
 {

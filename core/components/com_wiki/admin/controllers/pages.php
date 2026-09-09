@@ -15,6 +15,8 @@ use Notify;
 use User;
 use Lang;
 use App;
+use Route;
+use Event;
 
 /**
  * Controller class for wiki pages

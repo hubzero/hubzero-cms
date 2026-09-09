@@ -13,6 +13,7 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
+use Component;
 use Date;
 use User;
 

@@ -20,6 +20,7 @@ use Document;
 use Pathway;
 use Request;
 use Session;
+use Notify;
 use Config;
 use Event;
 use Route;

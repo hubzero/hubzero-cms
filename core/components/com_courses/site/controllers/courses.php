@@ -15,6 +15,8 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Config;
+use User;
 
 /**
  * Courses controller class

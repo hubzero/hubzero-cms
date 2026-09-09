@@ -15,6 +15,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Plugin;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 

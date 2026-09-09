@@ -13,6 +13,8 @@ use Request;
 use Notify;
 use Route;
 use Lang;
+use App;
+use User;
 
 require_once dirname(dirname(__DIR__)) . '/models/category.php';
 

@@ -15,6 +15,8 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Config;
+use Notify;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php';
 

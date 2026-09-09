@@ -11,6 +11,11 @@ use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 use Request;
+use App;
+use Config;
+use Lang;
+use Notify;
+use Route;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';

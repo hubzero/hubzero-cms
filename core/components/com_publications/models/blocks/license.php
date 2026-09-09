@@ -9,6 +9,8 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Lang;
+use Request;
 
 /**
  * License block

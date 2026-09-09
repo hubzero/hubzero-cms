@@ -18,6 +18,8 @@ use Config;
 use Route;
 use Lang;
 use App;
+use Date;
+use Notify;
 
 require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
 

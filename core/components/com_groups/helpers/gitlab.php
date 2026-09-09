@@ -7,6 +7,9 @@
 
 namespace Components\Groups\Helpers;
 
+use Lang;
+use Notify;
+
 class Gitlab
 {
 	/**

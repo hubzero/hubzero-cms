@@ -19,6 +19,9 @@ use User;
 use Lang;
 use Html;
 use App;
+use Component;
+use Notify;
+use Session;
 
 /**
  * Media controller

@@ -8,6 +8,7 @@
 namespace Components\Tags\Helpers;
 
 use stdClass;
+use Lang;
 
 class ActivityLogPresenter
 {

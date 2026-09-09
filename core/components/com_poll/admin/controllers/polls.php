@@ -18,6 +18,7 @@ use Notify;
 use User;
 use Lang;
 use App;
+use Route;
 
 /**
  * Controller class for polls

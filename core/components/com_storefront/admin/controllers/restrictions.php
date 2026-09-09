@@ -16,6 +16,7 @@ use Request;
 use Route;
 use User;
 use App;
+use Config;
 
 /**
  * Controller class

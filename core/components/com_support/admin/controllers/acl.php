@@ -17,6 +17,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Support controller class for defining permissions

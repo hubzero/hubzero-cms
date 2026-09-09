@@ -16,6 +16,7 @@ use Config;
 use Event;
 use Lang;
 use Date;
+use App;
 
 /**
  * API controller class for system tasks

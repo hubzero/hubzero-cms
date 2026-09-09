@@ -8,6 +8,9 @@
 namespace Components\Courses\Models\Assets;
 
 use Components\Courses\Tables;
+use App;
+use Request;
+use Route;
 
 /**
  * Content based asset handler (i.e. things like notes, wiki, html, etc...)

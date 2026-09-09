@@ -8,6 +8,8 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
+use Document;
+use Lang;
 
 
 /**

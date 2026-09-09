@@ -11,6 +11,7 @@ use Hubzero\Base\Obj;
 use Filesystem;
 use Component;
 use User;
+use Lang;
 
 /**
  * Categories helper

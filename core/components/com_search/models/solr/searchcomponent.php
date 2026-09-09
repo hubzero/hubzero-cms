@@ -12,6 +12,11 @@ use Hubzero\Database\Rows;
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Search\Models\Solr\Blacklist;
 use \Solarium\Exception\HttpException;
+use App;
+use Component;
+use Config;
+use Event;
+use Route;
 //use Component;
 
 require_once Component::path('com_search') . '/helpers/discoveryhelper.php';

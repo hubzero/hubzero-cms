@@ -9,6 +9,7 @@ namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Date;
+use Lang;
 
 /**
  * Model class for an access token

@@ -15,6 +15,7 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Component;
 
 /**
  * Manage files for a group

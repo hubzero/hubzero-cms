@@ -18,6 +18,7 @@ use Route;
 use Date;
 use User;
 use App;
+use Html;
 
 /**
  * Module class for displaying articles in a category

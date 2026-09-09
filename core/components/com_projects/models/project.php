@@ -28,6 +28,8 @@ use Route;
 use Date;
 use Lang;
 use User;
+use Event;
+use Request;
 
 /**
  * Project model

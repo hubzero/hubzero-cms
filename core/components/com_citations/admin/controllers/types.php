@@ -15,6 +15,8 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Notify;
+use User;
 
 /**
  * Controller class for citation types

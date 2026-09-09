@@ -18,6 +18,8 @@ use Route;
 use Date;
 use Lang;
 use App;
+use Component;
+use User;
 
 /**
  * Newsletter Mailing List Controller

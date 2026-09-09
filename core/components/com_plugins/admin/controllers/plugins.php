@@ -17,6 +17,7 @@ use Cache;
 use Event;
 use Lang;
 use App;
+use User;
 
 /**
  * Plugins controller class.

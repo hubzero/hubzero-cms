@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Hubzero\User\Group;
 use Lang;
 use User;
+use Component;
 
 require_once __DIR__ . DS . 'wish.php';
 require_once __DIR__ . DS . 'owner.php';

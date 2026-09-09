@@ -6,6 +6,9 @@
  */
 
 namespace Components\Redirect\Site;
+
+use Component;
+use Request;
 $component_name = basename(dirname(__DIR__));
 
 // Include publication model

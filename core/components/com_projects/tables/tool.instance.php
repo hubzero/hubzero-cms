@@ -8,6 +8,7 @@
 namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
+use Lang;
 
 /**
  * Project Tool Instance class

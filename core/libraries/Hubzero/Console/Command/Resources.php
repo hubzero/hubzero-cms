@@ -12,6 +12,8 @@ use Hubzero\Console\Arguments;
 
 require_once Component::path('com_resources') . '/models/entry.php';
 use Components\Resources\Models\Entry;
+use Component;
+use Config;
 
 /**
  * Resources command class

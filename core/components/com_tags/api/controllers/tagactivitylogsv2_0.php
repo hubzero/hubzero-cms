@@ -15,6 +15,8 @@ require_once "$componentPath/models/log.php";
 use Components\Tags\Helpers\ActivityLogPresenter;
 use Components\Tags\Models\Log;
 use Hubzero\Component\ApiController;
+use Component;
+use Request;
 
 class TagActivityLogsv2_0 extends ApiController
 {

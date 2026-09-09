@@ -12,6 +12,11 @@ use User;
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Components\Storefront\Models\Warehouse;
+use App;
+use Config;
+use Lang;
+use Pathway;
+use Route;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 

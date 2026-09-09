@@ -13,6 +13,7 @@ require_once "$componentPath/helpers/errorMessageHelper.php";
 
 use Components\Search\Helpers\ErrorMessageHelper;
 use Hubzero\Test\Basic;
+use Component;
 
 class ErrorMessageHelperTest extends Basic
 {

@@ -16,6 +16,8 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use Date;
+use User;
 
 // require the campaign model
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'campaign.php';

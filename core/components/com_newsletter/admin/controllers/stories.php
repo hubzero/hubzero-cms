@@ -16,6 +16,10 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Event;
+use Filesystem;
+use Notify;
+use User;
 
 /**
  * Newsletter stories Controller

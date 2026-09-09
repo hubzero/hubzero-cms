@@ -9,6 +9,7 @@ namespace Components\Projects\Tables;
 
 use Hubzero\Database\Table;
 use Date;
+use Lang;
 
 /**
  * Table class for project activity

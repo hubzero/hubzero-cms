@@ -13,6 +13,9 @@ require_once Component::path('com_search') . '/models/solr/filters/textfieldfilt
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Component;
+use Date;
+use User;
 
 /**
  * Database model for search filters

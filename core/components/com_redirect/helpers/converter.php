@@ -8,6 +8,9 @@
 
 namespace Component\Redirect\Helpers;
 
+use Component;
+use Route;
+
 /**
  * Instantiate and return a form field for autocompleting some value
  */

@@ -15,6 +15,7 @@ use Route;
 use Lang;
 use Date;
 use App;
+use User;
 
 /**
  * Controller class for services

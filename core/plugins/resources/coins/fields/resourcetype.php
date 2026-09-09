@@ -10,6 +10,7 @@ namespace Hubzero\Form\Fields;
 use Hubzero\Form\Fields\Select;
 use Html;
 use App;
+use Lang;
 
 /**
  * Renders a list of resource types

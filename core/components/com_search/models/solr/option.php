@@ -8,6 +8,8 @@
 namespace Components\Search\Models\Solr;
 
 use Hubzero\Database\Relational;
+use Date;
+use User;
 
 /**
  * Database model for search blacklist

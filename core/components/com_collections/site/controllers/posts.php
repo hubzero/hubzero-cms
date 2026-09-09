@@ -20,6 +20,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Event;
 
 /**
  * Controller class for collection posts

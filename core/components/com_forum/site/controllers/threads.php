@@ -24,6 +24,7 @@ use User;
 use Lang;
 use App;
 use DOMDocument;
+use Event;
 
 /**
  * Forum controller class for threads

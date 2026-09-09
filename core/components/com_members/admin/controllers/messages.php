@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Event;
 
 /**
  * Manage messaging settings

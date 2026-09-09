@@ -20,6 +20,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use Event;
 
 /**
  * Controller class for forum categories

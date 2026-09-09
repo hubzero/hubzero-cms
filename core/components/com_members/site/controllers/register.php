@@ -23,6 +23,8 @@ use Date;
 use App;
 
 use Components\Members\Helpers\ReturnUrl;
+use Notify;
+use Plugin;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';

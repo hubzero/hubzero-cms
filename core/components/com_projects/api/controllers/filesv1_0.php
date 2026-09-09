@@ -18,6 +18,8 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
+use Event;
+use Filesystem;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';

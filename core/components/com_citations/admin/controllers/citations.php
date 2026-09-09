@@ -23,6 +23,9 @@ use Route;
 use Event;
 use Lang;
 use App;
+use Notify;
+use Plugin;
+use User;
 
 /**
  * Controller class for citations

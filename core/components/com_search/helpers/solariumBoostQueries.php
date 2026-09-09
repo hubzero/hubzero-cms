@@ -13,6 +13,7 @@ require_once "$componentPath/helpers/solariumBoostQuery.php";
 
 use Components\Search\Helpers\SolariumBoostQuery as Query;
 use Hubzero\Utility\Arr;
+use Component;
 
 class SolariumBoostQueries
 {

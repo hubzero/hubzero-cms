@@ -18,6 +18,7 @@ use User;
 use Lang;
 use App;
 use stdClass;
+use Date;
 
 include_once __DIR__ . DS . 'permissions.php';
 

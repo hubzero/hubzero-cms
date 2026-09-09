@@ -17,6 +17,8 @@ use User;
 use Lang;
 use Date;
 use App;
+use Route;
+use Event;
 
 /**
  * Controller class for wiki page revisions

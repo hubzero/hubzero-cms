@@ -22,6 +22,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Notify;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'report.php';
 

@@ -16,6 +16,7 @@ use RuntimeException;
 use DirectoryIterator;
 use Filesystem;
 use Request;
+use Component;
 use User;
 use Lang;
 

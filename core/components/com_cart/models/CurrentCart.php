@@ -12,6 +12,11 @@ use Components\Cart\Helpers\CartHelper;
 use Hubzero\Base\Model;
 use User;
 use Components\Storefront\Models\Product;
+use App;
+use Component;
+use Lang;
+use Request;
+use Route;
 
 require_once 'Cart.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';

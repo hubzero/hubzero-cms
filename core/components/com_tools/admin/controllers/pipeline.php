@@ -16,6 +16,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use Date;
 
 /**
  * Tools controller class

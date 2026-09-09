@@ -15,6 +15,7 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';

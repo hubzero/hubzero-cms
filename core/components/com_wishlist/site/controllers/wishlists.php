@@ -28,6 +28,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Route;
 
 /**
  * Wishlist controller class

@@ -17,6 +17,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Component;
 
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
 

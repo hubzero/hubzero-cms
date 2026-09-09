@@ -7,6 +7,8 @@
 
 namespace Components\Templates\Admin;
 
+use Lang;
+
 // Access check.
 if (!\User::authorise('core.manage', 'com_templates'))
 {

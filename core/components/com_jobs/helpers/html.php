@@ -7,6 +7,8 @@
 
 namespace Components\Jobs\Helpers;
 
+use Lang;
+
 /**
  * Jobs helper class for misc. HTML
  */

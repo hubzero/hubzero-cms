@@ -15,6 +15,10 @@ use Route;
 use Event;
 use Lang;
 use App;
+use Component;
+use Notify;
+use Pathway;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';

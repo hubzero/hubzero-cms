@@ -15,6 +15,8 @@ use Component;
 use Lang;
 use User;
 use Date;
+use App;
+use Filesystem;
 
 /**
  * Model class for a category

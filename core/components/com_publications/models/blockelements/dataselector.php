@@ -8,6 +8,7 @@
 namespace Components\Publications\Models\BlockElement;
 
 use Components\Publications\Models\BlockElement as Base;
+use Request;
 
 /**
  * Renders URL selector element

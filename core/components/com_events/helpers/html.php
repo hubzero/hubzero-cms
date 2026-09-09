@@ -8,6 +8,7 @@
 namespace Components\Events\Helpers;
 
 use Lang;
+use User;
 
 /**
  * Events helper class for misc. HTML

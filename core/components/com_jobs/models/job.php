@@ -10,6 +10,8 @@ namespace Components\Jobs\Models;
 use Components\Members\Models\Member;
 use Hubzero\Base\Model;
 use Hubzero\Utility\Str;
+use Date;
+use Lang;
 
 require_once dirname(__DIR__). DS . 'tables' . DS . 'job.php';
 require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';

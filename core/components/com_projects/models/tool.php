@@ -23,6 +23,7 @@ use Hubzero\Base\ItemList;
 use Component;
 use Date;
 use Lang;
+use User;
 
 /**
  * Project Tool model

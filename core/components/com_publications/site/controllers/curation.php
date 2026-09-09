@@ -21,6 +21,10 @@ use Route;
 use Lang;
 use User;
 use App;
+use Component;
+use Config;
+use Date;
+use Event;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'curation.php';

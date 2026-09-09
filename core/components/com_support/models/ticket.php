@@ -10,6 +10,9 @@ namespace Components\Support\Models;
 use Hubzero\Database\Relational;
 use Components\Support\Helpers\ACL;
 use App;
+use Date;
+use Lang;
+use User;
 
 require_once __DIR__ . DS . 'comment.php';
 require_once __DIR__ . DS . 'status.php';

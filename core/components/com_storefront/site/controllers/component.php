@@ -7,6 +7,10 @@
 
 namespace Components\Storefront\Site\Controllers;
 
+use App;
+use Lang;
+use Request;
+
 /**
  *  Base component controller class
  */

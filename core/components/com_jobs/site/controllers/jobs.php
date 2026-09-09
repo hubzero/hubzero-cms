@@ -32,6 +32,8 @@ use Date;
 use User;
 use ZipArchive;
 use App;
+use Component;
+use Config;
 
 /**
  * Jobs controller class for postings

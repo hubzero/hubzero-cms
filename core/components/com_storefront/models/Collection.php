@@ -7,6 +7,9 @@
 
 namespace Components\Storefront\Models;
 use Exception;
+use Component;
+use Filesystem;
+use Lang;
 
 require_once __DIR__ . DS . 'Warehouse.php';
 

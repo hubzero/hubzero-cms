@@ -9,6 +9,7 @@ namespace Components\Search\Models\Solr\Filters;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Date;
 
 /**
  * Database model for filters of the type list

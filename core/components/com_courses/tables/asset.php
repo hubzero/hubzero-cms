@@ -11,6 +11,7 @@ use Hubzero\Database\Table;
 use Lang;
 use Date;
 use User;
+use Event;
 
 /**
  * Course assets table class

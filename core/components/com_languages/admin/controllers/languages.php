@@ -15,6 +15,8 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use Cache;
+use User;
 
 require_once dirname(dirname(__DIR__)) . '/models/language.php';
 

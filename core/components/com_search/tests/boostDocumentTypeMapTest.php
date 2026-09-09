@@ -15,6 +15,7 @@ require_once "$componentPath/tests/traits/canMock.php";
 use Components\Search\Helpers\BoostDocumentTypeMap as Map;
 use Components\Search\Tests\Traits\canMock;
 use Hubzero\Test\Basic;
+use Component;
 
 class BoostDocumentTypeMapTest extends Basic
 {

@@ -15,6 +15,13 @@ require_once  "$componentPath/models/reply.php";
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Models\Reply;
 use Hubzero\Component\SiteController;
+use App;
+use Component;
+use Date;
+use Lang;
+use Notify;
+use Request;
+use User;
 
 class Replies extends SiteController
 {

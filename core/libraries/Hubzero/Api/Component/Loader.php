@@ -8,6 +8,7 @@
 namespace Hubzero\Api\Component;
 
 use Hubzero\Component\Loader as Base;
+use Request;
 
 /**
  * Component helper class

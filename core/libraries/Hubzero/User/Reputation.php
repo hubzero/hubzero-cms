@@ -8,6 +8,7 @@ namespace Hubzero\User;
 
 use Hubzero\Database\Relational;
 use Session;
+use Plugin;
 
 /**
  * Reputation database model

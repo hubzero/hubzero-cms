@@ -13,6 +13,7 @@ use Components\Projects\Tables;
 use Component;
 use User;
 use Lang;
+use App;
 
 include_once Component::path('com_projects') . '/models/project.php';
 

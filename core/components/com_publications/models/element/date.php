@@ -9,6 +9,7 @@ namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
 use stdClass;
+use Lang;
 
 /**
  * Renders a category element

@@ -18,6 +18,8 @@ use User;
 use Html;
 use Lang;
 use App;
+use Cache;
+use Notify;
 
 include_once dirname(dirname(__DIR__)) . '/helpers/permissions.php';
 include_once \Component::path('com_plugins') . '/models/plugin.php';

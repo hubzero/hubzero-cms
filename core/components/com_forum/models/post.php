@@ -12,6 +12,7 @@ use Hubzero\Database\Value\Raw;
 use Hubzero\Form\Form;
 use Lang;
 use Date;
+use User;
 
 require_once __DIR__ . DS . 'attachment.php';
 require_once __DIR__ . DS . 'tags.php';

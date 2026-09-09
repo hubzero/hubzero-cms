@@ -9,6 +9,11 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use App;
+use Config;
+use Lang;
+use Request;
+use Route;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';

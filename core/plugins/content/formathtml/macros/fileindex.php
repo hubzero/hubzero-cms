@@ -8,6 +8,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use Component;
 
 /**
  * Wiki macro class for listing files

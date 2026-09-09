@@ -16,6 +16,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use User;
 
 require_once dirname(dirname(__DIR__)) . '/models/orm/page/category.php';
 

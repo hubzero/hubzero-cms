@@ -7,6 +7,9 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use App;
+use Lang;
+
 /**
  *  Base component controller class
  */

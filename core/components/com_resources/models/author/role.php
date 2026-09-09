@@ -9,6 +9,8 @@ namespace Components\Resources\Models\Author;
 
 use Hubzero\Database\Relational;
 use Components\Resources\Models\Author\Role\Type;
+use Date;
+use Lang;
 
 include_once __DIR__ . DS . 'role' . DS . 'type.php';
 

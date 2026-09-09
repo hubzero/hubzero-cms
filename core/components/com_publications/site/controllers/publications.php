@@ -30,6 +30,9 @@ use Event;
 use Lang;
 use User;
 use App;
+use Config;
+use Date;
+use Filesystem;
 
 /**
  * Primary component controller

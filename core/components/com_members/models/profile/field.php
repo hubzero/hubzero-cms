@@ -8,6 +8,7 @@
 namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
+use Component;
 
 include_once __DIR__ . DS . 'option.php';
 

@@ -16,6 +16,7 @@ use Exception;
 use Request;
 use Plugin;
 use Lang;
+use Component;
 
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'repo.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php';

@@ -7,6 +7,9 @@
 
 namespace Components\Storefront\Models;
 
+use Component;
+use Lang;
+
 require_once __DIR__ . DS . 'Memberships.php';
 require_once __DIR__ . DS . 'Product.php';
 require_once __DIR__ . DS . 'Option.php';

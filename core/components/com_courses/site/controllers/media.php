@@ -18,6 +18,7 @@ use Notify;
 use Date;
 use User;
 use Lang;
+use App;
 
 /**
  * Courses controller class for media

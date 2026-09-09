@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Notify;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'role.php';
 

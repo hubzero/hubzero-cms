@@ -16,6 +16,8 @@ use Lang;
 use User;
 use Date;
 use stdClass;
+use Request;
+use Route;
 
 require_once __DIR__ . DS . 'tags.php';
 require_once __DIR__ . DS . 'comment.php';

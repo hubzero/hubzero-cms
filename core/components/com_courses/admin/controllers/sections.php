@@ -15,6 +15,8 @@ use Config;
 use Route;
 use Date;
 use Lang;
+use App;
+use Component;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';

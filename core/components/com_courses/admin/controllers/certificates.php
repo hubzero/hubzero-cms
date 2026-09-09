@@ -15,6 +15,7 @@ use Request;
 use Route;
 use Lang;
 use App;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php';

@@ -19,6 +19,9 @@ use Components\Search\Helpers\RecordProcessingHelper;
 use Components\Search\Helpers\TypeOptionsHelper;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Component\AdminController;
+use Component;
+use Lang;
+use Request;
 
 class Boosts extends AdminController
 {

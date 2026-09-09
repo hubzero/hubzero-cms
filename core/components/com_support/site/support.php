@@ -7,6 +7,8 @@
 
 namespace Components\Support\Site;
 
+use Request;
+
 include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
 
 $controllerName = Request::getCmd('controller', Request::getCmd('view', 'index'));

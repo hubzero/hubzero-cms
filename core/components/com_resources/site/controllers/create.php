@@ -25,6 +25,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Config;
 
 /**
  * Resources controller for creating a resource

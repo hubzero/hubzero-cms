@@ -7,6 +7,7 @@
 namespace Components\Tools\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Lang;
 
 include_once __DIR__ . '/zone/location.php';
 

@@ -12,6 +12,9 @@ use Pathway;
 use Lang;
 use User;
 use Date;
+use Component;
+use Request;
+use Route;
 
 include_once __DIR__ . DS . 'tags.php';
 

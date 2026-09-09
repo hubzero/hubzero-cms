@@ -19,6 +19,8 @@ use Html;
 use Lang;
 use User;
 use App;
+use Event;
+use Route;
 
 /**
  * The Menu Item Controller

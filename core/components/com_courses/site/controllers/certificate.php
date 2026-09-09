@@ -18,6 +18,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use Notify;
 
 /**
  * Courses controller class for generation and viewing of certificates

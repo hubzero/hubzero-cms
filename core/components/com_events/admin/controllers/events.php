@@ -16,6 +16,13 @@ use Components\Events\Models\Tags;
 use Components\Events\Helpers\Html;
 use Hubzero\Component\AdminController;
 use Exception;
+use App;
+use Config;
+use Date;
+use Lang;
+use Request;
+use Route;
+use User;
 
 /**
  * Events controller for entries

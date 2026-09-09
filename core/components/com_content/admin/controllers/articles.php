@@ -22,6 +22,7 @@ use User;
 use Lang;
 use Date;
 use App;
+use Cache;
 
 /**
  * Controller class for content articles

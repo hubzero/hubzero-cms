@@ -11,6 +11,7 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use App;
 
 /**
  * Aliases configuration class for adding command aliases

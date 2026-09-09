@@ -16,6 +16,7 @@ use User;
 use Lang;
 use App;
 use stdClass;
+use Date;
 
 /**
  * Contains functions used by multiple Session/Tool modules

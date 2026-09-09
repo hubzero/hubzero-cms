@@ -22,6 +22,7 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
 
 include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 

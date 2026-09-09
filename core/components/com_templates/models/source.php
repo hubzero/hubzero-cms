@@ -8,6 +8,10 @@
 namespace Components\Templates\Models;
 
 use Hubzero\Base\Obj;
+use App;
+use Event;
+use Filesystem;
+use Lang;
 
 /**
  * Source model

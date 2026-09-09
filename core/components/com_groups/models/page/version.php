@@ -12,6 +12,7 @@ use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use Request;
+use App;
 
 // Include needed tables
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.version.php';

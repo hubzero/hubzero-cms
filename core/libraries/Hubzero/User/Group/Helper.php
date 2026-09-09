@@ -8,6 +8,7 @@
 namespace Hubzero\User\Group;
 
 use Hubzero\User\Group;
+use App;
 
 /**
  * Misc. group helper methods

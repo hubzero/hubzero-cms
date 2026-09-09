@@ -8,6 +8,7 @@
 namespace Components\Groups\Models;
 
 use Hubzero\Database\Relational;
+use Date;
 
 /**
  * Recently visited groups

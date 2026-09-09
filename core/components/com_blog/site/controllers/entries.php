@@ -18,8 +18,12 @@ use Document;
 use Request;
 use Pathway;
 use Event;
+use Notify;
+use Session;
+use Config;
 use Lang;
 use Route;
+use App;
 use User;
 use Date;
 

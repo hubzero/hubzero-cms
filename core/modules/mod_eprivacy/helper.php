@@ -9,6 +9,10 @@ namespace Modules\Eprivacy;
 
 use Hubzero\Module\Module;
 use App;
+use Config;
+use Lang;
+use Request;
+use User;
 
 /**
  * Module class for site activity

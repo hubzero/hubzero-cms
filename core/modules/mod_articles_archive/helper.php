@@ -12,6 +12,7 @@ use stdClass;
 use Route;
 use Lang;
 use App;
+use Date;
 
 /**
  * Module class for displaying an article archive

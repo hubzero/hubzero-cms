@@ -15,6 +15,7 @@ use Components\Resources\Helpers\Tags;
 use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
+use Lang;
 
 // include elements model
 include_once dirname(__DIR__) . DS . 'elements.php';

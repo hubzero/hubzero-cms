@@ -15,6 +15,7 @@ use Event;
 use Lang;
 use Date;
 use User;
+use Request;
 
 /**
  * Handles a Datastore Lite attachment

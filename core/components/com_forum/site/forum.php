@@ -7,6 +7,12 @@
 
 namespace Components\Forum\Site;
 
+use App;
+use Lang;
+use Request;
+use Route;
+use User;
+
 require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));

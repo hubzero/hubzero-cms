@@ -18,6 +18,7 @@ use Pathway;
 use Request;
 use Lang;
 use User;
+use Component;
 
 /**
  * Controller class for collections and posts

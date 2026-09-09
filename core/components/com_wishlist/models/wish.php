@@ -11,6 +11,8 @@ use Hubzero\Database\Relational;
 use User;
 use Lang;
 use Date;
+use Html;
+use Request;
 
 require_once __DIR__ . DS . 'attachment.php';
 require_once __DIR__ . DS . 'comment.php';

@@ -17,6 +17,7 @@ use User;
 use Date;
 use Lang;
 use App;
+use Event;
 
 /**
  * Groups controller class

@@ -15,6 +15,8 @@ use Components\Tags\Models\Tag;
 use Hubzero\Utility\Arr;
 use App;
 use Date;
+use Component;
+use User;
 
 /**
  * Resources badges class

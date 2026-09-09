@@ -13,6 +13,11 @@ require_once  "$componentPath/helpers/codeHelper.php";
 
 use Hubzero\Component\SiteController;
 use Components\Newsletter\Helpers\CodeHelper;
+use App;
+use Component;
+use Lang;
+use Notify;
+use Request;
 
 class Pages extends SiteController
 {

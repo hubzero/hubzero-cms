@@ -24,6 +24,11 @@ use Event;
 use Date;
 use Lang;
 use App;
+use Component;
+use Pathway;
+use Request;
+use Route;
+use User;
 
 /**
  * Citations controller class for citation entries

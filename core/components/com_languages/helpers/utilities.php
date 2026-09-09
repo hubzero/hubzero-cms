@@ -11,6 +11,7 @@ use Hubzero\Access\Access;
 use Hubzero\Base\Obj;
 use User;
 use Html;
+use Component;
 
 /**
  * Languages component helper.

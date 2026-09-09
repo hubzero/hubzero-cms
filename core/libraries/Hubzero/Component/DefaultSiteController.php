@@ -7,6 +7,8 @@
 
 namespace Hubzero\Component;
 
+use Request;
+
 class DefaultSiteController extends SiteController
 {
 	public function execute()

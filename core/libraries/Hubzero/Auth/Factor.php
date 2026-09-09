@@ -8,6 +8,7 @@
 namespace Hubzero\Auth;
 
 use Hubzero\Database\Relational;
+use User;
 
 /**
  * Factors database model

@@ -14,6 +14,7 @@ use Filesystem;
 use Request;
 use User;
 use App;
+use Lang;
 
 /**
  * Media list controller

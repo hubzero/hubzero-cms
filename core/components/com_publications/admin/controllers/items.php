@@ -18,6 +18,11 @@ use Route;
 use Lang;
 use User;
 use App;
+use Component;
+use Date;
+use Event;
+use Filesystem;
+use Notify;
 
 /**
  * Manage publications

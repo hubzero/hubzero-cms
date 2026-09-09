@@ -17,6 +17,8 @@ use Components\Search\Helpers\BoostDocumentTypeMap as Map;
 use Components\Search\Helpers\MockProxy;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Utility\Arr;
+use Component;
+use Date;
 
 class BoostFactory
 {

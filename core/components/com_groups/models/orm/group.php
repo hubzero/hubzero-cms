@@ -14,6 +14,7 @@ use stdClass;
 use Event;
 use Lang;
 use Date;
+use User;
 
 require_once __DIR__ . DS . 'invitee.php';
 require_once __DIR__ . DS . 'applicant.php';

@@ -10,6 +10,8 @@ namespace Plugins\Content\Formathtml\Macros\Group;
 require_once dirname(__DIR__) . DS . 'group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
+use Route;
+use User;
 
 /**
  * Group events Macro

@@ -13,6 +13,9 @@ use Hubzero\Oauth\Storage\Mysql as MysqlStorage;
 use Exception;
 use OAuth2;
 use Lang;
+use App;
+use Route;
+use User;
 
 /**
  * Handle Oauth Authorization & Tokens

@@ -9,6 +9,12 @@ namespace Components\Storefront\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
+use App;
+use Config;
+use Lang;
+use Notify;
+use Request;
+use Route;
 
 /**
  * Controller class for knowledge base categories

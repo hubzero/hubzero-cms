@@ -15,6 +15,8 @@ use Route;
 use Lang;
 use Date;
 use User;
+use Component;
+use Filesystem;
 
 require_once __DIR__ . DS . 'vote.php';
 require_once __DIR__ . DS . 'comment.php';

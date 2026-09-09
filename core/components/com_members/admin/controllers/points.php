@@ -19,6 +19,7 @@ use User;
 use Date;
 use Lang;
 use App;
+use Plugin;
 
 /**
  * Members controller class for user points

@@ -17,6 +17,8 @@ use Request;
 use stdClass;
 use Route;
 use Lang;
+use Event;
+use User;
 
 require_once dirname(dirname(__DIR__)) . '/models/orm/project.php';
 

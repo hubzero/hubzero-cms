@@ -16,6 +16,7 @@ use Hubzero\Session;
 use Exception;
 use Notify;
 use App;
+use Request;
 
 /**
  * Handles hub callbacks from external applications

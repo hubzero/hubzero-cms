@@ -21,6 +21,8 @@ use User;
 use Lang;
 use Html;
 use App;
+use Notify;
+use Route;
 
 /**
  * Content articles controller

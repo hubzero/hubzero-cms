@@ -11,6 +11,8 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 use stdClass;
+use Request;
+use Route;
 
 require_once __DIR__ . DS . 'item.php';
 require_once __DIR__ . DS . 'collection.php';

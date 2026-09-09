@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 use User;
+use Html;
 
 /**
  * Blog model for a comment

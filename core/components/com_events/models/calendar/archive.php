@@ -14,6 +14,7 @@ use Hubzero\Base\Model;
 use DateTimezone;
 use DateTime;
 use Date;
+use Request;
 
 // include calendar model
 require_once dirname(__DIR__) . DS . 'calendar.php';

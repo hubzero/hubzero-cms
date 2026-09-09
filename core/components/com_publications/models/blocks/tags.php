@@ -9,6 +9,8 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Lang;
+use Request;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
 

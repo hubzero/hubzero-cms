@@ -18,6 +18,12 @@ require_once  "$componentPath/models/emailSubscription.php";
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Helpers\SubscriptionsHelper;
 use Components\Newsletter\Models\EmailSubscription;
+use App;
+use Component;
+use Lang;
+use Notify;
+use Request;
+use User;
 
 class Emailsubscriptions extends SiteController
 {

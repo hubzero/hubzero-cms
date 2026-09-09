@@ -17,6 +17,8 @@ use Event;
 use User;
 use Date;
 use Lang;
+use Config;
+use Request;
 
 // Include table classes
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';

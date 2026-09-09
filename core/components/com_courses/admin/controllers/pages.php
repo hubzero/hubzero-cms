@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use Html;
 use App;
+use Config;
 
 // Course model pulls in other classes we need
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';

@@ -18,6 +18,7 @@ use Event;
 use Lang;
 use Date;
 use Plugin;
+use Route;
 
 /**
  * Html helper class

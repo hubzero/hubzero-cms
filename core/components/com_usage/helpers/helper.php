@@ -9,6 +9,7 @@ namespace Components\Usage\Helpers;
 
 use Exception;
 use App;
+use Lang;
 
 /**
  * Usage helper class

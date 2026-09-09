@@ -18,6 +18,8 @@ use Route;
 use Lang;
 use User;
 use App;
+use Notify;
+use Pathway;
 
 /**
  * Developer Applications Controller

@@ -7,6 +7,10 @@
 
 namespace Components\Media\Site\Helpers;
 
+use Component;
+use Filesystem;
+use Lang;
+
 /**
  * Media helper
  */

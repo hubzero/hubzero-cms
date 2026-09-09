@@ -7,6 +7,8 @@
 
 namespace Hubzero\Base;
 
+use Request;
+
 /**
  * Abstract model class
  */

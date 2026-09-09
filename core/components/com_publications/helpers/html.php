@@ -8,6 +8,14 @@
 namespace Components\Publications\Helpers;
 
 use Component;
+use Config;
+use Date;
+use Document;
+use Event;
+use Lang;
+use Pathway;
+use Route;
+use User;
 
 /**
  * Html helper class

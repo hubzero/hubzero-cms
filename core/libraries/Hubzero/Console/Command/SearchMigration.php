@@ -10,6 +10,7 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Components\Search\Models\Solr\SearchComponent;
+use Component;
 
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 

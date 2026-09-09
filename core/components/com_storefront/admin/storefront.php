@@ -7,6 +7,8 @@
 
 namespace Components\Storefront\Admin;
 
+use Lang;
+
 $option = 'com_storefront';
 
 if (!\User::authorise('core.manage', $option))

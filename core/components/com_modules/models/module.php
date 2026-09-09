@@ -12,6 +12,7 @@ use Hubzero\Config\Registry;
 use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
+use App;
 
 include_once __DIR__ . '/menu.php';
 

@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
 use Session;
 use Lang;
+use Date;
 
 include_once __DIR__ . DS . 'accesstoken.php';
 include_once __DIR__ . DS . 'refreshtoken.php';

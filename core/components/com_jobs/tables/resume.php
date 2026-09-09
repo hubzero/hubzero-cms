@@ -8,6 +8,7 @@
 namespace Components\Jobs\Tables;
 
 use Hubzero\Database\Table;
+use Lang;
 
 /**
  * Table class for job resumes

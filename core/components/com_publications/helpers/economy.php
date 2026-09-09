@@ -9,6 +9,8 @@ namespace Components\Publications\Helpers;
 
 use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
+use Lang;
+use User;
 
 include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
 

@@ -15,6 +15,7 @@ require_once "$componentPath/models/solr/boost.php";
 
 use Components\Search\Helpers\MockProxy;
 use Hubzero\Utility\Arr;
+use Component;
 
 class BoostQueryHelper
 {

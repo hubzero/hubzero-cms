@@ -20,6 +20,8 @@ use User;
 use Lang;
 use Date;
 use App;
+use Notify;
+use Request;
 
 /**
  * Newsletter Mailing List Controller

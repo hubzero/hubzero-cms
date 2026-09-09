@@ -8,6 +8,7 @@
 namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
+use User;
 
 /**
  * Macro class for linking contributor

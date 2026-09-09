@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Components\Resources\Models\Audience\Level;
 use Date;
 use User;
+use Lang;
 
 include_once __DIR__ . DS . 'audience' . DS. 'level.php';
 

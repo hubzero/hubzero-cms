@@ -21,6 +21,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Session;
 
 /**
  * Login Controller

@@ -16,6 +16,7 @@ use Component;
 use App;
 use Date;
 use Filesystem;
+use Route;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php';

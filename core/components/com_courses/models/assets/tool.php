@@ -15,6 +15,7 @@ use Components\Projects\Models\Project;
 use Components\Projects\Models\Orm\Connection;
 use \Hubzero\Filesystem\Entity;
 use \Hubzero\Filesystem\Manager;
+use Filesystem;
 /**
  * Tool asset handler class
  */

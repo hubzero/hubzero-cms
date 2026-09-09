@@ -12,6 +12,7 @@ use Hubzero\User\Group\Helper as GroupHelper;
 use Components\Blog\Models\Archive;
 use User;
 use Lang;
+use Component;
 
 
 /**

@@ -17,6 +17,7 @@ use Filesystem;
 use Request;
 use Lang;
 use User;
+use Component;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 

@@ -7,6 +7,8 @@
 
 namespace Components\Storefront\Models;
 
+use Lang;
+
 require_once __DIR__ . DS . 'Product.php';
 require_once __DIR__ . DS . 'Sku.php';
 require_once __DIR__ . DS . 'Warehouse.php';

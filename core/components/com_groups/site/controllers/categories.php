@@ -14,6 +14,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use Event;
 
 /**
  * Groups controller class

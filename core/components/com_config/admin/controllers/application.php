@@ -16,6 +16,9 @@ use Notify;
 use Route;
 use User;
 use App;
+use Date;
+use Lang;
+use Request;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'application.php';
 

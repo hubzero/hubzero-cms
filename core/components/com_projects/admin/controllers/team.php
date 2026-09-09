@@ -15,6 +15,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Notify;
 
 /**
  * Projects controller class for managing membership

@@ -8,6 +8,7 @@
 namespace Components\Blog\Models\Adapters;
 
 use Component;
+use Lang;
 use Date;
 
 require_once __DIR__ . DS . 'base.php';

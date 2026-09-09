@@ -13,6 +13,8 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php';
 

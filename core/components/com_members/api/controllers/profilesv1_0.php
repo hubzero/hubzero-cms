@@ -19,6 +19,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Date;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';

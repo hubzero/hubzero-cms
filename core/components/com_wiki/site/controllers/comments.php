@@ -19,6 +19,8 @@ use User;
 use Lang;
 use Date;
 use App;
+use Route;
+use Event;
 
 /**
  * Wiki controller class for comments

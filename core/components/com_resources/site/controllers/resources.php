@@ -28,6 +28,9 @@ use Event;
 use Lang;
 use User;
 use App;
+use Component;
+use Config;
+use Date;
 
 /**
  * Resources controller class

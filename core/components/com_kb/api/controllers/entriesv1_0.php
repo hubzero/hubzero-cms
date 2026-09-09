@@ -13,6 +13,8 @@ use Exception;
 use stdClass;
 use Request;
 use App;
+use Config;
+use User;
 
 /**
  * API controller class for resources

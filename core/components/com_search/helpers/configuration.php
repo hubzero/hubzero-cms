@@ -9,6 +9,7 @@ namespace Components\Search\Helpers;
 
 use Hubzero\Utility\Date;
 use Hubzero\User\Group;
+use Filesystem;
 
 /**
  * Search config helper

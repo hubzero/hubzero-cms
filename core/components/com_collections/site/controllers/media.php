@@ -19,6 +19,7 @@ use Exception;
 use Request;
 use Lang;
 use User;
+use Component;
 
 /**
  * Collections controller class for media

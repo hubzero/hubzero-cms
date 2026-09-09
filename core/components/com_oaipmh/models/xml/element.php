@@ -9,6 +9,7 @@ namespace Components\Oaipmh\Models\Xml;
 
 use LogicException;
 use DOMElement;
+use Lang;
 
 /**
  * XML Response Element

@@ -31,6 +31,8 @@ use User;
 use Date;
 use App;
 use Hubzero\Event as Evt;
+use Config;
+use Session;
 
 /**
  * Controller class for events

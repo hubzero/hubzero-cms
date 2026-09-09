@@ -31,6 +31,9 @@ use Event;
 use Lang;
 use User;
 use App;
+use Component;
+use Date;
+use Notify;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 

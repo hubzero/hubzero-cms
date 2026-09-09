@@ -12,6 +12,7 @@ use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Console\Command\Utilities\Git;
 use Hubzero\Filesystem\Adapter\Local;
+use Lang;
 
 /**
  * Repository class

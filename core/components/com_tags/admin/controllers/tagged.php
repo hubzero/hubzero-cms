@@ -14,6 +14,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Tags controller class for listing tagged objects

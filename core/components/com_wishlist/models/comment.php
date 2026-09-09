@@ -8,6 +8,8 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Item\Comment as ItemComment;
+use Html;
+use Lang;
 
 /**
  * Wishlist class for a wish comment model

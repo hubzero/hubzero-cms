@@ -17,6 +17,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use Date;
 
 /**
  * Controller class for knowledge base articles

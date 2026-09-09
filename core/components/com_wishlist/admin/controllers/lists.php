@@ -17,6 +17,7 @@ use Event;
 use Lang;
 use User;
 use App;
+use Date;
 
 /**
  * Cotnroller class for wish lists

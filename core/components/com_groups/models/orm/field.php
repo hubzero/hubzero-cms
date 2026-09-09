@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Components\Groups\Models\Orm\Answer;
 use Date;
 use User;
+use Lang;
 
 include_once __DIR__ . DS . 'option.php';
 include_once __DIR__ . DS . 'answer.php';

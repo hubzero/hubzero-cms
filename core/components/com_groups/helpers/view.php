@@ -16,6 +16,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Component;
 
 class View
 {

@@ -15,6 +15,7 @@ use Request;
 use Date;
 use Component;
 use stdClass;
+use User;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';

@@ -7,6 +7,11 @@
 
 namespace Components\Members\Helpers;
 
+use Component;
+use Config;
+use Lang;
+use Request;
+
 /**
  * Helper class for registration.
  * Use primarily for input validation.

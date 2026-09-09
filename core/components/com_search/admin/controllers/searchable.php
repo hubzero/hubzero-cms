@@ -21,6 +21,14 @@ use Components\Developer\Models\Application;
 use Hubzero\Access\Group as Accessgroup;
 use stdClass;
 use Hubzero\Utility\Inflector as Inflector;
+use App;
+use Component;
+use Date;
+use Event;
+use Lang;
+use Notify;
+use Request;
+use Route;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';

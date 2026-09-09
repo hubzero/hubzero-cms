@@ -13,6 +13,7 @@ use Document;
 use Request;
 use Session;
 use Lang;
+use Route;
 
 /**
  * OAIPMH controller for XML output

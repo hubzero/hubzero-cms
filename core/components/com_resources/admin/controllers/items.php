@@ -32,6 +32,10 @@ use Route;
 use Event;
 use Lang;
 use App;
+use Component;
+use Date;
+use Notify;
+use User;
 
 /**
  * Manage resource entries

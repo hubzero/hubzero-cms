@@ -17,6 +17,8 @@ use Event;
 use Route;
 use Lang;
 use App;
+use Cache;
+use Notify;
 
 include_once \Component::path('com_plugins') . '/models/plugin.php';
 

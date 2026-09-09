@@ -10,6 +10,7 @@ namespace Hubzero\Console\Command;
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;
+use Config;
 
 /**
  * Database class

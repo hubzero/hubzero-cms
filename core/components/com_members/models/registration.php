@@ -13,6 +13,8 @@ use Components\Members\Helpers;
 use Request;
 use User;
 use App;
+use Config;
+use Event;
 
 include_once __DIR__ . DS . 'profile' . DS . 'field.php';
 include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php';

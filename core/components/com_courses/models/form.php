@@ -10,6 +10,8 @@ namespace Components\Courses\Models;
 use ImagickException;
 use Component;
 use imagick;
+use App;
+use Lang;
 
 class PdfForm
 {

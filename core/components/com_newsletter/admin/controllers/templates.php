@@ -15,6 +15,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Newsletter templates Controller

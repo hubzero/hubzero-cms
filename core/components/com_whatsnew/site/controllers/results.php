@@ -16,6 +16,7 @@ use Config;
 use Event;
 use Lang;
 use Html;
+use Route;
 
 /**
  * Controller class for dipslaying what's new

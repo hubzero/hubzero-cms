@@ -16,6 +16,7 @@ use Request;
 use Lang;
 use User;
 use Date;
+use Component;
 
 // Include building blocks
 include_once __DIR__ . DS . 'blocks.php';

@@ -17,6 +17,9 @@ use Request;
 use Route;
 use Lang;
 use App;
+use Config;
+use Date;
+use Notify;
 
 require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';

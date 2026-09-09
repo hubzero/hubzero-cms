@@ -10,6 +10,8 @@ namespace Components\Tools\Tables;
 use Hubzero\Database\Table;
 use User;
 use Lang;
+use Component;
+use Date;
 
 /**
  * Tools table for a Tool

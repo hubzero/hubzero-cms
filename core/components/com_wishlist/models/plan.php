@@ -10,6 +10,7 @@ namespace Components\Wishlist\Models;
 use Hubzero\Database\Relational;
 use Lang;
 use Date;
+use Html;
 
 /**
  * Wishlist class for a wish plan model

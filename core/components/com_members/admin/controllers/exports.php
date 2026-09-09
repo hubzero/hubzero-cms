@@ -18,6 +18,7 @@ use User;
 use Date;
 use Lang;
 use App;
+use Route;
 
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';

@@ -8,6 +8,7 @@
 namespace Hubzero\Form\Fields;
 
 use Hubzero\Form\Field;
+use Lang;
 
 class AETextarea extends Textarea
 {

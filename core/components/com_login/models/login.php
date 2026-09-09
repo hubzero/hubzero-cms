@@ -11,6 +11,7 @@ use Hubzero\Base\Obj;
 use Hubzero\Utility\Uri;
 use Request;
 use App;
+use Route;
 
 /**
  * Login Model

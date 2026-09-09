@@ -12,6 +12,8 @@ use stdClass;
 use Filesystem;
 use Component;
 use Route;
+use Lang;
+use Request;
 
 /**
  * Image Viewer Handler

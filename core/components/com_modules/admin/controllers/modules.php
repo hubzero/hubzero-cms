@@ -20,6 +20,7 @@ use Event;
 use Date;
 use Lang;
 use App;
+use User;
 
 /**
  * Modules controller class.

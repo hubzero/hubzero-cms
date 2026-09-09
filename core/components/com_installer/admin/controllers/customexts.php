@@ -16,6 +16,10 @@ use Notify;
 use Event;
 use Route;
 use App;
+use Date;
+use Html;
+use Lang;
+use User;
 
 include_once dirname(__DIR__) . '/helpers/cli.php';
 include_once dirname(__DIR__) . DS . 'models' . DS . 'custom_extensions.php';

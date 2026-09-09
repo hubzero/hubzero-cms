@@ -9,6 +9,10 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
+use Date;
+use Event;
+use Lang;
+use Request;
 
 include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';

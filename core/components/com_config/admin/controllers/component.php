@@ -15,6 +15,7 @@ use Notify;
 use Lang;
 use User;
 use App;
+use Route;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'component.php';
 

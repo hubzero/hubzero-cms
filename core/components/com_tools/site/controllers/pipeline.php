@@ -18,6 +18,11 @@ use Lang;
 use User;
 use App;
 use Hubzero\User\Group;
+use Config;
+use Date;
+use Event;
+use Log;
+use Notify;
 
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';

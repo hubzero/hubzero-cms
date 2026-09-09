@@ -16,6 +16,7 @@ use Lang;
 use User;
 use Log;
 use App;
+use Date;
 
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';

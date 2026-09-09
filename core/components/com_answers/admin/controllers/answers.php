@@ -14,8 +14,10 @@ use Exception;
 use Request;
 use Notify;
 use Config;
+use Event;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**

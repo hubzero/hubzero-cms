@@ -15,6 +15,7 @@ require_once  "$componentPath/secrets/page_code.php";
 
 use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;
+use Component;
 
 class CodeHelper
 {

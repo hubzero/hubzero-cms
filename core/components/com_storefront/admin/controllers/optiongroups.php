@@ -16,6 +16,7 @@ use Config;
 use Route;
 use Lang;
 use App;
+use Notify;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php';

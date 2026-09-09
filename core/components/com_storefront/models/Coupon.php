@@ -7,6 +7,8 @@
 
 namespace Components\Storefront\Models;
 
+use Lang;
+
 /**
  *
  * Coupon class

@@ -13,6 +13,9 @@ use Hubzero\Access\Access;
 use Hubzero\Access\Map;
 use Exception;
 use Event;
+use App;
+use Component;
+use Config;
 
 /**
  * Users database model

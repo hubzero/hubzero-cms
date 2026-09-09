@@ -9,6 +9,7 @@ namespace Components\Publications\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Publications\Helpers;
 use Components\Publications\Models;
+use Request;
 
 /**
  * Publications controller class for media

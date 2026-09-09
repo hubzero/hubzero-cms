@@ -10,6 +10,12 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Collection;
+use App;
+use Config;
+use Lang;
+use Notify;
+use Request;
+use Route;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 

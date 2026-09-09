@@ -9,6 +9,7 @@ namespace Components\Support\Api;
 
 use Exception;
 use Hubzero\Component\Router\Base;
+use Lang;
 
 /**
  * Routing class for the component

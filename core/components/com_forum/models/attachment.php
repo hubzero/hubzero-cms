@@ -11,6 +11,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Filesystem\Util;
 use Filesystem;
 use Component;
+use Lang;
 
 /**
  * Class for comment files (attachments)

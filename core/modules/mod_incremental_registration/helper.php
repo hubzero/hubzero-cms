@@ -15,6 +15,8 @@ use Component;
 use Request;
 use User;
 use App;
+use Document;
+use Lang;
 
 /**
  * Incremental Registration Module controller class

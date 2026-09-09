@@ -11,6 +11,7 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Utility\Inflector;
+use Filesystem;
 
 /**
  * Scaffolding class for generating template extensions

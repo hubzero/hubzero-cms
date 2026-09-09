@@ -9,6 +9,7 @@ namespace Components\Courses\Models;
 
 use Date;
 use App;
+use User;
 
 class PdfFormDeployment
 {

@@ -16,6 +16,7 @@ use Route;
 use Html;
 use Lang;
 use App;
+use User;
 
 /**
  * Manage members password rules

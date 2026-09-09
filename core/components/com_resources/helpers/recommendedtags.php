@@ -8,6 +8,7 @@
 namespace Components\Resources\Helpers;
 
 use Wamania\Snowball\Stemmer\English as EnglishStemmer;
+use App;
 
 class RecommendedTags
 {

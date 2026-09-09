@@ -10,6 +10,7 @@ namespace Components\Search\Helpers;
 use Components\Search\Models\Hubtype;
 use stdClass;
 use Solarium;
+use Component;
 
 /**
  * Solr helper class

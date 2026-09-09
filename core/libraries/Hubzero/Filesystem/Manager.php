@@ -7,6 +7,8 @@
 
 namespace Hubzero\Filesystem;
 
+use Plugin;
+
 /**
  * Hubzero filesystem manager
  */

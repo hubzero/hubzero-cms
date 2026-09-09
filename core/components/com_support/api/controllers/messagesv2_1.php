@@ -18,6 +18,7 @@ use Config;
 use Route;
 use Lang;
 use User;
+use Event;
 
 require_once dirname(dirname(__DIR__)) . '/models/ticket.php';
 require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';

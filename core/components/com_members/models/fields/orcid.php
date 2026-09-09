@@ -12,6 +12,8 @@ use Document;
 use Route;
 use Lang;
 use User;
+use Component;
+use Request;
 
 /**
  * Supports a URL text field

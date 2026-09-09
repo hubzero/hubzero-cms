@@ -19,6 +19,8 @@ use Route;
 use Lang;
 use User;
 use Date;
+use Event;
+use Request;
 
 /**
  * Handles a file attachment

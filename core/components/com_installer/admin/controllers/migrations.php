@@ -14,6 +14,8 @@ use Config;
 use Notify;
 use Route;
 use App;
+use Lang;
+use User;
 
 require_once dirname(__DIR__) . '/helpers/cli.php';
 

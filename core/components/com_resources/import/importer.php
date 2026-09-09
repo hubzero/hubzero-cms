@@ -7,6 +7,8 @@
 
 namespace Components\Resources\Import;
 
+use Lang;
+
 // needed files
 require_once __DIR__ . DS . 'interfaces' . DS . 'adapter.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'import' . DS . 'run.php';

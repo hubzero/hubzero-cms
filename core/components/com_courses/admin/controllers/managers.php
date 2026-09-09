@@ -9,6 +9,9 @@ namespace Components\Courses\Admin\Controllers;
 
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
+use Lang;
+use Request;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 

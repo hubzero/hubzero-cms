@@ -14,6 +14,7 @@ use Event;
 use Lang;
 use User;
 use Date;
+use Component;
 
 /**
  * Authors block

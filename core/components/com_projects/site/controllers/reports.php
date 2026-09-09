@@ -15,6 +15,7 @@ use Lang;
 use User;
 use Date;
 use App;
+use Notify;
 
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'stats.php';
 

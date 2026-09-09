@@ -14,6 +14,8 @@ use Component;
 use Event;
 use Html;
 use stdClass;
+use Request;
+use Route;
 
 require_once Component::path('com_courses') . '/models/tags.php';
 require_once __DIR__ . DS . 'offering.php';

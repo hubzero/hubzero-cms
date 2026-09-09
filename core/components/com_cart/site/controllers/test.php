@@ -7,6 +7,11 @@
 
 namespace Components\Cart\Site\Controllers;
 
+use App;
+use Event;
+use Route;
+use User;
+
 /**
  * Cart controller class
  */

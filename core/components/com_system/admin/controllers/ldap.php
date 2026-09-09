@@ -11,6 +11,8 @@ use Hubzero\Component\AdminController;
 use Route;
 use Lang;
 use App;
+use Notify;
+use Request;
 
 /**
  * Controller class for system config

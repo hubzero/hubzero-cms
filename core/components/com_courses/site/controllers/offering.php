@@ -22,6 +22,7 @@ use Event;
 use User;
 use Lang;
 use App;
+use Component;
 
 /**
  * Courses controller class for an offering

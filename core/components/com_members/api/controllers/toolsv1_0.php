@@ -15,6 +15,7 @@ use Request;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Members API controller class

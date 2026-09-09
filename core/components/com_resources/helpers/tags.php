@@ -8,6 +8,7 @@
 namespace Components\Resources\Helpers;
 
 use Components\Tags\Models\Cloud;
+use Route;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 

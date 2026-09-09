@@ -10,6 +10,7 @@ namespace Components\Collections\Models;
 use Hubzero\Image\Processor;
 use Filesystem;
 use Lang;
+use Request;
 
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
 require_once __DIR__ . DS . 'base.php';

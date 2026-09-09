@@ -7,6 +7,8 @@
 
 namespace Components\Content\Admin;
 
+use Request;
+
 // Access check.
 if (!\User::authorise('core.manage', 'com_content'))
 {

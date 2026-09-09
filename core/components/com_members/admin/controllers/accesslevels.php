@@ -15,6 +15,7 @@ use Notify;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Manage user Access Levels

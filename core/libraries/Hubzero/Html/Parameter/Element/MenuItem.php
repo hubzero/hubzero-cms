@@ -10,6 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
 use App;
+use Request;
 
 /**
  * Renders a menu item element

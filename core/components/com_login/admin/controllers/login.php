@@ -16,6 +16,9 @@ use Request;
 use Plugin;
 use Notify;
 use App;
+use Event;
+use Session;
+use User;
 
 /**
  * Login Controller

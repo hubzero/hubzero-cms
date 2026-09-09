@@ -18,6 +18,7 @@ use Event;
 use Route;
 use Lang;
 use User;
+use Date;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php';
 

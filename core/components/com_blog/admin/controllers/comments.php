@@ -14,6 +14,7 @@ use Request;
 use Config;
 use Notify;
 use Route;
+use Event;
 use User;
 use Lang;
 use Date;

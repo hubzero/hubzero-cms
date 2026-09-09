@@ -15,6 +15,7 @@ use Exception;
 use Request;
 use Lang;
 use User;
+use Session;
 
 /**
  * Members controller class for ORCIDs

@@ -18,6 +18,7 @@ use Event;
 use Route;
 use Lang;
 use App;
+use User;
 
 /**
  * Tags controller class for managing entries

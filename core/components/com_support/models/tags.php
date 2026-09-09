@@ -11,6 +11,7 @@ use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Base\ItemList;
 use Route;
+use App;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 

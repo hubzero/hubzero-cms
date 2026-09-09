@@ -25,6 +25,7 @@ use Date;
 use User;
 use Lang;
 use App;
+use Route;
 
 require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
 require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';

@@ -21,6 +21,8 @@ use Config;
 use Event;
 use Lang;
 use User;
+use App;
+use Route;
 
 /**
  * Knowledge Base controller

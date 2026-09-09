@@ -7,6 +7,8 @@
 namespace Components\Tools\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Date;
+use User;
 
 require_once __DIR__ . DS . 'version.php';
 

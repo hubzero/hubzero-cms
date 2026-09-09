@@ -8,6 +8,7 @@
 namespace Components\Newsletter\Helpers;
 
 use Exception;
+use App;
 
 class SubscriptionsHelper
 {

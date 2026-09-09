@@ -14,6 +14,8 @@ use Hubzero\Config\Registry;
 
 use Exception;
 use Event;
+use Session;
+use User;
 
 /**
  * Authentication class, provides an interface for the authentication system

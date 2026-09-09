@@ -8,6 +8,7 @@
 namespace Components\Publications\Tables;
 
 use Hubzero\Database\Table;
+use Lang;
 
 /**
  * Table class for publication category

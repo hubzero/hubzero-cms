@@ -11,6 +11,7 @@ use Components\Tags\Models\Cloud;
 use Route;
 use Date;
 use Lang;
+use User;
 
 require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
