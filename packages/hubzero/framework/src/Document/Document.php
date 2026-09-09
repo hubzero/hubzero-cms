@@ -27,6 +27,10 @@ class Document
     private array $scriptDeclarations = [];
     private array $metadata = [];
     private array $customTags = [];
+    private ?string $viewEngine = null;
+    private ?string $cssFramework = null;
+    private array $acceptedEngines = ['php'];
+    private array $acceptedFrameworks = ['classic'];
 
     public function setTitle(string $title): static
     {
@@ -203,5 +207,91 @@ class Document
         }
 
         return $this;
+    }
+
+    /**
+     * Register a view engine the current component accepts.
+     */
+    public function acceptViewEngine(string $engine): void
+    {
+        if (!in_array($engine, $this->acceptedEngines, true)) {
+            $this->acceptedEngines[] = $engine;
+        }
+        $this->viewEngine = null;
+        $this->cssFramework = null;
+    }
+
+    /**
+     * Register a CSS framework the current component accepts.
+     */
+    public function acceptCssFramework(string $framework): void
+    {
+        if (!in_array($framework, $this->acceptedFrameworks, true)) {
+            $this->acceptedFrameworks[] = $framework;
+        }
+        $this->viewEngine = null;
+        $this->cssFramework = null;
+    }
+
+    /**
+     * Get the negotiated view engine for this request.
+     */
+    public function getViewEngine(): string
+    {
+        if ($this->viewEngine === null) {
+            $this->resolveViewEngine();
+        }
+
+        return $this->viewEngine;
+    }
+
+    /**
+     * Get the negotiated CSS framework for this request.
+     */
+    public function getCssFramework(): string
+    {
+        if ($this->cssFramework === null) {
+            $this->resolveCssFramework();
+        }
+
+        return $this->cssFramework;
+    }
+
+    /**
+     * Negotiate the view engine against the active template's preferences.
+     */
+    private function resolveViewEngine(): void
+    {
+        $template = app('template');
+        $templatePrefs = $template->params->get('view_engines', 'blade,php');
+        $preferred = array_map('trim', explode(',', $templatePrefs));
+
+        foreach ($preferred as $engine) {
+            if (in_array($engine, $this->acceptedEngines, true)) {
+                $this->viewEngine = $engine;
+                return;
+            }
+        }
+
+        $this->viewEngine = 'php';
+    }
+
+    /**
+     * Negotiate the CSS framework against the active template's preferences.
+     */
+    private function resolveCssFramework(): void
+    {
+        $template = app('template');
+        $templatePrefs = $template->params->get('css_frameworks', 'daisyui,classic');
+        $preferred = array_map('trim', explode(',', $templatePrefs));
+
+        foreach ($preferred as $framework) {
+            if (in_array($framework, $this->acceptedFrameworks, true)) {
+                $this->cssFramework = $framework;
+                return;
+            }
+        }
+
+        $this->cssFramework = 'classic';
     }
 }
