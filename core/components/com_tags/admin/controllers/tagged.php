@@ -149,7 +149,7 @@ class Tagged extends AdminController
 
 		$fields = Request::getArray('fields', array(), 'post');
 
-		$row = Objct::oneOrFail($fields['id'])->set($fields);
+		$row = Objct::oneOrNew(intval($fields['id']))->set($fields);
 
 		// Store content
 		if (!$row->save())
