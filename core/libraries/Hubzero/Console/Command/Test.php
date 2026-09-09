@@ -169,6 +169,11 @@ class Test extends Base implements CommandInterface
 
 		foreach ($nodes as $node)
 		{
+			if (!file_exists($node[1]))
+			{
+				continue;
+			}
+
 			$key  = $node[0];
 			$base = $node[1];
 
