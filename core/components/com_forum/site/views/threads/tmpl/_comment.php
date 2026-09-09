@@ -282,6 +282,7 @@ defined('_HZEXEC_') or die();
 			     ->set('option', $this->option)
 			     ->set('controller', $this->controller)
 			     ->set('comments', $this->comment->get('replies'))
+			     ->set('likes', $this->likes)
 			     ->set('thread', $this->thread)
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('config', $this->config)

@@ -280,7 +280,7 @@ class Categories extends AdminController
 		$category = Category::oneOrNew($fields['id'])->set($fields);
 
 		// Bind the rules.
-		$data = Request::getArray('jform', array(), 'post');
+		$data = Request::getArray('data', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$form = $category->getForm($data);

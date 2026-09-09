@@ -506,7 +506,7 @@ class Threads extends AdminController
 		$post->set('scope_id', $category->get('scope_id'));
 
 		// Bind the rules.
-		$data = Request::getArray('jform', array(), 'post');
+		$data = Request::getArray('data', array(), 'post');
 		if (isset($data['rules']) && is_array($data['rules']))
 		{
 			$form = $post->getForm($data);
@@ -516,7 +516,7 @@ class Threads extends AdminController
 				Notify::error($form->getError());
 			}
 
-			$category->assetRules = new \Hubzero\Access\Rules($data['rules']);
+			$post->assetRules = new \Hubzero\Access\Rules($data['rules']);
 		}
 
 		// Store new content
@@ -741,7 +741,7 @@ class Threads extends AdminController
 		{
 			// Update record(s)
 			$post = Post::oneOrFail(intval($id));
-			$post->set('stick', $sticky);
+			$post->set('sticky', $sticky);
 
 			if (!$post->save())
 			{

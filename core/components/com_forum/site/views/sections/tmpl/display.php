@@ -137,7 +137,7 @@ $this->css()
 												<?php echo Lang::txt('COM_FORUM_POSTS'); ?>
 											</span>
 										</td>
-									<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-categort')) { ?>
+									<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
 										<td class="entry-options">
 											<?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
 												<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">

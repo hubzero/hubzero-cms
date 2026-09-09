@@ -31,7 +31,7 @@ class Sections extends SiteController
 	 */
 	public function execute()
 	{
-		$this->model = new Manager('site', 0);
+		$this->forum = new Manager('site', 0);
 
 		parent::execute();
 	}
