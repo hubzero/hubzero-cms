@@ -163,7 +163,7 @@ if (!$this->comment->get('item_id'))
 						</div>
 
 						<p class="submit">
-							<input type="submit" class="btcommentvalue="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

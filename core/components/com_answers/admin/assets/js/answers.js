@@ -23,7 +23,7 @@ jQuery(document).ready(function ($) {
 		e.preventDefault();
 
 		if (confirm($(this).attr('data-confirm'))) {
-			return Hubzero.submitform('resethelpful');
+			return Hubzero.submitform('reset');
 		}
 
 		return false;
