@@ -56,7 +56,7 @@ Toolbar::help('messages');
 			?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $this->escape($row->get('id')); ?>" class="checkbox-toggle" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($row->get('id')); ?>" class="checkbox-toggle" />
 					<label for="cb<?php echo $i;?>" class="sr-only visually-hidden"><?php echo $this->escape($row->get('id')); ?></label>
 				</td>
 				<td class="priority-4"><?php echo $this->escape($row->get('id')); ?></td>

@@ -21,6 +21,7 @@ use Components\Support\Models\Category;
 use Hubzero\Component\AdminController;
 use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
+use Hubzero\Utility\Number;
 use Hubzero\Utility\Validate;
 use Exception;
 use Filesystem;
@@ -509,11 +510,11 @@ class Tickets extends AdminController
 							if ($attachment->isImage())
 							{
 								$file = basename($attachment->path());
-								$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />', $html);
+								$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $msg->getEmbed($attachment->path()) . '" alt="" />', $html);
 							}
 							else
 							{
-								$message->addAttachment($attachment->path());
+								$msg->addAttachment($attachment->path());
 							}
 						}
 					}
