@@ -512,7 +512,7 @@ class View extends Obj
             $bladeFile = strtolower($file) . '.blade.php';
             $this->_template = $this->find($this->_path['template'], $bladeFile);
 
-            if ($this->_template == false) {
+            if ($this->_template == false && $layout === 'default' && !str_starts_with($file, '_')) {
                 $bladeDefault = 'default' . ($tpl ? '_' . $tpl : '');
                 $bladeDefault = strtolower($bladeDefault) . '.blade.php';
                 $this->_template = $this->find($this->_path['template'], $bladeDefault);
@@ -618,21 +618,56 @@ class View extends Obj
             return;
         }
 
-        $namespace = $m[1]; // e.g. "com_categories"
-
-        // Already registered?
         $finder = Blade::factory()->getFinder();
         $hints  = $finder->getHints();
-        if (isset($hints[$namespace])) {
+
+        $namespace = $m[1]; // e.g. "com_categories"
+
+        // Register component base namespace if not already done
+        if (!isset($hints[$namespace])) {
+            $pos = strpos($templatePath, $m[0]);
+            $componentBase = substr($templatePath, 0, $pos) . '/components/' . $namespace;
+
+            if (is_dir($componentBase)) {
+                $finder->addNamespace($namespace, $componentBase);
+            }
+        }
+
+        // Register short view-name namespaces so @include('view._partial')
+        // resolves to the views/view/tmpl/ directory.  Scan all sibling view
+        // directories under the same client (site/admin) views/ folder.
+        $tmplDir = dirname($templatePath); // e.g. .../views/view/tmpl
+        $viewsDir = dirname($tmplDir, 2);  // e.g. .../views
+
+        if (basename(dirname($tmplDir)) !== 'views' && basename($viewsDir) !== 'views') {
+            // Not the expected structure — skip short-name registration
             return;
         }
 
-        // Derive the component base directory from the template path
-        $pos = strpos($templatePath, $m[0]);
-        $componentBase = substr($templatePath, 0, $pos) . '/components/' . $namespace;
+        // Use the actual views directory
+        if (basename(dirname($tmplDir)) === 'views') {
+            $viewsDir = dirname($tmplDir);
+        }
 
-        if (is_dir($componentBase)) {
-            $finder->addNamespace($namespace, $componentBase);
+        if (!is_dir($viewsDir)) {
+            return;
+        }
+
+        $registered = false;
+        foreach (scandir($viewsDir) as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+            $entryTmpl = $viewsDir . '/' . $entry . '/tmpl';
+            if (is_dir($entryTmpl) && !isset($hints[$entry])) {
+                $finder->addNamespace($entry, $entryTmpl);
+                $registered = true;
+            }
+        }
+
+        // Refresh hints cache after registration
+        if ($registered) {
+            $hints = $finder->getHints();
         }
     }
 

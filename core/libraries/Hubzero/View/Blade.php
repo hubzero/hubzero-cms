@@ -108,6 +108,8 @@ class Blade
         }
         if (defined('PATH_CORE')) {
             $viewPaths[] = PATH_CORE . '/templates';
+            // Allow @include('modules.mod_foo.tmpl._partial') etc.
+            $viewPaths[] = PATH_CORE;
         }
 
         $finder = new FileViewFinder($fs, $viewPaths);

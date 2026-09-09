@@ -597,7 +597,7 @@ class Base extends Obj
      */
     public function addScriptDeclaration($content, $type = 'text/javascript')
     {
-        if ($this->getViewEngine() === 'blade') {
+        if ($this->getViewEngine() === 'blade' && strtolower($type) !== 'application/ld+json') {
             throw new \RuntimeException(
                 'addScriptDeclaration() is not allowed under strict CSP in Blade mode. '
                 . 'Move inline JS to an external file. Content: '
