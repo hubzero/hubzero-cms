@@ -20,6 +20,9 @@ use App;
  */
 class Search extends \Hubzero\Component\SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *

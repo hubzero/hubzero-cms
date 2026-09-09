@@ -172,6 +172,7 @@ class Checkout extends ComponentController
         }
 
         $this->view->productEula = $productEula;
+        $this->setStepNavData($cart, 'eula');
 
         $eulaSubmitted = Request::getBool('submitEula', false, 'post');
 
@@ -254,6 +255,7 @@ class Checkout extends ComponentController
             }
         }
         $this->view->noteFields = $noteFields;
+        $this->setStepNavData($cart, 'notes');
 
         $notesSubmitted = Request::getBool('submitNotes', false, 'post');
 
@@ -400,6 +402,7 @@ class Checkout extends ComponentController
 
         $savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
         $this->view->savedShippingAddresses = $savedShippingAddresses;
+        $this->setStepNavData($cart, 'shipping');
         $this->view->display();
     }
 
@@ -458,6 +461,7 @@ class Checkout extends ComponentController
         $this->view->token = $token;
         $this->view->transactionItems = $transaction->items;
         $this->view->transactionInfo = $transaction->info;
+        $this->setStepNavData($cart, 'summary');
         $this->view->display();
     }
 
@@ -592,6 +596,35 @@ class Checkout extends ComponentController
 
         //print_r($this->view); die;
         */
+    }
+
+    /**
+     * Build step-nav data from the cart's checkout steps and pass
+     * $checkoutSteps (array) and $currentStepIndex (int) to the view.
+     *
+     * @param   CurrentCart  $cart
+     * @param   string      $currentStep  Current step name (eula, notes, shipping, summary, etc.)
+     * @return  void
+     */
+    private function setStepNavData($cart, $currentStep)
+    {
+        $allSteps = $cart->getAllCheckoutSteps();
+        $currentIndex = 0;
+
+        foreach ($allSteps as $i => $step) {
+            if ($step->step === $currentStep) {
+                $currentIndex = $i;
+                break;
+            }
+        }
+
+        $stepNavData = [];
+        foreach ($allSteps as $step) {
+            $stepNavData[] = ['label' => $step->label];
+        }
+
+        $this->view->checkoutSteps = $stepNavData;
+        $this->view->currentStepIndex = $currentIndex;
     }
 
     /**

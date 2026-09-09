@@ -21,6 +21,9 @@ use Hubzero\Facades\Route;
  */
 class Browse extends \Hubzero\Component\SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *
@@ -28,6 +31,16 @@ class Browse extends \Hubzero\Component\SiteController
      */
     public function execute()
     {
+        // Set up engine acceptance early since browseCollection()
+        // creates views before parent::execute() runs
+        $doc = App::get('document');
+        foreach ($this->viewEngines as $engine) {
+            $doc->acceptViewEngine($engine);
+        }
+        foreach ($this->cssFrameworks as $framework) {
+            $doc->acceptCssFramework($framework);
+        }
+
         $this->warehouse = new Warehouse();
 
         $this->warehouse->addAccessLevels(User::getAuthorisedViewLevels());

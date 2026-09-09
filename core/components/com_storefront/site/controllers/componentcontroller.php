@@ -17,6 +17,9 @@ use Hubzero\Facades\App;
  */
 class ComponentController extends \Hubzero\Component\SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Parse the URL parameters and map each parameter (in order) to the given array of names
      *

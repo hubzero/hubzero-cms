@@ -30,6 +30,9 @@ use Hubzero\Facades\Document;
  */
 class Product extends \Hubzero\Component\SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *
@@ -194,10 +197,21 @@ class Product extends \Hubzero\Component\SiteController
         }
         $this->view->price = $priceRange;
 
-        // Add custom page JS
+        // Add custom page JS (inline for PHP views, data attribute for Blade)
+        $this->view->sfOptionsJson = null;
         if ($data && (count($data->options) > 0 || count($data->skus) > 1)) {
-            $js = $this->getDisplayJs($data->options, $data->skus, $productIdentifier);
-            Document::addScriptDeclaration($js);
+            $doc = App::get('document');
+            if ($doc->getViewEngine() === 'blade') {
+                // Pass structured data for CSP-safe data-attribute rendering
+                $this->view->sfOptionsJson = $this->getDisplayJson(
+                    $data->options,
+                    $data->skus,
+                    $productIdentifier
+                );
+            } else {
+                $js = $this->getDisplayJs($data->options, $data->skus, $productIdentifier);
+                Document::addScriptDeclaration($js);
+            }
         }
 
         $this->view->config = $this->config;
@@ -346,6 +360,53 @@ class Product extends \Hubzero\Component\SiteController
 
         $js .= "\t}";
         return $js;
+    }
+
+    /**
+     * Generate JSON options data for CSP-safe data-attribute rendering
+     *
+     * @param   array   $ops
+     * @param   array   $skus
+     * @param   string  $productIdentifier
+     * @return  string  JSON string
+     */
+    private function getDisplayJson($ops, $skus, $productIdentifier)
+    {
+        $result = [
+            'skus' => [],
+            'skuPrices' => [],
+            'skuInventory' => [],
+            'ops' => [],
+            'pId' => $productIdentifier,
+        ];
+
+        foreach ($skus as $sId => $data) {
+            $options = $data['options'];
+            $info = $data['info'];
+
+            $result['skus'][] = array_map('strval', $options);
+            $result['skuPrices'][] = (string) ($info->sPrice * 100);
+
+            if (!$info->sAllowMultiple) {
+                $result['skuInventory'][] = 1;
+            } elseif (!$info->sTrackInventory) {
+                $result['skuInventory'][] = 20;
+            } elseif (empty($info->sInventory)) {
+                $result['skuInventory'][] = 1;
+            } else {
+                $result['skuInventory'][] = min($info->sInventory, 20);
+            }
+        }
+
+        foreach ($ops as $oId => $data) {
+            $optionIds = [];
+            foreach ($data['options'] as $option) {
+                $optionIds[] = (string) $option->oId;
+            }
+            $result['ops'][] = $optionIds;
+        }
+
+        return json_encode($result);
     }
 
     /**

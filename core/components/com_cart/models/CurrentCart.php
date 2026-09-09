@@ -398,6 +398,70 @@ class CurrentCart extends Cart
     }
 
     /**
+     * Get all checkout steps with status for step-nav display.
+     *
+     * Collapses multiple EULA steps into one visual step and appends
+     * the implicit summary step. Returns an array of objects with
+     * ->label, ->step, and ->completed properties.
+     *
+     * @return  array
+     */
+    public function getAllCheckoutSteps()
+    {
+        $sql = "SELECT `tsStep`, `tsStatus` FROM `#__cart_transaction_steps` ts "
+            . "WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId ASC";
+        $this->_db->setQuery($sql);
+        $rows = $this->_db->loadObjectList();
+
+        $steps = [];
+        $eulaAdded = false;
+
+        foreach ($rows as $row) {
+            // Collapse multiple EULA rows into one visual step
+            if ($row->tsStep === 'eula') {
+                if (!$eulaAdded) {
+                    $steps[] = (object) [
+                        'step'      => 'eula',
+                        'label'     => Lang::txt('COM_CART_STEP_AGREEMENT'),
+                        'completed' => (bool) $row->tsStatus,
+                    ];
+                    $eulaAdded = true;
+                } else {
+                    // If any EULA is incomplete, mark the visual step incomplete
+                    if (!$row->tsStatus) {
+                        $steps[array_key_first(
+                            array_filter($steps, function ($s) {
+                                return $s->step === 'eula';
+                            })
+                        )]->completed = false;
+                    }
+                }
+                continue;
+            }
+
+            $labels = [
+                'notes'    => Lang::txt('COM_CART_STEP_NOTES'),
+                'shipping' => Lang::txt('COM_CART_STEP_SHIPPING'),
+            ];
+
+            $steps[] = (object) [
+                'step'      => $row->tsStep,
+                'label'     => $labels[$row->tsStep] ?? ucfirst($row->tsStep),
+                'completed' => (bool) $row->tsStatus,
+            ];
+        }
+
+        // Summary is always the implicit final step (not in DB)
+        $steps[] = (object) [
+            'step'      => 'summary',
+            'label'     => Lang::txt('COM_CART_STEP_REVIEW'),
+            'completed' => false,
+        ];
+
+        return $steps;
+    }
+
+    /**
      * Get existing or create a new transaction (if doesn't exist)
      *
      * @param void
