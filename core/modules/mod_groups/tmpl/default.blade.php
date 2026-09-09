@@ -1,7 +1,7 @@
 {{--
   mod_groups — admin dashboard Blade template
 
-  Join-policy donut + visibility bar + footer stat row.
+  Join-policy donut + visibility bar + footer stat $row.
 
   Variables: $module, $params, $type, $visible, $hidden,
              $closed, $invite, $restricted, $open,
@@ -63,7 +63,7 @@
     @foreach ($segments as $seg)
       <div class="flex items-center gap-1.5">
         <span class="shrink-0 rounded-sm inline-block size-2.5"
-              data-style-bg="{{ $seg['color'] }}"></span>
+              data-$style-bg="{{ $seg['color'] }}"></span>
         <a href="{{ Route::url($seg['url'], false) }}"
            class="link link-hover flex-1 truncate">{{ $seg['label'] }}</a>
         <span class="font-semibold tabular-nums shrink-0">{{ number_format($seg['count']) }}</span>
@@ -75,8 +75,8 @@
 
 {{-- Visibility bar --}}
 <div class="rounded-full overflow-hidden flex bg-base-200 mb-1 h-[0.35rem]">
-  <div class="bg-primary transition-all" data-style-width="{{ $visiblePct }}%"></div>
-  <div class="bg-base-300" data-style-width="{{ $hiddenPct }}%"></div>
+  <div class="bg-primary transition-all" data-$style-width="{{ $visiblePct }}%"></div>
+  <div class="bg-base-300" data-$style-width="{{ $hiddenPct }}%"></div>
 </div>
 <div class="flex mb-4 text-xs">
   <div class="flex-1">
@@ -93,7 +93,7 @@
   </div>
 </div>
 
-{{-- Footer stat row --}}
+{{-- Footer stat $row --}}
 <div class="flex border-t border-base-200 pt-2 gap-1">
   <div class="flex-1 text-center">
     <div class="text-xl font-bold leading-none text-success">

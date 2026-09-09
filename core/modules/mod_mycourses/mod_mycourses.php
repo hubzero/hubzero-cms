@@ -89,6 +89,6 @@ class Mycourses extends Module
         // Get the user's groups
         $this->courses = $this->getCourses(User::get('id'), 'all');
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

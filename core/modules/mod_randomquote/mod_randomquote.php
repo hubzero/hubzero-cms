@@ -66,7 +66,7 @@ class Randomquote extends Module
         }
         $this->quote = $quote;
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 
     /**

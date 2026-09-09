@@ -39,7 +39,7 @@ class Syndicate extends Module
 
         $text = htmlspecialchars($params->get('text'));
 
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($params->get('layout', 'default')));
     }
 
     /**

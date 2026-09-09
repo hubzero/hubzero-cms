@@ -126,6 +126,6 @@ class Billboards extends Module
 
         $this->js($js);
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

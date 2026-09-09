@@ -59,6 +59,6 @@ class Wishvoters extends Module
             return '<p class="error">' . Lang::txt('MOD_WISHVOTERS_ERROR_RETRIEVING') . '</p>';
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

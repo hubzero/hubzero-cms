@@ -92,6 +92,9 @@ class Feed extends Module
         $feed = $this->getFeed();
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $this->renderLayout(
+            $this->getLayoutPath($params->get('layout', 'default')),
+            compact('feed', 'params', 'rssrtl', 'moduleclass_sfx', 'module')
+        );
     }
 }

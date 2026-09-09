@@ -71,7 +71,7 @@ class Recentquestions extends Module
             ->ordered()
             ->rows();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

@@ -15,11 +15,11 @@
   $total = $draft + $pending + $published + $unpublished + $removed;
 
   $stats = [
-    ['label' => Lang::txt('MOD_RESOURCES_PUBLISHED'),   'count' => $published,   'color' => 'var(--color-neutral)',   'url' => 'index.php?option=com_resources&c=resources&status=1'],
-    ['label' => Lang::txt('MOD_RESOURCES_PENDING'),     'count' => $pending,     'color' => 'var(--color-accent)',    'url' => 'index.php?option=com_resources&c=resources&status=3'],
-    ['label' => Lang::txt('MOD_RESOURCES_DRAFT'),       'count' => $draft,       'color' => 'var(--color-secondary)', 'url' => 'index.php?option=com_resources&c=resources&status=2'],
-    ['label' => Lang::txt('MOD_RESOURCES_UNPUBLISHED'), 'count' => $unpublished, 'color' => 'var(--color-base-300)',  'url' => 'index.php?option=com_resources&c=resources&status=0'],
-    ['label' => Lang::txt('MOD_RESOURCES_REMOVED'),     'count' => $removed,     'color' => 'var(--color-error)',     'url' => 'index.php?option=com_resources&c=resources&status=4'],
+    ['label' => Lang::txt('MOD_RESOURCES_PUBLISHED'),   'count' => $published,   'color' => 'var(--color-neutral)',   'url' => 'index.php?option=com_resources&c=$resources&status=1'],
+    ['label' => Lang::txt('MOD_RESOURCES_PENDING'),     'count' => $pending,     'color' => 'var(--color-accent)',    'url' => 'index.php?option=com_resources&c=$resources&status=3'],
+    ['label' => Lang::txt('MOD_RESOURCES_DRAFT'),       'count' => $draft,       'color' => 'var(--color-secondary)', 'url' => 'index.php?option=com_resources&c=$resources&status=2'],
+    ['label' => Lang::txt('MOD_RESOURCES_UNPUBLISHED'), 'count' => $unpublished, 'color' => 'var(--color-base-300)',  'url' => 'index.php?option=com_resources&c=$resources&status=0'],
+    ['label' => Lang::txt('MOD_RESOURCES_REMOVED'),     'count' => $removed,     'color' => 'var(--color-error)',     'url' => 'index.php?option=com_resources&c=$resources&status=4'],
   ];
 
   // SVG donut segments — r=15.9155, circumference≈100
@@ -61,7 +61,7 @@
     @foreach ($stats as $stat)
       <div class="flex items-center gap-2">
         <span class="shrink-0 rounded-sm inline-block size-2.5"
-              data-style-bg="{{ $stat['color'] }}"></span>
+              data-$style-bg="{{ $stat['color'] }}"></span>
         <a href="{{ Route::url($stat['url'], false) }}"
            class="link link-hover flex-1 truncate">{{ $stat['label'] }}</a>
         <span class="font-medium tabular-nums shrink-0">{{ number_format($stat['count']) }}</span>

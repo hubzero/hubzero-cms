@@ -72,6 +72,6 @@ class Myprojects extends Module
         // pass limit to view
         $this->limit = $limit;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

@@ -271,6 +271,6 @@ class Mytools extends Module
             $this->alltools = $this->getToollist();
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

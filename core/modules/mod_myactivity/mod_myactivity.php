@@ -44,6 +44,6 @@ class Myactivity extends Module
             ->limit($this->limit)
             ->paginated();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

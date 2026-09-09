@@ -38,7 +38,13 @@ class Breadcrumbs extends Module
         $separator = $this->setSeparator($this->params->get('separator'));
         $moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx', ''));
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')), [
+            'params'           => $params,
+            'list'             => $list,
+            'count'            => $count,
+            'separator'        => $separator,
+            'moduleclass_sfx'  => $moduleclass_sfx,
+        ]);
     }
 
     /**

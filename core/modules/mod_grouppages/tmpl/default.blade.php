@@ -1,7 +1,7 @@
 {{--
   mod_grouppages — unapproved group pages/modules widget
 
-  Shows groups with pending page and module approvals.
+  Shows $groups with pending page and $module approvals.
 
   Variables: $unapprovedPages, $unapprovedModules, $params, $module
 

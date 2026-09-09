@@ -37,7 +37,7 @@ class Findresources extends Module
         // Get major types
         $this->categories = \Components\Resources\Models\Type::getMajorTypes();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

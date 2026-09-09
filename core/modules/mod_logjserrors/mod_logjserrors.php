@@ -47,6 +47,6 @@ class Logjserrors extends Module
             exit();
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

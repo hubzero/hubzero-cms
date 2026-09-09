@@ -67,6 +67,6 @@ class Latestusage extends Module
         );
         $this->tools = $database->loadResult();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

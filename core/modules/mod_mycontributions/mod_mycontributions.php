@@ -304,6 +304,6 @@ class Mycontributions extends Module
         // Other cotnributions
         $this->contributions = $this->getContributions();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

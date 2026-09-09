@@ -1,7 +1,7 @@
 {{--
   Search module — clean daisyUI input for the navbar.
 
-  Variables from module class:
+  Variables from $module class:
     $text       — placeholder text
     $label      — accessible label
     $width      — input size (unused in blade, CSS controls width)

@@ -264,6 +264,6 @@ class Myquestions extends Module
             ? $breaker
             : $max - ($totalq - $othercount);
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

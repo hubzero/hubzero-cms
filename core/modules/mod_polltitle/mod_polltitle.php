@@ -30,7 +30,7 @@ class Polltitle extends Module
         // Load the latest poll
         $this->poll = Poll::current();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

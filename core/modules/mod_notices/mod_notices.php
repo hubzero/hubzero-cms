@@ -253,7 +253,7 @@ class Notices extends Module
 
             $this->message = $message;
 
-            require $this->getLayoutPath();
+            $this->renderLayout($this->getLayoutPath());
         }
     }
 }

@@ -31,6 +31,6 @@ class Googleanalytics extends Module
             return;
         }
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 }

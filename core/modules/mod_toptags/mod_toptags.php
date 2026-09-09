@@ -32,7 +32,7 @@ class Toptags extends Module
             ->order('objects', 'desc')
             ->rows();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

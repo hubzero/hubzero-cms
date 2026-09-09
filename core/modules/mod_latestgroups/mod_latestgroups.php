@@ -73,7 +73,7 @@ class Latestgroups extends Module
         //set groups to view
         $this->groups = $groupsToDisplay;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

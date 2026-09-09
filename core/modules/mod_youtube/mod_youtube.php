@@ -120,7 +120,7 @@ class Youtube extends Module
             $feed = $this->feed($youtube_url, $this->params);
             if (!$feed) {
                 $this->html = '<p class="error">' . Lang::txt('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
-                require $this->getLayoutPath();
+                $this->renderLayout($this->getLayoutPath());
                 return;
             }
 
@@ -223,7 +223,7 @@ class Youtube extends Module
             $this->html = $html;
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

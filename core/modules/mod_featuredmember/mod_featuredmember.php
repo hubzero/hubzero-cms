@@ -73,7 +73,7 @@ class Featuredmember extends Module
             $this->params = $config;
             $this->params->merge($rparams);
 
-            require $this->getLayoutPath();
+            $this->renderLayout($this->getLayoutPath());
         }
     }
 

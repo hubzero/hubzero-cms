@@ -51,6 +51,6 @@ class Resourcemenu extends Module
         $this->css()
              ->js();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

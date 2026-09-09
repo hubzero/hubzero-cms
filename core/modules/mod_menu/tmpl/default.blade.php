@@ -2,16 +2,19 @@
   Menu module — daisyUI layout.
 
   Renders the flat menu item list as nested daisyUI menu markup.
-  Items with children use <details>/<summary> for dropdowns.
+  Items with children use <details>/<summary> per daisyUI convention.
+  Context determines behavior:
+    - Inside .navbar: CSS positions submenus as flyout dropdowns
+    - Inside sidebar: CSS forces details open for always-visible lists
 
   Variables from Menu::display():
     $list           — flat array of menu item objects (with level/deeper/shallower)
     $active_id      — ID of the currently active menu item
     $path           — array of IDs in the active tree
     $showAll        — show all children (bool)
-    $class_sfx      — class suffix from params
-    $params         — module params (Registry)
-    $module         — module DB row
+    $class_sfx      — class suffix from $params
+    $params         — $module $params (Registry)
+    $module         — $module DB $row
 
   @package    hubzero-cms
   @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -29,9 +32,11 @@
     {{-- skip separators --}}
   @elseif($hasKids)
     <li>
-      <details>
+      <details @if($inPath || $isActive) open @endif>
         <summary @class(['active' => $isActive, 'font-semibold' => $inPath])>
-          {{ $item->title }}
+          <a href="{{ $item->flink }}"
+             @if($isActive) aria-current="page" @endif
+          >{{ $item->title }}</a>
         </summary>
         <ul>
   @else

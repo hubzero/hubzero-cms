@@ -203,6 +203,6 @@ class RapidContact extends Module
             }
         }
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 }

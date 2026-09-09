@@ -47,6 +47,6 @@ class Mymessages extends Module
             }
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

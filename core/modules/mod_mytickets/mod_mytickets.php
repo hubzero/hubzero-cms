@@ -105,6 +105,6 @@ class Mytickets extends Module
             }
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

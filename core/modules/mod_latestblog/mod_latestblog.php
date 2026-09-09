@@ -92,7 +92,7 @@ class Latestblog extends Module
 
         $this->posts = $posts;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

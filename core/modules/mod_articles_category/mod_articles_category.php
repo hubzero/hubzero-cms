@@ -105,7 +105,7 @@ class ArticlesCategory extends Module
                         break;
                 }
             }
-            require $this->getLayoutPath($params->get('layout', 'default'));
+            $this->renderLayout($this->getLayoutPath($params->get('layout', 'default')));
         }
     }
 

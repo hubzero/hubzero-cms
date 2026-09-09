@@ -165,7 +165,7 @@ class Latestdiscussions extends Module
         //$this->posts = $posts;
         $this->categories = $categories;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

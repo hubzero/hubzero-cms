@@ -73,6 +73,6 @@ class FeedYoutube extends Module
             $this->feed = false;
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

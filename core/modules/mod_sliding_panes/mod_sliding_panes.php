@@ -115,6 +115,6 @@ class SlidingPanes extends Module
             . " $('#" . $this->container . " .panes-content').jSlidingPanes(); });";
         $this->js($jsCode);
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

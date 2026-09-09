@@ -279,7 +279,7 @@ class EventsLatest extends Module
         //  $this->eventsByRelDay = null;
         // }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

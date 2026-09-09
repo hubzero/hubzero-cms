@@ -56,7 +56,7 @@ class Featuredquestion extends Module
                 $this->thumb = '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif';
             }
 
-            require $this->getLayoutPath();
+            $this->renderLayout($this->getLayoutPath());
         }
     }
 

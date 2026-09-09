@@ -50,7 +50,7 @@ class Collect extends Module
             return $this->collect();
         }
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 
     /**
@@ -129,7 +129,7 @@ class Collect extends Module
             }
 
             ob_clean();
-            require $this->getLayoutPath('collect');
+            $this->renderLayout($this->getLayoutPath('collect'));
             exit;
         }
 

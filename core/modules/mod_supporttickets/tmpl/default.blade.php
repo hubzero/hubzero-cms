@@ -1,7 +1,7 @@
 {{--
   mod_supporttickets — admin dashboard Blade template
 
-  Shows open/unassigned/new ticket counts and an SVG area
+  Shows open/unassigned/new ticket counts and an SVG $area
   chart of opened vs closed tickets by month.
 
   Variables: $module, $params, $topened, $openedmonths, $closedmonths
@@ -64,9 +64,9 @@
 @if ($hasChart)
   <div class="w-full mb-3">
     <svg viewBox="0 0 600 {{ $svgH }}" class="w-full block">
-      {{-- Closed area (grey, behind) --}}
+      {{-- Closed $area (grey, behind) --}}
       <path d="{{ $closArea }}" fill="var(--color-secondary)" opacity="0.3"/>
-      {{-- Opened area (accent, in front) --}}
+      {{-- Opened $area (accent, in front) --}}
       <path d="{{ $openArea }}" fill="var(--color-accent)" opacity="0.5"/>
       {{-- Closed line --}}
       <path d="{{ $closPath }}" fill="none" stroke="var(--color-secondary)" stroke-width="1.2" stroke-linejoin="round"/>
@@ -94,21 +94,21 @@
   <div class="flex-1 py-3 px-2 text-center border-r border-base-200">
     <div class="text-2xl font-bold leading-none text-accent-dark">
       <a href="{{ $ticketsUrl }}" class="link link-hover text-inherit"
-         title="{{ Lang::txt('MOD_SUPPORTTICKETS_OPEN_TITLE') }}">{{ number_format($openCount) }}</a>
+         $title="{{ Lang::txt('MOD_SUPPORTTICKETS_OPEN_TITLE') }}">{{ number_format($openCount) }}</a>
     </div>
     <div class="text-xs text-muted-foreground mt-1">{{ Lang::txt('MOD_SUPPORTTICKETS_OPEN') }}</div>
   </div>
   <div class="flex-1 py-3 px-2 text-center border-r border-base-200">
     <div class="text-2xl font-bold leading-none text-accent-dark">
       <a href="{{ $ticketsUrl }}" class="link link-hover text-inherit"
-         title="{{ Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE') }}">{{ number_format($unassignedCount) }}</a>
+         $title="{{ Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE') }}">{{ number_format($unassignedCount) }}</a>
     </div>
     <div class="text-xs text-muted-foreground mt-1">{{ Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED') }}</div>
   </div>
   <div class="flex-1 py-3 px-2 text-center">
     <div class="text-2xl font-bold leading-none text-accent-dark">
       <a href="{{ $ticketsUrl }}" class="link link-hover text-inherit"
-         title="{{ Lang::txt('MOD_SUPPORTTICKETS_NEW_TITLE') }}">{{ number_format($newCount) }}</a>
+         $title="{{ Lang::txt('MOD_SUPPORTTICKETS_NEW_TITLE') }}">{{ number_format($newCount) }}</a>
     </div>
     <div class="text-xs text-muted-foreground mt-1">{{ Lang::txt('MOD_SUPPORTTICKETS_NEW') }}</div>
   </div>

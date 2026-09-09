@@ -74,6 +74,6 @@ class Myresources extends Module
 
         $this->contributions = $database->loadObjectList();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

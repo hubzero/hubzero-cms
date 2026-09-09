@@ -48,6 +48,6 @@ class Mytodos extends Module
         // Push the module CSS to the template
         $this->css();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

@@ -37,6 +37,6 @@ class Version extends Module
         }
 
         // Get the view
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 }

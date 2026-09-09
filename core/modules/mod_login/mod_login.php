@@ -165,6 +165,6 @@ class Login extends Module
         // Set the return if we have it...
         $returnQueryString = ($return) ? "&return={$return}" : '';
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

@@ -176,7 +176,7 @@ class EventsCal extends Module
             );
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**
@@ -211,13 +211,13 @@ class EventsCal extends Module
                 'index.php?option=com_events&year=' . $prevYear . '&month=' . $prevMonth
             );
             $content .= ' <a class="prev month" href="' . $prevUrl . '">' .
-                \Hubzero\Facades\Html::getMonthName($prevMonth) . '</a>' . "\n";
+                Html::getMonthName($prevMonth) . '</a>' . "\n";
         }
         $currentUrl = Route::url(
             'index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month
         );
         $content .= ' <a class="current month" href="' . $currentUrl . '">' .
-            \Hubzero\Facades\Html::getMonthName($cal_month) . '</a>' . "\n";
+            Html::getMonthName($cal_month) . '</a>' . "\n";
         if ($this->params->get('show_nav_next_month')) {
             $nextYear = ($cal_month == 12 ? $cal_year + 1 : $cal_year);
             $nextMonth = ($cal_month == 12 ? 1 : $cal_month + 1);
@@ -225,7 +225,7 @@ class EventsCal extends Module
                 'index.php?option=com_events&year=' . $nextYear . '&month=' . $nextMonth
             );
             $content .= ' <a class="next month" href="' . $nextUrl . '">' .
-                \Hubzero\Facades\Html::getMonthName($nextMonth) . '</a>' . "\n";
+                Html::getMonthName($nextMonth) . '</a>' . "\n";
         }
         $content .= ' </caption>' . "\n";
         $content .= ' <thead>' . "\n";

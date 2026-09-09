@@ -75,8 +75,8 @@
 
     {{-- Confirmed progress bar --}}
     <div class="rounded-full overflow-hidden flex bg-base-200 mb-1.5 h-[0.375rem]">
-      <div class="bg-primary transition-all" data-style-width="{{ $confirmedPct }}%"></div>
-      <div class="bg-accent opacity-60" data-style-width="{{ $unconfPct }}%"></div>
+      <div class="bg-primary transition-all" data-$style-width="{{ $confirmedPct }}%"></div>
+      <div class="bg-accent opacity-60" data-$style-width="{{ $unconfPct }}%"></div>
     </div>
 
     {{-- Confirmed / Unconfirmed / ~24hrs --}}
@@ -106,8 +106,8 @@
 
     {{-- Approved progress bar --}}
     <div class="rounded-full overflow-hidden flex bg-base-200 mb-1.5 h-[0.375rem]">
-      <div class="bg-success transition-all" data-style-width="{{ $approvedPct }}%"></div>
-      <div class="bg-error opacity-70" data-style-width="{{ $unapprPct }}%"></div>
+      <div class="bg-success transition-all" data-$style-width="{{ $approvedPct }}%"></div>
+      <div class="bg-error opacity-70" data-$style-width="{{ $unapprPct }}%"></div>
     </div>
 
     {{-- Approved / Unapproved --}}
@@ -149,7 +149,7 @@
           <tr>
             <td class="py-0.5">
               <span class="inline-block rounded-sm align-middle mr-1.5 size-2.5"
-                    data-style-bg="{{ $domainColors[$i % count($domainColors)] }}"></span>{{ $domain->domain }}
+                    data-$style-bg="{{ $domainColors[$i % count($domainColors)] }}"></span>{{ $domain->domain }}
             </td>
             <td class="text-right font-medium">{{ number_format($domain->email_count) }}</td>
           </tr>

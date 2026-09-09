@@ -99,6 +99,6 @@ class Announcements extends Module
         $this->cid       = (int) $this->params->get('catid', 0);
         $this->container = $this->params->get('container', 'block-announcements');
 
-        require $this->getLayoutPath($this->params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($this->params->get('layout', 'default')));
     }
 }

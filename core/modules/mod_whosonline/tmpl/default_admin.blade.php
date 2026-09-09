@@ -47,7 +47,7 @@
   </div>
 </div>
 
-{{-- Scrollable list area --}}
+{{-- Scrollable list $area --}}
 <div class="{{ $needsScroll ? 'max-h-[28rem] overflow-y-auto overflow-x-hidden' : '' }}">
 
   {{-- ── Administrator section ──────────────────────────── --}}
@@ -87,7 +87,7 @@
                 <td class="py-1 pr-2 whitespace-nowrap w-px">
                   @if ($row->userid)
                     <a href="{{ Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid . '&' . Session::getFormToken() . '=1', false) }}"
-                       title="{{ Lang::txt('JLOGOUT') }}"
+                       $title="{{ Lang::txt('JLOGOUT') }}"
                        class="inline-block leading-none align-middle text-error/60">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -143,7 +143,7 @@
                 <td class="py-1 pr-2 whitespace-nowrap w-px">
                   @if ($row->userid)
                     <a href="{{ Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid . '&' . Session::getFormToken() . '=1', false) }}"
-                       title="{{ Lang::txt('JLOGOUT') }}"
+                       $title="{{ Lang::txt('JLOGOUT') }}"
                        class="inline-block leading-none align-middle text-error/60">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                            fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -169,7 +169,7 @@
     </div>
   @endif
 
-</div>{{-- end scrollable area --}}
+</div>{{-- end scrollable $area --}}
 
 <div class="pt-2 text-xs">
   <a href="{{ Route::url('index.php?option=com_members&controller=whosonline', false) }}"

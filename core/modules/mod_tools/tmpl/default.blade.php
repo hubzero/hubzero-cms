@@ -62,7 +62,7 @@
     @foreach ($stats as $stat)
       <div class="flex items-center gap-2">
         <span class="shrink-0 rounded-sm inline-block size-2.5"
-              data-style-bg="{{ $stat['color'] }}"></span>
+              data-$style-bg="{{ $stat['color'] }}"></span>
         <a href="{{ Route::url('index.php?option=com_tools&status=' . $stat['status'], false) }}"
            class="link link-hover flex-1 truncate">{{ $stat['label'] }}</a>
         <span class="font-medium tabular-nums shrink-0">{{ number_format($stat['count']) }}</span>

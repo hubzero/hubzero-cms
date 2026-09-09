@@ -1,7 +1,7 @@
 {{--
   mod_users — pending user approval widget
 
-  Shows count of users requiring approval, or an all-clear message.
+  Shows count of $users requiring approval, or an all-clear $message.
 
   Variables: $unapproved, $params, $module
 

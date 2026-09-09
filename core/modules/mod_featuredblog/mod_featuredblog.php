@@ -69,7 +69,7 @@ class Featuredblog extends Module
             $this->cls = trim($this->params->get('moduleclass_sfx', ''));
             $this->txt_length = trim($this->params->get('txt_length', ''));
 
-            require $this->getLayoutPath();
+            $this->renderLayout($this->getLayoutPath());
         }
     }
 }

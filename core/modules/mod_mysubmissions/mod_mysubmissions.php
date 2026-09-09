@@ -132,6 +132,6 @@ class Mysubmissions extends Module
             ->whereEquals('created_by', User::get('id'))
             ->rows();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

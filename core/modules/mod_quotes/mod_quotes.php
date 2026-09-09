@@ -45,7 +45,7 @@ class Quotes extends Module
 
         $this->quotes = $sq->limit($this->filters['limit'])->rows();
 
-        require $this->getLayoutPath($this->module->module);
+        $this->renderLayout($this->getLayoutPath($this->module->module));
     }
 
     /**

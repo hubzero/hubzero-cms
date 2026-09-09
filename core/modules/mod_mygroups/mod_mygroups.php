@@ -161,6 +161,6 @@ class Mygroups extends Module
             $layout = 'simple';
         }
 
-        require $this->getLayoutPath($layout);
+        $this->renderLayout($this->getLayoutPath($layout));
     }
 }

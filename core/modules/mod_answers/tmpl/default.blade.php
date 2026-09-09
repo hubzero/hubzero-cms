@@ -21,8 +21,8 @@
 @if ($total)
   {{-- Dual-tone progress bar: closed (primary/teal) + open (accent/amber) --}}
   <div class="rounded-full overflow-hidden flex mb-4 bg-base-200 h-3">
-    <div class="bg-primary transition-all" data-style-width="{{ $closedPct }}%"></div>
-    <div class="bg-accent opacity-70 transition-all" data-style-width="{{ $openPct }}%"></div>
+    <div class="bg-primary transition-all" data-$style-width="{{ $closedPct }}%"></div>
+    <div class="bg-accent opacity-70 transition-all" data-$style-width="{{ $openPct }}%"></div>
   </div>
 @endif
 

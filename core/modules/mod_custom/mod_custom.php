@@ -36,7 +36,7 @@ class Custom extends Module
         $pos = stripos($module->content, $separator);
 
         if ($pos !== false) {
-            $engine = Document::getRenderEngine();
+            $engine = Document::getViewEngine();
             if ($engine === 'blade') {
                 $module->content = trim(substr($module->content, $pos + strlen($separator)));
             } else {

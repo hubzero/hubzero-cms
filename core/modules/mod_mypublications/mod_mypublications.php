@@ -72,7 +72,7 @@ class Mypublications extends Module
 
         $this->filters  = $filters;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

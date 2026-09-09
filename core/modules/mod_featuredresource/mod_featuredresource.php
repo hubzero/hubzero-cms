@@ -110,7 +110,7 @@ class Featuredresource extends Module
 
         $this->row = $row;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

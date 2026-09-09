@@ -59,6 +59,6 @@ class Newsletter extends Module
              ->js();
 
         // Display module
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

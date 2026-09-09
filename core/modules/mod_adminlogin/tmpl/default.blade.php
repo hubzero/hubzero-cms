@@ -10,7 +10,7 @@
     $freturn           — base64-encoded factors return URL
     $returnQueryString — "&return=..." query string appended to OAuth URLs
     $authenticators    — array of OAuth plugins: [name => ['name', 'display']]
-    $site_display      — site name for local "Sign in with your X account" label
+    $site_display      — site name for $local "Sign in with your X account" label
     $basic             — bool, true when the hubzero password plugin is enabled
 
   @package    hubzero-cms
@@ -20,7 +20,7 @@
 
 <div class="card bg-base-100 shadow-lg rounded-box">
 
-  {{-- Dark header: title + hz watermark --}}
+  {{-- Dark header: $title + hz watermark --}}
   <header class="login-card-header">
     <h1 class="text-xs font-semibold tracking-widest uppercase text-white m-0 leading-none">
       {{ Lang::txt('COM_LOGIN_ADMINISTRATION_LOGIN') }}

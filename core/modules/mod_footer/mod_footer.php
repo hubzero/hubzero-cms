@@ -45,6 +45,6 @@ class Footer extends Module
 
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($params->get('layout', 'default')));
     }
 }

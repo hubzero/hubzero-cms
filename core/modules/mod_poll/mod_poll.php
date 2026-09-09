@@ -37,7 +37,7 @@ class Poll extends Module
         }
 
         if ($poll && $poll->id) {
-            require $this->getLayoutPath();
+            $this->renderLayout($this->getLayoutPath(), compact('poll', 'itemid'));
         }
     }
 }

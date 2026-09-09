@@ -22,7 +22,7 @@
   }
 @endphp
 
-<div role="tablist" class="tabs tabs-bordered flex-nowrap overflow-x-auto">
+<div role="tablist" class="tabs tabs-border flex-nowrap overflow-x-auto">
   @foreach ($list as $item)
     @php
       $label  = $item[0];
@@ -45,7 +45,7 @@
 </div>
 
 @if (count($subsubItems))
-  <div role="tablist" class="tabs tabs-bordered tabs-xs mt-1 flex-nowrap overflow-x-auto">
+  <div role="tablist" class="tabs tabs-border tabs-xs mt-1 flex-nowrap overflow-x-auto">
     @foreach ($subsubItems as $item)
       @php
         $label  = $item[0];

@@ -2,7 +2,7 @@
   Admin toolbar — daisyUI button rendering
 
   Receives $buttons array from Toolbar::getButtons().
-  Each entry: [Type, ...params] matching the button's fetchButton() signature.
+  Each entry: [Type, ...$params] matching the button's fetchButton() signature.
 
   Button types:
     Standard: [type, icon, textKey, task, listSelect]
@@ -43,7 +43,7 @@
       'copy'      => '<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />',
   ];
 
-  // Map icon names to button style variant
+  // Map icon names to button $style variant
   // 'outline-X' = colored border, 'neutral' = subtle border, 'ghost' = text-only
   $btnVariant = [
       'save'      => 'outline-primary',
@@ -140,13 +140,13 @@
 
         $attrs = [
             'href'       => '#',
-            'data-title' => $text,
+            'data-$title' => $text,
             'data-task'  => $task,
         ];
         $cls = 'toolbar toolbar-submit';
         if ($list) {
             $cls .= ' toolbar-list';
-            $attrs['data-message'] = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+            $attrs['data-$message'] = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
         }
         $attrs['class-extra'] = $cls;
       @endphp
@@ -164,14 +164,14 @@
 
         $attrs = [
             'href'         => '#',
-            'data-title'   => $text,
+            'data-$title'   => $text,
             'data-task'    => $task,
             'data-confirm' => $confirmMsg,
         ];
         $cls = 'toolbar toolbar-confirm';
         if ($list) {
             $cls .= ' toolbar-list';
-            $attrs['data-message'] = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+            $attrs['data-$message'] = Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
         }
         $attrs['class-extra'] = $cls;
       @endphp
@@ -186,7 +186,7 @@
         $text    = Lang::txt($textKey);
         $variant = $btnVariant[$icon] ?? 'neutral';
 
-        $attrs = ['href' => $url, 'data-title' => $text];
+        $attrs = ['href' => $url, 'data-$title' => $text];
         if ($target) {
             $attrs['target'] = $target;
         }
@@ -215,7 +215,7 @@
         $attrs = [
             'href'        => '#',
             'data-href'   => $helpUrl,
-            'data-title'  => $text,
+            'data-$title'  => $text,
             'data-width'  => $width,
             'data-height' => $height,
             'rel'         => 'help',
@@ -237,7 +237,7 @@
         $attrs = [
             'href'        => '#',
             'data-href'   => $popUrl,
-            'data-title'  => $text,
+            'data-$title'  => $text,
             'data-width'  => $width,
             'data-height' => $height,
             'class-extra' => 'toolbar toolbar-popup',

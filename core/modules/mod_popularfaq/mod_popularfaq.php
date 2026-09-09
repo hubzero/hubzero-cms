@@ -40,7 +40,7 @@ class Popularfaq extends Module
         $this->cssId    = $this->params->get('cssId');
         $this->cssClass = $this->params->get('cssClass');
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 
     /**

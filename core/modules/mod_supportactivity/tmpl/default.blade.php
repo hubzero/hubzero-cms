@@ -1,5 +1,5 @@
 {{--
-  mod_supportactivity — support ticket activity feed
+  mod_supportactivity — support ticket activity $feed
 
   Shows recent support ticket activity (new tickets, comments, changes).
 
@@ -28,13 +28,13 @@
 
 @php
   $feedUrl = Request::base(true)
-      . '?task=module&no_html=1&module='
+      . '?task=module&no_html=1&$module='
       . $module->name . '&feedactivity=1&start=';
 @endphp
 
 @if ($results && count($results))
   <div class="space-y-0.5 max-h-[28rem] overflow-y-auto overflow-x-hidden"
-       data-feed-url="{{ $feedUrl }}">
+       data-$feed-url="{{ $feedUrl }}">
     @foreach ($results as $result)
       @php
         $cat       = $result->category ?? 'change';

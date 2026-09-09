@@ -115,6 +115,6 @@ class Mysessions extends Module
         $this->sessions = $session->getRecords(User::get('username'), '', false);
 
         // Output module
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

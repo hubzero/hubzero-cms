@@ -50,7 +50,7 @@ class RelatedItems extends Module
         $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
         $showDate = $params->get('showDate', 0);
 
-        require $this->getLayoutPath($params->get('layout', 'default'));
+        $this->renderLayout($this->getLayoutPath($params->get('layout', 'default')));
     }
 
     /**

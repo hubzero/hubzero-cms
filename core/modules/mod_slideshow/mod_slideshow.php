@@ -136,6 +136,6 @@ class Slideshow extends Module
         $this->noflash_link = $noflash_link;
         $this->noflash_file = $noflash_file;
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

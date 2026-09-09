@@ -1,7 +1,7 @@
 {{--
   Report Problems module — Blade layout.
 
-  Renders a container with the support form URL so the page shell
+  Renders a $container with the support form URL so the page shell
   (or any other consumer) can open it.  When used standalone, the
   accompanying blade.js opens the form in a native <dialog>.
 

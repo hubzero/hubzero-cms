@@ -110,7 +110,7 @@ class IncrementalRegistration extends Module
                 list($introText, $awardPer) = $dbh->loadRow();
 
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    require $this->getLayoutPath('popover');
+                    $this->renderLayout($this->getLayoutPath('popover'));
                 } elseif (isset($_POST['incremental-registration']) && $_POST['incremental-registration'] == 'update') {
                     $errors       = array();
                     $orgtype      = null;
@@ -251,7 +251,7 @@ class IncrementalRegistration extends Module
                     }
 
                     if ($errors) {
-                        require $this->getLayoutPath('popover');
+                        $this->renderLayout($this->getLayoutPath('popover'));
                     } else {
                         $dbh->setQuery(
                             'SELECT ' . implode(', ', array_keys($row)) .
@@ -410,7 +410,7 @@ class IncrementalRegistration extends Module
                             $dbh->execute();
                         }
 
-                        require $this->getLayoutPath('thanks');
+                        $this->renderLayout($this->getLayoutPath('thanks'));
                         return;
                     }
                 }
@@ -429,7 +429,7 @@ class IncrementalRegistration extends Module
                         return $col === 0;
                     })
                 ) {
-                    require $this->getLayoutPath('curl');
+                    $this->renderLayout($this->getLayoutPath('curl'));
                 }
             }
         }

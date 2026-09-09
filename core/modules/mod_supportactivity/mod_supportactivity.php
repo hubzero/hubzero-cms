@@ -52,7 +52,7 @@ class Supportactivity extends Module
         if ($this->feed == 1) {
             ob_clean();
             foreach ($this->results as $result) {
-                require $this->getLayoutPath('default_item');
+                $this->renderLayout($this->getLayoutPath('default_item'));
             }
             exit();
         }

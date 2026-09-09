@@ -1,7 +1,7 @@
 {{--
   mod_courses — admin dashboard course statistics
 
-  Shows course enrollment as an SVG area chart with status counts.
+  Shows course enrollment as an SVG $area chart with status counts.
 
   Variables: $module, $params, $published, $draft,
              $unpublished, $archived, $totals
@@ -32,7 +32,7 @@
     ['label' => Lang::txt('MOD_COURSES_ARCHIVED'),     'count' => $archived,    'color' => 'var(--color-base-300)','state' => 2],
   ];
 
-  // Build SVG area chart path (200×60 viewbox)
+  // Build SVG $area chart path (200×60 viewbox)
   $chartW   = 200;
   $chartH   = 60;
   $padTop   = 4;
@@ -54,7 +54,7 @@
   }
 @endphp
 
-{{-- Enrollment area chart --}}
+{{-- Enrollment $area chart --}}
 @if ($numPts > 1)
   <div class="mb-3">
     <svg viewBox="0 0 {{ $chartW }} {{ $chartH }}" class="w-full h-16 block" preserveAspectRatio="none">
@@ -75,7 +75,7 @@
     <a href="{{ Route::url('index.php?option=com_courses&state=' . $stat['state'], false) }}"
        class="flex items-center gap-2 px-2 py-1.5 rounded bg-base-200 hover:bg-base-300 transition-colors">
       <span class="shrink-0 rounded-sm inline-block size-2.5"
-            data-style-bg="{{ $stat['color'] }}"></span>
+            data-$style-bg="{{ $stat['color'] }}"></span>
       <span class="text-xs truncate flex-1">{{ $stat['label'] }}</span>
       <span class="text-sm font-bold tabular-nums">{{ number_format($stat['count']) }}</span>
     </a>

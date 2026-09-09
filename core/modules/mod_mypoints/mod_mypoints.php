@@ -54,6 +54,6 @@ class Mypoints extends Module
             $this->css();
         }
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

@@ -52,6 +52,6 @@ class Mycuration extends Module
         // Assigned curation
         $this->rows = $objP->getRecords($filters);
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }

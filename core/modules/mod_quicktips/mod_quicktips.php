@@ -82,6 +82,6 @@ class Quicktips extends Module
             ->limit(1)
             ->fetch();
 
-        require $this->getLayoutPath();
+        $this->renderLayout($this->getLayoutPath());
     }
 }
