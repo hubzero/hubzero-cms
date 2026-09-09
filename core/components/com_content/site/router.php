@@ -240,7 +240,39 @@ class Router extends Base
         // the first segment is the view and the last segment is the id of the article or category.
         if (!isset($item)) {
             $vars['view'] = $segments[0];
-            $vars['id']   = $segments[$count - 1];
+            $id = $segments[$count - 1];
+
+            // If the id is not numeric, postBuild stripped the numeric prefix.
+            // Restore the alias (undo the first - to : conversion) and look up by alias.
+            if (!is_numeric($id) && (int) $id == 0) {
+                $alias = str_replace(':', '-', $id);
+
+                if ($vars['view'] == 'article') {
+                    $db->setQuery(
+                        'SELECT id, catid FROM `#__content` WHERE alias = '
+                        . $db->quote($alias) . ' LIMIT 1'
+                    );
+                    $row = $db->loadObject();
+                    if ($row) {
+                        $vars['id']    = (int) $row->id;
+                        $vars['catid'] = (int) $row->catid;
+                    } else {
+                        $vars['id'] = $id;
+                    }
+                } elseif ($vars['view'] == 'category') {
+                    $db->setQuery(
+                        'SELECT id FROM `#__categories` WHERE alias = '
+                        . $db->quote($alias)
+                        . ' AND extension = ' . $db->quote('com_content')
+                        . ' LIMIT 1'
+                    );
+                    $vars['id'] = (int) $db->loadResult() ?: $id;
+                } else {
+                    $vars['id'] = $id;
+                }
+            } else {
+                $vars['id'] = $id;
+            }
 
             return $vars;
         }

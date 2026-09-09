@@ -580,7 +580,7 @@ class Articles extends SiteController
         // Year Field
         $years = array();
         $years[] = Html::select('option', null, Lang::txt('JYEAR'));
-        for ($i = 2000; $i <= 2020; $i++) {
+        for ($i = 2000; $i <= (int) date('Y'); $i++) {
             $years[] = Html::select('option', $i, $i);
         }
         $form->yearField = Html::select(
@@ -693,8 +693,8 @@ class Articles extends SiteController
         }
 
         // Filter by categories
-        if (is_array($featuredCategories = $filters['frontpage.categories'])) {
-            $query->whereIn('a.catid', $featuredCategories);
+        if (is_array($filters['frontpage.categories'] ?? null)) {
+            $query->whereIn('a.catid', $filters['frontpage.categories']);
         }
 
         $articleOrderby   = $params->get('orderby_sec', 'rdate');
@@ -744,6 +744,13 @@ class Articles extends SiteController
             }
 
             $item->event = new stdClass();
+
+            // Merge article params with menu params
+            $item->params = clone $params;
+            if (!empty($item->attribs)) {
+                $articleParams = new \Hubzero\Config\Registry($item->attribs);
+                $item->params->merge($articleParams);
+            }
 
             // Old plugins: Ensure that text property is available
             if (!isset($item->text)) {
@@ -1127,8 +1134,8 @@ class Articles extends SiteController
         }
 
         // Filter by categories
-        if (is_array($featuredCategories = $filters['frontpage.categories'])) {
-            $query->whereIn('a.catid', $featuredCategories);
+        if (is_array($filters['frontpage.categories'] ?? null)) {
+            $query->whereIn('a.catid', $filters['frontpage.categories']);
         }
 
         $articleOrderby   = $params->get('orderby_sec', 'rdate');
