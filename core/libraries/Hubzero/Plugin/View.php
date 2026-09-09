@@ -141,7 +141,7 @@ class View extends AbstractView
 			$r = new ReflectionClass($this);
 			if ($r->inNamespace())
 			{
-				$bits = explode('\\', __NAMESPACE__);
+				$bits = explode('\\', $r->getNamespaceName());
 
 				// Should match either:
 				//   Plugins\Folder\Element
@@ -174,7 +174,7 @@ class View extends AbstractView
 			$r = new ReflectionClass($this);
 			if ($r->inNamespace())
 			{
-				$bits = explode('\\', __NAMESPACE__);
+				$bits = explode('\\', $r->getNamespaceName());
 
 				// Should match either:
 				//   Plugins\Folder\Element
