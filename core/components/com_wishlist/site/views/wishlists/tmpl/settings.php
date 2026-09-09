@@ -94,6 +94,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			<div class="clear"></div>
 
 			<?php $owners = $this->wishlist->getOwners(); ?>
+			<?php $native = $this->wishlist->getOwners(null, 1); ?>
 
 			<div class="explaination">
 				<p><?php echo Lang::txt('COM_WISHLIST_SETTINGS_EDIT_GROUPS'); ?></p>
@@ -130,7 +131,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($instance->get('cn')); ?></td>
 								<td><?php echo count($members); ?></td>
 								<td>
-									<?php echo ($n>1 && !in_array($groups[$i], $this->wishlist->owners('groups', 1))) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
+									<?php echo ($n>1 && !in_array($groups[$i], $native['groups'])) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
 								</td>
 							</tr>
 							<?php
@@ -179,8 +180,6 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					$allmembers = array_unique($allmembers);
 
 					$individuals = $owners['individuals'];
-
-					$native = $this->wishlist->getOwners(null, 1);
 
 					// if we have people outside of groups
 					if (count($individuals) > count($allmembers))

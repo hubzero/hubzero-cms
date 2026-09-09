@@ -211,7 +211,7 @@ class Wishlists extends SiteController
 		// cannot find this list
 		if (!$model->get('id'))
 		{
-			App::abort(404, Lang::txt('COM_WISHLIST_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 		}
 
 		// remember list id for plugin use
@@ -334,7 +334,7 @@ class Wishlists extends SiteController
 				case 'assigned':
 					$entries
 						->where('status', '!=', Wish::WISH_STATE_DELETED)
-						->whereRaw('assigned NOT NULL');
+						->whereRaw('assigned IS NOT NULL');
 					break;
 				case 'mine':
 					$entries
@@ -1675,7 +1675,7 @@ class Wishlists extends SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			return $this->login();
+			return $this->loginTask();
 		}
 
 		// check available user funds
@@ -1986,15 +1986,15 @@ class Wishlists extends SiteController
 			}
 
 			// Build e-mail components
-			$name  = $row->creator->get('name', Lang::txt('UNKNOWN'));
-			$login = $row->creator->get('username', Lang::txt('UNKNOWN'));
+			$name  = $row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
+			$login = $row->creator->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
-				$name = Lang::txt('ANONYMOUS');
+				$name = Lang::txt('JANONYMOUS');
 			}
 
-			$subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('BY') . ' ' . $name;
+			$subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_BY') . ' ' . $name;
 
 			// email components
 			$from = array(

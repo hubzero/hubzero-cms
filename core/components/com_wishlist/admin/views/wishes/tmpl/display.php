@@ -13,8 +13,8 @@ $canDo = \Components\Wishlist\Helpers\Permissions::getActions('wish');
 Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_WISHES'), 'wishlist');
 if ($canDo->get('core.edit.state'))
 {
-	Toolbar::publishList();
-	Toolbar::unpublishList();
+	Toolbar::publishList('grant', 'COM_WISHLIST_STATE_GRANTED');
+	Toolbar::unpublishList('pending', 'COM_WISHLIST_STATE_PENDING');
 	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
@@ -129,12 +129,12 @@ $this->css();
 				case 6:
 					$class = 'accepted';
 					$task = 'grant';
-					$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
+					$alt = Lang::txt('COM_WISHLIST_STATUS_ACCEPTED');
 				break;
 				case 7:
 					$class = 'flagged';
 					$task = 'pending';
-					$alt = Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN');
+					$alt = Lang::txt('COM_WISHLIST_STATUS_FLAGGED');
 				break;
 				case 0:
 				default;

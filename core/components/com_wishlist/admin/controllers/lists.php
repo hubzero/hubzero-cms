@@ -185,8 +185,8 @@ class Lists extends AdminController
 
 		// Initiate extended database class
 		$row = Wishlist::oneOrNew($fields['id'])->set($fields);
-		$row->set('state', (isset($fields['state'])) ? Wishlist::STATE_PUBLISHED : Wishlist::STATE_UNPUBLISHED);
-		$row->set('public', (isset($fields['public'])) ? 1 : 0);
+		$row->set('state', (isset($fields['state'])) ? (int) $fields['state'] : Wishlist::STATE_UNPUBLISHED);
+		$row->set('public', (isset($fields['public'])) ? (int) $fields['public'] : 0);
 
 		// Trigger before save event
 		$isNew  = $row->isNew();

@@ -23,7 +23,7 @@ if ($this->wishlist->get('id'))
 {
 	if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 		<section class="main section">
-			<p class="waring"><?php echo Lang::txt('WARNING_NOT_AUTHORIZED_PRIVATE_LIST'); ?></p>
+			<p class="waring"><?php echo Lang::txt('COM_WISHLIST_WARNING_NOT_AUTHORIZED_PRIVATE_LIST'); ?></p>
 		</section><!-- / .main section -->
 	<?php } else { ?>
 		<header id="content-header">

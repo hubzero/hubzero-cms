@@ -172,7 +172,7 @@ class Wishes extends AdminController
 				case 'assigned':
 					$model
 						->where('status', '!=', Wish::WISH_STATE_DELETED)
-						->whereRaw('assigned NOT NULL');
+						->whereRaw('assigned IS NOT NULL');
 					break;
 				case 'all':
 				default:
