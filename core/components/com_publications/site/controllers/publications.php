@@ -37,6 +37,20 @@ use Hubzero\Facades\Date;
 class Publications extends SiteController
 {
     /**
+     * View engines accepted by this controller.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determines task being called and attempts to execute it
      *
      * @return  void

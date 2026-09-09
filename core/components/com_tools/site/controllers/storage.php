@@ -24,6 +24,20 @@ use Hubzero\Facades\App;
 class Storage extends SiteController
 {
     /**
+     * View engine preference
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Execute a task
      *
      * @return  void

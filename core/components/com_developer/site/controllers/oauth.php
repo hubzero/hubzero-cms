@@ -23,6 +23,9 @@ use Hubzero\Facades\App;
  */
 class Oauth extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * OAuth Server Object
      *

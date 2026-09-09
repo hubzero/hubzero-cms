@@ -37,6 +37,16 @@ use Hubzero\Facades\Route;
 class Wishlists extends SiteController
 {
     /**
+     * @var array  View engines to accept (Blade first, PHP fallback)
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS frameworks to accept (daisyUI first, classic fallback)
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determine task and execute
      *
      * @return  void

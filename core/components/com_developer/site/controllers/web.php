@@ -15,6 +15,9 @@ use Hubzero\Component\SiteController;
  */
 class Web extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Display intro page
      *

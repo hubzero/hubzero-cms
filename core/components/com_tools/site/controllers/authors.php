@@ -24,6 +24,20 @@ use Hubzero\Facades\App;
 class Authors extends SiteController
 {
     /**
+     * View engine preference
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determines task being called and attempts to execute it
      *
      * @return  void

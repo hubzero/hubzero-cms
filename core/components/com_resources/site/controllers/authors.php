@@ -24,6 +24,20 @@ use Hubzero\Facades\Event;
 class Authors extends SiteController
 {
     /**
+     * Supported view engines
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determines task being called and attempts to execute it
      *
      * @return  void

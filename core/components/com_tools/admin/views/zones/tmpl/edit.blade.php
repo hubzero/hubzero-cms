@@ -54,7 +54,7 @@
     controller="{{ $controller }}"
 >
   {{-- Tabs --}}
-  <div class="tabs tabs-bordered mb-4">
+  <div class="tabs tabs-border mb-4">
     <button type="button" class="tab tab-active" data-tab="profile">{{ Lang::txt('JDETAILS') }}</button>
     <button type="button" class="tab" data-tab="locations">{{ Lang::txt('COM_TOOLS_FIELDSET_LOCATIONS') }}</button>
   </div>

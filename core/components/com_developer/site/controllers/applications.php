@@ -27,6 +27,9 @@ use Hubzero\Facades\Pathway;
  */
 class Applications extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Override execute method to init developer model
      *

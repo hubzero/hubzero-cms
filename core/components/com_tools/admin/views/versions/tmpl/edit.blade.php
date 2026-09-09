@@ -32,7 +32,7 @@
     controller="{{ $controller }}"
 >
   {{-- Tab nav --}}
-  <div class="tabs tabs-bordered mb-4">
+  <div class="tabs tabs-border mb-4">
     <button type="button" class="tab tab-active" data-tab="details">{{ Lang::txt('JDETAILS') }}</button>
     <button type="button" class="tab" data-tab="zones">{{ Lang::txt('COM_TOOLS_FIELDSET_ZONES') }}</button>
   </div>

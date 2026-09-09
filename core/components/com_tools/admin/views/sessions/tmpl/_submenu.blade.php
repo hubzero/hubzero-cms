@@ -14,7 +14,7 @@
 @endphp
 
 <nav role="navigation" class="sub sub-navigation mb-4">
-  <div role="tablist" class="tabs tabs-bordered">
+  <div role="tablist" class="tabs tabs-border">
     <a role="tab"
        href="{{ $baseUrl }}"
        class="tab {{ !$currentTask ? 'tab-active' : '' }}">

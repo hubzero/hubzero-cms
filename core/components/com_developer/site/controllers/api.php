@@ -20,6 +20,9 @@ use Hubzero\Facades\Lang;
  */
 class Api extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * General intro display
      *

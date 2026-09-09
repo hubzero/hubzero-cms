@@ -25,6 +25,20 @@ use Hubzero\Facades\Date;
 class Media extends SiteController
 {
     /**
+     * View engine preference
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Upload a file or create a new folder
      *
      * @return  void

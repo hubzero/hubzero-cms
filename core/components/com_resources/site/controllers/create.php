@@ -34,6 +34,20 @@ use Hubzero\Facades\Config;
 class Create extends SiteController
 {
     /**
+     * Supported view engines
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Container for steps
      *
      * @var array

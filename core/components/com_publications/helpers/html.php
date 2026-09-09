@@ -23,6 +23,7 @@ use Hubzero\Facades\Pathway;
  */
 class Html
 {
+
     /**
      * Get publication path
      *
@@ -156,18 +157,33 @@ class Html
     {
         $html = '';
 
-        $html .= '<div class="audience_wrap">' . "\n";
-        $html .= '<ul class="audiencelevel">' . "\n";
-        foreach ($levels as $level) {
-            $class = $level->label != $sel ? ' isoff' : '';
-            $class = $level->label != $sel && $level->label == 'level0' ? '_isoff' : $class;
-            if ($level->label != $sel && $sel == 'level0') {
-                $class .= " hidden";
+        if (Document::getCssFramework() === 'daisyui') {
+            $colors = ['bg-success', 'bg-info', 'bg-warning', 'bg-error', 'bg-primary'];
+            $html .= '<div class="flex items-center gap-1" role="img" aria-label="'
+                . htmlspecialchars($sel) . '">' . "\n";
+            $i = 0;
+            foreach ($levels as $level) {
+                $active = ($level->label == $sel);
+                $color = $colors[$i % count($colors)] ?? 'bg-base-300';
+                $opacity = $active ? '' : ' opacity-20';
+                $html .= '<span class="w-3 h-3 rounded-full ' . $color . $opacity . '"></span>' . "\n";
+                $i++;
             }
-            $html .= ' <li class="' . $level->label . $class . '"><span>&nbsp;</span></li>' . "\n";
+            $html .= '</div>' . "\n";
+        } else {
+            $html .= '<div class="audience_wrap">' . "\n";
+            $html .= '<ul class="audiencelevel">' . "\n";
+            foreach ($levels as $level) {
+                $class = $level->label != $sel ? ' isoff' : '';
+                $class = $level->label != $sel && $level->label == 'level0' ? '_isoff' : $class;
+                if ($level->label != $sel && $sel == 'level0') {
+                    $class .= " hidden";
+                }
+                $html .= ' <li class="' . $level->label . $class . '"><span>&nbsp;</span></li>' . "\n";
+            }
+            $html .= '</ul>' . "\n";
+            $html .= '</div>' . "\n";
         }
-        $html .= '</ul>' . "\n";
-        $html .= '</div>' . "\n";
         return $html;
     }
 
@@ -192,6 +208,8 @@ class Html
         $title  = strtolower($license->title) != 'custom' ? $license->title : '';
         $url    = Route::url($publication->link('version') . '&task=license');
 
+        $linkClass = Document::getCssFramework() === 'daisyui' ? 'link' : $class;
+
         $html  = '<p class="' . $cls . ' license">' . Lang::txt('COM_PUBLICATIONS_LICENSED_UNDER') . ' ';
         if ($title) {
             if ($lnk && !$custom) {
@@ -199,11 +217,11 @@ class Html
             } else {
                 $html .= $title . ' ' . Lang::txt('COM_PUBLICATIONS_LICENSED_ACCORDING_TO') . ' ';
                 $theseTerms = Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS');
-                $html .= '<a href="' . $url . '" class="' . $class . '">' . $theseTerms . '</a>';
+                $html .= '<a href="' . $url . '" class="' . $linkClass . '">' . $theseTerms . '</a>';
             }
         } else {
             $theseTerms = Lang::txt('COM_PUBLICATIONS_LICENSED_THESE_TERMS');
-            $html .= '<a href="' . $url . '" class="' . $class . '">' . $theseTerms . '</a>';
+            $html .= '<a href="' . $url . '" class="' . $linkClass . '">' . $theseTerms . '</a>';
         }
         $html .= '</p>';
 
@@ -228,16 +246,27 @@ class Html
             return $html;
         }
 
+        $daisyui = Document::getCssFramework() === 'daisyui';
+
         $k = 0;
         foreach ($sections as $section) {
             if ($section['html'] != '' && isset($cats[$k])) {
-                $cls  = ($c) ? $c . ' ' : '';
-                if (key($cats[$k]) != $active) {
-                    $cls .= ($h) ? $h . ' ' : '';
+                $sectionName = key($cats[$k]);
+                $isActive = ($sectionName == $active);
+                $sectionId = $sectionName . '-section';
+
+                if ($daisyui) {
+                    $cls = $isActive ? '' : 'hidden';
+                    $html .= '<div class="' . $cls . '" id="' . $sectionId
+                        . '" role="tabpanel">' . $section['html'] . '</div>';
+                } else {
+                    $cls  = ($c) ? $c . ' ' : '';
+                    if (!$isActive) {
+                        $cls .= ($h) ? $h . ' ' : '';
+                    }
+                    $html .= '<div class="' . $cls . 'section" id="' . $sectionId . '">'
+                        . $section['html'] . '</div>';
                 }
-                $sectionId = key($cats[$k]) . '-section';
-                $html .= '<div class="' . $cls . 'section" id="' . $sectionId . '">'
-                    . $section['html'] . '</div>';
             }
             $k++;
         }
@@ -259,25 +288,34 @@ class Html
      */
     public static function tabs($option, $id, $cats, $active = 'about', $alias = '', $version = '')
     {
+        $blade = Document::getCssFramework() === 'daisyui';
         $html  = '';
-        $html .= "\t" . '<ul class="sub-menu">' . "\n";
+
+        if ($blade) {
+            $html .= '<nav aria-label="Publication sections">' . "\n";
+            $html .= '<div role="tablist" class="tabs tabs-bordered">' . "\n";
+        } else {
+            $html .= "\t" . '<ul class="sub-menu">' . "\n";
+        }
+
         $i = 1;
         foreach ($cats as $cat) {
             $name = key($cat);
-            /*if ($name == 'usage')
-            {
-                continue;
-            }*/
             if ($name != '') {
                 if ($alias) {
-                    $url = Route::url('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
+                    $url = Route::url(
+                        'index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name
+                    );
                 } else {
-                    $url = Route::url('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
+                    $url = Route::url(
+                        'index.php?option=' . $option . '&id=' . $id . '&active=' . $name
+                    );
                 }
                 if ($version && $version != 'default') {
                     $url .= '?v=' . $version;
                 }
-                if (strtolower($name) == $active) {
+                $isActive = (strtolower($name) == $active);
+                if ($isActive) {
                     Pathway::append($cat[$name], $url);
 
                     if ($active != 'about') {
@@ -285,13 +323,29 @@ class Html
                         Document::setTitle($title . ': ' . $cat[$name]);
                     }
                 }
-                $html .= "\t\t" . '<li id="sm-' . $i . '"';
-                $html .= (strtolower($name) == $active) ? ' class="active"' : '';
-                $html .= '><a class="tab" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
+
+                if ($blade) {
+                    $cls = 'tab' . ($isActive ? ' tab-active' : '');
+                    $html .= '<a role="tab" class="' . $cls . '"'
+                        . ' href="' . $url . '"'
+                        . ' aria-selected="' . ($isActive ? 'true' : 'false') . '">'
+                        . htmlspecialchars($cat[$name]) . '</a>' . "\n";
+                } else {
+                    $html .= "\t\t" . '<li id="sm-' . $i . '"';
+                    $html .= $isActive ? ' class="active"' : '';
+                    $html .= '><a class="tab" href="' . $url . '"><span>'
+                        . $cat[$name] . '</span></a></li>' . "\n";
+                }
                 $i++;
             }
         }
-        $html .= "\t" . '</ul>' . "\n";
+
+        if ($blade) {
+            $html .= '</div>' . "\n";
+            $html .= '</nav>' . "\n";
+        } else {
+            $html .= "\t" . '</ul>' . "\n";
+        }
 
         return $html;
     }
@@ -317,10 +371,13 @@ class Html
         $formatter = new \Components\Citations\Helpers\Format();
         $formatter->setTemplate($template);
 
+        $daisyui = Document::getCssFramework() === 'daisyui';
+
         $html  = '<p>' . Lang::txt('COM_PUBLICATIONS_CITATION_INSTRUCTIONS') . '</p>' . "\n";
         $html .= $citations;
         if ($cite) {
-            $html .= '<ul class="citations results">' . "\n";
+            $listClass = $daisyui ? 'list-disc pl-5 space-y-2' : 'citations results';
+            $html .= '<ul class="' . $listClass . '">' . "\n";
             $html .= "\t" . '<li>' . "\n";
 
             $formatted = $formatter->formatCitation($cite, false, true, $cconfig);
@@ -332,7 +389,9 @@ class Html
             $formatted = str_replace(array('<b>"', '"</b>'), array('<b>', '</b>'), $formatted);
 
             if ($cite->doi && $cite->url) {
-                $doiLink = '<a href="' . $cite->url . '" rel="external">doi:' . $cite->doi . '</a>';
+                $linkCls = $daisyui ? ' class="link"' : '';
+                $doiLink = '<a href="' . $cite->url . '" rel="external"' . $linkCls
+                    . '>doi:' . $cite->doi . '</a>';
                 $formatted = str_replace('doi:' . $cite->doi, $doiLink, $formatted);
             } else {
                 $formatted = str_replace('doi:', '', $formatted);
@@ -345,11 +404,13 @@ class Html
                 $bibtexTitle = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BIBTEX_FORMAT');
                 $endnoteTitle = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ENDNOTE_FORMAT');
 
-                $html .= "\t\t" . '<p class="details">' . "\n";
+                $detailClass = $daisyui ? 'text-sm mt-1' : 'details';
+                $linkCls = $daisyui ? ' class="link link-primary"' : '';
+                $html .= "\t\t" . '<p class="' . $detailClass . '">' . "\n";
                 $html .= "\t\t\t" . '<a href="' . $bibtexUrl . '" title="'
-                    . $bibtexTitle . '">BibTex</a> <span>|</span> ' . "\n";
+                    . $bibtexTitle . '"' . $linkCls . '>BibTex</a> <span>|</span> ' . "\n";
                 $html .= "\t\t\t" . '<a href="' . $endnoteUrl . '" title="'
-                    . $endnoteTitle . '">EndNote</a>' . "\n";
+                    . $endnoteTitle . '"' . $linkCls . '>EndNote</a>' . "\n";
                 $html .= "\t\t" . '</p>' . "\n";
             }
             $html .= "\t" . '</li>' . "\n";
@@ -458,6 +519,9 @@ class Html
 
         // Output
         if ($text) {
+            if (Document::getCssFramework() === 'daisyui') {
+                return '<p class="text-sm text-base-content/70 mt-2">' . $text . '</p>';
+            }
             return '<p class="' . $class . '">' . $text . '</p>';
         }
 
@@ -579,6 +643,10 @@ class Html
         }
 
         if ($msg) {
+            if (Document::getCssFramework() === 'daisyui') {
+                $alertClass = ($class === 'warning') ? 'alert alert-warning' : 'alert alert-info';
+                return '<div role="alert" class="' . $alertClass . ' mt-4">' . $msg . '</div>';
+            }
             return '<p class="' . $class . ' statusmsg">' . $msg . '</p>';
         }
 
@@ -625,19 +693,28 @@ class Html
      */
     public static function showSubInfo($publication)
     {
+        $daisyui = Document::getCssFramework() === 'daisyui';
+
         $action = $publication->isPublished()
             ? Lang::txt('COM_PUBLICATIONS_LISTED_IN')
             : Lang::txt('COM_PUBLICATIONS_IN');
         $categoryUrl = Route::url($publication->link('category'));
         $categoryName = $publication->category()->name;
-        $html = '<p class="pubinfo">' . $action . ' '
-            . ' <a href="' . $categoryUrl . '">' . $categoryName . '</a>';
+
+        $linkClass = $daisyui ? 'link' : '';
+        $pClass    = $daisyui ? 'text-sm text-base-content/60' : 'pubinfo';
+
+        $html = '<p class="' . $pClass . '">' . $action . ' '
+            . ' <a' . ($linkClass ? ' class="' . $linkClass . '"' : '')
+            . ' href="' . $categoryUrl . '">' . htmlspecialchars($categoryName) . '</a>';
 
         // Publication belongs to group?
         if ($publication->groupOwner()) {
+            $groupUrl = Route::url('index.php?option=com_groups&cn=' . $publication->groupOwner('cn'));
             $html .= ' | ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
-                    . ' <a href="/groups/' . $publication->groupOwner('cn') . '">'
-                    . $publication->groupOwner('description') . '</a>';
+                    . ' <a' . ($linkClass ? ' class="' . $linkClass . '"' : '')
+                    . ' href="' . $groupUrl . '">'
+                    . htmlspecialchars($publication->groupOwner('description')) . '</a>';
         }
         $html .= '</p>' . "\n";
 
@@ -662,6 +739,12 @@ class Html
             }
         }
 
+        $escaped = htmlspecialchars($txt);
+
+        if (Document::getCssFramework() === 'daisyui') {
+            return '<h2 class="text-2xl font-bold">' . $escaped . '</h2>' . "\n";
+        }
+
         $html  = '<h2>' . $txt . '</h2>' . "\n";
         $html  = '<header id="content-header">' . $html . '</header>';
 
@@ -680,7 +763,10 @@ class Html
         if (isset($publication->_curationModel)) {
             $params = $publication->_curationModel->_manifest->params;
             if (isset($params->footer) && $params->footer) {
-                $html = '<div class="pub-footer">' . $params->footer . '</div>';
+                $cls = Document::getCssFramework() === 'daisyui'
+                    ? 'mt-6 text-sm text-base-content/70'
+                    : 'pub-footer';
+                $html = '<div class="' . $cls . '">' . $params->footer . '</div>';
             }
         }
 
@@ -710,8 +796,13 @@ class Html
         $showArchive = false
     ) {
         if ($disabled) {
-            // TBD
-            echo '<p class="unavailable warning">' . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE') . '</p>';
+            if (Document::getCssFramework() === 'daisyui') {
+                echo '<div role="alert" class="alert alert-warning">'
+                    . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE') . '</div>';
+            } else {
+                echo '<p class="unavailable warning">'
+                    . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE') . '</p>';
+            }
         } else {
             $archiveUrl = Route::url(
                 'index.php?option=com_publications&id=' . $pub->id
@@ -719,30 +810,48 @@ class Html
             );
             $bundleTitle = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE');
             $archivePackage = Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
-            ?>
-            <div class="button-highlighter">
-                <p class="launch-primary <?php echo $icon; ?>">
-                    <a href="<?php echo $url; ?>" title="<?php echo $title; ?>" id="launch-primary"></a>
-                </p>
-                <?php if ($showArchive == true) { ?>
-                    <div class="launch-choices hidden" id="launch-choices">
-                        <div>
-                            <p>
-                                <a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download">
-                                    <?php echo $title; ?>
-                                </a>
-                            </p>
-                            <p>
-                                <a href="<?php echo $archiveUrl; ?>" class="archival"
-                                   title="<?php echo $bundleTitle; ?>">
-                                    <?php echo $archivePackage; ?>
-                                </a>
-                            </p>
+
+            if (Document::getCssFramework() === 'daisyui') {
+                ?>
+                <div>
+                    <a href="<?php echo $url; ?>" class="btn btn-primary"
+                       title="<?php echo htmlspecialchars($title); ?>" id="launch-primary">
+                        <?php echo htmlspecialchars($title); ?>
+                    </a>
+                    <?php if ($showArchive == true) { ?>
+                        <a href="<?php echo $archiveUrl; ?>" class="btn btn-outline btn-sm mt-2"
+                           title="<?php echo htmlspecialchars($bundleTitle); ?>">
+                            <?php echo $archivePackage; ?>
+                        </a>
+                    <?php } ?>
+                </div>
+                <?php
+            } else {
+                ?>
+                <div class="button-highlighter">
+                    <p class="launch-primary <?php echo $icon; ?>">
+                        <a href="<?php echo $url; ?>" title="<?php echo $title; ?>" id="launch-primary"></a>
+                    </p>
+                    <?php if ($showArchive == true) { ?>
+                        <div class="launch-choices hidden" id="launch-choices">
+                            <div>
+                                <p>
+                                    <a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download">
+                                        <?php echo $title; ?>
+                                    </a>
+                                </p>
+                                <p>
+                                    <a href="<?php echo $archiveUrl; ?>" class="archival"
+                                       title="<?php echo $bundleTitle; ?>">
+                                        <?php echo $archivePackage; ?>
+                                    </a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                <?php } ?>
-            </div>
-            <?php
+                    <?php } ?>
+                </div>
+                <?php
+            }
         }
     }
 

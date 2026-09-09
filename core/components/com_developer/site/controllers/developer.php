@@ -18,6 +18,9 @@ use Hubzero\Facades\Lang;
  */
 class Developer extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Developer Intro Page
      *

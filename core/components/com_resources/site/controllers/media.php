@@ -26,6 +26,20 @@ use Hubzero\Facades\App;
 class Media extends SiteController
 {
     /**
+     * Supported view engines
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Upload a file or create a new folder
      *
      * @return  void

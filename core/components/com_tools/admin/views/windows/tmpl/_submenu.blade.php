@@ -11,7 +11,7 @@
   $sessionsUrl = Route::url('index.php?option=' . $option . '&controller=' . $controller . '&task=sessions', false);
 @endphp
 
-<div class="tabs tabs-bordered mb-4">
+<div class="tabs tabs-border mb-4">
   <a href="{{ $baseUrl }}"
      class="tab {{ !$currentTask ? 'tab-active' : '' }}">
     {{ Lang::txt('COM_TOOLS_WINDOWS_APPS') }}

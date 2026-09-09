@@ -24,6 +24,20 @@ use Hubzero\Facades\Date;
  */
 class Admin extends SiteController
 {
+    /**
+     * View engine preference
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     private $toolid = 0;
     private $admin = 0;
     private $messages = array();

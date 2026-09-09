@@ -39,6 +39,20 @@ use Hubzero\Facades\Date;
 class Resources extends SiteController
 {
     /**
+     * Supported view engines
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Constructor
      *
      * @param   array  $config  Optional configurations
