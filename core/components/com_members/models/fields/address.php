@@ -44,10 +44,16 @@ class Address extends Field
         $html = array();
 
         // Initialize some field attributes.
-        $class = ' class="radio addresses-' . $this->id;
-        $class .= $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '"';
+        $isDaisyUi = \Hubzero\Facades\Document::getCssFramework() === 'daisyui';
 
-        // Start the radio field output.
+        if ($isDaisyUi) {
+            $class = ' class="addresses-' . $this->id . ' w-full border-0 p-0 m-0 space-y-3"';
+        } else {
+            $class = ' class="radio addresses-' . $this->id;
+            $class .= $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '"';
+        }
+
+        // Start the field output.
         $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
 
         // Get the field options.
@@ -60,7 +66,7 @@ class Address extends Field
 
         $lang = App::get('language');
 
-        // Build the radio field output.
+        // Build the address field output.
         foreach ($values as $i => $value) {
             if (is_string($value)) {
                 $value = json_decode((string)$value, true);
@@ -78,74 +84,145 @@ class Address extends Field
                 $value['longitude'] = '';
             }
 
-            $html[] = '<div class="address-field-wrap">';
-            $html[] = '<ul class="address-field">';
-            $html[] = '<li>';
-            $html[] = '<label for="' . $this->id . '-' .  $i . '-address1">' . $lang->txt('Street') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" '
-                . 'name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" '
-                . 'value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</li>';
-            $html[] = '<li>';
-            $html[] = '<label for="' . $this->id . '-' . $i . '-address2">' . $lang->txt('Street 2') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address2" '
-                . 'name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" '
-                . 'value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</li>';
-            $html[] = '<li>';
-            $html[] = '<label for="' . $this->id . '-' . $i . '-city">' . $lang->txt('City') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-city" '
-                . 'name="' . $this->name . '[' . $i . '][city]" placeholder="City" '
-                . 'value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</li>';
-            $html[] = '<li>';
-            $html[] = '<div class="grid">';
-            $html[] = '<div class="col span6">';
-            $html[] = '<label for="' . $this->id . '-' . $i . '-postal">' . $lang->txt('Postal code') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-postal" '
-                . 'name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" '
-                . 'value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</div>';
-            $html[] = '<div class="col span6 omega">';
-            $html[] = '<label for="' . $this->id . '-' . $i . '-region">' . $lang->txt('State/Region') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-region" '
-                . 'name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" '
-                . 'value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</div>';
-            $html[] = '</div>';
-            $html[] = '</li>';
-            $html[] = '<li>';
-            $html[] = '<label for="' . $this->id . '-' . $i . '-country">' . $lang->txt('Country') . '</label>';
-            $html[] = Dropdown::genericlist(
-                $options,
-                $this->name . '[' . $i . '][country]',
-                '',
-                'value',
-                'text',
-                $value['country'],
-                $this->id . '-' . $i . '-country'
-            );
-            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
-                . 'name="' . $this->name . '[' . $i . '][latitude]" '
-                . 'value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
-                . 'name="' . $this->name . '[' . $i . '][longitude]" '
-                . 'value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '</li>';
-            $html[] = '</ul>';
-            $html[] = '</div>';
+            if ($isDaisyUi) {
+                $inputCls = 'input input-bordered input-sm w-full';
+                $html[] = '<div class="address-field-wrap bg-base-200 border border-base-300 rounded-lg p-3 space-y-2">';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-address1" class="label text-sm">'
+                    . $lang->txt('Street') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" '
+                    . 'class="' . $inputCls . '" '
+                    . 'name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" '
+                    . 'value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-address2" class="label text-sm">'
+                    . $lang->txt('Street 2') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address2" '
+                    . 'class="' . $inputCls . '" '
+                    . 'name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" '
+                    . 'value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-city" class="label text-sm">'
+                    . $lang->txt('City') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-city" '
+                    . 'class="' . $inputCls . '" '
+                    . 'name="' . $this->name . '[' . $i . '][city]" placeholder="City" '
+                    . 'value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="grid grid-cols-2 gap-2">';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-postal" class="label text-sm">'
+                    . $lang->txt('Postal code') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-postal" '
+                    . 'class="' . $inputCls . '" '
+                    . 'name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" '
+                    . 'value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-region" class="label text-sm">'
+                    . $lang->txt('State/Region') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-region" '
+                    . 'class="' . $inputCls . '" '
+                    . 'name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" '
+                    . 'value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '</div>';
+                $html[] = '<div class="admin-field">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-country" class="label text-sm">'
+                    . $lang->txt('Country') . '</label>';
+                $html[] = Dropdown::genericlist(
+                    $options,
+                    $this->name . '[' . $i . '][country]',
+                    'class="select select-bordered select-sm w-full"',
+                    'value',
+                    'text',
+                    $value['country'],
+                    $this->id . '-' . $i . '-country'
+                );
+                $html[] = '</div>';
+                $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                    . 'name="' . $this->name . '[' . $i . '][latitude]" '
+                    . 'value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                    . 'name="' . $this->name . '[' . $i . '][longitude]" '
+                    . 'value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+            } else {
+                $html[] = '<div class="address-field-wrap">';
+                $html[] = '<ul class="address-field">';
+                $html[] = '<li>';
+                $html[] = '<label for="' . $this->id . '-' .  $i . '-address1">' . $lang->txt('Street') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" '
+                    . 'name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" '
+                    . 'value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</li>';
+                $html[] = '<li>';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-address2">' . $lang->txt('Street 2') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address2" '
+                    . 'name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" '
+                    . 'value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</li>';
+                $html[] = '<li>';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-city">' . $lang->txt('City') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-city" '
+                    . 'name="' . $this->name . '[' . $i . '][city]" placeholder="City" '
+                    . 'value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</li>';
+                $html[] = '<li>';
+                $html[] = '<div class="grid">';
+                $html[] = '<div class="col span6">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-postal">' . $lang->txt('Postal code') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-postal" '
+                    . 'name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" '
+                    . 'value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '<div class="col span6 omega">';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-region">' . $lang->txt('State/Region') . '</label>';
+                $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-region" '
+                    . 'name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" '
+                    . 'value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</div>';
+                $html[] = '</div>';
+                $html[] = '</li>';
+                $html[] = '<li>';
+                $html[] = '<label for="' . $this->id . '-' . $i . '-country">' . $lang->txt('Country') . '</label>';
+                $html[] = Dropdown::genericlist(
+                    $options,
+                    $this->name . '[' . $i . '][country]',
+                    '',
+                    'value',
+                    'text',
+                    $value['country'],
+                    $this->id . '-' . $i . '-country'
+                );
+                $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                    . 'name="' . $this->name . '[' . $i . '][latitude]" '
+                    . 'value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                    . 'name="' . $this->name . '[' . $i . '][longitude]" '
+                    . 'value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
+                $html[] = '</li>';
+                $html[] = '</ul>';
+                $html[] = '</div>';
+            }
         }
 
         // End the radio field output.
         $html[] = '</fieldset>';
+
+        if (\Hubzero\Facades\Document::getCssFramework() === 'daisyui') {
+            return implode($html);
+        }
 
         Behavior::framework(true);
         App::get('document')->addScriptDeclaration("
 			function manageProfileAddresses() {
 				if ($('.addresses-" . $this->id . "').length > 0) {
 					var fieldset = $('.addresses-" . $this->id . "');
-					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">"
-                        . "Add another address</a></p>').on('click', function(e){
+					var btn = $('<div class=\"flex justify-end mt-2\"><a class=\"btn btn-sm btn-ghost border border-base-300 font-normal\" href=\"#\">"
+                        . "+ Add another address</a></div>').on('click', function(e){
 						e.preventDefault();
 
 						var grp = fieldset
@@ -179,15 +256,15 @@ class Address extends Field
 							));
 						});
 						if (!grp.find('.address-remove').length) {
-							var rmv = $('<a class=\"address-remove icon-remove\" "
-                                . "href=\"#\">Remove</a>');
+							var rmv = $('<div class=\"flex justify-end mt-2\"><a class=\"address-remove btn btn-xs btn-ghost text-error\" "
+                                . "href=\"#\">&minus; Remove</a></div>');
 							grp.append(rmv);
 						}
 						grp.appendTo(fieldset);
 
 						fieldset.find('.address-remove').off('click').on('click', function(e){
 							e.preventDefault();
-							$(this).parent().remove();
+							$(this).closest('.address-field-wrap').remove();
 						});
 					});
 					fieldset.after(btn);
@@ -197,10 +274,10 @@ class Address extends Field
 						}
 						grp = $(grp);
 						if (!grp.find('.address-remove').length) {
-							var rmv = $('<a class=\"address-remove icon-remove\" "
-                                . "href=\"#\">Remove</a>').on('click', function(e){
+							var rmv = $('<div class=\"flex justify-end mt-2\"><a class=\"address-remove btn btn-xs btn-ghost text-error\" "
+                                . "href=\"#\">&minus; Remove</a></div>').on('click', function(e){
 								e.preventDefault();
-								$(this).parent().remove();
+								$(this).closest('.address-field-wrap').remove();
 							});
 							grp.append(rmv);
 						}

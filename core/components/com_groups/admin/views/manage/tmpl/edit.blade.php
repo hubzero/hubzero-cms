@@ -71,7 +71,7 @@ $invalidMsg = Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED');
     data-invalid-msg="{{ $invalidMsg }}"
 >
     {{-- Tab navigation --}}
-    <div role="tablist" class="tabs tabs-bordered mb-6">
+    <div role="tablist" class="tabs tabs-border mb-6">
         <a role="tab" class="tab" data-tab-target="#page-details">
             {{ Lang::txt('JDETAILS') }}
         </a>

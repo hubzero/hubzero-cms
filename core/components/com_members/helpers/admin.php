@@ -178,65 +178,117 @@ class Admin
         $onchange = null,
         $readonly = false
     ) {
-        // Initialize variables.
         $html = array();
-        $link = Route::url('index.php?option=com_members&controller=members&task=modal&tmpl=component&field=' . $id);
-
-        // Initialize some field attributes.
-        $attr  = $class ? ' class="' . (string) $class . '"' : '';
-        $attr .= $size ? ' size="' . (int) $size . '"' : '';
-
-        // Initialize JavaScript field attributes.
-        $onchange = (string) $onchange;
-
-        // Load the modal behavior script.
-        Html::behavior('modal', 'a.modal_' . $id);
-
-        // Build the script.
-        $script = array();
-        $script[] = '	function jSelectUser_' . $id . '(id, title) {';
-        $script[] = '		var old_id = document.getElementById("' . $id . '_id").value;';
-        $script[] = '		if (old_id != id) {';
-        $script[] = '			document.getElementById("' . $id . '_id").value = id;';
-        $script[] = '			document.getElementById("' . $id . '_name").value = title;';
-        $script[] = '			' . $onchange;
-        $script[] = '		}';
-        $script[] = '		$.fancybox.close();';
-        $script[] = '	}';
-
-        // Add the script to the document head.
-        Document::addScriptDeclaration(implode("\n", $script));
+        $link = Route::url(
+            'index.php?option=com_members&controller=members'
+            . '&task=modal&tmpl=component&field=' . $id
+        );
 
         // Load the current username if available.
         $user = User::getInstance($value);
-        if (!$user || !$user->get('id')) {
+        if (empty($user->get('name'))) {
             $user->set('name', Lang::txt('JLIB_FORM_SELECT_USER'));
         }
 
-        // Create a dummy text field with the user name.
-        if (!$readonly) {
-            $html[] = '<div class="input-modal">';
-            $html[] = '	<span class="input-cell">';
-        }
-        $userName = htmlspecialchars($user->get('name'), ENT_COMPAT, 'UTF-8');
-        $html[] = '		<input type="text" id="' . $id . '_name" value="' . $userName . '" disabled="disabled"'
-            . $attr . ' />';
+        $userName = htmlspecialchars(
+            $user->get('name'),
+            ENT_COMPAT,
+            'UTF-8'
+        );
 
-        // Create the user select button.
-        if (!$readonly) {
-            $html[] = '	</span>';
-            $html[] = '	<span class="input-cell">';
-            $changeUser = Lang::txt('JLIB_FORM_CHANGE_USER');
-            $html[] = '		<a class="button modal_' . $id . '" title="' . $changeUser . '" href="' . $link . '"'
-                . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-            $html[] = '			' . Lang::txt('JLIB_FORM_CHANGE_USER');
-            $html[] = '		</a>';
-            $html[] = '	</span>';
-            $html[] = '</div>';
+        if (Document::getCssFramework() === 'daisyui') {
+            // Blade mode: use data-* attributes for modal,
+            // admin.js handles user-picker via postMessage
+            if (!$readonly) {
+                $html[] = '<div class="flex items-center gap-2">';
+                $userLabel = Lang::txt('COM_MEMBERS_FIELD_USER');
+                $html[] = '<input type="text"'
+                    . ' id="' . $id . '_name"'
+                    . ' value="' . $userName . '"'
+                    . ' disabled="disabled"'
+                    . ' aria-label="' . $userLabel . '"'
+                    . ' class="input input-bordered flex-1" />';
+                $changeUser = Lang::txt('JLIB_FORM_CHANGE_USER');
+                $html[] = '<a class="btn btn-sm btn-ghost"'
+                    . ' title="' . $changeUser . '"'
+                    . ' href="' . $link . '"'
+                    . ' data-width="800"'
+                    . ' data-height="500"'
+                    . ' data-user-picker="' . $id . '">'
+                    . $changeUser . '</a>';
+                $html[] = '</div>';
+            } else {
+                $userLabel = Lang::txt('COM_MEMBERS_FIELD_USER');
+                $html[] = '<input type="text"'
+                    . ' id="' . $id . '_name"'
+                    . ' value="' . $userName . '"'
+                    . ' disabled="disabled"'
+                    . ' aria-label="' . $userLabel . '"'
+                    . ' class="input input-bordered w-full" />';
+            }
+        } else {
+            // Legacy mode: inline JS + fancybox modal
+            $attr  = $class
+                ? ' class="' . (string) $class . '"'
+                : '';
+            $attr .= $size
+                ? ' size="' . (int) $size . '"'
+                : '';
+
+            $onchange = (string) $onchange;
+
+            Html::behavior('modal', 'a.modal_' . $id);
+
+            $script = array();
+            $script[] = '      function jSelectUser_'
+                . $id . '(id, title) {';
+            $script[] = '              var old_id = document.getElementById("'
+                . $id . '_id").value;';
+            $script[] = '              if (old_id != id) {';
+            $script[] = '                      document.getElementById("'
+                . $id . '_id").value = id;';
+            $script[] = '                      document.getElementById("'
+                . $id . '_name").value = title;';
+            $script[] = '                      ' . $onchange;
+            $script[] = '              }';
+            $script[] = '              $.fancybox.close();';
+            $script[] = '      }';
+
+            Document::addScriptDeclaration(
+                implode("\n", $script)
+            );
+
+            if (!$readonly) {
+                $html[] = '<div class="input-modal">';
+                $html[] = '    <span class="input-cell">';
+            }
+            $html[] = '                <input type="text"'
+                . ' id="' . $id . '_name"'
+                . ' value="' . $userName . '"'
+                . ' disabled="disabled"' . $attr . ' />';
+
+            if (!$readonly) {
+                $html[] = '    </span>';
+                $html[] = '    <span class="input-cell">';
+                $changeUser = Lang::txt('JLIB_FORM_CHANGE_USER');
+                $html[] = '            <a class="button modal_'
+                    . $id . '"'
+                    . ' title="' . $changeUser . '"'
+                    . ' href="' . $link . '"'
+                    . ' rel="{handler: \'iframe\','
+                    . ' size: {x: 800, y: 500}}">';
+                $html[] = '                    ' . $changeUser;
+                $html[] = '            </a>';
+                $html[] = '    </span>';
+                $html[] = '</div>';
+            }
         }
 
-        // Create the real field, hidden, that stored the user id.
-        $html[] = '<input type="hidden" id="' . $id . '_id" name="' . $name . '" value="' . (int) $value . '" />';
+        // Hidden field storing the user id.
+        $html[] = '<input type="hidden"'
+            . ' id="' . $id . '_id"'
+            . ' name="' . $name . '"'
+            . ' value="' . (int) $value . '" />';
 
         return implode("\n", $html);
     }

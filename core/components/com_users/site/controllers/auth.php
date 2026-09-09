@@ -31,6 +31,20 @@ use Hubzero\Facades\Session;
 class Auth extends SiteController
 {
     /**
+     * View engine preference
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework preference
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Default task
      *
      * @return  void
@@ -275,6 +289,7 @@ class Auth extends SiteController
             ->set('params', $params)
             ->set('returnQueryString', $returnQueryString)
             ->set('local', $local)
+            ->set('site_display', $this->site_display ?? Config::get('sitename'))
             ->setName('login')
             ->setLayout('default')
             ->addTemplatePath($this->getTemplatePath())

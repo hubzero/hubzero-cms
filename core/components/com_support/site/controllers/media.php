@@ -26,6 +26,20 @@ use Hubzero\Facades\Component;
 class Media extends SiteController
 {
     /**
+     * View engine priority.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework priority.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Upload a file to the wiki via AJAX
      *
      */

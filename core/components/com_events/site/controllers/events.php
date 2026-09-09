@@ -41,6 +41,20 @@ use Hubzero\Facades\Session;
 class Events extends SiteController
 {
     /**
+     * Supported view engines (Blade preferred, PHP legacy fallback)
+     *
+     * @var array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks (daisyUI preferred, classic fallback)
+     *
+     * @var array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Execute a task
      *
      * @return     void

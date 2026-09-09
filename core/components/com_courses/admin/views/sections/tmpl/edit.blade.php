@@ -33,7 +33,7 @@
       class="editform">
 
   {{-- Tab navigation --}}
-  <div role="tablist" class="tabs tabs-bordered mb-4">
+  <div role="tablist" class="tabs tabs-border mb-4">
     <a role="tab" class="tab tab-active" data-tab-target="#page-details">
       {{ Lang::txt('JDETAILS') }}
     </a>

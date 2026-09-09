@@ -112,48 +112,40 @@
                 action="{{ $formAction }}"
                 class="login-form">
 
-            <div class="form-control mb-4">
-              <label class="label" for="field-username">
-                <span class="label-text">
-                  {{ Lang::txt('COM_USERS_LOGIN_USERNAME') }}
-                </span>
-              </label>
+            <x-form-field name="field-username"
+                          :label="Lang::txt('COM_USERS_LOGIN_USERNAME')"
+                          required>
               <input type="text"
                      id="field-username"
                      name="username"
-                     class="input input-bordered w-full"
+                     class="input w-full"
                      autocomplete="username"
                      required />
-            </div>
+            </x-form-field>
 
-            <div class="form-control mb-4">
-              <label class="label" for="field-password">
-                <span class="label-text">
-                  {{ Lang::txt('COM_USERS_LOGIN_PASSWORD') }}
-                </span>
-              </label>
+            <x-form-field name="field-password"
+                          :label="Lang::txt('COM_USERS_LOGIN_PASSWORD')"
+                          required>
               <input type="password"
                      id="field-password"
                      name="passwd"
-                     class="input input-bordered w-full"
+                     class="input w-full"
                      autocomplete="current-password"
                      required />
-            </div>
+            </x-form-field>
 
             @if(Plugin::isEnabled('system', 'remember'))
-              <div class="form-control mb-4">
-                <label class="label cursor-pointer justify-start gap-3">
-                  <input type="checkbox"
-                         class="checkbox"
-                         name="remember"
-                         id="field-remember"
-                         value="yes"
-                         @if($remember_me_default) checked @endif />
-                  <span class="label-text">
-                    {{ Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN') }}
-                  </span>
-                </label>
-              </div>
+              <x-form-field name="field-remember"
+                            inputId="field-remember"
+                            :label="Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN')"
+                            type="checkbox">
+                <input type="checkbox"
+                       class="checkbox"
+                       name="remember"
+                       id="field-remember"
+                       value="yes"
+                       @if($remember_me_default) checked @endif />
+              </x-form-field>
             @endif
 
             <button type="submit"

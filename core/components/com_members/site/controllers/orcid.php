@@ -23,6 +23,9 @@ use Hubzero\Facades\Session;
  */
 class Orcid extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * user's name
      *

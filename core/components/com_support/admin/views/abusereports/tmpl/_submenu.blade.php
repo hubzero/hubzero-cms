@@ -17,7 +17,7 @@
   $checkClass   = ($currentTask == 'check') ? ' class="active"' : '';
 @endphp
 
-<div role="navigation" class="tabs tabs-bordered mb-4">
+<div role="navigation" class="tabs tabs-border mb-4">
     <a href="{{ $reportsUrl }}"
        class="tab {{ $currentTask != 'check' ? 'tab-active' : '' }}">
         {{ Lang::txt('COM_SUPPORT_ABUSE_REPORTS') }}

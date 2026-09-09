@@ -18,6 +18,19 @@ use Hubzero\Facades\Request;
 class Authorize extends SiteController
 {
     /**
+     * View engines accepted by this controller
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS frameworks accepted by this controller
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+    /**
      * Execute a task
      *
      * @return  void

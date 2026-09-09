@@ -28,6 +28,20 @@ use Hubzero\Facades\App;
 class Base extends SiteController
 {
     /**
+     * Supported view engines (Blade preferred, PHP fallback)
+     *
+     * @var  array
+     */
+    public $viewEngines = ['blade', 'php'];
+
+    /**
+     * Supported CSS frameworks (daisyUI preferred, classic fallback)
+     *
+     * @var  array
+     */
+    public $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Execute function
      *
      * @return  void

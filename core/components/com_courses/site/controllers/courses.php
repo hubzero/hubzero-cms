@@ -28,6 +28,16 @@ class Courses extends SiteController
     public const INTRO_COURSE_LIMIT = 12;
 
     /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Execute a task
      *
      * @return  void

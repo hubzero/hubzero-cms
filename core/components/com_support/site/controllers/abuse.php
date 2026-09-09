@@ -28,6 +28,20 @@ use Hubzero\Facades\App;
 class Abuse extends SiteController
 {
     /**
+     * View engine priority.
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework priority.
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Method to set the document path
      *
      * @return  void

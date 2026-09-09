@@ -29,6 +29,15 @@ use Hubzero\Facades\App;
 class Offering extends SiteController
 {
     /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+    /**
      * Execute a task
      *
      * @return     void

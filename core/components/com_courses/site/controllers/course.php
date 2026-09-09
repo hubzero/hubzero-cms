@@ -27,10 +27,20 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 
 /**
- * Courses controller class
+ * Course controller class
  */
 class Course extends SiteController
 {
+    /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *

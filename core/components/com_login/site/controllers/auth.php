@@ -30,6 +30,16 @@ use Hubzero\Facades\Session;
 class Auth extends SiteController
 {
     /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Default task
      *
      * @return  void
@@ -45,6 +55,7 @@ class Auth extends SiteController
             App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
             die('insecure connection and redirection failed');
         }
+
 
         // Check for errors.
         if ($this->getError()) {
@@ -274,6 +285,7 @@ class Auth extends SiteController
             ->set('params', $params)
             ->set('returnQueryString', $returnQueryString)
             ->set('local', $local)
+            ->set('site_display', $this->site_display ?? Config::get('sitename'))
             ->setName('login')
             ->setLayout('default')
             ->addTemplatePath($this->getTemplatePath())

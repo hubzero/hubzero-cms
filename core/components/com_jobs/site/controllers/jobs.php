@@ -42,6 +42,16 @@ use Hubzero\Facades\Config;
 class Jobs extends SiteController
 {
     /**
+     * @var  array  Preferred view engines in order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var  array  Preferred CSS frameworks in order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Method to set a property of the class
      *
      * @param     string $property Name of property

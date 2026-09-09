@@ -26,6 +26,20 @@ use Hubzero\Facades\App;
 class Queries extends SiteController
 {
     /**
+     * View engine priority
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework priority
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Displays a list of records
      *
      * @return  void

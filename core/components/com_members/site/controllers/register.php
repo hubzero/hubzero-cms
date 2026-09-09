@@ -31,6 +31,9 @@ use Hubzero\Facades\Plugin;
  */
 class Register extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Determine task and execute it
      *

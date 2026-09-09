@@ -27,6 +27,15 @@ use Hubzero\Facades\Notify;
 class Certificate extends SiteController
 {
     /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+    /**
      * Displays a list of courses
      *
      * @return  void

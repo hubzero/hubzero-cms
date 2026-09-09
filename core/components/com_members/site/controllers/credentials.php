@@ -24,6 +24,9 @@ use Hubzero\Facades\Log;
  */
 class Credentials extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Default task
      *

@@ -48,7 +48,7 @@
       data-invalid-msg="{{ Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED') }}">
 
   {{-- Tab navigation --}}
-  <div role="tablist" class="tabs tabs-bordered mb-6">
+  <div role="tablist" class="tabs tabs-border mb-6">
     <a role="tab" class="tab" data-tab-target="#page-account">
       {{ Lang::txt('COM_MEMBERS_SECTION_ACCOUNT') }}
     </a>

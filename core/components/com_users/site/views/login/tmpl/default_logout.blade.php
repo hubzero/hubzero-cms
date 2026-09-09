@@ -34,7 +34,7 @@
   $logoutImage    = $params->get('logout_image');
   $logoutUrl      = Route::url('index.php?option=' . $option . '&task=user.logout', false);
   $returnVal      = base64_encode(
-      $params->get('logout_redirect_url', $form->getValue('return'))
+      $params->get('logout_redirect_url', ($form ?? null)?->getValue('return') ?? '')
   );
 @endphp
 

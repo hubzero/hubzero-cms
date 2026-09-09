@@ -45,6 +45,20 @@ use Hubzero\Facades\Component;
 class Tickets extends SiteController
 {
     /**
+     * View engine priority
+     *
+     * @var  array
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * CSS framework priority
+     *
+     * @var  array
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Determine task and execute it
      *
      * @return  void

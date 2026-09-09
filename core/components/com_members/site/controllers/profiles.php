@@ -34,6 +34,9 @@ use Hubzero\Facades\Plugin;
  */
 class Profiles extends SiteController
 {
+    protected $viewEngines = ['blade', 'php'];
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
     /**
      * Execute a task
      *

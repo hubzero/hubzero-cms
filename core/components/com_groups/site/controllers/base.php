@@ -25,6 +25,16 @@ use Hubzero\Facades\App;
 class Base extends SiteController
 {
     /**
+     * @var array  View engine preference order
+     */
+    protected $viewEngines = ['blade', 'php'];
+
+    /**
+     * @var array  CSS framework preference order
+     */
+    protected $cssFrameworks = ['daisyui', 'classic'];
+
+    /**
      * Set a notification
      *
      * @param   string  $message  Message to set
