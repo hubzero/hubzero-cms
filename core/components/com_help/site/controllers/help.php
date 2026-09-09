@@ -72,7 +72,7 @@ class Help extends SiteController
 
         // Set vars for views
         $this->view
-            ->set('modified', filemtime($finalHelpPage))
+            ->set('modified', $finalHelpPage ? filemtime($finalHelpPage) : 0)
             ->set('component', $component)
             ->set('extension', $extension)
             ->set('content', $content)
