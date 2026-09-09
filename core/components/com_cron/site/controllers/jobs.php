@@ -63,11 +63,6 @@ class Jobs extends SiteController
             }
         }
 
-        // Forcefully do NOT render the template
-        // (extra processing that's not needed)
-        Request::setVar('no_html', 1);
-        Request::setVar('tmpl', 'component');
-
         $now = Date::toSql();
 
         // Get the list of jobs that should be run
@@ -113,11 +108,12 @@ class Jobs extends SiteController
             $output->jobs[] = $job->toArray();
         }
 
-        // Output any data from the jobs that ran
+        // Output JSON data from the jobs that ran
         // Largely used for debugging/monitoring purposes
-        $this->view
-            ->set('no_html', Request::getInt('no_html', 0))
-            ->set('output', $output)
-            ->display();
+        session_write_close();
+        ob_clean();
+        header('Content-type: application/json');
+        echo json_encode($output);
+        exit();
     }
 }
