@@ -227,7 +227,7 @@ class Application extends AdminController
 		// If user has opted to reset the Hub secret:
 		if ($hubsecret['reset_secret'] == 'reset')
 		{
-			$tableName = 'jos_config';
+			$tableName = '#__config';
 
 			// create 32-character secret:
 			$secretLength = 32;
