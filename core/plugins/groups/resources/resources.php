@@ -660,7 +660,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 						{
 							if ($i == 0)
 							{
-                                                                $counts[] = self::allWithFilters($filters)->join('jos_resource_acl_group','jos_resource_acl_group.resource_id','jos_resources.id','left')
+                                                                $counts[] = self::allWithFilters($filters)->join('#__resource_acl_group','#__resource_acl_group.resource_id','#__resources.id','left')
                                                                 ->total(true);
 							}
 							else
@@ -673,7 +673,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-                                                        $counts[] = self::allWithFilters($filters)->join('jos_resource_acl_group','jos_resource_acl_group.resource_id','jos_resources.id','left')
+                                                        $counts[] = self::allWithFilters($filters)->join('#__resource_acl_group','#__resource_acl_group.resource_id','#__resources.id','left')
                                                         ->total(true);
 						}
 						$i++;
