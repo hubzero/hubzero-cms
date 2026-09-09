@@ -65,35 +65,49 @@ class Menutype extends Select
                 $value = Lang::txt(\Hubzero\Utility\Arr::getValue($rlu, MenusHelper::getLinkKey($link)));
                 break;
         }
-        // Load the javascript and css
-        Html::behavior('framework');
-        Html::behavior('modal');
-
         $menuUrl = Route::url(
             'index.php?option=com_menus&view=menutypes&tmpl=component&recordId=' . $recordId,
             false
         );
-        Document::addScriptDeclaration("
-			jQuery(document).ready(function($){
-				$('input.modal').fancybox({
-					arrows: false,
-					type: 'iframe',
-					autoSize: false,
-					fitToView: false,
-					width: 600,
-					height: 450,
-					href: '" . $menuUrl . "'
-				});
-			});
-		");
 
         $html[] = '<div class="input-modal">';
         $html[] = '<span class="input-cell">';
         $html[] = '<input type="text" id="' . $this->id . '" readonly="readonly" disabled="disabled" '
             . 'value="' . $value . '"' . $size . $class . ' />';
         $html[] = '</span><span class="input-cell">';
-        $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
+
         $escapedValue = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
+
+        if (\Hubzero\Facades\Document::getCssFramework() === 'daisyui') {
+            // Blade mode: load jQuery only, use admin.js openPickerPopup.
+            Html::behavior('framework');
+            Html::behavior('picker');
+            $html[] = '<button type="button" class="button"'
+                . ' data-picker-url="' . htmlspecialchars($menuUrl, ENT_QUOTES) . '"'
+                . ' data-picker-width="1400"'
+                . ' data-picker-height="900"'
+                . ' data-picker-no-header="true">'
+                . Lang::txt('JSELECT') . '</button>';
+        } else {
+            // Legacy mode: fancybox binding via inline script.
+            Html::behavior('framework');
+            Html::behavior('modal');
+            Document::addScriptDeclaration("
+				jQuery(document).ready(function(\$){
+					\$('input.modal').fancybox({
+						arrows: false,
+						type: 'iframe',
+						autoSize: false,
+						fitToView: false,
+						width: 600,
+						height: 450,
+						href: '" . $menuUrl . "'
+					});
+				});
+			");
+            $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
+        }
+
         $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $escapedValue . '" />';
         $html[] = '</span>';
         $html[] = '</div>';

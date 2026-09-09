@@ -48,18 +48,22 @@ class ModulePosition extends Text
         }
         $clientId = (int) $clientId;
 
-        // Load the modal behavior script.
-        Html::behavior('modal', 'a.modal');
+        $isDaisyUi = Document::getCssFramework() === 'daisyui';
 
-        // Build the script.
-        $script = array();
-        $script[] = '	function jSelectPosition_' . $this->id . '(name) {';
-        $script[] = '		$("#' . $this->id . '").val(name);';
-        $script[] = '		$.fancybox.close();';
-        $script[] = '	}';
+        if (!$isDaisyUi) {
+            // Load the modal behavior script.
+            Html::behavior('modal', 'a.modal');
 
-        // Add the script to the document head.
-        Document::addScriptDeclaration(implode("\n", $script));
+            // Build the script.
+            $script = array();
+            $script[] = '	function jSelectPosition_' . $this->id . '(name) {';
+            $script[] = '		$("#' . $this->id . '").val(name);';
+            $script[] = '		$.fancybox.close();';
+            $script[] = '	}';
+
+            // Add the script to the document head.
+            Document::addScriptDeclaration(implode("\n", $script));
+        }
 
         // Setup variables for display.
         $html = array();
@@ -67,7 +71,6 @@ class ModulePosition extends Text
             . '&amp;function=jSelectPosition_' . $this->id . '&amp;client_id=' . $clientId;
 
         // The current user display field.
-        //$html[] = '<div class="fltlft">';
         $html[] = '<div class="input-modal">';
         $html[] = '<span class="input-cell">';
         $html[] = parent::getInput();
@@ -77,8 +80,17 @@ class ModulePosition extends Text
         $html[] = '<span class="input-cell">';
         $title = Lang::txt('COM_MODULES_CHANGE_POSITION_TITLE');
         $btnText = Lang::txt('COM_MODULES_CHANGE_POSITION_BUTTON');
-        $html[] = '<a class="button modal" title="' . $title . '"  href="' . $link
-            . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . $btnText . '</a>';
+        if ($isDaisyUi) {
+            $html[] = '<a class="btn btn-sm btn-ghost" title="' . $title
+                . '" href="' . $link . '"'
+                . ' data-rel="iframe"'
+                . ' data-width="800" data-height="450"'
+                . ' data-target-input="' . $this->id . '"'
+                . '>' . $btnText . '</a>';
+        } else {
+            $html[] = '<a class="button modal" title="' . $title . '"  href="' . $link
+                . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . $btnText . '</a>';
+        }
         $html[] = '</span>';
         $html[] = '</div>';
 

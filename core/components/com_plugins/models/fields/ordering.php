@@ -58,11 +58,11 @@ class Ordering extends Field
 
         // Create a read-only list (no name) with a hidden input to store the value.
         if ((string) $this->element['readonly'] == 'true') {
-            $html[] = self::ordering('', $query, trim($attr), $this->value, $pluginId ? 0 : 1);
+            $html[] = self::ordering('', $query, trim($attr), $this->value, $pluginId ? 0 : 1, null, $this->id);
             $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '" />';
         } else {
             // Create a regular list.
-            $html[] = self::ordering($this->name, $query, trim($attr), $this->value, $pluginId ? 0 : 1);
+            $html[] = self::ordering($this->name, $query, trim($attr), $this->value, $pluginId ? 0 : 1, null, $this->id);
         }
 
         return implode($html);
@@ -122,7 +122,7 @@ class Ordering extends Field
      * @param   string   $chop      The length of the truncated headline
      * @return  string   Html for the select list
      */
-    public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null)
+    public static function ordering($name, $query, $attribs = null, $selected = null, $neworder = null, $chop = null, $id = false)
     {
         if (empty($attribs)) {
             $attribs = 'class="inputbox" size="1"';
@@ -131,6 +131,9 @@ class Ordering extends Field
         if (empty($neworder)) {
             $orders = self::genericordering($query);
             $opts = array('list.attr' => $attribs, 'list.select' => (int) $selected);
+            if ($id !== false) {
+                $opts['id'] = $id;
+            }
             $html = Html::select('genericlist', $orders, $name, $opts);
         } else {
             if ($neworder > 0) {

@@ -24,9 +24,9 @@ class Directory
     public static function writable($writable)
     {
         if ($writable) {
-            return '<span class="writable">' . Lang::txt('COM_SYSTEM_INFO_WRITABLE') . '</span>';
+            return '<span class="text-success">' . Lang::txt('COM_SYSTEM_INFO_WRITABLE') . '</span>';
         } else {
-            return '<span class="unwritable">' . Lang::txt('COM_SYSTEM_INFO_UNWRITABLE') . '</span>';
+            return '<span class="text-error">' . Lang::txt('COM_SYSTEM_INFO_UNWRITABLE') . '</span>';
         }
     }
 
