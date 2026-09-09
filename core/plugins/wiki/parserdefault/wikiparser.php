@@ -1559,6 +1559,7 @@ class WikiParser
                     $_macros[$matches[1]] =& $macro;
                 } else {
                     $_macros[$matches[1]] = false;
+                    $macro = false;
                 }
             } else {
                 $macro =& $_macros[$matches[1]];

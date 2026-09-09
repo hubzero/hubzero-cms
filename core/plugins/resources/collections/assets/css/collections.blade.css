@@ -1,0 +1,31 @@
+/**
+ * Collections plugin — daisyUI styles.
+ *
+ * Loaded instead of collections.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+#collectionForm {
+  min-width: 300px;
+}
+
+#collectionForm .grid {
+  padding: 0.75rem;
+}
+
+#collectionForm .grid label {
+  padding: 0;
+}
+
+#collectionForm .grid .or {
+  margin: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+#add-collection {
+  width: 100%;
+}

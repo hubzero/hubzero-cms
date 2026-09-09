@@ -1,0 +1,125 @@
+/**
+ * About plugin — daisyUI styles.
+ *
+ * Loaded instead of about.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Resource content area */
+.resource {
+  border: none;
+  padding-top: 0;
+}
+
+.resource .resource-content {
+  margin-bottom: 2rem;
+  padding: 0;
+  line-height: 1.7;
+}
+
+.resource .resource-content:first-child {
+  margin-top: 0;
+}
+
+.resource ul {
+  margin-left: 1.5rem;
+  list-style: disc;
+}
+
+.resource #authorslist,
+.resource #authorslist p,
+.resource ul:first-child,
+.resource ul:first-child li:first-child {
+  margin-top: 0;
+  padding-right: 0;
+  line-height: 1.6;
+}
+
+/* Citations */
+.resource .citations {
+  border: none;
+  border-radius: var(--radius-box);
+  background-color: var(--color-base-200);
+  padding: 0.75rem 1rem;
+  margin: 0;
+  list-style: none;
+  text-indent: -1em;
+  padding-left: calc(1rem + 1em);
+}
+
+.resource .citations + .citations {
+  margin-top: 0.75rem;
+}
+
+.resource .citations li {
+  border: none;
+  line-height: 1.6;
+}
+
+/* About section layout */
+.abouttab {
+  margin-right: 0;
+}
+
+#about-section {
+  padding: 0;
+}
+
+/* Screenshots */
+.screenshots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.screenshots li {
+  margin: 0;
+  padding: 0;
+}
+
+.screenshots a,
+.screenshots a:hover,
+.screenshots img {
+  border: none;
+}
+
+.screenshots img {
+  border-radius: var(--radius-field);
+  max-height: 5rem;
+  width: auto;
+}
+
+/* Screenshot slider */
+.sscontainer {
+  display: block;
+}
+
+#showcase {
+  background: var(--color-base-200);
+  width: 100%;
+  height: 90px;
+  margin-top: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: var(--radius-box);
+}
+
+#showcase img {
+  background: var(--color-base-200);
+  border: 1px solid var(--color-border);
+  margin: 4px;
+  padding: 4px;
+  float: left;
+  position: relative;
+  border-radius: var(--radius-field);
+}
+
+#showcase img:hover {
+  border-color: var(--color-primary);
+}

@@ -1,0 +1,154 @@
+{{--
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ *
+ * NOTE: This is an EMAIL template. Inline styles and table layout are intentional
+ * because email clients do not support external CSS.
+ */
+--}}
+
+@php
+// Get the group
+$group = \Hubzero\User\Group::getInstance($announcement->get('scope_id'));
+$groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
+
+// Define colors
+$bgcolor = '#FBF1BE';
+$bdcolor = '#E9E1BC';
+
+// If high priority
+if ($announcement->priority == 1) {
+    $bgcolor = '#ffd3d4';
+    $bdcolor = '#e9bcbc';
+}
+@endphp
+
+    <!-- Start Header -->
+    <table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+                <td width="10%" align="left" valign="bottom" nowrap="nowrap" class="sitename">
+                    {{ Config::get('sitename') }}
+                </td>
+                <td width="80%" align="left" valign="bottom" class="tagline mobilehide">
+                    <span class="home">
+                        <a href="{{ Request::base() }}"
+                            style="color: #666; font-weight: bold; text-decoration: none; border: none;"
+                            >{{ Request::base() }}</a>
+                    </span>
+                    <br />
+                    <span class="description">{{ Config::get('MetaDesc') }}</span>
+                </td>
+                <td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
+                    Group Announcement
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- End Header -->
+
+    <!-- Start Spacer -->
+    <table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+                <td height="30"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- End Spacer -->
+
+@php
+$tableStyle = 'border-collapse: collapse;'
+    . ' border: 1px solid ' . $bdcolor . ';'
+    . ' background: ' . $bgcolor . ';'
+    . ' font-size: 0.9em; line-height: 1.6em;'
+    . ' background-image: -webkit-gradient(linear, 0 0, 100% 100%,';
+
+$thStyle = 'font-weight: normal;'
+    . ' border-bottom: 1px solid ' . $bdcolor . ';'
+    . ' padding: 8px; text-align: left';
+
+$announcementsLink = $groupLink . '/announcements';
+@endphp
+
+    <table id="ticket-info"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="{{ $tableStyle }}
+                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+                                        color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
+                                        color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
+                                        to(transparent));
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+                                    transparent 75%, transparent);
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+                                    transparent 75%, transparent);
+    background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+                                    transparent 75%, transparent);
+    background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+                                    transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+                                    transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+                                    transparent 75%, transparent);
+                                    -webkit-background-size: 30px 30px;
+                                    -moz-background-size: 30px 30px;
+                                    background-size: 30px 30px;">
+        <thead class="mobilehide">
+            <tr>
+                <th style="{{ $thStyle }}" align="left">
+                    <strong>{{ $group->get('description') }}</strong>,
+                    <a href="{{ $groupLink }}">{{ $groupLink }}</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="100%" style="padding: 8px;">
+                    <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left; padding: 20px;" align="left">
+                                    <a href="{{ $announcementsLink }}">{{ $announcementsLink }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; padding: 20px;" align="left">
+                                    {!! $announcement->get('content') !!}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Start Spacer -->
+    <table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+                <td height="30"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- End Spacer -->
+
+    <!-- Start Footer -->
+    <table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+            <tr>
+                <td align="left" valign="bottom">
+                    <span>{{ Config::get('sitename') }} sent this email because you belong to the <a href="{{ $groupLink }}">{{ $group->get('description') }}</a> group.</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- End Footer -->

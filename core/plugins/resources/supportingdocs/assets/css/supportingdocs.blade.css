@@ -1,0 +1,57 @@
+/**
+ * Supporting Docs plugin — daisyUI styles.
+ *
+ * Loaded instead of supportingdocs.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.supportingdocs {
+  margin: 0 0 1rem 0;
+}
+
+.supportingdocs h3 {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.supportingdocs ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.supportingdocs ul li {
+  margin: 0;
+  padding: 0.75rem 0 0.75rem 2.25rem;
+  border: none;
+  position: relative;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.supportingdocs ul li::before {
+  content: "\1F4C4";
+  font-size: 1.25rem;
+  display: block;
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  color: var(--color-base-content/0.3);
+}
+
+.supportingdocs ul li.html::before {
+  content: "\1F517";
+}
+
+.supportingdocs .caption {
+  color: var(--color-base-content/0.5);
+  display: block;
+  font-size: 0.8125rem;
+  margin-top: 0.125rem;
+}

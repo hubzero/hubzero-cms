@@ -12,6 +12,7 @@
 namespace Plugins\Hubzero\Autocompleter;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
@@ -69,25 +70,33 @@ class Autocompleter extends Plugin
 
         // Push some needed scripts and stylings to the template but ensure we do it only once
         if ($this->pushscripts) {
+            $isDaisyUi = Document::getCssFramework() === 'daisyui';
+            $cssFile = $isDaisyUi ? 'autocompleter.blade.css' : 'autocompleter.css';
+
             $scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 
-            $templatecss = DS . 'templates' . DS . App::get('template')->template . DS .
-                'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
-            $plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS .
-                'assets' . DS . 'css' . DS . 'autocompleter.css';
+            $templatecss = DS . 'templates' . DS . App::get('template')->template
+                . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . $cssFile;
+            $plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter'
+                . DS . 'assets' . DS . 'css' . DS . $cssFile;
+
             if (file_exists(PATH_APP . $templatecss)) {
-                $scripts .= $base . substr(PATH_APP, strlen(PATH_ROOT)) . $templatecss .
-                    '?v=' . filemtime(PATH_APP . $templatecss);
+                $scripts .= $base . substr(PATH_APP, strlen(PATH_ROOT))
+                    . $templatecss . '?v=' . filemtime(PATH_APP . $templatecss);
             } elseif (file_exists(PATH_CORE . $templatecss)) {
-                $scripts .= $base . '/core' . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
+                $scripts .= $base . '/core' . $templatecss
+                    . '?v=' . filemtime(PATH_CORE . $templatecss);
             } else {
-                $scripts .= $base . '/core' . $plugincss . '?v=' . filemtime(PATH_CORE . $plugincss);
+                $scripts .= $base . '/core' . $plugincss
+                    . '?v=' . filemtime(PATH_CORE . $plugincss);
             }
 
             $scripts .= '";</script>' . "\n";
-            $scripts .= '<script type="text/javascript" src="' . $base .
-                '/core/plugins' . DS . $this->_type . DS . $this->_name .
-                '/assets/js/' . $this->_name . '.js"></script>' . "\n";
+
+            $scripts .= '<script type="text/javascript" src="'
+                . $base . '/core/plugins' . DS . $this->_type . DS
+                . $this->_name . '/assets/js/' . $this->_name
+                . '.js"></script>' . "\n";
 
             $this->pushscripts = false;
         }

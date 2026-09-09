@@ -1,0 +1,133 @@
+/**
+ * Questions plugin — daisyUI styles.
+ *
+ * Loaded instead of questions.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Sidebar metadata icon */
+.metadata p.answer::before {
+  content: "\f086";
+}
+
+/* Question form */
+.subject #hubForm.full fieldset {
+  padding-left: 0;
+}
+
+/* Entry states */
+.entry-state {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Entry comments link */
+.entry-comments a {
+  color: var(--color-base-content/0.5);
+  font-size: 0.8125rem;
+}
+
+/* Entries table */
+.entries {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.entries td,
+.entries th {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.entries th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-base-content/0.6);
+}
+
+.entries .entry-title a {
+  font-weight: 500;
+}
+
+.entries .entry-details {
+  padding: 0.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--color-base-content/0.5);
+}
+
+.entries .entry-details-divider {
+  margin: 0 0.375rem;
+  color: var(--color-base-content/0.3);
+}
+
+/* State-based row colors */
+.entries .answered {
+  background: color-mix(in oklch, var(--color-secondary) 5%, transparent);
+}
+
+.entries .flagged {
+  background: color-mix(in oklch, var(--color-warning) 5%, transparent);
+}
+
+.entries .mine {
+  background: color-mix(in oklch, var(--color-info) 5%, transparent);
+}
+
+/* Rewards */
+.entries .reward {
+  text-align: right;
+}
+
+.entry-reward {
+  white-space: nowrap;
+  color: var(--color-base-content/0.5);
+  font-size: 0.8125rem;
+}
+
+/* Voting */
+.entries td.voting,
+.voting {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.vote-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-base-content/0.4);
+  border: none;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-field);
+  font-size: 0.8125rem;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.vote-button:hover {
+  color: var(--color-primary);
+  background: var(--color-primary/0.08);
+}
+
+/* No results row */
+.entries .noresults td {
+  text-align: center;
+  color: var(--color-base-content/0.4);
+  padding: 2rem;
+}
+
+/* Container block */
+.container-block .entry-details {
+  padding: 0.5rem 0;
+}
+
+.entry-popularity {
+  display: none;
+}

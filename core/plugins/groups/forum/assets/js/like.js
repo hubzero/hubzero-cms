@@ -13,9 +13,9 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                     e.preventDefault();
                     this.__toggle = !this.__toggle;
                     if (this.__toggle) {
-                        whoLikedPostDiv.style.height = `${whoLikedPostDiv.scrollHeight}px`;
+                        whoLikedPostDiv.style.maxHeight = `${whoLikedPostDiv.scrollHeight}px`;
                     } else {
-                        whoLikedPostDiv.style.height = 0;
+                        whoLikedPostDiv.style.maxHeight = null;
                     }
                 }
 
@@ -44,7 +44,8 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 const newLikesString = likesListArray.filter(e => e !== nameAndId).join('/');
 
                                 likeButton.dataset.count = `${newLikeCount}`;
-                                likeButton.classList.remove("userLiked");
+                                likeButton.classList.remove("userLiked", "text-error", "hover:text-error/80");
+                                likeButton.classList.add("text-base-content/40", "hover:text-base-content/60");
                                 likeButton.dataset.likesList = newLikesString;
                                 likeStatsLink.innerHTML = (newLikeCount === 0) ? 'No Likes' : `View Likes(${newLikeCount})`;
 
@@ -60,10 +61,12 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                         whoLikedArray.push(` < a href = ${userProfileUrl} target = '_blank' > ${userName} < / a > `);
                                     }
 
-                                    likeStatsLink.classList.remove("noLikes");
-                                    whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
+                                    likeStatsLink.classList.add("underline", "cursor-pointer", "hover:text-base-content");
+                                    likeStatsLink.classList.remove("no-underline", "cursor-default");
+                                    whoLikedPostDiv.innerHTML = "<div class='names bg-base-200 p-2.5 rounded text-right text-xs'>" + whoLikedArray.join(', ') + " liked this</div>";
                                 } else {
-                                    likeStatsLink.classList.add("noLikes");
+                                    likeStatsLink.classList.remove("underline", "cursor-pointer", "hover:text-base-content");
+                                    likeStatsLink.classList.add("no-underline", "cursor-default");
                                     whoLikedPostDiv.innerHTML = "";
                                 }
 
@@ -77,10 +80,12 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 const newLikesString = [...likesListArray, nameAndId].filter(Boolean).join('/');
 
                                 likeButton.dataset.count = `${newLikeCount}`;
-                                likeButton.classList.add("userLiked");
+                                likeButton.classList.add("userLiked", "text-error", "hover:text-error/80");
+                                likeButton.classList.remove("text-base-content/40", "hover:text-base-content/60");
                                 likeButton.dataset.likesList = newLikesString;
                                 likeStatsLink.innerHTML = `View Likes(${newLikeCount})`;
-                                likeStatsLink.classList.remove("noLikes");
+                                likeStatsLink.classList.add("underline", "cursor-pointer", "hover:text-base-content");
+                                likeStatsLink.classList.remove("no-underline", "cursor-default");
 
                                 let whoLikedArray = [];
                                 const newLikesArray = newLikesString.split("/");
@@ -93,7 +98,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                     whoLikedArray.push(` < a href = ${userProfileUrl} target = '_blank' > ${userName} < / a > `);
                                 }
 
-                                whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
+                                whoLikedPostDiv.innerHTML = "<div class='names bg-base-200 p-2.5 rounded text-right text-xs'>" + whoLikedArray.join(', ') + " liked this</div>";
 
                                 // console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                             }

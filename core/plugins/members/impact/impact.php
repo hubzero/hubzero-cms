@@ -10,6 +10,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
+use Hubzero\Facades\Document;
 
 /**
  * @package   hubzero-cms
@@ -336,35 +337,82 @@ class Impact extends Plugin
         $pa = new \Components\Publications\Tables\Author($database);
         $authors = $pa->getAuthors($row->version_id);
 
-        $html = "\t" . '<li class="resource">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title)
-            . '</a></p>' . "\n";
-        $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
-        if ($authors) {
-            $html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': '
-                . \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
+        if (Document::getCssFramework() === 'daisyui') {
+            // daisyUI output
+            $html = '<li>';
+            $html .= '<p class="font-semibold"><a class="link link-hover text-primary" href="'
+                . $row->href . '">'
+                . e(stripslashes($row->title)) . '</a></p>';
+            $details = [$thedate, e(stripslashes($row->cat_name))];
+            if ($authors) {
+                $details[] = Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': '
+                    . \Components\Publications\Helpers\Html::showContributors(
+                        $authors,
+                        false,
+                        true
+                    );
+            }
+            if ($row->doi) {
+                $details[] = 'doi:' . e($row->doi);
+            }
+            $html .= '<p class="text-sm text-base-content/70">'
+                . implode(' | ', $details) . '</p>';
+            if ($row->text) {
+                $html .= '<p class="text-sm text-base-content/70 mt-0.5">'
+                    . \Hubzero\Utility\Str::truncate(
+                        strip_tags(stripslashes($row->text)),
+                        300
+                    ) . '</p>';
+            }
+            $html .= '</li>';
+        } else {
+            // Legacy output
+            $html = "\t" . '<li class="resource">' . "\n";
+            $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+                . stripslashes($row->title)
+                . '</a></p>' . "\n";
+            $html .= "\t\t" . '<p class="details">' . $thedate
+                . ' <span>|</span> ' . stripslashes($row->cat_name);
+            if ($authors) {
+                $html .= ' <span>|</span>'
+                    . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': '
+                    . \Components\Publications\Helpers\Html::showContributors(
+                        $authors,
+                        false,
+                        true
+                    ) . "\n";
+            }
+            if ($row->doi) {
+                $html .= ' <span>|</span> doi:' . $row->doi . "\n";
+            }
+            if (
+                !$row->project_provisioned
+                && ((isset($row->project_private)
+                    && $row->project_private != 1)
+                || $row->author == true)
+            ) {
+                $url = 'index.php?option=com_projects&alias='
+                    . $row->project_alias;
+                $url .= $row->author == true
+                    ? '&active=publications&pid=' . $row->id
+                    : '';
+                $html .= ' <span>|</span> Project: ';
+                $html .= '<a href="';
+                $html .= Route::url($url) . '">';
+                $html .= $row->project_title;
+                $html .= '</a>';
+                $html .= "\n";
+            }
+            $html .= '</p>' . "\n";
+            if ($row->text) {
+                $html .= "\t\t<p>"
+                    . \Hubzero\Utility\Str::truncate(
+                        strip_tags(stripslashes($row->text)),
+                        300
+                    ) . "</p>\n";
+            }
+            $html .= "\t" . '</li>' . "\n";
         }
-        if ($row->doi) {
-            $html .= ' <span>|</span> doi:' . $row->doi . "\n";
-        }
-        if (
-            !$row->project_provisioned && ((isset($row->project_private) && $row->project_private != 1)
-            || $row->author == true)
-        ) {
-            $url = 'index.php?option=com_projects&alias=' . $row->project_alias;
-            $url .= $row->author == true ? '&active=publications&pid=' . $row->id : '';
-            $html .= ' <span>|</span> Project: ';
-            $html .= '<a href="';
-            $html .= Route::url($url) . '">';
-            $html .= $row->project_title;
-            $html .= '</a>';
-            $html .= "\n";
-        }
-        $html .= '</p>' . "\n";
-        if ($row->text) {
-            $html .= "\t\t<p>" . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->text)), 300) . "</p>\n";
-        }
-        $html .= "\t" . '</li>' . "\n";
         return $html;
     }
 }

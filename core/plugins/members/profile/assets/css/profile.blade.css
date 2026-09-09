@@ -1,0 +1,912 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ *
+ * Member Profile plugin — daisyUI mode styles.
+ */
+
+/* ── Profile section list ─────────────────────────────── */
+
+.member_profile {
+  margin: 0;
+  padding: 0;
+}
+
+#profile {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--color-base-300);
+}
+
+#profile li.section {
+  overflow: hidden;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--color-base-300);
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+#profile li.section:hover {
+  background-color: color-mix(in srgb, var(--color-base-content) 3%, transparent);
+}
+
+#profile li .section-hover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* ── Section content layout ───────────────────────────── */
+
+#profile li .section-content {
+  width: 95%;
+  float: left;
+}
+
+#profile li .section-content .key {
+  float: left;
+  position: relative;
+  width: 20%;
+  margin: 0 2% 0 3%;
+  padding: 0;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-base-content) 55%, transparent);
+  font-size: 0.875rem;
+}
+
+#profile li .section-content .value {
+  float: left;
+  width: 75%;
+  color: var(--color-base-content);
+}
+
+/* ── Edit link ────────────────────────────────────────── */
+
+#profile li .section-edit {
+  float: left;
+  width: 5%;
+  text-align: right;
+}
+
+#profile li .section-edit a {
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+  text-transform: uppercase;
+  position: relative;
+  z-index: 20;
+  display: none;
+  letter-spacing: 0.025em;
+}
+
+#profile li:hover .section-edit a {
+  color: var(--color-primary);
+}
+
+#profile li .section-edit a.open {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+/* ── Edit form container ──────────────────────────────── */
+
+#profile .section-edit-container {
+  display: none;
+}
+
+#profile .section-edit-content {
+  padding: 1rem;
+  margin: 1.25rem 0 0.625rem 25%;
+  background: var(--color-base-100);
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+#profile .section-edit-container .notice {
+  margin: 0.625rem 0 0.625rem 25%;
+}
+
+#profile .section-edit-content .input-wrap {
+  border-bottom: 1px solid var(--color-base-300);
+  margin-bottom: 1em;
+  padding: 0 0 1em 0;
+}
+
+#profile .section-edit-content label {
+  font-weight: 600;
+  display: block;
+  padding-bottom: 0.625rem;
+}
+
+#profile .section-edit-content label.side-by-side {
+  float: left;
+  width: 49%;
+  padding-right: 2%;
+}
+
+#profile .section-edit-content .block {
+  display: block;
+  margin-top: 1em;
+  clear: both;
+}
+
+#profile .section-edit-content .block label {
+  display: block;
+  padding-top: 1em;
+  border-top: 1px solid var(--color-base-300);
+}
+
+#profile .section-edit-content div.side-by-side {
+  float: left;
+  width: 48%;
+  padding-right: 2%;
+}
+
+#profile .section-edit-content .side-by-side label {
+  display: inline;
+  margin: 0.5em 0 0 0;
+  border-bottom: none;
+}
+
+#profile .section-edit-content label.three {
+  width: 32%;
+  padding-right: 2%;
+}
+
+#profile .section-edit-content label.no-padding-right {
+  padding-right: 0;
+}
+
+#profile .section-edit-content .input-wrap input[type=password],
+#profile .section-edit-content .input-wrap input[type=text],
+#profile .section-edit-content .input-wrap select,
+#profile .section-edit-content .input-wrap textarea {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  font-size: 0.875rem;
+}
+
+#profile .section-edit-content .input-wrap input:focus,
+#profile .section-edit-content .input-wrap select:focus,
+#profile .section-edit-content .input-wrap textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+  border-color: var(--color-primary);
+}
+
+.section-edit-submit {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.section-edit-submit:hover {
+  opacity: 0.9;
+}
+
+.section-edit-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.section-edit-cancel {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+  border: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.15s;
+}
+
+.section-edit-cancel:hover {
+  background: var(--color-base-300);
+}
+
+#profile .section-edit-content .no-margin-top {
+  margin-top: 0;
+}
+
+#profile .section-edit-content .sub label {
+  margin: 0 0 5px 0;
+  padding: 0;
+  font-weight: normal;
+  border: none;
+}
+
+#profile .section-edit-content .sub-sub,
+#profile .section-edit-content label.indent {
+  margin: 0 0 10px 20px;
+}
+
+#profile .section-edit-content .hint {
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+  font-size: 90%;
+  font-weight: normal;
+}
+
+#profile .section-edit-content label {
+  position: relative;
+}
+
+#profile .section-edit-content .input-wrap li label {
+  font-weight: normal;
+}
+
+#profile .section-edit-content span.required {
+  color: var(--color-error);
+  font-weight: normal;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  right: 0;
+}
+
+#profile .section-edit-content .input-wrap ul {
+  list-style: none;
+  margin: 0;
+}
+
+#profile .section-edit-content .input-wrap li {
+  margin: 0;
+  padding: 0.2em 0;
+}
+
+#profile .section-edit-content .input-wrap li label,
+#profile .section-edit-content .input-wrap li input[type=radio],
+#profile .section-edit-content .input-wrap li input[type=checkbox] {
+  width: auto;
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+/* ── Active / Hidden / Private section states ─────────── */
+
+#profile li.section.active {
+  background: color-mix(in srgb, var(--color-base-content) 5%, transparent);
+}
+
+#profile li.section.hidden .key {
+  color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+}
+
+#profile li.section.hidden .value {
+  color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+}
+
+#profile li.section.hidden .key::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  background-color: color-mix(in srgb, var(--color-base-content) 40%, transparent);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+}
+
+#profile li.section.private {
+  background-color: color-mix(in srgb, var(--color-base-content) 5%, transparent);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    color-mix(in srgb, var(--color-base-content) 3%, transparent) 10px,
+    color-mix(in srgb, var(--color-base-content) 3%, transparent) 20px
+  );
+}
+
+#profile li.section.private .key::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  background-color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* ── Profile Bio Section ──────────────────────────────── */
+
+#profile li.profile-bio p:first-child {
+  margin-top: 0;
+}
+
+#profile_bio {
+  width: 99%;
+}
+
+/* ── Completeness Meter ───────────────────────────────── */
+
+#page_options #member-profile-completeness {
+  position: relative;
+  width: 200px;
+  border: none;
+  font-size: 0.6875rem;
+  line-height: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-base-content) 55%, transparent);
+  text-align: left;
+}
+
+#member-profile-completeness #meter {
+  margin: 3px 0 0 0;
+  background: var(--color-base-300);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+#member-profile-completeness #meter-percent {
+  display: block;
+  height: 8px;
+  background: var(--color-primary);
+  transition: width 0.5s ease;
+  border-radius: 9999px;
+  width: 0%;
+}
+
+#member-profile-completeness #meter-percent::after {
+  content: attr(data-percent) '%';
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--color-base-content);
+}
+
+#member-profile-completeness #completeness-info {
+  display: block;
+  text-align: right;
+  padding: 3px 0 0 0;
+  font-weight: normal;
+  text-transform: lowercase;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+  cursor: pointer;
+}
+
+#member-profile-completeness #completeness-info:hover {
+  color: var(--color-base-content);
+}
+
+/* ── Award Info ────────────────────────────────────────── */
+
+#award-info {
+  display: none;
+  background: color-mix(in srgb, var(--color-warning) 15%, var(--color-base-100));
+  padding: 1em 1.5em;
+  border: 2px solid var(--color-warning);
+  border-radius: 0.5rem;
+  margin-bottom: 1em;
+}
+
+/* ── Updating Overlay ─────────────────────────────────── */
+
+.edit-profile-overlay.update {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--color-base-100) 70%, transparent);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-profile-overlay.update::after {
+  content: "";
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--color-base-300);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: profile-spin 0.6s linear infinite;
+}
+
+@keyframes profile-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Profile Picture Upload Dialog ────────────────────── */
+
+dialog.profile-picture-dialog {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  max-width: 32rem;
+  width: 90vw;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog.profile-picture-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.profile-picture-dialog .dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-base-300);
+}
+
+.profile-picture-dialog .dialog-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.profile-picture-dialog .dialog-body {
+  padding: 1.5rem;
+}
+
+.profile-picture-dialog .dialog-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+  border-radius: 0.375rem;
+}
+
+.profile-picture-dialog .dialog-close:hover {
+  color: var(--color-base-content);
+  background: var(--color-base-200);
+}
+
+#ajax-upload-container {
+  padding: 0;
+}
+
+#ajax-upload-container h2 {
+  margin: 0 0 1.5rem 0;
+  line-height: 1;
+}
+
+#ajax-upload-left {
+  text-align: center;
+}
+
+#ajax-upload-left img {
+  border-radius: 0.5rem;
+  max-width: 100%;
+  max-height: 300px;
+}
+
+#ajax-upload-left #remove-picture {
+  display: inline-block;
+  color: var(--color-error);
+  margin-top: 0.5rem;
+}
+
+/* Upload button / drop area */
+.qq-uploader {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.qq-upload-button,
+.qq-upload-drop-area {
+  background: var(--color-base-200);
+  border: 2px dashed var(--color-base-300);
+  text-align: center;
+  color: color-mix(in srgb, var(--color-base-content) 40%, transparent);
+  padding: 3rem 0;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.qq-upload-button span,
+.qq-upload-drop-area span {
+  position: relative;
+  display: block;
+  padding-top: 2em;
+}
+
+.qq-upload-button span::before,
+.qq-upload-drop-area span::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2rem;
+  height: 2rem;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21ZM10.5 8.25a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21ZM10.5 8.25a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+}
+
+.qq-upload-button:hover,
+.qq-upload-drop-area:hover,
+.qq-upload-drop-area-active {
+  border-color: var(--color-primary);
+  color: var(--color-base-content);
+  cursor: pointer;
+}
+
+.qq-upload-drop-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#ajax-upload-right .qq-upload-list {
+  display: none;
+}
+
+#ajax-upload-uploading {
+  background: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#ajax-upload-uploading::before {
+  content: "Uploading...";
+  font-size: 1.25rem;
+  color: var(--color-base-100);
+}
+
+/* ── Profile Picture Change Button ────────────────────── */
+
+#page_identity a#page_identity_change {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+  color: var(--color-base-100);
+  z-index: 20;
+  display: block;
+  border: none;
+  padding: 0.75em 0;
+  min-height: 1em;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-align: center;
+  transition: background-color 0.15s;
+}
+
+#page_identity a#page_identity_change:hover {
+  background: var(--color-base-content);
+}
+
+#page_identity_change span::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: -0.125em;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21ZM10.5 8.25a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21ZM10.5 8.25a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+
+/* ── Usage Agreement Dialog ───────────────────────────── */
+
+dialog.usage-agreement-dialog {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  max-width: 40rem;
+  width: 90vw;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog.usage-agreement-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#usage-agreement-popup {
+  padding: 1.5rem;
+}
+
+#usage-agreement-popup h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+#usage-agreement-box {
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: background-color 0.2s;
+}
+
+#usage-agreement {
+  width: 100%;
+  height: 300px;
+  overflow-y: auto;
+}
+
+#usage-agreement-buttons,
+#usage-agreement-last-chance-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+#usage-agreement-last-chance {
+  display: none;
+  background: color-mix(in srgb, var(--color-error) 10%, var(--color-base-100));
+  padding: 1rem;
+  border-radius: 0.375rem;
+}
+
+#usage-agreement-last-chance h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+#usage-agreement-last-chance-buttons {
+  display: none;
+}
+
+.usage-agreement-back-to-agree {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+.usage-agreement-dont-accept {
+  background: var(--color-error);
+  color: var(--color-error-content);
+}
+
+/* ── Address Section ──────────────────────────────────── */
+
+#profile .address-field-wrap {
+  position: relative;
+  padding: 0 0 1em 0;
+  margin: 0 0 1em 0;
+  border-bottom: 1px solid var(--color-base-300);
+}
+
+#profile .address-add {
+  text-align: center;
+}
+
+#profile .address-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.member-address-form fieldset p {
+  margin: 0;
+  padding: 1em;
+}
+
+.member-address-form fieldset {
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.member-address-form fieldset legend {
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+
+.member-address-form fieldset label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.member-address-form fieldset input[type=text],
+.member-address-form fieldset select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-base-300);
+  border-radius: 0.375rem;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.member-address-form fieldset input:focus,
+.member-address-form fieldset select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+}
+
+.member-address-form p.submit {
+  padding: 1rem 0 0;
+}
+
+.member-address-form p.submit input[type=submit] {
+  padding: 0.5rem 1.5rem;
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.section .address-links {
+  display: none;
+}
+
+.section.active .address-links {
+  display: block;
+}
+
+.profile-address .grid {
+  padding: 1.25rem 0 0 0;
+  margin: 1.25rem 0 0 0;
+  border-top: 1px solid var(--color-base-300);
+}
+
+.profile-address .grid:first-child {
+  margin: 0;
+  padding: 0;
+  border-top: none;
+}
+
+/* ── Address Edit Dialog ──────────────────────────────── */
+
+dialog.address-edit-dialog {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  max-width: 44rem;
+  width: 90vw;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog.address-edit-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.address-edit-dialog .dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-base-300);
+}
+
+.address-edit-dialog .dialog-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.address-edit-dialog .dialog-body {
+  padding: 1.5rem;
+}
+
+.address-edit-dialog .dialog-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+  border-radius: 0.375rem;
+}
+
+.address-edit-dialog .dialog-close:hover {
+  color: var(--color-base-content);
+  background: var(--color-base-200);
+}
+
+/* ── Error messages ───────────────────────────────────── */
+
+.error,
+p.error {
+  background: color-mix(in srgb, var(--color-error) 10%, var(--color-base-100));
+  border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent);
+  color: var(--color-error);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.error strong {
+  font-weight: 600;
+}
+
+.warning,
+p.warning {
+  background: color-mix(in srgb, var(--color-warning) 10%, var(--color-base-100));
+  border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
+  color: color-mix(in srgb, var(--color-warning) 80%, var(--color-base-content));
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.notice.warning {
+  background: color-mix(in srgb, var(--color-warning) 10%, var(--color-base-100));
+  border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* ── ORCID button ─────────────────────────────────────── */
+
+#orcid-fetch {
+  margin-top: 1.65em;
+}
+
+/* ── Clearfix helper ──────────────────────────────────── */
+
+br.clear {
+  clear: both;
+}
+
+.cf::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.hide {
+  display: none !important;
+}

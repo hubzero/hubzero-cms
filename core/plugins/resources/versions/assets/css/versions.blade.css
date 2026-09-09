@@ -1,0 +1,32 @@
+/**
+ * Versions plugin — daisyUI styles.
+ *
+ * Loaded instead of versions.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Version state indicator */
+.version-state {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: 1.2em;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.toolpublished::before {
+  content: "\2714";
+  color: var(--color-success);
+  margin-right: 0.5rem;
+}
+
+.toolunpublished::before {
+  content: "\2296";
+  color: var(--color-base-content/0.4);
+  margin-right: 0.5rem;
+}

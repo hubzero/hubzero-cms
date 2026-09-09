@@ -1,0 +1,192 @@
+/**
+ * Reviews plugin — daisyUI styles.
+ *
+ * Loaded instead of reviews.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Comment list reset */
+ol.comments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol.comments .comment {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+ol.comments .comment:last-child {
+  border-bottom: none;
+}
+
+ol.comments .comment-member-photo {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+}
+
+ol.comments .comment-member-photo img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-field);
+  object-fit: cover;
+}
+
+ol.comments .comment-content {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+/* Nested replies list spans both columns, indented */
+ol.comments .comment > ol.comments {
+  grid-column: 1 / -1;
+  margin-left: 4rem;
+}
+
+ol.comments .comment-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+ol.comments .comment-title strong {
+  margin-right: 0.5rem;
+}
+
+ol.comments .comment-title .permalink {
+  color: var(--color-base-content/0.5);
+  font-size: 0.8125rem;
+  border: none;
+}
+
+ol.comments .comment-title .comment-date-at,
+ol.comments .comment-title .comment-date-on {
+  color: var(--color-base-content/0.4);
+}
+
+ol.comments .comment-body {
+  margin: 0.5rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* Star ratings */
+.avgrating {
+  display: inline-flex;
+  gap: 0.125rem;
+  font-size: 0.875rem;
+  color: var(--color-warning);
+}
+
+.avgrating span {
+  font-size: 0.8125rem;
+  color: var(--color-base-content/0.6);
+}
+
+/* Comment options (edit, delete, reply, report) */
+ol.comments .comment-options {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.8125rem;
+}
+
+ol.comments .comment-options a {
+  color: var(--color-base-content/0.5);
+  border: none;
+  transition: color 0.15s;
+}
+
+ol.comments .comment-options a:hover {
+  color: var(--color-primary);
+}
+
+ol.comments .comment-options .delete:hover {
+  color: var(--color-error);
+}
+
+ol.comments .comment-options a.active::before {
+  content: "\2716";
+  margin-right: 0.25rem;
+}
+
+ol.comments .edit,
+ol.comments .delete {
+  float: none;
+}
+
+/* Comment form */
+ol.comments form legend,
+ol.comments span.label-text {
+  display: none;
+}
+
+ol.comments form .submit {
+  clear: both;
+  margin: 0.5rem 0 0 0;
+  padding: 0;
+  text-align: right;
+}
+
+ol.comments .comment-add.hide {
+  display: none;
+}
+
+/* Voting */
+.comment-voting {
+  float: right;
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.comment-voting a {
+  color: var(--color-base-content/0.4);
+  border: none;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-field);
+  transition: all 0.15s;
+}
+
+.comment-voting a:hover {
+  color: var(--color-primary);
+  background: var(--color-primary/0.08);
+}
+
+.comment-voting .helpful-count {
+  color: var(--color-base-content/0.5);
+}
+
+/* No results */
+.results-none {
+  max-width: 30em;
+  margin: 3rem auto;
+  padding: 0;
+  text-align: center;
+  color: var(--color-base-content/0.5);
+}
+
+.results-none p {
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 300;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Nested replies */
+ol.comments ol.comments {
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-border);
+}
+
+ol.comments .comment-none {
+  color: var(--color-base-content/0.4);
+}

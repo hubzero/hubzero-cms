@@ -1,0 +1,119 @@
+/**
+ * Wishlist plugin — daisyUI styles.
+ *
+ * Loaded instead of wishlist.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Entries */
+.entry-details a {
+  color: var(--color-base-content/0.6);
+}
+
+.entry-details a:hover {
+  color: var(--color-base-content);
+}
+
+.entry-comments a {
+  font-size: 0.8125rem;
+  color: var(--color-base-content/0.5);
+}
+
+/* Ideas table */
+.ideas .entry-id {
+  display: block;
+  overflow: hidden;
+  width: 1.7em;
+  height: 1.7em;
+  margin: 0.5em 0 0 0;
+  text-align: center;
+}
+
+.ideas .entry-id::before {
+  font-size: 1.2em;
+  line-height: 1;
+  color: var(--color-base-content/0.3);
+}
+
+/* State colors */
+.ideas tbody tr.accepted {
+  background: color-mix(in oklch, var(--color-warning) 5%, transparent);
+}
+
+.ideas tbody tr.granted {
+  background: color-mix(in oklch, var(--color-success) 5%, transparent);
+}
+
+.ideas tbody tr.rejected {
+  background: color-mix(in oklch, var(--color-error) 5%, transparent);
+}
+
+.ideas tbody tr.withdrawn {
+  background: var(--color-base-200);
+}
+
+/* Status labels */
+.ideas .ranking span {
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ideas .ranking .accepted {
+  color: var(--color-warning);
+}
+
+.ideas .ranking .granted {
+  color: var(--color-success);
+}
+
+.ideas .ranking .flagged,
+.ideas .ranking .rejected {
+  color: var(--color-error);
+}
+
+.ideas .ranking .withdrawn {
+  color: var(--color-base-content/0.4);
+}
+
+/* Voting */
+.entries tbody td.voting,
+.voting {
+  text-align: right;
+  white-space: nowrap;
+}
+
+p.voting {
+  float: right;
+  min-width: 10em;
+  margin: 0.5rem 0;
+  padding: 0;
+}
+
+/* Priority bar */
+.priority-level-base {
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 3px;
+  background-color: var(--color-base-300);
+  width: 5.5em;
+  border-radius: 2px;
+}
+
+.priority-level {
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 2px;
+}
+
+.priority-level span {
+  display: none;
+}

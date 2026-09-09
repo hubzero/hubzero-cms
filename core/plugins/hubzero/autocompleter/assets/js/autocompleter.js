@@ -5,6 +5,10 @@
  */
 
 /* Plugin based off of Tokenizing Autocomplete by James Smith (http://loopj.com) */
+
+// Detect daisyUI mode from <html data-css-framework="daisyui">
+var IS_DAISYUI = document.documentElement.getAttribute('data-css-framework') === 'daisyui';
+
 (function ($) {
 // Default settings
 var DEFAULT_SETTINGS = {
@@ -41,7 +45,12 @@ var DEFAULT_SETTINGS = {
 
 	// Formatters
 	resultsFormatter: function(item){ return "<li>" + item[this.propertyToSearch]+ "</li>" },
-	tokenFormatter: function(item) { return "<li><p>" + item[this.propertyToSearch] + "</p></li>" },
+	tokenFormatter: function(item) {
+		if (IS_DAISYUI) {
+			return '<li class="badge badge-soft badge-primary gap-1"><p>' + item[this.propertyToSearch] + '</p></li>';
+		}
+		return "<li><p>" + item[this.propertyToSearch] + "</p></li>";
+	},
 
 	// Callbacks
 	onResult: null,
@@ -969,14 +978,16 @@ HUB.Plugins.Autocomplete = {
 	initialize: function() {
 		var $ = jq;
 
-		//var head = document.head;
+		// Inject the CSS file — PHP sets plgAutocompleterCss to the
+		// framework-appropriate stylesheet (legacy or blade).
 		var head = document.getElementsByTagName('head')[0];
 		var styles = document.createElement('link');
 		styles.type = 'text/css';
 		styles.rel = 'stylesheet';
-		styles.href = plgAutocompleterCss; //$('#plgAutocompleterCss').val();
+		styles.href = plgAutocompleterCss;
 		if (!styles.href) {
-			styles.href = '/core/plugins/hubzero/autocompleter/assets/css/autocompleter.css';
+			var suffix = IS_DAISYUI ? 'autocompleter.blade.css' : 'autocompleter.css';
+			styles.href = '/core/plugins/hubzero/autocompleter/assets/css/' + suffix;
 		}
 		head.appendChild(styles);
 

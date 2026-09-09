@@ -1,0 +1,31 @@
+/**
+ * Watch plugin — daisyUI styles.
+ *
+ * Loaded instead of watch.css when the active CSS framework is daisyUI.
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2005-2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.item-watch {
+  background: var(--color-base-200);
+  padding: 1rem;
+  border-radius: var(--radius-box);
+}
+
+.item-watch p:first-child {
+  margin-top: 0;
+}
+
+.item-watch p:last-child {
+  margin-bottom: 0;
+}
+
+.item-watch.watching {
+  background-color: color-mix(in oklch, var(--color-info) 8%, var(--color-base-100));
+}
+
+.item-watch .btn {
+  display: block;
+}

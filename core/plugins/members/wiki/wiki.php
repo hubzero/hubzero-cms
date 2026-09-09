@@ -3,6 +3,7 @@
 namespace Plugins\Members\Wiki;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Document;
 use Hubzero\Facades\Lang;
 
 /**
@@ -136,13 +137,26 @@ class Wiki extends Plugin
      */
     public static function out($row)
     {
-        $html = "\t" . '<li class="resource">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">'
-            . stripslashes($row->title) . '</a></p>' . "\n";
-        $html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
-        $html .= "\t\t" . '<p>'
-            . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
-        $html .= "\t" . '</li>' . "\n";
+        $snippet = \Hubzero\Utility\Str::truncate(
+            strip_tags(stripslashes($row->version->get('pagehtml'))),
+            300
+        );
+
+        if (Document::getCssFramework() === 'daisyui') {
+            $html = '<li>';
+            $html .= '<p class="font-semibold"><a class="link link-hover text-primary" href="' . $row->link() . '">'
+                . e(stripslashes($row->title)) . '</a></p>';
+            $html .= '<p class="text-sm text-base-content/70 mt-0.5">' . $snippet . '</p>';
+            $html .= '</li>';
+        } else {
+            $html = "\t" . '<li class="resource">' . "\n";
+            $html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">'
+                . stripslashes($row->title) . '</a></p>' . "\n";
+            $html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
+            $html .= "\t\t" . '<p>' . $snippet . "</p>\n";
+            $html .= "\t" . '</li>' . "\n";
+        }
+
         return $html;
     }
 }

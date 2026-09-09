@@ -6,6 +6,7 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
+use Hubzero\Facades\Document;
 
 /**
  * @package   hubzero-cms
@@ -80,7 +81,8 @@ class Usage extends Plugin
             && (!in_array($database->getPrefix() . 'author_stats', $tables)
             || !in_array($database->getPrefix() . 'metrics_author_cluster', $tables))
         ) {
-            $arr['html'] = '<p class="error">' . Lang::txt('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
+            $cls = Document::getCssFramework() === 'daisyui' ? 'alert alert-error' : 'error';
+            $arr['html'] = '<p class="' . $cls . '">' . Lang::txt('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
             return $arr;
         }
 
