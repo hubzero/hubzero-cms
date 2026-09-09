@@ -1590,6 +1590,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Initiate a whiteboard comment object
 		$comment = \Hubzero\Item\Comment::oneOrFail($id);
+
+		// Only the comment's author and the owner of the profile may remove it
+		if (User::get('id') != $comment->get('created_by')
+		 && User::get('id') != $this->member->get('id'))
+		{
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			return $this->_post();
+		}
+
 		$comment->set('state', $comment::STATE_DELETED);
 
 		// Delete the entry itself
