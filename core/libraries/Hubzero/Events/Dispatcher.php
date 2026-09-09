@@ -252,16 +252,48 @@ class Dispatcher implements DispatcherInterface
             $event = $this->resolveEventName($event);
 
             if (isset($this->listeners[$event])) {
-                return $this->listeners[$event]->has($listener);
+                if ($this->listeners[$event]->has($listener)) {
+                    return true;
+                }
+                // Check wrapped listeners' inner objects
+                return $this->hasWrappedListener($this->listeners[$event], $listener);
             }
         } else {
             foreach ($this->listeners as $queue) {
                 if ($queue->has($listener)) {
                     return true;
                 }
+                if ($this->hasWrappedListener($queue, $listener)) {
+                    return true;
+                }
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Check if a listener queue contains a WrappedListener wrapping the given object.
+     *
+     * addListener() wraps non-ListenerInterface objects in WrappedListener
+     * before storing them, so a direct SplObjectStorage::contains() check
+     * on the raw object will always fail. This method unwraps each entry
+     * to compare inner objects.
+     *
+     * @param   ListenersPriorityQueue  $queue     The listener queue.
+     * @param   object                  $listener  The raw listener object to find.
+     * @return  boolean
+     */
+    private function hasWrappedListener(ListenersPriorityQueue $queue, $listener): bool
+    {
+        foreach ($queue as $registered) {
+            if (
+                $registered instanceof WrappedListener
+                && $registered->getWrappedListener() === $listener
+            ) {
+                return true;
+            }
+        }
         return false;
     }
 

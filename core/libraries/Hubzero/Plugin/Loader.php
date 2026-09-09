@@ -33,6 +33,21 @@ class Loader implements LoaderInterface
     protected static $plugins = null;
 
     /**
+     * Cache of instantiated plugin listener objects, keyed by "type.name".
+     *
+     * Prevents duplicate listener registration when the event dispatcher
+     * lazy-loads the same plugin group multiple times in a single request.
+     * Each trigger() call invokes addListeners() → loadListeners() → init(),
+     * which previously created a new instance every time. Because
+     * SplObjectStorage::contains() uses object identity, the dispatcher's
+     * hasListener() check could not detect that an equivalent listener was
+     * already registered, leading to N× duplicated event responses.
+     *
+     * @var  array<string, object>
+     */
+    protected static $instances = [];
+
+    /**
      * Get the event name.
      *
      * @return  string  The event name.
@@ -244,6 +259,14 @@ class Loader implements LoaderInterface
         }
 
         if ($autocreate) {
+            $cacheKey = $plugin->type . '.' . $plugin->name;
+
+            // Return the cached instance so the dispatcher's identity-based
+            // hasListener() check can detect it as already registered.
+            if (isset(static::$instances[$cacheKey])) {
+                return static::$instances[$cacheKey];
+            }
+
             // Try namespaced first, then legacy
             foreach (array($classNameN, $classNameL) as $className) {
                 if (!class_exists($className)) {
@@ -261,7 +284,9 @@ class Loader implements LoaderInterface
                 }
 
                 // Instantiate and register the plugin.
-                return new $className($dispatcher, (array) $plugin);
+                $instance = new $className($dispatcher, (array) $plugin);
+                static::$instances[$cacheKey] = $instance;
+                return $instance;
             }
         }
 
