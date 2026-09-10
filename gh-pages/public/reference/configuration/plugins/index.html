@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Plugin parameters · Reference · Hubzero Documentation</title>
-  <meta name="description" content="One page per plugin group, listing every plugin in the group and its parameters.">
+  <meta name="description" content="One page per plugin group, listing every plugin in the group and its parameters. These are the settings behind each plugin&#x27;s row under Extensions Plug-in…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/configuration/plugins/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,7 +116,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/wiki/index.html">Wiki (com_wiki)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/wishlist/index.html">Wishlist (com_wishlist)</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Plugin parameters</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Plugin parameters</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#how-to-read-these-tables">How to read these tables</a></li>
+</ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="answers/index.html">Answers plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="antispam/index.html">Antispam plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="authentication/index.html">Authentication plugins</a></li>
@@ -214,7 +216,14 @@
         </header>
         
         <div class="prose">
-<p>One page per plugin group, listing every plugin in the group and its parameters.</p>
+<p>One page per plugin group, listing every plugin in the group and its parameters. These are the settings behind each plugin's row under <strong>Extensions</strong> &gt; <strong>Plug-in Manager</strong>.</p>
+<h2 id="how-to-read-these-tables">How to read these tables</h2>
+<ul>
+<li><strong>Default</strong> is the value written in the manifest, which is what a hub runs on until someone saves the screen. It is not always what the code falls back to when the setting is absent, and where the two disagree the narrative chapter for that extension says so.</li>
+<li><strong>Type</strong> is the form field the administrator interface renders. An unrecognised type falls back to a plain text box.</li>
+<li><strong>Description</strong> is the manifest's description string resolved through the extension's language files. A missing string leaves the raw key.</li>
+<li>A parameter listed here is not proof that anything reads it. Several shipped settings are stored and never used again; those are recorded in the chapter for the extension.</li>
+</ul>
 <section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="answers/index.html">Answers plugins</a></li>
 <li><a href="antispam/index.html">Antispam plugins</a></li>
 <li><a href="authentication/index.html">Authentication plugins</a></li>
