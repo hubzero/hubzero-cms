@@ -655,20 +655,23 @@ img { max-width: 100%; height: auto; }
 
 .books { max-width: calc(68rem + 2 * clamp(1rem, 4vw, 3rem)); margin: 0 auto; padding: .5rem clamp(1rem, 4vw, 3rem) 0; }
 
-/* each audience is a row: label on the left, its books on the right, so a group
-   with one or two books does not leave a mostly empty grid row */
-.book-group {
+/* ----------------------------------------------------------------- shelf */
+
+/* The books as a shelf of covers. Each is one volume in a series: the same
+   mark, the same series line, the same proportions, and a colour of its own
+   so a reader learns to recognise it. */
+
+/* Each audience is a shelf: its label on the left, its volumes on the right,
+   so a shelf holding one book does not leave a mostly empty row. */
+.shelf {
   display: grid;
   grid-template-columns: 9rem minmax(0, 1fr);
   gap: .9rem 1.5rem;
   padding: 1.75rem 0;
   border-bottom: 1px solid var(--rule);
 }
-.book-group:last-child { border-bottom: 0; }
-.book-group__title {
-  display: flex;
-  align-items: center;
-  gap: .6rem;
+.shelf:last-child { border-bottom: 0; }
+.shelf__title {
   margin: .35rem 0 0;
   color: var(--ink-3);
   font-size: .78rem;
@@ -676,55 +679,129 @@ img { max-width: 100%; height: auto; }
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-/* A rule that runs to the end of the row, so the five audiences read as
-   bands rather than as one long list of cards. */
-.book-group__title::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: var(--rule);
-}
-.book-grid {
+.shelf__books {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: .9rem;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  gap: 1.1rem;
+  align-items: start;
 }
-.book-card {
+
+.cover {
+  --cover-ink: #0b6e8c;
+  --cover-wash: rgba(11, 110, 140, .07);
+  position: relative;
+  display: flex;
+  min-height: 15.5rem;
+  border-radius: 3px 7px 7px 3px;
+  background: var(--paper);
+  box-shadow:
+    0 1px 1px rgba(15, 35, 45, .10),
+    0 8px 18px -12px rgba(15, 35, 45, .35);
+  overflow: hidden;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.cover:hover,
+.cover:focus-within {
+  transform: translateY(-3px);
+  box-shadow:
+    0 2px 3px rgba(15, 35, 45, .12),
+    0 16px 30px -14px rgba(15, 35, 45, .45);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover { transition: none; }
+  .cover:hover, .cover:focus-within { transform: none; }
+}
+
+/* the spine, with the fold shading a real one has */
+.cover__spine {
+  flex: 0 0 .85rem;
+  background-color: var(--cover-ink);
+  background-image:
+    linear-gradient(to right,
+      color-mix(in srgb, var(--cover-ink) 88%, black) 0 22%,
+      var(--cover-ink) 22% 62%,
+      color-mix(in srgb, var(--cover-ink) 82%, black) 62% 78%,
+      color-mix(in srgb, var(--cover-ink) 92%, white) 78% 100%);
+}
+
+.cover__face {
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.1rem 1rem;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--paper);
+  flex: 1 1 auto;
+  padding: 1.15rem 1.15rem 1rem;
+  background:
+    linear-gradient(180deg, var(--cover-wash), transparent 55%),
+    var(--paper);
+  border-left: 1px solid var(--rule);
 }
-.book-card h3 { margin: 0 0 .35rem; font-size: 1.08rem; font-weight: 600; }
-.book-card h3 a { color: var(--ink); text-decoration: none; }
-.book-card h3 a::after { content: ""; position: absolute; inset: 0; }
-.book-card { position: relative; }
-.book-card {
-  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+.cover__mark { width: 1.6rem; height: auto; color: var(--cover-ink); }
+.cover__series {
+  margin-top: .55rem;
+  color: var(--ink-3);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
-.book-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 1px 2px rgba(13, 40, 52, .05), 0 6px 16px -6px rgba(13, 40, 52, .18);
-  transform: translateY(-1px);
+.cover__title {
+  margin: .5rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
 }
-.book-card:focus-within { border-color: var(--accent); }
-@media (prefers-reduced-motion: reduce) {
-  .book-card { transition: none; }
-  .book-card:hover { transform: none; }
+.cover__title a { color: var(--ink); text-decoration: none; }
+.cover__title a::after { content: ""; position: absolute; inset: 0; }
+.cover__title a:focus-visible { outline: none; }
+.cover:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cover__rule {
+  width: 2.2rem;
+  height: 2px;
+  margin: .6rem 0 .55rem;
+  background: var(--cover-ink);
 }
-/* The shadow does nothing against a dark ground, so lift the card's own fill
-   instead and let the accent border carry the state. */
+.cover__blurb {
+  color: var(--ink-2);
+  font-size: .88rem;
+  line-height: 1.45;
+}
+.cover__meta {
+  margin-top: auto;
+  padding-top: .9rem;
+  color: var(--ink-3);
+  font-size: .75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* one colour per volume */
+.cover--managers    { --cover-ink: #0b6e8c; --cover-wash: rgba(11, 110, 140, .07); }
+.cover--users       { --cover-ink: #2f7d63; --cover-wash: rgba(47, 125, 99, .07); }
+.cover--tools       { --cover-ink: #9a6320; --cover-wash: rgba(154, 99, 32, .08); }
+.cover--developers  { --cover-ink: #4d5aa0; --cover-wash: rgba(77, 90, 160, .07); }
+.cover--reference   { --cover-ink: #7c4a74; --cover-wash: rgba(124, 74, 116, .07); }
+
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .book-card:hover {
-    box-shadow: none;
+  :root:not([data-theme="light"]) .cover {
     background: var(--paper-2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .4), 0 10px 22px -14px rgba(0, 0, 0, .8);
   }
+  :root:not([data-theme="light"]) .cover__face {
+    background: linear-gradient(180deg, var(--cover-wash), transparent 55%), var(--paper-2);
+  }
+  :root:not([data-theme="light"]) .cover--managers   { --cover-ink: #4ea9c8; --cover-wash: rgba(78, 169, 200, .10); }
+  :root:not([data-theme="light"]) .cover--users      { --cover-ink: #5cb394; --cover-wash: rgba(92, 179, 148, .10); }
+  :root:not([data-theme="light"]) .cover--tools      { --cover-ink: #d1974a; --cover-wash: rgba(209, 151, 74, .10); }
+  :root:not([data-theme="light"]) .cover--developers { --cover-ink: #8b96db; --cover-wash: rgba(139, 150, 219, .10); }
+  :root:not([data-theme="light"]) .cover--reference  { --cover-ink: #bd88b4; --cover-wash: rgba(189, 136, 180, .10); }
 }
-:root[data-theme="dark"] .book-card:hover { box-shadow: none; background: var(--paper-2); }
-.book-card p { margin: 0; color: var(--ink-2); font-size: .92rem; }
-.book-card__meta { margin-top: auto !important; padding-top: .75rem; color: var(--ink-3) !important; font-size: .78rem !important; }
+:root[data-theme="dark"] .cover { background: var(--paper-2); box-shadow: 0 1px 1px rgba(0,0,0,.4), 0 10px 22px -14px rgba(0,0,0,.8); }
+:root[data-theme="dark"] .cover__face { background: linear-gradient(180deg, var(--cover-wash), transparent 55%), var(--paper-2); }
+:root[data-theme="dark"] .cover--managers   { --cover-ink: #4ea9c8; --cover-wash: rgba(78, 169, 200, .10); }
+:root[data-theme="dark"] .cover--users      { --cover-ink: #5cb394; --cover-wash: rgba(92, 179, 148, .10); }
+:root[data-theme="dark"] .cover--tools      { --cover-ink: #d1974a; --cover-wash: rgba(209, 151, 74, .10); }
+:root[data-theme="dark"] .cover--developers { --cover-ink: #8b96db; --cover-wash: rgba(139, 150, 219, .10); }
+:root[data-theme="dark"] .cover--reference  { --cover-ink: #bd88b4; --cover-wash: rgba(189, 136, 180, .10); }
 
 /* ---------------------------------------------------------------- footer */
 
@@ -784,7 +861,7 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 640px) {
-  .book-group { grid-template-columns: 1fr; gap: .5rem; }
+  .shelf { grid-template-columns: 1fr; gap: .5rem; padding: 1.1rem 0; }
 }
 
 @media (max-width: 520px) {
