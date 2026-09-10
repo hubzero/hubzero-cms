@@ -12,27 +12,19 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
 /**
- * Install command class - fresh Hubzero installation
+ * Install command class - fresh HUBzero installation
  **/
 class Install extends Base implements CommandInterface
 {
     /**
      * Default (required) command - runs the full installation
      *
-     * @museDescription  Run the full Hubzero installation process
+     * @museDescription  Run the full HUBzero installation process
      *
-     * Pass --config=<file>, or --config=- to read it from standard input, to
-     * install without being asked anything. The file is JSON, with a "site",
-     * "database" and "admin" object holding the same values the prompts
-     * collect, and an optional "sample" key saying whether to load sample
-     * data. Pass --env to read the same answers from HUB_*
-     * environment variables instead, as a container is configured.
-     *
-     * Without being asked anything, an install of a hub that is already
-     * installed only brings its database up to date, so the same command can
-     * start a container every time. --wait=<seconds> waits that long for
-     * the database server to answer first, as one starting beside it may not
-     * yet.
+     * Pass --config=<file> to install without being asked anything. The file
+     * is JSON, with a "site", "database" and "admin" object holding the same
+     * values the prompts collect, and an optional "sample" key saying whether
+     * to load sample data.
      *
      * @return  void
      **/
@@ -46,30 +38,9 @@ class Install extends Base implements CommandInterface
 
         $unattended = Install\Answers::isUnattended();
 
-        if ($wait = (int) $this->arguments->getOpt('wait')) {
-            $this->waitForDatabase($wait);
-        }
-
-        if ($unattended) {
-            $installed = Install\AdminUser::exists(PATH_APP);
-
-            if ($installed === null) {
-                $this->output->error('The hub is configured, but its database cannot be reached.');
-            }
-
-            if ($installed) {
-                $this->output->addLine('The hub is already installed. Bringing its database up to date.');
-
-                if (!Install\Migrations::run($ansi, PATH_APP, PATH_CORE, PATH_ROOT)) {
-                    $this->output->error('Some migrations failed. You can retry with: muse install migrations');
-                }
-                return;
-            }
-        }
-
         // Run preflight checks
         if (!Install\Preflight::check($ansi, PATH_ROOT)) {
-            $this->output->error('Pre-flight checks failed.');
+            return;
         }
 
         // Create app directory structure
@@ -83,9 +54,6 @@ class Install extends Base implements CommandInterface
 
         // Site settings
         $settingsResult = Install\SiteSettings::configure($ansi, PATH_APP);
-        if ($settingsResult === null && $unattended) {
-            $this->output->error('Site settings failed.');
-        }
         if ($settingsResult === null) {
             return; // User chose to exit
         }
@@ -101,18 +69,18 @@ class Install extends Base implements CommandInterface
         }
 
         // Prompt before loading schema
-        $this->say("\n");
-        $this->say("\033[33mReady to Load Database Schema\033[39m\n");
-        $this->say("-----------------------------\n");
-        $this->say("\n");
-        $this->say("This will create 381 database tables and load essential system data.\n");
-        $this->say("This step is required for Hubzero to function.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mReady to Load Database Schema\033[39m\n";
+        echo "-----------------------------\n";
+        echo "\n";
+        echo "This will create 381 database tables and load essential system data.\n";
+        echo "This step is required for HUBzero to function.\n";
+        echo "\n";
 
         if (!$unattended && !$this->promptContinue("Continue with schema loading?")) {
-            $this->say("\n");
-            $this->say("Installation cancelled.\n");
-            $this->say("\n");
+            echo "\n";
+            echo "Installation cancelled.\n";
+            echo "\n";
             return;
         }
 
@@ -129,13 +97,13 @@ class Install extends Base implements CommandInterface
         }
 
         // Ask about sample data
-        $this->say("\n");
-        $this->say("\033[33mSample Data (Optional)\033[39m\n");
-        $this->say("-----------------------\n");
-        $this->say("\n");
-        $this->say("Sample data includes demo content to help you get started.\n");
-        $this->say("This is optional and can be skipped for production installations.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mSample Data (Optional)\033[39m\n";
+        echo "-----------------------\n";
+        echo "\n";
+        echo "Sample data includes demo content to help you get started.\n";
+        echo "This is optional and can be skipped for production installations.\n";
+        echo "\n";
 
         $loadSample = $unattended
             ? Install\Answers::wantsSampleData()
@@ -147,17 +115,17 @@ class Install extends Base implements CommandInterface
                 // Continue anyway - sample data is optional
             }
         } else {
-            $this->say("\n");
-            $this->say("Skipping sample data.\n");
+            echo "\n";
+            echo "Skipping sample data.\n";
         }
 
         // Run database migrations
-        $this->say("\n");
-        $this->say("\033[33mDatabase Migrations\033[39m\n");
-        $this->say("-------------------\n");
-        $this->say("\n");
-        $this->say("Migrations apply incremental updates to bring the database schema up to date.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mDatabase Migrations\033[39m\n";
+        echo "-------------------\n";
+        echo "\n";
+        echo "Migrations apply incremental updates to bring the database schema up to date.\n";
+        echo "\n";
 
         if (!Install\Migrations::run($ansi, PATH_APP, PATH_CORE, PATH_ROOT)) {
             $this->output->error('Some migrations may have failed. You can retry with: muse install migrations');
@@ -291,18 +259,18 @@ class Install extends Base implements CommandInterface
         }
 
         // Prompt before loading schema
-        $this->say("\n");
-        $this->say("\033[33mReady to Load Database Schema\033[39m\n");
-        $this->say("-----------------------------\n");
-        $this->say("\n");
-        $this->say("This will create 381 database tables and load essential system data.\n");
-        $this->say("This step is required for Hubzero to function.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mReady to Load Database Schema\033[39m\n";
+        echo "-----------------------------\n";
+        echo "\n";
+        echo "This will create 381 database tables and load essential system data.\n";
+        echo "This step is required for HUBzero to function.\n";
+        echo "\n";
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Continue with schema loading?")) {
-            $this->say("\n");
-            $this->say("Schema loading cancelled.\n");
-            $this->say("\n");
+            echo "\n";
+            echo "Schema loading cancelled.\n";
+            echo "\n";
             return;
         }
 
@@ -318,13 +286,13 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        $this->say("\n");
-        $this->say("\033[32mSchema and base data loaded successfully.\033[39m\n");
-        $this->say("\n");
-        $this->say("Next steps:\n");
-        $this->say("  - Run migrations:           muse install migrations\n");
-        $this->say("  - Load sample data (opt):   muse install sample\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[32mSchema and base data loaded successfully.\033[39m\n";
+        echo "\n";
+        echo "Next steps:\n";
+        echo "  - Run migrations:           muse install migrations\n";
+        echo "  - Load sample data (opt):   muse install sample\n";
+        echo "\n";
     }
 
     /**
@@ -372,18 +340,18 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        $this->say("\n");
-        $this->say("\033[33mSample Data\033[39m\n");
-        $this->say("-----------\n");
-        $this->say("\n");
-        $this->say("Sample data includes demo content to help you get started.\n");
-        $this->say("This is optional and can be skipped for production installations.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mSample Data\033[39m\n";
+        echo "-----------\n";
+        echo "\n";
+        echo "Sample data includes demo content to help you get started.\n";
+        echo "This is optional and can be skipped for production installations.\n";
+        echo "\n";
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Load sample data?")) {
-            $this->say("\n");
-            $this->say("Sample data loading cancelled.\n");
-            $this->say("\n");
+            echo "\n";
+            echo "Sample data loading cancelled.\n";
+            echo "\n";
             return;
         }
 
@@ -442,18 +410,18 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        $this->say("\n");
-        $this->say("\033[33mDatabase Migrations\033[39m\n");
-        $this->say("-------------------\n");
-        $this->say("\n");
-        $this->say("This will run all pending database migrations to update the schema.\n");
-        $this->say("Migrations apply incremental changes to bring the database up to date.\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mDatabase Migrations\033[39m\n";
+        echo "-------------------\n";
+        echo "\n";
+        echo "This will run all pending database migrations to update the schema.\n";
+        echo "Migrations apply incremental changes to bring the database up to date.\n";
+        echo "\n";
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Run database migrations?")) {
-            $this->say("\n");
-            $this->say("Migration cancelled.\n");
-            $this->say("\n");
+            echo "\n";
+            echo "Migration cancelled.\n";
+            echo "\n";
             return;
         }
 
@@ -500,384 +468,6 @@ class Install extends Base implements CommandInterface
     }
 
     /**
-     * Wait for the database server to accept a connection
-     *
-     * Tries the configuration the hub already has, or else the answers'
-     * database section, every two seconds. Giving up is not an error: the
-     * install then fails on the connection itself, and says why.
-     *
-     * @param   int  $seconds  How long to keep trying
-     * @return  void
-     **/
-    private function waitForDatabase($seconds)
-    {
-        $config = (array) (Install\Database::readConfig(PATH_APP) ?? []);
-
-        if ($config) {
-            $config['username'] = $config['user'] ?? '';
-            $config['database'] = $config['db'] ?? '';
-        } else {
-            $config = Install\Answers::section('database');
-        }
-
-        if (empty($config['username'])) {
-            return;
-        }
-
-        $dsn = 'mysql:';
-        if (!empty($config['socket'])) {
-            $dsn .= 'unix_socket=' . $config['socket'];
-        } else {
-            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
-            if (!empty($config['port'])) {
-                $dsn .= ';port=' . $config['port'];
-            }
-        }
-
-        $deadline = time() + $seconds;
-        $said     = false;
-
-        while (true) {
-            try {
-                new \PDO($dsn, $config['username'], $config['password'] ?? '', [\PDO::ATTR_TIMEOUT => 5]);
-                return;
-            } catch (\PDOException $e) {
-                if (time() >= $deadline) {
-                    return;
-                }
-            }
-
-            if (!$said) {
-                $this->output->addLine('Waiting for the database server...');
-                $said = true;
-            }
-
-            sleep(2);
-        }
-    }
-
-    /**
-     * Print a line of the installer's own output
-     *
-     * Its color codes are written into the text, so they come out here when
-     * the output is not colored, as in a container's log.
-     *
-     * @param   string  $text
-     * @return  void
-     **/
-    private function say($text)
-    {
-        if (!$this->output->isColored()) {
-            $text = preg_replace("/\e\[[0-9;]*m/", '', $text);
-        }
-
-        echo $text;
-    }
-
-    /**
-     * Check an installed hub
-     *
-     * @museDescription  Check that an installed hub is served, keeps its secrets and runs as it should
-     *
-     * Looks at the hub as a visitor would, over its own address, and at
-     * what it needs behind that: the scheduled tasks, the database server's
-     * settings, mail, and who owns what it writes. Each check says what to
-     * do when it does not pass.
-     *
-     * @return  void
-     **/
-    public function verify()
-    {
-        $this->say("\n\033[33mChecking the Hub\033[39m\n");
-        $this->say("----------------\n");
-
-        $live = rtrim((string) \Config::get('live_site'), '/');
-
-        if ($live === '') {
-            $passed = $this->report(
-                'fail',
-                'live_site is not set in app/config/app.php, so the scheduled tasks cannot reach the hub'
-            );
-        } else {
-            $passed = $this->checkServed($live);
-        }
-
-        $this->checkScheduledTasks();
-        $this->checkDatabaseServer();
-        $this->checkMail();
-        $this->checkOwnership();
-
-        $this->say("\n");
-
-        if (!$passed) {
-            $this->output->error('The hub failed a check above.');
-        }
-
-        $this->output->addLine('No check failed.', 'success');
-    }
-
-    /**
-     * Report the result of one check
-     *
-     * @param   string  $status  ok, warn or fail
-     * @param   string  $text
-     * @return  bool    False for a failure
-     **/
-    private function report($status, $text)
-    {
-        $labels = [
-            'ok'   => "\033[32m[OK]\033[39m  ",
-            'warn' => "\033[33m[WARN]\033[39m",
-            'fail' => "\033[31m[FAIL]\033[39m",
-        ];
-
-        $this->say('  ' . $labels[$status] . ' ' . $text . "\n");
-
-        return $status !== 'fail';
-    }
-
-    /**
-     * Request one of the hub's own addresses
-     *
-     * @param   string  $url
-     * @param   bool    $verify  Whether to require a certificate this server trusts
-     * @return  array   The status code, and curl's error if there was one
-     **/
-    private function fetch($url, $verify = true)
-    {
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_NOBODY         => false,
-            CURLOPT_FOLLOWLOCATION => false,
-            CURLOPT_SSL_VERIFYPEER => $verify,
-            CURLOPT_SSL_VERIFYHOST => $verify ? 2 : 0,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_USERAGENT      => 'hubzero-cms verify',
-        ]);
-
-        curl_exec($ch);
-        $code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_errno($ch) ? curl_error($ch) : '';
-        curl_close($ch);
-
-        return [$code, $error];
-    }
-
-    /**
-     * Check that the hub answers over HTTPS and refuses its private files
-     *
-     * @param   string  $live  The hub's address
-     * @return  bool    False if a check failed
-     **/
-    private function checkServed($live)
-    {
-        if (stripos($live, 'https://') !== 0) {
-            return $this->report('fail', "live_site is {$live}; a hub has to be served over https://");
-        }
-
-        list($code, $error) = $this->fetch($live . '/');
-
-        if ($error !== '') {
-            list($code, $insecure) = $this->fetch($live . '/', false);
-
-            if ($insecure !== '') {
-                return $this->report('fail', "{$live} does not answer from this server: {$error}");
-            }
-
-            $this->report('warn', "{$live} answers, but with a certificate this server does not trust: {$error}");
-        }
-
-        if ($code !== 200) {
-            return $this->report('fail', "{$live}/ answered HTTP {$code}, not 200");
-        }
-
-        if ($error === '') {
-            $this->report('ok', "{$live} answers over HTTPS");
-        }
-
-        list($code) = $this->fetch($live . '/app/config/database.php', false);
-
-        if ($code === 403 || $code === 404) {
-            return $this->report('ok', "Its configuration is refused to visitors (HTTP {$code})");
-        }
-
-        return $this->report(
-            'fail',
-            "{$live}/app/config/database.php answered HTTP {$code}: "
-            . "the web server's rules for private paths are missing"
-        );
-    }
-
-    /**
-     * Check that the server ticks the scheduled tasks
-     *
-     * @return  void
-     **/
-    private function checkScheduledTasks()
-    {
-        try {
-            $db = \App::get('db');
-            $db->setQuery("SELECT MAX(`last_run`) FROM `#__cron_jobs` WHERE `state` = 1");
-            $last = $db->loadResult();
-        } catch (\Exception $e) {
-            $this->report('warn', 'Could not read when the scheduled tasks last ran: ' . $e->getMessage());
-            return;
-        }
-
-        $minutes = $last && $last !== '0000-00-00 00:00:00'
-            ? (int) floor((time() - strtotime($last . ' UTC')) / 60)
-            : null;
-
-        if ($minutes === null) {
-            $this->report('warn', 'The scheduled tasks have never run. Add the cron line that ticks the hub');
-        } elseif ($minutes > 15) {
-            $this->report('warn', "The scheduled tasks last ran {$minutes} minutes ago. Is the server ticking them?");
-        } else {
-            $this->report('ok', 'The scheduled tasks are running');
-        }
-    }
-
-    /**
-     * Check the database server's settings the hub depends on
-     *
-     * @return  void
-     **/
-    private function checkDatabaseServer()
-    {
-        $db = \App::get('db');
-
-        try {
-            $db->setQuery('SELECT @@GLOBAL.sql_mode');
-            $mode = (string) $db->loadResult();
-
-            if (strpos($mode, 'STRICT_TRANS_TABLES') === false) {
-                $this->report(
-                    'warn',
-                    "MariaDB's SQL mode is not strict ('{$mode}'). Leave it at the server's default"
-                );
-            } else {
-                $this->report('ok', "MariaDB's SQL mode is strict");
-            }
-
-            $db->setQuery("SELECT CONVERT_TZ('2000-01-01 00:00:00', 'UTC', 'America/New_York')");
-
-            if ($db->loadResult() === null) {
-                $this->report(
-                    'warn',
-                    "MariaDB's time zone tables are empty. Load them: "
-                    . 'mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql'
-                );
-            } else {
-                $this->report('ok', "MariaDB's time zone tables are loaded");
-            }
-        } catch (\Exception $e) {
-            $this->report('warn', 'Could not read the database server\'s settings: ' . $e->getMessage());
-        }
-
-        $usage = \Component::params('com_usage');
-
-        if (!$usage->get('statsDBDatabase')) {
-            $this->report(
-                'warn',
-                'The usage statistics have no database. Create ' . \Config::get('db') . '_metrics'
-                . ' for the hub\'s account, then run: muse migration run -f'
-            );
-            return;
-        }
-
-        try {
-            \Hubzero\Database\Driver::getInstance([
-                'driver'   => 'pdo',
-                'host'     => $usage->get('statsDBHost'),
-                'port'     => $usage->get('statsDBPort'),
-                'user'     => $usage->get('statsDBUsername'),
-                'password' => $usage->get('statsDBPassword'),
-                'database' => $usage->get('statsDBDatabase'),
-            ]);
-            $this->report('ok', 'The usage statistics reach their database');
-        } catch (\Exception $e) {
-            $this->report('warn', 'The usage statistics cannot reach their database: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Check that the hub has somewhere to send mail
-     *
-     * @return  void
-     **/
-    private function checkMail()
-    {
-        $mailer = (string) \Config::get('mailer', 'mail');
-
-        if ($mailer === 'smtp') {
-            $host = (string) \Config::get('smtphost', 'localhost');
-            $port = (int) \Config::get('smtpport', 25);
-
-            $socket = @fsockopen($host, $port, $errno, $errstr, 5);
-
-            if ($socket) {
-                fclose($socket);
-                $this->report('ok', "Mail goes to the SMTP server at {$host}:{$port}");
-            } else {
-                $this->report('warn', "Mail goes to {$host}:{$port}, which does not answer: {$errstr}");
-            }
-            return;
-        }
-
-        $command = $mailer === 'sendmail'
-            ? (string) \Config::get('sendmail', '/usr/sbin/sendmail')
-            : (string) ini_get('sendmail_path');
-        $program = strtok($command, ' ');
-
-        if ($program && is_executable($program)) {
-            $this->report('ok', "Mail goes to {$program}");
-        } else {
-            $this->report(
-                'warn',
-                'Mail goes to ' . ($program ?: 'nothing') . ', which is not there. '
-                . 'Give the hub an SMTP server in its Mail Settings'
-            );
-        }
-    }
-
-    /**
-     * Check that everything the hub writes belongs to the account that owns it
-     *
-     * That is app/'s owner: in an image, the code itself can belong to root
-     * while only app/ is the web server's.
-     *
-     * @return  void
-     **/
-    private function checkOwnership()
-    {
-        $owner = fileowner(PATH_APP);
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(PATH_APP, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::SELF_FIRST
-        );
-
-        try {
-            foreach ($files as $file) {
-                if ($file->getOwner() !== $owner) {
-                    $this->report(
-                        'warn',
-                        $file->getPathname() . ' belongs to another account, so the hub may not be able to write it. '
-                        . 'Give it back: sudo chown -R --reference=' . PATH_APP . ' ' . PATH_APP
-                    );
-                    return;
-                }
-            }
-        } catch (\Exception $e) {
-            $this->report('warn', 'Could not look through ' . PATH_APP . ': ' . $e->getMessage());
-            return;
-        }
-
-        $this->report('ok', 'Everything in app/ belongs to the account that owns the hub');
-    }
-
-    /**
      * Output help documentation
      *
      * @return  void
@@ -886,27 +476,21 @@ class Install extends Base implements CommandInterface
     {
         $this->output
              ->getHelpOutput()
-             ->addOverview('Hubzero Fresh Installation')
+             ->addOverview('HUBzero Fresh Installation')
              ->addTasks($this)
              ->render();
     }
 
     /**
-     * Read the answers, from a file or the environment, if either was named
+     * Read the answer file, if one was named
      *
-     * Every task takes --config or --env, so that a step can be repeated on its own
+     * Every task takes --config, so that a step can be repeated on its own
      * without being asked anything, the same way the whole install can.
      *
      * @return  bool  False if a file was named and could not be read
      **/
     private function loadAnswers()
     {
-        if ($this->arguments->getOpt('env')) {
-            Install\Answers::fromEnvironment();
-            $this->output->addLine('Reading the answers from HUB_* environment variables');
-            return true;
-        }
-
         $answerFile = $this->arguments->getOpt('config');
 
         if (!$answerFile) {
@@ -920,7 +504,7 @@ class Install extends Base implements CommandInterface
             return false;
         }
 
-        $this->output->addLine('Reading the answers in ' . ($answerFile === '-' ? 'standard input' : $answerFile));
+        $this->output->addLine('Reading the answers in ' . $answerFile);
 
         return true;
     }
@@ -942,36 +526,36 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        $this->say("\n");
-        $this->say("\033[33mExisting Configuration Found\033[39m\n");
-        $this->say("----------------------------\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[33mExisting Configuration Found\033[39m\n";
+        echo "----------------------------\n";
+        echo "\n";
 
         if (!empty($siteConfig)) {
             if (!empty($siteConfig['sitename'])) {
-                $this->say("  Site name:    \033[32m{$siteConfig['sitename']}\033[39m\n");
+                echo "  Site name:    \033[32m{$siteConfig['sitename']}\033[39m\n";
             }
             if (!empty($siteConfig['mailfrom'])) {
-                $this->say("  Admin email:  \033[32m{$siteConfig['mailfrom']}\033[39m\n");
+                echo "  Admin email:  \033[32m{$siteConfig['mailfrom']}\033[39m\n";
             }
             if (!empty($siteConfig['offset'])) {
-                $this->say("  Timezone:     \033[32m{$siteConfig['offset']}\033[39m\n");
+                echo "  Timezone:     \033[32m{$siteConfig['offset']}\033[39m\n";
             }
         }
 
         if (!empty($dbConfig)) {
             if (!empty($dbConfig['database'])) {
-                $this->say("  Database:     \033[32m{$dbConfig['database']}\033[39m\n");
+                echo "  Database:     \033[32m{$dbConfig['database']}\033[39m\n";
             }
             if (!empty($dbConfig['username'])) {
-                $this->say("  DB User:      \033[32m{$dbConfig['username']}\033[39m\n");
+                echo "  DB User:      \033[32m{$dbConfig['username']}\033[39m\n";
             }
             $host = $dbConfig['host'] ?? 'localhost';
-            $this->say("  DB Host:      \033[32m{$host}\033[39m\n");
+            echo "  DB Host:      \033[32m{$host}\033[39m\n";
         }
 
-        $this->say("\n");
-        $this->say("\033[90mExisting values will be shown as defaults. Press Enter to keep them.\033[39m\n");
+        echo "\n";
+        echo "\033[90mExisting values will be shown as defaults. Press Enter to keep them.\033[39m\n";
     }
 
     /**
@@ -983,7 +567,7 @@ class Install extends Base implements CommandInterface
     private function promptContinue($prompt)
     {
         while (true) {
-            $this->say("{$prompt} [Y/n] ");
+            echo "{$prompt} [Y/n] ";
             $response = strtolower(trim(fgets(STDIN)));
 
             if ($response === '' || $response === 'y' || $response === 'yes') {
@@ -994,7 +578,7 @@ class Install extends Base implements CommandInterface
                 return false;
             }
 
-            $this->say("Please enter y/yes or n/no.\n\n");
+            echo "Please enter y/yes or n/no.\n\n";
         }
     }
 
@@ -1010,7 +594,7 @@ class Install extends Base implements CommandInterface
         $hint = $default ? '[Y/n]' : '[y/N]';
 
         while (true) {
-            $this->say("{$prompt} {$hint} ");
+            echo "{$prompt} {$hint} ";
             $response = strtolower(trim(fgets(STDIN)));
 
             if ($response === '') {
@@ -1025,7 +609,7 @@ class Install extends Base implements CommandInterface
                 return false;
             }
 
-            $this->say("Please enter y/yes or n/no.\n\n");
+            echo "Please enter y/yes or n/no.\n\n";
         }
     }
 
@@ -1039,41 +623,41 @@ class Install extends Base implements CommandInterface
      **/
     private function showInstallationComplete($ansi, $settingsResult, $adminResult)
     {
-        $this->say("\n");
-        $this->say("\033[32m" . str_repeat("=", 50) . "\033[39m\n");
-        $this->say("\033[32m  Installation Complete!\033[39m\n");
-        $this->say("\033[32m" . str_repeat("=", 50) . "\033[39m\n");
-        $this->say("\n");
+        echo "\n";
+        echo "\033[32m" . str_repeat("=", 50) . "\033[39m\n";
+        echo "\033[32m  Installation Complete!\033[39m\n";
+        echo "\033[32m" . str_repeat("=", 50) . "\033[39m\n";
+        echo "\n";
 
-        $this->say("Your Hubzero site has been successfully installed.\n");
-        $this->say("\n");
+        echo "Your HUBzero site has been successfully installed.\n";
+        echo "\n";
 
-        $this->say("\033[33mSite Information:\033[39m\n");
-        $this->say("  Site Name:  \033[32m{$settingsResult['sitename']}\033[39m\n");
+        echo "\033[33mSite Information:\033[39m\n";
+        echo "  Site Name:  \033[32m{$settingsResult['sitename']}\033[39m\n";
         if (!empty($settingsResult['live_site'])) {
-            $this->say("  Site URL:   \033[32m{$settingsResult['live_site']}\033[39m\n");
+            echo "  Site URL:   \033[32m{$settingsResult['live_site']}\033[39m\n";
         }
-        $this->say("\n");
+        echo "\n";
 
-        $this->say("\033[33mAdmin Login:\033[39m\n");
-        $this->say("  Username:   \033[32m{$adminResult['username']}\033[39m\n");
-        $this->say("  Email:      \033[32m{$adminResult['email']}\033[39m\n");
-        $this->say("\n");
+        echo "\033[33mAdmin Login:\033[39m\n";
+        echo "  Username:   \033[32m{$adminResult['username']}\033[39m\n";
+        echo "  Email:      \033[32m{$adminResult['email']}\033[39m\n";
+        echo "\n";
 
-        $this->say("\033[33mNext Steps:\033[39m\n");
-        $this->say("  1. Configure your web server to point to: \033[36m" . PATH_ROOT . "\033[39m\n");
-        $this->say("  2. Access your site in a web browser\n");
-        $this->say("  3. Log in at \033[36m/administrator\033[39m with the admin credentials above\n");
-        $this->say("  4. Configure additional settings in the admin panel\n");
-        $this->say("\n");
+        echo "\033[33mNext Steps:\033[39m\n";
+        echo "  1. Configure your web server to point to: \033[36m" . PATH_ROOT . "\033[39m\n";
+        echo "  2. Access your site in a web browser\n";
+        echo "  3. Log in at \033[36m/administrator\033[39m with the admin credentials above\n";
+        echo "  4. Configure additional settings in the admin panel\n";
+        echo "\n";
 
-        $this->say("\033[33mUseful Commands:\033[39m\n");
-        $this->say("  \033[36mmuse help\033[39m              - Show available muse commands\n");
-        $this->say("  \033[36mmuse migration run\033[39m    - Run database migrations\n");
-        $this->say("  \033[36mmuse cache clear\033[39m      - Clear the cache\n");
-        $this->say("\n");
+        echo "\033[33mUseful Commands:\033[39m\n";
+        echo "  \033[36mmuse help\033[39m              - Show available muse commands\n";
+        echo "  \033[36mmuse migration run\033[39m    - Run database migrations\n";
+        echo "  \033[36mmuse cache clear\033[39m      - Clear the cache\n";
+        echo "\n";
 
-        $this->say("\033[90mFor documentation, visit: https://help.hubzero.org\033[39m\n");
-        $this->say("\n");
+        echo "\033[90mFor documentation, visit: https://help.hubzero.org\033[39m\n";
+        echo "\n";
     }
 }

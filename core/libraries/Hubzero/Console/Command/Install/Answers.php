@@ -42,27 +42,18 @@ class Answers
     /**
      * Read an answer file
      *
-     * A path of "-" reads the answers from standard input, so that they can
-     * be handed to muse from a file it could not open itself: one that
-     * belongs to someone else, or that is outside its container.
-     *
-     * @param   string  $path   Path to a JSON answer file, or "-"
+     * @param   string  $path   Path to a JSON answer file
      * @param   string  $error  Set to the reason when this returns false
      * @return  bool
      **/
     public static function load($path, &$error = null)
     {
-        if ($path === '-') {
-            $path = 'standard input';
-            $json = stream_get_contents(STDIN);
-        } elseif (!is_file($path) || !is_readable($path)) {
+        if (!is_file($path) || !is_readable($path)) {
             $error = 'Answer file not found: ' . $path;
             return false;
-        } else {
-            $json = file_get_contents($path);
         }
 
-        $answers = json_decode((string) $json, true);
+        $answers = json_decode(file_get_contents($path), true);
 
         if (!is_array($answers)) {
             $error = 'Answer file is not valid JSON: ' . $path;
@@ -80,66 +71,6 @@ class Answers
         self::$unattended = true;
 
         return true;
-    }
-
-    /**
-     * The environment variables that can stand in for an answer file
-     *
-     * @var  array
-     */
-    private const ENVIRONMENT = [
-        'site' => [
-            'sitename'  => 'HUB_SITENAME',
-            'mailfrom'  => 'HUB_MAILFROM',
-            'live_site' => 'HUB_LIVE_SITE',
-            'offset'    => 'HUB_TIMEZONE',
-        ],
-        'database' => [
-            'host'     => 'HUB_DB_HOST',
-            'port'     => 'HUB_DB_PORT',
-            'database' => 'HUB_DB_NAME',
-            'username' => 'HUB_DB_USER',
-            'password' => 'HUB_DB_PASSWORD',
-            'prefix'   => 'HUB_DB_PREFIX',
-        ],
-        'admin' => [
-            'name'     => 'HUB_ADMIN_NAME',
-            'username' => 'HUB_ADMIN_USERNAME',
-            'email'    => 'HUB_ADMIN_EMAIL',
-            'password' => 'HUB_ADMIN_PASSWORD',
-        ],
-    ];
-
-    /**
-     * Read the answers from environment variables
-     *
-     * A container is configured through its environment rather than a file.
-     * Each variable answers the question its answer-file key does, and a
-     * variable left unset leaves that answer to its default.
-     *
-     * @return  void
-     **/
-    public static function fromEnvironment()
-    {
-        $answers = [];
-
-        foreach (self::ENVIRONMENT as $section => $keys) {
-            foreach ($keys as $key => $variable) {
-                $value = getenv($variable);
-
-                if ($value !== false && $value !== '') {
-                    $answers[$section][$key] = $value;
-                }
-            }
-        }
-
-        $sample = getenv('HUB_SAMPLE_DATA');
-
-        if ($sample !== false) {
-            $answers['sample'] = $sample;
-        }
-
-        self::set($answers);
     }
 
     /**
