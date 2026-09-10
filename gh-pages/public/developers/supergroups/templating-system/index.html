@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Templating System · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A new templating system has been added to help Super groups create a better web presence. When a super group is created, a default template is created…">
+  <title>Templating system · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A super group renders through a template of its own instead of the site template. The template is ordinary PHP with a handful of tags in it, and it lives in…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/templating-system/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,40 +127,44 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Templating System</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#file-structure">File Structure</a></li>
-<li class="toc__item toc__item--l2"><a href="#default-template">Default Template</a></li>
-<li class="toc__item toc__item--l2"><a href="#error-template">Error Template</a></li>
-<li class="toc__item toc__item--l2"><a href="#template-includes">Template Includes</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Templating system</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-one-required-file">The one required file</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-the-file-is-chosen">How the file is chosen</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-template-can-see">What the template can see</a></li>
+<li class="toc__item toc__item--l2"><a href="#include-tags">Include tags</a></li>
+<li class="toc__item toc__item--l3"><a href="#script-and-stylesheet-paths">Script and stylesheet paths</a></li>
+<li class="toc__item toc__item--l3"><a href="#modules-and-approval">Modules and approval</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-default-template">The default template</a></li>
+<li class="toc__item toc__item--l2"><a href="#error-template">Error template</a></li>
+<li class="toc__item toc__item--l2"><a href="#file-layout">File layout</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -169,75 +173,213 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Templating System</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Templating system</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Templating System</h1>
+          <h1>Templating system</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups/templating_system">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A new templating system has been added to help Super groups create a better web presence. When a super group is created, a default template is created and placed in the groups filespace.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The only file needed for a super group template to work is /{web_root}/site/groups/{group_id}/template/index.php</p>
+<p>A super group renders through a template of its own instead of the site
+template. The template is ordinary PHP with a handful of <code>&lt;group:include&gt;</code>
+tags in it, and it lives in the group's <code>template/</code> directory.</p>
+<h2 id="the-one-required-file">The one required file</h2>
+<pre><code>app/site/groups/&lt;gidNumber&gt;/template/index.php
+</code></pre>
+<p>That is the only file a super group template needs. Everything else — the
+error page, the includes, the stylesheets — is convention.</p>
+<h2 id="how-the-file-is-chosen">How the file is chosen</h2>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/template.php"><code>Components\Groups\Helpers\Template::_fetch()</code></a>
+builds a list of candidates and uses the first that exists. When a group page
+is being rendered the order is:</p>
+<ol>
+<li><code>&lt;page's template&gt;.php</code> — the file behind the page's <strong>Template</strong> setting</li>
+<li><code>page-&lt;alias&gt;.php</code></li>
+<li><code>page-&lt;id&gt;.php</code></li>
+<li><code>page.php</code></li>
+<li><code>default.php</code></li>
+<li><code>index.php</code></li>
+</ol>
+<p>When there is no active page — a plugin tab such as Wiki or Calendar, for
+instance — only <code>default.php</code> and <code>index.php</code> are considered, in that order.
+If neither exists the group aborts with <em>Missing &quot;Super Group&quot; template
+file.</em></p>
+<p>The per-page files are the subject of <a href="../page-templates/index.html">Page templates</a>.</p>
+<h2 id="what-the-template-can-see">What the template can see</h2>
+<p>The template is <code>require</code>d by the <code>Template</code> helper, so <code>$this</code> inside it is
+that helper. Four properties are set before it runs:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$this-&gt;group</code></td>
+<td>The <code>Hubzero\User\Group</code> being displayed</td>
+</tr>
+<tr>
+<td><code>$this-&gt;page</code></td>
+<td>The active group page, or <code>null</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;tab</code></td>
+<td>The active tab, from the <code>active</code> URL segment</td>
+</tr>
+<tr>
+<td><code>$this-&gt;content</code></td>
+<td>The rendered body of the active tab</td>
+</tr>
+</tbody>
+</table>
+<p>The file's output is then scanned for <code>&lt;group:include&gt;</code> tags, those are
+replaced with rendered content, and the result is <code>eval</code>ed — so PHP written
+inside a group page or module runs at that point too.</p>
+<h2 id="include-tags">Include tags</h2>
+<p>A template may use these tags. They are parsed by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/document.php"><code>Components\Groups\Helpers\Document</code></a>
+and each one is handled by a class in <code>helpers/document/renderer/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>What it renders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;group:include type=&quot;content&quot; /&gt;</code></td>
+<td>The body of the active tab</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;content&quot; scope=&quot;before&quot; /&gt;</code></td>
+<td>Content group plugins contribute above the page</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;menu&quot; /&gt;</code></td>
+<td>The group's tab bar and page menu</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;toolbar&quot; /&gt;</code></td>
+<td>The member and manager toolbar</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;modules&quot; position=&quot;{position}&quot; /&gt;</code></td>
+<td>Every published module in that position</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;module&quot; title=&quot;{title}&quot; /&gt;</code></td>
+<td>One module, by title</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;googleanalytics&quot; account=&quot;{account}&quot; /&gt;</code></td>
+<td>A Google Analytics snippet</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;script&quot; base=&quot;&quot; source=&quot;{path}&quot; /&gt;</code></td>
+<td>Adds a script to the document</td>
+</tr>
+<tr>
+<td><code>&lt;group:include type=&quot;stylesheet&quot; base=&quot;&quot; source=&quot;{path}&quot; /&gt;</code></td>
+<td>Adds a stylesheet to the document</td>
+</tr>
+</tbody>
+</table>
+<p>Tags must be self-closing, exactly as written. Anything else — a misspelled
+<code>type</code>, or a tag used where it is not allowed — renders as an HTML comment
+saying so rather than failing.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A single module is <code>type=&quot;module&quot;</code> with a <code>title</code>; a position
+is <code>type=&quot;modules&quot;</code> with a <code>position</code>. Older documentation showed
+<code>type=&quot;modules&quot; title=&quot;...&quot;</code>, which matches no renderer, and spelled the
+attribute <code>postion</code>. Both are wrong.</p>
 </aside>
-<h2 id="file-structure">File Structure</h2>
-<p>Below shows the desired file directory structure for super groups. Following this pattern will allow HUB owners and developers to add new developments and find bugs easier.</p>
-<p><a href="https://help.hubzero.org/app/site/documentation/1-3-0/webdevs/supergroups/filesystem.png"><img src="../../media/templating-system-filesystem.png" alt="Super group filesystem structure" /></a></p>
-<h2 id="default-template">Default Template</h2>
-<p>A default template is created for each super group. This can be used as a base for the super groups template.</p>
-<p><a href="https://help.hubzero.org/app/site/documentation/1-3-0/webdevs/supergroups/template.png"><img src="../../media/templating-system-template.png" alt="Super group template example" /></a></p>
-<h2 id="error-template">Error Template</h2>
-<p>Super groups have the ability use a custom error template (error.php), which can include a stylesheet (error.css) or scripts to display a custom error page.</p>
-<p><a href="https://help.hubzero.org/app/site/documentation/1-3-0/webdevs/supergroups/error.png"><img src="../../media/templating-system-error.png" alt="Super group error page" /></a></p>
-<h2 id="template-includes">Template Includes</h2>
-<p>The following group include tags can be used within a template to display the content, the menu, the member/manager toolbar, modules, or include a Google Analytics tracking code.</p>
+<h3 id="script-and-stylesheet-paths">Script and stylesheet paths</h3>
+<p><code>base</code> selects where <code>source</code> is resolved from:</p>
 <ul>
-<li><code>&lt;group:include type=&quot;content&quot; /&gt;</code></li>
-<li><code>&lt;group:include type=&quot;content&quot; scope=&quot;before&quot; /&gt;</code>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;menu&quot; /&gt;</code></p>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;toolbar&quot; /&gt;</code></p>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;modules&quot; postion=&quot;{position}&quot; /&gt;</code></p>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;modules&quot; title=&quot;{title}&quot; /&gt;</code></p>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;googleanayltics&quot; account=&quot;{account}&quot; /&gt;</code></p>
-<ul>
-<li>
-<p><code>&lt;group:include type=&quot;script&quot; base=&quot;&quot; source=&quot;{file_path}&quot; /&gt;</code></p>
-<ul>
-<li><code>&lt;group:include type=&quot;stylesheet&quot; base=&quot;&quot; source=&quot;{file_path}&quot; /&gt;</code></li>
+<li><code>base=&quot;template&quot;</code> prepends <code>template/assets/js</code> or <code>template/assets/css</code>.</li>
+<li>Any other value is used as a path segment under the group directory.</li>
+<li>Omitting <code>base</code> looks in the group's <code>uploads</code> directory.</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<p>The file is served through the group's own download route, so a group
+stylesheet arrives as <code>/groups/&lt;alias&gt;/File:template/assets/css/main.css</code>.</p>
+<h3 id="modules-and-approval">Modules and approval</h3>
+<p>The module renderers list only published modules. Unapproved modules are
+included only when the template is rendered with <code>allMods</code> set, which is what
+the module preview screens do; a visitor never sees one.</p>
+<h2 id="the-default-template">The default template</h2>
+<p>Saving a group as a super group copies
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/super/default/template"><code>core/components/com_groups/super/default/template</code></a>
+into the group directory. It is a working starting point rather than a
+finished design: a header with the group title and menu, the content, and a
+footer.</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * Basic Template
+ *
+ * Template used for Special Groups. Will now be auto-created
+ * when admin switches group from type HUB to type Special.
+ */
+
+// define base path (without doc root)
+$base = rtrim(str_replace(PATH_ROOT, '', __DIR__), DS);
+
+// define base url for links
+$baseLink = 'index.php?option=com_groups&amp;cn=' . $this-&gt;group-&gt;get('cn');
+
+// check to see if were supposed to no display html (template frame)
+$no_html = Request::getInt('no_html', 0);
+
+// add stylesheets and scripts
+Document::addStyleSheet($base . DS . 'assets/css/main.css');
+Document::addScript($base . DS . 'assets/js/main.js');
+?&gt;
+
+&lt;?php if (!$no_html) : ?&gt;
+&lt;group:include type=&quot;content&quot; scope=&quot;before&quot; /&gt;
+
+&lt;div class=&quot;super-group-body-wrap group-&lt;?php echo $this-&gt;group-&gt;get('cn'); ?&gt;&quot;&gt;
+	&lt;div class=&quot;super-group-body&quot;&gt;
+		&lt;?php include_once 'includes/header.php'; ?&gt;
+
+		&lt;div class=&quot;super-group-content-wrap&quot;&gt;
+</code></pre>
+<p>Note the <code>no_html</code> check. When a request carries <code>no_html=1</code> the template
+emits only the content, which is what AJAX requests from group plugins rely
+on. Keep that behaviour in any template you write from scratch.</p>
+<p><img src="../../media/templating-system-template.png" alt="An example of a finished super group template" /></p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> For Script &amp; Stylesheet group includes you can specify a base param of &quot;template&quot; which will automatically prepend &quot;/template/assets/js&quot; or &quot;/template/assets/css&quot; to the source. If no base is specified, it will look for the file in the groups &quot;uploads&quot; directory.</p>
+<p><strong>Note:</strong> That screenshot shows a custom template built on a hub, not the
+skeleton the hub gives you. The skeleton is unstyled by comparison.</p>
+</aside>
+<h2 id="error-template">Error template</h2>
+<p>The skeleton also ships <code>template/error.php</code> and <code>assets/css/error.css</code>.</p>
+<p><img src="../../media/templating-system-error.png" alt="The super group error page the template was written for" /></p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This does not work in 2.4. <code>View::attachCustomErrorHandler()</code>
+in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>core/components/com_groups/helpers/view.php</code></a>
+still checks that the group has an <code>error.php</code>, but the
+<code>set_exception_handler()</code> call below the check is commented out. A super
+group gets the site's error pages, so the screenshot above shows a page the
+software no longer produces. The file is still copied into every new group
+directory.</p>
+</aside>
+<h2 id="file-layout">File layout</h2>
+<p><img src="../../media/templating-system-filesystem.png" alt="A super group directory in a file browser" /></p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> That picture predates the <code>macros/</code> and <code>migrations/</code>
+directories, which the skeleton now creates as well. See
+<a href="../index.html#the-group-directory">the section overview</a> for the current
+layout.</p>
 </aside>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Super Groups</a><a class="pager__next" href="../page-templates/index.html" rel="next"><span>Next</span>Page Templates</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Super Groups</a><a class="pager__next" href="../page-templates/index.html" rel="next"><span>Next</span>Page templates</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/01-templating_system.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

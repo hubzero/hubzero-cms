@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>API · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Internal Requests via JavaScript Internal requests to the API can easily be handled through the XMLHttpRequest feature of JavaScript. Many JavaScript libraries…">
+  <title>REST API · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Every hub serves a REST API under . It is a third face on the same components that serve the site and the administrator interface: 246 endpoints across 31…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/api/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -127,35 +127,42 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">API</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#internal-requests-via-javascript">Internal Requests via JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">REST API</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-client">The client</a></li>
+<li class="toc__item toc__item--l2"><a href="#routing">Routing</a></li>
+<li class="toc__item toc__item--l2"><a href="#controllers">Controllers</a></li>
+<li class="toc__item toc__item--l3"><a href="#documenting-an-endpoint">Documenting an endpoint</a></li>
+<li class="toc__item toc__item--l2"><a href="#authentication">Authentication</a></li>
+<li class="toc__item toc__item--l3"><a href="#from-javascript-on-the-hub-itself">From JavaScript on the hub itself</a></li>
+<li class="toc__item toc__item--l2"><a href="#rate-limiting">Rate limiting</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-an-endpoint">Adding an endpoint</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
@@ -165,32 +172,163 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">API</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">REST API</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>API</h1>
+          <h1>REST API</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/api">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="internal-requests-via-javascript">Internal Requests via JavaScript</h2>
-<p>Internal requests to the API can easily be handled through the XMLHttpRequest feature of JavaScript. Many JavaScript libraries abstract away the details of this feature, and jQuery is no different.</p>
-<p>In a typical API call, one would be expected to provide authentication in the form of a user access token. This token is often retrieved by asked the user to authenticate to the API server. But, because the client and the server in this scenario are the same, and the user is already logged in, it seems silly to ask them to authenticate again. Even still, we need a token to make an authenticated call to the API. To do this, we must then request a token based on the clients credentials in the form of an HTTP cookie, much the same way standard sessions are managed with a browser.</p>
-<p>To make this even simpler, we've added some snippets to the HUBzero libraries to help you out. To setup the API request in your jQuery code, simply include the <code>initApi</code> call, as shown:</p>
+<p>Every hub serves a REST API under <code>/api/</code>. It is a third face on the same
+components that serve the site and the administrator interface: 246
+endpoints across 31 components, each one a method on a controller in that
+component's <code>api/</code> directory.</p>
+<p>The <a href="../../reference/api/index.html">API reference</a> lists every endpoint, its
+method, its URI and its parameters, generated from the source. This page is
+about how the API works and how to add to it.</p>
+<h2 id="the-client">The client</h2>
+<p><code>/api</code> is not a directory. <code>ClientDetector</code> sees <code>api</code> as the first URL
+segment and selects the API client, which loads its own service providers
+and facade aliases from <code>core/bootstrap/Api/</code> — a different response object,
+a different authentication provider, no template, no document. See
+<a href="../foundation/structure/index.html#boot">Structure</a>.</p>
+<h2 id="routing">Routing</h2>
+<p><code>core/bootstrap/Api/routes.php</code> parses the request in four steps:</p>
+<ol>
+<li><strong>Strip <code>api/</code></strong> from the front of the path.</li>
+<li><strong>Determine the version.</strong> From a <code>/v1.0/</code> segment, an <code>Accept</code> header, or
+a <code>v=</code> or <code>version=</code> query variable. It defaults to <code>1.0</code>, and the
+normalised value ends up in <code>version</code>, <code>version.major</code> and
+<code>version.minor</code>.</li>
+<li><strong>Map the HTTP method to a task.</strong> <code>POST</code> becomes <code>create</code>, <code>PUT</code> becomes
+<code>update</code>, <code>DELETE</code> becomes <code>delete</code>. <code>GET</code> is left alone, because the task
+might be <code>list</code> or <code>read</code> or something the component invented.</li>
+<li><strong>Match the component</strong> by the next segment, then hand the rest of the
+segments to that component's API router.</li>
+</ol>
+<p>So <code>GET /api/blog/list</code> reaches <code>Components\Blog\Api\Controllers\Entriesv1_0::listTask()</code>.</p>
+<h2 id="controllers">Controllers</h2>
+<p>An API controller lives in <code>{component}/api/controllers/</code>, is named
+<code>{name}v{major}_{minor}.php</code>, and extends
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/ApiController.php"><code>Hubzero\Component\ApiController</code></a>.
+Every public method ending in <code>Task</code> is a task the router can reach.</p>
+<pre><code class="language-php">namespace Components\Blog\Api\Controllers;
+
+use Hubzero\Component\ApiController;
+use Request;
+use User;
+
+class Entriesv1_0 extends ApiController
+{
+    public function listTask()
+    {
+        $limit = Request::getInt('limit', 25);
+
+        // ...
+
+        $this-&gt;send($response);
+    }
+}
+</code></pre>
+<p>The version is in the class name, which is how two versions of an endpoint
+coexist: add <code>Entriesv2_0</code> beside <code>Entriesv1_0</code> and a request that asks for
+<code>v2.0</code> gets the new one while everything else keeps working.</p>
+<p><code>send()</code> hands an object to
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/Response.php"><code>Hubzero\Api\Response</code></a>,
+which serialises it according to the <code>format</code> query variable — <code>json</code> (the
+default), <code>xml</code>, <code>html</code>, <code>xhtml</code>, <code>text</code>, <code>php</code> or <code>php_serialized</code>. An
+unrecognised value falls back to <code>json</code>. <code>ResponseServiceProvider</code> also
+forces <code>debug</code> off and disables output compression, because either would
+corrupt the body.</p>
+<p>Two response modifiers run as middleware over the result: <code>UriBase</code> turns
+relative paths into absolute URLs, and <code>JsonpCallable</code> wraps the body in a
+callback when one is asked for.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Two more modifiers are written but switched off —
+<code>Hubzero\Api\Response\DateFormatter</code> and
+<code>Hubzero\Api\Response\ObjectExpander</code>, which would normalise dates and
+inline related user and group objects. Both are commented out in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Api/services.php"><code>core/bootstrap/Api/services.php</code></a>.
+Do not write an endpoint that assumes either has run.</p>
+</aside>
+<h3 id="documenting-an-endpoint">Documenting an endpoint</h3>
+<p>Endpoint documentation is docblock tags on the task method, and they are not
+decoration — two things read them. <code>Hubzero\Api\Doc\Generator</code> builds the
+interactive explorer a hub serves at <code>/developer/api/docs</code>, and
+<code>tools/docs/gen_api_reference.py</code> builds the
+<a href="../../reference/api/index.html">API reference</a> in these pages.</p>
+<pre><code class="language-php">/**
+ * Display a list of entries
+ *
+ * @apiMethod GET
+ * @apiUri    /blog/list
+ * @apiParameter {
+ * 		&quot;name&quot;:          &quot;limit&quot;,
+ * 		&quot;description&quot;:   &quot;Number of results to return.&quot;,
+ * 		&quot;type&quot;:          &quot;integer&quot;,
+ * 		&quot;required&quot;:      false,
+ * 		&quot;default&quot;:       25
+ * }
+ * @return  void
+ */
+public function listTask()
+</code></pre>
+<p><code>@apiParameter</code> takes a JSON object. An endpoint with no <code>@apiMethod</code> and
+<code>@apiUri</code> appears in neither place, so a new endpoint is undocumented until
+you add them.</p>
+<h2 id="authentication">Authentication</h2>
+<p>The API authenticates with OAuth 2.0 bearer tokens.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/Guard.php"><code>Hubzero\Api\Guard</code></a> reads the
+token, resolves it to a user, and rejects the request if the token is
+missing, expired, or points at a user who no longer exists. Anonymous
+requests are allowed where the endpoint permits them; the user is then the
+guest.</p>
+<p>Tokens come from <code>POST /api/developer/oauth/token</code>. A user creates and
+manages application credentials at <code>/developer</code> on the hub, which is
+<code>com_developer</code>.</p>
+<h3 id="from-javascript-on-the-hub-itself">From JavaScript on the hub itself</h3>
+<p>Asking a logged-in user to authenticate to the same site they are already
+logged in to would be silly, so there is a grant type that trades the
+session cookie for a token. <code>Hubzero.initApi()</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/assets/js/hubzero.js"><code>core/assets/js/hubzero.js</code></a> does it:</p>
+<pre><code class="language-php">Html::behavior('core');
+</code></pre>
 <pre><code class="language-javascript">jQuery(document).ready(function($) {
     Hubzero.initApi(function() {
-        // your code here
+        // every $.ajax call from here on carries the token
     });
 });
 </code></pre>
-<p>All this does is it makes a request to the API to get a token based on your current session cookie. It then sets that token as a header that will be used by jQuery in all future <code>$.ajax</code> requests.</p>
-<p>Lastly, you'll need to make sure the Hubzero JavaScript object is available. To do so, just make sure to include the Html environment call somewhere in your PHP to include our core JS library.</p>
-<pre><code class="language-php">Html::behavior('core');
+<p>It POSTs <code>grant_type=session</code> to <code>/api/developer/oauth/token</code>, sets the
+returned token as an <code>Authorization: Bearer</code> header on every subsequent
+jQuery request through <code>$.ajaxSetup()</code>, and schedules itself to run again
+when the token expires. <code>Html::behavior('core')</code> is what puts <code>hubzero.js</code>
+on the page; without it <code>Hubzero</code> is undefined.</p>
+<h2 id="rate-limiting">Rate limiting</h2>
+<p><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Api/RateLimit"><code>Hubzero\Api\RateLimit\RateLimitService</code></a>
+is registered with the other API providers and enforces two windows,
+configured in <code>app/config/rate_limit.php</code>:</p>
+<pre><code class="language-php">return array(
+    'short' =&gt; array('period' =&gt; '5',    'limit' =&gt; '500'),
+    'long'  =&gt; array('period' =&gt; '1440', 'limit' =&gt; '10000'),
+);
 </code></pre>
-<p>For additional details see &quot;https://hubname.org/developer/api/docs&quot; on your respective hub.</p>
+<p><code>period</code> is in minutes. Counts are kept in the database.</p>
+<h2 id="adding-an-endpoint">Adding an endpoint</h2>
+<ol>
+<li>Create <code>{component}/api/controllers/{name}v1_0.php</code> with a class
+extending <code>ApiController</code>.</li>
+<li>Add a <code>{task}Task()</code> method, and give it <code>@apiMethod</code>, <code>@apiUri</code> and an
+<code>@apiParameter</code> for each parameter.</li>
+<li>Check authorisation explicitly. An API controller has no menu item and no
+component parameters merged into it; nothing is checked for you.</li>
+<li>Return data with <code>$this-&gt;send()</code>. Do not echo.</li>
+<li>Regenerate the reference: <code>python3 tools/docs/gen_api_reference.py</code>.</li>
+</ol>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../testing/index.html" rel="prev"><span>Previous</span>Testing</a><a class="pager__next" href="../aws/index.html" rel="next"><span>Next</span>AWS</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/16-api.md">Edit this page on GitHub</a>

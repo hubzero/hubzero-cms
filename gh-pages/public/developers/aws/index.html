@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AWS · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Connecting via ssh On the EC2 instances page, select your instance and click the Connect button. Your ssh connection command will look similar to this,…">
+  <meta name="description" content="Nothing in this repository is specific to Amazon Web Services, apart from one storage plugin. The CMS does not know or care what it runs on: it needs PHP, a…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/aws/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -127,40 +127,38 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">AWS</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#connecting-via-ssh">Connecting via ssh</a></li>
-<li class="toc__item toc__item--l2"><a href="#sudo-to-root">Sudo to root</a></li>
-<li class="toc__item toc__item--l2"><a href="#the-hub-configuration-file">The hub configuration file</a></li>
-<li class="toc__item toc__item--l2"><a href="#connecting-to-the-database-as-the-web-user-with-a-database-client">Connecting to the database as the web user with a database client</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-or-granting-additional-permissions">Creating or granting additional permissions</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-actually-aws-specific">What is actually AWS-specific</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-a-hub-s-configuration-lives">Where a hub&#x27;s configuration lives</a></li>
+<li class="toc__item toc__item--l2"><a href="#installing-a-hub">Installing a hub</a></li>
 </ol></li>
 </ul>
         </nav>
@@ -175,32 +173,51 @@
           <p class="eyebrow">Developers</p>
           <h1>AWS</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/aws">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="connecting-via-ssh">Connecting via ssh</h2>
-<p>On the EC2 instances page, select your instance and click the Connect button. Your ssh connection command will look similar to this, depending on where your Amazon private key file is kept.
-<code>ssh -i private_key.pem root@ec2-52-23-170-128.compute-1.amazonaws.com</code></p>
-<p>Depending on your user access configuration, &quot;centos&quot; may be used as the username. For example, <code>ssh centos@your.hostname.com</code></p>
-<h2 id="sudo-to-root">Sudo to root</h2>
-<p>To sudo to root, enter the following command when logged in a the &quot;centos&quot; user:</p>
-<pre><code>sudo su -
-</code></pre>
-<p>You will change to the root user and placed in the root user's home directory.</p>
-<h2 id="the-hub-configuration-file">The hub configuration file</h2>
-<p>The hub configuration file is located in the hub document root. Located at &quot;/var/www/hub&quot;</p>
-<p>Within that directory you will find a &quot;configuration.php&quot; file which contain many of the configuration options set by the CMS from the global configuration page in the administrator interface (/administrator) of the hub. You will also find the web username and password for the database there.</p>
-<h2 id="connecting-to-the-database-as-the-web-user-with-a-database-client">Connecting to the database as the web user with a database client</h2>
-<p>Connections to the database are restricted to localhost for security purposes.</p>
-<p>In your database client you must select the SSH option and enter the appropriate credentials for the SSH tunnel and Database to connect.</p>
-<p>The SSH credentials can be the &quot;centos&quot; user and the stored key on your workstation. Other Linux users with SSH access may be sued as well.</p>
-<p>The database credentials to connect as the web user are found in the hub configuration.php file (var $password and var $db). You may also use another database account that has been previously granted database access.</p>
-<h2 id="creating-or-granting-additional-permissions">Creating or granting additional permissions</h2>
-<p>New Linux users should be created at the system level.</p>
-<p>New Database users and granting permission should be done by the root user. As root, you may enter MySQL by typing &quot;mysql&quot; at the command line, without a password.</p>
+<p>Nothing in this repository is specific to Amazon Web Services, apart from one
+storage plugin. The CMS does not know or care what it runs on: it needs PHP, a
+web server, and a database.</p>
+<p>The page this replaces was a short recipe for a particular hub that ran on an
+EC2 instance in 2016 — how to <code>ssh</code> in with a key pair, <code>sudo su -</code> as the
+<code>centos</code> user, and find <code>configuration.php</code> under <code>/var/www/hub</code>. None of that
+is describable from this codebase, some of it is no longer true of the CMS,
+and the rest is ordinary EC2 and MySQL administration that Amazon documents
+better. It is not reproduced here.</p>
+<h2 id="what-is-actually-aws-specific">What is actually AWS-specific</h2>
+<p>One plugin, <code>plg_filesystem_awss3</code>
+(<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins/filesystem/awss3"><code>core/plugins/filesystem/awss3</code></a>),
+connects a project's file store to an S3 bucket. It is one of five filesystem
+connectors, alongside Dropbox, GitHub, Google Drive, and the local disk. It
+takes five parameters — <strong>App ID</strong>, <strong>App Secret</strong>, <strong>Region</strong>, <strong>Bucket</strong>,
+and <strong>Directory</strong> — which an administrator sets under <strong>Extensions</strong> →
+<strong>Plugins</strong>. The parameters are listed in
+<a href="../../reference/configuration/plugins/filesystem/index.html">the generated reference</a>.</p>
+<p>The S3 access itself is <code>league/flysystem-aws-s3-v3</code>, a Composer dependency
+declared in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/composer.json"><code>core/composer.json</code></a>.</p>
+<p>That is the whole of it. There is no AWS deployment tooling, no CloudFormation
+or Terraform, no AMI build, and no image or session storage that assumes S3.</p>
+<h2 id="where-a-hub-s-configuration-lives">Where a hub's configuration lives</h2>
+<p>The old page's one durable claim was wrong for 2.4. A hub's configuration is
+not a single <code>configuration.php</code> in the document root. It is a set of PHP
+files under <code>app/config/</code>, one per concern — <code>database.php</code>, <code>mail.php</code>,
+<code>session.php</code>, <code>cache.php</code>, and the rest — each returning an array. <code>muse install</code> and the web installer write them; the administrator interface
+rewrites them when global configuration is saved.</p>
+<p>The database credentials are in <code>app/config/database.php</code>. That directory is
+created mode <code>0770</code> by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Install/AppDirectory.php"><code>Hubzero\Console\Command\Install\AppDirectory</code></a>
+and must stay unreadable to anyone but the web user and its group.</p>
+<p>See <a href="../basics/config/index.html">Configuration</a> for how the files are loaded and
+overridden per client.</p>
+<h2 id="installing-a-hub">Installing a hub</h2>
+<p>Hubzero installs from packages on Enterprise Linux 8 or a compatible rebuild,
+on a cloud instance or anywhere else. Follow
+<a href="../../installation/index.html">Installation</a>; nothing in it changes because the
+machine happens to be an EC2 instance.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../api/index.html" rel="prev"><span>Previous</span>API</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../api/index.html" rel="prev"><span>Previous</span>REST API</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/17-aws.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

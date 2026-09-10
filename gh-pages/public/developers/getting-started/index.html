@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Introduction · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Getting Started As a developer you are tasked with altering or extending the functionality of a HUBzero install or one of its extensions. You will need to be…">
+  <title>Getting started · Developers · Hubzero Documentation</title>
+  <meta name="description" content="What you need before you write code against Hubzero: a hub to develop against, a way to reach its files and its database, and a sense of what changed in the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,19 +41,21 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Introduction</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#getting-started">Getting Started</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting started</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-you-should-know">What you should know</a></li>
+<li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
+<li class="toc__item toc__item--l2"><a href="#next">Next</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="devenvironment/index.html">Development Environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -83,11 +85,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -129,34 +131,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -165,33 +167,66 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Introduction</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Getting started</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Introduction</h1>
+          <h1>Getting started</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
-        <div class="prose">
-<h2 id="getting-started">Getting Started</h2>
-<p>As a developer you are tasked with altering or extending the functionality of a HUBzero install or one of its extensions. You will need to be proficient in PHP and have some familiarity with such things as JavaScript or CSS. If you are new to HUBzero, this reference should help guide you through the creation of extensions such as modules and widgets (more on those later). Thankfully, the requirements for getting started creating HUBzero extensions are minimal: knowledge of programming in PHP and a good text editor. While those are the only <em>requirements</em> we do, however, recommend you have working knowledge of the following:</p>
-<ul>
-<li>HTML</li>
-<li>Cascading StyleSheets (CSS)</li>
-<li>JavaScript (familiarity with the <a href="http://jquery.com">jQuery</a> framework is a plus)</li>
-<li>XML</li>
-<li>Model-View-Controller (MVC) design pattern</li>
-<li>Object-Oriented Programming</li>
-</ul>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="releasenotes/index.html">Release Notes</a></li>
-<li><a href="fileaccess/index.html">Accessing Files</a></li>
-<li><a href="databaseaccess/index.html">Direct Database Access</a></li>
-<li><a href="upgrade/index.html">Upgrade Guide</a></li>
-<li><a href="browsersupport/index.html">Browser Support</a></li>
-<li><a href="devenvironment/index.html">Development Environment</a></li></ul></section>
-        </div>
         
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Developers</a><a class="pager__next" href="releasenotes/index.html" rel="next"><span>Next</span>Release Notes</a></nav>
+        <div class="prose">
+<p>What you need before you write code against Hubzero: a hub to develop
+against, a way to reach its files and its database, and a sense of what
+changed in the framework you are reading.</p>
+<p>The CMS is PHP, and it does not run standalone. You develop against a
+working hub, replacing its CMS directory with a checkout of
+<a href="https://github.com/hubzero/hubzero-cms">hubzero/hubzero-cms</a>. Everything
+under <code>core/</code> is the platform; everything under <code>app/</code> is that hub's own
+state and is not in the repository.</p>
+<h2 id="what-you-should-know">What you should know</h2>
+<p>The requirements are modest: PHP, and a text editor. Working knowledge of
+the following makes the rest of this book easier:</p>
+<ul>
+<li>HTML and CSS</li>
+<li>JavaScript. The CMS ships <a href="https://jquery.com">jQuery</a> 3.3.1 in
+<code>core/assets/js/jquery.js</code> and most of its own scripts are written
+against it.</li>
+<li>XML, which every extension manifest and configuration file is written in</li>
+<li>The model-view-controller pattern, which components and the admin
+interface follow</li>
+<li>Object-oriented PHP. The framework is namespaced under <code>Hubzero\</code> and
+autoloaded by Composer.</li>
+</ul>
+<p>The platform targets PHP 8.2; <code>core/composer.json</code> pins the platform to
+<code>8.2.30</code> and the lint workflow runs on 8.3.</p>
+<h2 id="in-this-section">In this section</h2>
+<ul>
+<li><a href="releasenotes/index.html">Release notes</a> — where release notes live, and the one
+historic change that still shapes the code you read.</li>
+<li><a href="fileaccess/index.html">Accessing files</a> — reaching a hub's files on the server,
+and reading and writing files from code.</li>
+<li><a href="databaseaccess/index.html">Direct database access</a> — the hub's credentials, the
+shell, and the <code>#__</code> table prefix.</li>
+<li><a href="upgrade/index.html">Upgrade guide</a> — the Joomla names an older extension uses
+and what replaced them.</li>
+<li><a href="browsersupport/index.html">Browser support</a> — what the code actually targets,
+which is less than you might expect.</li>
+<li><a href="devenvironment/index.html">Development environment</a> — getting a hub to develop
+against, and what this repository does and does not provide.</li>
+</ul>
+<h2 id="next">Next</h2>
+<p><a href="../foundation/index.html">Foundation</a> covers how a request is served and
+the names an extension uses constantly. <a href="../../contributing/index.html">Contributing</a>
+covers sending a change back.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="releasenotes/index.html">Release notes</a></li>
+<li><a href="fileaccess/index.html">Accessing files</a></li>
+<li><a href="databaseaccess/index.html">Direct database access</a></li>
+<li><a href="upgrade/index.html">Upgrade guide</a></li>
+<li><a href="browsersupport/index.html">Browser support</a></li>
+<li><a href="devenvironment/index.html">Development environment</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Developers</a><a class="pager__next" href="releasenotes/index.html" rel="next"><span>Next</span>Release notes</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

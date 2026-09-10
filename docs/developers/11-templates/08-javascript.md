@@ -1,341 +1,249 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/javascript
 source-id: 3511
-imported: 2026-09-09
 -->
 # JavaScript
 
-## Overview
+What the CMS puts in the page before your template runs, how a template adds
+scripts of its own, and how a component, module or plugin pushes a script to
+the document.
 
-HUBzero comes with the [jQuery](http://jquery.com) Javascript Framework included by a system plugin. jQuery is not only a visual effects library–it also support Ajax request and JSON notation, table sort, drag & drop operations and much more. All current HUBzero JavaScripts are built on this framework.
+## What is already there
 
-## Directory & Files
+### jQuery
 
-The jQuery framework can be found within the `/core/assets/js` directory. It is a compressed version used for production. An uncompressed version may be found at [jquery.com](http://jquery.com).
+jQuery is not loaded by the template. The `System - jQuery` plugin loads it, on
+`onAfterRoute`, for the site client only:
 
-```
-/hubzero
-  /media
-    /system
-      /js
-        jquery.js
-```
+<!--include: core/plugins/system/jquery/jquery.php:21-50-->
 
-Most HUBzero templates will include some scripts of their own for basic setup, visual effects, etc. These are generally stored in (but not limited to) a sub-directory, named `/js`, of the template's main directory.
+So:
 
-```
-/hubzero
-  /media
-    /system
-      /js
-        jquery.fancybox.js
-        jquery.fileuploader.js
-        jquery.ui.js
-```
+- Nothing is added when `activateSite` is off, or when the request asks for
+  `format=pdf`.
+- `jqueryui` adds jQuery UI on top; `jqueryfb` adds fancybox through
+  `Html::behavior('modal')`; `noconflictSite` appends
+  `jquery.noconflict.js`, which releases `$`.
+- The **administrator** never goes through this plugin. Admin templates get
+  jQuery because something in the request chain calls `Html::behavior()`.
 
-Of the scripts commonly found in a HUBzero template, `hub.js` is perhaps the most important and it is strongly encouraged that developers include these files in their template.
+[`Behavior::framework()`](../../../core/libraries/Hubzero/Html/Builder/Behavior.php)
+pushes `/core/assets/js/jquery.js` (and `jquery.ui.js` for the extras) to
+*position zero* of the document's script list, ahead of anything a component
+has already added, with a `?v={filemtime}` cache buster. In the administrator
+it also pushes `core.js`.
 
-## hub.js
+Both files live in [`core/assets/js`](../../../core/assets/js), which also holds
+the several dozen jQuery plugins the components use — fancybox, fullcalendar,
+tablesorter, fileupload, datetimepicker and the rest. They are minified for
+production; a few ship an `-uncompressed.js` sibling.
 
-```javascript
-//-----------------------------------------------------------
-//  Create our namespace
-//-----------------------------------------------------------
-var HUB = HUB || {};
-HUB.Base = {};
+### core.js
 
-var alertFallback = true;
-if (typeof console === "undefined" || typeof console.log === "undefined") {
-	console = {};
-	console.log = function() {};
-}
+`core/assets/js/core.js` defines the `Hubzero` global. It is the CMS's own
+script layer, and it is the thing to reach for before writing your own:
 
-//-----------------------------------------------------------
-//  Various functions - encapsulated in HUB namespace
-//-----------------------------------------------------------
-if (!jq) {
-	var jq = $;
+| | |
+|---|---|
+| `Hubzero.submitform(task, form)` | Set `form.task` and submit, firing the submit event first |
+| `Hubzero.submitbutton(task)` | `submitform` with the default admin form |
+| `Hubzero.Lang.load(strings)` / `Hubzero.Lang.txt(key, fallback)` | Translations pushed from PHP |
+| `Hubzero.checkAll(box, tag)` | Toggle a grid's checkboxes and update `boxchecked` |
+| `Hubzero.renderMessages(messages)` / `removeMessages()` | Write into `#system-message-container` |
+| `Hubzero.popupWindow(url, name, w, h, scroll)` | Centred `window.open` |
+| `Hubzero.tableOrdering(order, dir, task, form)` | Set the sort fields and submit |
+| `Hubzero.listItemTask(id, task)` | Check one row and submit a task for it |
+| `Hubzero.saveOrder(rows, task)` | Check every row and submit the reorder task |
+| `Hubzero.hasClass` / `addClass` / `removeClass` | Class helpers with an `IE` fallback |
 
-	$.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
-} else {
-	jq.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
-}
+Every one of them is also aliased onto a `Joomla` global, so inherited
+third-party code keeps working. Write against `Hubzero`.
 
-var template = {};
+`core/assets/js/hubzero.js` is a separate, smaller file with `Hubzero.root()`
+and `Hubzero.initApi()`; `Html::behavior('core')` is what adds it.
 
-jQuery(document).ready(function(jq){
-	var $ = jq,
-		w = 760,
-		h = 520,
-		templatepath = '/templates/template/';
+### The data-attribute hooks
 
-	// Set focus on username field for login form
-	if ($('#username').length > 0) {
-		$('#username').focus();
-	}
+The bottom of `core.js` binds handlers on `DOMContentLoaded` by class name and
+reads the details out of `data-` attributes. This is how the admin toolbar,
+grids, filters and pagination work, and it is why none of them need inline
+script:
 
-	// Turn links with specific classes into popups
-	$('a').each(function(i, trigger) {
-		if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
-			$(trigger).on('click', function (e) {
-				e.preventDefault();
+| Class | Event | Attributes read |
+|---|---|---|
+| `.toolbar` with `.toolbar-submit` | click | `data-task`, plus `data-message` with `.toolbar-list` when nothing is checked |
+| `.toolbar` with `.toolbar-confirm` | click | `data-confirm`, `data-task`, `data-message` |
+| `.toolbar` with `.toolbar-popup` | click | `href`, `data-message`, `data-width` (700), `data-height` (500) |
+| `.checkbox-toggle` | click | `.toggle-all` checks the whole grid; anything else updates the count |
+| `.filter-submit` | change | — submits the form |
+| `.filter-clear` | click | — resets every `.filter` field and submits |
+| `.grid-order` | click | `data-order`, `data-direction`, `data-task` |
+| `.grid-order-save` | click | `data-rows`, `data-task` |
+| `.grid-action` | click | `data-id`, `data-task` |
+| `.pagination a` | click | `data-prefix`, `data-start` |
 
-				if ($(this).attr('class')) {
-					var sizeString = $(this).attr('class').split(' ').pop();
-					if (sizeString && sizeString.match(/d+xd+/)) {
-						var sizeTokens = sizeString.split('x');
-						w = parseInt(sizeTokens[0]);
-						h = parseInt(sizeTokens[1]);
-					}
-					else if(sizeString && sizeString == 'fullxfull')
-					{
-						w = screen.width;
-						h = screen.height;
-					}
-				}
+Prefer this pattern in your own code: put the values on the element, bind by
+class, keep the script in a file. It survives the
+[`System - CSP`](../../../core/plugins/system/csp/csp.php) plugin being switched
+on, which inline `<script>` blocks do not — that plugin ships disabled, and its
+default `script-src` still allows `'unsafe-inline'`, but neither is something
+to rely on.
 
-				window.open($(this).attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
-			});
-		}
-		if ($(trigger).attr('rel') && $(trigger).attr('rel').indexOf('external') !=- 1) {
-			$(trigger).attr('target', '_blank');
-		}
-	});
+## Adding a template's own scripts
 
-	if (jQuery.fancybox) {
-		// Set the overlay trigger for launch tool links
-		$('.launchtool').on('click', function(e) {
-			$.fancybox({
-				closeBtn: false,
-				href: templatepath + 'images/anim/circling-ball-loading.gif'
-			});
-		});
+Put them in `js/` and add them from `index.php`. `kimera` does exactly one
+thing:
 
-		// Set overlays for lightboxed elements
-		$('a[rel=lightbox]').fancybox();
-	}
+<!--include: core/templates/kimera/index.php:13-14-->
 
-	// Init tooltips
-	if (jQuery.ui && jQuery.ui.tooltip) {
-		$(document).tooltip({
-			items: '.hasTip, .tooltips',
-			position: {
-				my: 'center bottom',
-				at: 'center top'
-			},
-			// When moving between hovering over many elements quickly, the tooltip will jump around
-			// because it can't start animating the fade in of the new tip until the old tip is
-			// done. Solution is to disable one of the animations.
-			hide: false,
-			content: function () {
-				var tip = $(this),
-					tipText = tip.attr('title');
+`$this` in a template layout is the document, so `addScript()`,
+`addScriptDeclaration()`, `addStyleSheet()` and `addStyleDeclaration()` are all
+available. The `filemtime()` query string is the convention for busting caches
+after a deploy; copy it.
 
-				if (tipText.indexOf('::') != -1) {
-					var parts = tipText.split('::');
-					tip.attr('title', parts[1]);
-				}
-				return $(this).attr('title');
-			},
-			tooltipClass: 'tooltip'
-		});
+What ships in the templates' `js/` directories is thinner than the old
+documentation suggested:
 
-		// Init fixed position DOM: tooltips
-		$('.fixedToolTip').tooltip({
-			relative: true
-		});
-	}
+| File | What it is |
+|---|---|
+| `kimera/js/hub.js` | The jQuery `growl` notification plugin, nothing more |
+| `kimera/js/html5.js`, `kameleon/js/html5.js` | The HTML5 shiv, loaded in a conditional comment for old IE |
+| `lucent/js/hub.js`, `system/js/hub.js` | The legacy `HUB` namespace and its page setup |
+| `lucent/js/core.js` | Lucent's own navigation and layout behaviour |
+| `kameleon/js/index.js`, `component.js`, `login.js` | One script per admin layout |
+| `system/js/group.js` | Super group page behaviour |
 
-	//test for placeholder support
-	var test = document.createElement('input'),
-		placeholder_supported = ('placeholder' in test);
+> **Note:** The `HUB` namespace — `HUB.Base`, `HUB.Components`, `HUB.Modules`,
+> `HUB.Plugins` — still exists in `lucent/js/hub.js` and `system/js/hub.js`,
+> and older extension scripts hang off it. New code should use the `Hubzero`
+> namespace from `core.js` instead. Do not copy `HUB` into a new template.
 
-	//if we dont have placeholder support mimic it with focus and blur events
-	if (!placeholder_supported) {
-		$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
-			var placeholderText = $(el).attr('placeholder');
+## Pushing a script from an extension
 
-			//make sure we have placeholder text
-			if (placeholderText != '' && placeholderText != null) {
-				//add plceholder text and class
-				if ($(el).val() == '') {
-					$(el).addClass('placeholder-support').val(placeholderText);
-				}
+### The view helpers
 
-				//attach event listeners to input
-				$(el)
-					.on('focus', function() {
-						if ($(el).val() == placeholderText) {
-							$(el).removeClass('placeholder-support').val('');
-						}
-					})
-					.on('blur', function(){
-						if ($(el).val() == '') {
-							$(el).addClass('placeholder-support').val(placeholderText);
-						}
-					});
-			}
-		});
-
-		$('form').on('submit', function(event){
-			$('.placeholder-support').each(function (i, el) {
-				$(this).val('');
-			});
-		});
-	}
-};
-```
-
-## HUB Namespace
-
-Typically the template will include a file (`hub.js`) that first establishes a `HUB` namespace and then proceeds through some basic setup routines. All HUBzero built components, modules, and templates that employ JavaScript place scripts within this `HUB` namespace. This helps prevent any naming collisions with third-party libraries. While it is recommended that any scripts you may add to your code is also placed within the HUB namespace, it is not required.
-
-> **Note:** When not using jQuery, the template will include a `global.js` file that establishes the HUB namespace.
-
-Some additional sub-spaces for further organization are available within the `HUB` namespace. Separate spaces for Modules, Components, and Plugins are created. Once again, this further helps avoid possible naming/script collisions. Additionally, one more Base space is created for basic setup and utilities that may be used in other scripts.
-
-```javascript
-//  Create our namespace
-if (!HUB) {
-	var HUB = {};
-
-	// Establish a space for setup/init and utilities
-	HUB.Base = {};
-
-	// Establish sub-spaces for the various extensions
-	HUB.Components = {};
-	HUB.Modules = {};
-	HUB.Plugins = {};
-}
-```
-
-To demonstrate adding code to the namespace, below is code from a script in a component named `com_example`.
-
-```javascript
-//  Create our namespace
-if (!HUB) {
-	var HUB = {};
-
-	// sub-space for components
-	HUB.Components = {};
-}
-
-// The Example namespace and init method
-HUB.Components.Example = {
-	init: function() {
-		// do something
-	}
-}
-
-// Initialize the code (jQuery)
-jQuery(document).ready(function($){
-	Components.Example.init();
-});
-```
-
-## Loading From An Extension
-
-### Components
-
-Occasionally a component will have scripts of its own. Pushing JavaScript to the template from a component is quite easy and involves only a few lines of code.
-
-```php
-Hubzero\Document\Assets::addComponentScript('com_example');
-```
-
-First, we load the `Hubzero\Document\Assets` class. Next we call the static method `addComponentScript`, passing it the name of the component as the first (and only) argument. This will first check for the presence of the style sheet in the active template's [overrides](09-overrides.md). If found, the path to the overridden script will be added to the array of scripts the template needs to include in the `<head>`. If no override is found, the code then checks for the existence of the script in the component's directory. Once again, if found, it gets pushed to the template.
-
-### Modules
-
-Loading Javascript from a module works virtually the same as loading from a component save one minor difference in code. Instead of calling the `addComponentScript` method, we call the `addModuleScript` method and pass it the name of the module.
-
-```php
-Hubzero\Document\Assets::addModuleScript('mod_example');
-```
-
-### Plugins
-
-Loading Javascript from a plugin works similarly to loading from a component or module but instead we call the `addPluginScript` method and pass it the name of the plugin group **and** the name of the plugin.
-
-```php
-Hubzero\Document\Assets::addPluginScript('examples', 'test');
-```
-
-Plugin Javascript must be named the same as the plugin and located within a directory of the same name as the plugin inside the plugin group directory.
-
-```
-/plugins
-  /examples
-    /test
-      test.css
-    test.php
-    test.xml
-```
-
-### View Helpers (all extensions)
-
-Modules, Component, and plugin views now have helpers for pushing Cascading StyleSheets and JavaScript assets to the document. Each method automatically looks for overrides within the current, active template, taking out the busy work of checking yourself each time assets are added. The method names are short, accept a range of options, and allow for method chaining, all tailored for brevity and ease of use.
-
-The css() method provides a quick and convenient way to attach stylesheets. For components, it accepts two arguments:
-
-1. The name of the stylesheet to be pushed to the document (file extension is optional). If no name is provided, the name of the component or plugin will be used. For instance, if called within a view of the component "com_tags", the system will look for a stylesheet named "tags.css".
-2. The name of the extension to look for the stylesheet. For components, this will be the component name (e.g., com_tags). For plugins, this is the name of the plugin folder and requires the third argument of plugin group (type) be passed to the method.
-3. \*Plugin views only.\* The name of the plugin.
-
-Example:
+Inside a view layout, `$this->js()` is the short way. It resolves the file,
+checks for a template override, and adds it to the document:
 
 ```php
 <?php
-// Push a stylesheet to the document
-$this->css()
-      ->css('another')  // Extension (.css) is optional
-      ->css('tags.css', 'com_tags');  // Load CSS from another component
-?>
-... view HTML ...
-```
-
-Along with file names, the method also accepts style declarations:
-
-```php
-<?php
-// Push a stylesheet to the document
-$this->css('.foo {
-	color: #000;
-}');
-?>
-... view HTML ...
-```
-
-Similarly, a js() method is available for pushing javascript assets to the document. The arguments accepted are the same as the css() method described above.
-
-```php
-<?php
-// Push some javascript to the document
+// Push {extension}/assets/js/{name of this component}.js
 $this->js()
-      ->js('another');
+     ->js('another')            // .js is optional
+     ->js('tags', 'com_tags');  // A file belonging to another component
 ?>
-... view HTML ...
 ```
 
-And, just as the css() method accepts style declarations, the js() method accepts script declarations:
+The three arguments are the asset name, the extension it belongs to, and — for
+plugins only — the plugin element:
 
 ```php
-<?php
-// Push some javascript to the document
-$this->js('
-	jQuery(document).ready(function($){
-		$("a").on("click", function(e){
-			console.log($(this).attr("href"));
-		});
-	});
-');
-?>
-... view HTML ...
+$this->js('test', 'members', 'dashboard');  // plg_members_dashboard
 ```
+
+With no arguments the helper works out the extension from the view: the
+component `option` for a component view, `plg_{folder}_{element}` for a plugin
+view. `css()` takes the same arguments, and `img()` returns a path rather than
+pushing anything.
+
+Both helpers also accept a *declaration*. If the string you pass contains a
+`(` or a `;` it is treated as code, not a filename, and goes to
+`addScriptDeclaration()`:
+
+```php
+$this->js('jQuery(document).ready(function($){ /* … */ });');
+```
+
+That is a real feature and a lot of shipped code uses it, but see the note
+about data attributes above before reaching for it.
+
+> **Warning:** The same-named `css()`/`js()` methods on controllers, modules
+> and plugins come from
+> [`Hubzero\Base\Traits\AssetAware`](../../../core/libraries/Hubzero/Base/Traits/AssetAware.php),
+> and their **third argument is an attributes array**, not a plugin element:
+> `$this->js('thing', 'com_example', ['defer' => true])`. Pass the full
+> `plg_{folder}_{element}` as the extension there.
+
+### The static methods
+
+Outside a view, use
+[`Hubzero\Document\Assets`](../../../core/libraries/Hubzero/Document/Assets.php):
+
+```php
+use Hubzero\Document\Assets;
+
+Assets::addComponentScript('com_example');           // com_example/assets/js/example.js
+Assets::addComponentScript('com_example', 'other');  // …/js/other.js
+Assets::addModuleScript('mod_example');
+Assets::addPluginScript('examples', 'test');         // plugins/examples/test/assets/js/test.js
+Assets::addSystemScript('jquery.fancybox');          // core/assets/js/…
+```
+
+Each has an `add…Stylesheet` twin, and a fourth `$dir` argument for assets that
+are not in `js/`.
+
+### Where the file is looked for
+
+[`Hubzero\Document\Asset\File`](../../../core/libraries/Hubzero/Document/Asset/File.php)
+builds a candidate list and takes the first that exists:
+
+```
+app/{type}/{extension}/assets/js/{name}.js
+app/{type}/{extension}/js/{name}.js
+core/{type}/{extension}/assets/js/{name}.js
+core/{type}/{extension}/js/{name}.js
+```
+
+`{type}` is `components/{com_x}/{client}`, `modules/{mod_x}` or
+`plugins/{folder}/{element}`. So `app/` wins over `core/`, and `assets/js/` —
+the modern layout — wins over a bare `js/`.
+
+The **template override** is checked separately and beats all of them:
+
+```
+{active template}/html/{extension name}/{name}.js
+```
+
+That is the same directory as the layout overrides, so
+`app/templates/mytemplate/html/com_example/example.js` replaces the component's
+script without touching the component. System assets nest one level deeper —
+`html/system/js/{name}.js`. See [Output overrides](09-overrides.md).
+
+A name beginning `http`, `//` or `://` is treated as external and passed
+through untouched. A name beginning `./` or `/` is resolved from the web root
+instead of the extension.
+
+## Behaviors
+
+`Html::behavior()` is the front door for the shared libraries, so you do not
+have to know where each one lives or add it twice — every behavior is loaded at
+most once per request.
+
+| Call | Adds |
+|---|---|
+| `Html::behavior('framework')` | jQuery, at the front of the queue |
+| `Html::behavior('framework', true)` | jQuery UI as well |
+| `Html::behavior('core')` | `hubzero.js` |
+| `Html::behavior('modal')` | fancybox, bound to a selector |
+| `Html::behavior('tooltip')` | jQuery UI tooltips |
+| `Html::behavior('formvalidation')` | `validate.js` |
+| `Html::behavior('bootstrap')`, `('htmx')`, `('alpinejs')`, `('inertia')`, `('htmxalpine')` | The named library, at a pinned version |
+| `Html::behavior('calendar')`, `('colorpicker')`, `('combobox')`, `('multiselect')`, `('uploader')`, `('switcher')`, `('tree')` | The matching widget |
+| `Html::behavior('math')` | MathJax |
+| `Html::behavior('chart')` | flot |
+| `Html::behavior('caption')`, `('highlighter')`, `('keepalive')`, `('noframes')` | Small page behaviours |
+
+The full list, with each one's arguments, is in
+[`Behavior.php`](../../../core/libraries/Hubzero/Html/Builder/Behavior.php).
+
+## Icons without a font
+
+`Html::asset('icon', 'edit')` inlines an SVG from
+[`core/assets/icons`](../../../core/assets/icons) — 325 of them — wrapped in
+`<span class="icn icn-edit" aria-hidden="true">`. A template overrides any of
+them with `html/icons/{symbol}.svg`. No script and no webfont is involved. See
+[Fontcons](12-fontcons.md).

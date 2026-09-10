@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Packaging · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Preparation File Structure The most basic files, such as , , , , should be placed directly in your template folder. The most common is to place images, CSS…">
+  <meta name="description" content="A finished template has two manifests. tells the CMS what the template offers — its parameters, its module positions and its metadata. tells Composer how to…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/packaging/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,41 +127,44 @@
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Packaging</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#preparation">Preparation</a></li>
-<li class="toc__item toc__item--l3"><a href="#file-structure">File Structure</a></li>
-<li class="toc__item toc__item--l3"><a href="#thumbnail-preview-image">Thumbnail Preview Image</a></li>
-<li class="toc__item toc__item--l2"><a href="#packaging-2">Packaging</a></li>
-<li class="toc__item toc__item--l2"><a href="#composer-manifest">Composer Manifest</a></li>
-<li class="toc__item toc__item--l2"><a href="#xml-manifest-deprecated">XML Manifest (deprecated)</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-tree-should-look-like">What the tree should look like</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-thumbnail">The thumbnail</a></li>
+<li class="toc__item toc__item--l2"><a href="#templatedetails-xml">templateDetails.xml</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-root-element">The root element</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-each-element-is-for">What each element is for</a></li>
+<li class="toc__item toc__item--l3"><a href="#positions">Positions</a></li>
+<li class="toc__item toc__item--l3"><a href="#parameters">Parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#composer-json">composer.json</a></li>
+<li class="toc__item toc__item--l2"><a href="#installing">Installing</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -176,98 +179,315 @@
           <p class="eyebrow">Developers</p>
           <h1>Packaging</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/packaging">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="preparation">Preparation</h2>
-<h3 id="file-structure">File Structure</h3>
-<p>The most basic files, such as <code>index.php</code>, <code>error.php</code>, <code>templateDetails.xml</code>, <code>template_thumbnail.png</code>, <code>favicon.ico</code> should be placed directly in your template folder. The most common is to place images, CSS files, JavaScript files etc in separate folders. Override files must be placed in folders in the folder &quot;<code>html</code>&quot;.</p>
-<pre><code>/{TemplateName}
-  /css
-    ... CSS files ...
-  /html
-    ... Overrides ...
-  /images
-    ... Image files ...
-  /js
-    ... JavaScript files ...
-  composer.json
-  error.php
-  index.php
-  templateDetails.xml
-  template_thumbnail.png
-  favicon.ico
+<p>A finished template has two manifests. <code>templateDetails.xml</code> tells the CMS what
+the template offers — its parameters, its module positions and its metadata.
+<code>composer.json</code> tells Composer how to fetch and place it. Neither of them
+installs anything on its own; a <a href="../migrations/index.html">migration</a> does the actual
+registering.</p>
+<h2 id="what-the-tree-should-look-like">What the tree should look like</h2>
+<pre><code>app/templates/mytemplate/
+    css/
+    html/                      Output overrides
+    img/
+    js/
+    language/
+        en-GB/
+            en-GB.tpl_mytemplate.ini
+    migrations/
+        Migration…TplMytemplate.php
+    component.php
+    error.php
+    index.php
+    composer.json
+    templateDetails.xml
+    template_thumbnail.png
+    favicon.ico
 </code></pre>
-<h3 id="thumbnail-preview-image">Thumbnail Preview Image</h3>
-<p>A thumbnail preview image named <code>template_thumbnail</code> should be included in your template. Image size is 206 pixels in width and 150 pixels high. Recommended file format is PNG.</p>
-<h2 id="packaging-2">Packaging</h2>
-<p>It is possible to install a template manually by copying the files using an SFTP client and modifying the database tables. It is more efficient to create a package file in the form on a <a href="https://getcomposer.org/doc/01-basic-usage.md">composer.json</a> document that will allow the Installer to do this for you. This package file resides in the top-level of your template's directory and contains a variety of information:</p>
-<ul>
-<li>basic descriptive details about your template (i.e. name), and optionally, a description, copyright and license information.</li>
-<li>the extension type (component, module, plugin, template)</li>
-<li>optionally, a destined install directory</li>
-</ul>
-<h2 id="composer-manifest">Composer Manifest</h2>
-<p>This <code>composer.json</code> file just outlines basic information about the template such as the owner, version, etc. for identification by the installer and then tells the installer which files should be copied and installed.</p>
-<p>A typical component manifest:</p>
-<pre><code class="language-javascript">{
-  &quot;name&quot;: &quot;myorg/tpl_example&quot;,
-  &quot;description&quot;: &quot;Example template&quot;,
-  &quot;license&quot;: &quot;MIT&quot;,
-  &quot;type&quot;: &quot;hubzero-template&quot;
-}
-</code></pre>
-<p>The hub includes some extra code that tells Composer where/how to install extensions, so it's important to use the designated <code>type</code>s. Available types are: <code>hubzero-component</code>, <code>hubzero-module</code>, <code>hubzero-plugin</code>, <code>hubzero-template</code>.</p>
-<h2 id="xml-manifest-deprecated">XML Manifest (deprecated)</h2>
-<p>This XML file just lines out basic information about the template such as the owner, version, etc. for identification by the installer and then provides optional parameters which may be set in the Template Manager and accessed from within the module's logic to fine tune its behavior. Additionally, this file tells the installer which files should be copied and installed.</p>
-<p>A typical template manifest:</p>
+<p><a href="../structure/index.html">Structure</a> says which of these are required and which are
+conventions.</p>
+<h3 id="the-thumbnail">The thumbnail</h3>
+<p><code>template_thumbnail.png</code> is what the administrator's template list shows.
+206 pixels wide; <code>kimera</code>'s is 206×150 and <code>kameleon</code>'s 206×118, so the height
+is not fixed. PNG, and it must be that exact filename —
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/helpers/utilities.php"><code>TemplatesHelper::thumb()</code></a>
+looks for nothing else.</p>
+<p>Put an optional <code>template_preview.png</code> beside it and the thumbnail becomes a
+link that opens the full-size image in a modal.</p>
+<h2 id="templatedetails-xml">templateDetails.xml</h2>
+<p>Contrary to what older documentation said, this file is not deprecated.
+<code>com_templates</code>, <code>com_modules</code> and <code>com_installer</code> all read it, and a template
+without one is configurable only by editing files.</p>
+<p>A complete example:</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;extension version=&quot;1.5&quot; type=&quot;template&quot;&gt;
-	&lt;name&gt;mynewtemplate&lt;/name&gt;
-	&lt;creationDate&gt;2008-05-01&lt;/creationDate&gt;
-	&lt;author&gt;John Doe&lt;/author&gt;
-	&lt;authorEmail&gt;john@example.com&lt;/authorEmail&gt;
-	&lt;authorUrl&gt;http://www.example.com&lt;/authorUrl&gt;
-	&lt;copyright&gt;John Doe 2008&lt;/copyright&gt;
-	&lt;license&gt;GNU/GPL&lt;/license&gt;
-	&lt;version&gt;1.0.2&lt;/version&gt;
-	&lt;description&gt;My New Template&lt;/description&gt;
+&lt;extension type=&quot;template&quot; version=&quot;2.5&quot;&gt;
+	&lt;name&gt;mytemplate&lt;/name&gt;
+	&lt;creationDate&gt;2026-09-09&lt;/creationDate&gt;
+	&lt;author&gt;Jane Doe&lt;/author&gt;
+	&lt;authorEmail&gt;jane@example.org&lt;/authorEmail&gt;
+	&lt;authorUrl&gt;example.org&lt;/authorUrl&gt;
+	&lt;copyright&gt;Copyright (c) 2026 Example University&lt;/copyright&gt;
+	&lt;license&gt;http://opensource.org/licenses/MIT MIT&lt;/license&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;description&gt;Site template for Example Hub&lt;/description&gt;
 	&lt;files&gt;
 		&lt;filename&gt;index.php&lt;/filename&gt;
 		&lt;filename&gt;component.php&lt;/filename&gt;
-		&lt;filename&gt;templateDetails.xml&lt;/filename&gt;
+		&lt;filename&gt;error.php&lt;/filename&gt;
+		&lt;filename&gt;css/index.css&lt;/filename&gt;
+		&lt;filename&gt;js/hub.js&lt;/filename&gt;
 		&lt;filename&gt;template_thumbnail.png&lt;/filename&gt;
-		&lt;filename&gt;images/background.png&lt;/filename&gt;
-		&lt;filename&gt;css/style.css&lt;/filename&gt;
 	&lt;/files&gt;
+	&lt;languages&gt;
+		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.tpl_mytemplate.ini&lt;/language&gt;
+	&lt;/languages&gt;
 	&lt;positions&gt;
-		&lt;position&gt;breadcrumb&lt;/position&gt;
+		&lt;position&gt;notices&lt;/position&gt;
+		&lt;position&gt;search&lt;/position&gt;
 		&lt;position&gt;left&lt;/position&gt;
 		&lt;position&gt;right&lt;/position&gt;
-		&lt;position&gt;top&lt;/position&gt;
-		&lt;position&gt;user1&lt;/position&gt;
-		&lt;position&gt;user2&lt;/position&gt;
-		&lt;position&gt;user3&lt;/position&gt;
-		&lt;position&gt;user4&lt;/position&gt;
 		&lt;position&gt;footer&lt;/position&gt;
 	&lt;/positions&gt;
+	&lt;config&gt;
+		&lt;fields name=&quot;params&quot;&gt;
+			&lt;fieldset name=&quot;basic&quot;&gt;
+				&lt;field name=&quot;header&quot; type=&quot;list&quot; default=&quot;light&quot;
+				       label=&quot;TPL_MYTEMPLATE_FIELD_HEADER_LABEL&quot;
+				       description=&quot;TPL_MYTEMPLATE_FIELD_HEADER_DESC&quot;&gt;
+					&lt;option value=&quot;light&quot;&gt;TPL_MYTEMPLATE_FIELD_HEADER_LIGHT&lt;/option&gt;
+					&lt;option value=&quot;dark&quot;&gt;TPL_MYTEMPLATE_FIELD_HEADER_DARK&lt;/option&gt;
+				&lt;/field&gt;
+			&lt;/fieldset&gt;
+		&lt;/fields&gt;
+	&lt;/config&gt;
 &lt;/extension&gt;
 </code></pre>
-<p>Let's go through some of the most important tags:</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The repository is MIT licensed, and so are all the shipped
+templates. Older copies of this page showed <code>&lt;license&gt;GNU/GPL&lt;/license&gt;</code>;
+that is out of date. Use whatever licence your own template is actually
+under — the CMS does not read this element, but people do.</p>
+</aside>
+<h3 id="the-root-element">The root element</h3>
+<p><code>&lt;extension type=&quot;template&quot;&gt;</code> is the current form and what every shipped
+template except <code>lucent</code> uses. <code>&lt;install type=&quot;template&quot;&gt;</code> is the legacy form
+and is still accepted; <code>lucent</code> uses it. <code>&lt;metafile&gt;</code> is for languages only.
+Anything else and the parser gives up and the template shows no metadata.</p>
+<p>The <code>type</code> attribute must say <code>template</code>. <code>kameleon</code> also carries
+<code>client=&quot;administrator&quot;</code>, but nothing reads that attribute — the client is
+whatever <code>addTemplateEntry()</code> wrote into <code>#__extensions</code>.</p>
+<h3 id="what-each-element-is-for">What each element is for</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Read by</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;name&gt;</code>, <code>&lt;version&gt;</code>, <code>&lt;description&gt;</code>, <code>&lt;author&gt;</code>, <code>&lt;authorEmail&gt;</code>, <code>&lt;authorUrl&gt;</code>, <code>&lt;copyright&gt;</code>, <code>&lt;creationDate&gt;</code></td>
+<td><code>com_templates</code>, <code>com_installer</code></td>
+<td>Shown in the template and extension lists. Missing <code>author</code> and <code>creationDate</code> display as <em>Unknown</em>.</td>
+</tr>
+<tr>
+<td><code>&lt;positions&gt;</code></td>
+<td><code>com_modules</code></td>
+<td>Fills the position dropdown when someone places a module.</td>
+</tr>
+<tr>
+<td><code>&lt;config&gt;</code></td>
+<td><code>com_templates</code></td>
+<td>Becomes the style-editing form.</td>
+</tr>
+<tr>
+<td><code>&lt;languages&gt;</code></td>
+<td>Nothing</td>
+<td>The language file is found by <a href="../languages/index.html">naming convention</a>, not by this list.</td>
+</tr>
+<tr>
+<td><code>&lt;files&gt;</code></td>
+<td>Nothing</td>
+<td>Left over from the old XML installer. <code>kimera</code> lists 18 files out of the 140 it ships; <code>lucent</code> and <code>welcome</code> list none. Harmless either way.</td>
+</tr>
+<tr>
+<td><code>&lt;license&gt;</code></td>
+<td>Nothing</td>
+<td>Informational.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="positions">Positions</h3>
+<pre><code class="language-xml">&lt;positions&gt;
+	&lt;position&gt;introblock&lt;/position&gt;
+	&lt;position value=&quot;user3&quot;&gt;Utility bar&lt;/position&gt;
+&lt;/positions&gt;
+</code></pre>
+<p><code>com_modules</code> reads the element text as the position name. Give a <code>value</code>
+attribute and the text becomes the label instead. With neither, the
+administrator sees a label looked up as
+<code>TPL_{TEMPLATE}_POSITION_{POSITION}</code> — define that key in your
+<a href="../languages/index.html">language file</a> and the list reads as English.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing checks the manifest against <code>index.php</code>. <code>kimera</code>
+declares <code>banner</code> and <code>introblock</code> that its layout never includes, and its
+layout includes <code>breadcrumbs</code> and <code>endpage</code> that the manifest never declares.
+A module placed in an undeclared position still renders; it is just not
+offered in the dropdown. Keep the two lists in step yourself.</p>
+</aside>
+<h3 id="parameters">Parameters</h3>
+<p>The <code>&lt;config&gt;</code> block is an ordinary
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Form"><code>Hubzero\Form</code></a> fieldset definition, and
+<a href="../../extensions/parameters/index.html">Parameters</a> covers the field types. Two
+things are specific to templates:</p>
 <ul>
-<li><strong>EXTENSION</strong><br />
-The install tag has several key attributes. The <code>type</code> must be &quot;template&quot;.</li>
-<li><strong>NAME</strong><br />
-You can name the templates in any way you wish.</li>
-<li><strong>FILES</strong><br />
-The files tag includes all of the files that will will be installed with the template.</li>
-<li><strong>POSITIONS</strong><br />
-The module positions used in the template.</li>
+<li><code>label</code> and <code>description</code> are language keys, resolved from the template's own
+language file.</li>
+<li><code>com_templates</code> looks for <code>config/config.xml</code> inside the template first and
+falls back to <code>templateDetails.xml</code>. Either works; nothing shipped uses the
+separate file.</li>
 </ul>
-<p>The one noticeable difference between this template manifest and the typical manifest of a module or component is the lack of <code>config</code>. While templates may have their own <code>params</code> for further configuration via the administrative back-end, they aren't as commonly found as in other extension manifests. Most HUBzero templates do not include them.</p>
+<p>Read the values back in a layout with <code>$this-&gt;params-&gt;get('header')</code>.</p>
+<h2 id="composer-json">composer.json</h2>
+<p>This is what makes the template installable as a package. <code>kimera</code>'s, whole:</p>
+<pre><code class="language-json">{
+	&quot;name&quot;: &quot;hubzero/tpl_kimera&quot;,
+	&quot;description&quot;: &quot;Kimera template for the HUBzero CMS&quot;,
+	&quot;type&quot;: &quot;hubzero-template&quot;,
+	&quot;keywords&quot;: [&quot;hubzero&quot;],
+	&quot;homepage&quot;: &quot;https://hubzero.org&quot;,
+	&quot;license&quot;: &quot;MIT&quot;,
+	&quot;authors&quot;: [
+		{
+			&quot;name&quot;: &quot;HUBzero&quot;,
+			&quot;email&quot;: &quot;support@hubzero.org&quot;
+		}
+	],
+	&quot;support&quot;: {
+		&quot;email&quot;: &quot;support@hubzero.org&quot;,
+		&quot;issues&quot;: &quot;https://help.hubzero.org&quot;
+	},
+	&quot;require&quot;: {
+		&quot;php&quot; : &quot;^5.4&quot;
+	},
+	&quot;extra&quot;: {
+		&quot;install-directory&quot;: &quot;/templates/kimera/&quot;
+	}
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>{vendor}/tpl_{template}</code>. The vendor is yours, not <code>hubzero</code>.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Must be one of <code>hubzero-component</code>, <code>hubzero-module</code>, <code>hubzero-plugin</code>, <code>hubzero-template</code>. This is what tells the hub's installer where the package belongs.</td>
+</tr>
+<tr>
+<td><code>license</code></td>
+<td>An <a href="https://spdx.org/licenses/">SPDX identifier</a>. The shipped templates say <code>MIT</code>.</td>
+</tr>
+<tr>
+<td><code>extra.install-directory</code></td>
+<td>Where the files should land, relative to <code>app/</code>.</td>
+</tr>
+<tr>
+<td><code>require</code></td>
+<td>The shipped templates pin <code>&quot;php&quot;: &quot;^5.4&quot;</code>, which is long obsolete; set something honest for your own.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="installing">Installing</h2>
+<p>There is no XML installer any more. Installation goes through Composer.
+<strong>Extensions → Extension Manager</strong> in the administrator opens <code>com_installer</code>,
+which has these screens:</p>
+<table>
+<thead>
+<tr>
+<th>Screen</th>
+<th>Controller</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hubzero Core</strong></td>
+<td><code>manage</code></td>
+<td>Lists installed extensions; enable, disable, remove</td>
+</tr>
+<tr>
+<td><strong>Core Migrations</strong></td>
+<td><code>migrations</code></td>
+<td>Runs pending <code>up()</code> methods</td>
+</tr>
+<tr>
+<td><strong>Custom Extensions</strong></td>
+<td><code>customexts</code></td>
+<td>Installs an extension from a Git repository</td>
+</tr>
+<tr>
+<td><strong>Warnings</strong></td>
+<td><code>warnings</code></td>
+<td>Environment checks</td>
+</tr>
+<tr>
+<td>Packages</td>
+<td><code>packages</code></td>
+<td>Lists what the registered repositories offer, and installs one</td>
+</tr>
+<tr>
+<td>Repositories</td>
+<td><code>repositories</code></td>
+<td>Registers a Composer repository</td>
+</tr>
+</tbody>
+</table>
+<p>Installing a packaged template is:</p>
+<ol>
+<li><strong>Repositories</strong> registers the source your package comes from. The screen
+edits the <code>repositories</code> block of the hub's <code>app/composer.json</code>.</li>
+<li><strong>Packages</strong> installs it.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Composer.php"><code>Hubzero\Utility\Composer</code></a>
+runs Composer with <code>app/</code> as its working directory, so the require lands in
+<code>app/composer.json</code> and the files under <code>app/</code>.</li>
+<li><strong>Core Migrations</strong> runs the template's <code>up()</code>, which writes the
+<code>#__extensions</code> and <code>#__template_styles</code> rows. Until this step the template
+exists on disk and is invisible to the CMS.</li>
+<li><strong>Hubzero Core</strong> lists the result and lets an administrator enable or
+disable it.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Both Composer screens are unfinished. Nothing links to them —
+<code>Helpers\Installer::addSubmenu()</code> lists only Hubzero Core, Custom Extensions
+and Warnings — so you reach them by typing the URL
+<code>/administrator/index.php?option=com_installer&amp;controller=packages</code>, after
+which tabs link to the other. Every language key their views use is
+undefined as well, so their labels render as raw
+<code>COM_INSTALLER_PACKAGES_…</code> keys. Copying the directory in by hand and running
+the migration is the reliable route today.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Both screens refuse to run and show a warning instead if the hub
+has no <code>app/composer.json</code>.</p>
+</aside>
+<p>Copying the directory in by hand and then running the migration works just as
+well, and is what you will do while developing. The
+<a href="../../extensions/deployext/index.html">deployment chapter</a> covers packaging a
+finished extension for other people.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../overrides/index.html" rel="prev"><span>Previous</span>Output Overrides</a><a class="pager__next" href="../socicons/index.html" rel="next"><span>Next</span>Socicons</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../overrides/index.html" rel="prev"><span>Previous</span>Output overrides</a><a class="pager__next" href="../socicons/index.html" rel="next"><span>Next</span>Socicons</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/10-packaging.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

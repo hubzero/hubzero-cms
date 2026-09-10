@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Migrations · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Migrations allow you a group update its separate database without having to connect to the live database and manually updating the schema. Another…">
+  <meta name="description" content="A super group&#x27;s database is versioned the same way the hub&#x27;s is: with migration classes that muse runs in order and records so it never runs one twice. Putting…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/migrations/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,38 +127,41 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Migrations</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-a-migration">Creating a Migration</a></li>
-<li class="toc__item toc__item--l2"><a href="#running-migrations">Running Migrations</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-they-live">Where they live</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-class">The class</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-one">Creating one</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-them">Running them</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-runs-are-recorded">Where the runs are recorded</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-them-automatically">Running them automatically</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -173,28 +176,149 @@
           <p class="eyebrow">Developers</p>
           <h1>Migrations</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups/migrations">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Migrations allow you a group update its separate database without having to connect to the live database and manually updating the schema. Another benefit to using migrations is that they are automatically run every time the super groups code is updated from Gitlab!</p>
-<h2 id="creating-a-migration">Creating a Migration</h2>
-<p>Migrations can be created easily with the HUbzero command line application &quot;Muse&quot;. From the command line run the following command (in the web root):</p>
-<p><code>/{web_root}/cli/muse.php group scaffolding migration --group={group_cn} -e=com_{component}</code></p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Simply replate {group_cn} with your groups cname and {component} with the component. The migration file will be automatically placed into the correct location, ready for you to modify and commit when ready.</p>
-</aside>
-<h2 id="running-migrations">Running Migrations</h2>
-<p>Running migrations is almost as easy as creating them with once again help from the Hubzero command line application. From the command line run the following command (in the web root):</p>
-<p><code>/{web_roo}/cli/muse.php group migrate -if --group={group_cn}</code></p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Simply replate {group_cn} with your groups cname. The -i argument means ignore dates (run migrations it could have missed) and -f means actually run.</p>
-</aside>
+<p>A super group's <a href="../databases/index.html">database</a> is versioned the same way the
+hub's is: with migration classes that muse runs in order and records so it
+never runs one twice. Putting schema changes in migrations means nobody has to
+connect to the live database by hand, and means the schema travels with the
+code — the admin screen that pulls a group's code runs its migrations
+straight afterwards.</p>
+<p>Everything in <a href="../../database/migrations/index.html">Migrations</a> applies. This
+chapter is only what a group does differently.</p>
+<h2 id="where-they-live">Where they live</h2>
+<pre><code>app/site/groups/&lt;gidNumber&gt;/migrations/
+</code></pre>
+<p>That one directory, and nothing under it. When muse is given a group, the
+group directory becomes the entire search path, so migrations inside the
+group's own <code>components/com_*/migrations</code> are <strong>not</strong> found. Keep them all in
+the group's top-level <code>migrations</code> directory, and put the component name in
+the class name to tell them apart.</p>
+<p>The skeleton creates the directory when the group is first saved as a super
+group.</p>
+<h2 id="the-class">The class</h2>
+<p>Naming is as it is everywhere else: <code>Migration</code>, a fourteen-digit timestamp,
+and the extension in studly case.</p>
+<pre><code>Migration20260901120000ComDrwho.php
+</code></pre>
+<pre><code class="language-php">&lt;?php
+
+use Hubzero\Content\Migration\Base;
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+/**
+ * Migration script for the Doctor's companion table
+ **/
+class Migration20260901120000ComDrwho extends Base
+{
+	/**
+	 * Up
+	 **/
+	public function up()
+	{
+		if (!$this-&gt;db-&gt;tableExists('#__companions'))
+		{
+			$this-&gt;db-&gt;setQuery(&quot;CREATE TABLE `#__companions` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`name` varchar(255) NOT NULL DEFAULT '',
+				PRIMARY KEY (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;&quot;);
+			$this-&gt;db-&gt;query();
+		}
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		if ($this-&gt;db-&gt;tableExists('#__companions'))
+		{
+			$this-&gt;db-&gt;setQuery(&quot;DROP TABLE `#__companions`&quot;);
+			$this-&gt;db-&gt;query();
+		}
+	}
+}
+</code></pre>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Note: You only need to manually run migrations in a dev environment. When groups code is updated on live, migrations are automatically run.</p>
+<p><strong>Warning:</strong> A group migration class must <strong>not</strong> be namespaced. The runner
+works the expected namespace out from the file's path, and it only knows the
+<code>components</code>, <code>modules</code>, <code>plugins</code>, <code>templates</code> and <code>migrations</code> layouts — a
+path under <code>site/groups</code> gives it nothing, so it falls back to looking for a
+global class of the same name as the file. A namespaced class is skipped
+with <em>does not have a class of the same name</em> and the migration silently
+never runs.</p>
+</aside>
+<p><code>$this-&gt;db</code> inside the migration is the <strong>group's</strong> database, because muse
+passes it as the alternate connection. <code>#__</code> expands to nothing there, since
+the group's <code>prefix</code> is empty.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The extension macros — <code>addComponentEntry()</code>, <code>addPluginEntry()</code>,
+<code>addModuleEntry()</code> and the rest — are wired to <code>$this-&gt;db</code> too, which in a
+group migration is the group's database and not the hub's. They will try to
+write <code>#__extensions</code> inside the group schema. A super group component is
+not registered with the CMS in the first place, so there is nothing these
+should be used for here.</p>
+</aside>
+<h2 id="creating-one">Creating one</h2>
+<p><code>muse group scaffolding migration</code> is documented in older material and does
+not put the file in the right place on this release — it resolves its
+install directory against <code>core/</code>, not <code>app/</code>. Give scaffolding an absolute
+directory instead:</p>
+<pre><code class="language-bash">php core/bin/muse scaffolding create migration \
+    -e=com_drwho \
+    --install-dir=/path/to/hub/app/site/groups/1051
+</code></pre>
+<p>That writes <code>app/site/groups/1051/migrations/Migration&lt;timestamp&gt;ComDrwho.php</code>
+and opens it in <code>$EDITOR</code>. <code>-e</code> only decides the suffix on the class name;
+add <code>-i</code> if the extension does not exist as a directory under the group and
+scaffolding refuses it.</p>
+<p>Writing the file by hand is equally valid. Nothing but the file name pattern
+and the class name matters.</p>
+<h2 id="running-them">Running them</h2>
+<pre><code class="language-bash">php core/bin/muse group migrate --group=mygroup -if
+</code></pre>
+<ul>
+<li><code>--group</code> takes the group's alias. Run muse from inside the group's
+directory and you may leave it off; the command works the group out from
+the current directory.</li>
+<li><code>-i</code> ignores dates, so migrations the group may have missed are offered.</li>
+<li><code>-f</code> makes it a real run. Without <code>-f</code> everything is a dry run that only
+lists what it would do — which is the safe way to look first.</li>
+</ul>
+<p><code>php core/bin/muse migration -f --group=mygroup</code> is the same thing; the
+<code>group migrate</code> command sets the option and hands over to the migration
+command.</p>
+<p>If the group has no <code>migrations</code> directory the command stops with <em>Error:
+Migrations directory does not exist</em>, and if <code>config/db.php</code> is missing or
+wrong it stops with <em>Error: Could not connect to Group Database</em>.</p>
+<h2 id="where-the-runs-are-recorded">Where the runs are recorded</h2>
+<p>In the <strong>hub's</strong> <code>#__migrations</code> table, not the group's. The <code>scope</code> column
+holds the path to the directory relative to the document root —
+<code>app/site/groups/1051/migrations</code> — which is what keeps one group's history
+separate from another's and from the hub's own.</p>
+<p>So a group's database can be dropped and rebuilt, but the hub still believes
+its migrations have run. Use <code>--force</code> with <code>--file=</code> to re-run one, or
+<code>-d=down</code> first.</p>
+<h2 id="running-them-automatically">Running them automatically</h2>
+<p>You only run migrations by hand in a development environment. On a hub whose
+groups are managed through <a href="../../supergroups-gitlab/index.html">GitLab</a>, an
+administrator selecting <strong>Merge Groups Code</strong> runs, for each group,
+<code>muse group update -f</code> followed by <code>muse group migrate -f</code>. New migrations
+that arrive with a merge are applied as part of the merge.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The controller means to skip the migration step when the update
+fails. It decides by looking for the word <code>ineligble</code> in the update output —
+misspelled, and in any case a word muse never prints. The test therefore
+always passes and migrations run even after a failed update. Read the
+output of a merge rather than trusting that it stopped itself. This is
+recorded in the project record.</p>
 </aside>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databases/index.html" rel="prev"><span>Previous</span>Databases</a><a class="pager__next" href="../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/06-migrations.md">Edit this page on GitHub</a>

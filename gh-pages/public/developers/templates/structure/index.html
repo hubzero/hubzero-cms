@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Structure · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview All templates should include a manifest in the form of an XML document named . The file holds key metadata about the template and is essential.…">
+  <meta name="description" content="A template is a directory. This chapter says what goes in it, what is required, and what the CMS does with each part. Where it lives Your templates go in . The…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/structure/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -126,38 +126,41 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Structure</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#directory-files">Directory &amp; Files</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-it-lives">Where it lives</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-tree">The tree</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-actually-required">What is actually required</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-parts">The parts</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-shipped-templates-leave-out">What the shipped templates leave out</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -172,29 +175,217 @@
           <p class="eyebrow">Developers</p>
           <h1>Structure</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/structure">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>All templates should include a manifest in the form of an XML document named <code>templateDetails.xml</code>. The file holds key &quot;metadata&quot; about the template and is essential. Without it, your template won't be seen by the system.</p>
-<h2 id="directory-files">Directory &amp; Files</h2>
-<p>Templates are found in the <code>/templates</code> directory of a hub's <code>/app</code>. Specific template files are contained within a directory of the same name as the template. While a template may contain any number of files and sub-directories, it must contain at least two files: the primary layout (<code>index.php</code>) and a XML manifest named <code>templateDetails.xml</code>.</p>
-<pre><code>/app
-.. /templates
-.. .. /{TemplateName}
-.. .. .. /css
-.. .. .. /html
-.. .. .. /img
-.. .. ..  /js
-.. .. .. error.php
-.. .. .. component.php
-.. .. .. index.php
-.. .. .. templateDetails.xml
-.. .. .. template_thumbnail.png
-.. .. .. favicon.ico
+<p>A template is a directory. This chapter says what goes in it, what is
+required, and what the CMS does with each part.</p>
+<h2 id="where-it-lives">Where it lives</h2>
+<p>Your templates go in <code>app/templates/{name}</code>. The templates that ship with the
+CMS are in <code>core/templates/{name}</code> and are replaced on upgrade, so do not edit
+them in place — copy one into <code>app/templates</code> instead, as the
+<a href="../index.html">overview</a> describes.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Loader.php"><code>Hubzero\Template\Loader</code></a>
+resolves a style to a directory, checking <code>app/</code> before <code>core/</code>. A template in
+<code>app/templates/kimera</code> therefore shadows the shipped <code>kimera</code> entirely.</p>
+<h2 id="the-tree">The tree</h2>
+<p>This is <code>kimera</code>, the fullest of the shipped site templates:</p>
+<pre><code>core/templates/kimera/
+    css/               Compiled stylesheets
+        browser/       Per-browser fixes: ie8.css, ie9.css
+        pages/         Per-page stylesheets: home.css, community.css, …
+        theme.php      Parameter-driven colours, served as CSS
+    html/              Output overrides for other extensions
+    img/               Images the template's own CSS refers to
+    js/                Scripts: hub.js, html5.js
+    language/
+        en-GB/
+            en-GB.tpl_kimera.ini
+    less/              LESS sources for everything under css/
+    migrations/
+        Migration20170831000000TplKimera.php
+    component.php      Layout for tmpl=component requests
+    composer.json      Package metadata
+    error.php          Layout for error pages
+    favicon.ico
+    index.php          The main layout
+    offline.php        Layout shown when the site is offline
+    templateDetails.xml
+    template_thumbnail.png
 </code></pre>
+<p>Nothing here is magic except the names. <code>css/</code>, <code>js/</code>, <code>img/</code> and <code>less/</code> are
+conventions your own stylesheets and <code>index.php</code> refer to; you can call them
+what you like. The rest the CMS looks for by name.</p>
+<h2 id="what-is-actually-required">What is actually required</h2>
+<p>Only two things:</p>
+<ul>
+<li><strong><code>index.php</code>.</strong> If it is missing, <code>Hubzero\Document\Type\Html</code> silently
+falls back to <code>core/templates/system</code> and renders that instead.</li>
+<li><strong>A row in <code>#__extensions</code>, and a style in <code>#__template_styles</code>.</strong> The
+administrator's template list is a query against <code>#__extensions</code>, not a scan
+of the filesystem, so a directory nobody has registered is invisible. Write
+a <a href="../migrations/index.html">migration</a> to register it.</li>
+</ul>
+<p><code>templateDetails.xml</code> is <em>not</em> required for the template to render. It is
+required for the administrator to configure it: without it the template has no
+parameters to edit and contributes no module positions. See
+<a href="../packaging/index.html">Packaging</a>.</p>
+<h2 id="the-parts">The parts</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What reads it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.php</code></td>
+<td>The document, for every normal page. See <a href="../layouts/index.html">Page layout</a>.</td>
+</tr>
+<tr>
+<td><code>{tmpl}.php</code></td>
+<td>The document, when the request carries <code>tmpl={name}</code>. <code>tmpl=component</code> gives modal windows and popups their bare frame; <code>com_help</code> sets <code>tmpl=help</code>, <code>com_cpanel</code> sets <code>tmpl=cpanel</code>, <code>com_login</code> sets <code>tmpl=login</code>, and <code>com_groups</code> sets <code>tmpl=group</code> for super group pages.</td>
+</tr>
+<tr>
+<td><code>error.php</code></td>
+<td>The error document.</td>
+</tr>
+<tr>
+<td><code>offline.php</code></td>
+<td>Rendered when the site is switched offline and the visitor lacks <code>core.login.offline</code>.</td>
+</tr>
+<tr>
+<td><code>email.php</code></td>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Mail/Template.php"><code>Hubzero\Mail\Template</code></a>, for HTML mail.</td>
+</tr>
+<tr>
+<td><code>templateDetails.xml</code></td>
+<td><code>com_templates</code> for parameters and metadata, <code>com_modules</code> for the position list.</td>
+</tr>
+<tr>
+<td><code>language/{tag}/{tag}.tpl_{name}.ini</code></td>
+<td>Loaded automatically. See <a href="../languages/index.html">Languages</a>.</td>
+</tr>
+<tr>
+<td><code>migrations/</code></td>
+<td><code>muse migration</code>. See <a href="../migrations/index.html">Migrations</a>.</td>
+</tr>
+<tr>
+<td><code>html/</code></td>
+<td>Every extension's asset and layout lookup. See <a href="../overrides/index.html">Output overrides</a>.</td>
+</tr>
+<tr>
+<td><code>html/icons/{symbol}.svg</code></td>
+<td><code>Html::asset('icon', …)</code>, overriding <code>core/assets/icons</code>.</td>
+</tr>
+<tr>
+<td><code>template_thumbnail.png</code></td>
+<td>The template list in the administrator. 206 pixels wide; <code>kimera</code>'s is 206×150. An optional <code>template_preview.png</code> beside it makes the thumbnail a link to the full-size image.</td>
+</tr>
+<tr>
+<td><code>favicon.ico</code></td>
+<td>Only if your <code>index.php</code> links to it. Nothing links it for you.</td>
+</tr>
+<tr>
+<td><code>composer.json</code></td>
+<td>Composer, when the template is installed as a package.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-shipped-templates-leave-out">What the shipped templates leave out</h2>
+<p>Not one of them has the full tree, which is a useful measure of what you can
+skip:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>kimera</code></th>
+<th><code>lucent</code></th>
+<th><code>welcome</code></th>
+<th><code>kameleon</code></th>
+<th><code>system</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.php</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>component.php</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>error.php</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>templateDetails.xml</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>composer.json</code></td>
+<td>yes</td>
+<td>—</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>migrations/</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>html/</code> overrides</td>
+<td>32 files</td>
+<td>—</td>
+<td>—</td>
+<td>4 files</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>template_thumbnail.png</code></td>
+<td>yes</td>
+<td>—</td>
+<td>—</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><code>system</code> is the fallback and is never registered as a style, which is why it
+has neither a manifest nor a migration. It also holds the shared <code>email.php</code>,
+<code>group.php</code>, <code>help.php</code>, <code>login.php</code> and <code>offline.php</code> layouts that other
+templates inherit when they do not define their own.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>lucent</code> ships a <code>templateDetails.xml</code> whose root element is
+<code>&lt;install&gt;</code> rather than <code>&lt;extension&gt;</code>, with an empty <code>&lt;files&gt;</code> list and a
+stale GPLv2 <code>&lt;license&gt;</code>. Both root tags are accepted, but copy <code>kimera</code>'s
+manifest rather than <code>lucent</code>'s.</p>
+</aside>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../designing/index.html" rel="next"><span>Next</span>Designing</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/03-structure.md">Edit this page on GitHub</a>

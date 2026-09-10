@@ -1,113 +1,160 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups_gitlab/developing
 source-id: 3530
 modified: 2014-09-10
-imported: 2026-09-09
 -->
 # Developing
 
-## Overview
+The cycle for a super group managed through GitLab is: work in a clone,
+propose the change as a merge request, and have an administrator pull the
+merged result into the hub.
 
-After you have completed all the necessary setup steps its time to start actually developing. The following items are necessary steps to getting your code added to the live site super group code as easily as possible.
+The examples use `mygroup` as the group's alias, `hub-example` as the hub's
+GitLab group and `theuser` as your GitLab user name. The project is
+`sg_mygroup`, in the group `hub-example`; both names are built by the hub when
+it creates the project, as described in [Setup](02-setup.md).
 
-> **Note:** For example purposes we are going to use "mytestgroup" as the group cname and "hubzero.org" as the hub we are working on. This would map to "hubzero" as the group name and "mytestgroup" as the project in Gitlab. We are also going to use "theuser" as the user's username in Gitlab.
+> **Note:** Everything up to the last section happens in GitLab and in git.
+> None of it is the CMS, and none of it could be verified against this
+> repository. Use it as a description of the arrangement the CMS expects, and
+> your own GitLab's documentation for the details.
 
-## Fork Project
+## Fork the project
 
-The first step is you need to create a fork of the main project. You can find main project by navigating to your dashboard in Gitlab then the projects tab. Project names are formatted by the group/project, where group is the hub name/URL and project is super group cname.
+Find `hub-example / sg_mygroup` in GitLab and fork it. The fork is yours: you
+can push to it freely without touching the group the hub pulls from.
 
-1. Click on the project you want to start development for, you should be taken to the project page.
-2. Click the "Fork repository" button on the right side of the page. This will fork the repository and take you to your forked version of this repository.
+## Clone your fork
 
-## Clone Repository
-
-You are now ready to clone the repository to a development machine. This can be anywhere, but recommended that you use the hubs dev machine or local dev machine (local HUB on VM).
-
-1. Get the repository url. From your forked repository page you should see a text box with the git repo url in it. Copy that URL to your clipboard
-2. Go to the machine where you want to clone the repository to and type the following into a terminal window:
-   ```
-   git clone git@gitlab.hubzero.org:theuser/mytestgroup.git; mv mytestgroup/* mytestgroup/.git* .; rmdir mytestgroup;
-   ```
-3. The repository content will be copied to a "mytestgroup" directory within the current directory
-
-## Add Upstream Repository
-
-Upstream repository is a fancy word for the main repository you forked from. You need to tell your forked copy that it has a main repository and where it is. To add the upstream repository, in a Terminal window navigate to your cloned repo and type the following:
-
-```
-git remote add upstream git@gitlab.hubzero.org:hubzero/mytestgroup.git
+```bash
+git clone git@gitlab.example.org:theuser/sg_mygroup.git
+cd sg_mygroup
 ```
 
-You can test to see if everything was added correctly by typing:
+Clone anywhere you like. A development hub is the convenient place, because
+you can then point a super group at the working copy and see the result.
 
-```
+> **Note:** Older documentation gave a one-line clone that moved the files up
+> and removed the directory. That was for cloning *into* a group directory
+> that already existed. A plain clone is what you want.
+
+## Add the upstream remote
+
+Your fork does not track the group's real repository. Add it:
+
+```bash
+git remote add upstream git@gitlab.example.org:hub-example/sg_mygroup.git
 git remote -v
 ```
 
-and you should now see something like:
-
-```
-origin    git@gitlab.hubzero.org:testuser/mytestgroup.git (fetch)
-origin    git@gitlab.hubzero.org:testuser/mytestgroup.git (push)
-upstream  git@gitlab.hubzero.org:hubzero/mytestgroup.git (fetch)
-upstream  git@gitlab.hubzero.org:hubzero/mytestgroup.git (push)
+```text
+origin    git@gitlab.example.org:theuser/sg_mygroup.git (fetch)
+origin    git@gitlab.example.org:theuser/sg_mygroup.git (push)
+upstream  git@gitlab.example.org:hub-example/sg_mygroup.git (fetch)
+upstream  git@gitlab.example.org:hub-example/sg_mygroup.git (push)
 ```
 
-> **Warning:** This is a very important part of working with Gitlab is keeping your forked repository synced with the main repository.
+Keeping the fork in step with upstream is the part people skip and regret. Do
+it before every push.
 
-## Develop
+## What belongs in the repository
 
-Make changes, add new code, fix bugs etc. Commit as you develop.
+Everything the hub put there when it created the project: `template/`,
+`components/`, `macros/`, `migrations/`, `pages/`, `language/`.
 
-## Sync with Main Project
+Two things are deliberately excluded and must stay out:
 
-Before you push your changes to Gitlab it is recommended that you sync your forked project with the main project.
+- `uploads/` — the group's own files, which belong to its members and are not
+  code.
+- `config/db.php` — the group's database password.
 
-> **Warning:** Failure to sync your fork before pushing changes and creating a merge request can result in your merge request being denied until synced properly.
+The hub writes both into `.git/info/exclude` when it sets the repository up.
+That file is local to the clone the hub made; a fresh clone does not have it,
+so take care not to add either path by hand.
 
-To sync, navigate to your cloned repo in a terminal window and type the following:
+## Work
 
-```
+Ordinary git. Commit as you go. The hub sets the repository up on `master`
+and protects that branch, so `master` is what a merge request targets.
+
+Schema changes belong in
+[migrations](../13-supergroups/06-migrations.md), in the group's top-level
+`migrations` directory, so they run when the code is merged on the hub.
+
+## Sync before you push
+
+```bash
 git fetch upstream
-```
-
-Then make sure your on the master branch by typing:
-
-```
 git checkout master
-```
-
-Then merge the upstream master branch with your master branch by:
-
-```
 git merge upstream/master
 ```
 
-You might have to resolve some merge conflicts at this point. See the Git documation or search Google for issues you might run into.
+Resolve any conflicts here, in your own clone, where it costs nothing. A merge
+request from a fork that is behind is harder to review and may be sent back.
 
-> **Note:** You can sync your forked project with the main project as often as you like. Syncing often usually reduces potential merge conflicts.
+## Push and open a merge request
 
-## Push Changes
-
-Pushing your changes it simple and easy. Simple type the following in a terminal window from within your cloned repo:
-
-```
+```bash
 git push origin master
 ```
 
-This pushes the changes you've committed to your forked projects repository.
+Then, in GitLab, open a merge request from your fork's `master` to
+`hub-example/sg_mygroup`'s `master`. Write a description that says what
+changed and why: the person approving it is reading the diff cold.
 
-## Create Merge Request
+How long approval takes, and who does it, is your hub's policy. GitLab mails
+you when the request is accepted or closed.
 
-A merge request is how the changes you pushed to your forked project get into the main project. Login to gitlab, go to your forked project, click the merge tab, then "New merge request". Select the master branch in your forked copy and click "Compare branches". You should be taken to the next step where you can give the merge request a title and a description. The description is very important for the approval team to understand what the merge is related to. This page will also show the commits that will be merged and the file diffs. When your ready click "Submit merge request".
+## Pulling the changes into the hub
 
-## Wait for Approval
+The last step is a hub administrator's, in the administrator interface. The
+screens are in **Users** → **Groups**.
 
-Approval may be the next day or make take up to a week depending on complexity and schedules. Approvals are done Monday-Friday 8am - 5pm EST.
+1. Tick the super groups to update in the group list.
+2. Select **Update Groups Code**. Nothing is changed yet: the hub fetches from
+   the remote and lists the commits each group is behind by, or says *Your
+   code is currently up to date!*
+3. Look at the list. Each group with something to merge gets a **Merge
+   Changes** tick box, ticked.
+4. Select **Merge Groups Code**.
 
-When your merge request is accepted or denied you will get an email notice regarding its status.
+**Update Groups Code** is only on the toolbar when **Repo Management** is on
+and the administrator holds the `core.manage` permission for `com_groups`.
+Groups in the selection that are not super groups, or that have no `.git`
+directory, are listed as failures and skipped.
 
-## Pull Changes
+The merge runs `muse group update -f` and then `muse group migrate -f` in the
+group's directory. Concretely, for each group:
 
-Pulling in the changes that were merged into the main project can be done through the admin interface for the HUB. You must have admin rights to access the administrator interface.
+- Local modifications in the group's directory are **stashed** first, so
+  anything edited on the server by hand is set aside rather than merged.
+- A tag named `cmsrollbackpoint-<timestamp>` is written, so the state before
+  the merge can be recovered.
+- The merge is **fast-forward only**. A group whose directory has commits of
+  its own will refuse to merge rather than produce a merge commit.
+- The group's [migrations](../13-supergroups/06-migrations.md) run afterwards,
+  against the group's own database.
+
+> **Warning:** The controller means to skip migrations when the update fails,
+> but the test it uses never matches, so migrations run either way. Read the
+> output of the merge instead of assuming it stopped. Recorded in
+> It is recorded with the project.
+## Rolling back
+
+The rollback point the merge wrote is reachable from muse:
+
+```bash
+php core/bin/muse group update rollback --group=mygroup -f
+```
+
+That resets the group's directory to the most recent
+`cmsrollbackpoint-` tag. It does not undo migrations; a schema change is
+reversed by running its `down()`, with
+`muse group migrate -d=down -f --group=mygroup --file=Migration….php`.
+
+`php core/bin/muse group update status --group=mygroup` reports what the
+working copy looks like without changing anything.

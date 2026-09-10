@@ -1,135 +1,118 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/releasenotes
 source-id: 3423
 modified: 2014-03-18
-imported: 2026-09-09
-source-state: unpublished
 -->
-# Release Notes
+# Release notes
 
-## Changes
+Where to find what changed in a release, and the one historic change that
+still explains most of what you read in the framework.
 
-The Hubzero library underwent several significant changes.
+## Where release notes live
 
-### Namespaced
+This page is not a changelog. Release notes for a Hubzero version are in
+the [Releases](../../releases/README.md) book, and the authoritative record
+of what changed is the repository itself: the tags and commit history on
+[hubzero/hubzero-cms](https://github.com/hubzero/hubzero-cms). Each release
+line has its own `X.Y-main` branch; `2.4-main` is the current one.
 
-One of the biggest changes was the namespacing of the Hubzero library. In most cases, this means a simple find & replace for Hubzero class names. Underscores "_" become back-slashes "\\\\". Example:
+The running version is the `HVERSION` constant, defined in
+[`core/bootstrap/app.php`](../../../core/bootstrap/app.php) and shown in
+the administrator's **System Information** screen and the `mod_version`
+module.
 
-```php
-// old
-Hubzero_User_Profile
+<!--include: core/bootstrap/app.php:39-39-->
 
-// new
-Hubzero\\User\\Profile
-```
+> **Warning:** `Hubzero\Version\Version::VERSION` is a second, stale version
+> string. It reads `2.1.0` and is only used by `muse repository --version`,
+> which therefore reports the wrong version. Use `HVERSION`.
 
-| Old | New |
+## The 2.0 namespacing
+
+The change that most affects code you read today happened at 2.0, when the
+framework library was namespaced. Extensions written before that use
+underscored class names that no longer exist. The rule is mechanical:
+`Hubzero_User_Profile` became `Hubzero\User\Profile`.
+
+Anything still calling the old names needs the table below. Where a class
+also moved, the new name is not a straight translation:
+
+| Removed | Now |
 |---|---|
-| Hubzero_View_Helper_Html::niceidformat() | Hubzero\\\\Utility\\\\String::pad() |
-| Hubzero_View_Helper_Html::formatSize() | Hubzero\\\\Utility\\\\Number::formatBytes() |
-| Hubzero_View_Helper_Html::shortenText() | Hubzero\\\\Utility\\\\String::truncate() |
-| Hubzero_View_Helper_Html::purifyText() | Hubzero\\\\Utility\\\\Sanitize::stripAll() |
-| Hubzero_View_Helper_Html::str_highlight() | Hubzero\\\\Utility\\\\String::highlight() |
-| Hubzero_View_Helper_Html::timeAgo() | JHTML::_('date.relative', $date) |
+| `Hubzero_Group` | [`Hubzero\User\Group`](../../../core/libraries/Hubzero/User/Group.php) |
+| `Hubzero_Group_Helper` | `Hubzero\User\Group\Helper` |
+| `Hubzero_Group_InviteEmail` | `Hubzero\User\Group\InviteEmail` |
+| `Hubzero_Geo` | [`Hubzero\Geocode\Geocode`](../../../core/libraries/Hubzero/Geocode/Geocode.php) |
+| `Hubzero\ItemList` | [`Hubzero\Base\ItemList`](../../../core/libraries/Hubzero/Base/ItemList.php) |
+| `Hubzero\Model` | [`Hubzero\Base\Model`](../../../core/libraries/Hubzero/Base/Model.php) |
+| `Hubzero\Object` | [`Hubzero\Base\Obj`](../../../core/libraries/Hubzero/Base/Obj.php) |
+| `Hubzero_Document` | [`Hubzero\Document\Assets`](../../../core/libraries/Hubzero/Document/Assets.php) |
+| `Hubzero_Component` | `Hubzero\Component\SiteController` or `Hubzero\Component\AdminController` |
+| `Hubzero_Api_Controller` | [`Hubzero\Component\ApiController`](../../../core/libraries/Hubzero/Component/ApiController.php) |
+| `Hubzero_Browser` | [`Hubzero\Browser\Detector`](../../../core/libraries/Hubzero/Browser/Detector.php) |
+| `Hubzero_Ldap` | [`Hubzero\Utility\Ldap`](../../../core/libraries/Hubzero/Utility/Ldap.php) |
 
-Portions of the Hubzero library were reorganized and, consequently, some class names changed.
+> **Note:** The 2.0 notes said the object base class became
+> `Hubzero\Base\Object`. It did not stay there. `Object` became a reserved
+> word in PHP 7, so the class is `Hubzero\Base\Obj`. An empty
+> `core/libraries/Hubzero/Base/Object.php` is still in the tree and declares
+> nothing.
 
-| Old | New |
+The view helpers were split across three utility classes:
+
+| Removed | Now |
 |---|---|
-| Hubzero_Group | Hubzero\\\\User\\\\Group |
-| Hubzero_Group_Helper | Hubzero\\\\User\\\\Group\\\\Helper |
-| Hubzero_Group_InviteEmail | Hubzero\\\\User\\\\Group\\\\InviteEmail |
-| Hubzero_Geo | Hubzero\\\\Geocode\\\\Geocode |
-| Hubzero\\\\Object | Hubzero\\\\Base\\\\Object |
-| Hubzero\\\\ItemList | Hubzero\\\\Base\\\\ItemList |
-| Hubzero\\\\Model | Hubzero\\\\Base\\\\Model |
-| Hubzero_Document | Hubzero\\\\Document\\\\Assets |
-| Hubzero_Component | Hubzero\\\\Component\\\\{Site\|Admin}Controller |
-| Hubzero_Api_Controller | Hubzero\\\\Component\\\\ApiController |
-| Hubzero_Browser | Hubzero\\\\Browser\\\\Detector |
-| Hubzero_Ldap | Hubzero\\\\Utility\\\\Ldap |
+| `Hubzero_View_Helper_Html::niceidformat()` | `Hubzero\Utility\Str::pad()` |
+| `Hubzero_View_Helper_Html::formatSize()` | `Hubzero\Utility\Number::formatBytes()` |
+| `Hubzero_View_Helper_Html::shortenText()` | `Hubzero\Utility\Str::truncate()` |
+| `Hubzero_View_Helper_Html::purifyText()` | `Hubzero\Utility\Sanitize::stripAll()` |
+| `Hubzero_View_Helper_Html::str_highlight()` | `Hubzero\Utility\Str::highlight()` |
+| `Hubzero_View_Helper_Html::timeAgo()` | `Date::of($date)->relative()` |
 
-The `Hubzero\\Browser\\Detector` class also had some methods named.
+> **Note:** The 2.0 notes named `Hubzero\Utility\String`. That class was
+> renamed to [`Hubzero\Utility\Str`](../../../core/libraries/Hubzero/Utility/Str.php)
+> when `String` became a reserved word in PHP 7. `timeAgo()` was documented
+> as `JHTML::_('date.relative', $date)`; there is no `date` HTML builder, and
+> the method is [`Hubzero\Utility\Date::relative()`](../../../core/libraries/Hubzero/Utility/Date.php).
 
-| Old | New |
+The browser detector's accessors were shortened at the same time, and the
+short names are what the class has today:
+
+| Removed | Now |
 |---|---|
-| getBrowser() | name() |
-| getBrowserVersion() | version() |
-| getBrowserMajorVersion() | major() |
-| getBrowserMinorVersion() | minor() |
-| getOs() | platform() |
-| getOsVersion() | platformVersion() |
-| getUserAgent() | agent() |
+| `getBrowser()` | `name()` |
+| `getBrowserVersion()` | `version()` |
+| `getBrowserMajorVersion()` | `major()` |
+| `getBrowserMinorVersion()` | `minor()` |
+| `getOs()` | `platform()` |
+| `getOsVersion()` | `platformVersion()` |
+| `getUserAgent()` | `agent()` |
 
-## Deprecated
+## What went away
 
-- **`ximport()`**  
-  Namespaced Hubzero classes are now autoloaded and `ximport()` calls are now deprecated and should be removed where used.
+- **`ximport()`.** Namespaced classes are autoloaded, so the old manual
+  import function was deprecated at 2.0 and no longer exists anywhere in the
+  tree. Delete the calls; nothing replaces them.
 
-## Additions
+## What arrived
 
-### New Classes
+These are all still current, and each has its own chapter:
 
-Along with the renaming and moving of several classes in the core Hubzero library, a handful of new classes were incorporated.
+- **Sub-views.** `$this->view('layout')` loads a view from inside a view.
+  See [Component views](../09-components/07-views.md).
+- **Asset helpers.** `$this->css()` and `$this->js()` push a stylesheet or
+  script to the document from a view, and chain. The signature has changed
+  since 2.0 — see [Component assets](../09-components/08-assets.md).
+- **Geocoding.** [`Hubzero\Geocode\Geocode`](../../../core/libraries/Hubzero/Geocode/Geocode.php)
+  fires a plugin event and any plugin in the `geocode` group may answer.
+  Sixteen ship in `core/plugins/geocode`, several of which need an account
+  with the service before they return anything.
 
-| Class | Notes |
-|---|---|
-| Hubzero\\Utility\\Number | Various methods for manipulating and formatting numbers |
-| Hubzero\\View\\View | Base view class |
-| Hubzero\\Component\\View | Component view |
-| Hubzero\\Plugin\\View | Plugin view |
+## Joomla names
 
-### Sub-view Helpers
-
-Loading a sub-view (view within a view) can now be done via the `view()` method. This method accepts two arguments: 1) the view name and 2) the parent folder name [option]. If the second argument is not passed, the parent folder is inherited from the view the method is called from (i.e., `$this`).
-
-```php
-<?php
-
-$this->view('layout')
-       ->set('foo', $bar)
-       ->display();
-
-?>
-```
-
-### View Asset Helpers
-
-Component and plugin views now have helpers for pushing Cascading StyleSheets and JavaScript assets to the document.
-
-The `css()` method provides a quick and convenient way to attach stylesheets. For components, it accepts two arguments:
-
-1. The name of the stylesheet to be pushed to the document (file extension is optional). If no name is provided, the name of the component or plugin will be used. For instance, if called within a view of the component `com_tags`, the system will look for a stylesheet named `tags.css`.
-2. The name of the extension to look for the stylesheet. For components, this will be the component name (e.g., com_tags). For plugins, this is the name of the plugin folder and requires the third argument be passed to the method.
-3. **Plugin views only.** The name of the plugin.
-
-Method chaining is also allowed.
-
-```php
-<?php
-// Push a stylesheet to the document
-$this->css()
-      ->css('another');
-?>
-... view HTML ...
-```
-
-Similarly, a `js()` method is available for pushing javascript assets to the document. The arguments accepted are the same as the `css()` method described above.
-
-```php
-<?php
-// Push some javascript to the document
-$this->js()
-      ->js('another');
-?>
-... view HTML ...
-```
-
-### Geocode Library & Plugins
-
-The Hubzero library now comes with a helper class for various geocoding utilities. The class provides helpers for getting a list of countries, geocoding an address (i.e., getting longitude and latitude for a street address or IP address), and reverse geocoding an address (i.e., getting a street address for longitude and latitude).
-
-When a method of the class is called (e.g. `locate()`), a plugin event is fired and any number of services may respond. A plugin for each available service resides in the newly created `geocode` plugins group.
-
-> **Note:** Some services may require registration.
+An extension written against Joomla rather than against Hubzero 1.x needs a
+different table. That is the [Upgrade guide](upgrade.md).

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Accessing Files · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Accessing via SSH The following tutorial should help you in using SSH to connect to and from your HUBzero server(s). You should be relatively comfortable with…">
+  <title>Accessing files · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Two different problems share this name: getting at a hub&#x27;s files on the server, and reading and writing files from inside your code. This page covers the first…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/fileaccess/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,25 +41,21 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Accessing Files</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#accessing-via-ssh">Accessing via SSH</a></li>
-<li class="toc__item toc__item--l3"><a href="#windows-clients">Windows Clients</a></li>
-<li class="toc__item toc__item--l3"><a href="#mac-osx">Mac OSX</a></li>
-<li class="toc__item toc__item--l2"><a href="#accessing-via-sftp">Accessing via sFTP</a></li>
-<li class="toc__item toc__item--l3"><a href="#graphical-clients">Graphical Clients</a></li>
-<li class="toc__item toc__item--l3"><a href="#command-line">Command-line</a></li>
-<li class="toc__item toc__item--l2"><a href="#finding-files">Finding Files</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Accessing files</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#reaching-the-server">Reaching the server</a></li>
+<li class="toc__item toc__item--l2"><a href="#finding-the-hub">Finding the hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-and-writing-files-from-code">Reading and writing files from code</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development Environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -89,11 +85,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -135,34 +131,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -171,165 +167,91 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Accessing Files</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Accessing files</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Accessing Files</h1>
+          <h1>Accessing files</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/fileaccess">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was never published there, so read it as a draft.</aside>
+        
         <div class="prose">
-<h2 id="accessing-via-ssh">Accessing via SSH</h2>
-<p>The following tutorial should help you in using SSH to connect to and from your HUBzero server(s). You should be relatively comfortable with using a terminal (also referred to as a &quot;command-line tool&quot;) to navigate directories and manipulate files.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Most accounts do <strong>not</strong> have SSH/sFTP access initially. Your system administrator must grant your account access before you will be able to connect.</p>
-</aside>
-<p>From a terminal type <code>ssh &lt;user&gt;@&lt;host&gt;</code>. You will then be prompted for a password. Both the username and password will typically be the same as the account you registered on <code>&lt;host&gt;</code>.</p>
-<pre><code>yourmachine:~ you$ ssh username@host
-yourmachine:~ you$ username@host password:
-
-host ~
+<p>Two different problems share this name: getting at a hub's files on the
+server, and reading and writing files from inside your code. This page
+covers the first and points at the chapter that covers the second.</p>
+<h2 id="reaching-the-server">Reaching the server</h2>
+<p>A hub runs on a Linux server and you work on it over SSH. From a terminal:</p>
+<pre><code class="language-bash">ssh username@hub.example.org
 </code></pre>
-<h3 id="windows-clients">Windows Clients</h3>
-<ul>
-<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a> (a Telnet and SSH client)</li>
-</ul>
-<h3 id="mac-osx">Mac OSX</h3>
-<p>All versions of Mac OSX come with Terminal.app which may be found in the <code>/Utilities</code> directory of your <code>/Applications</code> directory.</p>
-<h2 id="accessing-via-sftp">Accessing via sFTP</h2>
-<p>sFTP, or secure FTP, is a program that uses SSH to transfer files. Unlike standard FTP, it encrypts both commands and data, preventing passwords and sensitive information from being transmitted in the clear over the network. It is functionally similar to FTP, but because it uses a different protocol, you can't use a standard FTP client to talk to an sFTP server, nor can you connect to an FTP server with a client that supports only sFTP.</p>
-<p>The following tutorial should help you in using sFTP to connect to and from your HUBzero server(s).</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Most accounts do <strong>not</strong> have SSH/sFTP access initially. Your system administrator must grant your account access before you will be able to connect.</p>
-</aside>
-<h3 id="graphical-clients">Graphical Clients</h3>
-<p>Using graphical SFTP clients simplifies file transfers by allowing you to transmit files simply by dragging and dropping icons between windows. When you open the program, you will have to enter the name of the host (e.g., yourhub.org) and your HUB username and password.</p>
-<h4 id="windows-clients-2">Windows Clients</h4>
-<ul>
-<li><a href="http://winscp.net/">WinSCP</a></li>
-<li><a href="http://www.bitkinex.com/sftpclient/">BitKinex</a></li>
-<li><a href="http://filezilla-project.org/">FileZilla</a></li>
-<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY</a></li>
-</ul>
-<h4 id="mac-osx-clients">Mac OSX Clients</h4>
-<ul>
-<li><a href="http://www.panic.com/transmit/">Transmit</a></li>
-<li><a href="http://fetchsoftworks.com/">Fetch</a></li>
-<li><a href="http://cyberduck.ch/">Cyberduck</a></li>
-<li><a href="http://extendmac.com/flow/">Flow</a></li>
-<li><a href="http://rsug.itd.umich.edu/software/fugu/">Fugu</a></li>
-</ul>
-<h3 id="command-line">Command-line</h3>
-<p>You can use command line SFTP from your Unix account, or from your Mac OS X or Unix workstation. To start an SFTP session, at the command prompt, enter:</p>
-<pre><code>yourmachine:~ you$ sftp username@host
-yourmachine:~ you$ username@host password:
-
-host ~
+<p>For file transfer, use sFTP, which runs over the same SSH connection and
+encrypts commands and data alike. An ordinary FTP client cannot talk to it.</p>
+<pre><code class="language-bash">sftp username@hub.example.org
 </code></pre>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>cd</code></td>
-<td>Change the directory on the remote computer</td>
-</tr>
-<tr>
-<td><code>chmod</code></td>
-<td>Change the permissions of files on the remote computer</td>
-</tr>
-<tr>
-<td><code>chown</code></td>
-<td>Change the owner of files on the remote computer</td>
-</tr>
-<tr>
-<td><code>dir</code> (or <code>ls</code>)</td>
-<td>List the files in the current directory on the remote computer</td>
-</tr>
-<tr>
-<td><code>exit</code> (or <code>quit</code>)</td>
-<td>Close the connection to the remote computer and exit SFTP</td>
-</tr>
-<tr>
-<td><code>get</code></td>
-<td>Copy a file from the remote computer to the local computer</td>
-</tr>
-<tr>
-<td><code>help</code> (or <code>?</code>)</td>
-<td>Get help on the use of SFTP commands</td>
-</tr>
-<tr>
-<td><code>lcd</code></td>
-<td>Change the directory on the local computer</td>
-</tr>
-<tr>
-<td><code>lls</code></td>
-<td>See a list of the files in the current directory on the local computer</td>
-</tr>
-<tr>
-<td><code>lmkdir</code></td>
-<td>Create a directory on the local computer</td>
-</tr>
-<tr>
-<td><code>ln</code> (or <code>symlink</code>)</td>
-<td>Create a symbolic link for a file on the remote computer</td>
-</tr>
-<tr>
-<td><code>lpwd</code></td>
-<td>Show the current directory (present working directory) on the local computer</td>
-</tr>
-<tr>
-<td><code>lumask</code></td>
-<td>Change the local umask value</td>
-</tr>
-<tr>
-<td><code>mkdir</code></td>
-<td>Create a directory on the remote computer</td>
-</tr>
-<tr>
-<td><code>put</code></td>
-<td>Copy a file from the local computer to the remote computer</td>
-</tr>
-<tr>
-<td><code>pwd</code></td>
-<td>Show the current directory (present working directory) on the remote computer</td>
-</tr>
-<tr>
-<td><code>rename</code></td>
-<td>Rename a file on the remote host</td>
-</tr>
-<tr>
-<td><code>rm</code></td>
-<td>Delete files from the remote computer</td>
-</tr>
-<tr>
-<td><code>rmdir</code></td>
-<td>Remove a directory on the remote host (the directory usually has to be empty)</td>
-</tr>
-<tr>
-<td><code>version</code></td>
-<td>Display the SFTP version</td>
-</tr>
-<tr>
-<td><code>!</code></td>
-<td>In Unix, exit to the shell prompt, where you can enter commands. Enter <code>exit</code> to get back to SFTP. If you follow <code>!</code> with a command (e.g., <code>!pwd</code>), SFTP will execute the command without dropping you to the Unix prompt.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="finding-files">Finding Files</h2>
-<p>Once connected to a server, by either sFTP or directly with SSH, you will need to find the web root which contains the HUB install. The web root for the production version of a HUB can be found at <code>/www/yourhub</code>. Typically, HUBs will also have a development version of a HUB, which can be found at <code>/www/dev</code>.</p>
-<p>Once in the desired directory, file layout and directory structure follows the conventions detailed in <a href="../../foundation/structure/index.html">Structure</a> unless otherwise noted.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A hub account does not carry shell access. Registering on a
+hub gives you a web account and nothing more; a system administrator has
+to grant SSH and sFTP separately.</p>
+</aside>
+<p>Any current SSH client works. Windows ships OpenSSH, so <code>ssh</code> and <code>sftp</code> work
+from PowerShell or the Command Prompt; <a href="https://www.putty.org/">PuTTY</a> and
+<a href="https://winscp.net/">WinSCP</a> are the long-standing graphical alternatives.
+macOS and Linux have <code>ssh</code> and <code>sftp</code> installed already.</p>
+<p>Inside an <code>sftp</code> session, <code>get</code> and <code>put</code> transfer a file, <code>ls</code> and <code>cd</code> work
+on the remote side, <code>lls</code> and <code>lcd</code> on the local side, and <code>help</code> lists the
+rest. <code>scp -r</code> and <code>rsync -a</code> are usually quicker for a whole directory.</p>
+<h2 id="finding-the-hub">Finding the hub</h2>
+<p>The web root is the hub's document root, conventionally <code>/www/&lt;hubname&gt;</code> on
+a Hubzero server. Many sites keep a second, development copy alongside it,
+often <code>/www/dev</code>. Both are ordinary directories; nothing in the CMS depends
+on the name.</p>
+<p>Underneath, the layout is the one described in
+<a href="../../foundation/structure/index.html">Structure</a>: <code>core/</code> holds the platform,
+<code>app/</code> holds this hub's configuration, extensions, cache, and uploads, and
+<code>index.php</code> at the root is the only entry point.</p>
+<p>Two things to know before you edit anything in place:</p>
+<ul>
+<li>Files must stay readable by the web server user, <code>apache</code> on Enterprise
+Linux. A file you create over sFTP is owned by you.</li>
+<li>Everything under <code>app/</code> is a running hub's state and is not in the
+repository. Everything under <code>core/</code> is, so an edit there is a change you
+will have to carry forward or contribute back.</li>
+</ul>
+<h2 id="reading-and-writing-files-from-code">Reading and writing files from code</h2>
+<p>Do not use PHP's <code>fopen</code> and <code>unlink</code> directly. The CMS has a file API, so
+that the same calls work whether the hub writes to local disk or over FTP,
+and so uploads are virus-scanned and paths are normalised on the way
+through.</p>
+<p>The entry point is the <code>Filesystem</code> facade, which resolves to
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/Filesystem.php"><code>Hubzero\Filesystem\Filesystem</code></a>:</p>
+<pre><code class="language-php">use Filesystem;
+
+if (Filesystem::exists($path))
+{
+	$contents = Filesystem::read($path);
+}
+
+Filesystem::write($path, $contents);
+Filesystem::makeDirectory($dir);
+Filesystem::delete($path);
+</code></pre>
+<p><code>exists()</code>, <code>read()</code>, <code>write()</code>, <code>append()</code>, <code>prepend()</code>, <code>copy()</code>,
+<code>move()</code>, <code>rename()</code>, <code>delete()</code>, <code>upload()</code>, <code>makeDirectory()</code>,
+<code>copyDirectory()</code>, <code>deleteDirectory()</code>, <code>isDirectory()</code>, <code>isFile()</code>,
+<code>isWritable()</code>, <code>size()</code>, <code>mimetype()</code>, <code>lastModified()</code> and
+<code>listContents()</code> are all on the class, along with four macros —
+<code>files()</code>, <code>directories()</code>, <code>directoryTree()</code> and <code>emptyDirectory()</code> —
+registered by the service provider at boot.</p>
+<p><a href="../../services/filesystem/index.html">Filesystem</a> is the full chapter: the
+adapters, the macro mechanism, the safe-path rules, and the archive types.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> See the <a href="../../foundation/structure/index.html">overview</a> for details on a typical HUBzero install's directory structure.</p>
+<p><strong>Note:</strong> The facade is a root-namespace alias. A namespaced file that
+writes <code>Filesystem::read()</code> without a <code>use Filesystem;</code> resolves the name
+inside its own namespace and fatals. See
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
 </aside>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../releasenotes/index.html" rel="prev"><span>Previous</span>Release Notes</a><a class="pager__next" href="../databaseaccess/index.html" rel="next"><span>Next</span>Direct Database Access</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../releasenotes/index.html" rel="prev"><span>Previous</span>Release notes</a><a class="pager__next" href="../databaseaccess/index.html" rel="next"><span>Next</span>Direct database access</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/02-fileaccess.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

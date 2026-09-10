@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page Layout · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A template will typically have two layout files: for the majority of content and for custom error pages ( 404 - Not Found , etc.). Both of these files…">
+  <title>Page layouts · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A layout is the outermost HTML of a page. The component has already produced its markup by the time a layout runs; the layout wraps it, adds the masthead and…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/layouts/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,39 +127,43 @@
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Page Layout</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#a-breakdown-of-index-php">A Breakdown of index.php</a></li>
-<li class="toc__item toc__item--l2"><a href="#a-breakdown-of-error-php">A Breakdown of error.php</a></li>
-<li class="toc__item toc__item--l2"><a href="#loading-modules">Loading Modules</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Page layouts</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-layout-files">The layout files</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-the-cms-picks-a-layout">How the CMS picks a layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#inside-a-layout">Inside a layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#jdoc-includes">jdoc includes</a></li>
+<li class="toc__item toc__item--l2"><a href="#module-positions">Module positions</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-head-block">The head block</a></li>
+<li class="toc__item toc__item--l2"><a href="#error-layouts">Error layouts</a></li>
+<li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -168,222 +172,464 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Page Layout</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Page layouts</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Page Layout</h1>
+          <h1>Page layouts</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/layouts">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A template will typically have two layout files: <code>index.php</code> for the majority of content and <code>error.php</code> for custom error pages (&quot;404 - Not Found&quot;, etc.). Both of these files are contained within the top level of a template (i.e., they cannot be placed in a sub-directory of the template).</p>
-<pre><code>/app
-  /templates
-    /{TemplateName}
-      error.php
-      index.php
-</code></pre>
-<p>All the HTML that defines the layout of your template is contained in a file named <code>index.php</code>. The <code>index.php</code> file becomes the core of every page that is delivered and, because of this, the file is <strong>required</strong>. Essentially, you make a page (like any HTML page) but place PHP code where the content of your site should go.</p>
-<p>The <code>error.php</code> layout, unlike <code>index.php</code> is optional. When not included in a template, Joomla! will use its default system error layout to display site errors such as &quot;404 - Page Not Found&quot;. Including <code>error.php</code> is recommended though as it helps give your site a more cohesive feel and experience to the user.</p>
-<h2 id="a-breakdown-of-index-php">A Breakdown of index.php</h2>
+<p>A layout is the outermost HTML of a page. The component has already produced
+its markup by the time a layout runs; the layout wraps it, adds the masthead
+and the footer, and marks the places where modules go. Layout files sit at the
+top level of a template directory — never in a subdirectory — and the CMS
+picks one per request by name.</p>
+<h2 id="the-layout-files">The layout files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Rendered when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.php</code></td>
+<td>The default. Used whenever nothing else is asked for. <strong>Required</strong>: a template without it is ignored and the <code>system</code> template runs instead.</td>
+</tr>
+<tr>
+<td><code>component.php</code></td>
+<td><code>?tmpl=component</code> — the convention for modal, popup, and print output. Most components link to it.</td>
+</tr>
+<tr>
+<td><code>offline.php</code></td>
+<td>The site is offline and the visitor lacks <code>core.login.offline</code>.</td>
+</tr>
+<tr>
+<td><code>error.php</code></td>
+<td>An uncaught exception reaches the error handler.</td>
+</tr>
+<tr>
+<td><code>cpanel.php</code></td>
+<td>The administrator control panel; <code>com_cpanel</code> sets <code>tmpl=cpanel</code>.</td>
+</tr>
+<tr>
+<td><code>login.php</code></td>
+<td>The administrator login screen; <code>com_login</code> sets <code>tmpl=login</code>.</td>
+</tr>
+<tr>
+<td><code>help.php</code></td>
+<td>The help viewer; <code>com_help</code> sets <code>tmpl=help</code>.</td>
+</tr>
+<tr>
+<td><code>group.php</code></td>
+<td>A super group page, and the super group error page.</td>
+</tr>
+<tr>
+<td><code>email.php</code></td>
+<td>The wrapper for HTML mail, through <code>Hubzero\Mail\Template</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Any other value of <code>tmpl</code> names a layout the same way, so <code>?tmpl=print</code> looks
+for <code>print.php</code>. The name is filtered to <code>A-Z0-9_.-</code> before it is used.</p>
+<p>Only <code>index.php</code> is required. Everything else falls back, file by file, to
+<code>core/templates/system</code> — so a template that ships no <code>error.php</code> still gets a
+usable error page, styled by the system template rather than by yours.</p>
+<p>This is what the shipped templates provide:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>index</th>
+<th>component</th>
+<th>error</th>
+<th>offline</th>
+<th>cpanel</th>
+<th>login</th>
+<th>group</th>
+<th>help</th>
+<th>email</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kimera</code> (site)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>lucent</code> (site)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>welcome</code> (site)</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>kameleon</code> (administrator)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p><code>core/templates/system/index.php</code> is one line: it includes <code>component.php</code>.
+The system template is a safety net, not a design.</p>
+<h2 id="how-the-cms-picks-a-layout">How the CMS picks a layout</h2>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php"><code>Bootstrap\Site\Providers\DocumentServiceProvider</code></a>
+runs after the component has produced its output. It reads <code>tmpl</code> from the
+request, defaults it to <code>index</code>, forces <code>offline</code> when the site is offline,
+and hands
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Type/Html.php"><code>Hubzero\Document\Type\Html</code></a>
+four things: the template name, the file name, the templates directory, and
+the template's saved parameters. The document includes that file, captures
+the output, replaces the <code>jdoc</code> tags in it, and returns the page.</p>
+<p>The templates directory is <code>app/templates</code> when
+<code>app/templates/{name}</code> exists and <code>core/templates</code> otherwise, so a hub can
+shadow a shipped template by putting a directory of the same name under
+<code>app/templates</code>. Everything under <code>app/</code> is site-local; nothing there is part
+of the distribution.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> For the sake of simplicity, we've excluded some more common portions found in HUBzero templates. The portions removed were purely optional and not necessary for a template to function correctly. We suggest inspecting other templates that may be installed on your HUB for further details.</p>
+<p><strong>Note:</strong> Error pages take a different route.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Type/Error.php"><code>Hubzero\Document\Type\Error</code></a>
+includes <code>error.php</code> and returns its output <strong>without parsing it</strong>. A
+<code>jdoc:include</code> tag in <code>error.php</code> is printed literally. Error layouts get no
+modules, no message queue, and no <code>head</code> block; write the <code>&lt;title&gt;</code> and the
+stylesheet link yourself, as <code>kimera/error.php</code> does.</p>
 </aside>
-<p>Starting at the top:</p>
-<pre><code class="language-html">&lt;?php
-defined( '_HZEXEC_' ) or die( 'Restricted access' );
+<h2 id="inside-a-layout">Inside a layout</h2>
+<p>A layout is included by the document object, so <code>$this</code> is that document. It
+runs in the global namespace, which is why the facades work with no <code>use</code>
+statements.</p>
+<table>
+<thead>
+<tr>
+<th>On <code>$this</code></th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$this-&gt;template</code></td>
+<td>The active template's name</td>
+</tr>
+<tr>
+<td><code>$this-&gt;baseurl</code></td>
+<td>URL prefix for the templates directory, <code>/app</code> or <code>/core</code></td>
+</tr>
+<tr>
+<td><code>$this-&gt;params</code></td>
+<td><code>Hubzero\Config\Registry</code> of the template style's saved parameters</td>
+</tr>
+<tr>
+<td><code>$this-&gt;language</code>, <code>$this-&gt;direction</code></td>
+<td>Language tag and <code>ltr</code>/<code>rtl</code>, for the <code>&lt;html&gt;</code> element</td>
+</tr>
+<tr>
+<td><code>$this-&gt;getTitle()</code>, <code>$this-&gt;setTitle()</code></td>
+<td>The document title, before <code>head</code> renders it</td>
+</tr>
+<tr>
+<td><code>$this-&gt;addStyleSheet()</code>, <code>$this-&gt;addScript()</code></td>
+<td>Queue a file into the <code>head</code> block</td>
+</tr>
+<tr>
+<td><code>$this-&gt;addStyleDeclaration()</code>, <code>$this-&gt;addScriptDeclaration()</code></td>
+<td>Queue inline CSS or JS</td>
+</tr>
+<tr>
+<td><code>$this-&gt;countModules($expr)</code></td>
+<td>How many modules a position holds</td>
+</tr>
+<tr>
+<td><code>$this-&gt;getBuffer($type, $name)</code></td>
+<td>Rendered output for a <code>jdoc</code> type, before it is substituted</td>
+</tr>
+</tbody>
+</table>
+<p>Every layout opens with the entry guard:</p>
+<pre><code class="language-php">defined('_HZEXEC_') or die();
+</code></pre>
+<p><code>core/templates/system/component.php</code> is the smallest complete layout in the
+repository:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
-$this-&gt;addScript($this-&gt;baseurl . '/templates/' . $this-&gt;template . '/js/hub.js');
-
-// Get the user's browser and browser version
-// We add this to the document root as classes for better targeting with CSS
-$browser = new Hubzero\Browser\Detector();
-$b = $browser-&gt;name();
-$v = $browser-&gt;major();
-
-// Set the page title
-$this-&gt;setTitle(Config::get('sitename') . ' - ' . $this-&gt;getTitle());
+defined('_HZEXEC_') or die();
 ?&gt;
 &lt;!DOCTYPE html&gt;
-&lt;!--[if lt IE 7 ]&gt; &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie6&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 7 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie7&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 8 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie8&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 9 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie9&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if (gt IE 9)|!(IE)]&gt;&lt;!--&gt; &lt;html dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;&lt;?php echo $b . ' ' . $b . $v; ?&gt;&quot;&gt; &lt;!--&lt;![endif]--&gt;
+&lt;html lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; class=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot;&gt;
+	&lt;head&gt;
+		&lt;jdoc:include type=&quot;head&quot; /&gt;
+	&lt;/head&gt;
+	&lt;body class=&quot;contentpane&quot;&gt;
+		&lt;jdoc:include type=&quot;message&quot; /&gt;
+		&lt;jdoc:include type=&quot;component&quot; /&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
-<p>The first line prevents unauthorized people from looking at your coding and potentially causing trouble. Then we grab a reference to the global site configuration. Next, we push some scripts to the document, first checking if the jquery plugin is enabled. Following that, we get the current site visitors browser and browser version. We add this to the document root as classes for better targeting with CSS. The last line of PHP takes the current page title and prepends the site's name. Thus, every page results with a title like &quot;myHUB.org - My Page Title&quot;.</p>
-<p>The first line of actual HTML tells the browser (and webbots) what sort of page it is. The next line says what language the site is in.</p>
-<pre><code class="language-html">&lt;head&gt;
-	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php
-	echo Hubzero\Document\Assets::getSystemStylesheet(array(
-		'fontcons', 'reset', 'columns', 'notifications', 'pagination',
-		'tabs', 'tags', 'comments', 'voting', 'layout'
-	)); /* reset MUST come before all others except fontcons */ ?&gt;&quot; /&gt;
-	&lt;!-- Include the template's main CSS file --&gt;
-	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/main.css&quot; /&gt;
-	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;print&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/print.css&quot; /&gt;
-
-	&lt;!-- This includes metadata tags and the &lt;title&gt; tag --&gt;
-	&lt;jdoc:include type=&quot;head&quot; /&gt;
-
-	&lt;!--[if IE 9]&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie9.css&quot; /&gt;
-	&lt;![endif]--&gt;
-	&lt;!--[if IE 8]&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie8.css&quot; /&gt;
-	&lt;![endif]--&gt;
-	&lt;!--[if IE 7]&gt;
-		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie7.css&quot; /&gt;
-	&lt;![endif]--&gt;
-&lt;/head&gt;
+<p><code>countModules()</code> takes a boolean expression over position names, which is how
+a layout collapses empty columns:</p>
+<pre><code class="language-php">&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
 </code></pre>
-<p>The first line compiles several bootstrap CSS files into a single, minified (comments and white-space removed to lessen file size) file to reduce http requests.</p>
-<p>The following two lines include the main stylesheet for the template and a print stylesheet that applies more suitable styles when printing.</p>
-<p>The fifth line gets Joomla! to put the correct header information in. This includes the page title, meta information, your <code>main.css</code>, system JavaScript, as well as any CSS or JavaScript that was pushed to the template from an extension (component, module, or plugin). This is a bit different than Joomla! 1.5's typical behavior in that the HUBzero code is automatically finding and including <code>main.css</code> and some key JavaScript files from your template. This is done due to the fact that order of inclusion is important for both CSS and JavaScript. For instance, one cannot execute JavaScript code built using the MooTools framework <em>before</em> the framework has been included. It would simply fail. As such, the naming and existence of specific directories, CSS, and JavaScript files becomes quite important for a HUBzero template.</p>
-<p>The rest creates links to a couple CSS fix style sheets for Internet Explorer (more on this in the <a href="../css/index.html">Cascading Style Sheets</a> chapter).</p>
-<p>Now for the main body:</p>
-<pre><code class="language-html">&lt;body&gt;
+<p>The expression is evaluated with <code>eval()</code>, so keep it to position names and
+the operators <code>and</code>, <code>or</code>, <code>xor</code>, arithmetic, and comparisons.</p>
+<h2 id="jdoc-includes">jdoc includes</h2>
+<p><code>jdoc:include</code> marks a hole in the layout. The document finds every tag, asks
+a renderer for the corresponding markup, and substitutes it in.</p>
+<table>
+<thead>
+<tr>
+<th><code>type</code></th>
+<th>Renders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>component</code></td>
+<td>The component's output. A layout without this shows nothing.</td>
+</tr>
+<tr>
+<td><code>head</code></td>
+<td><code>&lt;base&gt;</code>, meta tags, <code>&lt;title&gt;</code>, <code>&lt;link&gt;</code>s, and <code>&lt;script&gt;</code>s queued by anything on the page.</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>The queued system messages, as <code>&lt;p class=&quot;passed&quot;&gt;</code>, <code>.warning</code>, <code>.error</code>, <code>.info</code>.</td>
+</tr>
+<tr>
+<td><code>modules</code></td>
+<td>Every published module in the position named by <code>name</code>.</td>
+</tr>
+<tr>
+<td><code>module</code></td>
+<td>One module instance, looked up by name.</td>
+</tr>
+</tbody>
+</table>
+<p>Module and modules tags are rendered before every other type, so a module may
+push a stylesheet or a script and still have it appear in the <code>head</code> block.</p>
+<p>The tag is matched by a regular expression, not by an XML parser, and the
+expression is strict:</p>
+<ul>
+<li><code>type</code> must be the first attribute, and its value must be in double quotes;</li>
+<li>a single space must follow the closing quote of <code>type</code>;</li>
+<li>the tag must be self-closing.</li>
+</ul>
+<p><code>&lt;jdoc:include type=&quot;component&quot; /&gt;</code> works. <code>&lt;jdoc:include type=&quot;component&quot;/&gt;</code>
+does not — it is left in the page as literal text. If a hole in your layout
+renders as nothing at all, check the spacing first.</p>
+<h2 id="module-positions">Module positions</h2>
+<p>A position is just a string. A layout asks for one by name, and the loader
+returns whatever the administrator has assigned to it. Kimera's content region
+shows the usual shape — an optional left column, the component, an optional
+right column, and a footer:</p>
+<pre><code class="language-php">			&lt;div id=&quot;wrap&quot;&gt;
+				&lt;main id=&quot;content&quot; class=&quot;&lt;?php echo Request::getCmd('option', ''); ?&gt;&quot;&gt;
+					&lt;div class=&quot;inner&lt;?php if ($this-&gt;countModules('left or right')) { echo ' withmenu'; } ?&gt;&quot;&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+						&lt;section class=&quot;main section&quot;&gt;
+							&lt;div class=&quot;section-inner&quot;&gt;
+					&lt;?php endif; ?&gt;
 
-	&lt;div id=&quot;header&quot;&gt;
-		&lt;h1&gt;&lt;a href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;&quot; title=&quot;&lt;?php echo Config::get('sitename'); ?&gt;&quot;&gt;&lt;?php echo Config::get('sitename'); ?&gt;&lt;/a&gt;&lt;/h1&gt;
+					&lt;?php if ($this-&gt;countModules('left')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;div class=&quot;subject&quot;&gt;
+					&lt;?php endif; ?&gt;
 
-		&lt;ul id=&quot;toolbar&quot; class=&quot;&lt;?php if (!$juser-&gt;get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?&gt;&quot;&gt;
-&lt;?php
-	// Is the user logged in?
-	if (!User::isGuest()) {
-		// Yes. Show them a different toolbar.
-		echo '&lt;li id=&quot;logout&quot;&gt;&lt;a href=&quot;/logout&quot;&gt;&lt;span&gt;'.Lang::txt('Logout').'&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;';
-		echo '&lt;li id=&quot;myaccount&quot;&gt;&lt;a href=&quot;/members/'.User::get('id').'&quot;&gt;&lt;span&gt;'.Lang::txt('My Account').'&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;';
-		echo '&lt;li id=&quot;usersname&quot;&gt;'.User::get('name').' ('.User::get('username').')&lt;/li&gt;';
-	} else {
-		// No. Show them the login and register options.
-		echo &quot;ttt&quot;.'&lt;li id=&quot;login&quot;&gt;&lt;a href=&quot;/login&quot; title=&quot;'.Lang::txt('Login').'&quot;&gt;'.Lang::txt('Login').'&lt;/a&gt;&lt;/li&gt;'.&quot;n&quot;;
-		echo &quot;ttt&quot;.'&lt;li id=&quot;register&quot;&gt;&lt;a href=&quot;/register&quot; title=&quot;'.Lang::txt('Sign up for a free account').'&quot;&gt;'.Lang::txt('Register').'&lt;/a&gt;&lt;/li&gt;'.&quot;n&quot;;
-	}
-?&gt;
-		&lt;/ul&gt;
+								&lt;!-- start component output --&gt;
+								&lt;jdoc:include type=&quot;component&quot; /&gt;
+								&lt;!-- end component output --&gt;
 
-		&lt;!-- Include any modules for the &quot;search&quot; position --&gt;
-		&lt;jdoc:include type=&quot;modules&quot; name=&quot;search&quot; /&gt;
-	&lt;/div&gt;&lt;!-- / #header --&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;/div&gt;&lt;!-- / .subject --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('right')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
 
-	&lt;!-- Include any modules assigned to the &quot;user3&quot; position --&gt;
-	&lt;div id=&quot;nav&quot;&gt;
-		&lt;h2&gt;Navigation&lt;/h2&gt;
-		&lt;jdoc:include type=&quot;modules&quot; name=&quot;user3&quot; /&gt;
-	&lt;/div&gt;&lt;!-- / #nav --&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;/div&gt;
+						&lt;/section&gt;&lt;!-- / .main section --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;/div&gt;&lt;!-- / .inner --&gt;
+				&lt;/main&gt;
 
-	&lt;div id=&quot;wrap&quot;&gt;
-		&lt;div id=&quot;content&quot; class=&quot;&lt;?php echo $option; ?&gt;&quot;&gt;
-			&lt;!-- Include the component output --&gt;
-			&lt;jdoc:include type=&quot;component&quot; /&gt;
-		&lt;/div&gt;&lt;!-- / #content --&gt;
-
-		&lt;div id=&quot;footer&quot;&gt;
-			&lt;!-- Include any modules assigned to the &quot;footer&quot; position --&gt;
-			&lt;jdoc:include type=&quot;modules&quot; name=&quot;footer&quot; /&gt;
-		&lt;/div&gt;&lt;!-- / #footer --&gt;
-	&lt;/div&gt;&lt;!-- / #wrap --&gt;
-&lt;/body&gt;
-</code></pre>
-<p>First we layout the site's masthead in the <code>&lt;div id=&quot;header&quot;&gt;</code> block. Inside, we set the <code>&lt;h1&gt;</code> tag to the site's name, taken from the global site configuration.</p>
-<p>Next, we move on to a toolbar that is present in the masthead of every page. This toolbar contains &quot;login&quot; and &quot;register&quot; links when not logged in and &quot;logout&quot; and &quot;My Account&quot; links when logged in. While not required, it is highly recommended that all templates include some form of this arrangement in an easy-to-find, consistent location.</p>
-<p>Some modules that have been assigned the position &quot;search&quot; are then loaded in the masthead. Most HUBzero templates default to having a simple search form module appear. Again, this is not required and placement of modules is entirely up to the developer(s) but we, once again, strongly recommend that some form of a search box be included on all pages.</p>
-<p>Then we move on to a block where navigation is loaded. It is here that our main menu will appear.</p>
-<p>Next, we get to the primary content block. One of the first things you may notice is the use of <code>module</code> as a <code>jdoc:include</code> type. This is how we tell where in our template to output modules that have been assigned to specific positions.</p>
-<p>It is also worth noting the small bit of PHP (<code>&lt;?php echo $option; ?&gt;</code>) in the <code>class</code> attribute of the content <code>&lt;div&gt;</code>. This small bit of code outputs the name of the current component as a CSS class. So, if one were on a page of a &quot;groups&quot; component, the resulting HTML would be <code>&lt;div id=&quot;content&quot; class=&quot;com_groups&quot;&gt;</code>. Since all component output is contained inside the &quot;content&quot; <code>div</code>, this allows for more specific CSS targeting.</p>
-<aside class="admonition admonition--tip">
-<p><strong>Tip:</strong> See the <a href="../../modules/loading/index.html">Modules: Loading</a> article for more details on module positioning.</p>
-</aside>
-<p>The content <code>div</code> contains a very important <code>jdoc:include</code> of type <code>component</code>. This is where all component output will be injected in the template. It is essential this line be included in a template for it to be able to display any content.</p>
-<h2 id="a-breakdown-of-error-php">A Breakdown of error.php</h2>
-<p>Starting at the top:</p>
-<pre><code class="language-html">&lt;?php
-defined( '_HZEXEC_' ) or die( 'Restricted access' );
-
-// Get the user's browser and browser version
-// We add this to the document root as classes for better targeting with CSS
-$browser = new Hubzero\Browser\Detector();
-$b = $browser-&gt;name();
-$v = $browser-&gt;major();
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;!--[if lt IE 7 ]&gt; &amp;lthtml dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie6&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 7 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie7&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 8 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie8&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 9 ]&gt;    &lt;html dir=&quot;&lt;?php echo  $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;ie9&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if (gt IE 9)|!(IE)]&gt;&lt;!--&gt; &lt;html dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo  $this-&gt;language; ?&gt;&quot; class=&quot;&lt;?php echo $b . ' ' . $b . $v; ?&gt;&quot;&gt; &lt;!--&lt;![endif]--&gt;
-</code></pre>
-<p>The first line prevents unauthorized people from looking at your coding and potentially causing trouble. Then we grab a reference to the global site configuration. The first line of actual HTML tells the browser (and webbots) what sort of page it is. The next line says what language the site is in.</p>
-<pre><code class="language-html">&lt;head&gt;
-	&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-	&lt;title&gt;&lt;?php echo Config::get('sitename'); ?&gt; - &lt;?php echo $this-&gt;title; ?&gt; - &lt;?php echo $this-&gt;error-&gt;message ?&gt;&lt;/title&gt;
-	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot; href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/error.css&quot; /&gt;
-&lt;/head&gt;
-</code></pre>
-<p>Unlike with <code>index.php</code>, we do not include the <code>&lt;jdoc:include type=&quot;head&quot; /&gt;</code> tag. Instead, we simply set a single <code>metadata</code> tag to declare the character set and then set the <code>title</code> tag. Next, we include the <code>error.css</code> style sheet, which contains styling just for this layout.</p>
-<p>Now for the main body:</p>
-<pre><code class="language-html">&lt;body&gt;
-	&lt;div id=&quot;wrap&quot;&gt;
-		&lt;div id=&quot;header&quot;&gt;
-			&lt;h1&gt;&lt;a href=&quot;&lt;?php echo $this-&gt;baseurl ?&gt;&quot; title=&quot;&lt;?php echo $config-&gt;getValue('config.sitename'); ?&gt;&quot;&gt;&lt;?php echo Config::get('sitename'); ?&gt;&lt;/a&gt;&lt;/h1&gt;
+				&lt;footer id=&quot;footer&quot;&gt;
+					&lt;jdoc:include type=&quot;modules&quot; name=&quot;footer&quot; /&gt;
+				&lt;/footer&gt;
+			&lt;/div&gt;&lt;!-- / #wrap --&gt;
 		&lt;/div&gt;
-		&lt;div id=&quot;outline&quot;&gt;
-			&lt;div id=&quot;errorbox&quot; class=&quot;code-&lt;?php echo $this-&gt;error-&gt;code ?&gt;&quot;&gt;
-				&lt;h2&gt;&lt;?php echo $this-&gt;error-&gt;code ?&gt; - &lt;?php echo $this-&gt;error-&gt;message ?&gt;&lt;/h2&gt;
-
-				&lt;p&gt;&lt;?php echo Lang::txt('You may not be able to visit this page because of:'); ?&gt;&lt;/p&gt;
-
-				&lt;ol&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('An out-of-date bookmark/favourite'); ?&gt;&lt;/li&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('A search engine that has an out-of-date listing for this site'); ?&gt;&lt;/li&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('A mis-typed address'); ?&gt;&lt;/li&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('You have no access to this page'); ?&gt;&lt;/li&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('The requested resource was not found'); ?&gt;&lt;/li&gt;
-					&lt;li&gt;&lt;?php echo Lang::txt('An error has occurred while processing your request.'); ?&gt;&lt;/li&gt;
-				&lt;/ol&gt;
-
-				&lt;p&gt;&lt;?php echo Lang::txt('If difficulties persist, please contact the system administrator of this site.'); ?&gt;&lt;/p&gt;
-			&lt;/div&gt;&lt;!-- / #errorbox --&gt;
-
-			&lt;form method=&quot;get&quot; action=&quot;/search&quot;&gt;
-				&lt;fieldset&gt;
-					&lt;?php echo Lang::txt('Please try the'); ?&gt; &lt;a href=&quot;index.php&quot; title=&quot;&lt;?php echo Lang::txt('Go to the home page'); ?&gt;&quot;&gt;&lt;?php echo Lang::txt('Home Page'); ?&gt;&lt;/a&gt; &lt;span&gt;&lt;?php echo Lang::txt('or'); ?&gt;&lt;/span&gt;
-					&lt;label&gt;
-						&lt;?php echo Lang::txt('Search:'); ?&gt;
-						&lt;input type=&quot;text&quot; name=&quot;searchword&quot; value=&quot;&quot; /&gt;
-					&lt;/label&gt;
-					&lt;input type=&quot;submit&quot; value=&quot;&lt;?php echo Lang::txt('Go'); ?&gt;&quot; /&gt;
-				&lt;/fieldset&gt;
-			&lt;/form&gt;
-		&lt;/div&gt;&lt;!-- / #outline --&gt;
-&lt;?php
-		if ($this-&gt;debug) :
-			echo &quot;tt&quot;.'&lt;div id=&quot;techinfo&quot;&gt;'.&quot;n&quot;;
-			echo $this-&gt;renderBacktrace().&quot;n&quot;;
-			echo &quot;tt&quot;.'&lt;/div&gt;'.&quot;n&quot;;
-		endif;
-?&gt;
-	&lt;/div&gt;&lt;!-- / #wrap --&gt;
-&lt;/body&gt;
+		&lt;jdoc:include type=&quot;modules&quot; name=&quot;endpage&quot; /&gt;
 </code></pre>
-<p>As can be seen, this is relatively straight-forward. We set a title for the page, output the error message, provide some potential reasons for the error and, finally, include a search form. Note that we did not use any modules.</p>
-<p>One portion to pay special attention to is the small bit of PHP at the end of the page. This outputs a stack trace when site debugging is turned on.</p>
+<p>The <code>&lt;positions&gt;</code> block in <code>templateDetails.xml</code> does <strong>not</strong> restrict
+anything. It is read only by <code>com_modules</code> when it builds the position picker
+on the module edit screen, so a position that is used in <code>index.php</code> but not
+declared still renders; it simply does not appear in that list. Kimera is an
+example of the drift: it uses <code>breadcrumbs</code> and <code>endpage</code> without declaring
+them, and declares <code>banner</code> and <code>introblock</code> without using them.</p>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Positions used in its layouts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kimera</code></td>
+<td><code>helppane</code>, <code>notices</code>, <code>search</code>, <code>user3</code>, <code>breadcrumbs</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>footer</code>, <code>endpage</code></td>
+</tr>
+<tr>
+<td><code>lucent</code></td>
+<td><code>html-head</code>, <code>notices</code>, <code>helppane</code>, <code>user3</code>, <code>left</code>, <code>right</code>, <code>search</code>, <code>endpage</code></td>
+</tr>
+<tr>
+<td><code>kameleon</code></td>
+<td><code>notices</code>, <code>menu</code>, <code>title</code>, <code>toolbar</code>, <code>submenu</code></td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td><code>notices</code>, <code>helppane</code>, <code>endpage</code> (in <code>group.php</code> only)</td>
+</tr>
+<tr>
+<td><code>welcome</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../../modules/loading/index.html">Modules: loading</a> for what the loader does
+with a position, and <a href="../overrides/index.html">Overrides</a> for module chrome — the
+<code>style</code> attribute on a <code>jdoc</code> tag and the <code>modChrome_*</code> functions a template
+can add.</p>
+<h2 id="the-head-block">The head block</h2>
+<p><code>&lt;jdoc:include type=&quot;head&quot; /&gt;</code> emits everything the request has queued: the
+<code>&lt;base&gt;</code> tag, meta tags, the description and generator, <code>&lt;title&gt;</code>, link
+relations, stylesheets, style declarations, scripts, script declarations, and
+the <code>strings</code> object that <code>Lang::script()</code> fills for JavaScript translation.</p>
+<p>Order matters, and the head block is late in the sequence, so anything a
+layout must load <em>before</em> extension assets goes in the markup above it. Kimera
+links its own stylesheet first and lets the head block follow:</p>
+<pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; class=&quot;&lt;?php echo implode(' ', $cls); ?&gt;&quot;&gt;
+	&lt;head&gt;
+		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+		&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot; href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/index.css?v=&lt;?php echo filemtime(__DIR__ . '/css/index.css'); ?&gt;&quot; /&gt;
+
+		&lt;jdoc:include type=&quot;head&quot; /&gt;
+
+		&lt;!--[if IE 9]&gt;
+			&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie9.css&quot; /&gt;
+		&lt;![endif]--&gt;
+		&lt;!--[if lt IE 9]&gt;
+			&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/js/html5.js&quot;&gt;&lt;/script&gt;
+			&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot; href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie8.css&quot; /&gt;
+		&lt;![endif]--&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+</code></pre>
+<p>Anything the layout adds with <code>$this-&gt;addStyleSheet()</code> or <code>$this-&gt;addScript()</code>
+instead appears <em>inside</em> the head block, after whatever the component queued.
+Kameleon does that for its own <code>index.css</code>, which is why its rules need enough
+specificity to win.</p>
+<h2 id="error-layouts">Error layouts</h2>
+<p><code>error.php</code> is handed an <code>Error</code> document with two extra members:</p>
+<ul>
+<li><code>$this-&gt;error</code> — the <code>Exception</code>. <code>getCode()</code> and <code>getMessage()</code> are what
+you want; the code is not guaranteed to be an HTTP status, so test it before
+displaying it, as <code>kimera/error.php</code> does.</li>
+<li><code>$this-&gt;debug</code> — true when the site's <strong>Debug System</strong> setting is on.
+<code>$this-&gt;renderBacktrace()</code> returns the stack trace as a table.</li>
+</ul>
+<p>Never show <code>getMessage()</code> unless <code>$this-&gt;debug</code> is true. Kimera maps 403, 404
+and everything else onto three translated strings and shows the raw message
+only when debugging.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Debugging exposes file paths, queries, and stack traces to
+every visitor. Leave it off in production.</p>
+</aside>
+<h2 id="parameters">Parameters</h2>
+<p>A template declares parameters in the <code>&lt;config&gt;</code> block of its
+<code>templateDetails.xml</code>, and an administrator sets them per template style.
+<code>$this-&gt;params</code> reads them back. Kimera uses them for a header variant, a
+background pattern, and two accent colours, then builds a style declaration
+from the result:</p>
+<pre><code class="language-php">$bground = $this-&gt;params-&gt;get('backgroundImage', $this-&gt;params-&gt;get('background', 'delauney'));
+$styles  = include_once __DIR__ . '/css/theme.php';
+if ($styles)
+{
+    $this-&gt;addStyleDeclaration($styles);
+}
+</code></pre>
+<p>Kameleon does the same with <code>css/themes/custom.php</code> for its custom colour
+theme. Both files return a CSS string rather than printing one.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> It is never recommended to turn on debugging on a production site.</p>
+<p><strong>Note:</strong> Kimera and Kameleon both declare their parameters with
+<code>&lt;config&gt;&lt;fields name=&quot;params&quot;&gt;</code>. Lucent's manifest still uses the older
+<code>&lt;install&gt;</code> root element with an empty <code>&lt;params&gt;</code> block, so it has no
+settable parameters at all. Follow Kimera.</p>
 </aside>
-<h2 id="loading-modules">Loading Modules</h2>
-<p>Modules may be loaded in a template by including a Joomla! specific <code>jdoc:include</code> tag. This tag includes two attributes: <code>type</code>, which must be specified as <code>module</code> in this case and <code>name</code>, which specifies the position that you wish to load. Any modules assigned to the specified position (set via the administrative Module Manager) declared in the <code>name</code> attribute will have their output placed in the template (the <code>jdoc:include</code> is removed by the CMS afterwards).</p>
-<pre><code class="language-html">&lt;jdoc:include type=&quot;modules&quot; name=&quot;footer&quot; /&gt;
-</code></pre>
-<aside class="admonition admonition--tip">
-<p><strong>Tip:</strong> See the <a href="../../modules/loading/index.html">Modules: Loading</a> article for further details on how to use more advanced features.</p>
-</aside>
+<p>Because parameters belong to a template <em>style</em>, one template can be installed
+several times with different settings, and a menu item can select a style
+through its <code>template_style_id</code>. <code>?templateStyle={id}</code> overrides that for one
+request.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../designing/index.html" rel="prev"><span>Previous</span>Designing</a><a class="pager__next" href="../css/index.html" rel="next"><span>Next</span>Cascading Style Sheets</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../designing/index.html" rel="prev"><span>Previous</span>Designing</a><a class="pager__next" href="../css/index.html" rel="next"><span>Next</span>Cascading style sheets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/06-layouts.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>JavaScript · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview HUBzero comes with the jQuery Javascript Framework included by a system plugin. jQuery is not only a visual effects library–it also support Ajax…">
+  <meta name="description" content="What the CMS puts in the page before your template runs, how a template adds scripts of its own, and how a component, module or plugin pushes a script to the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/javascript/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,44 +127,46 @@
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">JavaScript</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#directory-files">Directory &amp; Files</a></li>
-<li class="toc__item toc__item--l2"><a href="#hub-js">hub.js</a></li>
-<li class="toc__item toc__item--l2"><a href="#hub-namespace">HUB Namespace</a></li>
-<li class="toc__item toc__item--l2"><a href="#loading-from-an-extension">Loading From An Extension</a></li>
-<li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
-<li class="toc__item toc__item--l3"><a href="#modules">Modules</a></li>
-<li class="toc__item toc__item--l3"><a href="#plugins">Plugins</a></li>
-<li class="toc__item toc__item--l3"><a href="#view-helpers-all-extensions">View Helpers (all extensions)</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-already-there">What is already there</a></li>
+<li class="toc__item toc__item--l3"><a href="#jquery">jQuery</a></li>
+<li class="toc__item toc__item--l3"><a href="#core-js">core.js</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-data-attribute-hooks">The data-attribute hooks</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-a-template-s-own-scripts">Adding a template&#x27;s own scripts</a></li>
+<li class="toc__item toc__item--l2"><a href="#pushing-a-script-from-an-extension">Pushing a script from an extension</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-view-helpers">The view helpers</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-static-methods">The static methods</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-the-file-is-looked-for">Where the file is looked for</a></li>
+<li class="toc__item toc__item--l2"><a href="#behaviors">Behaviors</a></li>
+<li class="toc__item toc__item--l2"><a href="#icons-without-a-font">Icons without a font</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -179,295 +181,384 @@
           <p class="eyebrow">Developers</p>
           <h1>JavaScript</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates/javascript">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>HUBzero comes with the <a href="http://jquery.com">jQuery</a> Javascript Framework included by a system plugin. jQuery is not only a visual effects library–it also support Ajax request and JSON notation, table sort, drag &amp; drop operations and much more. All current HUBzero JavaScripts are built on this framework.</p>
-<h2 id="directory-files">Directory &amp; Files</h2>
-<p>The jQuery framework can be found within the <code>/core/assets/js</code> directory. It is a compressed version used for production. An uncompressed version may be found at <a href="http://jquery.com">jquery.com</a>.</p>
-<pre><code>/hubzero
-  /media
-    /system
-      /js
-        jquery.js
-</code></pre>
-<p>Most HUBzero templates will include some scripts of their own for basic setup, visual effects, etc. These are generally stored in (but not limited to) a sub-directory, named <code>/js</code>, of the template's main directory.</p>
-<pre><code>/hubzero
-  /media
-    /system
-      /js
-        jquery.fancybox.js
-        jquery.fileuploader.js
-        jquery.ui.js
-</code></pre>
-<p>Of the scripts commonly found in a HUBzero template, <code>hub.js</code> is perhaps the most important and it is strongly encouraged that developers include these files in their template.</p>
-<h2 id="hub-js">hub.js</h2>
-<pre><code class="language-javascript">//-----------------------------------------------------------
-//  Create our namespace
-//-----------------------------------------------------------
-var HUB = HUB || {};
-HUB.Base = {};
-
-var alertFallback = true;
-if (typeof console === &quot;undefined&quot; || typeof console.log === &quot;undefined&quot;) {
-	console = {};
-	console.log = function() {};
-}
-
-//-----------------------------------------------------------
-//  Various functions - encapsulated in HUB namespace
-//-----------------------------------------------------------
-if (!jq) {
-	var jq = $;
-
-	$.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
-} else {
-	jq.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
-}
-
-var template = {};
-
-jQuery(document).ready(function(jq){
-	var $ = jq,
-		w = 760,
-		h = 520,
-		templatepath = '/templates/template/';
-
-	// Set focus on username field for login form
-	if ($('#username').length &gt; 0) {
-		$('#username').focus();
-	}
-
-	// Turn links with specific classes into popups
-	$('a').each(function(i, trigger) {
-		if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
-			$(trigger).on('click', function (e) {
-				e.preventDefault();
-
-				if ($(this).attr('class')) {
-					var sizeString = $(this).attr('class').split(' ').pop();
-					if (sizeString &amp;&amp; sizeString.match(/d+xd+/)) {
-						var sizeTokens = sizeString.split('x');
-						w = parseInt(sizeTokens[0]);
-						h = parseInt(sizeTokens[1]);
-					}
-					else if(sizeString &amp;&amp; sizeString == 'fullxfull')
-					{
-						w = screen.width;
-						h = screen.height;
-					}
-				}
-
-				window.open($(this).attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
-			});
+<p>What the CMS puts in the page before your template runs, how a template adds
+scripts of its own, and how a component, module or plugin pushes a script to
+the document.</p>
+<h2 id="what-is-already-there">What is already there</h2>
+<h3 id="jquery">jQuery</h3>
+<p>jQuery is not loaded by the template. The <code>System - jQuery</code> plugin loads it, on
+<code>onAfterRoute</code>, for the site client only:</p>
+<pre><code class="language-php">	public function onAfterRoute()
+	{
+		if (!App::isSite())
+		{
+			return;
 		}
-		if ($(trigger).attr('rel') &amp;&amp; $(trigger).attr('rel').indexOf('external') !=- 1) {
-			$(trigger).attr('target', '_blank');
+
+		// Check if active for this client
+		if (!$this-&gt;params-&gt;get('activateSite') || Request::getString('format') == 'pdf')
+		{
+			return;
 		}
-	});
 
-	if (jQuery.fancybox) {
-		// Set the overlay trigger for launch tool links
-		$('.launchtool').on('click', function(e) {
-			$.fancybox({
-				closeBtn: false,
-				href: templatepath + 'images/anim/circling-ball-loading.gif'
-			});
-		});
+		Html::behavior('framework');
 
-		// Set overlays for lightboxed elements
-		$('a[rel=lightbox]').fancybox();
+		if ($this-&gt;params-&gt;get('jqueryui'))
+		{
+			Html::behavior('framework', true);
+		}
+
+		if ($this-&gt;params-&gt;get('jqueryfb'))
+		{
+			Html::behavior('modal');
+		}
+
+		if ($this-&gt;params-&gt;get('noconflictSite'))
+		{
+			Document::addScript(Request::root(true) . '/core/assets/js/jquery.noconflict.js');
+		}
 	}
-
-	// Init tooltips
-	if (jQuery.ui &amp;&amp; jQuery.ui.tooltip) {
-		$(document).tooltip({
-			items: '.hasTip, .tooltips',
-			position: {
-				my: 'center bottom',
-				at: 'center top'
-			},
-			// When moving between hovering over many elements quickly, the tooltip will jump around
-			// because it can't start animating the fade in of the new tip until the old tip is
-			// done. Solution is to disable one of the animations.
-			hide: false,
-			content: function () {
-				var tip = $(this),
-					tipText = tip.attr('title');
-
-				if (tipText.indexOf('::') != -1) {
-					var parts = tipText.split('::');
-					tip.attr('title', parts[1]);
-				}
-				return $(this).attr('title');
-			},
-			tooltipClass: 'tooltip'
-		});
-
-		// Init fixed position DOM: tooltips
-		$('.fixedToolTip').tooltip({
-			relative: true
-		});
-	}
-
-	//test for placeholder support
-	var test = document.createElement('input'),
-		placeholder_supported = ('placeholder' in test);
-
-	//if we dont have placeholder support mimic it with focus and blur events
-	if (!placeholder_supported) {
-		$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
-			var placeholderText = $(el).attr('placeholder');
-
-			//make sure we have placeholder text
-			if (placeholderText != '' &amp;&amp; placeholderText != null) {
-				//add plceholder text and class
-				if ($(el).val() == '') {
-					$(el).addClass('placeholder-support').val(placeholderText);
-				}
-
-				//attach event listeners to input
-				$(el)
-					.on('focus', function() {
-						if ($(el).val() == placeholderText) {
-							$(el).removeClass('placeholder-support').val('');
-						}
-					})
-					.on('blur', function(){
-						if ($(el).val() == '') {
-							$(el).addClass('placeholder-support').val(placeholderText);
-						}
-					});
-			}
-		});
-
-		$('form').on('submit', function(event){
-			$('.placeholder-support').each(function (i, el) {
-				$(this).val('');
-			});
-		});
-	}
-};
 </code></pre>
-<h2 id="hub-namespace">HUB Namespace</h2>
-<p>Typically the template will include a file (<code>hub.js</code>) that first establishes a <code>HUB</code> namespace and then proceeds through some basic setup routines. All HUBzero built components, modules, and templates that employ JavaScript place scripts within this <code>HUB</code> namespace. This helps prevent any naming collisions with third-party libraries. While it is recommended that any scripts you may add to your code is also placed within the HUB namespace, it is not required.</p>
+<p>So:</p>
+<ul>
+<li>Nothing is added when <code>activateSite</code> is off, or when the request asks for
+<code>format=pdf</code>.</li>
+<li><code>jqueryui</code> adds jQuery UI on top; <code>jqueryfb</code> adds fancybox through
+<code>Html::behavior('modal')</code>; <code>noconflictSite</code> appends
+<code>jquery.noconflict.js</code>, which releases <code>$</code>.</li>
+<li>The <strong>administrator</strong> never goes through this plugin. Admin templates get
+jQuery because something in the request chain calls <code>Html::behavior()</code>.</li>
+</ul>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Html/Builder/Behavior.php"><code>Behavior::framework()</code></a>
+pushes <code>/core/assets/js/jquery.js</code> (and <code>jquery.ui.js</code> for the extras) to
+<em>position zero</em> of the document's script list, ahead of anything a component
+has already added, with a <code>?v={filemtime}</code> cache buster. In the administrator
+it also pushes <code>core.js</code>.</p>
+<p>Both files live in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/assets/js"><code>core/assets/js</code></a>, which also holds
+the several dozen jQuery plugins the components use — fancybox, fullcalendar,
+tablesorter, fileupload, datetimepicker and the rest. They are minified for
+production; a few ship an <code>-uncompressed.js</code> sibling.</p>
+<h3 id="core-js">core.js</h3>
+<p><code>core/assets/js/core.js</code> defines the <code>Hubzero</code> global. It is the CMS's own
+script layer, and it is the thing to reach for before writing your own:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Hubzero.submitform(task, form)</code></td>
+<td>Set <code>form.task</code> and submit, firing the submit event first</td>
+</tr>
+<tr>
+<td><code>Hubzero.submitbutton(task)</code></td>
+<td><code>submitform</code> with the default admin form</td>
+</tr>
+<tr>
+<td><code>Hubzero.Lang.load(strings)</code> / <code>Hubzero.Lang.txt(key, fallback)</code></td>
+<td>Translations pushed from PHP</td>
+</tr>
+<tr>
+<td><code>Hubzero.checkAll(box, tag)</code></td>
+<td>Toggle a grid's checkboxes and update <code>boxchecked</code></td>
+</tr>
+<tr>
+<td><code>Hubzero.renderMessages(messages)</code> / <code>removeMessages()</code></td>
+<td>Write into <code>#system-message-container</code></td>
+</tr>
+<tr>
+<td><code>Hubzero.popupWindow(url, name, w, h, scroll)</code></td>
+<td>Centred <code>window.open</code></td>
+</tr>
+<tr>
+<td><code>Hubzero.tableOrdering(order, dir, task, form)</code></td>
+<td>Set the sort fields and submit</td>
+</tr>
+<tr>
+<td><code>Hubzero.listItemTask(id, task)</code></td>
+<td>Check one row and submit a task for it</td>
+</tr>
+<tr>
+<td><code>Hubzero.saveOrder(rows, task)</code></td>
+<td>Check every row and submit the reorder task</td>
+</tr>
+<tr>
+<td><code>Hubzero.hasClass</code> / <code>addClass</code> / <code>removeClass</code></td>
+<td>Class helpers with an <code>IE</code> fallback</td>
+</tr>
+</tbody>
+</table>
+<p>Every one of them is also aliased onto a <code>Joomla</code> global, so inherited
+third-party code keeps working. Write against <code>Hubzero</code>.</p>
+<p><code>core/assets/js/hubzero.js</code> is a separate, smaller file with <code>Hubzero.root()</code>
+and <code>Hubzero.initApi()</code>; <code>Html::behavior('core')</code> is what adds it.</p>
+<h3 id="the-data-attribute-hooks">The data-attribute hooks</h3>
+<p>The bottom of <code>core.js</code> binds handlers on <code>DOMContentLoaded</code> by class name and
+reads the details out of <code>data-</code> attributes. This is how the admin toolbar,
+grids, filters and pagination work, and it is why none of them need inline
+script:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Event</th>
+<th>Attributes read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.toolbar</code> with <code>.toolbar-submit</code></td>
+<td>click</td>
+<td><code>data-task</code>, plus <code>data-message</code> with <code>.toolbar-list</code> when nothing is checked</td>
+</tr>
+<tr>
+<td><code>.toolbar</code> with <code>.toolbar-confirm</code></td>
+<td>click</td>
+<td><code>data-confirm</code>, <code>data-task</code>, <code>data-message</code></td>
+</tr>
+<tr>
+<td><code>.toolbar</code> with <code>.toolbar-popup</code></td>
+<td>click</td>
+<td><code>href</code>, <code>data-message</code>, <code>data-width</code> (700), <code>data-height</code> (500)</td>
+</tr>
+<tr>
+<td><code>.checkbox-toggle</code></td>
+<td>click</td>
+<td><code>.toggle-all</code> checks the whole grid; anything else updates the count</td>
+</tr>
+<tr>
+<td><code>.filter-submit</code></td>
+<td>change</td>
+<td>— submits the form</td>
+</tr>
+<tr>
+<td><code>.filter-clear</code></td>
+<td>click</td>
+<td>— resets every <code>.filter</code> field and submits</td>
+</tr>
+<tr>
+<td><code>.grid-order</code></td>
+<td>click</td>
+<td><code>data-order</code>, <code>data-direction</code>, <code>data-task</code></td>
+</tr>
+<tr>
+<td><code>.grid-order-save</code></td>
+<td>click</td>
+<td><code>data-rows</code>, <code>data-task</code></td>
+</tr>
+<tr>
+<td><code>.grid-action</code></td>
+<td>click</td>
+<td><code>data-id</code>, <code>data-task</code></td>
+</tr>
+<tr>
+<td><code>.pagination a</code></td>
+<td>click</td>
+<td><code>data-prefix</code>, <code>data-start</code></td>
+</tr>
+</tbody>
+</table>
+<p>Prefer this pattern in your own code: put the values on the element, bind by
+class, keep the script in a file. It survives the
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/csp/csp.php"><code>System - CSP</code></a> plugin being switched
+on, which inline <code>&lt;script&gt;</code> blocks do not — that plugin ships disabled, and its
+default <code>script-src</code> still allows <code>'unsafe-inline'</code>, but neither is something
+to rely on.</p>
+<h2 id="adding-a-template-s-own-scripts">Adding a template's own scripts</h2>
+<p>Put them in <code>js/</code> and add them from <code>index.php</code>. <code>kimera</code> does exactly one
+thing:</p>
+<pre><code class="language-php">// Include global scripts
+$this-&gt;addScript($this-&gt;baseurl . '/templates/' . $this-&gt;template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
+</code></pre>
+<p><code>$this</code> in a template layout is the document, so <code>addScript()</code>,
+<code>addScriptDeclaration()</code>, <code>addStyleSheet()</code> and <code>addStyleDeclaration()</code> are all
+available. The <code>filemtime()</code> query string is the convention for busting caches
+after a deploy; copy it.</p>
+<p>What ships in the templates' <code>js/</code> directories is thinner than the old
+documentation suggested:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kimera/js/hub.js</code></td>
+<td>The jQuery <code>growl</code> notification plugin, nothing more</td>
+</tr>
+<tr>
+<td><code>kimera/js/html5.js</code>, <code>kameleon/js/html5.js</code></td>
+<td>The HTML5 shiv, loaded in a conditional comment for old IE</td>
+</tr>
+<tr>
+<td><code>lucent/js/hub.js</code>, <code>system/js/hub.js</code></td>
+<td>The legacy <code>HUB</code> namespace and its page setup</td>
+</tr>
+<tr>
+<td><code>lucent/js/core.js</code></td>
+<td>Lucent's own navigation and layout behaviour</td>
+</tr>
+<tr>
+<td><code>kameleon/js/index.js</code>, <code>component.js</code>, <code>login.js</code></td>
+<td>One script per admin layout</td>
+</tr>
+<tr>
+<td><code>system/js/group.js</code></td>
+<td>Super group page behaviour</td>
+</tr>
+</tbody>
+</table>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> When not using jQuery, the template will include a <code>global.js</code> file that establishes the HUB namespace.</p>
+<p><strong>Note:</strong> The <code>HUB</code> namespace — <code>HUB.Base</code>, <code>HUB.Components</code>, <code>HUB.Modules</code>,
+<code>HUB.Plugins</code> — still exists in <code>lucent/js/hub.js</code> and <code>system/js/hub.js</code>,
+and older extension scripts hang off it. New code should use the <code>Hubzero</code>
+namespace from <code>core.js</code> instead. Do not copy <code>HUB</code> into a new template.</p>
 </aside>
-<p>Some additional sub-spaces for further organization are available within the <code>HUB</code> namespace. Separate spaces for Modules, Components, and Plugins are created. Once again, this further helps avoid possible naming/script collisions. Additionally, one more Base space is created for basic setup and utilities that may be used in other scripts.</p>
-<pre><code class="language-javascript">//  Create our namespace
-if (!HUB) {
-	var HUB = {};
-
-	// Establish a space for setup/init and utilities
-	HUB.Base = {};
-
-	// Establish sub-spaces for the various extensions
-	HUB.Components = {};
-	HUB.Modules = {};
-	HUB.Plugins = {};
-}
-</code></pre>
-<p>To demonstrate adding code to the namespace, below is code from a script in a component named <code>com_example</code>.</p>
-<pre><code class="language-javascript">//  Create our namespace
-if (!HUB) {
-	var HUB = {};
-
-	// sub-space for components
-	HUB.Components = {};
-}
-
-// The Example namespace and init method
-HUB.Components.Example = {
-	init: function() {
-		// do something
-	}
-}
-
-// Initialize the code (jQuery)
-jQuery(document).ready(function($){
-	Components.Example.init();
-});
-</code></pre>
-<h2 id="loading-from-an-extension">Loading From An Extension</h2>
-<h3 id="components">Components</h3>
-<p>Occasionally a component will have scripts of its own. Pushing JavaScript to the template from a component is quite easy and involves only a few lines of code.</p>
-<pre><code class="language-php">Hubzero\Document\Assets::addComponentScript('com_example');
-</code></pre>
-<p>First, we load the <code>Hubzero\Document\Assets</code> class. Next we call the static method <code>addComponentScript</code>, passing it the name of the component as the first (and only) argument. This will first check for the presence of the style sheet in the active template's <a href="../overrides/index.html">overrides</a>. If found, the path to the overridden script will be added to the array of scripts the template needs to include in the <code>&lt;head&gt;</code>. If no override is found, the code then checks for the existence of the script in the component's directory. Once again, if found, it gets pushed to the template.</p>
-<h3 id="modules">Modules</h3>
-<p>Loading Javascript from a module works virtually the same as loading from a component save one minor difference in code. Instead of calling the <code>addComponentScript</code> method, we call the <code>addModuleScript</code> method and pass it the name of the module.</p>
-<pre><code class="language-php">Hubzero\Document\Assets::addModuleScript('mod_example');
-</code></pre>
-<h3 id="plugins">Plugins</h3>
-<p>Loading Javascript from a plugin works similarly to loading from a component or module but instead we call the <code>addPluginScript</code> method and pass it the name of the plugin group <strong>and</strong> the name of the plugin.</p>
-<pre><code class="language-php">Hubzero\Document\Assets::addPluginScript('examples', 'test');
-</code></pre>
-<p>Plugin Javascript must be named the same as the plugin and located within a directory of the same name as the plugin inside the plugin group directory.</p>
-<pre><code>/plugins
-  /examples
-    /test
-      test.css
-    test.php
-    test.xml
-</code></pre>
-<h3 id="view-helpers-all-extensions">View Helpers (all extensions)</h3>
-<p>Modules, Component, and plugin views now have helpers for pushing Cascading StyleSheets and JavaScript assets to the document. Each method automatically looks for overrides within the current, active template, taking out the busy work of checking yourself each time assets are added. The method names are short, accept a range of options, and allow for method chaining, all tailored for brevity and ease of use.</p>
-<p>The css() method provides a quick and convenient way to attach stylesheets. For components, it accepts two arguments:</p>
-<ol>
-<li>The name of the stylesheet to be pushed to the document (file extension is optional). If no name is provided, the name of the component or plugin will be used. For instance, if called within a view of the component &quot;com_tags&quot;, the system will look for a stylesheet named &quot;tags.css&quot;.</li>
-<li>The name of the extension to look for the stylesheet. For components, this will be the component name (e.g., com_tags). For plugins, this is the name of the plugin folder and requires the third argument of plugin group (type) be passed to the method.</li>
-<li>*Plugin views only.* The name of the plugin.</li>
-</ol>
-<p>Example:</p>
+<h2 id="pushing-a-script-from-an-extension">Pushing a script from an extension</h2>
+<h3 id="the-view-helpers">The view helpers</h3>
+<p>Inside a view layout, <code>$this-&gt;js()</code> is the short way. It resolves the file,
+checks for a template override, and adds it to the document:</p>
 <pre><code class="language-php">&lt;?php
-// Push a stylesheet to the document
-$this-&gt;css()
-      -&gt;css('another')  // Extension (.css) is optional
-      -&gt;css('tags.css', 'com_tags');  // Load CSS from another component
-?&gt;
-... view HTML ...
-</code></pre>
-<p>Along with file names, the method also accepts style declarations:</p>
-<pre><code class="language-php">&lt;?php
-// Push a stylesheet to the document
-$this-&gt;css('.foo {
-	color: #000;
-}');
-?&gt;
-... view HTML ...
-</code></pre>
-<p>Similarly, a js() method is available for pushing javascript assets to the document. The arguments accepted are the same as the css() method described above.</p>
-<pre><code class="language-php">&lt;?php
-// Push some javascript to the document
+// Push {extension}/assets/js/{name of this component}.js
 $this-&gt;js()
-      -&gt;js('another');
+     -&gt;js('another')            // .js is optional
+     -&gt;js('tags', 'com_tags');  // A file belonging to another component
 ?&gt;
-... view HTML ...
 </code></pre>
-<p>And, just as the css() method accepts style declarations, the js() method accepts script declarations:</p>
-<pre><code class="language-php">&lt;?php
-// Push some javascript to the document
-$this-&gt;js('
-	jQuery(document).ready(function($){
-		$(&quot;a&quot;).on(&quot;click&quot;, function(e){
-			console.log($(this).attr(&quot;href&quot;));
-		});
-	});
-');
-?&gt;
-... view HTML ...
+<p>The three arguments are the asset name, the extension it belongs to, and — for
+plugins only — the plugin element:</p>
+<pre><code class="language-php">$this-&gt;js('test', 'members', 'dashboard');  // plg_members_dashboard
 </code></pre>
+<p>With no arguments the helper works out the extension from the view: the
+component <code>option</code> for a component view, <code>plg_{folder}_{element}</code> for a plugin
+view. <code>css()</code> takes the same arguments, and <code>img()</code> returns a path rather than
+pushing anything.</p>
+<p>Both helpers also accept a <em>declaration</em>. If the string you pass contains a
+<code>(</code> or a <code>;</code> it is treated as code, not a filename, and goes to
+<code>addScriptDeclaration()</code>:</p>
+<pre><code class="language-php">$this-&gt;js('jQuery(document).ready(function($){ /* … */ });');
+</code></pre>
+<p>That is a real feature and a lot of shipped code uses it, but see the note
+about data attributes above before reaching for it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The same-named <code>css()</code>/<code>js()</code> methods on controllers, modules
+and plugins come from
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Traits/AssetAware.php"><code>Hubzero\Base\Traits\AssetAware</code></a>,
+and their <strong>third argument is an attributes array</strong>, not a plugin element:
+<code>$this-&gt;js('thing', 'com_example', ['defer' =&gt; true])</code>. Pass the full
+<code>plg_{folder}_{element}</code> as the extension there.</p>
+</aside>
+<h3 id="the-static-methods">The static methods</h3>
+<p>Outside a view, use
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Assets.php"><code>Hubzero\Document\Assets</code></a>:</p>
+<pre><code class="language-php">use Hubzero\Document\Assets;
+
+Assets::addComponentScript('com_example');           // com_example/assets/js/example.js
+Assets::addComponentScript('com_example', 'other');  // …/js/other.js
+Assets::addModuleScript('mod_example');
+Assets::addPluginScript('examples', 'test');         // plugins/examples/test/assets/js/test.js
+Assets::addSystemScript('jquery.fancybox');          // core/assets/js/…
+</code></pre>
+<p>Each has an <code>add…Stylesheet</code> twin, and a fourth <code>$dir</code> argument for assets that
+are not in <code>js/</code>.</p>
+<h3 id="where-the-file-is-looked-for">Where the file is looked for</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File</code></a>
+builds a candidate list and takes the first that exists:</p>
+<pre><code>app/{type}/{extension}/assets/js/{name}.js
+app/{type}/{extension}/js/{name}.js
+core/{type}/{extension}/assets/js/{name}.js
+core/{type}/{extension}/js/{name}.js
+</code></pre>
+<p><code>{type}</code> is <code>components/{com_x}/{client}</code>, <code>modules/{mod_x}</code> or
+<code>plugins/{folder}/{element}</code>. So <code>app/</code> wins over <code>core/</code>, and <code>assets/js/</code> —
+the modern layout — wins over a bare <code>js/</code>.</p>
+<p>The <strong>template override</strong> is checked separately and beats all of them:</p>
+<pre><code>{active template}/html/{extension name}/{name}.js
+</code></pre>
+<p>That is the same directory as the layout overrides, so
+<code>app/templates/mytemplate/html/com_example/example.js</code> replaces the component's
+script without touching the component. System assets nest one level deeper —
+<code>html/system/js/{name}.js</code>. See <a href="../overrides/index.html">Output overrides</a>.</p>
+<p>A name beginning <code>http</code>, <code>//</code> or <code>://</code> is treated as external and passed
+through untouched. A name beginning <code>./</code> or <code>/</code> is resolved from the web root
+instead of the extension.</p>
+<h2 id="behaviors">Behaviors</h2>
+<p><code>Html::behavior()</code> is the front door for the shared libraries, so you do not
+have to know where each one lives or add it twice — every behavior is loaded at
+most once per request.</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Html::behavior('framework')</code></td>
+<td>jQuery, at the front of the queue</td>
+</tr>
+<tr>
+<td><code>Html::behavior('framework', true)</code></td>
+<td>jQuery UI as well</td>
+</tr>
+<tr>
+<td><code>Html::behavior('core')</code></td>
+<td><code>hubzero.js</code></td>
+</tr>
+<tr>
+<td><code>Html::behavior('modal')</code></td>
+<td>fancybox, bound to a selector</td>
+</tr>
+<tr>
+<td><code>Html::behavior('tooltip')</code></td>
+<td>jQuery UI tooltips</td>
+</tr>
+<tr>
+<td><code>Html::behavior('formvalidation')</code></td>
+<td><code>validate.js</code></td>
+</tr>
+<tr>
+<td><code>Html::behavior('bootstrap')</code>, <code>('htmx')</code>, <code>('alpinejs')</code>, <code>('inertia')</code>, <code>('htmxalpine')</code></td>
+<td>The named library, at a pinned version</td>
+</tr>
+<tr>
+<td><code>Html::behavior('calendar')</code>, <code>('colorpicker')</code>, <code>('combobox')</code>, <code>('multiselect')</code>, <code>('uploader')</code>, <code>('switcher')</code>, <code>('tree')</code></td>
+<td>The matching widget</td>
+</tr>
+<tr>
+<td><code>Html::behavior('math')</code></td>
+<td>MathJax</td>
+</tr>
+<tr>
+<td><code>Html::behavior('chart')</code></td>
+<td>flot</td>
+</tr>
+<tr>
+<td><code>Html::behavior('caption')</code>, <code>('highlighter')</code>, <code>('keepalive')</code>, <code>('noframes')</code></td>
+<td>Small page behaviours</td>
+</tr>
+</tbody>
+</table>
+<p>The full list, with each one's arguments, is in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Html/Builder/Behavior.php"><code>Behavior.php</code></a>.</p>
+<h2 id="icons-without-a-font">Icons without a font</h2>
+<p><code>Html::asset('icon', 'edit')</code> inlines an SVG from
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/assets/icons"><code>core/assets/icons</code></a> — 325 of them — wrapped in
+<code>&lt;span class=&quot;icn icn-edit&quot; aria-hidden=&quot;true&quot;&gt;</code>. A template overrides any of
+them with <code>html/icons/{symbol}.svg</code>. No script and no webfont is involved. See
+<a href="../fontcons/index.html">Fontcons</a>.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../css/index.html" rel="prev"><span>Previous</span>Cascading Style Sheets</a><a class="pager__next" href="../overrides/index.html" rel="next"><span>Next</span>Output Overrides</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../css/index.html" rel="prev"><span>Previous</span>Cascading style sheets</a><a class="pager__next" href="../overrides/index.html" rel="next"><span>Next</span>Output overrides</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/08-javascript.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -1,252 +1,233 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/layouts
 source-id: 3509
-imported: 2026-09-09
 -->
-# Page Layout
+# Page layouts
 
-## Overview
+A layout is the outermost HTML of a page. The component has already produced
+its markup by the time a layout runs; the layout wraps it, adds the masthead
+and the footer, and marks the places where modules go. Layout files sit at the
+top level of a template directory — never in a subdirectory — and the CMS
+picks one per request by name.
 
-A template will typically have two layout files: `index.php` for the majority of content and `error.php` for custom error pages ("404 - Not Found", etc.). Both of these files are contained within the top level of a template (i.e., they cannot be placed in a sub-directory of the template).
+## The layout files
 
-```
-/app
-  /templates
-    /{TemplateName}
-      error.php
-      index.php
-```
+| File | Rendered when |
+|---|---|
+| `index.php` | The default. Used whenever nothing else is asked for. **Required**: a template without it is ignored and the `system` template runs instead. |
+| `component.php` | `?tmpl=component` — the convention for modal, popup, and print output. Most components link to it. |
+| `offline.php` | The site is offline and the visitor lacks `core.login.offline`. |
+| `error.php` | An uncaught exception reaches the error handler. |
+| `cpanel.php` | The administrator control panel; `com_cpanel` sets `tmpl=cpanel`. |
+| `login.php` | The administrator login screen; `com_login` sets `tmpl=login`. |
+| `help.php` | The help viewer; `com_help` sets `tmpl=help`. |
+| `group.php` | A super group page, and the super group error page. |
+| `email.php` | The wrapper for HTML mail, through `Hubzero\Mail\Template`. |
 
-All the HTML that defines the layout of your template is contained in a file named `index.php`. The `index.php` file becomes the core of every page that is delivered and, because of this, the file is **required**. Essentially, you make a page (like any HTML page) but place PHP code where the content of your site should go.
+Any other value of `tmpl` names a layout the same way, so `?tmpl=print` looks
+for `print.php`. The name is filtered to `A-Z0-9_.-` before it is used.
 
-The `error.php` layout, unlike `index.php` is optional. When not included in a template, Joomla! will use its default system error layout to display site errors such as "404 - Page Not Found". Including `error.php` is recommended though as it helps give your site a more cohesive feel and experience to the user.
+Only `index.php` is required. Everything else falls back, file by file, to
+`core/templates/system` — so a template that ships no `error.php` still gets a
+usable error page, styled by the system template rather than by yours.
 
-## A Breakdown of index.php
+This is what the shipped templates provide:
 
-> **Note:** For the sake of simplicity, we've excluded some more common portions found in HUBzero templates. The portions removed were purely optional and not necessary for a template to function correctly. We suggest inspecting other templates that may be installed on your HUB for further details.
+| | index | component | error | offline | cpanel | login | group | help | email |
+|---|---|---|---|---|---|---|---|---|---|
+| `kimera` (site) | ✓ | ✓ | ✓ | ✓ | | | | | |
+| `lucent` (site) | ✓ | ✓ | ✓ | | | | | | |
+| `welcome` (site) | ✓ | | | | | | | | |
+| `kameleon` (administrator) | ✓ | ✓ | ✓ | | ✓ | ✓ | | | |
+| `system` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
-Starting at the top:
+`core/templates/system/index.php` is one line: it includes `component.php`.
+The system template is a safety net, not a design.
 
-```html
-<?php
-defined( '_HZEXEC_' ) or die( 'Restricted access' );
+## How the CMS picks a layout
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
+[`Bootstrap\Site\Providers\DocumentServiceProvider`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php)
+runs after the component has produced its output. It reads `tmpl` from the
+request, defaults it to `index`, forces `offline` when the site is offline,
+and hands
+[`Hubzero\Document\Type\Html`](../../../core/libraries/Hubzero/Document/Type/Html.php)
+four things: the template name, the file name, the templates directory, and
+the template's saved parameters. The document includes that file, captures
+the output, replaces the `jdoc` tags in it, and returns the page.
 
-// Get the user's browser and browser version
-// We add this to the document root as classes for better targeting with CSS
-$browser = new Hubzero\Browser\Detector();
-$b = $browser->name();
-$v = $browser->major();
+The templates directory is `app/templates` when
+`app/templates/{name}` exists and `core/templates` otherwise, so a hub can
+shadow a shipped template by putting a directory of the same name under
+`app/templates`. Everything under `app/` is site-local; nothing there is part
+of the distribution.
 
-// Set the page title
-$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
-?>
-<!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
-```
+> **Note:** Error pages take a different route.
+> [`Hubzero\Document\Type\Error`](../../../core/libraries/Hubzero/Document/Type/Error.php)
+> includes `error.php` and returns its output **without parsing it**. A
+> `jdoc:include` tag in `error.php` is printed literally. Error layouts get no
+> modules, no message queue, and no `head` block; write the `<title>` and the
+> stylesheet link yourself, as `kimera/error.php` does.
 
-The first line prevents unauthorized people from looking at your coding and potentially causing trouble. Then we grab a reference to the global site configuration. Next, we push some scripts to the document, first checking if the jquery plugin is enabled. Following that, we get the current site visitors browser and browser version. We add this to the document root as classes for better targeting with CSS. The last line of PHP takes the current page title and prepends the site's name. Thus, every page results with a title like "myHUB.org - My Page Title".
+## Inside a layout
 
-The first line of actual HTML tells the browser (and webbots) what sort of page it is. The next line says what language the site is in.
+A layout is included by the document object, so `$this` is that document. It
+runs in the global namespace, which is why the facades work with no `use`
+statements.
 
-```html
-<head>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php
-	echo Hubzero\Document\Assets::getSystemStylesheet(array(
-		'fontcons', 'reset', 'columns', 'notifications', 'pagination',
-		'tabs', 'tags', 'comments', 'voting', 'layout'
-	)); /* reset MUST come before all others except fontcons */ ?>" />
-	<!-- Include the template's main CSS file -->
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/main.css" />
-	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/print.css" />
+| On `$this` | What it gives you |
+|---|---|
+| `$this->template` | The active template's name |
+| `$this->baseurl` | URL prefix for the templates directory, `/app` or `/core` |
+| `$this->params` | `Hubzero\Config\Registry` of the template style's saved parameters |
+| `$this->language`, `$this->direction` | Language tag and `ltr`/`rtl`, for the `<html>` element |
+| `$this->getTitle()`, `$this->setTitle()` | The document title, before `head` renders it |
+| `$this->addStyleSheet()`, `$this->addScript()` | Queue a file into the `head` block |
+| `$this->addStyleDeclaration()`, `$this->addScriptDeclaration()` | Queue inline CSS or JS |
+| `$this->countModules($expr)` | How many modules a position holds |
+| `$this->getBuffer($type, $name)` | Rendered output for a `jdoc` type, before it is substituted |
 
-	<!-- This includes metadata tags and the <title> tag -->
-	<jdoc:include type="head" />
+Every layout opens with the entry guard:
 
-	<!--[if IE 9]>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
-	<![endif]-->
-	<!--[if IE 8]>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
-	<![endif]-->
-	<!--[if IE 7]>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" />
-	<![endif]-->
-</head>
-```
-
-The first line compiles several bootstrap CSS files into a single, minified (comments and white-space removed to lessen file size) file to reduce http requests.
-
-The following two lines include the main stylesheet for the template and a print stylesheet that applies more suitable styles when printing.
-
-The fifth line gets Joomla! to put the correct header information in. This includes the page title, meta information, your `main.css`, system JavaScript, as well as any CSS or JavaScript that was pushed to the template from an extension (component, module, or plugin). This is a bit different than Joomla! 1.5's typical behavior in that the HUBzero code is automatically finding and including `main.css` and some key JavaScript files from your template. This is done due to the fact that order of inclusion is important for both CSS and JavaScript. For instance, one cannot execute JavaScript code built using the MooTools framework *before* the framework has been included. It would simply fail. As such, the naming and existence of specific directories, CSS, and JavaScript files becomes quite important for a HUBzero template.
-
-The rest creates links to a couple CSS fix style sheets for Internet Explorer (more on this in the [Cascading Style Sheets](07-css.md) chapter).
-
-Now for the main body:
-
-```html
-<body>
-
-	<div id="header">
-		<h1><a href="<?php echo $this->baseurl ?>" title="<?php echo Config::get('sitename'); ?>"><?php echo Config::get('sitename'); ?></a></h1>
-
-		<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
-<?php
-	// Is the user logged in?
-	if (!User::isGuest()) {
-		// Yes. Show them a different toolbar.
-		echo '<li id="logout"><a href="/logout"><span>'.Lang::txt('Logout').'</span></a></li>';
-		echo '<li id="myaccount"><a href="/members/'.User::get('id').'"><span>'.Lang::txt('My Account').'</span></a></li>';
-		echo '<li id="usersname">'.User::get('name').' ('.User::get('username').')</li>';
-	} else {
-		// No. Show them the login and register options.
-		echo "ttt".'<li id="login"><a href="/login" title="'.Lang::txt('Login').'">'.Lang::txt('Login').'</a></li>'."n";
-		echo "ttt".'<li id="register"><a href="/register" title="'.Lang::txt('Sign up for a free account').'">'.Lang::txt('Register').'</a></li>'."n";
-	}
-?>
-		</ul>
-
-		<!-- Include any modules for the "search" position -->
-		<jdoc:include type="modules" name="search" />
-	</div><!-- / #header -->
-
-	<!-- Include any modules assigned to the "user3" position -->
-	<div id="nav">
-		<h2>Navigation</h2>
-		<jdoc:include type="modules" name="user3" />
-	</div><!-- / #nav -->
-
-	<div id="wrap">
-		<div id="content" class="<?php echo $option; ?>">
-			<!-- Include the component output -->
-			<jdoc:include type="component" />
-		</div><!-- / #content -->
-
-		<div id="footer">
-			<!-- Include any modules assigned to the "footer" position -->
-			<jdoc:include type="modules" name="footer" />
-		</div><!-- / #footer -->
-	</div><!-- / #wrap -->
-</body>
+```php
+defined('_HZEXEC_') or die();
 ```
 
-First we layout the site's masthead in the `<div id="header">` block. Inside, we set the `<h1>` tag to the site's name, taken from the global site configuration.
+`core/templates/system/component.php` is the smallest complete layout in the
+repository:
 
-Next, we move on to a toolbar that is present in the masthead of every page. This toolbar contains "login" and "register" links when not logged in and "logout" and "My Account" links when logged in. While not required, it is highly recommended that all templates include some form of this arrangement in an easy-to-find, consistent location.
+<!--include: core/templates/system/component.php-->
 
-Some modules that have been assigned the position "search" are then loaded in the masthead. Most HUBzero templates default to having a simple search form module appear. Again, this is not required and placement of modules is entirely up to the developer(s) but we, once again, strongly recommend that some form of a search box be included on all pages.
+`countModules()` takes a boolean expression over position names, which is how
+a layout collapses empty columns:
 
-Then we move on to a block where navigation is loaded. It is here that our main menu will appear.
-
-Next, we get to the primary content block. One of the first things you may notice is the use of `module` as a `jdoc:include` type. This is how we tell where in our template to output modules that have been assigned to specific positions.
-
-It is also worth noting the small bit of PHP (`<?php echo $option; ?>`) in the `class` attribute of the content `<div>`. This small bit of code outputs the name of the current component as a CSS class. So, if one were on a page of a "groups" component, the resulting HTML would be `<div id="content" class="com_groups">`. Since all component output is contained inside the "content" `div`, this allows for more specific CSS targeting.
-
-> **Tip:** See the [Modules: Loading](../08-modules/09-loading.md) article for more details on module positioning.
-
-The content `div` contains a very important `jdoc:include` of type `component`. This is where all component output will be injected in the template. It is essential this line be included in a template for it to be able to display any content.
-
-## A Breakdown of error.php
-
-Starting at the top:
-
-```html
-<?php
-defined( '_HZEXEC_' ) or die( 'Restricted access' );
-
-// Get the user's browser and browser version
-// We add this to the document root as classes for better targeting with CSS
-$browser = new Hubzero\Browser\Detector();
-$b = $browser->name();
-$v = $browser->major();
-?>
-<!DOCTYPE html>
-<!--[if lt IE 7 ]> &lthtml dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
+```php
+<?php if ($this->countModules('left or right')) : ?>
 ```
 
-The first line prevents unauthorized people from looking at your coding and potentially causing trouble. Then we grab a reference to the global site configuration. The first line of actual HTML tells the browser (and webbots) what sort of page it is. The next line says what language the site is in.
+The expression is evaluated with `eval()`, so keep it to position names and
+the operators `and`, `or`, `xor`, arithmetic, and comparisons.
 
-```html
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo Config::get('sitename'); ?> - <?php echo $this->title; ?> - <?php echo $this->error->message ?></title>
-	<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/error.css" />
-</head>
+## jdoc includes
+
+`jdoc:include` marks a hole in the layout. The document finds every tag, asks
+a renderer for the corresponding markup, and substitutes it in.
+
+| `type` | Renders |
+|---|---|
+| `component` | The component's output. A layout without this shows nothing. |
+| `head` | `<base>`, meta tags, `<title>`, `<link>`s, and `<script>`s queued by anything on the page. |
+| `message` | The queued system messages, as `<p class="passed">`, `.warning`, `.error`, `.info`. |
+| `modules` | Every published module in the position named by `name`. |
+| `module` | One module instance, looked up by name. |
+
+Module and modules tags are rendered before every other type, so a module may
+push a stylesheet or a script and still have it appear in the `head` block.
+
+The tag is matched by a regular expression, not by an XML parser, and the
+expression is strict:
+
+- `type` must be the first attribute, and its value must be in double quotes;
+- a single space must follow the closing quote of `type`;
+- the tag must be self-closing.
+
+`<jdoc:include type="component" />` works. `<jdoc:include type="component"/>`
+does not — it is left in the page as literal text. If a hole in your layout
+renders as nothing at all, check the spacing first.
+
+## Module positions
+
+A position is just a string. A layout asks for one by name, and the loader
+returns whatever the administrator has assigned to it. Kimera's content region
+shows the usual shape — an optional left column, the component, an optional
+right column, and a footer:
+
+<!--include: core/templates/kimera/index.php:164-206-->
+
+The `<positions>` block in `templateDetails.xml` does **not** restrict
+anything. It is read only by `com_modules` when it builds the position picker
+on the module edit screen, so a position that is used in `index.php` but not
+declared still renders; it simply does not appear in that list. Kimera is an
+example of the drift: it uses `breadcrumbs` and `endpage` without declaring
+them, and declares `banner` and `introblock` without using them.
+
+| Template | Positions used in its layouts |
+|---|---|
+| `kimera` | `helppane`, `notices`, `search`, `user3`, `breadcrumbs`, `welcome`, `left`, `right`, `footer`, `endpage` |
+| `lucent` | `html-head`, `notices`, `helppane`, `user3`, `left`, `right`, `search`, `endpage` |
+| `kameleon` | `notices`, `menu`, `title`, `toolbar`, `submenu` |
+| `system` | `notices`, `helppane`, `endpage` (in `group.php` only) |
+| `welcome` | none |
+
+See [Modules: loading](../08-modules/09-loading.md) for what the loader does
+with a position, and [Overrides](09-overrides.md) for module chrome — the
+`style` attribute on a `jdoc` tag and the `modChrome_*` functions a template
+can add.
+
+## The head block
+
+`<jdoc:include type="head" />` emits everything the request has queued: the
+`<base>` tag, meta tags, the description and generator, `<title>`, link
+relations, stylesheets, style declarations, scripts, script declarations, and
+the `strings` object that `Lang::script()` fills for JavaScript translation.
+
+Order matters, and the head block is late in the sequence, so anything a
+layout must load *before* extension assets goes in the markup above it. Kimera
+links its own stylesheet first and lets the head block follow:
+
+<!--include: core/templates/kimera/index.php:50-66-->
+
+Anything the layout adds with `$this->addStyleSheet()` or `$this->addScript()`
+instead appears *inside* the head block, after whatever the component queued.
+Kameleon does that for its own `index.css`, which is why its rules need enough
+specificity to win.
+
+## Error layouts
+
+`error.php` is handed an `Error` document with two extra members:
+
+- `$this->error` — the `Exception`. `getCode()` and `getMessage()` are what
+  you want; the code is not guaranteed to be an HTTP status, so test it before
+  displaying it, as `kimera/error.php` does.
+- `$this->debug` — true when the site's **Debug System** setting is on.
+  `$this->renderBacktrace()` returns the stack trace as a table.
+
+Never show `getMessage()` unless `$this->debug` is true. Kimera maps 403, 404
+and everything else onto three translated strings and shows the raw message
+only when debugging.
+
+> **Warning:** Debugging exposes file paths, queries, and stack traces to
+> every visitor. Leave it off in production.
+
+## Parameters
+
+A template declares parameters in the `<config>` block of its
+`templateDetails.xml`, and an administrator sets them per template style.
+`$this->params` reads them back. Kimera uses them for a header variant, a
+background pattern, and two accent colours, then builds a style declaration
+from the result:
+
+```php
+$bground = $this->params->get('backgroundImage', $this->params->get('background', 'delauney'));
+$styles  = include_once __DIR__ . '/css/theme.php';
+if ($styles)
+{
+    $this->addStyleDeclaration($styles);
+}
 ```
 
-Unlike with `index.php`, we do not include the `<jdoc:include type="head" />` tag. Instead, we simply set a single `metadata` tag to declare the character set and then set the `title` tag. Next, we include the `error.css` style sheet, which contains styling just for this layout.
+Kameleon does the same with `css/themes/custom.php` for its custom colour
+theme. Both files return a CSS string rather than printing one.
 
-Now for the main body:
+> **Note:** Kimera and Kameleon both declare their parameters with
+> `<config><fields name="params">`. Lucent's manifest still uses the older
+> `<install>` root element with an empty `<params>` block, so it has no
+> settable parameters at all. Follow Kimera.
 
-```html
-<body>
-	<div id="wrap">
-		<div id="header">
-			<h1><a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>"><?php echo Config::get('sitename'); ?></a></h1>
-		</div>
-		<div id="outline">
-			<div id="errorbox" class="code-<?php echo $this->error->code ?>">
-				<h2><?php echo $this->error->code ?> - <?php echo $this->error->message ?></h2>
-
-				<p><?php echo Lang::txt('You may not be able to visit this page because of:'); ?></p>
-
-				<ol>
-					<li><?php echo Lang::txt('An out-of-date bookmark/favourite'); ?></li>
-					<li><?php echo Lang::txt('A search engine that has an out-of-date listing for this site'); ?></li>
-					<li><?php echo Lang::txt('A mis-typed address'); ?></li>
-					<li><?php echo Lang::txt('You have no access to this page'); ?></li>
-					<li><?php echo Lang::txt('The requested resource was not found'); ?></li>
-					<li><?php echo Lang::txt('An error has occurred while processing your request.'); ?></li>
-				</ol>
-
-				<p><?php echo Lang::txt('If difficulties persist, please contact the system administrator of this site.'); ?></p>
-			</div><!-- / #errorbox -->
-
-			<form method="get" action="/search">
-				<fieldset>
-					<?php echo Lang::txt('Please try the'); ?> <a href="index.php" title="<?php echo Lang::txt('Go to the home page'); ?>"><?php echo Lang::txt('Home Page'); ?></a> <span><?php echo Lang::txt('or'); ?></span>
-					<label>
-						<?php echo Lang::txt('Search:'); ?>
-						<input type="text" name="searchword" value="" />
-					</label>
-					<input type="submit" value="<?php echo Lang::txt('Go'); ?>" />
-				</fieldset>
-			</form>
-		</div><!-- / #outline -->
-<?php
-		if ($this->debug) :
-			echo "tt".'<div id="techinfo">'."n";
-			echo $this->renderBacktrace()."n";
-			echo "tt".'</div>'."n";
-		endif;
-?>
-	</div><!-- / #wrap -->
-</body>
-```
-
-As can be seen, this is relatively straight-forward. We set a title for the page, output the error message, provide some potential reasons for the error and, finally, include a search form. Note that we did not use any modules.
-
-One portion to pay special attention to is the small bit of PHP at the end of the page. This outputs a stack trace when site debugging is turned on.
-
-> **Note:** It is never recommended to turn on debugging on a production site.
-
-## Loading Modules
-
-Modules may be loaded in a template by including a Joomla! specific `jdoc:include` tag. This tag includes two attributes: `type`, which must be specified as `module` in this case and `name`, which specifies the position that you wish to load. Any modules assigned to the specified position (set via the administrative Module Manager) declared in the `name` attribute will have their output placed in the template (the `jdoc:include` is removed by the CMS afterwards).
-
-```html
-<jdoc:include type="modules" name="footer" />
-```
-
-> **Tip:** See the [Modules: Loading](../08-modules/09-loading.md) article for further details on how to use more advanced features.
+Because parameters belong to a template *style*, one template can be installed
+several times with different settings, and a menu item can select a style
+through its `template_style_id`. `?templateStyle={id}` overrides that for one
+request.

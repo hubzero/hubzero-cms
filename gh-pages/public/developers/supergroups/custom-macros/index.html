@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Custom Macros · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Super groups have the ability to create their own custom macros or override any existing macro . Custom Macro Class Structure Overriding Macros To…">
+  <title>Custom macros · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A macro is the markup a page author writes to call PHP. A super group can add macros of its own and replace any of the ones the hub ships, by putting classes…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/custom-macros/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,38 +127,41 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Custom Macros</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#custom-macro-class-structure">Custom Macro Class Structure</a></li>
-<li class="toc__item toc__item--l2"><a href="#overriding-macros">Overriding Macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Custom macros</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-group-macros-apply">Where group macros apply</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-one">Writing one</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-rules">The rules</a></li>
+<li class="toc__item toc__item--l3"><a href="#macros-in-a-subdirectory">Macros in a subdirectory</a></li>
+<li class="toc__item toc__item--l2"><a href="#overriding-a-macro-the-hub-ships">Overriding a macro the hub ships</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-a-macro-does-not-appear">When a macro does not appear</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -167,90 +170,139 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Custom Macros</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Custom macros</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Custom Macros</h1>
+          <h1>Custom macros</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups/custom_macros">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Super groups have the ability to create their own custom macros or override any existing macro <code>[[MacroName(args)]]</code>.</p>
-<h2 id="custom-macro-class-structure">Custom Macro Class Structure</h2>
+<p>A macro is the <code>[[Name(arguments)]]</code> markup a page author writes to call PHP.
+A super group can add macros of its own and replace any of the ones the hub
+ships, by putting classes in the group's <code>macros/</code> directory.</p>
+<pre><code>app/site/groups/&lt;gidNumber&gt;/macros/
+</code></pre>
+<p>The directory is created with the rest of the group's skeleton, and is filled
+from the server or through the group's
+<a href="../../supergroups-gitlab/index.html">repository</a> — the group file browser
+reaches only <code>uploads</code>.</p>
+<h2 id="where-group-macros-apply">Where group macros apply</h2>
+<p>The group's <code>macros/</code> directory is added to the macro search path in two
+places, both in com_groups: when a group page version is parsed
+(<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/page/version.php"><code>models/page/version.php</code></a>)
+and when a group module is parsed
+(<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/module.php"><code>models/module.php</code></a>).
+Both pass the directory as <code>alt_macro_path</code> to the
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins/content/formathtml"><code>content/formathtml</code></a> plugin, which
+parses it before its own <code>macros/</code> directory.</p>
+<p>So group macros work in group pages and group modules, and only for that one
+group. They do not apply to the group's wiki: the wiki runs through
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins/wiki/parserdefault"><code>wiki/parserdefault</code></a>, which has a
+fixed macro path and no group hook.</p>
+<h2 id="writing-one">Writing one</h2>
+<p>The file name is the macro name, lowercased, plus <code>.php</code>. The class is the
+macro name in the <code>Plugins\Content\Formathtml\Macros</code> namespace, extending
+<code>Plugins\Content\Formathtml\Macro</code>.</p>
 <pre><code class="language-php">&lt;?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2014 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see .
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2026 Purdue University. All rights reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace PluginsContentFormathtmlMacros;
+namespace Plugins\Content\Formathtml\Macros;
 
-use PluginsContentFormathtmlMacro;
+use Plugins\Content\Formathtml\Macro;
 
 /**
- * Wiki macro class for displaying hello world
+ * Macro to greet the reader
  */
-class {{macro_name}} extends Macro
+class HelloWorld extends Macro
 {
 	/**
-	 * Returns description of macro, use, and accepted arguments
+	 * Description of the macro, shown in the macro list
 	 *
-	 * @return     array
+	 * @return  string
 	 */
 	public function description()
 	{
 		$txt = array();
-		$txt['html'] = 'Put macro description here...';
+		$txt['wiki'] = 'Outputs &quot;Hello world&quot;';
+		$txt['html'] = '&lt;p&gt;Outputs &quot;Hello world&quot;&lt;/p&gt;';
 		return $txt['html'];
 	}
 
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
-		return 'Return any html content you want this macro to render';
+		return 'Hello World, args = ' . $this-&gt;args;
 	}
 }
 </code></pre>
-<h2 id="overriding-macros">Overriding Macros</h2>
-<p>To override a macro, copy the original macro located in <code>/{web_root}/plugins/content/formathtml/macros/</code> into your groups macro folder <code>/{web_root}/site/groups/{group_id}/macros/</code>. You can no modify the render functionality, add or remove params, etc.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Note: The Macos class name must remain the same and the class must implement a render() method. You are free to add or chanage other methods.</p>
+<p>That is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/formathtml/macros/helloworld.php"><code>macros/helloworld.php</code></a>
+from core, which is the shortest working example in the tree. Copy it as a
+starting point.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Older documentation showed this header declaring LGPLv3. That is
+out of date: the CMS is MIT licensed. A group's own code carries whatever
+notice the group's owner chooses.</p>
 </aside>
+<h3 id="the-rules">The rules</h3>
+<ul>
+<li><strong><code>render()</code> is required.</strong> It returns the markup that replaces the macro
+call. Return a string; returning nothing removes the macro from the page.</li>
+<li><strong><code>description()</code> is optional</strong> and is used only where the hub lists
+available macros.</li>
+<li><strong><code>$this-&gt;args</code></strong> is the raw text between the parentheses. The base class
+gives <code>getArguments()</code>, which splits it on commas and trims, and
+<code>getArgument($index, $default)</code>.</li>
+<li>The parser also sets <code>$this-&gt;option</code>, <code>$this-&gt;scope</code>, <code>$this-&gt;pagename</code>,
+<code>$this-&gt;domain</code>, <code>$this-&gt;pageid</code> and <code>$this-&gt;filepath</code> before calling
+<code>render()</code>. In a group page <code>pagename</code> and <code>domain</code> are the group's alias
+and <code>filepath</code> is the group's <code>uploads</code> directory.</li>
+<li><strong><code>public $allowPartial = true</code></strong> lets the macro run during a partial parse
+as well. Without it, a partial parse renders
+<em>Macro &quot;Name&quot; not allowed.</em> instead.</li>
+<li>A macro name is matched case-insensitively and lowercased before the file is
+looked up, so <code>[[HelloWorld()]]</code>, <code>[[helloworld()]]</code> and <code>[[HELLOWORLD()]]</code>
+all load <code>helloworld.php</code>.</li>
+</ul>
+<h3 id="macros-in-a-subdirectory">Macros in a subdirectory</h3>
+<p>A dot in the macro name is a directory separator. <code>[[Group.Members()]]</code> loads
+<code>group/members.php</code> and expects
+<code>Plugins\Content\Formathtml\Macros\Group\Members</code>. Recreate the same
+directory structure under the group's <code>macros/</code> folder.</p>
+<h2 id="overriding-a-macro-the-hub-ships">Overriding a macro the hub ships</h2>
+<ol>
+<li>Copy the original out of
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins/content/formathtml/macros"><code>core/plugins/content/formathtml/macros/</code></a>,
+keeping its path and file name, into the group's <code>macros/</code> directory.</li>
+<li>Change what you need in <code>render()</code>.</li>
+</ol>
+<p>Keep the class name and the namespace exactly as they were. The parser
+searches the group directory first and stops at the first file it finds, so
+the group's copy is the one that is included; because both files declare the
+same class, changing the name would break every other reference to it.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Note: If the original macro file is located within a subfolder, you must recreate that folder structure in the groups macros folder for the override to work.</p>
+<p><strong>Warning:</strong> The override is per group, but the class is global to the
+request. The first group content parsed on a request fixes which version of
+the class is loaded. On a normal page that is the group being viewed, but if
+you render two groups' content in one request, expect the first one to win.</p>
 </aside>
+<h2 id="when-a-macro-does-not-appear">When a macro does not appear</h2>
+<p>A macro whose file cannot be found renders as nothing at all — no error, no
+placeholder, the markup simply vanishes. If a call disappears from the page,
+check the file name against the macro name, the namespace, and the class
+name in that order.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../page-templates/index.html" rel="prev"><span>Previous</span>Page Templates</a><a class="pager__next" href="../php-pages/index.html" rel="next"><span>Next</span>PHP Pages</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../page-templates/index.html" rel="prev"><span>Previous</span>Page templates</a><a class="pager__next" href="../php-pages/index.html" rel="next"><span>Next</span>PHP pages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/03-custom_macros.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

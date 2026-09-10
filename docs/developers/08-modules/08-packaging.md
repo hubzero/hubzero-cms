@@ -103,9 +103,15 @@ only by an administrator.
 
 ## Installing
 
-An administrator installs the package through **Extensions → Install** in the
-administrative interface, or a developer copies the directory into
-`app/modules` by hand. Either way the module is not usable until its
+There is no package installer. The **Install**, **Update**, **Discover** and
+**Database** tabs the older documentation names do not exist in this release;
+only orphan language strings remain. See the
+[extension manager](../../managers/10-extensions/04-extension-manager.md) for
+what the screen actually offers.
+
+A module therefore arrives through the git-backed **Custom Extensions** flow,
+or by copying the directory into `app/modules` by hand. Either way the module
+is not usable until its
 migration has run and registered it — see [Migrations](01-migrations.md) — and
 not visible until an administrator creates an instance and assigns it to a
 position.

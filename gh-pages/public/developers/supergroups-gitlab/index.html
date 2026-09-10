@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Super Groups &amp; Gitlab · Developers · Hubzero Documentation</title>
-  <meta name="description" content="What is Gitlab In efforts to make super group development easier, we are utilizing a code management tool called Gitlab . Similar to Github in functionality…">
+  <title>Super groups with GitLab · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A super group is a directory of code on a server. Editing that code on a live hub means editing production by hand. The alternative the CMS supports is to keep…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -127,36 +127,37 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Super Groups &amp; Gitlab</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#what-is-gitlab">What is Gitlab</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Super groups with GitLab</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-ships-and-what-does-not">What ships and what does not</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-chapters">The chapters</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -165,23 +166,80 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Super Groups &amp; Gitlab</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Super groups with GitLab</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Super Groups &amp; Gitlab</h1>
+          <h1>Super groups with GitLab</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups_gitlab">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="what-is-gitlab">What is Gitlab</h2>
-<p>In efforts to make super group development easier, we are utilizing a code management tool called <a href="https://www.gitlab.com/">Gitlab</a>. Similar to <a href="https://www.github.com/">Github</a> in functionality and looks, it provides an easy way for the developers to write &amp; push code and give the HUBzero team the security we needed to allow third party developers to commit code to production machines.</p>
-<p><a href="https://help.hubzero.org/app/site/documentation/1-3-0/webdevs/supergroups/gitlab.png"><img src="../media/supergroups-gitlab-gitlab.png" alt="GitLab integration" /></a></p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="why-gitlab/index.html">Why Gitlab</a></li>
+<p>A <a href="../supergroups/index.html">super group</a> is a directory of code on a
+server. Editing that code on a live hub means editing production by hand.
+The alternative the CMS supports is to keep each group's directory in a
+<a href="https://about.gitlab.com/">GitLab</a> repository: developers work on a copy,
+propose changes as merge requests, and an administrator pulls the approved
+result into the hub from the administrator interface.</p>
+<p>This section covers what the CMS does, what a hub has to configure, and how a
+developer works against a group that is managed this way.</p>
+<h2 id="what-ships-and-what-does-not">What ships and what does not</h2>
+<p>GitLab is a separate application. Nothing in this repository runs one, and no
+hub gets one by installing the CMS. What ships is a client:</p>
+<ul>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/gitlab.php"><code>core/components/com_groups/helpers/gitlab.php</code></a>
+— a small REST client over Guzzle that can search for and create GitLab
+groups and projects and protect a branch.</li>
+<li>The super group tasks in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>admin/controllers/manage.php</code></a>
+— creating the project when a group is saved, and the <strong>Update Groups Code</strong>
+and <strong>Merge Groups Code</strong> screens.</li>
+<li>Shell scripts in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/admin/assets/scripts"><code>admin/assets/scripts/</code></a>
+that do the git work on the server.</li>
+</ul>
+<p>The integration is <strong>off by default</strong> and does nothing until a hub sets
+<strong>Repo Management</strong>, a <strong>Repo URL</strong> and a <strong>Repo API Key</strong>. Even then the
+project-creation half only runs on a hub whose <code>application_env</code> starts with
+<code>production</code>.</p>
+<p>Everything on the GitLab side — accounts, forks, merge requests, review, the
+web interface — is that application's, not the hub's. This section says
+plainly which parts of the old workflow could be checked against this code
+and which could not.</p>
+<h2 id="the-chapters">The chapters</h2>
+<table>
+<thead>
+<tr>
+<th>Chapter</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="why-gitlab/index.html">Why GitLab</a></td>
+<td>What the arrangement buys, and what the hub actually enforces</td>
+</tr>
+<tr>
+<td><a href="setup/index.html">Setup</a></td>
+<td>The hub-side options, and what happens when a group is saved</td>
+</tr>
+<tr>
+<td><a href="developing/index.html">Developing</a></td>
+<td>The fork, clone, merge request and pull cycle</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../media/supergroups-gitlab-gitlab.png" alt="The GitLab dashboard as it looked when this workflow was written" /></p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> That screenshot shows GitLab 6, from 2014. No current GitLab looks
+anything like it, and the picture is of GitLab's own project rather than of
+a hub. Treat it as historical.</p>
+</aside>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="why-gitlab/index.html">Why GitLab</a></li>
 <li><a href="setup/index.html">Setup</a></li>
 <li><a href="developing/index.html">Developing</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups/components/index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="why-gitlab/index.html" rel="next"><span>Next</span>Why Gitlab</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups/components/index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="why-gitlab/index.html" rel="next"><span>Next</span>Why GitLab</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/14-supergroups-gitlab/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

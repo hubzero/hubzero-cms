@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Upgrade Guide · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Directory Structure Files Most notable about the 2.0.0 release will be the new directory structure and reorganization of the various files and extensions…">
+  <title>Upgrade guide · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the Joomla names with its own. An extension written against , and still needs converting.…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/upgrade/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,32 +41,30 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Upgrade Guide</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#directory-structure-files">Directory Structure &amp; Files</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Upgrade guide</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#directory-structure">Directory structure</a></li>
 <li class="toc__item toc__item--l2"><a href="#constants">Constants</a></li>
-<li class="toc__item toc__item--l2"><a href="#common-classes">Common Classes</a></li>
+<li class="toc__item toc__item--l2"><a href="#classes">Classes</a></li>
 <li class="toc__item toc__item--l3"><a href="#jroute">JRoute</a></li>
 <li class="toc__item toc__item--l3"><a href="#jtext">JText</a></li>
 <li class="toc__item toc__item--l3"><a href="#jrequest">JRequest</a></li>
-<li class="toc__item toc__item--l3"><a href="#jtoolbarhelper">JToolbarHelper</a></li>
-<li class="toc__item toc__item--l3"><a href="#jsubmenuhelper">JSubMenuHelper</a></li>
+<li class="toc__item toc__item--l3"><a href="#jtoolbarhelper-and-jsubmenuhelper">JToolbarHelper and JSubMenuHelper</a></li>
 <li class="toc__item toc__item--l3"><a href="#jhtml">JHtml</a></li>
-<li class="toc__item toc__item--l2"><a href="#factory-objects">Factory Objects</a></li>
+<li class="toc__item toc__item--l2"><a href="#factory-objects">Factory objects</a></li>
 <li class="toc__item toc__item--l2"><a href="#dates">Dates</a></li>
-<li class="toc__item toc__item--l3"><a href="#now">Now</a></li>
-<li class="toc__item toc__item--l3"><a href="#specified-date">Specified date</a></li>
 <li class="toc__item toc__item--l2"><a href="#users">Users</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-database">The database</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development Environment</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -96,11 +94,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -142,34 +140,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -178,22 +176,34 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Upgrade Guide</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Upgrade guide</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Upgrade Guide</h1>
+          <h1>Upgrade guide</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/upgrade">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="directory-structure-files">Directory Structure &amp; Files</h2>
-<p>Most notable about the 2.0.0 release will be the new directory structure and reorganization of the various files and extensions comprising the CMS.</p>
-<p>Files are essentially divided between two primary directories: <code>app</code> and <code>core</code>.</p>
+<p>Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the
+Joomla names with its own. An extension written against <code>JFactory</code>,
+<code>JText</code> and <code>JRequest</code> still needs converting. This page is that
+translation table, plus what to do about the database when you upgrade a
+hub.</p>
+<p>For the Hubzero 1.x names that changed at the same time, see
+<a href="../releasenotes/index.html#the-2-0-namespacing">Release notes</a>.</p>
+<h2 id="directory-structure">Directory structure</h2>
+<p>The tree has two top-level directories:</p>
 <pre><code>/app
 /core
 index.php
 </code></pre>
-<p>The <code>app</code> directory is where everything concerning a specific hub lives. That is, it's the home to all the logs, cache data, uploads, and extensions unique to a specific instance of a hub.</p>
+<p><code>core/</code> is the platform — the framework library, the shipped components,
+plugins, modules and templates, and the migrations. <code>app/</code> is one hub's
+own state: its configuration, its overrides, its logs, cache and uploads.
+<code>index.php</code> at the root is the only entry point. There is no
+<code>administrator/</code> directory and no <code>api/</code> directory; both applications are
+served from the same front controller.</p>
+<p><a href="../../foundation/structure/index.html">Structure</a> covers the layout in full.</p>
 <h2 id="constants">Constants</h2>
 <table>
 <thead>
@@ -204,161 +214,171 @@ index.php
 </thead>
 <tbody>
 <tr>
-<td>JPATH_ROOT</td>
-<td>PATH_ROOT</td>
+<td><code>JPATH_ROOT</code>, <code>JPATH_BASE</code>, <code>JPATH_SITE</code></td>
+<td><code>PATH_ROOT</code></td>
 </tr>
 <tr>
-<td>JPATH_BASE</td>
-<td>PATH_ROOT</td>
+<td><code>JPATH_ADMINISTRATOR</code></td>
+<td>Nothing. The directory does not exist.</td>
 </tr>
 <tr>
-<td>JPATH_SITE</td>
-<td>PATH_ROOT</td>
-</tr>
-<tr>
-<td>JPATH_ADMINISTRATOR</td>
-<td>PATH_ROOT No files or code should be placed into or read from the <code>administrator</code> directory and it is slated for deletion in a future version.</td>
-</tr>
-<tr>
-<td>JPATH_COMPONENT</td>
+<td><code>JPATH_COMPONENT</code></td>
 <td><code>Component::path($option)</code></td>
 </tr>
 <tr>
-<td>n/a</td>
-<td>PATH_APP Points to <code>ROOT/app</code> where all hub-specific data resides.</td>
+<td><code>_JEXEC</code></td>
+<td><code>_HZEXEC_</code></td>
 </tr>
 <tr>
 <td>n/a</td>
-<td>PATH_CORE Points to <code>ROOT/core</code> where the framework and core extensions live.</td>
+<td><code>PATH_APP</code> — <code>ROOT/app</code>, this hub's own data</td>
 </tr>
 <tr>
-<td>_JEXEC</td>
-<td>_HZEXEC_</td>
+<td>n/a</td>
+<td><code>PATH_CORE</code> — <code>ROOT/core</code>, the framework and shipped extensions</td>
 </tr>
 </tbody>
 </table>
-<p>It is highly recommended, when including files within the same extension (component, module, plugin), to use the <code>__DIR__</code> and <code>__FILE__</code> PHP constants and relative paths.</p>
-<pre><code class="language-php">&lt;?php
-// This file is example.php, located in:
-// ROOT/app/components/com_example/admin
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>JPATH_*</code> names are still defined, in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a>, so old code
+keeps running. They are compatibility aliases, not the names to write.
+<code>JPATH_ADMINISTRATOR</code> points at a <code>ROOT/administrator</code> that is not in the
+tree.</p>
+</aside>
+<p>When including a file from within the same extension, prefer PHP's own
+<code>__DIR__</code> and <code>__FILE__</code> over any constant:</p>
+<pre><code class="language-php">// This file is ROOT/app/components/com_example/admin/example.php
 
-// dirname(__DIR__) moves up one directory
-// ROOT/app/components/com_example/models
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'foo.php');
-
-// ROOT/app/components/com_example/admin/controllers
-require_once(__DIR__ . DS . 'controllers' . DS . 'example.php');
+// dirname(__DIR__) moves up one level, to com_example
+require_once dirname(__DIR__) . DS . 'models' . DS . 'foo.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'example.php';
 </code></pre>
-<h2 id="common-classes">Common Classes</h2>
-<p>To make upgrading an extension a little easier, a number of Joomla classes (and their methods) have equivalent classes in the new framework.</p>
+<p>Better still, do not include anything. The class loader resolves
+<code>Components\Example\Models\Foo</code> to that path on its own; see
+<a href="../../foundation/constants/index.html">Constants</a> and
+<a href="../../foundation/structure/index.html">Structure</a>.</p>
+<h2 id="classes">Classes</h2>
+<p>Most of the conversions are a facade with the <code>J</code> dropped. Facades are
+registered as root-namespace aliases, so a namespaced file must import the
+one it uses — <code>use Route;</code> — or the call fatals at runtime. See
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
 <h3 id="jroute">JRoute</h3>
 <table>
 <thead>
 <tr>
-<th><code>JRoute::_();</code></th>
-<th><code>Route::url();</code></th>
-</tr>
-</thead>
-</table>
-<h3 id="jtext">JText</h3>
-<p>The <code>JText</code> class, used for translating language keys, was replaced by the <code>Lang</code> facade. Along with this, the <code>_()</code> and <code>sprintf()</code> methods were merged to allow for a single call to <code>Lang::txt()</code> with a variable number of arguments. If more than one argument is passed to the <code>txt()</code> method, the translator will attempt to perform variable replacement in the translated string.</p>
-<pre><code class="language-php">// Language file
-COM_EXAMPLE_HELLO=&quot;Hello!&quot;
-COM_EXAMPLE_HELLO_NAME=&quot;Hello, %s!&quot;
-
-...
-
-// PHP
-
-// Outputs 'Hello!'
-echo Lang::txt('COM_EXAMPLE_HELLO');
-
-// Outputs 'Hello, HUBzero!'
-echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'HUBzero');
-</code></pre>
-<table>
-<thead>
-<tr>
-<th><code>JText::_();</code></th>
-<th><code>Lang::txt();</code></th>
+<th>Joomla</th>
+<th>Hubzero</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>JText::sprintf();</code></td>
-<td><code>Lang::txt();</code></td>
+<td><code>JRoute::_($url)</code></td>
+<td><code>Route::url($url)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="jtext">JText</h3>
+<p><code>Lang</code> replaces <code>JText</code>, and <code>_()</code> and <code>sprintf()</code> merged into one
+<code>Lang::txt()</code> that takes a variable number of arguments. Pass more than
+one and the translator does the replacement.</p>
+<pre><code class="language-php">// Language file
+COM_EXAMPLE_HELLO=&quot;Hello!&quot;
+COM_EXAMPLE_HELLO_NAME=&quot;Hello, %s!&quot;
+</code></pre>
+<pre><code class="language-php">// Outputs 'Hello!'
+echo Lang::txt('COM_EXAMPLE_HELLO');
+
+// Outputs 'Hello, Hubzero!'
+echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'Hubzero');
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Joomla</th>
+<th>Hubzero</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>JText::_()</code></td>
+<td><code>Lang::txt()</code></td>
 </tr>
 <tr>
-<td><code>JText::plural();</code></td>
-<td><code>Lang::txts();</code></td>
+<td><code>JText::sprintf()</code></td>
+<td><code>Lang::txt()</code></td>
 </tr>
 <tr>
-<td><code>JText::alt();</code></td>
-<td><code>Lang::alt();</code></td>
+<td><code>JText::plural()</code></td>
+<td><code>Lang::txts()</code></td>
+</tr>
+<tr>
+<td><code>JText::alt()</code></td>
+<td><code>Lang::alt()</code></td>
 </tr>
 </tbody>
 </table>
 <h3 id="jrequest">JRequest</h3>
-<p>To make transitioning easier, all public <code>JRequest</code> methods have been preserved on the global request object, which can be accessed through the application container or the <code>Request</code> facade.</p>
+<p>Every public <code>JRequest</code> method survives on the request object, so dropping
+the <code>J</code> is usually enough:</p>
 <pre><code class="language-php">// Via the application container
-$request = App::get('request');
-$foo = $request-&gt;getVar('foo');
+$foo = App::get('request')-&gt;getVar('foo');
 
 // Via the facade
 $foo = Request::getVar('foo');
 </code></pre>
-<p>In the majority of cases, this means simply dropping the 'J' from <code>JRequest</code> will be sufficient for upgrading an extension's code.</p>
 <table>
 <thead>
 <tr>
-<th><code>JRequest::*</code></th>
-<th><code>Request::*</code></th>
+<th>Joomla</th>
+<th>Hubzero</th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td><code>JRequest::*</code></td>
+<td><code>Request::*</code></td>
+</tr>
+</tbody>
 </table>
-<h3 id="jtoolbarhelper">JToolbarHelper</h3>
-<p>Perhaps one of the easier conversions; Simply replace instances of <code>JToolbarHelper</code> with the <code>Toolbar</code> facade. Method names and the arguments passed to them stay the same.</p>
+<h3 id="jtoolbarhelper-and-jsubmenuhelper">JToolbarHelper and JSubMenuHelper</h3>
+<p>Class name only; the methods and their arguments are unchanged.</p>
 <pre><code class="language-php">// Joomla
 JToolbarHelper::publishList();
-JToolbarHelper::unpublishList();
 
 // Hubzero
 Toolbar::publishList();
-Toolbar::unpublishList();
 </code></pre>
-<h3 id="jsubmenuhelper">JSubMenuHelper</h3>
-<p>As with <code>JToolbarHelper</code> above, only the class name need be updated. All primary method names stay the same.</p>
-<pre><code class="language-php">// Joomla
-JSubMenuHelper::addEntry(
-	JText::_('COM_COLLECTIONS_POSTS'),
-	'index.php?option=com_collections&amp;controller=posts',
-	$controllerName == 'posts'
-);
-
-// Hubzero
-Submenu::addEntry(
+<p><code>JSubMenuHelper</code> becomes <code>Submenu</code>, with one difference worth noticing:
+the link is routed.</p>
+<pre><code class="language-php">Submenu::addEntry(
 	Lang::txt('COM_COLLECTIONS_POSTS'),
 	Route::url('index.php?option=com_collections&amp;controller=posts'),
 	$controllerName == 'posts'
 );
 </code></pre>
 <h3 id="jhtml">JHtml</h3>
-<p>Unlike may of the other classes mentioned above, the class, method, and arguments changed for the replacement of <code>Html</code>. Easily enough, the &quot;J&quot; can simply be dropped to have a class name of just <code>Html</code>. The method name and first argument passed to said method is a little more complicated but follows a strict pattern. For <code>Html</code>, all arguments were passed to a method of <code>_()</code>, the first argument being a dot-notation combination of sub library and the function to call within it.</p>
-<pre><code class="language-php">echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this-&gt;filters['sort_Dir'], @$this-&gt;filters['sort']);
-</code></pre>
-<p>For the <code>Html</code> class, the method is now the name of the sub-library and the first argument passed is the name of the function to call.</p>
-<pre><code class="language-php">echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this-&gt;filters['sort_Dir'], @$this-&gt;filters['sort']);
-</code></pre>
-<p>Examples:</p>
+<p>This one is not a rename. Joomla passed everything through <code>JHtml::_()</code>
+with a dotted first argument naming the sub-library and the function.
+Hubzero makes the sub-library the method and the function the first
+argument:</p>
 <pre><code class="language-php">// Joomla
-JHtml::_('behavior.framework');
+echo JHtml::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
+echo JHtml::_('behavior.framework');
 
 // Hubzero
-Html::behavior('framework');
+echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
+echo Html::behavior('framework');
 </code></pre>
-<h2 id="factory-objects">Factory Objects</h2>
-<p>The following is a list of conversions for objects typically acquired from Joomla's <code>JFactory</code>. In most cases, the objects or their equivalents are available for retrieval from the global <code>App</code>. A number of the objects also have associated Facades for quicker access. In the examples below <strong>method()</strong> is variable and implies that the method formerly called on the Joomla object can be called statically on the facade.</p>
-<p>Example 1:</p>
+<p>The sub-libraries are the classes in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Html/Builder"><code>core/libraries/Hubzero/Html/Builder/</code></a>:
+<code>access</code>, <code>asset</code>, <code>batch</code>, <code>behavior</code>, <code>category</code>, <code>content</code>,
+<code>contentlanguage</code>, <code>grid</code>, <code>input</code>, <code>select</code>, <code>sliders</code>, <code>tabs</code>. There is
+no <code>date</code> sub-library; for a relative date use <code>Date::of($d)-&gt;relative()</code>.</p>
+<h2 id="factory-objects">Factory objects</h2>
+<p>Objects that came from <code>JFactory</code> come from the service container, and most
+have a facade in front of them. <code>method()</code> below stands for whatever you
+used to call on the Joomla object:</p>
 <pre><code class="language-php">// Joomla
 $user = JFactory::getUser();
 echo $user-&gt;get('name');
@@ -366,119 +386,123 @@ echo $user-&gt;get('name');
 // Hubzero
 echo User::get('name');
 </code></pre>
-<p>Example 2:</p>
-<pre><code class="language-php">// Joomla
-$doc = JFactory::getDocument();
-$doc-&gt;addStylesheet('/some/file.css');
-
-// Hubzero
-Document::addStylesheet('/some/file.css');
-</code></pre>
 <table>
 <thead>
 <tr>
 <th>Joomla</th>
-<th>Hubzero</th>
-<th>Hubzero Facade</th>
+<th>Container</th>
+<th>Facade</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>JFactory::getDbo();</td>
-<td>App::get('db');</td>
+<td><code>JFactory::getDbo()</code></td>
+<td><code>App::get('db')</code></td>
 <td>n/a</td>
 </tr>
 <tr>
-<td>JFactory::getUser(); JUser::getInstance();</td>
-<td>App::get('user'); User::getInstance();</td>
-<td>User::<strong>method()</strong>;</td>
+<td><code>JFactory::getUser()</code>, <code>JUser::getInstance()</code></td>
+<td><code>App::get('user')</code></td>
+<td><code>User::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getSession();</td>
-<td>App::get('session');</td>
-<td>Session::<strong>method()</strong>;</td>
+<td><code>JFactory::getSession()</code></td>
+<td><code>App::get('session')</code></td>
+<td><code>Session::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getDocument();</td>
-<td>App::get('document');</td>
-<td>Document::<strong>method()</strong>;</td>
+<td><code>JFactory::getDocument()</code></td>
+<td><code>App::get('document')</code></td>
+<td><code>Document::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getConfig();</td>
-<td>App::get('config');</td>
-<td>Config::<strong>method()</strong>;</td>
+<td><code>JFactory::getConfig()</code></td>
+<td><code>App::get('config')</code></td>
+<td><code>Config::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getLanguage();</td>
-<td>App::get('lang');</td>
-<td>Lang::<strong>method()</strong>;</td>
+<td><code>JFactory::getLanguage()</code></td>
+<td><code>App::get('lang')</code></td>
+<td><code>Lang::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getCache();</td>
-<td>App::get('cache.store');</td>
-<td>Cache::<strong>method()</strong>;</td>
+<td><code>JFactory::getCache()</code></td>
+<td><code>App::get('cache.store')</code></td>
+<td><code>Cache::method()</code></td>
 </tr>
 <tr>
-<td>JFactory::getLogger();</td>
-<td>App::get('log')-&gt;logger('{log name}');</td>
-<td>Log::<strong>method()</strong>; Note: The facade only interacts with the <code>debug</code> log. Use <code>App::get('log');</code> to interact with any other log.</td>
+<td><code>JFactory::getLogger()</code></td>
+<td><code>App::get('log')-&gt;logger('{name}')</code></td>
+<td><code>Log::method()</code></td>
 </tr>
 </tbody>
 </table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>Log</code> facade writes to the <code>debug</code> log. For any other log,
+go through <code>App::get('log')-&gt;logger('{name}')</code>.</p>
+</aside>
 <h2 id="dates">Dates</h2>
-<p>Along with a replacement class for Joomla's <code>JDate</code>, the CMS includes a global <code>Date</code> class to make handling and formatting of dates a little easier.</p>
-<h3 id="now">Now</h3>
-<p>The <code>Date</code> class will always return an instance of <code>Hubzero\Utility\Date</code>. If no specific time or timestamp is specified, it will default to 'now'.</p>
-<pre><code class="language-php">// Output the current timestamp (UTC) in the database's format. ex: &quot;2015-04-03 12:23:56&quot;
+<p><code>JDate</code> becomes <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Date.php"><code>Hubzero\Utility\Date</code></a>,
+reached through the <code>Date</code> facade. With no argument it means now, in UTC.</p>
+<pre><code class="language-php">// The current UTC timestamp in the database's format: &quot;2026-04-03 12:23:56&quot;
 echo Date::toSql();
 
-// Output the current timestamp (UTC) in Unix format.
+// The current UTC timestamp as a Unix time
 echo Date::toUnix();
 
-// Output the current timestamp (UTC) year. ex: &quot;2015&quot;
+// The current UTC year: &quot;2026&quot;
 echo Date::format('Y');
 
-// Output the current timestamp adjusted to the timezone of the hub. For example, if the UTC time is &quot;12:23 pm&quot; and the hub's set timezone is Eastern Standard Time (EST), the time outoutted will be &quot;08:23 am&quot;
+// Adjusted to the hub's timezone. UTC 12:23 pm on an Eastern hub is &quot;08:23 am&quot;
 echo Date::toLocal('g:i a');
 </code></pre>
-<h3 id="specified-date">Specified date</h3>
-<p>A specific timestamp and timezone can be passed to the <code>of</code> method. If no timezone is provided, the timezone will default to UTC.</p>
-<pre><code class="language-php">// Output the current timestamp (UTC) year. ex: &quot;2013&quot;
-echo Date::of('2013-08-12 17:01:34')-&gt;format('Y');
-
-// Output the current timestamp adjusted to the timezone of the hub. ex: &quot;1:01 pm&quot;
-echo Date::of('2013-08-12 17:01:34')-&gt;toLocal('g:i a');
+<p><code>Date::of()</code> takes a specific timestamp, and an optional timezone that
+defaults to UTC:</p>
+<pre><code class="language-php">echo Date::of('2013-08-12 17:01:34')-&gt;format('Y');    // &quot;2013&quot;
+echo Date::of('2013-08-12 17:01:34')-&gt;toLocal('g:i a'); // &quot;1:01 pm&quot;
 </code></pre>
+<p>See <a href="../../basics/dates/index.html">Dates</a>.</p>
 <h2 id="users">Users</h2>
-<p>The global user object, retrieved from <code>JFactory::getUser()</code> can now be accessed anywhere within the CMS from the <code>User</code> facade. Any method, other than <code>getInstance()</code>, statically called on <code>User</code> will be acted upon the current, global user. This is the same as calling <code>JFactory::getUser()-&gt;method()</code>.</p>
+<p>Any method called statically on <code>User</code>, other than <code>getInstance()</code>, acts on
+the current user — the equivalent of <code>JFactory::getUser()-&gt;method()</code>.</p>
 <pre><code class="language-php">// Joomla
 echo JFactory::getUser()-&gt;get('name');
 
 // Hubzero
 echo User::get('name');
 </code></pre>
-<p>The <code>getInstance()</code> method can be used to retrieve the underlying object (of the facade) and assigned to a variable as needed.</p>
-<pre><code class="language-php">// Joomla
-$user = JFactory::getUser();
-// ... or ...
-$user = JUser::getInstance();
-
-// Hubzero
-$user = User::getInstance();
+<p><code>getInstance()</code> returns the object behind the facade, with or without an
+id or username:</p>
+<pre><code class="language-php">$user  = User::getInstance();      // the current user
+$other = User::getInstance(1234);  // JFactory::getUser(1234)
 </code></pre>
-<p>Obtaining instances of new users can be achieved by calling <code>getInstance($id_or_username)</code> on the <code>User</code> facade in the same manner as calling <code>JUser::getInstance($id_or_username)</code> or <code>JFactory::getUser($id_or_username)</code>.</p>
-<pre><code class="language-php">// Joomla
-$user = JFactory::getUser(1234);
-// ... or ...
-$user = JUser::getInstance(1234);
-
-// Hubzero
-$user = User::getInstance(1234);
+<h2 id="the-database">The database</h2>
+<p>An upgrade is not finished when the files are in place. Schema and data
+changes ship as <a href="../../database/migrations/index.html">migrations</a> — small PHP
+classes under a <code>migrations</code> directory with an <code>up()</code> and a <code>down()</code> —
+and <a href="../../muse/index.html">muse</a> runs the ones a hub has not seen,
+recording each in <code>#__migrations</code> so it never runs twice.</p>
+<pre><code class="language-bash">php core/bin/muse migration      # dry run: lists what would happen
+php core/bin/muse migration -f   # actually run them
 </code></pre>
+<p>The dry run is the default, which is the safest thing about the command
+and the easiest to miss. <code>-e com_example</code> limits the run to one extension,
+<code>-d down</code> reverses, and the full option list is in the
+<a href="../../../reference/muse/migration/index.html">muse migration reference</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Reversing a schema change is often impossible without data
+loss, whatever <code>down()</code> claims. Take a database dump before an upgrade:
+<code>php core/bin/muse database dump</code>.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Older instructions pair <code>-f</code> with <code>-i</code>. <code>-i</code> now behaves as
+<code>-a</code>, which only widens the list of migrations considered; it is not
+needed for an ordinary upgrade.</p>
+</aside>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databaseaccess/index.html" rel="prev"><span>Previous</span>Direct Database Access</a><a class="pager__next" href="../browsersupport/index.html" rel="next"><span>Next</span>Browser Support</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databaseaccess/index.html" rel="prev"><span>Previous</span>Direct database access</a><a class="pager__next" href="../browsersupport/index.html" rel="next"><span>Next</span>Browser support</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/04-upgrade.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

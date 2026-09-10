@@ -70,7 +70,7 @@ drifted; the `/status/` page counts what is left.
   `[access levels](../users/access-levels.md)`. Linking to a directory reaches
   its `README.md`. Anchors work: `access-levels.md#viewing-levels`.
 - Link to code in the repository with a relative path to the file:
-  `[`Relational`](../../core/libraries/Hubzero/Database/Relational.php)`. The
+  `[`Relational`](../core/libraries/Hubzero/Database/Relational.php)`. The
   site turns it into a GitHub link.
 - External links are ordinary absolute URLs.
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Developing · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview After you have completed all the necessary setup steps its time to start actually developing. The following items are necessary steps to getting your…">
+  <meta name="description" content="The cycle for a super group managed through GitLab is: work in a clone, propose the change as a merge request, and have an administrator pull the merged result…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/developing/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,45 +127,44 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Developing</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#fork-project">Fork Project</a></li>
-<li class="toc__item toc__item--l2"><a href="#clone-repository">Clone Repository</a></li>
-<li class="toc__item toc__item--l2"><a href="#add-upstream-repository">Add Upstream Repository</a></li>
-<li class="toc__item toc__item--l2"><a href="#develop">Develop</a></li>
-<li class="toc__item toc__item--l2"><a href="#sync-with-main-project">Sync with Main Project</a></li>
-<li class="toc__item toc__item--l2"><a href="#push-changes">Push Changes</a></li>
-<li class="toc__item toc__item--l2"><a href="#create-merge-request">Create Merge Request</a></li>
-<li class="toc__item toc__item--l2"><a href="#wait-for-approval">Wait for Approval</a></li>
-<li class="toc__item toc__item--l2"><a href="#pull-changes">Pull Changes</a></li>
+<li class="toc__item toc__item--l2"><a href="#fork-the-project">Fork the project</a></li>
+<li class="toc__item toc__item--l2"><a href="#clone-your-fork">Clone your fork</a></li>
+<li class="toc__item toc__item--l2"><a href="#add-the-upstream-remote">Add the upstream remote</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-belongs-in-the-repository">What belongs in the repository</a></li>
+<li class="toc__item toc__item--l2"><a href="#work">Work</a></li>
+<li class="toc__item toc__item--l2"><a href="#sync-before-you-push">Sync before you push</a></li>
+<li class="toc__item toc__item--l2"><a href="#push-and-open-a-merge-request">Push and open a merge request</a></li>
+<li class="toc__item toc__item--l2"><a href="#pulling-the-changes-into-the-hub">Pulling the changes into the hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#rolling-back">Rolling back</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -174,85 +173,133 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super Groups &amp; Gitlab</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Developing</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Super groups with GitLab</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Developing</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
           <h1>Developing</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups_gitlab/developing">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>After you have completed all the necessary setup steps its time to start actually developing. The following items are necessary steps to getting your code added to the live site super group code as easily as possible.</p>
+<p>The cycle for a super group managed through GitLab is: work in a clone,
+propose the change as a merge request, and have an administrator pull the
+merged result into the hub.</p>
+<p>The examples use <code>mygroup</code> as the group's alias, <code>hub-example</code> as the hub's
+GitLab group and <code>theuser</code> as your GitLab user name. The project is
+<code>sg_mygroup</code>, in the group <code>hub-example</code>; both names are built by the hub when
+it creates the project, as described in <a href="../setup/index.html">Setup</a>.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> For example purposes we are going to use &quot;mytestgroup&quot; as the group cname and &quot;hubzero.org&quot; as the hub we are working on. This would map to &quot;hubzero&quot; as the group name and &quot;mytestgroup&quot; as the project in Gitlab. We are also going to use &quot;theuser&quot; as the user's username in Gitlab.</p>
+<p><strong>Note:</strong> Everything up to the last section happens in GitLab and in git.
+None of it is the CMS, and none of it could be verified against this
+repository. Use it as a description of the arrangement the CMS expects, and
+your own GitLab's documentation for the details.</p>
 </aside>
-<h2 id="fork-project">Fork Project</h2>
-<p>The first step is you need to create a fork of the main project. You can find main project by navigating to your dashboard in Gitlab then the projects tab. Project names are formatted by the group/project, where group is the hub name/URL and project is super group cname.</p>
-<ol>
-<li>Click on the project you want to start development for, you should be taken to the project page.</li>
-<li>Click the &quot;Fork repository&quot; button on the right side of the page. This will fork the repository and take you to your forked version of this repository.</li>
-</ol>
-<h2 id="clone-repository">Clone Repository</h2>
-<p>You are now ready to clone the repository to a development machine. This can be anywhere, but recommended that you use the hubs dev machine or local dev machine (local HUB on VM).</p>
-<ol>
-<li>Get the repository url. From your forked repository page you should see a text box with the git repo url in it. Copy that URL to your clipboard</li>
-<li>Go to the machine where you want to clone the repository to and type the following into a terminal window:<pre><code>git clone git@gitlab.hubzero.org:theuser/mytestgroup.git; mv mytestgroup/* mytestgroup/.git* .; rmdir mytestgroup;
+<h2 id="fork-the-project">Fork the project</h2>
+<p>Find <code>hub-example / sg_mygroup</code> in GitLab and fork it. The fork is yours: you
+can push to it freely without touching the group the hub pulls from.</p>
+<h2 id="clone-your-fork">Clone your fork</h2>
+<pre><code class="language-bash">git clone git@gitlab.example.org:theuser/sg_mygroup.git
+cd sg_mygroup
 </code></pre>
-</li>
-<li>The repository content will be copied to a &quot;mytestgroup&quot; directory within the current directory</li>
-</ol>
-<h2 id="add-upstream-repository">Add Upstream Repository</h2>
-<p>Upstream repository is a fancy word for the main repository you forked from. You need to tell your forked copy that it has a main repository and where it is. To add the upstream repository, in a Terminal window navigate to your cloned repo and type the following:</p>
-<pre><code>git remote add upstream git@gitlab.hubzero.org:hubzero/mytestgroup.git
-</code></pre>
-<p>You can test to see if everything was added correctly by typing:</p>
-<pre><code>git remote -v
-</code></pre>
-<p>and you should now see something like:</p>
-<pre><code>origin    git@gitlab.hubzero.org:testuser/mytestgroup.git (fetch)
-origin    git@gitlab.hubzero.org:testuser/mytestgroup.git (push)
-upstream  git@gitlab.hubzero.org:hubzero/mytestgroup.git (fetch)
-upstream  git@gitlab.hubzero.org:hubzero/mytestgroup.git (push)
-</code></pre>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> This is a very important part of working with Gitlab is keeping your forked repository synced with the main repository.</p>
-</aside>
-<h2 id="develop">Develop</h2>
-<p>Make changes, add new code, fix bugs etc. Commit as you develop.</p>
-<h2 id="sync-with-main-project">Sync with Main Project</h2>
-<p>Before you push your changes to Gitlab it is recommended that you sync your forked project with the main project.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Failure to sync your fork before pushing changes and creating a merge request can result in your merge request being denied until synced properly.</p>
-</aside>
-<p>To sync, navigate to your cloned repo in a terminal window and type the following:</p>
-<pre><code>git fetch upstream
-</code></pre>
-<p>Then make sure your on the master branch by typing:</p>
-<pre><code>git checkout master
-</code></pre>
-<p>Then merge the upstream master branch with your master branch by:</p>
-<pre><code>git merge upstream/master
-</code></pre>
-<p>You might have to resolve some merge conflicts at this point. See the Git documation or search Google for issues you might run into.</p>
+<p>Clone anywhere you like. A development hub is the convenient place, because
+you can then point a super group at the working copy and see the result.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> You can sync your forked project with the main project as often as you like. Syncing often usually reduces potential merge conflicts.</p>
+<p><strong>Note:</strong> Older documentation gave a one-line clone that moved the files up
+and removed the directory. That was for cloning <em>into</em> a group directory
+that already existed. A plain clone is what you want.</p>
 </aside>
-<h2 id="push-changes">Push Changes</h2>
-<p>Pushing your changes it simple and easy. Simple type the following in a terminal window from within your cloned repo:</p>
-<pre><code>git push origin master
+<h2 id="add-the-upstream-remote">Add the upstream remote</h2>
+<p>Your fork does not track the group's real repository. Add it:</p>
+<pre><code class="language-bash">git remote add upstream git@gitlab.example.org:hub-example/sg_mygroup.git
+git remote -v
 </code></pre>
-<p>This pushes the changes you've committed to your forked projects repository.</p>
-<h2 id="create-merge-request">Create Merge Request</h2>
-<p>A merge request is how the changes you pushed to your forked project get into the main project. Login to gitlab, go to your forked project, click the merge tab, then &quot;New merge request&quot;. Select the master branch in your forked copy and click &quot;Compare branches&quot;. You should be taken to the next step where you can give the merge request a title and a description. The description is very important for the approval team to understand what the merge is related to. This page will also show the commits that will be merged and the file diffs. When your ready click &quot;Submit merge request&quot;.</p>
-<h2 id="wait-for-approval">Wait for Approval</h2>
-<p>Approval may be the next day or make take up to a week depending on complexity and schedules. Approvals are done Monday-Friday 8am - 5pm EST.</p>
-<p>When your merge request is accepted or denied you will get an email notice regarding its status.</p>
-<h2 id="pull-changes">Pull Changes</h2>
-<p>Pulling in the changes that were merged into the main project can be done through the admin interface for the HUB. You must have admin rights to access the administrator interface.</p>
+<pre><code class="language-text">origin    git@gitlab.example.org:theuser/sg_mygroup.git (fetch)
+origin    git@gitlab.example.org:theuser/sg_mygroup.git (push)
+upstream  git@gitlab.example.org:hub-example/sg_mygroup.git (fetch)
+upstream  git@gitlab.example.org:hub-example/sg_mygroup.git (push)
+</code></pre>
+<p>Keeping the fork in step with upstream is the part people skip and regret. Do
+it before every push.</p>
+<h2 id="what-belongs-in-the-repository">What belongs in the repository</h2>
+<p>Everything the hub put there when it created the project: <code>template/</code>,
+<code>components/</code>, <code>macros/</code>, <code>migrations/</code>, <code>pages/</code>, <code>language/</code>.</p>
+<p>Two things are deliberately excluded and must stay out:</p>
+<ul>
+<li><code>uploads/</code> — the group's own files, which belong to its members and are not
+code.</li>
+<li><code>config/db.php</code> — the group's database password.</li>
+</ul>
+<p>The hub writes both into <code>.git/info/exclude</code> when it sets the repository up.
+That file is local to the clone the hub made; a fresh clone does not have it,
+so take care not to add either path by hand.</p>
+<h2 id="work">Work</h2>
+<p>Ordinary git. Commit as you go. The hub sets the repository up on <code>master</code>
+and protects that branch, so <code>master</code> is what a merge request targets.</p>
+<p>Schema changes belong in
+<a href="../../supergroups/migrations/index.html">migrations</a>, in the group's top-level
+<code>migrations</code> directory, so they run when the code is merged on the hub.</p>
+<h2 id="sync-before-you-push">Sync before you push</h2>
+<pre><code class="language-bash">git fetch upstream
+git checkout master
+git merge upstream/master
+</code></pre>
+<p>Resolve any conflicts here, in your own clone, where it costs nothing. A merge
+request from a fork that is behind is harder to review and may be sent back.</p>
+<h2 id="push-and-open-a-merge-request">Push and open a merge request</h2>
+<pre><code class="language-bash">git push origin master
+</code></pre>
+<p>Then, in GitLab, open a merge request from your fork's <code>master</code> to
+<code>hub-example/sg_mygroup</code>'s <code>master</code>. Write a description that says what
+changed and why: the person approving it is reading the diff cold.</p>
+<p>How long approval takes, and who does it, is your hub's policy. GitLab mails
+you when the request is accepted or closed.</p>
+<h2 id="pulling-the-changes-into-the-hub">Pulling the changes into the hub</h2>
+<p>The last step is a hub administrator's, in the administrator interface. The
+screens are in <strong>Users</strong> → <strong>Groups</strong>.</p>
+<ol>
+<li>Tick the super groups to update in the group list.</li>
+<li>Select <strong>Update Groups Code</strong>. Nothing is changed yet: the hub fetches from
+the remote and lists the commits each group is behind by, or says <em>Your
+code is currently up to date!</em></li>
+<li>Look at the list. Each group with something to merge gets a <strong>Merge
+Changes</strong> tick box, ticked.</li>
+<li>Select <strong>Merge Groups Code</strong>.</li>
+</ol>
+<p><strong>Update Groups Code</strong> is only on the toolbar when <strong>Repo Management</strong> is on
+and the administrator holds the <code>core.manage</code> permission for <code>com_groups</code>.
+Groups in the selection that are not super groups, or that have no <code>.git</code>
+directory, are listed as failures and skipped.</p>
+<p>The merge runs <code>muse group update -f</code> and then <code>muse group migrate -f</code> in the
+group's directory. Concretely, for each group:</p>
+<ul>
+<li>Local modifications in the group's directory are <strong>stashed</strong> first, so
+anything edited on the server by hand is set aside rather than merged.</li>
+<li>A tag named <code>cmsrollbackpoint-&lt;timestamp&gt;</code> is written, so the state before
+the merge can be recovered.</li>
+<li>The merge is <strong>fast-forward only</strong>. A group whose directory has commits of
+its own will refuse to merge rather than produce a merge commit.</li>
+<li>The group's <a href="../../supergroups/migrations/index.html">migrations</a> run afterwards,
+against the group's own database.</li>
+</ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The controller means to skip migrations when the update fails,
+but the test it uses never matches, so migrations run either way. Read the
+output of the merge instead of assuming it stopped. Recorded in
+the project record.</p>
+</aside>
+<h2 id="rolling-back">Rolling back</h2>
+<p>The rollback point the merge wrote is reachable from muse:</p>
+<pre><code class="language-bash">php core/bin/muse group update rollback --group=mygroup -f
+</code></pre>
+<p>That resets the group's directory to the most recent
+<code>cmsrollbackpoint-</code> tag. It does not undo migrations; a schema change is
+reversed by running its <code>down()</code>, with
+<code>muse group migrate -d=down -f --group=mygroup --file=Migration….php</code>.</p>
+<p><code>php core/bin/muse group update status --group=mygroup</code> reports what the
+working copy looks like without changing anything.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../setup/index.html" rel="prev"><span>Previous</span>Setup</a><a class="pager__next" href="../../testing/index.html" rel="next"><span>Next</span>Testing</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/14-supergroups-gitlab/03-developing.md">Edit this page on GitHub</a>

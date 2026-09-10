@@ -31,8 +31,13 @@ Write paths by joining with `DS`, and never assume a hub's files live under
 the code:
 
 ```php
- = PATH_APP . DS . 'site' . DS . 'resources' . DS .  . DS . ;
+$path = PATH_APP . DS . $resourcePath . DS . 'content' . DS . $name;
 ```
+
+The same join appears in `com_resources`, which builds every media path this
+way rather than concatenating separators of its own:
+
+<!--include: core/components/com_resources/helpers/hubpresenter.php:111-111-->
 
 ## Version
 
@@ -81,4 +86,4 @@ above; these are listed for reading old extensions.
 The bootstrap fixes the process locale before any extension runs: the default
 time zone is UTC and the internal encoding is UTF-8. Dates are stored and
 compared in UTC and converted for display, so do not change the default time
-zone. See [Dates](../04-basics/dates.md).
+zone. See [Dates](../05-basics/10-dates.md).

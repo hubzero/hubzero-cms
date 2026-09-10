@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/testing
 source-id: 3531
 modified: 2015-08-07
@@ -7,122 +10,237 @@ imported: 2026-09-09
 -->
 # Testing
 
-## Overview
+Hubzero has a working PHPUnit suite across the framework libraries, eight
+components and two plugins, plus two custom linters that catch faults nothing
+else does. This page says what is there, how to run it, and how to add to it.
 
-There's a lot of information and articles out there about why and how you should be writing your tests. But, in short, it ensures your code does what you want it to and makes sure it continues to even after you or others make modifications.
-
-Not everything is easy to test. But, at the very least, libraries and other shared pieces of code would ideally be covered by unit tests. It takes time, but it's definitely easier to do it as you write code than it is to go back and add all your tests at the end of the project.
-
-In an effort to make testing a little more accessible, HUBzero offers some basic guidance and structure for your testing. We'll step through what's available below.
-
-## Location
-
-Your tests will live in a `tests` folder within the applicable extension directory. For example, tests for the blog component can be found at:
+A full run on 2.4-main passes:
 
 ```
-core/components/com_blog/tests/...
+Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 ```
 
-> **Note:** Tests are only supported in individual extensions with 2.1.10+. Older versions only support running tests from the HUBzero framework.
+The deprecations come from PHPUnit 11 warning about older test syntax, not
+from failures. Six tests skip themselves when what they need is absent.
 
-Test naming convention and structure should follow the definitions found in the [PHPUnit documentation.](https://phpunit.de/manual/current/en/index.html)
+## What exists
 
-## Test Types
+| Tool | Where | What it does |
+|---|---|---|
+| PHPUnit 11.5 | `core/vendor/bin/phpunit` | The test runner |
+| `core/phpunit.xml.dist` | | The shipped configuration: three suites |
+| `muse test` | `core/bin/muse` | Lists and runs one extension's tests |
+| `tools/lint/missing-facade-imports.php` | | Finds unqualified facade calls in namespaced files |
+| `tools/lint/undefined-language-keys.php` | | Finds language keys nothing defines |
+| `core/bin/php_tests.sh` | | PSR-12 style plus a syntax check, over a list of files |
+| `.github/workflows/php-lint.yml` | | CI: `php -l` over `core` and `app`, then the facade linter |
 
-There are two primary types of tests, basic and database. Basic tests involve no external resources, whereas database tests require the ability to simulate/mock database calls.
+Tests are named `*Test.php` and live in a `Tests` or `tests` directory
+inside the thing they test:
 
-### Basic Tests
+```
+core/libraries/Hubzero/Database/Tests/QueryTest.php
+core/libraries/Hubzero/Config/Tests/RegistryTest.php
+core/components/com_blog/tests/EntryTest.php
+core/components/com_resources/helpers/tests/
+core/plugins/user/hubzero/tests/
+```
 
-Basic tests in HUBzero offer no additional functionality or abstraction over the PHPUnit_Framework_TestCase. Therefore there's really nothing that needs to be covered here that isn't already in the PHPUnit documentation.
+## Running them
 
-### Database Tests
+Everything, through the shipped configuration:
 
-To help with writing tests that require a database object, we've worked to provide some shortcuts and best practices. Database tests are tough because they can be slow, and you don't want them to depend a certain database state or mess up another developers database. So, to get around this, we either completely mock the database, or use a reloadable sqlite database.
+```bash
+cd core
+vendor/bin/phpunit -c phpunit.xml.dist
+```
 
-Let's look at an example of this.
+Or one suite at a time — `libraries`, `components`, `plugins`:
+
+```bash
+vendor/bin/phpunit -c phpunit.xml.dist --testsuite libraries
+```
+
+The `libraries` suite covers `libraries/Hubzero` and excludes three
+production classes that happen to be named `Test.php`. `components` globs
+`components/*/tests` and `components/*/helpers/tests`; `plugins` globs
+`plugins/*/*/tests`.
+
+### Through muse
+
+[Muse](muse/README.md) wraps the runner for one extension at a time.
+`muse test show` lists what can be run:
+
+```
+$ php core/bin/muse test show
+lib_base
+lib_cache
+lib_config
+lib_database
+…
+core:com_blog
+core:com_courses
+core:com_groups
+core:plg_authentication_orcid
+core:plg_user_hubzero
+```
+
+Names are the extension with its prefix — `com_`, `mod_`, `plg_{group}_`,
+`tpl_`, or `lib_` for a framework subsystem — with `core:` or `app:` in front
+of everything but a library, because the same extension can exist in both
+trees.
+
+```bash
+php core/bin/muse test run lib_config
+```
+
+`run` requires an extension; there is no way to run everything through muse.
+Use PHPUnit directly for that.
+
+> **Note:** `muse test run` invokes PHPUnit with
+> `--bootstrap core/bootstrap/phpunit-bootstrap.php` and no configuration
+> file of its own, so PHPUnit picks up whatever `phpunit.xml` it finds in the
+> working directory. Run it from the installation root.
+
+## Writing a test
+
+Two base classes, both real PHPUnit 11 test cases.
+
+### Basic
+
+[`Hubzero\Test\Basic`](../../core/libraries/Hubzero/Test/Basic.php) extends
+`PHPUnit\Framework\TestCase` and adds nothing. If your test needs no
+database, extend it — or extend `TestCase` directly — and follow the
+[PHPUnit documentation](https://docs.phpunit.de/en/11.5/).
+
+### Database
+
+[`Hubzero\Test\Database`](../../core/libraries/Hubzero/Test/Database.php) is
+for tests that need a driver. It gives you a real, throwaway SQLite database
+rather than a connection to anyone's development server:
 
 ```php
-/**
- * Test to make sure we can run a basic select statement
- *
- * @return void
- **/
 public function testBasicFetch()
 {
     $dbo   = $this->getMockDriver();
     $query = new Query($dbo);
 
-    // Try to actually fetch some rows
     $rows = $query->select('*')
                   ->from('users')
                   ->whereEquals('id', '1')
                   ->fetch();
 
-    // Basically, as long as we don't get false here, we're good
     $this->assertCount(1, $rows, 'Query should have returned one result');
 }
 ```
 
-You'll see above the call to a function named `getMockDriver()`. This method is going to give you back a database object, loading up a sqlite database named test.sqlite3, by default. This is a fully functioning database driver.
-
-To make the database driver useful, you'll need at least two files included in your tests directory. They are:
+`getMockDriver()` returns a fully functioning driver over a SQLite file. Two
+fixtures back it, in a `Fixtures` directory beside the test:
 
 ```
-Tests/Fixtures/seed.xml
 Tests/Fixtures/test.sqlite3
+Tests/Fixtures/seed.xml
 ```
 
-The seed.xml file will contain all your sample data. This will be automatically loaded in the test framework for each test class (i.e. file). The structure and destination of all database operations will come from the test.sqlite3 file.
+`test.sqlite3` supplies the schema; `seed.xml` supplies the rows, reloaded
+for each test class. Override `$fixture` and `$seed` on the test class to
+use different filenames, or override `getDataSet()` for anything more
+involved.
 
-The names of those files can also be changed by overwriting the `$fixture` and/or `$seed` properties on your test class.
+`Hubzero\Test\Database` also bootstraps the facades — it adopts the
+container the bootstrap installed rather than replacing it, and registers an
+event dispatcher — so a model that calls `Event::trigger()` at file scope
+does not fatal.
 
-## Scaffolding and Running Tests
+> **Note:** This class is Hubzero's own, not PHPUnit's. It replaces
+> `PHPUnit\DbUnit\TestCase`, which was abandoned years ago. The supporting
+> classes are in
+> [`Hubzero\Test\Database`](../../core/libraries/Hubzero/Test/Database) —
+> `Connection`, `DataSet`, `XmlDataSet`, `Table`.
 
-To get starting writing new tests, you can use the muse scaffolding command to create a test stub. This will look something like this:
+### Scaffolding
 
-```
-me@me.org:~# muse scaffolding create test lib_database --type=database
-Creating /var/www/example/core/libraries/Hubzero/database/Tests/ExampleDatabaseTest.php
-```
-
-The test scaffolding expects the first argument after test to be the extension into which the test should be placed. A `--type` argument can also be given to specify whether or not you're creating a basic or a database test. In this example, given that we're testing the database object, the database test type obviously makes sense.
-
-### Running Tests
-
-Once you've created your tests, you'll need to run them. To get started, you can use the muse `test` command.
-
-First, you'll probably want to list all available tests that can be run. From the console, run `muse test show`. This will list all the available tests.
-
-```
-me@me.org:~# muse test show
-lib_base
-lib_browser
-lib_cache
-lib_config
-lib_console
-lib_database
-lib_debug
-lib_notification
-lib_pathway
-lib_spam
-lib_template
-lib_utility
-core:com_blog
+```bash
+php core/bin/muse scaffolding create test lib_database --type=database
 ```
 
-Available tests are grouped by their respective extension or library. Components (com\_), modules (mod\_), plugins (plg\_), and templates (tpl\_) will also be prefixed with an indicator as to if the extension is in the /core or /app directory. This is because it is possible to have an extension with the same name in both /app and /core and allows for specifying to muse the exact suite of tests to be run.
+The first argument after `test` is the extension; `--type` is `basic` or
+`database`.
 
-Next, you can run tests with the `run` command:
+## The linters
 
+Two faults are invisible to PHP's own syntax check and to any test that does
+not happen to execute the affected line. Both have a linter.
+
+### Missing facade imports
+
+The CMS registers `Route`, `Lang`, `User`, `Config` and the rest as
+**root-namespace** aliases. Inside a namespaced file, an unqualified
+`Route::url()` resolves to `Current\Namespace\Route` and fatals when the line
+runs. The file parses; nothing complains until that branch executes, which
+on a rarely used error path can be years.
+
+```bash
+php tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
+php tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
 ```
-me@me.org:~# muse test run lib_database
-PHPUnit 4.6.2 by Sebastian Bergmann and contributors.
 
-...................................................
+It reads the file with PHP's tokenizer, so a name in a comment, a string or
+a heredoc is not counted. It exits non-zero on a finding, and the PHP lint
+workflow runs it on every push. The tree is currently clean; 730 of these
+were fixed at once, and this is what keeps them from coming back.
 
-Time: 2.51 seconds, Memory: 17.5Mb
+### Undefined language keys
 
-OK (51 tests, 73 assertions)
+`Lang::txt()` returns its argument unchanged when the key is not found, so a
+missing string is not an error — the raw key is printed into the page.
+
+```bash
+php tools/lint/undefined-language-keys.php
+php tools/lint/undefined-language-keys.php core/components/com_blog
 ```
 
-More details on the muse functionality can be found in the [Muse documentation](12-muse/README.md).
+A key counts as defined if any `en-GB` file anywhere under `core/` or `app/`
+defines it, which is deliberately generous: only a handful of files load per
+request, so a key defined in some other extension may still fail at runtime.
+Keys built at runtime (`'COM_X_' . strtoupper($type)`) cannot be checked and
+are skipped, so a clean run does not prove every string resolves.
+
+**This one is not in CI.** Run it yourself before sending a change.
+
+## Continuous integration
+
+Two workflows run on GitHub:
+
+- **`php-lint.yml`** — on every push to `2.4-main` and on pull requests
+  touching any `.php` file. It runs `php -l` over every PHP file in `core`
+  and `app` outside `vendor`, then the facade linter.
+- **`pages.yml`** — builds this documentation, runs the builder's own Python
+  tests, regenerates the references and fails if the committed copy is
+  stale, and checks every internal link.
+
+A third, `dev-push.yml`, deploys to a Purdue development host and is
+disabled (`if: false`).
+
+> **Warning:** **No CI job runs PHPUnit.** The suite passes today, and
+> nothing enforces that it keeps passing. Run it before you send a change.
+
+## What the old page claimed that is not true
+
+This page was imported from help.hubzero.org and described the 2015 state.
+For the record:
+
+- Tests extend `PHPUnit\Framework\TestCase`, not `PHPUnit_Framework_TestCase`.
+  PHPUnit here is 11.5, not 4.6.
+- The "tests are only supported in individual extensions with 2.1.10+" note
+  is long spent. Extension tests work and several ship.
+- `muse test show` output has changed; the list above is the real one.
+
+Two loose ends worth knowing about:
+
+- `tests/Unit` and `tests/Feature` in the installation root are **empty**,
+  and no configuration file refers to them. They are a stub of a layout that
+  was never adopted. Do not put tests there.
+- A `phpunit.xml` in the root, if you have one, is yours: the filename is in
+  `.gitignore`. `core/phpunit.xml.dist` is the shipped configuration, and it
+  is the one to change if the change should reach other people.
