@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://hubzero.github.io/hubzero-cms/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/getting-started/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/getting-started/releases/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/getting-started/concepts/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/getting-started/introduction/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/installation/</loc></url>
@@ -422,7 +423,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/events/wishlist/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/events/xmessage/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/releases/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/docs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/style/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/license/</loc></url>

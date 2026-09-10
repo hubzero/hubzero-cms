@@ -635,6 +635,7 @@
 /reference/muse/test https://hubzero.github.io/hubzero-cms/reference/muse/#muse-test
 /reference/muse/user https://hubzero.github.io/hubzero-cms/reference/muse/#muse-user
 /reference/muse/user-terms https://hubzero.github.io/hubzero-cms/reference/muse/#muse-user-terms
+/releases https://hubzero.github.io/hubzero-cms/getting-started/releases/
 /tools/administrators/installing-tool-dependencies https://hubzero.github.io/hubzero-cms/tools/administrators/#installing-tool-dependencies
 /tools/administrators/jupyter-notebooks https://hubzero.github.io/hubzero-cms/tools/administrators/#jupyter-notebooks
 /tools/administrators/whitelistdirectories https://hubzero.github.io/hubzero-cms/tools/administrators/#directory-parameter-whitelist

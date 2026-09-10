@@ -29,3 +29,5 @@ documentation takes for granted and points you to the book you need.
 - [Introduction](introduction.md) — the platform in a page.
 - [Concepts](concepts.md) — components, plugins, modules, templates, groups,
   projects, resources, and tools, and how they fit together.
+- [Releases](03-releases.md) — how Hubzero is released and where upgrade
+  guidance lives.

@@ -15,7 +15,7 @@ still explains most of what you read in the framework.
 ## Where release notes live
 
 This page is not a changelog. Release notes for a Hubzero version are in
-the [Releases](../../releases/README.md) book, and the authoritative record
+the [Releases](../../getting-started/03-releases.md) chapter, and the authoritative record
 of what changed is the repository itself: the tags and commit history on
 [hubzero/hubzero-cms](https://github.com/hubzero/hubzero-cms). Each release
 line has its own `X.Y-main` branch; `2.4-main` is the current one.
