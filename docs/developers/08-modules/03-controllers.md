@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/modules/controllers
 source-state: unpublished
 -->
@@ -26,6 +26,44 @@ Three lines of work: declare the namespace, pull in the class, construct it
 and call `display()`. `with()` is a global helper that returns the object it
 is given, so that a method can be called on a freshly constructed instance in
 one expression.
+
+Write the same file for your module and change the namespace:
+
+```php
+<?php
+
+namespace Modules\UpcomingBookings;
+
+require_once __DIR__ . DS . 'helper.php';
+
+with(new Helper($params, $module))->display();
+```
+
+That stub-plus-`helper.php` pair is not one style among several. It is what
+[`Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php) is
+built around:
+
+```php
+$path = $this->path($module->module);
+
+if (file_exists($path))
+{
+	// … load the language file …
+	ob_start();
+	include $path;
+	$module->content = ob_get_contents() . $content;
+	ob_end_clean();
+}
+```
+
+The loader `include`s a file. It never instantiates a class, never looks one
+up by name, and never calls a method on your module. Whatever your entry file
+echoes is the module's output; whatever it does not echo does not exist. All
+100 shipped modules are written this way, and 99 of them put the work in a
+`Helper` class beside the stub. The exception, `mod_multilangstatus`, has no
+data to gather and constructs the base `Hubzero\Module\Module` directly so
+that `display()` requires its layout — which is the shortest a module can be
+and still have one.
 
 ## What is in scope
 
@@ -61,19 +99,20 @@ almost no logic can do everything in the entry file:
 ```php
 <?php
 
-namespace Modules\Example;
+namespace Modules\UpcomingBookings;
 
 use Lang;
 
 defined('_HZEXEC_') or die();
 
-echo '<p>' . Lang::txt('MOD_EXAMPLE_GREETING') . '</p>';
+echo '<p>' . Lang::txt('MOD_UPCOMING_BOOKINGS_NONE') . '</p>';
 ```
 
-That works, but it gives up the two things the module class provides: a
-template override point, because `getLayoutPath()` is a method on the class,
-and the asset helpers `css()`, `js()`, and `img()`. Use it only for a module
-that will never have a layout.
+That works, and it is the wrong shape for anything you will keep. It gives up
+both things the module class provides: a template override point, because
+`getLayoutPath()` is a method on the class, and the asset helpers `css()`,
+`js()`, and `img()`. It also means a hub cannot restyle your module without
+editing your file. Use the class.
 
 ## Guarding the file
 
@@ -97,3 +136,12 @@ post, or that needs several tasks — the work belongs somewhere else. Post to a
 component and let it redirect back; the module then only renders the form.
 `mod_login` does exactly this: it renders a form whose action points at
 `com_login`, and holds no submission logic itself.
+
+Apply that to the booking module and the line falls in an obvious place. A
+**Cancel** button beside each reservation is fine, as long as it is a link or
+a form posting to
+`index.php?option=com_bookings&controller=reservations&task=cancel`, which
+does the work and redirects. The module never cancels anything itself. If it
+did, the cancellation would run on every page of the hub that carries the
+module, and there would be no route to it that a menu, a permission check, or
+a redirect could see.

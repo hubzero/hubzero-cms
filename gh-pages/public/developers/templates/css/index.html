@@ -184,12 +184,19 @@
 shared stylesheets under <code>core/assets</code>, and whatever the components, modules
 and plugins on the page push into the document. This chapter covers where each
 of those lives, how a file is found, and what a template can do about it.</p>
+<p>The reason to read it before writing CSS is order. Your rules and a component's
+rules end up in the same cascade with the same specificity more often than you
+would like, and which of them wins is decided by <em>where you linked the file</em>,
+not by anything in the file itself. Getting that wrong produces a template that
+works until a component pushes a stylesheet, and then does not.</p>
 <h2 id="the-template-s-own-stylesheets">The template's own stylesheets</h2>
 <p>Convention puts a template's CSS in a <code>css</code> directory at the top of the
 template directory. Nothing enforces the convention and <strong>nothing is loaded
 automatically</strong>: every stylesheet a template uses is linked by a layout, by
-name. There is no <code>main.css</code> that the CMS picks up on its own.</p>
-<p>A layout links a stylesheet one of two ways.</p>
+name. There is no <code>main.css</code> that the CMS picks up on its own. A new template
+whose CSS never appears is usually a template that never linked it.</p>
+<p>A layout links a stylesheet one of two ways, and the choice decides the
+cascade.</p>
 <p>Directly in the markup, before <code>&lt;jdoc:include type=&quot;head&quot; /&gt;</code>, so that it
 loads ahead of anything an extension queues:</p>
 <pre><code class="language-php">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot;
@@ -210,11 +217,16 @@ if ($theme == 'custom')
 </code></pre>
 <p>Kimera and Lucent use the first form; Kameleon uses the second, which is why
 its own rules need enough specificity to win against a component's.</p>
+<p>Use the first form unless you want to override component CSS wholesale. It is
+what <code>northgate</code> does: brand styles load first, components layer on top, and
+the handful of component rules Northgate needs to beat are handled with
+<a href="../overrides/index.html">output overrides</a> rather than with a specificity war.</p>
 <p>Two details of the link are load-bearing:</p>
 <ul>
 <li><code>$this-&gt;baseurl</code> is the URL prefix for the templates directory — <code>/app</code> when
 the template lives in <code>app/templates</code>, <code>/core</code> when it ships. Never hardcode
-either.</li>
+either. A <code>northgate</code> layout with <code>/core/templates/…</code> in it links <code>kimera</code>'s
+stylesheet on every page and gives no error at all.</li>
 <li><code>?v=&lt;?php echo filemtime(...); ?&gt;</code> is the cache-busting convention used by
 every shipped template and by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File::link()</code></a>.
@@ -336,6 +348,22 @@ Kimera.</p>
 files that <strong>return</strong> a CSS string built from the template's parameters. The
 layout includes the file and passes the result to <code>addStyleDeclaration()</code>. See
 <a href="../layouts/index.html#parameters">Page layouts</a> for how the parameters reach them.</p>
+<p>This is the mechanism to copy for <code>northgate</code>'s accent colour: one parameter in
+the manifest, one <code>css/theme.php</code> that turns it into rules, and no second copy
+of the template per institution.</p>
+<p>Two things about the pattern are easy to get wrong, and Kimera shows both:</p>
+<ul>
+<li><strong>The theme file reads variables out of the including scope.</strong>
+<code>kimera/css/theme.php</code> uses <code>$bground</code>, <code>$color1</code>, <code>$color2</code>, <code>$opacity</code> and
+<code>$opacity2</code>, which <code>index.php</code> sets immediately before the include. Set them
+first or the file builds a stylesheet from nulls.</li>
+<li><strong>It is pulled in with <code>include_once</code>, and it declares a function.</strong>
+<code>include_once</code> returns the string on the first include and <code>true</code> on any
+later one, which is why <code>index.php</code> guards with <code>if ($styles)</code>. Switching to a
+plain <code>include</code> to get the string twice fatals instead, on the redeclaration
+of <code>hex2rgb()</code>. If you need the CSS in two layouts, put the builder in a
+function or a class and call it.</li>
+</ul>
 <h2 id="less">LESS</h2>
 <p>LESS is the preprocessor in use. There are two sets of sources.</p>
 <p><code>core/assets/less/</code> holds the shared ones. <code>site.less</code> is the build file and
@@ -386,7 +414,9 @@ names everything in it:</p>
 </code></pre>
 <p><code>core/assets/less/variables.less</code> holds the colours, font stacks and sizes
 those files use; a template that imports the shared sources redefines the
-variables it wants before the import.</p>
+variables it wants before the import. That is the whole of a re-brand, done
+properly: <code>northgate/less/_variables.less</code> sets <code>@linkColor</code> and the font stack,
+and the imports below it recompile against those values.</p>
 <p>Each template that uses LESS keeps its own sources in a <code>less</code> directory and
 imports across into <code>core/assets/less</code> by relative path. Kimera's
 <code>less/index.less</code> opens this way:</p>
@@ -397,6 +427,9 @@ imports across into <code>core/assets/less</code> by relative path. Kimera's
 // CSS Reset
 @import &quot;../../../../core/assets/less/reset.less&quot;;
 </code></pre>
+<p>Those <code>../../../../</code> paths survive a copy into <code>app/templates</code>, because
+<code>app/templates/northgate/less/</code> sits the same depth below the repository root
+as <code>core/templates/kimera/less/</code>.</p>
 <p>The compiled result is what ships and what the layout links:
 <code>less/index.less</code> → <code>css/index.css</code> for Kimera and Kameleon,
 <code>less/main.less</code> → <code>less/main.css</code> for Lucent.</p>
@@ -405,7 +438,14 @@ imports across into <code>core/assets/less</code> by relative path. Kimera's
 script ships with it</strong>. There is no gulpfile, no Grunt config and no npm
 package in any template. If you edit a <code>.less</code> file you must recompile it
 yourself, with any LESS compiler, and commit the <code>.css</code> alongside. Editing
-only the LESS changes nothing that a browser sees.</p>
+only the LESS changes nothing that a browser sees — the page loads the stale
+<code>.css</code>, so the symptom is an edit that appears to do nothing at all.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>kimera/less/_variables.less</code> declares
+<code>@pathTemplate: &quot;/core/templates/kimera&quot;</code> and nothing uses it. In a copy it
+still names the source template, so the first rule that does use it points at
+the shipped <code>kimera</code>'s files. Either delete it or correct it.</p>
 </aside>
 <h2 id="the-shared-stylesheets">The shared stylesheets</h2>
 <p><code>core/assets/css/</code> holds the stylesheets shared by every extension: <code>reset</code>,
@@ -454,13 +494,13 @@ third argument.</p>
 <p>Views get <code>css()</code> and <code>js()</code> from
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/Helper/Css.php"><code>Hubzero\View\Helper\Css</code></a>.
 Both return the view, so calls chain:</p>
-<pre><code class="language-php">$this-&gt;css()               // the extension's own stylesheet
-     -&gt;css('another')      // the .css extension is optional
-     -&gt;css('tags', 'com_tags');   // from another component
+<pre><code class="language-php">$this-&gt;css()                     // the extension's own stylesheet
+     -&gt;css('instruments')        // the .css extension is optional
+     -&gt;css('tags', 'com_tags');  // from another component
 </code></pre>
 <p>With no arguments, the file taken is the extension's default name: for a
-component the name minus <code>com_</code> (<code>com_tags</code> → <code>tags.css</code>), for a module the
-full directory name (<code>mod_notices</code> → <code>mod_notices.css</code>), for a plugin the
+component the name minus <code>com_</code> (<code>com_bookings</code> → <code>bookings.css</code>), for a module
+the full directory name (<code>mod_notices</code> → <code>mod_notices.css</code>), for a plugin the
 plugin's own name (<code>plg_groups_forum</code> → <code>forum.css</code>).</p>
 <p>The arguments are <code>(name, extension, element)</code>. <code>element</code> is for plugins, and
 turns the first two into a plugin name:</p>
@@ -509,16 +549,18 @@ name and goes to <code>addStyleDeclaration()</code>:</p>
 plugin element. <code>$this-&gt;css('x.css', 'system', array('media' =&gt; 'print'))</code>
 is correct in a controller, module or plugin, and wrong in a view — a view
 reads that array as a plugin name and looks for <code>plg_system_Array</code>. The two
-<code>css()</code> methods look identical and are not.</p>
+<code>css()</code> methods look identical and are not. The failure is a stylesheet that
+silently never loads: <code>$asset-&gt;exists()</code> is false, so nothing is queued and
+nothing is logged.</p>
 </aside>
 <h3 id="where-the-file-is-looked-for">Where the file is looked for</h3>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File::sourcePath()</code></a>
-builds the search list. For <code>css('groups', 'com_groups')</code> on the site it tries,
-in order, under <code>app/</code> and then under <code>core/</code>:</p>
-<pre><code>components/com_groups/site/assets/css/groups.css
-components/com_groups/site/css/groups.css
-components/groups/site/assets/css/groups.css
-components/groups/site/css/groups.css
+builds the search list. For <code>css('bookings', 'com_bookings')</code> on the site it
+tries, in order, under <code>app/</code> and then under <code>core/</code>:</p>
+<pre><code>components/com_bookings/site/assets/css/bookings.css
+components/com_bookings/site/css/bookings.css
+components/bookings/site/assets/css/bookings.css
+components/bookings/site/css/bookings.css
 </code></pre>
 <p><code>site</code> there is the client name, so an admin view of the same component looks
 under <code>admin/</code> instead. Modules drop the client segment
@@ -537,7 +579,7 @@ That is the subject of the <a href="../overrides/index.html">next chapter</a>.</
 <code>addComponentStylesheet()</code>, <code>addModuleStyleSheet()</code>, <code>addPluginStyleSheet()</code>
 and their <code>Script</code> counterparts. They wrap the same asset objects and honour
 the same overrides:</p>
-<pre><code class="language-php">Hubzero\Document\Assets::addComponentStylesheet('com_example');
+<pre><code class="language-php">Hubzero\Document\Assets::addComponentStylesheet('com_bookings');
 Hubzero\Document\Assets::addModuleStyleSheet('mod_example');
 Hubzero\Document\Assets::addPluginStyleSheet('groups', 'forum');
 </code></pre>
@@ -568,7 +610,7 @@ stylesheets expect.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../layouts/index.html" rel="prev"><span>Previous</span>Page layouts</a><a class="pager__next" href="../javascript/index.html" rel="next"><span>Next</span>JavaScript</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/07-css.md">Edit this page on GitHub</a>

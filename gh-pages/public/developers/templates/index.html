@@ -121,8 +121,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../plugins/loading/index.html">Loading</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Templates</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-want-one">When you want one</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-example-these-chapters-build">The example these chapters build</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-templates-live">Where templates live</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-fresh-hub-renders-nothing">A fresh hub renders nothing</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-to-start">Where to start</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-chapters">The chapters</a></li>
 </ol><ul class="tree">
@@ -177,19 +180,80 @@ It is not the site: the template supplies the frame, and components, modules
 and plugins supply what goes inside it.</p>
 <p>These chapters are for developers writing a template against the Hubzero
 framework. They assume you are comfortable with HTML, CSS and PHP.</p>
+<h2 id="when-you-want-one">When you want one</h2>
+<p>Reach for a template when the thing you are changing is <strong>the page around
+everything else</strong> — the masthead, the navigation, the colours, the footer,
+where the sidebar sits. A template applies to every page on the hub at once,
+and switching it changes the look of components you did not write.</p>
+<p>Reach for something narrower when the change is narrower:</p>
+<table>
+<thead>
+<tr>
+<th>You want</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The whole hub to look like an institution's site</td>
+<td>a template</td>
+</tr>
+<tr>
+<td>One component's markup changed, everything else left alone</td>
+<td>an <a href="overrides/index.html">output override</a> inside your template</td>
+</tr>
+<tr>
+<td>A block of content in a sidebar</td>
+<td>a <a href="../modules/index.html">module</a></td>
+</tr>
+<tr>
+<td>A screen with records behind it</td>
+<td>a <a href="../components/index.html">component</a></td>
+</tr>
+</tbody>
+</table>
+<p>An override lives inside a template, so the two are not really alternatives:
+you get a template first, then put overrides in it.</p>
+<h2 id="the-example-these-chapters-build">The example these chapters build</h2>
+<p>One template runs through this section: <strong><code>northgate</code></strong>, the site template for
+Northgate University, a partner institution on a hub whose main application is
+<a href="../components/index.html"><code>com_bookings</code></a> — the component that books a lab's
+instruments.</p>
+<p>It is deliberately not built from nothing. <code>northgate</code> is a copy of the shipped
+<code>kimera</code> template with Northgate's colours, masthead and footer, plus a handful
+of output overrides that restyle <code>com_bookings</code> to match. That is what almost
+every real hub template is, and it is the route these chapters take:</p>
+<ol>
+<li><a href="#where-to-start">Copy a shipped template</a> into <code>app/templates/northgate</code>.</li>
+<li><a href="migrations/index.html">Register it</a> with a migration, or the CMS cannot see it.</li>
+<li>Rename its <a href="languages/index.html">language file</a> and rewrite its strings.</li>
+<li>Rework the <a href="layouts/index.html">layout</a> and the <a href="css/index.html">stylesheets</a>.</li>
+<li>Add <a href="overrides/index.html">output overrides</a> for the components that need them.</li>
+</ol>
+<p>Where a chapter shows <code>kimera</code>, <code>lucent</code>, <code>welcome</code>, <code>kameleon</code> or <code>system</code>,
+that is code you can open in this repository. Where it shows <code>northgate</code>, that
+is what you write.</p>
 <h2 id="where-templates-live">Where templates live</h2>
 <p>Templates are found in two places:</p>
 <ul>
-<li><code>core/templates/</code> — the templates that ship with the CMS. They are marked
-<em>protected</em> and are replaced on upgrade, so do not edit them in place.</li>
+<li><code>core/templates/</code> — the templates that ship with the CMS. They are replaced
+on upgrade, so do not edit them in place.</li>
 <li><code>app/templates/</code> — the templates belonging to this hub. Put your own work
-here.</li>
+here. Nothing under <code>app/</code> is part of the distribution; it is the hub's own
+directory and it is not in this repository.</li>
 </ul>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Loader.php"><code>Hubzero\Template\Loader</code></a>
-looks in <code>app/templates/{name}</code> first and falls back to
-<code>core/templates/{name}</code>, so a template in <code>app/</code> of the same name overrides a
-shipped one entirely. If neither has an <code>index.php</code>, the loader falls back to
-<code>core/templates/system</code>.</p>
+resolves a style to a directory, checking <code>app/templates/{name}</code> first and
+falling back to <code>core/templates/{name}</code>, so a template in <code>app/</code> of the same
+name overrides a shipped one entirely. If neither has an <code>index.php</code>, the
+loader falls back to <code>core/templates/system</code>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That fallback is silent. A template whose <code>index.php</code> is missing,
+misspelled or unreadable does not error — the hub simply renders in the bare
+<code>system</code> template, which looks like a stylesheet failing to load. If a hub
+suddenly goes unstyled, check that <code>index.php</code> exists at the resolved path
+before you look at anything else.</p>
+</aside>
 <h2 id="what-ships">What ships</h2>
 <table>
 <thead>
@@ -203,22 +267,22 @@ shipped one entirely. If neither has an <code>index.php</code>, the loader falls
 <tr>
 <td><code>kimera</code></td>
 <td>Site</td>
-<td>The default site template. LESS sources, a colour and background theme in its parameters, and a large set of output overrides in <code>html/</code>.</td>
+<td>The reference site template. LESS sources, a colour and background theme in its parameters, and a large set of output overrides in <code>html/</code>. Copy this one.</td>
 </tr>
 <tr>
 <td><code>lucent</code></td>
 <td>Site</td>
-<td>A newer site template. Registered but not made the home style by its migration.</td>
+<td>A newer site template. Leaner, with layered LESS. Registered but not made the home style by its migration, and its manifest is in the older form.</td>
 </tr>
 <tr>
 <td><code>welcome</code></td>
 <td>Site</td>
-<td>A single-page welcome/splash template, used before a hub has content.</td>
+<td>A single-page splash template. It is the home style on a fresh hub — see below.</td>
 </tr>
 <tr>
 <td><code>system</code></td>
 <td>Site</td>
-<td>The fallback. Also holds the default <code>email.php</code>, <code>group.php</code>, <code>help.php</code>, <code>login.php</code> and <code>offline.php</code> layouts.</td>
+<td>The fallback. Also holds the default <code>email.php</code>, <code>group.php</code>, <code>help.php</code>, <code>login.php</code> and <code>offline.php</code> layouts that other templates inherit.</td>
 </tr>
 <tr>
 <td><code>kameleon</code></td>
@@ -227,25 +291,62 @@ shipped one entirely. If neither has an <code>index.php</code>, the loader falls
 </tr>
 </tbody>
 </table>
-<p>Run <code>git ls-files core/templates</code> to see the whole tree.</p>
+<p>Those five are the whole set; nothing else lives under <code>core/templates</code>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>kimera</code> and <code>lucent</code> are the two worth reading before you start.
-<code>kimera</code> shows the override-heavy approach; <code>lucent</code> shows a leaner one.</p>
+<code>kimera</code> shows the override-heavy approach and is what <code>northgate</code> is copied
+from; <code>lucent</code> shows a leaner one.</p>
 </aside>
-<h2 id="where-to-start">Where to start</h2>
-<p>The quickest start is to copy a shipped template into <code>app/templates</code> and work
-from there:</p>
-<pre><code class="language-bash">php core/bin/muse scaffolding copy template core/kimera to app/mytemplate
+<h2 id="a-fresh-hub-renders-nothing">A fresh hub renders nothing</h2>
+<p>This surprises everybody, so it is worth knowing before you write a line of
+markup.</p>
+<p>The install data makes <strong><code>welcome</code></strong> the home style for the site client:</p>
+<pre><code class="language-sql">INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
+VALUES (1,'welcome',0,'1','Welcome Template','{&quot;flavor&quot;:&quot;&quot;,&quot;template&quot;:&quot;kimera&quot;}');
 </code></pre>
-<p>That copies the directory and rewrites the template name inside every copied
-file. Then write a <a href="migrations/index.html">migration</a> so the CMS knows the
-template exists.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
+<code>jdoc:include</code> tags at all — not for modules, not for messages, and not for the
+component. It prints its own splash page and nothing else, whatever the request
+asked for. So on a fresh hub no module renders and no component output reaches
+the page, and neither is a fault.</p>
+<p>The splash page's <strong>ready</strong> link is <code>?getstarted=1</code>. That branch of the layout
+sets <code>home = 1</code> on the style named by the template's own <code>template</code> parameter —
+seeded as <code>kimera</code> — and redirects. Until someone clicks it or an administrator
+changes the default style, the hub is the splash page.</p>
+<p>The second half of the surprise is waiting on the other side. The install data
+publishes the site's <strong>Main Menu</strong> module (and a <strong>Login Form</strong>) to a position
+named <code>position-7</code>, and no shipped site template includes that position. So the
+main menu still does not render after the switch. <a href="layouts/index.html#why-a-position-renders-nothing">Page
+layouts</a> has the full account and
+the check to run.</p>
+<h2 id="where-to-start">Where to start</h2>
+<p>Copy a shipped template into <code>app/templates</code> and work from there:</p>
+<pre><code class="language-bash">php core/bin/muse scaffolding copy template core/kimera to app/northgate
+</code></pre>
+<p>That copies the directory and rewrites the template name inside the copied
+files. Then write a <a href="migrations/index.html">migration</a> so the CMS knows the template
+exists.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> The copy rewrites file <em>contents</em> only. Filenames keep the
-source template's name, so after copying you must rename
-<code>language/en-GB/en-GB.tpl_kimera.ini</code> and the file in <code>migrations/</code> yourself,
-or the language file will not load and the migration class will not match
-its filename.</p>
+<p><strong>Warning:</strong> The copy is shallower than it looks.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Scaffolding.php"><code>Scaffolding::make()</code></a>
+rewrites the template name inside the files at the <strong>top level</strong> of the copied
+directory — <code>index.php</code>, <code>component.php</code>, <code>error.php</code>, <code>templateDetails.xml</code> —
+and does not descend into subdirectories. <code>less/</code>, <code>css/</code>, <code>language/</code>,
+<code>migrations/</code> and <code>html/</code> arrive verbatim. No file is renamed either. After
+the copy you must, by hand:</p>
+<ul>
+<li>rename <code>language/en-GB/en-GB.tpl_kimera.ini</code> to <code>en-GB.tpl_northgate.ini</code>
+and rewrite its <code>TPL_KIMERA_*</code> keys, or none of its strings load;</li>
+<li>rename <code>migrations/Migration20170831000000TplKimera.php</code> and its class, or
+the migration runner skips the file and — if the shipped <code>kimera</code> is still
+installed — PHP fatals on the duplicate class name;</li>
+<li>fix anything in a subdirectory that names the source template. In <code>kimera</code>
+that is <code>@pathTemplate: &quot;/core/templates/kimera&quot;</code> in <code>less/_variables.less</code>
+— currently unused, and wrong the moment you use it.</li>
+</ul>
+<p>The <code>@import &quot;../../../../core/assets/less/…&quot;</code> paths do survive the move:
+<code>app/templates/northgate/less/</code> is the same depth below the repository root as
+<code>core/templates/kimera/less/</code>.</p>
 </aside>
 <h2 id="the-chapters">The chapters</h2>
 <ul>
@@ -266,7 +367,7 @@ HTML helpers emit, and where the gaps are.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/loading/index.html" rel="prev"><span>Previous</span>Loading</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/README.md">Edit this page on GitHub</a>

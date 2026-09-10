@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups
 source-id: 3519
@@ -15,11 +15,65 @@ migrations and a database configuration, and the group renders through that
 template instead of the site's. This section is about writing the code that
 goes in that directory.
 
+## When you want one
+
+A super group is the answer to one question: *this part of the hub has to look
+and behave like its own site, but the people in it are hub members and the
+content is hub content.* A research centre with its own identity, a partner
+institution, a facility that runs a booking desk — those are super groups.
+
+Reach for something else when that is not the requirement:
+
+| You want | Build |
+|---|---|
+| A team space with a forum, wiki, blog, calendar and files | an ordinary hub group — it already has all of that |
+| A group whose pages may contain PHP or `<script>`, and nothing more | an ordinary group with **Trusted content** turned on |
+| A new area of the hub, not attached to a group | a [component](../09-components/README.md) |
+| A different look for the whole hub | a [template](../11-templates/README.md) |
+
+A super group costs somebody a template to write and maintain. If nobody on
+the team can do that, the group gets a harder version of what it already had.
+
+### The example this section carries
+
+The pages that follow build one super group: the **Coastal Resilience
+Center**, alias `coastal`, `gidNumber` 1051. The centre already has a hub
+group. What it wants is a look of its own and two pages the page editor
+cannot produce — a status board fed by its own tide-gauge readings, and a
+catalogue of field sites. In the order the chapters come, that is:
+
+| The centre wants | It gets | Chapter |
+|---|---|---|
+| Its own header, colours and footer | `template/index.php` | [Templating system](01-templating_system.md) |
+| A wide layout for the field-site pages | `template/fieldsite.php` | [Page templates](02-page_templates.md) |
+| `[[GaugeStatus(pier-7)]]` inside ordinary page text | `macros/gaugestatus.php` | [Custom macros](03-custom_macros.md) |
+| A status board written in code | `pages/status.php` | [PHP pages](04-php_pages.md) |
+| Somewhere to keep gauge readings | `sg_coastal`, via `config/db.php` | [Databases](05-databases.md) |
+| That schema under version control | `migrations/` | [Migrations](06-migrations.md) |
+| A browsable gauge catalogue with its own URLs | `components/com_gauges/` | [Components](07-components.md) |
+
+Nothing here is hypothetical about the framework: every file above is loaded
+by code named in the chapter that describes it.
+
+## Who can change what
+
 A group's type is a database value only an administrator can set. Nothing a
-group manager does from the site turns an ordinary group into a super group,
-and nothing in the group's own web space can be edited from the site either:
-the group file browser reaches the group's `uploads` folder and nothing else,
-for every group, super or not. You edit a super group's template on the
+group manager does from the site turns an ordinary group into a super group.
+That boundary matters when you plan the work, because it decides who has to be
+in the room.
+
+| Change | Who |
+|---|---|
+| Logo, tab access, pages, categories, modules | a group manager, from the site |
+| Super group status | an administrator |
+| **Trusted content** on an ordinary group | an administrator |
+| A group's site template override | an administrator |
+| Template files, macros, PHP pages, components | someone with server or repository access |
+
+The group's file browser reaches the group's `uploads` folder and nothing
+else, **for every group, super or not** — the super group branch in the media
+controller is commented out. So there is no route from the site to
+`template/`, `macros/`, `pages/` or `components/`. You edit those on the
 server, or through the repository workflow in
 [Super Groups with GitLab](../14-supergroups-gitlab.md).
 
@@ -56,6 +110,11 @@ app/site/groups/1051/
 └── uploads/             everything the group's file browser can reach
 ```
 
+The directory is named after the `gidNumber` and the database after the alias,
+which is a trap the first time you go looking: `coastal` on the web is
+`app/site/groups/1051` on disk and `sg_coastal` in MySQL. The alias is fixed
+at creation and cannot be renamed.
+
 Everything except `pages/` is created when the group is saved as a super
 group, from the skeleton in
 [`core/components/com_groups/super/default`](../../../core/components/com_groups/super/default).
@@ -88,13 +147,20 @@ A super group also overrides the strings of any group plugin: every
 `core/plugins/groups/*` plugin looks in the group directory's `language/`
 folder before its own, so
 `language/en-GB/en-GB.plg_groups_blog.ini` renames or rewords anything the
-Blog tab says for that group alone.
+Blog tab says for that group alone. That is the cheapest customisation in the
+section — the centre calls its blog tab **Field Notes** with one file and no
+code.
+
+> **Warning:** Every group plugin resolves that override to a hardcoded
+> `PATH_APP/site/groups/<gid>`, ignoring the **Upload Path** option the rest
+> of `com_groups` reads. A hub that has moved its group files keeps working
+> and loses its language overrides silently.
 
 ## Code in pages and modules
 
 Group page and module content is run through HTML Purifier before it is
 stored. For an ordinary group, PHP tags and `<script>` elements are stripped.
-For a super group — and for an ordinary group whose **Trusted content** page
+For a super group — and for an ordinary group whose **Trusted content**
 setting is on — they survive, handled by the `Php` and `ExternalScripts`
 filters in
 [`core/components/com_groups/helpers/filters/`](../../../core/components/com_groups/helpers/filters).
@@ -111,4 +177,6 @@ applied. They only *do* anything where the renderer runs them.
 
 > **Note:** Escaping the approval queue is what the `pages/` directory is
 > for. A `.php` file placed there by someone with server access is executed
-> as written and is never queued for approval.
+> as written and is never queued for approval. That is the point of the
+> directory, and the reason it can only be filled from the server or the
+> repository.

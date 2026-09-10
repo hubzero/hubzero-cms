@@ -141,9 +141,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom macros</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">PHP pages</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-thing-that-works">The smallest thing that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#url-mapping">URL mapping</a></li>
 <li class="toc__item toc__item--l2"><a href="#when-a-php-page-is-reached">When a PHP page is reached</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-file-can-do">What the file can do</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-the-group-s-database">Reading the group&#x27;s database</a></li>
 <li class="toc__item toc__item--l2"><a href="#rendering-inside-the-group-template">Rendering inside the group template</a></li>
 <li class="toc__item toc__item--l2"><a href="#approval">Approval</a></li>
 </ol></li>
@@ -176,10 +178,29 @@
 group serves at a URL. It is the way to write a page in code instead of in the
 page editor, and the way out of the approval queue: a file put there by
 someone with server access runs as written and is never queued.</p>
+<p>The Coastal Resilience Center's status board is one of these. It reads the
+latest reading for every tide gauge out of the group's own database and prints
+a table. There is nothing to administer, no records to edit, and one URL. A
+component would be four directories of scaffolding for that; a group page
+written in the editor would go through the approval queue on every save.</p>
+<p>Reach for a PHP page when all of the following hold — otherwise see
+<a href="../components/index.html">Components</a>:</p>
+<ul>
+<li>one page, or a small handful, and no URL structure below them;</li>
+<li>no records the group edits through the hub;</li>
+<li>the people who maintain it can deploy files.</li>
+</ul>
 <pre><code>app/site/groups/&lt;gidNumber&gt;/pages/
 </code></pre>
 <p>The skeleton does not create <code>pages/</code>. Make it yourself the first time you
 need it.</p>
+<h2 id="the-smallest-thing-that-works">The smallest thing that works</h2>
+<pre><code class="language-php">&lt;?php // app/site/groups/1051/pages/status.php ?&gt;
+&lt;h2&gt;Tide gauge status&lt;/h2&gt;
+&lt;p&gt;Group: &lt;?php echo htmlspecialchars($group-&gt;get('description')); ?&gt;&lt;/p&gt;
+</code></pre>
+<p>Reachable at <code>/groups/coastal/status</code>. No registration, no manifest, no
+restart.</p>
 <h2 id="url-mapping">URL mapping</h2>
 <p>The file path under <code>pages/</code> is the URL path under the group, with <code>.php</code>
 added:</p>
@@ -192,21 +213,24 @@ added:</p>
 </thead>
 <tbody>
 <tr>
-<td><code>/groups/mygroup/features</code></td>
-<td><code>pages/features.php</code></td>
+<td><code>/groups/coastal/status</code></td>
+<td><code>pages/status.php</code></td>
 </tr>
 <tr>
-<td><code>/groups/mygroup/features/one</code></td>
-<td><code>pages/features/one.php</code></td>
+<td><code>/groups/coastal/status/pier-7</code></td>
+<td><code>pages/status/pier-7.php</code></td>
 </tr>
 <tr>
-<td><code>/groups/mygroup</code></td>
+<td><code>/groups/coastal</code></td>
 <td><code>pages/overview.php</code></td>
 </tr>
 </tbody>
 </table>
 <p>The last row is not a special case: an empty path is treated as <code>overview</code>, so
 <code>pages/overview.php</code> replaces the group's home page.</p>
+<p>Note what the second row means: there is no path <em>parameter</em>. <code>status/pier-7</code>
+is a second file, not an argument to the first. A page that has to vary by
+identifier belongs in a component, which gets a router.</p>
 <h2 id="when-a-php-page-is-reached">When a PHP page is reached</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>Components\Groups\Helpers\View::superGroupPhpPages()</code></a>
 is consulted only while the group is showing its <strong>Overview</strong> tab, and only
@@ -233,11 +257,18 @@ unreachable.</li>
 <code>categories</code> and <code>media</code> are routed to com_groups controllers by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/site/router.php"><code>site/router.php</code></a>.</li>
 </ul>
-<p>Nothing warns you about the collision. The page simply never appears.</p>
+<p>Nothing warns you about the collision. The page simply never appears — you get
+the wiki, or the page manager, or a group page you had forgotten about, and no
+error anywhere says why. Check the name against both lists before you check
+your file.</p>
 <h2 id="what-the-file-can-do">What the file can do</h2>
 <p>The file is <code>include</code>d, so it runs in the scope of the helper method that
 included it. <code>$group</code> is in scope and is the <code>Hubzero\User\Group</code> being
 displayed. Echo your markup; anything the file prints becomes the page body.</p>
+<p>That method is <strong>static</strong>, so there is no <code>$this</code>. Copying a line out of a view
+template — <code>$this-&gt;escape($x)</code> is the usual one — fatals with <em>Using $this when
+not in object context</em> and takes the whole group page with it. Escape with
+<code>htmlspecialchars()</code> here.</p>
 <p>After the file runs, its output goes through two more steps:</p>
 <ol>
 <li><code>&lt;group:include&gt;</code> tags in the output are rendered. The tags allowed are the
@@ -261,6 +292,26 @@ which is simply:</p>
 <p>To change that wrapper, put a file called <code>_view_php.php</code> in the group's
 <code>template/</code> directory — not in <code>template/pages/</code>, which is where the wrapper
 for editor-written pages is overridden.</p>
+<h2 id="reading-the-group-s-database">Reading the group's database</h2>
+<p>The status board's whole point is the data behind it, and getting the
+connection right is the one thing that bites:</p>
+<pre><code class="language-php">&lt;?php
+$db = \Hubzero\User\Group\Helper::getDbo();
+
+$db-&gt;setQuery(&quot;SELECT `name`, `reading` FROM `gauges` ORDER BY `name`&quot;);
+
+echo '&lt;ul class=&quot;gauges&quot;&gt;';
+foreach ($db-&gt;loadObjectList() as $gauge)
+{
+	echo '&lt;li&gt;' . htmlspecialchars($gauge-&gt;name) . ': '
+	   . htmlspecialchars($gauge-&gt;reading) . '&lt;/li&gt;';
+}
+echo '&lt;/ul&gt;';
+</code></pre>
+<p><code>getDbo()</code> returns the <strong>hub's</strong> connection rather than failing when anything
+is wrong — see <a href="../databases/index.html#opening-it">Databases</a>. A <code>CREATE TABLE</code> in a
+PHP page that has silently landed on the hub connection is how a group's table
+ends up in the hub schema.</p>
 <h2 id="rendering-inside-the-group-template">Rendering inside the group template</h2>
 <p>A PHP page is content, not a template. It is dropped into the group's normal
 template, so the header, menu and footer come from <code>template/index.php</code> as
@@ -275,9 +326,12 @@ applies to content saved through the page and module managers on the site.
 A file in <code>pages/</code> bypasses all of it, which is the point of the directory and
 also the reason it can only be filled by someone with access to the server or
 to the group's repository.</p>
+<p>That cuts both ways. The code runs with the hub's privileges and nobody
+reviews it on the way in, so the group's repository — not the group's page
+editor — is where the review has to happen.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../custom-macros/index.html" rel="prev"><span>Previous</span>Custom macros</a><a class="pager__next" href="../databases/index.html" rel="next"><span>Next</span>Databases</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/04-php_pages.md">Edit this page on GitHub</a>

@@ -175,25 +175,41 @@
 <p>Every string a module puts on the page should come from a translation file, so
 that a hub can change the wording without editing the module and so that other
 languages can be added later.</p>
+<p>That second reason matters more for a module than for a component. A module
+sits in the furniture of every page, so its wording is exactly what a hub
+wants to adjust — &quot;Upcoming bookings&quot; here, &quot;Your instrument time&quot; there. If
+the string is in the layout, the hub has to fork the module to change it.</p>
 <h2 id="where-the-files-go">Where the files go</h2>
-<pre><code>core/modules/mod_mygroups/
+<pre><code>app/modules/mod_upcoming_bookings/
     language/
         en-GB/
-            en-GB.mod_mygroups.ini
-            en-GB.mod_mygroups.sys.ini
+            en-GB.mod_upcoming_bookings.ini
+            en-GB.mod_upcoming_bookings.sys.ini
 </code></pre>
 <p>The directory is the language tag, and the file name is the tag, a dot, and
 the module's full element name — prefix included. The <code>.sys.ini</code> file holds
 the handful of strings the CMS itself needs before the module runs: the name
 and description shown in the Module Manager and the installer. Everything the
 module renders goes in the plain <code>.ini</code>.</p>
+<p>The <code>.sys.ini</code> needs exactly two keys, and the first of them is not obvious:</p>
+<pre><code class="language-ini">MOD_UPCOMING_BOOKINGS=&quot;Upcoming bookings&quot;
+MOD_UPCOMING_BOOKINGS_XML_DESCRIPTION=&quot;Lists the current user's next instrument reservations.&quot;
+</code></pre>
+<p>The Module Manager's <strong>Select a Module Type</strong> screen runs the extension's
+<em>name</em> — which <code>addModuleEntry()</code> set to the element, <code>mod_upcoming_bookings</code>
+— through <code>Lang::txt()</code>, and the manifest's <code>&lt;description&gt;</code> through it as
+well. So a key spelled like the element name is what gives the module a
+readable title. Omit the file and the screen offers a module called
+<code>mod_upcoming_bookings</code> described as
+<code>MOD_UPCOMING_BOOKINGS_XML_DESCRIPTION</code>. Nothing errors; it just looks
+unfinished.</p>
 <h2 id="when-they-are-loaded">When they are loaded</h2>
 <p>You do not load them. <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>
 loads the module's language file immediately before including the entry file,
 trying two locations and stopping at the first that produces strings:</p>
 <ol>
-<li><code>app/bootstrap/{client}/language/{tag}/{tag}.mod_example.ini</code></li>
-<li><code>{module directory}/language/{tag}/{tag}.mod_example.ini</code></li>
+<li><code>app/bootstrap/{client}/language/{tag}/{tag}.mod_upcoming_bookings.ini</code></li>
+<li><code>{module directory}/language/{tag}/{tag}.mod_upcoming_bookings.ini</code></li>
 </ol>
 <p>The first path is the hub's own override directory, where <code>{client}</code> is <code>site</code>
 or <code>administrator</code>. A hub that wants to reword one string in a shipped module
@@ -210,11 +226,13 @@ the module uses, not just the changed one.</p>
 
 ; Note : All ini files need to be saved as UTF-8 - No BOM
 
-MOD_MYGROUPS_RECENT=&quot;Recent&quot;
-MOD_MYGROUPS_ALL=&quot;All&quot;
-MOD_MYGROUPS_NO_RECENT_GROUPS=&quot;No recently visited groups found.&quot;
-MOD_MYGROUPS_PARAM_LIMIT_LABEL=&quot;# to display&quot;
-MOD_MYGROUPS_PARAM_LIMIT_DESC=&quot;The number of items to display.&quot;
+MOD_UPCOMING_BOOKINGS_HEADING=&quot;Upcoming bookings&quot;
+MOD_UPCOMING_BOOKINGS_NONE=&quot;You have no instrument time booked.&quot;
+MOD_UPCOMING_BOOKINGS_SLOT=&quot;%s until %s&quot;
+MOD_UPCOMING_BOOKINGS_PARAM_LIMIT_LABEL=&quot;# to display&quot;
+MOD_UPCOMING_BOOKINGS_PARAM_LIMIT_DESC=&quot;The number of reservations to display.&quot;
+MOD_UPCOMING_BOOKINGS_PARAM_INSTRUMENT_LABEL=&quot;Instrument&quot;
+MOD_UPCOMING_BOOKINGS_PARAM_INSTRUMENT_DESC=&quot;Limit to one instrument, or 0 for all.&quot;
 </code></pre>
 <p>Rules the parser enforces or the convention expects:</p>
 <ul>
@@ -230,32 +248,35 @@ so parameter labels are translatable too.</li>
 <h2 id="using-a-string">Using a string</h2>
 <p><code>Lang::txt()</code> takes a key and returns the translated string, passing any extra
 arguments through <code>sprintf</code>:</p>
-<pre><code class="language-php">&lt;p&gt;&lt;?php echo Lang::txt('MOD_MYGROUPS_NO_RECENT_GROUPS'); ?&gt;&lt;/p&gt;
-&lt;p&gt;&lt;?php echo Lang::txt('MOD_EXAMPLE_COUNT', count($this-&gt;rows)); ?&gt;&lt;/p&gt;
+<pre><code class="language-php">&lt;p&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?&gt;&lt;/p&gt;
+&lt;p&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_SLOT', $starts, $ends); ?&gt;&lt;/p&gt;
 </code></pre>
-<p>with the placeholder in the value:</p>
-<pre><code class="language-ini">MOD_EXAMPLE_COUNT=&quot;Showing %s items&quot;
+<p>with the placeholders in the value:</p>
+<pre><code class="language-ini">MOD_UPCOMING_BOOKINGS_SLOT=&quot;%s until %s&quot;
 </code></pre>
 <p>A key with no translation is returned unchanged, which is how a missing string
-shows up on the page as <code>MOD_EXAMPLE_COUNT</code> in capitals rather than as an
-error.</p>
+shows up on the page as <code>MOD_UPCOMING_BOOKINGS_SLOT</code> in capitals rather than
+as an error. That is the failure to watch for: capitals in the sidebar mean a
+typo in the key, a stale cached copy of the module's output, or a file
+whose name does not match the module element.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> In a layout, <code>Lang</code> needs no import — layouts run in the global
-namespace. In <code>helper.php</code>, which declares <code>namespace Modules\Example</code>, you
-must write <code>use Lang;</code> at the top of the file or the call fatals. See
+namespace. In <code>helper.php</code>, which declares
+<code>namespace Modules\UpcomingBookings</code>, you must write <code>use Lang;</code> at the top
+of the file or the call fatals. See
 <a href="../../foundation/facades/index.html">Facades</a>.</p>
 </aside>
 <h2 id="registering-the-file">Registering the file</h2>
 <p>List the file in the manifest so the installer copies it:</p>
 <pre><code class="language-xml">&lt;languages&gt;
-    &lt;language tag=&quot;en-GB&quot;&gt;en-GB.mod_mygroups.ini&lt;/language&gt;
+    &lt;language tag=&quot;en-GB&quot;&gt;en-GB.mod_upcoming_bookings.ini&lt;/language&gt;
 &lt;/languages&gt;
 </code></pre>
 <p>See <a href="../../extensions/languages/index.html">Languages</a> for how the language tag is
 chosen for a request and how additional languages are installed.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../helpers/index.html" rel="prev"><span>Previous</span>Helpers</a><a class="pager__next" href="../views/index.html" rel="next"><span>Next</span>Views</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/05-languages.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/packaging
 source-id: 3513
@@ -14,19 +14,34 @@ the template offers — its parameters, its module positions and its metadata.
 installs anything on its own; a [migration](01-migrations.md) does the actual
 registering.
 
+## Why you would package anything
+
+If `northgate` only ever runs on one hub, you do not need this chapter. Copy
+the directory into `app/templates`, run the migration, done.
+
+Package it when the template has to reach a hub you do not administer, or more
+than one hub, or a hub whose deployment is scripted. Packaging is what turns
+"copy this directory and remember to run the migration" into something a hub's
+own `app/composer.json` records and can update.
+
+Be clear about what packaging does **not** get you. There is no XML installer
+and no upload-a-zip screen. Read [Installing](#installing) before you plan
+around it.
+
 ## What the tree should look like
 
 ```
-app/templates/mytemplate/
+app/templates/northgate/
     css/
     html/                      Output overrides
     img/
     js/
     language/
         en-GB/
-            en-GB.tpl_mytemplate.ini
+            en-GB.tpl_northgate.ini
+            en-GB.tpl_northgate.sys.ini
     migrations/
-        Migration…TplMytemplate.php
+        Migration…TplNorthgate.php
     component.php
     error.php
     index.php
@@ -37,7 +52,9 @@ app/templates/mytemplate/
 ```
 
 [Structure](03-structure.md) says which of these are required and which are
-conventions.
+conventions. The `.sys.ini` is the one file no shipped template has and every
+template with its own module positions should — see
+[Languages](02-languages.md#strings-the-administrator-sees).
 
 ### The thumbnail
 
@@ -56,20 +73,38 @@ Contrary to what older documentation said, this file is not deprecated.
 `com_templates`, `com_modules` and `com_installer` all read it, and a template
 without one is configurable only by editing files.
 
-A complete example:
+The smallest one that does anything useful is four lines of metadata and a
+position list:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="template" version="2.5">
-	<name>mytemplate</name>
-	<creationDate>2026-09-09</creationDate>
-	<author>Jane Doe</author>
-	<authorEmail>jane@example.org</authorEmail>
-	<authorUrl>example.org</authorUrl>
-	<copyright>Copyright (c) 2026 Example University</copyright>
+	<name>northgate</name>
+	<version>1.0</version>
+	<description>Northgate University site template</description>
+	<positions>
+		<position>user3</position>
+		<position>left</position>
+		<position>right</position>
+	</positions>
+</extension>
+```
+
+That is enough for the three positions to appear in the module editor's
+dropdown. A complete example:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" version="2.5">
+	<name>northgate</name>
+	<creationDate>2026-09-10</creationDate>
+	<author>Northgate University Web Team</author>
+	<authorEmail>web@northgate.example</authorEmail>
+	<authorUrl>northgate.example</authorUrl>
+	<copyright>Copyright (c) 2026 Northgate University</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.0</version>
-	<description>Site template for Example Hub</description>
+	<description>Northgate University site template</description>
 	<files>
 		<filename>index.php</filename>
 		<filename>component.php</filename>
@@ -79,23 +114,26 @@ A complete example:
 		<filename>template_thumbnail.png</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.tpl_mytemplate.ini</language>
+		<language tag="en-GB">en-GB.tpl_northgate.ini</language>
 	</languages>
 	<positions>
 		<position>notices</position>
 		<position>search</position>
+		<position>user3</position>
+		<position>breadcrumbs</position>
 		<position>left</position>
 		<position>right</position>
 		<position>footer</position>
+		<position>endpage</position>
 	</positions>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="header" type="list" default="light"
-				       label="TPL_MYTEMPLATE_FIELD_HEADER_LABEL"
-				       description="TPL_MYTEMPLATE_FIELD_HEADER_DESC">
-					<option value="light">TPL_MYTEMPLATE_FIELD_HEADER_LIGHT</option>
-					<option value="dark">TPL_MYTEMPLATE_FIELD_HEADER_DARK</option>
+				       label="TPL_NORTHGATE_FIELD_HEADER_LABEL"
+				       description="TPL_NORTHGATE_FIELD_HEADER_DESC">
+					<option value="light">TPL_NORTHGATE_FIELD_HEADER_LIGHT</option>
+					<option value="dark">TPL_NORTHGATE_FIELD_HEADER_DARK</option>
 				</field>
 			</fieldset>
 		</fields>
@@ -142,8 +180,11 @@ whatever `addTemplateEntry()` wrote into `#__extensions`.
 `com_modules` reads the element text as the position name. Give a `value`
 attribute and the text becomes the label instead. With neither, the
 administrator sees a label looked up as
-`TPL_{TEMPLATE}_POSITION_{POSITION}` — define that key in your
-[language file](02-languages.md) and the list reads as English.
+`TPL_{TEMPLATE}_POSITION_{POSITION}`, falling back to
+`COM_MODULES_POSITION_{POSITION}` from `com_modules`' own language file. Define
+your key in the template's **`.sys.ini`** — the main `.ini` is not loaded for
+this list. See
+[Languages](02-languages.md#strings-the-administrator-sees).
 
 > **Warning:** Nothing checks the manifest against `index.php`. `kimera`
 > declares `banner` and `introblock` that its layout never includes, and its
@@ -182,7 +223,13 @@ This is what makes the template installable as a package. `kimera`'s, whole:
 
 ## Installing
 
-There is no XML installer any more. Installation goes through Composer.
+**There is no package installer.** There is no XML installer, no
+upload-and-install screen, and no working end-to-end path from a package file
+to a registered template. Installation is meant to go through Composer, and the
+Composer screens are unfinished — read this section before you plan a
+deployment around them.
+
+Installation is meant to go through Composer.
 **Extensions → Extension Manager** in the administrator opens `com_installer`,
 which has these screens:
 
@@ -221,7 +268,23 @@ Installing a packaged template is:
 > **Note:** Both screens refuse to run and show a warning instead if the hub
 > has no `app/composer.json`.
 
-Copying the directory in by hand and then running the migration works just as
-well, and is what you will do while developing. The
+### What to do instead
+
+Until those screens are finished, the reliable route — and the one to script —
+is three steps with no user interface in them:
+
+```bash
+# 1. Put the directory where the loader will find it
+rsync -a northgate/ /path/to/hub/app/templates/northgate/
+
+# 2. Register it
+php core/bin/muse migration -f -e=tpl_northgate
+
+# 3. Clear the cached template list, or wait out `cachetime`
+```
+
+That is also what you will do while developing. Ship the `composer.json`
+anyway: it costs nothing, it records the vendor, licence and install directory,
+and it is what a working installer would read. The
 [deployment chapter](../07-extensions/04-deployext.md) covers packaging a
 finished extension for other people.

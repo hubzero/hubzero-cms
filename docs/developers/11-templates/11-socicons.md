@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/socicons
 source-id: 3514
@@ -12,6 +12,22 @@ modified: 2013-08-02
 Socicons is a small webfont of logos for social and web services — Twitter,
 Facebook, LinkedIn, Google, Dropbox and a few dozen more. It ships with the
 CMS as font files only.
+
+## When you need it
+
+Almost never, and the honest answer is [at the bottom of this
+page](#consider-not-using-it). Reach for Socicons in one case: you are styling
+a control whose icon must be a **third-party brand mark**, and you want it to
+match the share buttons the shipped plugins already draw. That is what the font
+is for and it is the only thing it is good at.
+
+For anything else — an edit pencil, a folder, an arrow — use the
+[SVG icons](12-fontcons.md#the-alternative-svg-icons). They are overridable per
+template and need no codepoint table.
+
+The reason this page is longer than it should be is that Socicons ships with no
+stylesheet, so every consumer reimplements the same thirty lines. If you use
+it, you are writing those thirty lines too.
 
 ## What ships
 

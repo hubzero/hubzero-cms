@@ -130,6 +130,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Packaging</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-you-would-package-anything">Why you would package anything</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-tree-should-look-like">What the tree should look like</a></li>
 <li class="toc__item toc__item--l3"><a href="#the-thumbnail">The thumbnail</a></li>
 <li class="toc__item toc__item--l2"><a href="#templatedetails-xml">templateDetails.xml</a></li>
@@ -139,6 +140,7 @@
 <li class="toc__item toc__item--l3"><a href="#parameters">Parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#composer-json">composer.json</a></li>
 <li class="toc__item toc__item--l2"><a href="#installing">Installing</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-to-do-instead">What to do instead</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
@@ -181,17 +183,28 @@ the template offers — its parameters, its module positions and its metadata.
 <code>composer.json</code> tells Composer how to fetch and place it. Neither of them
 installs anything on its own; a <a href="../migrations/index.html">migration</a> does the actual
 registering.</p>
+<h2 id="why-you-would-package-anything">Why you would package anything</h2>
+<p>If <code>northgate</code> only ever runs on one hub, you do not need this chapter. Copy
+the directory into <code>app/templates</code>, run the migration, done.</p>
+<p>Package it when the template has to reach a hub you do not administer, or more
+than one hub, or a hub whose deployment is scripted. Packaging is what turns
+&quot;copy this directory and remember to run the migration&quot; into something a hub's
+own <code>app/composer.json</code> records and can update.</p>
+<p>Be clear about what packaging does <strong>not</strong> get you. There is no XML installer
+and no upload-a-zip screen. Read <a href="#installing">Installing</a> before you plan
+around it.</p>
 <h2 id="what-the-tree-should-look-like">What the tree should look like</h2>
-<pre><code>app/templates/mytemplate/
+<pre><code>app/templates/northgate/
     css/
     html/                      Output overrides
     img/
     js/
     language/
         en-GB/
-            en-GB.tpl_mytemplate.ini
+            en-GB.tpl_northgate.ini
+            en-GB.tpl_northgate.sys.ini
     migrations/
-        Migration…TplMytemplate.php
+        Migration…TplNorthgate.php
     component.php
     error.php
     index.php
@@ -201,7 +214,9 @@ registering.</p>
     favicon.ico
 </code></pre>
 <p><a href="../structure/index.html">Structure</a> says which of these are required and which are
-conventions.</p>
+conventions. The <code>.sys.ini</code> is the one file no shipped template has and every
+template with its own module positions should — see
+<a href="../languages/index.html#strings-the-administrator-sees">Languages</a>.</p>
 <h3 id="the-thumbnail">The thumbnail</h3>
 <p><code>template_thumbnail.png</code> is what the administrator's template list shows.
 206 pixels wide; <code>kimera</code>'s is 206×150 and <code>kameleon</code>'s 206×118, so the height
@@ -214,18 +229,33 @@ link that opens the full-size image in a modal.</p>
 <p>Contrary to what older documentation said, this file is not deprecated.
 <code>com_templates</code>, <code>com_modules</code> and <code>com_installer</code> all read it, and a template
 without one is configurable only by editing files.</p>
-<p>A complete example:</p>
+<p>The smallest one that does anything useful is four lines of metadata and a
+position list:</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;extension type=&quot;template&quot; version=&quot;2.5&quot;&gt;
-	&lt;name&gt;mytemplate&lt;/name&gt;
-	&lt;creationDate&gt;2026-09-09&lt;/creationDate&gt;
-	&lt;author&gt;Jane Doe&lt;/author&gt;
-	&lt;authorEmail&gt;jane@example.org&lt;/authorEmail&gt;
-	&lt;authorUrl&gt;example.org&lt;/authorUrl&gt;
-	&lt;copyright&gt;Copyright (c) 2026 Example University&lt;/copyright&gt;
+	&lt;name&gt;northgate&lt;/name&gt;
+	&lt;version&gt;1.0&lt;/version&gt;
+	&lt;description&gt;Northgate University site template&lt;/description&gt;
+	&lt;positions&gt;
+		&lt;position&gt;user3&lt;/position&gt;
+		&lt;position&gt;left&lt;/position&gt;
+		&lt;position&gt;right&lt;/position&gt;
+	&lt;/positions&gt;
+&lt;/extension&gt;
+</code></pre>
+<p>That is enough for the three positions to appear in the module editor's
+dropdown. A complete example:</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;extension type=&quot;template&quot; version=&quot;2.5&quot;&gt;
+	&lt;name&gt;northgate&lt;/name&gt;
+	&lt;creationDate&gt;2026-09-10&lt;/creationDate&gt;
+	&lt;author&gt;Northgate University Web Team&lt;/author&gt;
+	&lt;authorEmail&gt;web@northgate.example&lt;/authorEmail&gt;
+	&lt;authorUrl&gt;northgate.example&lt;/authorUrl&gt;
+	&lt;copyright&gt;Copyright (c) 2026 Northgate University&lt;/copyright&gt;
 	&lt;license&gt;http://opensource.org/licenses/MIT MIT&lt;/license&gt;
 	&lt;version&gt;1.0&lt;/version&gt;
-	&lt;description&gt;Site template for Example Hub&lt;/description&gt;
+	&lt;description&gt;Northgate University site template&lt;/description&gt;
 	&lt;files&gt;
 		&lt;filename&gt;index.php&lt;/filename&gt;
 		&lt;filename&gt;component.php&lt;/filename&gt;
@@ -235,23 +265,26 @@ without one is configurable only by editing files.</p>
 		&lt;filename&gt;template_thumbnail.png&lt;/filename&gt;
 	&lt;/files&gt;
 	&lt;languages&gt;
-		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.tpl_mytemplate.ini&lt;/language&gt;
+		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.tpl_northgate.ini&lt;/language&gt;
 	&lt;/languages&gt;
 	&lt;positions&gt;
 		&lt;position&gt;notices&lt;/position&gt;
 		&lt;position&gt;search&lt;/position&gt;
+		&lt;position&gt;user3&lt;/position&gt;
+		&lt;position&gt;breadcrumbs&lt;/position&gt;
 		&lt;position&gt;left&lt;/position&gt;
 		&lt;position&gt;right&lt;/position&gt;
 		&lt;position&gt;footer&lt;/position&gt;
+		&lt;position&gt;endpage&lt;/position&gt;
 	&lt;/positions&gt;
 	&lt;config&gt;
 		&lt;fields name=&quot;params&quot;&gt;
 			&lt;fieldset name=&quot;basic&quot;&gt;
 				&lt;field name=&quot;header&quot; type=&quot;list&quot; default=&quot;light&quot;
-				       label=&quot;TPL_MYTEMPLATE_FIELD_HEADER_LABEL&quot;
-				       description=&quot;TPL_MYTEMPLATE_FIELD_HEADER_DESC&quot;&gt;
-					&lt;option value=&quot;light&quot;&gt;TPL_MYTEMPLATE_FIELD_HEADER_LIGHT&lt;/option&gt;
-					&lt;option value=&quot;dark&quot;&gt;TPL_MYTEMPLATE_FIELD_HEADER_DARK&lt;/option&gt;
+				       label=&quot;TPL_NORTHGATE_FIELD_HEADER_LABEL&quot;
+				       description=&quot;TPL_NORTHGATE_FIELD_HEADER_DESC&quot;&gt;
+					&lt;option value=&quot;light&quot;&gt;TPL_NORTHGATE_FIELD_HEADER_LIGHT&lt;/option&gt;
+					&lt;option value=&quot;dark&quot;&gt;TPL_NORTHGATE_FIELD_HEADER_DARK&lt;/option&gt;
 				&lt;/field&gt;
 			&lt;/fieldset&gt;
 		&lt;/fields&gt;
@@ -323,8 +356,11 @@ whatever <code>addTemplateEntry()</code> wrote into <code>#__extensions</code>.<
 <p><code>com_modules</code> reads the element text as the position name. Give a <code>value</code>
 attribute and the text becomes the label instead. With neither, the
 administrator sees a label looked up as
-<code>TPL_{TEMPLATE}_POSITION_{POSITION}</code> — define that key in your
-<a href="../languages/index.html">language file</a> and the list reads as English.</p>
+<code>TPL_{TEMPLATE}_POSITION_{POSITION}</code>, falling back to
+<code>COM_MODULES_POSITION_{POSITION}</code> from <code>com_modules</code>' own language file. Define
+your key in the template's <strong><code>.sys.ini</code></strong> — the main <code>.ini</code> is not loaded for
+this list. See
+<a href="../languages/index.html#strings-the-administrator-sees">Languages</a>.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Nothing checks the manifest against <code>index.php</code>. <code>kimera</code>
 declares <code>banner</code> and <code>introblock</code> that its layout never includes, and its
@@ -403,7 +439,12 @@ separate file.</li>
 </tbody>
 </table>
 <h2 id="installing">Installing</h2>
-<p>There is no XML installer any more. Installation goes through Composer.
+<p><strong>There is no package installer.</strong> There is no XML installer, no
+upload-and-install screen, and no working end-to-end path from a package file
+to a registered template. Installation is meant to go through Composer, and the
+Composer screens are unfinished — read this section before you plan a
+deployment around them.</p>
+<p>Installation is meant to go through Composer.
 <strong>Extensions → Extension Manager</strong> in the administrator opens <code>com_installer</code>,
 which has these screens:</p>
 <table>
@@ -475,13 +516,25 @@ the migration is the reliable route today.</p>
 <p><strong>Note:</strong> Both screens refuse to run and show a warning instead if the hub
 has no <code>app/composer.json</code>.</p>
 </aside>
-<p>Copying the directory in by hand and then running the migration works just as
-well, and is what you will do while developing. The
+<h3 id="what-to-do-instead">What to do instead</h3>
+<p>Until those screens are finished, the reliable route — and the one to script —
+is three steps with no user interface in them:</p>
+<pre><code class="language-bash"># 1. Put the directory where the loader will find it
+rsync -a northgate/ /path/to/hub/app/templates/northgate/
+
+# 2. Register it
+php core/bin/muse migration -f -e=tpl_northgate
+
+# 3. Clear the cached template list, or wait out `cachetime`
+</code></pre>
+<p>That is also what you will do while developing. Ship the <code>composer.json</code>
+anyway: it costs nothing, it records the vendor, licence and install directory,
+and it is what a working installer would read. The
 <a href="../../extensions/deployext/index.html">deployment chapter</a> covers packaging a
 finished extension for other people.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../overrides/index.html" rel="prev"><span>Previous</span>Output overrides</a><a class="pager__next" href="../socicons/index.html" rel="next"><span>Next</span>Socicons</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/10-packaging.md">Edit this page on GitHub</a>

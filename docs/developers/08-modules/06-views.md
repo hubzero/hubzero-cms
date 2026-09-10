@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/modules/views
 -->
 # Views
@@ -10,6 +10,40 @@ A module's markup belongs in a layout file under `tmpl/`, separate from the
 class that gathers the data. Keeping them apart is not only tidiness: a layout
 in `tmpl/` can be overridden by a template, and markup echoed from the class
 cannot.
+
+That override point is the whole argument. A module ends up in the sidebar of
+a hub whose designer you will never meet, and the only way they can make your
+booking list match the rest of the page — without forking the module and
+inheriting your bugs — is to drop a file into their template. Echo the markup
+from `helper.php` and you have taken that away.
+
+## The smallest one
+
+`mod_upcoming_bookings/tmpl/default.php`, in full:
+
+```php
+<?php
+defined('_HZEXEC_') or die();
+
+$this->css();
+?>
+<h3><?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_HEADING'); ?></h3>
+<?php if (!count($this->reservations)) : ?>
+	<p><?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?></p>
+<?php else : ?>
+	<ul id="upcoming-bookings-<?php echo $this->module->id; ?>">
+		<?php foreach ($this->reservations as $reservation) : ?>
+			<li><?php echo Lang::txt(
+				'MOD_UPCOMING_BOOKINGS_SLOT',
+				$this->escape($reservation->get('starts')),
+				$this->escape($reservation->get('ends'))
+			); ?></li>
+		<?php endforeach; ?>
+	</ul>
+<?php endif; ?>
+```
+
+Everything the class set is on `$this`. There is no view object between them.
 
 ## Where layouts live
 
@@ -33,7 +67,7 @@ required from another layout, not chosen directly.
 [`Hubzero\Module\Loader::getLayoutPath()`](../../../core/libraries/Hubzero/Module/Loader.php),
 which returns the first of three paths:
 
-1. `{templates}/{template}/html/mod_example/{layout}.php` — the active
+1. `{templates}/{template}/html/mod_upcoming_bookings/{layout}.php` — the active
    template's override.
 2. `{module directory}/tmpl/{layout}.php` — the module's own layout.
 3. `{module directory}/tmpl/default.php` — the fallback.

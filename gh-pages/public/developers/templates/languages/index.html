@@ -123,10 +123,12 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Languages</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-bother">Why bother</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-files-go">Where the files go</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-one">Writing one</a></li>
 <li class="toc__item toc__item--l2"><a href="#loading">Loading</a></li>
 <li class="toc__item toc__item--l2"><a href="#printing-a-string">Printing a string</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-failure-looks-like">What failure looks like</a></li>
 <li class="toc__item toc__item--l2"><a href="#strings-the-administrator-sees">Strings the administrator sees</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
@@ -175,11 +177,21 @@
 <p>Every string a template prints should come from a language file, so the
 template can be translated without being edited. A template's strings live in
 its own <code>language</code> directory and are loaded for you.</p>
+<h2 id="why-bother">Why bother</h2>
+<p>Two reasons, and the second is the one that catches people.</p>
+<p>A template is the part of the hub that prints the most bare English: <em>Log in</em>,
+<em>Search</em>, <em>Skip to main content</em>, <em>Help</em>. If those are literals in <code>index.php</code>,
+the hub cannot be translated no matter what anyone does to the components.</p>
+<p>More immediately, a hub that installs your template can replace any string in
+it <em>without editing your files</em> — by dropping a file into its own
+<code>app/bootstrap/site/language/</code> directory. That is the supported way for one hub
+to say <strong>Reserve</strong> where <code>northgate</code> says <strong>Book</strong>. A hardcoded string forces a
+fork of the template.</p>
 <h2 id="where-the-files-go">Where the files go</h2>
-<pre><code>core/templates/kimera/
+<pre><code>app/templates/northgate/
     language/
         en-GB/
-            en-GB.tpl_kimera.ini
+            en-GB.tpl_northgate.ini
 </code></pre>
 <p>The directory is <code>language</code>, singular. Inside it, one directory per language
 tag, and inside that a file named <code>{tag}.tpl_{template}.ini</code>. The <code>tpl_</code>
@@ -191,10 +203,12 @@ directory name.</p>
 <p>All four site templates and <code>kameleon</code> ship one. Nothing else in a template
 tree is scanned for strings.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <code>muse scaffolding copy template</code> rewrites file <em>contents</em> but
-not filenames, so a template copied from <code>kimera</code> still has a file called
-<code>en-GB.tpl_kimera.ini</code>. Rename it to match the new template or none of its
-strings will load.</p>
+<p><strong>Warning:</strong> <code>muse scaffolding copy template</code> rewrites file <em>contents</em> only,
+and only at the top level of the copied directory — <code>language/</code> is a
+subdirectory, so its file arrives untouched and still named
+<code>en-GB.tpl_kimera.ini</code>, still full of <code>TPL_KIMERA_*</code> keys. Rename the file to
+match the new template and rewrite the key prefix, or none of its strings
+load.</p>
 </aside>
 <h2 id="writing-one">Writing one</h2>
 <p>A language file is key/value pairs. Keys are case-insensitive — they are
@@ -237,15 +251,18 @@ fetching the template:</p>
 <em>replacement</em> for a shipped template's strings; the second falls back to the
 template's own directory. Whichever loads first wins, so a hub can override
 individual templates' strings without touching <code>core/</code>.</p>
-<p>To load some other extension's strings, call <code>Lang::load()</code> yourself:</p>
+<p>To load some other extension's strings, call <code>Lang::load()</code> yourself. A
+template layout that prints a <code>com_bookings</code> string needs this, because nothing
+loads a component's language file for a page that is not running that
+component:</p>
 <pre><code class="language-php">&lt;?php
 defined('_HZEXEC_') or die();
 
-// From app/bootstrap/site/language/en-GB/en-GB.com_example.ini
-Lang::load('com_example');
+// From app/bootstrap/site/language/en-GB/en-GB.com_bookings.ini
+Lang::load('com_bookings');
 
 // From a specific directory
-Lang::load('com_example', PATH_CORE . '/components/com_example/site');
+Lang::load('com_bookings', PATH_APP . '/components/com_bookings/site');
 </code></pre>
 <p>The signature is
 <code>load($extension = 'hubzero', $basePath = PATH_APP, $lang = null, $reload = false, $default = true)</code>.
@@ -255,7 +272,7 @@ as given, with <code>/language/{tag}</code> appended.</p>
 <p><code>$default</code> — true by default — makes the loader fall back to <code>en-GB</code> when the
 current language has no file of its own.</p>
 <h2 id="printing-a-string">Printing a string</h2>
-<pre><code class="language-php">&lt;p&gt;&lt;?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?&gt;&lt;/p&gt;
+<pre><code class="language-php">&lt;p&gt;&lt;?php echo Lang::txt('TPL_NORTHGATE_BOOK_AN_INSTRUMENT'); ?&gt;&lt;/p&gt;
 </code></pre>
 <p>Extra arguments are passed through <code>sprintf</code>, so a file can hold format
 strings:</p>
@@ -263,32 +280,52 @@ strings:</p>
 </code></pre>
 <pre><code class="language-php">echo Lang::txt('TPL_WELCOME_CONGRATS', $version);
 </code></pre>
-<p>A key with no translation is returned unchanged, which is why an untranslated
-page shows <code>TPL_KIMERA_LOGIN</code> rather than an empty space. Turn on <strong>Debug
-Language</strong> in Global Configuration to make this obvious: found strings are
-wrapped in <code>**asterisks**</code> and missing ones in <code>??question marks??</code>.</p>
+<h3 id="what-failure-looks-like">What failure looks like</h3>
+<p>A key with no translation is returned unchanged. There is no error and no blank
+space: the page shows the literal <code>TPL_NORTHGATE_BOOK_AN_INSTRUMENT</code> where the
+words should be. Every cause produces the same symptom —</p>
+<ul>
+<li>the file is named for the template it was copied from;</li>
+<li>the key is defined but the file is in <code>languages/</code> rather than <code>language/</code>;</li>
+<li>the key is misspelled in the layout;</li>
+<li>the string is a component's and nobody called <code>Lang::load()</code>.</li>
+</ul>
+<p>Turn on <strong>Debug Language</strong> in Global Configuration to tell them apart: found
+strings are wrapped in <code>**asterisks**</code> and missing ones in <code>??question marks??</code>.
+A key with no asterisks and no question marks is not being looked up at all.</p>
 <h2 id="strings-the-administrator-sees">Strings the administrator sees</h2>
-<p>Two things outside the template itself are translated from the same file.</p>
+<p>Two things outside the template itself are translated, and they do not load the
+same file.</p>
 <p><strong>Parameter labels.</strong> The <code>label</code> and <code>description</code> attributes in the
 <code>&lt;config&gt;</code> block of <a href="../packaging/index.html"><code>templateDetails.xml</code></a> are language keys.
-<code>com_templates</code> loads <code>tpl_{template}</code> before it builds the style-editing form,
-so <code>TPL_KIMERA_FIELD_HEADER_LABEL</code> resolves there.</p>
-<p><strong>Module position names.</strong> When <code>com_modules</code> builds the position list it reads
-<code>&lt;positions&gt;</code> from the manifest and looks for a key named
-<code>TPL_{TEMPLATE}_POSITION_{POSITION}</code>, upper-cased. Define
-<code>TPL_MYTEMPLATE_POSITION_INTROBLOCK</code> to give the <code>introblock</code> position a
-readable name; without it the administrator sees the raw position name.</p>
-<p>Both of those lookups prefer a <code>.sys.ini</code> file — <code>en-GB.tpl_kimera.sys.ini</code> —
-and fall back to the main file. A <code>.sys.ini</code> holds the subset of strings the
-administrator interface needs before the extension itself runs. No shipped
-Hubzero template has one, and nothing breaks without it.</p>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/admin/controllers/styles.php"><code>com_templates</code></a>
+loads the template's <strong>main</strong> <code>tpl_{template}</code> file before it builds the
+style-editing form, so <code>TPL_NORTHGATE_FIELD_HEADER_LABEL</code> resolves there.</p>
+<p><strong>Module position names.</strong> When
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_modules/admin/controllers/modules.php"><code>com_modules</code></a>
+builds the position list it reads <code>&lt;positions&gt;</code> from every installed template's
+manifest and, for each, loads only <code>tpl_{template}.sys</code> — the <code>.sys.ini</code> file,
+never the main one. It then looks for a key named
+<code>TPL_{TEMPLATE}_POSITION_{POSITION}</code>, upper-cased, and falls back to
+<code>COM_MODULES_POSITION_{POSITION}</code> from its own language file if the template's
+key is not defined.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> No shipped Hubzero template has a <code>.sys.ini</code>, so no shipped
+template's <code>TPL_*_POSITION_*</code> key is ever loaded. Every position label you see
+in the administrator today comes from the <code>COM_MODULES_POSITION_*</code> fallback,
+or renders as the raw key when there is no fallback either. If you want your
+own positions named, ship
+<code>language/en-GB/en-GB.tpl_northgate.sys.ini</code> — a <code>.sys.ini</code> holds the subset
+of strings the administrator interface needs before the extension itself runs.
+Putting the keys in the main file has no effect on this list.</p>
+</aside>
 <aside class="admonition admonition--tip">
 <p><strong>Tip:</strong> The <a href="../../extensions/languages/index.html">Languages</a> chapter covers the
 same file format for components, modules and plugins.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../structure/index.html" rel="next"><span>Next</span>Structure</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/02-languages.md">Edit this page on GitHub</a>

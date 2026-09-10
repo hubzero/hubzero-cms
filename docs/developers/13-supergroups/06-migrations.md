@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups/migrations
 source-id: 3525
@@ -16,8 +16,26 @@ connect to the live database by hand, and means the schema travels with the
 code — the admin screen that pulls a group's code runs its migrations
 straight afterwards.
 
-Everything in [Migrations](../06-database.md#migrations) applies. This
-chapter is only what a group does differently.
+## The same runner, pointed somewhere else
+
+There is no separate group migration system. `muse group migrate` reaches
+[`Hubzero\Content\Migration`](../../../core/libraries/Hubzero/Content/Migration.php),
+the same class `muse migration` runs against the hub, with two of its
+constructor arguments filled in:
+
+| Argument | For the hub | For a group |
+|---|---|---|
+| `$docroot` | omitted, so the runner walks `core/` and `app/` and every extension under them | the group's directory, which **replaces** the search path entirely |
+| `$runDb` | omitted, so migrations run against the hub connection | the group's connection, from `config/db.php` |
+
+Everything else — the file naming, the class shape, `up()` and `down()`, the
+dry run, the `#__migrations` log — is the hub's machinery unchanged. Read
+[Migrations](../06-database.md#migrations) first; this chapter is only what
+the two substituted arguments change.
+
+Both consequences follow from that table and are worth holding on to: only one
+directory is searched, and the log row still lands in the **hub's** table even
+though the schema change lands in the group's.
 
 ## Where they live
 
@@ -25,11 +43,12 @@ chapter is only what a group does differently.
 app/site/groups/<gidNumber>/migrations/
 ```
 
-That one directory, and nothing under it. When muse is given a group, the
-group directory becomes the entire search path, so migrations inside the
-group's own `components/com_*/migrations` are **not** found. Keep them all in
-the group's top-level `migrations` directory, and put the component name in
-the class name to tell them apart.
+That one directory, and nothing under it. Because the group directory becomes
+the entire search path, migrations inside the group's own
+`components/com_*/migrations` are **not** found — the runner looks for
+`<search path>/migrations` and stops. Keep them all in the group's top-level
+`migrations` directory, and put the component name in the class name to tell
+them apart.
 
 The skeleton creates the directory when the group is first saved as a super
 group.
@@ -40,7 +59,7 @@ Naming is as it is everywhere else: `Migration`, a fourteen-digit timestamp,
 and the extension in studly case.
 
 ```
-Migration20260901120000ComDrwho.php
+Migration20260901120000ComGauges.php
 ```
 
 ```php
@@ -52,18 +71,18 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for the Doctor's companion table
+ * Migration script for the tide gauge table
  **/
-class Migration20260901120000ComDrwho extends Base
+class Migration20260901120000ComGauges extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		if (!$this->db->tableExists('#__companions'))
+		if (!$this->db->tableExists('#__gauges'))
 		{
-			$this->db->setQuery("CREATE TABLE `#__companions` (
+			$this->db->setQuery("CREATE TABLE `#__gauges` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`name` varchar(255) NOT NULL DEFAULT '',
 				PRIMARY KEY (`id`)
@@ -77,9 +96,9 @@ class Migration20260901120000ComDrwho extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__companions'))
+		if ($this->db->tableExists('#__gauges'))
 		{
-			$this->db->setQuery("DROP TABLE `#__companions`");
+			$this->db->setQuery("DROP TABLE `#__gauges`");
 			$this->db->query();
 		}
 	}
@@ -98,6 +117,11 @@ class Migration20260901120000ComDrwho extends Base
 passes it as the alternate connection. `#__` expands to nothing there, since
 the group's `prefix` is empty.
 
+There is no supported way back to the hub's connection from inside a group
+migration: `Base` keeps it in a private property and never offers it. If a
+group migration genuinely has to touch the hub schema, ask for it explicitly
+with `\App::get('db')` and be sure that is what you meant.
+
 > **Note:** The extension macros — `addComponentEntry()`, `addPluginEntry()`,
 > `addModuleEntry()` and the rest — are wired to `$this->db` too, which in a
 > group migration is the group's database and not the hub's. They will try to
@@ -114,11 +138,11 @@ directory instead:
 
 ```bash
 php core/bin/muse scaffolding create migration \
-    -e=com_drwho \
+    -e=com_gauges \
     --install-dir=/path/to/hub/app/site/groups/1051
 ```
 
-That writes `app/site/groups/1051/migrations/Migration<timestamp>ComDrwho.php`
+That writes `app/site/groups/1051/migrations/Migration<timestamp>ComGauges.php`
 and opens it in `$EDITOR`. `-e` only decides the suffix on the class name;
 add `-i` if the extension does not exist as a directory under the group and
 scaffolding refuses it.
@@ -129,7 +153,7 @@ and the class name matters.
 ## Running them
 
 ```bash
-php core/bin/muse group migrate --group=mygroup -if
+php core/bin/muse group migrate --group=coastal -if
 ```
 
 - `--group` takes the group's alias. Run muse from inside the group's
@@ -139,13 +163,16 @@ php core/bin/muse group migrate --group=mygroup -if
 - `-f` makes it a real run. Without `-f` everything is a dry run that only
   lists what it would do — which is the safe way to look first.
 
-`php core/bin/muse migration -f --group=mygroup` is the same thing; the
-`group migrate` command sets the option and hands over to the migration
-command.
+`php core/bin/muse migration -f --group=coastal` is the same thing:
+`group migrate` validates the group, sets the `group` option and hands over to
+the migration command, which is where the work happens.
 
 If the group has no `migrations` directory the command stops with *Error:
 Migrations directory does not exist*, and if `config/db.php` is missing or
-wrong it stops with *Error: Could not connect to Group Database*.
+wrong it stops with *Error: Could not connect to Group Database*. Both are
+loud, and both are much better than the silent failure the previous warning
+describes, so a dry run that reports *nothing to migrate* on a directory you
+know has files means the class is namespaced or misnamed.
 
 ## Where the runs are recorded
 
@@ -171,4 +198,4 @@ that arrive with a merge are applied as part of the merge.
 > misspelled, and in any case a word muse never prints. The test therefore
 > always passes and migrations run even after a failed update. Read the
 > output of a merge rather than trusting that it stopped itself. This is
-> Recorded with the project.
+> recorded in the review findings.

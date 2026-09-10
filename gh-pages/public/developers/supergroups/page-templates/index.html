@@ -178,6 +178,11 @@
 <p>Most of a super group's pages render through the same template file. When one
 page, or a family of pages, needs a different layout, put a second file in the
 group's <code>template/</code> directory and the renderer picks it up.</p>
+<p>The Coastal Resilience Center has one page like that. Its field-site pages —
+one per instrumented site, a dozen of them and growing — need the map to run
+the full width, with no sidebar. Every other page is fine in <code>index.php</code>. That
+is exactly what page templates are for: a layout variation for some pages,
+not a second design.</p>
 <p>The mechanism is the candidate list in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/template.php"><code>Components\Groups\Helpers\Template::_fetch()</code></a>,
 described in <a href="../templating-system/index.html#how-the-file-is-chosen">Templating system</a>.
@@ -220,20 +225,31 @@ template file from the site.</p>
 </table>
 <p>They are tried in that order, then <code>default.php</code>, then <code>index.php</code>. The first
 file that exists wins.</p>
+<p>Which to use is a question of how many pages share the layout:</p>
+<ul>
+<li><strong>One page, once.</strong> <code>page-&lt;alias&gt;.php</code>. Nothing to configure.</li>
+<li><strong>Several pages, and the list will grow.</strong> A named template. The centre's
+dozen field sites all point at one file, and adding the thirteenth is a
+drop-down on the page form, not a deploy.</li>
+<li><strong>Every page except the plugin tabs.</strong> <code>page.php</code>.</li>
+</ul>
 <p><code>page.php</code> is worth calling out: it applies to group <em>pages</em> only. A plugin
 tab — Wiki, Calendar, Forum — has no active page, so it renders through
-<code>default.php</code> or <code>index.php</code> no matter what <code>page.php</code> contains.</p>
+<code>default.php</code> or <code>index.php</code> no matter what <code>page.php</code> contains. A template
+put in <code>page.php</code> and expected to frame the whole group is the commonest
+mistake here, and it shows up as the wiki looking wrong while the pages look
+right.</p>
 <h3 id="a-template-named-after-the-page">A template named after the page</h3>
-<p>The About Us page, alias <code>about-us</code> and id 6, uses <code>page-about-us.php</code> if
-that file exists, otherwise <code>page-6.php</code>. Nothing else is needed; the page
-does not have to be edited.</p>
+<p>The Field Sites index, alias <code>field-sites</code> and id 6, uses
+<code>page-field-sites.php</code> if that file exists, otherwise <code>page-6.php</code>. Nothing
+else is needed; the page does not have to be edited.</p>
 <p>Prefer the alias. The id is assigned by the database and means nothing to
 anyone reading the directory later.</p>
 <h3 id="a-named-template-several-pages-can-share">A named template several pages can share</h3>
 <p>A file becomes a named template by declaring a name in a comment near the top:</p>
-<pre><code class="language-php">&lt;?php
+<pre><code class="language-php">&lt;?php // app/site/groups/1051/template/fieldsite.php
 /*
-Template Name: My Custom Page
+Template Name: Field site
 */
 </code></pre>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>Components\Groups\Helpers\View::getPageTemplates()</code></a>
@@ -243,6 +259,12 @@ The file may be called whatever you like — the label is what the interface
 shows, and the filename is what gets stored on the page.</p>
 <p>Two files never appear in the list, whatever they declare: <code>index.php</code> and
 <code>default.php</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The label is the array key, so two files declaring the same
+<strong>Template Name</strong> collapse to one entry and the last file read wins. If a
+template you just added is missing from the drop-down, check for a
+duplicate label before you check anything else.</p>
+</aside>
 <h2 id="choosing-one">Choosing one</h2>
 <p>The <strong>Template</strong> control is on the page's own edit form, in the <strong>Settings</strong>
 section, below <strong>Comments</strong>:</p>
@@ -265,7 +287,9 @@ control itself still looks and behaves as pictured.</p>
 <p>The control only exists on a super group's pages, and on the site form only
 when the template directory holds at least one named template. The
 administrator's page form at <strong>Users</strong> → <strong>Groups</strong> shows it for every super
-group, empty list or not.</p>
+group, empty list or not. So the first named template you add is the one that
+makes the control appear at all — until then a manager sees no <strong>Template</strong>
+setting and reasonably concludes the feature is missing.</p>
 <h2 id="what-the-file-receives">What the file receives</h2>
 <p>A page template is loaded exactly as <code>index.php</code> is, so it sees the same four
 properties — <code>$this-&gt;group</code>, <code>$this-&gt;page</code>, <code>$this-&gt;tab</code> and
@@ -273,7 +297,8 @@ properties — <code>$this-&gt;group</code>, <code>$this-&gt;page</code>, <code>
 <a href="../templating-system/index.html#include-tags"><code>&lt;group:include&gt;</code> tag</a>. Most page
 templates are a copy of <code>index.php</code> with one part swapped out, so it is
 usually worth moving the shared header and footer into <code>template/includes/</code>
-and including them from both.</p>
+and including them from both. The centre does that on the day it adds the
+second template, not the fourth: two copies of a header drift within a month.</p>
 <h2 id="include-tags-inside-a-page-s-content">Include tags inside a page's content</h2>
 <p>The tags a <em>template</em> may use are not the tags a <em>page</em> may use. Content
 written in the page editor is rendered by a plain
@@ -287,9 +312,11 @@ whose allowed list is only:</p>
 </ul>
 <p><code>content</code>, <code>menu</code>, <code>toolbar</code> and <code>googleanalytics</code> are template-only; used in
 page content they render as an HTML comment saying the include is not allowed
-there. <code>base</code> works as it does in a template: <code>template</code> resolves under
-<code>template/assets/js</code> or <code>template/assets/css</code>, anything else is a path
-segment under the group directory, and an omitted <code>base</code> looks in <code>uploads</code>.</p>
+there. That comment is the whole error message — the page renders, the region
+is blank, and nothing is logged. <code>base</code> works as it does in a template:
+<code>template</code> resolves under <code>template/assets/js</code> or <code>template/assets/css</code>,
+anything else is a path segment under the group directory, and an omitted
+<code>base</code> looks in <code>uploads</code>.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The attribute for a position is <code>position</code>. Older
 documentation spelled it <code>postion</code> and paired <code>type=&quot;modules&quot;</code> with a
@@ -304,9 +331,15 @@ group can replace that wrapper by dropping a file of the same name into
 It emits <code>&lt;div class=&quot;group-page page-&lt;alias&gt;&quot;&gt;</code> around the content and, below
 it, the byline and the comment thread. Overriding it is the way to change
 those without touching core.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The in-page <strong>Edit Page</strong> control lives inside that byline
+block, and the block is drawn only when the page's <strong>Author Details</strong>
+setting is on — which is not the default. Copy the wrapper without reading
+it and you can remove a manager's only in-page route to the editor.</p>
+</aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templating-system/index.html" rel="prev"><span>Previous</span>Templating system</a><a class="pager__next" href="../custom-macros/index.html" rel="next"><span>Next</span>Custom macros</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/02-page_templates.md">Edit this page on GitHub</a>

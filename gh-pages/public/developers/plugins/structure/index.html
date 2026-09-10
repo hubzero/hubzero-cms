@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Structure · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A plugin is identified by two names: the group it belongs to and its own. Both are directory names, and together they determine the class name, the language…">
+  <meta name="description" content="A plugin is identified by two names: the group it belongs to and its own. Get them right once and everything else follows from them, because both are directory…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/structure/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,8 +113,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Structure</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#directory-layout">Directory layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#group-and-directory-must-match">Group and directory must match</a></li>
+<li class="toc__item toc__item--l2"><a href="#characters-in-the-two-names">Characters in the two names</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-loader-looks">Where the loader looks</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-class">The class</a></li>
+<li class="toc__item toc__item--l2"><a href="#facades-in-a-plugin">Facades in a plugin</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-entry-guard">The entry guard</a></li>
 <li class="toc__item toc__item--l2"><a href="#subdirectories">Subdirectories</a></li>
 </ol></li>
@@ -172,10 +175,16 @@
         </header>
         
         <div class="prose">
-<p>A plugin is identified by two names: the group it belongs to and its own. Both
-are directory names, and together they determine the class name, the language
-file name, the asset paths, and the <code>folder</code> and <code>element</code> columns of its row
-in <code>#__extensions</code>.</p>
+<p>A plugin is identified by two names: the group it belongs to and its own. Get
+them right once and everything else follows from them, because both are
+directory names and together they determine the class name, the language file
+name, the asset paths, the view override path, and the <code>folder</code> and <code>element</code>
+columns of the plugin's row in <code>#__extensions</code>. Get one of them wrong and the
+plugin does not load, with no message anywhere. That is what this chapter is
+about.</p>
+<p>For the worked example the two names are <code>bookings</code> and <code>notify</code>, so the
+plugin is <code>plg_bookings_notify</code> and it lives in
+<code>app/plugins/bookings/notify/</code>.</p>
 <h2 id="directory-layout">Directory layout</h2>
 <p>Plugins are never at the top level of <code>plugins</code>; they are always one level
 down, inside a group directory:</p>
@@ -185,30 +194,70 @@ down, inside a group directory:</p>
             {name}.php
             {name}.xml
 </code></pre>
-<p>So a <code>system</code> plugin called <code>example</code>:</p>
-<pre><code>app/plugins/system/example/
-    assets/css/example.css
-    language/en-GB/en-GB.plg_system_example.ini
-    language/en-GB/en-GB.plg_system_example.sys.ini
-    migrations/Migration20260101000000PlgSystemExample.php
-    views/display/tmpl/default.php
+<p>So <code>plg_bookings_notify</code>:</p>
+<pre><code>app/plugins/bookings/notify/
+    language/en-GB/en-GB.plg_bookings_notify.ini
+    language/en-GB/en-GB.plg_bookings_notify.sys.ini
+    migrations/Migration20260210000000PlgBookingsNotify.php
+    views/email/tmpl/message.php
     composer.json
-    example.php
-    example.xml
     index.html
+    notify.php
+    notify.xml
 </code></pre>
-<p>Only <code>example.php</code> and <code>example.xml</code> are required. Because the group is part
-of the path, the same plugin name can be reused in different groups —
-<code>core/plugins/content/formatwiki</code> and <code>core/plugins/wiki/…</code> coexist without
-conflict.</p>
-<p><code>Hubzero\Plugin\Loader</code> strips anything outside letters, digits, <code>_</code>, <code>.</code>,
-and <code>-</code> from both the group and the name before building a class name or a
-path, so those are the characters available. Stick to lowercase alphanumerics
-and underscores unless you have a reason not to.</p>
+<p>Only <code>notify.php</code> and <code>notify.xml</code> are required, and the migration if the
+plugin is to run at all. Because the group is part of the path, the same
+plugin name can be reused in different groups — <code>core/plugins/content/formatwiki</code>
+and a <code>wiki</code> group plugin of the same name would coexist without conflict.</p>
+<h2 id="group-and-directory-must-match">Group and directory must match</h2>
+<p>The group name is not a label. It is a path segment, and it comes from the
+database:
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader::path()</code></a>
+takes the <code>folder</code> column of the extension row, joins it to <code>plugins</code>, and
+looks for that directory. The same value is the prefix on the events the
+plugin hears, because <code>Event::trigger('bookings.onReservationCreate', …)</code>
+splits at the dot and imports the group named on the left.</p>
+<p>Nothing validates the pair. There is no register of legal group names, no
+manifest check, and no warning when the directory named by a row does not
+exist.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> If the row says <code>folder = 'booking'</code> and the directory is
+<code>app/plugins/bookings/</code>, <code>path()</code> finds no directory and returns an empty
+string, the loader builds the path <code>/notify.php</code>, <code>file_exists()</code> says no,
+and <code>init()</code> returns <code>null</code>. The plugin is listed in the Plugin Manager,
+shows as enabled, and never runs. The same happens the other way round —
+directory <code>booking</code>, trigger <code>bookings.</code> — and again if the plugin's own
+name and its <code>element</code> column disagree. The group name has to be identical
+in the directory, in the <code>folder</code> column, and in the prefix on every event
+the component triggers.</p>
+</aside>
+<p>So when <code>com_bookings</code> fires <code>bookings.onReservationCreate</code>, the plugin
+directory is <code>plugins/bookings/</code>, the migration calls
+<code>addPluginEntry('bookings', 'notify')</code>, and the manifest says
+<code>group=&quot;bookings&quot;</code>. Singular or plural is your choice; making the same choice
+in all four places is not.</p>
+<h2 id="characters-in-the-two-names">Characters in the two names</h2>
+<p><code>Hubzero\Plugin\Loader</code> strips anything outside letters, digits, <code>_</code>, <code>.</code>, and
+<code>-</code> from both names before building a class name or a path. That is what is
+<em>permitted</em>. What is <em>safe</em> is narrower: lowercase letters and digits, and
+nothing else.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> An underscore in either name breaks three separate things, none
+of them loudly. <code>Hubzero\Document\Asset\File</code> splits <code>plg_group_element</code> on
+underscores and reads the second and third pieces as the group and the
+element, so <a href="../assets/index.html">assets</a> resolve to a directory that does not
+exist and silently load nothing. The <code>getParams</code> and <code>saveParams</code>
+<a href="../migrations/index.html#shipping-default-parameters">migration macros</a> split the
+same string the same way and read or write the wrong row. And
+<code>muse migration -e=</code> validates its argument against
+<code>^plg_[[:alnum:]]+_[[:alnum:]]+$</code> and refuses the name outright. No plugin
+in <code>core/plugins</code> has an underscore in its group or its element. Use a
+hyphen if you need a separator, as <code>editors-xtd</code> does, or run the words
+together, as <code>formatwiki</code> does.</p>
+</aside>
 <h2 id="where-the-loader-looks">Where the loader looks</h2>
-<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader::path()</code></a>
-resolves a group and name to a directory by checking <code>PATH_APP</code> first and
-<code>PATH_CORE</code> second:</p>
+<p><code>Loader::path()</code> resolves a group and name to a directory by checking
+<code>PATH_APP</code> first and <code>PATH_CORE</code> second:</p>
 <ol>
 <li><code>app/plugins/{group}/{name}</code></li>
 <li><code>core/plugins/{group}/{name}</code></li>
@@ -216,7 +265,8 @@ resolves a group and name to a directory by checking <code>PATH_APP</code> first
 <p>The entry file is <code>{name}.php</code> inside whichever directory exists. A hub
 overrides a shipped plugin by copying the whole directory into <code>app/plugins</code>;
 the extension row does not change, because it records only the group and the
-element.</p>
+element. Your own plugins belong in <code>app/</code>, always —
+<code>core/</code> is replaced wholesale by an upgrade.</p>
 <h2 id="the-class">The class</h2>
 <p>The entry file must define a class the loader can find. Two names are
 accepted, checked in this order:</p>
@@ -230,21 +280,25 @@ accepted, checked in this order:</p>
 <tbody>
 <tr>
 <td><code>plg{Group}{Name}</code></td>
-<td><code>plgMembersBlog</code>, <code>plgContentFormatwiki</code>, <code>plgGroupsForum</code></td>
+<td><code>plgBookingsNotify</code>, <code>plgMembersBlog</code>, <code>plgContentFormatwiki</code></td>
 </tr>
 <tr>
 <td><code>Plugins\{Group}\{Name}</code></td>
-<td><code>Plugins\Members\Blog</code></td>
+<td><code>Plugins\Bookings\Notify</code></td>
 </tr>
 </tbody>
 </table>
-<p>Both are <code>ucfirst()</code> of the group and of the name — only the first letter is
-capitalised, so <code>formatwiki</code> gives <code>plgContentFormatwiki</code>, not
-<code>plgContentFormatWiki</code>. Every plugin shipped in <code>core/plugins</code> uses the first
-form, in the global namespace. The namespaced form is supported by the loader
-but unused; supporting classes under a plugin — models, helpers, macros — do
-use <code>Plugins\Group\Name\…</code> namespaces, and are loaded by the framework's
-class loader.</p>
+<p>The loader concatenates the two column values without changing their case and
+calls <code>class_exists()</code> on the result, and PHP resolves class names
+case-insensitively, so the capitalisation in your file is not what makes the
+match. Follow the convention anyway: only the first letter of each name is
+capitalised, so <code>formatwiki</code> gives <code>plgContentFormatwiki</code> and not
+<code>plgContentFormatWiki</code>, and every plugin shipped in <code>core/plugins</code> is written
+that way.</p>
+<p>Every shipped plugin uses the first form, in the global namespace. The
+namespaced form is supported by the loader but unused; supporting classes
+under a plugin — models, helpers, macros — do use <code>Plugins\Group\Name\…</code>
+namespaces, and are loaded by the framework's class loader.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The <code>editors-xtd</code> group is the exception that proves the rule. Its
 classes are named <code>plgButtonImage</code>, <code>plgButtonReadmore</code>, and so on, which
@@ -257,29 +311,37 @@ itself. Do not copy the pattern in a new plugin.</p>
 // No direct access
 defined('_HZEXEC_') or die();
 
-class plgSystemExample extends \Hubzero\Plugin\Plugin
+class plgBookingsNotify extends \Hubzero\Plugin\Plugin
 {
-    public function onAfterInitialise()
-    {
-        // ...
-    }
+	public function onReservationCreate($reservation)
+	{
+		// ...
+	}
 }
 </code></pre>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Because core plugin classes are in the global namespace, they call
-<code>Lang::txt()</code> and <code>Route::url()</code> with no imports. A <em>namespaced</em> plugin file
-must <code>use</code> each facade it calls, or the unqualified name resolves inside the
-plugin's own namespace and fatals. The same applies to any namespaced helper
-class you add beside the plugin. See
-<a href="../../foundation/facades/index.html">Facades</a>.</p>
-</aside>
+<h2 id="facades-in-a-plugin">Facades in a plugin</h2>
+<p>The plugin entry class is declared in the <strong>root</strong> namespace, so an
+unqualified <code>Lang::txt()</code>, <code>Route::url()</code> or <code>Config::get()</code> in it already
+names the alias. No <code>use</code> line is needed, and none of the shipped plugins has
+one. This is the one place in the tree where the import rule does not bite,
+and it is why plugin files look different from component files.</p>
+<p>Everything else beside the plugin does declare a namespace — models, helpers,
+a <code>Plugins\Bookings\Notify\Helpers\Recipients</code> class — and there the rule
+applies in full. It is subtler than &quot;it fatals&quot;: an unimported facade in a
+namespaced file usually <em>works</em>, because the alias autoloader falls back to
+the last segment of the class name, and then fails later in a handful of
+specific situations. Read <a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>
+for which ones, and run
+<code>php tools/lint/missing-facade-imports.php app/plugins/bookings/notify</code> before
+you ship.</p>
 <h2 id="the-entry-guard">The entry guard</h2>
 <p>Plugin files begin with</p>
 <pre><code class="language-php">defined('_HZEXEC_') or die();
 </code></pre>
 <p>before any executable code. Plugin directories are inside the document root on
 a default install, so this line is the only thing preventing a direct HTTP
-request from running the file outside the application. See
+request from running the file outside the application. It belongs at the top
+of the entry file, the migration, and every view template. See
 <a href="../../foundation/constants/index.html">Constants</a>.</p>
 <h2 id="subdirectories">Subdirectories</h2>
 <p>Everything else is optional and follows fixed names, because the framework
@@ -287,10 +349,11 @@ looks for them by convention: <code>views/{name}/tmpl/{layout}.php</code> for
 <a href="../views/index.html">views</a>, <code>assets/{css,js,img}</code> for <a href="../assets/index.html">assets</a>,
 <code>language/{tag}</code> for <a href="../languages/index.html">languages</a>, <code>migrations</code> for
 <a href="../migrations/index.html">migrations</a>. Models and helpers have no enforced location;
-<code>views</code> and <code>helpers</code> beside the entry file is the common arrangement.</p>
+<code>helpers</code> beside the entry file is the common arrangement, and is where a
+plugin view looks first when a layout calls a method the view does not have.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../controllers/index.html" rel="next"><span>Next</span>Controllers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/02-structure.md">Edit this page on GitHub</a>

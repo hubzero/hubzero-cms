@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Languages · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Strings a plugin renders — and the labels on its parameter form — come from translation files inside the plugin directory. Unlike modules, a plugin&#x27;s language…">
+  <meta name="description" content="Every string a plugin puts in front of a person — the subject line of the mail sends, the tab title a group plugin adds, the labels on its own parameter form —…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/languages/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,46 +174,60 @@
         </header>
         
         <div class="prose">
-<p>Strings a plugin renders — and the labels on its parameter form — come from
-translation files inside the plugin directory. Unlike modules, a plugin's
-language file is not loaded for you unless you ask.</p>
+<p>Every string a plugin puts in front of a person — the subject line of the mail
+<code>plg_bookings_notify</code> sends, the tab title a group plugin adds, the labels on
+its own parameter form — comes from a translation file inside the plugin
+directory. Putting them there is not only about translating: it is also what
+lets a hub change your wording without editing your code.</p>
+<p>Unlike modules, a plugin's language file is not loaded for you unless you ask.
+That one difference is the whole of this chapter's trap.</p>
 <h2 id="where-the-files-go">Where the files go</h2>
-<pre><code>core/plugins/members/blog/
+<pre><code>app/plugins/bookings/notify/
     language/
         en-GB/
-            en-GB.plg_members_blog.ini
-            en-GB.plg_members_blog.sys.ini
+            en-GB.plg_bookings_notify.ini
+            en-GB.plg_bookings_notify.sys.ini
 </code></pre>
 <p>The directory is the language tag. The file name is the tag, a dot, and
 <code>plg_{group}_{name}</code> — the same string used everywhere else the plugin is
 identified.</p>
 <p>The <code>.sys.ini</code> file holds only what the CMS needs before the plugin runs: the
-name and description shown in the Plugin Manager and in the installer. It is
-loaded by the administrative interface, not by the plugin. Everything the
-plugin itself renders belongs in the plain <code>.ini</code>. A plugin that renders
-nothing — <code>plg_content_formatwiki</code> is one — ships only the <code>.sys.ini</code>.</p>
+name and description shown in the Plugin Manager. It is loaded by the
+administrative interface, not by the plugin. Everything the plugin itself
+renders belongs in the plain <code>.ini</code>. A plugin that renders nothing —
+<code>plg_content_formatwiki</code> is one — ships only the <code>.sys.ini</code>.</p>
 <h2 id="loading-them">Loading them</h2>
 <p>The base constructor loads nothing by default, because most plugins have no
 strings and loading a file per plugin per request would be wasted work. Opt in
 with a property:</p>
-<pre><code class="language-php">class plgMembersBlog extends \Hubzero\Plugin\Plugin
+<pre><code class="language-php">class plgBookingsNotify extends \Hubzero\Plugin\Plugin
 {
-    /**
-     * Affects constructor behavior. If true, language files will be loaded automatically.
-     *
-     * @var  boolean
-     */
-    protected $_autoloadLanguage = true;
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
 }
 </code></pre>
 <p>With that set, the constructor calls <code>loadLanguage()</code> for you. You can also
-call it yourself, later, from the one method that needs the strings:</p>
-<pre><code class="language-php">public function onMembers($user, $member, $option, $areas)
+call it yourself, later, from the one method that needs the strings — which is
+the better choice for a plugin in a group that is imported on every request,
+or one like <code>plg_bookings_notify</code> whose strings are needed on the rare request
+that creates a reservation:</p>
+<pre><code class="language-php">public function onReservationCreate($reservation)
 {
-    $this-&gt;loadLanguage();
-    // ...
+	$this-&gt;loadLanguage();
+	// ...
 }
 </code></pre>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Forget both and nothing breaks loudly. <code>Lang::txt()</code> returns the
+key it was given when there is no translation, so the mail goes out with
+<code>PLG_BOOKINGS_NOTIFY_SUBJECT</code> as its subject line and the group tab is
+labelled <code>PLG_GROUPS_FORUM</code>. A raw key in capitals on a page or in an email
+means one of two things: the file was never loaded, or the key is not in it.</p>
+</aside>
 <h2 id="where-it-looks">Where it looks</h2>
 <p><code>loadLanguage($extension = '', $basePath = PATH_APP)</code> defaults <code>$extension</code> to
 <code>plg_{group}_{name}</code> and then tries three locations, stopping at the first
@@ -235,64 +249,79 @@ rather than merging with it, and must contain every key the plugin uses.</p>
 </aside>
 <p>The translator loads the site's default language before the requested one
 unless <code>debug_lang</code> is on, so a key absent from a partial translation still
-resolves through <code>en-GB</code>.</p>
+resolves through <code>en-GB</code>. Turning <code>debug_lang</code> on in the site configuration is
+the fastest way to find keys that are not resolving: it stops that fallback,
+wraps every string it did find in <code>**</code>, and every one it did not in <code>??</code>.</p>
 <h2 id="overriding-the-search">Overriding the search</h2>
 <p><code>loadLanguage()</code> is a normal method and a plugin may override it.
 <code>plgGroupsForum</code> does, so that a super group can ship its own strings from
 inside the group's own directory:</p>
 <pre><code class="language-php">public function loadLanguage($extension = '', $basePath = PATH_APP)
 {
-    if (empty($extension))
-    {
-        $extension = 'plg_' . $this-&gt;_type . '_' . $this-&gt;_name;
-    }
+	if (empty($extension))
+	{
+		$extension = 'plg_' . $this-&gt;_type . '_' . $this-&gt;_name;
+	}
 
-    $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-    if ($group &amp;&amp; $group-&gt;isSuperGroup())
-    {
-        $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group-&gt;get('gidNumber');
-    }
+	$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+	if ($group &amp;&amp; $group-&gt;isSuperGroup())
+	{
+		$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group-&gt;get('gidNumber');
+	}
 
-    // ... then the normal chain
+	// ... then the normal chain
 }
 </code></pre>
+<p>That is a super group feature, not a general pattern. A plugin that is not
+serving a group has no reason to override the search.</p>
 <h2 id="writing-the-file">Writing the file</h2>
 <pre><code class="language-ini">; @package    hubzero-cms
-; @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+; @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
 ; @license    http://opensource.org/licenses/MIT MIT
 
 ; Note : All ini files need to be saved as UTF-8 - No BOM
 
-PLG_MEMBERS_BLOG=&quot;Blog&quot;
-PLG_MEMBERS_BLOG_BROWSE=&quot;Browse&quot;
-PLG_MEMBERS_BLOG_NUM_COMMENTS=&quot;%s comments&quot;
+PLG_BOOKINGS_NOTIFY=&quot;Bookings - Notify&quot;
+PLG_BOOKINGS_NOTIFY_SUBJECT=&quot;New reservation for %s&quot;
+PLG_BOOKINGS_NOTIFY_BOOKED_BY=&quot;Booked by %s&quot;
+PLG_BOOKINGS_NOTIFY_SEND_FAILED=&quot;Failed to mail the reservation notice to %s&quot;
+PLG_BOOKINGS_NOTIFY_MANAGER_EMAIL=&quot;Manager address&quot;
 </code></pre>
 <p>Keys are uppercase with underscores and start with <code>PLG_{GROUP}_{NAME}_</code> so
-they cannot collide with another extension's. Values are double-quoted; the
-files are parsed with <code>parse_ini_file()</code> in raw mode, so a literal double
-quote inside a value is escaped as <code>\&quot;</code>. Comments start with a semicolon.</p>
+they cannot collide with another extension's — the string table is one flat
+namespace for the whole request, and the last file loaded wins. Values are
+double-quoted; the files are parsed with <code>parse_ini_file()</code> in raw mode, so a
+literal double quote inside a value is escaped as <code>\&quot;</code>. Comments start with a
+semicolon.</p>
 <h2 id="using-a-string">Using a string</h2>
-<pre><code class="language-php">Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_MEMBERS_BLOG'));
+<pre><code class="language-php">$subject = Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $reservation-&gt;instrument-&gt;get('title'));
 </code></pre>
 <p><code>Lang::txt()</code> passes extra arguments through <code>sprintf</code>, and returns the key
 unchanged when there is no translation — which is why a missing string appears
-on the page in capitals rather than as an error.</p>
+on the page in capitals rather than as an error. A key with a <code>%s</code> in it and
+no argument passed comes out with the <code>%s</code> still in it, for the same reason.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Core plugin classes are in the global namespace, so <code>Lang</code> needs
-no import. A namespaced helper class beside the plugin does need <code>use Lang;</code>.
-See <a href="../../foundation/facades/index.html">Facades</a>.</p>
+<p><strong>Note:</strong> The plugin entry class is in the root namespace, so <code>Lang</code> needs no
+import there. A <em>namespaced</em> helper class beside the plugin is a different
+case, and not the simple one: an unimported facade in a namespaced file
+usually resolves anyway, through a fallback in the alias autoloader, and
+then fails in a few specific situations. Import it. See
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>, and run
+<code>php tools/lint/undefined-language-keys.php app/plugins/bookings/notify</code> to
+find keys with no string behind them.</p>
 </aside>
 <h2 id="registering-the-file">Registering the file</h2>
 <p>List it in the manifest so the installer copies it:</p>
 <pre><code class="language-xml">&lt;languages&gt;
-    &lt;language tag=&quot;en-GB&quot;&gt;en-GB.plg_members_blog.ini&lt;/language&gt;
+	&lt;language tag=&quot;en-GB&quot;&gt;en-GB.plg_bookings_notify.ini&lt;/language&gt;
+	&lt;language tag=&quot;en-GB&quot;&gt;en-GB.plg_bookings_notify.sys.ini&lt;/language&gt;
 &lt;/languages&gt;
 </code></pre>
 <p>See <a href="../../extensions/languages/index.html">Languages</a> for how the tag for a
 request is chosen and how further languages are installed.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../controllers/index.html" rel="prev"><span>Previous</span>Controllers</a><a class="pager__next" href="../views/index.html" rel="next"><span>Next</span>Views</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/04-languages.md">Edit this page on GitHub</a>

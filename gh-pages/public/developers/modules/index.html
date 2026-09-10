@@ -86,8 +86,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Modules</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-want-one">When you want one</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-example-this-section-builds">The example this section builds</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-module-is-made-of">What a module is made of</a></li>
-<li class="toc__item toc__item--l2"><a href="#placing-a-module">Placing a module</a></li>
+<li class="toc__item toc__item--l2"><a href="#two-things-stand-between-your-files-and-the-page">Two things stand between your files and the page</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="migrations/index.html">Migrations</a></li>
@@ -180,48 +182,113 @@ buffer is spliced into the template.</p>
 named after the module and prefixed with <code>mod_</code>, and the same name is used for
 the entry file, the manifest, the language files, and the row in the
 <code>#__extensions</code> table.</p>
+<h2 id="when-you-want-one">When you want one</h2>
+<p>Reach for a module when you want to show something on pages you do not own.
+The lab's booking screens belong to a component; a box in the sidebar of
+<em>every</em> page saying &quot;your next two instrument slots&quot; belongs to a module,
+because no component owns the front page, the knowledge base, and a group
+overview all at once.</p>
+<table>
+<thead>
+<tr>
+<th>You want</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A screen with records behind it, and a URL</td>
+<td>a <a href="../components/index.html">component</a></td>
+</tr>
+<tr>
+<td>A block that appears on pages a component already draws</td>
+<td>a module</td>
+</tr>
+<tr>
+<td>Something to happen when a record is saved</td>
+<td>a <a href="../plugins/index.html">plugin</a></td>
+</tr>
+<tr>
+<td>A form that posts and acts on the result</td>
+<td>a component; the module renders the form and posts to it</td>
+</tr>
+</tbody>
+</table>
+<p>A module has no router, no tasks, and no request of its own. The moment you
+want it to handle a submission you have outgrown it — see
+<a href="controllers/index.html">Controllers</a>.</p>
+<h2 id="the-example-this-section-builds">The example this section builds</h2>
+<p>The pages that follow build one module: <strong><code>mod_upcoming_bookings</code></strong>, a sidebar
+block listing the current user's next few instrument reservations. It reads
+<code>Components\Bookings\Models\Reservation</code> from <code>com_bookings</code>, the
+instrument-booking component the <a href="../components/index.html">Components</a>
+section builds, and stores nothing of its own.</p>
+<p>That is the ordinary shape of a module: a few lines of query against somebody
+else's model, one layout, two parameters. Where a page shows code <em>included
+from the tree</em> it comes from a shipped module — <code>mod_mygroups</code>,
+<code>mod_findresources</code>, <code>mod_login</code> — because those are the working files. Where
+it shows <code>mod_upcoming_bookings</code>, that is what you write.</p>
 <h2 id="what-a-module-is-made-of">What a module is made of</h2>
 <p>At minimum a module is two files: an entry point named after the directory,
 and an XML manifest. Nearly every real module adds a helper class, a layout,
 and a language file:</p>
-<pre><code>core/modules/mod_mygroups/
+<pre><code>app/modules/mod_upcoming_bookings/
     assets/
-        css/mod_mygroups.css
-        js/mod_mygroups.js
+        css/mod_upcoming_bookings.css
     language/en-GB/
-        en-GB.mod_mygroups.ini
-        en-GB.mod_mygroups.sys.ini
+        en-GB.mod_upcoming_bookings.ini
+        en-GB.mod_upcoming_bookings.sys.ini
     migrations/
-        Migration20190109000000ModMyGroups.php
+        Migration20260101000000ModUpcomingBookings.php
     tmpl/
         default.php
-        simple.php
-        _item.php
     composer.json
     helper.php
-    mod_mygroups.php
-    mod_mygroups.xml
+    mod_upcoming_bookings.php
+    mod_upcoming_bookings.xml
 </code></pre>
 <p>The entry file is included by <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader</code></a>
 with two variables already in scope, <code>$params</code> and <code>$module</code>. It hands both to
 a helper class extending <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>,
 which gathers data and requires a layout out of <code>tmpl/</code>.</p>
+<p>That two-part arrangement — a stub that <code>require_once</code>s <code>helper.php</code> and
+constructs a class named <code>Helper</code> — is what 99 of the 100 shipped modules do,
+and it is what the loader expects. It does not instantiate anything itself: it
+<code>include</code>s the entry file inside an output buffer and keeps whatever was
+echoed. See <a href="controllers/index.html">Controllers</a>.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Module classes are namespaced (<code>namespace Modules\MyGroups;</code>) but
+<p><strong>Note:</strong> Module classes are namespaced (<code>namespace Modules\UpcomingBookings;</code>) but
 the layouts they require are not. A namespaced class must <code>use</code> every facade
 it calls — <code>use User;</code>, <code>use Request;</code> — or the call resolves to a class in
 the module's own namespace and fatals. See
 <a href="../foundation/facades/index.html">Facades</a>. Layouts run in the global
 namespace and need no imports.</p>
 </aside>
-<h2 id="placing-a-module">Placing a module</h2>
-<p>Installing a module makes the CMS aware that it exists; it does not put it on
-a page. An administrator creates an <em>instance</em> of the module in the Module
-Manager, gives it a title, assigns it to a template position, sets its access
-level and its menu assignments, and publishes it. Several instances of the
-same module can exist at once, each with its own parameters. Everything the
-loader knows about an instance comes from the <code>#__modules</code> and
-<code>#__modules_menu</code> tables.</p>
+<h2 id="two-things-stand-between-your-files-and-the-page">Two things stand between your files and the page</h2>
+<p>Copying a module into <code>app/modules</code> is not enough, and neither is registering
+it. Both of these have to be true before anything renders:</p>
+<ol>
+<li><strong>A row in <code>#__extensions</code>.</strong> A migration writes it. Until it exists the
+Module Manager will not offer your module at all — of the four extension
+kinds this is the strictest, and the
+<a href="../extensions/index.html#how-an-extension-is-found">extensions chapter</a>
+compares them. See <a href="migrations/index.html">Migrations</a>.</li>
+<li><strong>An instance assigned to a position.</strong> An administrator creates an
+<em>instance</em> in the Module Manager, gives it a title, picks a template
+position, sets the access level and the menu assignments, and publishes it.
+Several instances of the same module can exist at once, each with its own
+parameters. Everything the loader knows about an instance comes from
+<code>#__modules</code> and <code>#__modules_menu</code>.</li>
+</ol>
+<p>Neither failure says anything. A module with no extension row is missing from
+a dropdown; a module with no instance is missing from the page.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Positions belong to the template, not to the module. Your
+module never names a position, and the position picker only lists what the
+active template declared. Assign an instance to a position the active
+template's <code>index.php</code> never includes and it renders nothing, with no error.
+See <a href="loading/index.html#positions-belong-to-the-template">Loading</a>.</p>
+</aside>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="migrations/index.html">Migrations</a> — registering the module with the CMS.</li>
@@ -239,7 +306,7 @@ and article content.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/deployext/index.html" rel="prev"><span>Previous</span>Deploying extensions</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/README.md">Edit this page on GitHub</a>

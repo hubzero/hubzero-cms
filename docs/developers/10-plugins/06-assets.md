@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/plugins/assets
 -->
 # Assets
@@ -11,6 +11,13 @@ live beside the plugin's code and are pushed to the document by helpers named
 `css()`, `js()`, and `img()` — available both on the plugin class and on a
 plugin view, though the two are different methods with different third
 arguments.
+
+Most plugins need none of this. `plg_bookings_notify` renders a mail body and
+nothing that reaches a browser, so it ships no `assets` directory at all. This
+chapter is for the group tabs, member panels and project steps that do draw
+something on a page — and its whole content is the answer to one question:
+where does the framework look for the file, and what happens when it is not
+there.
 
 ## Where assets live
 
@@ -35,6 +42,13 @@ name for you:
   `plg_members_blog`;
 - the file name defaults to the plugin's *element*, the third segment of that
   string — `blog`.
+
+"Third segment" is literal: `Hubzero\Document\Asset\File` splits the
+extension name on underscores and takes `$parts[1]` as the group directory and
+`$parts[2]` as the element. A group or element name containing an underscore
+resolves to a directory that does not exist, and by the rule at the end of this
+chapter that means nothing loads and nothing complains. See
+[Characters in the two names](02-structure.md#characters-in-the-two-names).
 
 So `blog.css` and `blog.js` are what `$this->css()->js()` loads, and
 `forum.css` is what the groups forum plugin loads. Name your files after the

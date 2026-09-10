@@ -133,6 +133,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Elements and typography</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-this-is-a-contract-and-not-a-suggestion">Why this is a contract and not a suggestion</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-grid">The grid</a></li>
 <li class="toc__item toc__item--l3"><a href="#fraction-classes">Fraction classes</a></li>
 <li class="toc__item toc__item--l3"><a href="#collapsing">Collapsing</a></li>
@@ -180,6 +181,24 @@
 <p>The classes shared between the templates and the components. Component views
 emit this markup and expect your template to style it, so these are the ones
 you cannot rename.</p>
+<h2 id="why-this-is-a-contract-and-not-a-suggestion">Why this is a contract and not a suggestion</h2>
+<p>A template is written once and then wraps markup written by other people, most
+of it years earlier. The only thing keeping those two halves compatible is this
+set of class names. <code>com_bookings</code> prints <code>&lt;div class=&quot;col span4&quot;&gt;</code> and
+<code>&lt;p class=&quot;error&quot;&gt;</code> without knowing which template will draw them; your template
+supplies the rules without knowing what will use them.</p>
+<p>That gives you two jobs and one prohibition:</p>
+<ul>
+<li><strong>Style all of it.</strong> A template that never defines <code>.aside</code> leaves every
+component page without its sidebar. That failure is silent and looks like a
+bug in the component.</li>
+<li><strong>Restyle freely.</strong> Colours, spacing, type — none of that is fixed.</li>
+<li><strong>Do not rename any of it.</strong> There is no alias layer. Renaming <code>.subject</code>
+breaks every component at once.</li>
+</ul>
+<p>When you write markup of your own — in a layout, or in an
+<a href="../overrides/index.html">override</a> — use these classes rather than inventing new ones,
+so a later template can restyle your page along with everything else.</p>
 <p>The sources are in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/assets/less"><code>core/assets/less</code></a>, with compiled
 equivalents in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/assets/css"><code>core/assets/css</code></a> for anything not
 written in LESS:</p>
@@ -514,7 +533,7 @@ a &quot;next&quot; control:</p>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../fontcons/index.html" rel="prev"><span>Previous</span>Fontcons</a><a class="pager__next" href="../accessibility/index.html" rel="next"><span>Next</span>Accessibility</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/13-elements.md">Edit this page on GitHub</a>

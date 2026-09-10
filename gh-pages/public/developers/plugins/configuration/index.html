@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Configuration · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A plugin&#x27;s parameters are declared in its XML manifest, edited by an administrator in the Plugin Manager, stored as JSON in the column of its row, and read…">
+  <meta name="description" content="Parameters are how a plugin asks the hub&#x27;s administrator a question it cannot answer itself. cannot know which address the lab&#x27;s manager reads, and hard-coding…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/configuration/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -172,13 +172,36 @@
         </header>
         
         <div class="prose">
-<p>A plugin's parameters are declared in its XML manifest, edited by an
-administrator in the Plugin Manager, stored as JSON in the <code>params</code> column of
-its <code>#__extensions</code> row, and read back as a <code>Hubzero\Config\Registry</code>.</p>
+<p>Parameters are how a plugin asks the hub's administrator a question it cannot
+answer itself. <code>plg_bookings_notify</code> cannot know which address the lab's
+manager reads, and hard-coding it would make the plugin useful on exactly one
+hub. So it declares a <code>manager_email</code> field, the administrator fills it in
+from the Plugin Manager, and the plugin reads it back.</p>
+<p>The route is: declared in the XML manifest, edited in the Plugin Manager,
+stored as JSON in the <code>params</code> column of the plugin's <code>#__extensions</code> row, and
+read back as a <code>Hubzero\Config\Registry</code> on <code>$this-&gt;params</code>. Every step of
+that lives in the row — which is one more reason a plugin without one is not
+merely inert. There is nowhere for its settings to be.</p>
 <h2 id="declaring-fields">Declaring fields</h2>
 <p>The manifest's <code>&lt;config&gt;</code> element holds one <code>&lt;fields name=&quot;params&quot;&gt;</code>
-containing one or more <code>&lt;fieldset&gt;</code>s. Each fieldset becomes a tab on the edit
-form; each <code>&lt;field&gt;</code> is one parameter:</p>
+containing one or more <code>&lt;fieldset&gt;</code>s. Each <code>&lt;field&gt;</code> is one parameter:</p>
+<pre><code class="language-xml">&lt;config&gt;
+	&lt;fields name=&quot;params&quot;&gt;
+		&lt;fieldset name=&quot;basic&quot;&gt;
+			&lt;field name=&quot;manager_email&quot; type=&quot;text&quot; size=&quot;40&quot; default=&quot;&quot;
+				label=&quot;PLG_BOOKINGS_NOTIFY_MANAGER_EMAIL&quot;
+				description=&quot;PLG_BOOKINGS_NOTIFY_MANAGER_EMAIL_DESC&quot; /&gt;
+			&lt;field name=&quot;include_notes&quot; type=&quot;radio&quot; default=&quot;0&quot;
+				label=&quot;PLG_BOOKINGS_NOTIFY_INCLUDE_NOTES&quot;
+				description=&quot;PLG_BOOKINGS_NOTIFY_INCLUDE_NOTES_DESC&quot;&gt;
+				&lt;option value=&quot;0&quot;&gt;JNO&lt;/option&gt;
+				&lt;option value=&quot;1&quot;&gt;JYES&lt;/option&gt;
+			&lt;/field&gt;
+		&lt;/fieldset&gt;
+	&lt;/fields&gt;
+&lt;/config&gt;
+</code></pre>
+<p>The shipped <code>plg_content_formatwiki</code> is the same shape:</p>
 <pre><code class="language-xml">	&lt;config&gt;
 		&lt;fields name=&quot;params&quot;&gt;
 			&lt;fieldset name=&quot;basic&quot;&gt;
@@ -220,50 +243,72 @@ form; each <code>&lt;field&gt;</code> is one parameter:</p>
 </tr>
 </tbody>
 </table>
-<p><code>&lt;field type=&quot;spacer&quot; /&gt;</code> inserts a gap and takes no value.</p>
-<p>A plugin with several groups of settings splits them across fieldsets, as
-<code>plg_groups_forum</code> does with a <code>basic</code> fieldset for access and display and a
-<code>forum</code> fieldset for threading behaviour.</p>
+<p><code>&lt;field type=&quot;spacer&quot; /&gt;</code> inserts a gap and takes no value. See
+<a href="../../extensions/parameters/index.html">Parameters</a> for the full field type list,
+which is shared with components and modules.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Each fieldset becomes a collapsible panel, and the panel's
+heading is <code>$fieldSet-&gt;label</code> if the fieldset declares one and
+<code>COM_PLUGINS_{NAME}_FIELDSET_LABEL</code> otherwise. Only <code>basic</code> and <code>advanced</code>
+have that string defined. Name a fieldset anything else without a <code>label</code>
+attribute — <code>&lt;fieldset name=&quot;mail&quot;&gt;</code> — and the administrator sees the literal
+text <code>COM_PLUGINS_MAIL_FIELDSET_LABEL</code> above your fields. A dozen shipped
+plugins do this, <code>plg_groups_forum</code> among them. Either use <code>basic</code>, or give
+the fieldset a <code>label</code> of your own.</p>
+</aside>
 <h2 id="reading-parameters-in-the-plugin">Reading parameters in the plugin</h2>
 <p>Every plugin instance has its parameters ready before any event fires: the
 constructor takes them from the <code>#__extensions</code> row and wraps them in a
 <code>Registry</code>.</p>
-<pre><code class="language-php">class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
+<pre><code class="language-php">public function onReservationCreate($reservation)
 {
-    public function onContentPrepare($context, &amp;$article, &amp;$params, $page = 0)
-    {
-        if ($this-&gt;params-&gt;get('convertFormat'))
-        {
-            // ...
-        }
-    }
+	if (!($to = $this-&gt;params-&gt;get('manager_email')))
+	{
+		return;
+	}
+
+	$notes = $this-&gt;params-&gt;get('include_notes', 0);
+	// ...
 }
 </code></pre>
-<p>Always read through <code>get()</code> with a default. A plugin registered before you
-added a field has no value for it, and <code>get('newfield')</code> returns null:</p>
+<p>Always read through <code>get()</code> with a default, and check the value before using
+it. <code>default</code> in the manifest is what the <em>form</em> shows; it is not written to
+the row until somebody saves the form, and a plugin registered by a migration
+before anyone opened that form has no value for the field at all. So does a
+plugin registered before you added the field in a later release:</p>
 <pre><code class="language-php">$limit = (int) $this-&gt;params-&gt;get('display_limit', 50);
 </code></pre>
+<p>A missing parameter therefore reads as <code>null</code>, not as the manifest default,
+and a plugin that trusts the manifest fails on exactly the hubs that never
+touched its settings — which is most of them.</p>
 <h2 id="reading-another-plugin-s-parameters">Reading another plugin's parameters</h2>
 <p>The <code>Plugin</code> facade fronts
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader</code></a>, and
 <code>params()</code> takes the group and the plugin name, in that order, returning a
 <code>Registry</code>:</p>
-<pre><code class="language-php">$params = Plugin::params('content', 'formatwiki');
+<pre><code class="language-php">$params = Plugin::params('bookings', 'notify');
 
-echo $params-&gt;get('convertFormat');
+echo $params-&gt;get('manager_email');
 </code></pre>
 <p><code>Plugin::byType('authentication')</code> returns the raw rows for a whole group,
 each with a <code>params</code> string on it — which is what <code>mod_login</code> uses to find
 each authentication provider's <code>display_name</code>:</p>
 <pre><code class="language-php">foreach (Plugin::byType('authentication') as $p)
 {
-    $pparams = new Registry($p-&gt;params);
-    $display = $pparams-&gt;get('display_name', ucfirst($p-&gt;name));
+	$pparams = new Registry($p-&gt;params);
+	$display = $pparams-&gt;get('display_name', ucfirst($p-&gt;name));
 }
 </code></pre>
 <p><code>Hubzero\Plugin\Plugin::getParams($name, $folder)</code> is a static shortcut that
-queries the table directly. Note that its arguments are the other way round
-from <code>Plugin::params()</code>: name first, folder second.</p>
+queries the table directly.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Two things about it. Its arguments are the other way round from
+<code>Plugin::params()</code> — name first, folder second — and the two calls read the
+same as each other, so a swap does not look wrong. And its query carries
+<code>AND enabled=1</code>, so a disabled plugin's parameters come back as an empty
+<code>Registry</code> rather than as the stored values. Both failures produce defaults
+where you expected settings, and neither raises anything.</p>
+</aside>
 <h2 id="per-object-parameters">Per-object parameters</h2>
 <p>Some plugins need different settings for each group, project, or member they
 run for, not one setting for the whole site. That is what
@@ -271,36 +316,39 @@ run for, not one setting for the whole site. That is what
 provides, backed by the <code>#__plugin_params</code> table with <code>object_id</code>, <code>folder</code>,
 and <code>element</code> columns.</p>
 <pre><code class="language-php">$this-&gt;params = \Hubzero\Plugin\Params::getParams(
-    $member-&gt;get('id'),
-    'members',
-    $this-&gt;_name
+	$member-&gt;get('id'),
+	'members',
+	$this-&gt;_name
 );
 </code></pre>
-<p><code>getParams()</code> reads the plugin's global parameters, merges the per-object row
-on top, and returns the result — so an object that has never been customised
-falls back to the site-wide settings. <code>getCustomParams()</code> returns only the
-per-object values and <code>getDefaultParams()</code> only the global ones.</p>
+<p><code>getParams($oid, $folder, $element)</code> reads the plugin's global parameters,
+merges the per-object row on top, and returns the result — so an object that
+has never been customised falls back to the site-wide settings.
+<code>getCustomParams()</code> returns only the per-object values and
+<code>getDefaultParams()</code> only the global ones.</p>
 <p><code>plgMembersBlog</code> does exactly this, then sets a few runtime-only values on the
 same Registry to carry authorisation decisions into its views:</p>
 <pre><code class="language-php">if ($user-&gt;get('id') == $member-&gt;get('id'))
 {
-    $this-&gt;params-&gt;set('access-edit-comment', true);
-    $this-&gt;params-&gt;set('access-delete-comment', true);
+	$this-&gt;params-&gt;set('access-edit-comment', true);
+	$this-&gt;params-&gt;set('access-delete-comment', true);
 }
 </code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Overwriting <code>$this-&gt;params</code> like this replaces the plugin's
 configuration for the rest of the request. It is the established pattern in
 the <code>groups</code>, <code>members</code>, and <code>projects</code> groups, but it means a later method
-on the same instance sees the per-object merge, not the global settings.</p>
+on the same instance sees the per-object merge, not the global settings.
+Plugin instances live for the whole request and are shared across every
+trigger in it.</p>
 </aside>
 <h2 id="changing-parameters-from-a-migration">Changing parameters from a migration</h2>
 <p>Use <code>savePluginParams($folder, $element, $params)</code>, reading the current values
-first with <code>getParams('plg_group_name')</code> so you merge rather than replace. See
-<a href="../migrations/index.html">Migrations</a>.</p>
+first with <code>getParams('plg_group_name')</code> because the macro replaces the column
+rather than merging into it. See <a href="../migrations/index.html#shipping-default-parameters">Migrations</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../assets/index.html" rel="prev"><span>Previous</span>Assets</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/07-configuration.md">Edit this page on GitHub</a>

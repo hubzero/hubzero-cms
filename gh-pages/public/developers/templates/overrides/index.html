@@ -129,13 +129,16 @@
 <li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Output overrides</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-this-is-the-chapter-that-matters">Why this is the chapter that matters</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-overrides-live">Where overrides live</a></li>
-<li class="toc__item toc__item--l2"><a href="#component-layouts">Component layouts</a></li>
-<li class="toc__item toc__item--l3"><a href="#layout-names">Layout names</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-five-rules">The five rules</a></li>
+<li class="toc__item toc__item--l2"><a href="#rule-1-the-template-is-searched-first">Rule 1: the template is searched first</a></li>
+<li class="toc__item toc__item--l2"><a href="#rule-2-the-directory-is-named-for-the-request">Rule 2: the directory is named for the request</a></li>
+<li class="toc__item toc__item--l2"><a href="#rule-3-the-layout-is-display">Rule 3: the layout is display</a></li>
 <li class="toc__item toc__item--l3"><a href="#sub-layouts">Sub-layouts</a></li>
-<li class="toc__item toc__item--l2"><a href="#plugin-layouts">Plugin layouts</a></li>
+<li class="toc__item toc__item--l2"><a href="#rule-4-plugin-views-have-no-fallback">Rule 4: plugin views have no fallback</a></li>
+<li class="toc__item toc__item--l2"><a href="#rule-5-asset-paths-are-flat">Rule 5: asset paths are flat</a></li>
 <li class="toc__item toc__item--l2"><a href="#module-layouts">Module layouts</a></li>
-<li class="toc__item toc__item--l2"><a href="#stylesheets-and-scripts">Stylesheets and scripts</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-assets">System assets</a></li>
 <li class="toc__item toc__item--l2"><a href="#images">Images</a></li>
 <li class="toc__item toc__item--l2"><a href="#module-chrome">Module chrome</a></li>
@@ -185,8 +188,39 @@ plugin produces, without touching the extension. Put a file of the right name
 in the right place under the template's <code>html</code> directory and the framework
 finds it first. Overrides survive upgrades, because the extension's own files
 are never edited.</p>
+<h2 id="why-this-is-the-chapter-that-matters">Why this is the chapter that matters</h2>
+<p>Most of what a hub actually asks for is not a new template. It is <em>this one
+screen, but with our wording</em>, or <em>this list, but without that column</em>. There
+are three ways to do that and only one of them survives an upgrade:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Survives an upgrade?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Edit the file in <code>core/components/…</code></td>
+<td>No. Replaced.</td>
+</tr>
+<tr>
+<td>Fork the component into <code>app/components/…</code></td>
+<td>Yes, but you now maintain a component.</td>
+</tr>
+<tr>
+<td>Put a layout of the same name under your template's <code>html/</code></td>
+<td>Yes.</td>
+</tr>
+</tbody>
+</table>
+<p>The third is what this chapter is about. <code>northgate</code> uses it for exactly one
+thing worth the effort: <code>com_bookings</code>' instrument page, where Northgate needs
+its own booking-policy text above the calendar. Everything else it leaves
+alone.</p>
 <p>Every override belongs to one template. Switch template and the overrides go
-with it.</p>
+with it — which is a feature when two partner institutions share a hub, and a
+surprise when someone changes the default style and half the wording reverts.</p>
 <h2 id="where-overrides-live">Where overrides live</h2>
 <p>The root is <code>App::get('template')-&gt;path . '/html'</code> — the active template's
 directory plus <code>html</code>. That directory is <code>app/templates/{name}</code> when it
@@ -200,8 +234,21 @@ replaced on upgrade. Copy the template into <code>app/templates</code> first.</p
 </aside>
 <p>None of the shipped templates overrides a layout. Kimera's <code>html</code> directory
 holds 32 files and every one of them is a stylesheet; Kameleon's holds
-<code>modules.php</code> and nothing else. Use them as examples of asset overrides, not layout ones.</p>
-<h2 id="component-layouts">Component layouts</h2>
+<code>modules.php</code> and nothing else. Use them as examples of asset overrides, not
+layout ones.</p>
+<h2 id="the-five-rules">The five rules</h2>
+<p>Everything below is an application of these. If you remember nothing else,
+remember these.</p>
+<ol>
+<li><strong>The template is searched first, then the extension.</strong> Nothing merges; the
+first file found wins outright.</li>
+<li><strong>The override directory is named for the request's <code>option</code></strong>, not for the
+component that owns the view.</li>
+<li><strong>A component layout is called <code>display</code></strong>, not <code>default</code>.</li>
+<li><strong>A plugin view has no fallback above its own <code>tmpl</code> directory.</strong></li>
+<li><strong>Asset override paths are flat.</strong> No <code>assets</code>, no <code>css</code>, no <code>js</code>.</li>
+</ol>
+<h2 id="rule-1-the-template-is-searched-first">Rule 1: the template is searched first</h2>
 <p>A component view resolves its layout through
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/View.php"><code>Hubzero\View\View::setPath()</code></a>,
 which builds the search list:</p>
@@ -248,27 +295,49 @@ searched first. For a component view the order is:</p>
 <li><code>{component}/{client}/views/{view}/tmpl/</code></li>
 <li><code>{component}/{client}/views/{view}/</code></li>
 </ol>
-<p><code>{option}</code> is the <code>option</code> request variable — <code>com_blog</code>, <code>com_kb</code> — and
-<code>{view}</code> is the view's name. So the override of</p>
-<pre><code>core/components/com_blog/site/views/entries/tmpl/display.php
+<p>So the override of</p>
+<pre><code>app/components/com_bookings/site/views/instruments/tmpl/display.php
 </code></pre>
 <p>is</p>
-<pre><code>app/templates/mytemplate/html/com_blog/entries/display.php
+<pre><code>app/templates/northgate/html/com_bookings/instruments/display.php
 </code></pre>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The override directory is named for the component <strong>of the current
-request</strong>, not for the component that owns the view. A view rendered by one
-component on behalf of another is overridden under the requesting
-component's name.</p>
-</aside>
-<h3 id="layout-names">Layout names</h3>
-<p>The layout name is the file name. <code>Hubzero\Component\View</code> defaults it to
-<code>display</code>, not <code>default</code>, and a controller sets another with
+<p><strong>Copy the file, do not write a new one.</strong> The winner is used whole; nothing
+from the extension's version is merged in. An override that contains only the
+paragraph you wanted to add renders a page that is only that paragraph.</p>
+<p><strong>When the layout is not found anywhere</strong>, <code>loadTemplate()</code> throws
+<code>InvalidLayoutException</code> with code 404 — <em>Layout display not found</em>. A
+misspelled override filename does not silently fall through to the component's
+copy if the component has no <code>default.php</code> either; it takes the page down.</p>
+<h2 id="rule-2-the-directory-is-named-for-the-request">Rule 2: the directory is named for the request</h2>
+<p><code>{option}</code> is the <code>option</code> request variable — <code>com_bookings</code>, <code>com_kb</code> — read
+fresh from the request, not from the view. Two consequences, and both bite.</p>
+<p><strong>A view rendered on behalf of another component is overridden under the
+requesting component's name.</strong> If <code>com_bookings</code> builds a <code>com_tags</code> view
+object to draw its tag cloud, the override for it is
+<code>html/com_bookings/…</code>, not <code>html/com_tags/…</code>.</p>
+<p><strong>An override only fires on requests that carry its <code>option</code>.</strong> A
+<code>com_bookings</code> view rendered inside a group page — where <code>option=com_groups</code> —
+does not see <code>html/com_bookings/</code>. The override is not broken; the request is a
+different one. If your override works on the component's own pages and nowhere
+else, this is why.</p>
+<p>A view can be told otherwise: passing <code>override_path</code> in a view's construction
+config replaces the request's <code>option</code> with a fixed directory name. Component
+code that renders another component's views should set it. Most does not.</p>
+<h2 id="rule-3-the-layout-is-display">Rule 3: the layout is <code>display</code></h2>
+<p><code>Hubzero\Component\View</code> declares <code>public $_layout = 'display';</code>. The abstract
+<code>Hubzero\View\View</code> it extends declares <code>'default'</code>. So a component view's
+layout is <code>display.php</code> unless a controller sets another with
 <code>$view-&gt;setLayout('edit')</code>.</p>
+<p>That is the first thing to check when an override does nothing: a file named
+<code>default.php</code> in the right directory is simply never asked for.</p>
 <p>If the named layout is not found anywhere on the search path,
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/View.php"><code>loadTemplate()</code></a> falls back to
-<code>default.php</code>. That fallback is why components such as <code>com_login</code>, whose
-views ship only <code>tmpl/default.php</code>, render at all.</p>
+<code>default.php</code> before giving up. That fallback is why components such as
+<code>com_login</code>, whose views ship only <code>tmpl/default.php</code>, render at all — and it
+is also why a <code>default.php</code> override sometimes <em>does</em> work, which makes the
+rule harder to learn. Name it <code>display.php</code>.</p>
+<p><code>setLayout()</code> also accepts a <code>{template}:{layout}</code> form, which reads the layout
+from a named template rather than the active one.</p>
 <h3 id="sub-layouts">Sub-layouts</h3>
 <p>A layout can render a fragment of itself by calling <code>loadTemplate()</code> with a
 suffix. The file taken is <code>{layout}_{suffix}.php</code>:</p>
@@ -278,16 +347,18 @@ suffix. The file taken is <code>{layout}_{suffix}.php</code>:</p>
 <code>default_batch.php</code> from the same directory. You pass <code>batch</code>, not
 <code>default_batch</code> — the layout name is already known.</p>
 <p>Each sub-layout is looked up separately, on the same search path, so a
-template can override one fragment and leave the rest alone. Copying</p>
+template can override one fragment and leave the rest alone. This is the
+cheapest kind of override there is: copying</p>
 <pre><code>core/components/com_categories/admin/views/categories/tmpl/default_batch.php
 </code></pre>
 <p>to</p>
-<pre><code>app/templates/myadmintemplate/html/com_categories/categories/default_batch.php
+<pre><code>app/templates/northgateadmin/html/com_categories/categories/default_batch.php
 </code></pre>
-<p>replaces the batch panel while <code>default.php</code> still comes from the component.
-<code>com_categories</code> is an administrator component, so that override belongs to
-the administrator template.</p>
-<h2 id="plugin-layouts">Plugin layouts</h2>
+<p>replaces the batch panel while <code>default.php</code> still comes from the component, so
+an upgrade to the rest of the screen reaches you normally. <code>com_categories</code> is
+an administrator component, so that override belongs to the administrator
+template.</p>
+<h2 id="rule-4-plugin-views-have-no-fallback">Rule 4: plugin views have no fallback</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/View.php"><code>Hubzero\Plugin\View</code></a> builds
 its own search list:</p>
 <pre><code class="language-php">	protected function setPath($type, $path)
@@ -318,10 +389,79 @@ a directory inside it. So</p>
 <pre><code>core/plugins/groups/forum/views/categories/tmpl/display.php
 </code></pre>
 <p>is overridden at</p>
-<pre><code>app/templates/mytemplate/html/plg_groups_forum/categories/display.php
+<pre><code>app/templates/northgate/html/plg_groups_forum/categories/display.php
 </code></pre>
-<p>Unlike component views, plugin views search only the <code>tmpl</code> directory and the
-override — there is no fallback to the view directory above <code>tmpl</code>.</p>
+<p>Compare that with <code>View::setPath()</code> above. The component version pushes
+<code>dirname($path)</code> onto the stack when the path ends in <code>tmpl</code>, giving a third
+search location; the plugin version does not. A plugin view searches exactly
+two places — the override and the plugin's own <code>tmpl</code> directory — so a layout
+sitting one level up, beside <code>tmpl/</code>, is never found.</p>
+<h2 id="rule-5-asset-paths-are-flat">Rule 5: asset paths are flat</h2>
+<p>Every asset pushed with <code>$this-&gt;css()</code>, <code>$this-&gt;js()</code> or the
+<code>Hubzero\Document\Assets</code> statics goes through
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File</code></a>,
+which checks the template before the extension:</p>
+<pre><code class="language-php">	public function overridePath()
+	{
+		if (!isset($this-&gt;paths['override']))
+		{
+			$this-&gt;paths['override']  = \App::get('template')-&gt;path . DS . 'html';
+			$this-&gt;paths['override'] .= DS . $this-&gt;extensionName() . DS . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '') . $this-&gt;file();
+		}
+		return $this-&gt;paths['override'];
+	}
+</code></pre>
+<p>The override path is the extension's name and the file's name, with no
+<code>assets</code>, no <code>css</code> and no <code>js</code> directory in between, whatever the source file's
+own path was:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Override</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/components/com_bookings/site/assets/css/bookings.css</code></td>
+<td><code>html/com_bookings/bookings.css</code></td>
+</tr>
+<tr>
+<td><code>app/components/com_bookings/site/assets/js/bookings.js</code></td>
+<td><code>html/com_bookings/bookings.js</code></td>
+</tr>
+<tr>
+<td><code>core/modules/mod_reportproblems/assets/css/mod_reportproblems.css</code></td>
+<td><code>html/mod_reportproblems/mod_reportproblems.css</code></td>
+</tr>
+<tr>
+<td><code>core/plugins/groups/forum/assets/css/forum.css</code></td>
+<td><code>html/plg_groups_forum/forum.css</code></td>
+</tr>
+<tr>
+<td><code>core/plugins/groups/forum/assets/js/forum.js</code></td>
+<td><code>html/plg_groups_forum/forum.js</code></td>
+</tr>
+</tbody>
+</table>
+<p>Kimera's <code>html</code> directory is a real set of these — <code>com_blog/blog.css</code>,
+<code>com_kb/kb.css</code>, <code>mod_notices/mod_notices.css</code>,
+<code>plg_groups_citations/citations.css</code> and twenty-odd more.</p>
+<p>Mirroring the source path — <code>html/com_bookings/assets/css/bookings.css</code> — is
+the mistake to expect, and it fails by doing nothing: the file is simply not
+found and the component's own stylesheet loads instead.</p>
+<p>An override replaces the file; it does not add to it. Start from a copy of the
+extension's stylesheet, or you lose every rule it had. For a small change,
+prefer a rule in your template's own stylesheet over an override you now have
+to keep in step with the component.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Because the path is flat, two assets of the same name from the same
+extension collide. <code>plg_groups_forum</code> ships both <code>forum.css</code> and <code>like.css</code>;
+those are fine. An extension shipping <code>assets/css/x.css</code> and
+<code>assets/print/x.css</code> could not have both overridden.</p>
+</aside>
+<p>See <a href="../css/index.html#where-the-file-is-looked-for">Cascading style sheets</a> for the
+source paths these fall back to.</p>
 <h2 id="module-layouts">Module layouts</h2>
 <p>Modules do not use a view object. <code>Hubzero\Module\Module::display()</code> requires
 one file, chosen by
@@ -380,73 +520,16 @@ one or more layouts in <code>tmpl/</code>:</p>
     tmpl/default.php
 </code></pre>
 <p>Its layout is overridden at
-<code>app/templates/mytemplate/html/mod_reportproblems/default.php</code>.</p>
+<code>app/templates/northgate/html/mod_reportproblems/default.php</code>.</p>
 <p>Two things are specific to modules. The layout comes from the module
 instance's own <code>layout</code> parameter, so an administrator can point one instance
 at a different file. And the parameter accepts a <code>{template}:{layout}</code> form,
 which reads the layout from a <em>named</em> template rather than the active one —
 <code>_</code> means the active template.</p>
-<h2 id="stylesheets-and-scripts">Stylesheets and scripts</h2>
-<p>Every asset pushed with <code>$this-&gt;css()</code>, <code>$this-&gt;js()</code> or the
-<code>Hubzero\Document\Assets</code> statics goes through
-<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File</code></a>,
-which checks the template before the extension:</p>
-<pre><code class="language-php">	public function overridePath()
-	{
-		if (!isset($this-&gt;paths['override']))
-		{
-			$this-&gt;paths['override']  = \App::get('template')-&gt;path . DS . 'html';
-			$this-&gt;paths['override'] .= DS . $this-&gt;extensionName() . DS . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '') . $this-&gt;file();
-		}
-		return $this-&gt;paths['override'];
-	}
-</code></pre>
-<p>The override path is <strong>flat</strong>. It is the extension's name and the file's name,
-with no <code>assets</code>, no <code>css</code> and no <code>js</code> directory in between, whatever the
-source file's own path was:</p>
-<table>
-<thead>
-<tr>
-<th>Source</th>
-<th>Override</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>core/components/com_groups/site/assets/css/groups.css</code></td>
-<td><code>html/com_groups/groups.css</code></td>
-</tr>
-<tr>
-<td><code>core/modules/mod_reportproblems/assets/css/mod_reportproblems.css</code></td>
-<td><code>html/mod_reportproblems/mod_reportproblems.css</code></td>
-</tr>
-<tr>
-<td><code>core/plugins/groups/forum/assets/css/forum.css</code></td>
-<td><code>html/plg_groups_forum/forum.css</code></td>
-</tr>
-<tr>
-<td><code>core/plugins/groups/forum/assets/js/forum.js</code></td>
-<td><code>html/plg_groups_forum/forum.js</code></td>
-</tr>
-</tbody>
-</table>
-<p>Kimera's <code>html</code> directory is a real set of these — <code>com_blog/blog.css</code>,
-<code>com_kb/kb.css</code>, <code>mod_notices/mod_notices.css</code>,
-<code>plg_groups_citations/citations.css</code> and twenty-odd more.</p>
-<p>An override replaces the file; it does not add to it. Start from a copy of the
-extension's stylesheet, or you lose every rule it had.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Because the path is flat, two assets of the same name from the same
-extension collide. <code>plg_groups_forum</code> ships both <code>forum.css</code> and <code>like.css</code>;
-those are fine. An extension shipping <code>assets/css/x.css</code> and
-<code>assets/print/x.css</code> could not have both overridden.</p>
-</aside>
-<p>See <a href="../css/index.html#where-the-file-is-looked-for">Cascading style sheets</a> for the
-source paths these fall back to.</p>
 <h2 id="system-assets">System assets</h2>
 <p>The shared stylesheets and scripts in <code>core/assets</code> are overridable too. They
-use the extension name <code>system</code>, and they are the one case that keeps a
-directory segment — the asset's type:</p>
+use the extension name <code>system</code>, and they are the one exception to rule 5 — they
+keep a directory segment, the asset's type:</p>
 <pre><code>{template}/html/system/css/introduction.css
 {template}/html/system/js/jquery.fancybox.js
 </code></pre>
@@ -492,7 +575,9 @@ function modChrome_none($module, &amp;$params, &amp;$attribs)
 <p>The value is split on spaces and each name applied in turn, so
 <code>style=&quot;xhtml outline&quot;</code> runs both. <code>outline</code> is appended automatically when a
 request carries <code>tp=1</code> <strong>and</strong> <strong>Preview Module Positions</strong> is enabled in the
-<code>com_templates</code> options; that is how the position names appear on the page.</p>
+<code>com_templates</code> options; that is how the position names appear on the page.
+That preview is the fastest way to answer &quot;which position is this?&quot; while you
+are building a layout.</p>
 <p>Kameleon adds one style of its own, <code>modChrome_cpanel</code>, for the control panel
 icons.</p>
 <h2 id="pagination">Pagination</h2>
@@ -513,7 +598,7 @@ and no code looks for it. To change pagination markup today, style it, or
 pass your own view object to <code>render()</code>.</p>
 </aside>
 <h2 id="quick-reference">Quick reference</h2>
-<p>Using a template named <code>mytemplate</code>:</p>
+<p>Using the template named <code>northgate</code>:</p>
 <table>
 <thead>
 <tr>
@@ -525,48 +610,53 @@ pass your own view object to <code>render()</code>.</p>
 <tbody>
 <tr>
 <td>A component layout</td>
-<td><code>core/components/com_blog/site/views/entries/tmpl/display.php</code></td>
-<td><code>app/templates/mytemplate/html/com_blog/entries/display.php</code></td>
+<td><code>app/components/com_bookings/site/views/instruments/tmpl/display.php</code></td>
+<td><code>app/templates/northgate/html/com_bookings/instruments/display.php</code></td>
 </tr>
 <tr>
 <td>A component sub-layout</td>
 <td><code>core/components/com_categories/admin/views/categories/tmpl/default_batch.php</code></td>
-<td><code>app/templates/myadmintemplate/html/com_categories/categories/default_batch.php</code></td>
+<td><code>app/templates/northgateadmin/html/com_categories/categories/default_batch.php</code></td>
 </tr>
 <tr>
 <td>A plugin layout</td>
 <td><code>core/plugins/groups/forum/views/categories/tmpl/display.php</code></td>
-<td><code>app/templates/mytemplate/html/plg_groups_forum/categories/display.php</code></td>
+<td><code>app/templates/northgate/html/plg_groups_forum/categories/display.php</code></td>
 </tr>
 <tr>
 <td>A module layout</td>
 <td><code>core/modules/mod_reportproblems/tmpl/default.php</code></td>
-<td><code>app/templates/mytemplate/html/mod_reportproblems/default.php</code></td>
+<td><code>app/templates/northgate/html/mod_reportproblems/default.php</code></td>
 </tr>
 <tr>
 <td>A component stylesheet</td>
-<td><code>core/components/com_groups/site/assets/css/groups.css</code></td>
-<td><code>app/templates/mytemplate/html/com_groups/groups.css</code></td>
+<td><code>app/components/com_bookings/site/assets/css/bookings.css</code></td>
+<td><code>app/templates/northgate/html/com_bookings/bookings.css</code></td>
 </tr>
 <tr>
 <td>A module stylesheet</td>
 <td><code>core/modules/mod_reportproblems/assets/css/mod_reportproblems.css</code></td>
-<td><code>app/templates/mytemplate/html/mod_reportproblems/mod_reportproblems.css</code></td>
+<td><code>app/templates/northgate/html/mod_reportproblems/mod_reportproblems.css</code></td>
 </tr>
 <tr>
 <td>A plugin stylesheet</td>
 <td><code>core/plugins/groups/forum/assets/css/forum.css</code></td>
-<td><code>app/templates/mytemplate/html/plg_groups_forum/forum.css</code></td>
+<td><code>app/templates/northgate/html/plg_groups_forum/forum.css</code></td>
 </tr>
 <tr>
 <td>A shared stylesheet</td>
 <td><code>core/assets/css/introduction.css</code></td>
-<td><code>app/templates/mytemplate/html/system/css/introduction.css</code></td>
+<td><code>app/templates/northgate/html/system/css/introduction.css</code></td>
+</tr>
+<tr>
+<td>An SVG icon</td>
+<td><code>core/assets/icons/edit.svg</code></td>
+<td><code>app/templates/northgate/html/icons/edit.svg</code></td>
 </tr>
 <tr>
 <td>Module chrome</td>
 <td><code>core/templates/system/html/modules.php</code></td>
-<td><code>app/templates/mytemplate/html/modules.php</code> (add styles; do not redeclare)</td>
+<td><code>app/templates/northgate/html/modules.php</code> (add styles; do not redeclare)</td>
 </tr>
 </tbody>
 </table>
@@ -576,13 +666,15 @@ pass your own view object to <code>render()</code>.</p>
 belong to the template already; see <a href="../layouts/index.html">Page layouts</a>.</li>
 <li><strong>Language strings.</strong> Those are replaced through the language override
 files, not through <code>html</code>; see <a href="../languages/index.html">Languages</a>.</li>
+<li><strong>Pagination markup.</strong> See the warning above.</li>
 <li><strong>Anything a view prints from a helper or a model.</strong> Overrides replace
 markup, not logic. If the string you want to change is built in PHP outside
-the layout, the override cannot reach it.</li>
+the layout, the override cannot reach it — and that is the point at which a
+plugin, or a change to the component, is the right answer instead.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../javascript/index.html" rel="prev"><span>Previous</span>JavaScript</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/09-overrides.md">Edit this page on GitHub</a>

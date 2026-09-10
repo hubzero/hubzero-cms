@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups/page_templates
 source-id: 3521
@@ -12,6 +12,12 @@ modified: 2014-09-10
 Most of a super group's pages render through the same template file. When one
 page, or a family of pages, needs a different layout, put a second file in the
 group's `template/` directory and the renderer picks it up.
+
+The Coastal Resilience Center has one page like that. Its field-site pages —
+one per instrumented site, a dozen of them and growing — need the map to run
+the full width, with no sidebar. Every other page is fine in `index.php`. That
+is exactly what page templates are for: a layout variation for some pages,
+not a second design.
 
 The mechanism is the candidate list in
 [`Components\Groups\Helpers\Template::_fetch()`](../../../core/components/com_groups/helpers/template.php),
@@ -44,15 +50,26 @@ template file from the site.
 They are tried in that order, then `default.php`, then `index.php`. The first
 file that exists wins.
 
+Which to use is a question of how many pages share the layout:
+
+- **One page, once.** `page-<alias>.php`. Nothing to configure.
+- **Several pages, and the list will grow.** A named template. The centre's
+  dozen field sites all point at one file, and adding the thirteenth is a
+  drop-down on the page form, not a deploy.
+- **Every page except the plugin tabs.** `page.php`.
+
 `page.php` is worth calling out: it applies to group *pages* only. A plugin
 tab — Wiki, Calendar, Forum — has no active page, so it renders through
-`default.php` or `index.php` no matter what `page.php` contains.
+`default.php` or `index.php` no matter what `page.php` contains. A template
+put in `page.php` and expected to frame the whole group is the commonest
+mistake here, and it shows up as the wiki looking wrong while the pages look
+right.
 
 ### A template named after the page
 
-The About Us page, alias `about-us` and id 6, uses `page-about-us.php` if
-that file exists, otherwise `page-6.php`. Nothing else is needed; the page
-does not have to be edited.
+The Field Sites index, alias `field-sites` and id 6, uses
+`page-field-sites.php` if that file exists, otherwise `page-6.php`. Nothing
+else is needed; the page does not have to be edited.
 
 Prefer the alias. The id is assigned by the database and means nothing to
 anyone reading the directory later.
@@ -62,9 +79,9 @@ anyone reading the directory later.
 A file becomes a named template by declaring a name in a comment near the top:
 
 ```php
-<?php
+<?php // app/site/groups/1051/template/fieldsite.php
 /*
-Template Name: My Custom Page
+Template Name: Field site
 */
 ```
 
@@ -76,6 +93,11 @@ shows, and the filename is what gets stored on the page.
 
 Two files never appear in the list, whatever they declare: `index.php` and
 `default.php`.
+
+> **Note:** The label is the array key, so two files declaring the same
+> **Template Name** collapse to one entry and the last file read wins. If a
+> template you just added is missing from the drop-down, check for a
+> duplicate label before you check anything else.
 
 ## Choosing one
 
@@ -101,7 +123,9 @@ above.
 The control only exists on a super group's pages, and on the site form only
 when the template directory holds at least one named template. The
 administrator's page form at **Users** → **Groups** shows it for every super
-group, empty list or not.
+group, empty list or not. So the first named template you add is the one that
+makes the control appear at all — until then a manager sees no **Template**
+setting and reasonably concludes the feature is missing.
 
 ## What the file receives
 
@@ -111,7 +135,8 @@ properties — `$this->group`, `$this->page`, `$this->tab` and
 [`<group:include>` tag](01-templating_system.md#include-tags). Most page
 templates are a copy of `index.php` with one part swapped out, so it is
 usually worth moving the shared header and footer into `template/includes/`
-and including them from both.
+and including them from both. The centre does that on the day it adds the
+second template, not the fourth: two copies of a header drift within a month.
 
 ## Include tags inside a page's content
 
@@ -127,9 +152,11 @@ whose allowed list is only:
 
 `content`, `menu`, `toolbar` and `googleanalytics` are template-only; used in
 page content they render as an HTML comment saying the include is not allowed
-there. `base` works as it does in a template: `template` resolves under
-`template/assets/js` or `template/assets/css`, anything else is a path
-segment under the group directory, and an omitted `base` looks in `uploads`.
+there. That comment is the whole error message — the page renders, the region
+is blank, and nothing is logged. `base` works as it does in a template:
+`template` resolves under `template/assets/js` or `template/assets/css`,
+anything else is a path segment under the group directory, and an omitted
+`base` looks in `uploads`.
 
 > **Warning:** The attribute for a position is `position`. Older
 > documentation spelled it `postion` and paired `type="modules"` with a
@@ -146,3 +173,8 @@ The wrapper is
 It emits `<div class="group-page page-<alias>">` around the content and, below
 it, the byline and the comment thread. Overriding it is the way to change
 those without touching core.
+
+> **Warning:** The in-page **Edit Page** control lives inside that byline
+> block, and the block is drawn only when the page's **Author Details**
+> setting is on — which is not the default. Copy the wrapper without reading
+> it and you can remove a manager's only in-page route to the editor.

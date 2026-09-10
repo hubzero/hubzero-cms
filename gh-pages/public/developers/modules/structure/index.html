@@ -173,31 +173,33 @@
         
         <div class="prose">
 <p>Everything about a module hangs off its directory name. Pick the name once —
-<code>mod_example</code> — and the entry file, the manifest, the language files, the CSS,
-the extension row, and the namespace all follow from it.</p>
+<code>mod_upcoming_bookings</code> — and the entry file, the manifest, the language
+files, the CSS, the extension row, and the namespace all follow from it.
+Getting one of them out of step is the usual reason a module that looks
+complete renders nothing, and none of the mismatches raise an error.</p>
 <h2 id="directory-layout">Directory layout</h2>
-<pre><code>app/modules/mod_example/
+<pre><code>app/modules/mod_upcoming_bookings/
     assets/
-        css/mod_example.css
+        css/mod_upcoming_bookings.css
         img/
-        js/mod_example.js
+        js/mod_upcoming_bookings.js
     language/en-GB/
-        en-GB.mod_example.ini
-        en-GB.mod_example.sys.ini
+        en-GB.mod_upcoming_bookings.ini
+        en-GB.mod_upcoming_bookings.sys.ini
     migrations/
-        Migration20260101000000ModExample.php
+        Migration20260101000000ModUpcomingBookings.php
     tmpl/
         default.php
         index.html
     composer.json
     helper.php
     index.html
-    mod_example.php
-    mod_example.xml
+    mod_upcoming_bookings.php
+    mod_upcoming_bookings.xml
 </code></pre>
-<p>Only <code>mod_example.php</code> and <code>mod_example.xml</code> are required. In practice a
-module that renders anything worth reading also has <code>helper.php</code> and
-<code>tmpl/default.php</code>.</p>
+<p>Only <code>mod_upcoming_bookings.php</code> and <code>mod_upcoming_bookings.xml</code> are required.
+In practice a module that renders anything worth reading also has <code>helper.php</code>
+and <code>tmpl/default.php</code>.</p>
 <table>
 <thead>
 <tr>
@@ -207,11 +209,11 @@ module that renders anything worth reading also has <code>helper.php</code> and
 </thead>
 <tbody>
 <tr>
-<td><code>mod_example.php</code></td>
+<td><code>mod_upcoming_bookings.php</code></td>
 <td>The entry point. Included by the loader with <code>$params</code> and <code>$module</code> in scope.</td>
 </tr>
 <tr>
-<td><code>mod_example.xml</code></td>
+<td><code>mod_upcoming_bookings.xml</code></td>
 <td>The manifest: name, client, files, and the parameter fields shown in the Module Manager.</td>
 </tr>
 <tr>
@@ -244,15 +246,18 @@ module that renders anything worth reading also has <code>helper.php</code> and
 </tr>
 </tbody>
 </table>
+<p>Only the first three produce output. The manifest and the migration are what
+make the module <em>reachable</em> — see <a href="../migrations/index.html">Migrations</a> — so write
+them early rather than last, or you will have a module you cannot place.</p>
 <h2 id="where-the-loader-looks">Where the loader looks</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::path()</code></a>
 resolves a module name to its entry file by trying four paths in order and
 returning the first that exists:</p>
 <ol>
-<li><code>app/modules/example/example.php</code></li>
-<li><code>app/modules/mod_example/mod_example.php</code></li>
-<li><code>core/modules/example/example.php</code></li>
-<li><code>core/modules/mod_example/mod_example.php</code></li>
+<li><code>app/modules/upcoming_bookings/upcoming_bookings.php</code></li>
+<li><code>app/modules/mod_upcoming_bookings/mod_upcoming_bookings.php</code></li>
+<li><code>core/modules/upcoming_bookings/upcoming_bookings.php</code></li>
+<li><code>core/modules/mod_upcoming_bookings/mod_upcoming_bookings.php</code></li>
 </ol>
 <p>Two things follow from that order. First, <code>app/</code> wins over <code>core/</code>, so a hub
 overrides a shipped module by copying the whole directory into <code>app/modules</code>
@@ -263,6 +268,12 @@ form so the directory, the extension element, and the asset paths all agree.</p>
 outside <code>[A-Za-z0-9_.-]</code> and adds the <code>mod_</code> prefix if it is missing. That is
 why <code>Module::name('login')</code> and <code>Module::name('mod_login')</code> reach the same
 module.</p>
+<p><code>path()</code> returns an empty string when none of the four exists, and <code>render()</code>
+skips the include rather than complaining. So a module whose entry file is
+misnamed — <code>upcoming_bookings.php</code> inside <code>mod_upcoming_bookings/</code>, a rename
+that missed one file — renders nothing at all. The name in the
+<code>#__extensions</code> row, the directory name, and the entry filename all have to be
+the same string.</p>
 <h2 id="namespaces-and-class-names">Namespaces and class names</h2>
 <p>The module class lives under the <code>Modules</code> namespace, in StudlyCase, with the
 <code>mod_</code> prefix dropped:</p>
@@ -286,19 +297,36 @@ module.</p>
 <td><code>mod_articles_archive</code></td>
 <td><code>Modules\ArticleArchive</code></td>
 </tr>
+<tr>
+<td><code>mod_upcoming_bookings</code></td>
+<td><code>Modules\UpcomingBookings</code></td>
+</tr>
 </tbody>
 </table>
 <p>Note the third row: the namespace tracks the directory loosely, not
 mechanically. Nothing enforces it, because the entry file <code>require_once</code>s
 <code>helper.php</code> and instantiates the class directly — no autoloader ever has to
 map the class name back to a path. For the same reason the class itself is
-conventionally, and freely, named <code>Helper</code>. Every core module uses <code>Helper</code>.</p>
+conventionally, and freely, named <code>Helper</code>. Ninety-nine of the 100 shipped
+modules use <code>Helper</code>, and so should yours: the loader finds the file, not the class, so a
+different class name buys nothing and surprises the next reader.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> The namespace makes unqualified class names resolve inside
-<code>Modules\Example</code> first. <code>User::get('id')</code> in a namespaced helper looks for
-<code>Modules\Example\User</code> and fatals with &quot;Class not found&quot;. Import each facade
-you use at the top of the file: <code>use User;</code>, <code>use Request;</code>, <code>use App;</code>. See
-<a href="../../foundation/facades/index.html">Facades</a>.</p>
+<p><strong>Warning:</strong> The class loader <em>can</em> resolve <code>Modules\…</code> classes, and it
+resolves them by collapsing the namespace segment to one lowercase word:
+<code>Modules\UpcomingBookings\Slot</code> is looked for in
+<code>modules/mod_upcomingbookings/</code>, which is not the directory you created.
+Sixteen shipped module directories carry an underscore and have the same
+problem. It costs nothing for <code>helper.php</code>, which is <code>require_once</code>d by
+path, but any <em>extra</em> class you add to an underscored module must be
+required by path too. See
+<a href="../../foundation/autoloading/index.html#the-per-kind-details-that-catch-people">Autoloading</a>.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The namespace also makes unqualified class names resolve inside
+<code>Modules\UpcomingBookings</code> first. <code>User::get('id')</code> in a namespaced helper
+looks for <code>Modules\UpcomingBookings\User</code> and fatals with &quot;Class not found&quot;.
+Import each facade you use at the top of the file: <code>use User;</code>,
+<code>use Request;</code>, <code>use App;</code>. See <a href="../../foundation/facades/index.html">Facades</a>.</p>
 </aside>
 <h2 id="site-and-administrator-modules">Site and administrator modules</h2>
 <p>A module belongs to one client, declared as <code>client=&quot;site&quot;</code> or
@@ -307,14 +335,27 @@ you use at the top of the file: <code>use User;</code>, <code>use Request;</code
 directory; the client is a property of the registration, not of the path.
 <code>Loader::all()</code> filters on <code>m.client_id</code>, so an administrator module is
 invisible to the site and vice versa.</p>
+<p><code>mod_upcoming_bookings</code> is a site module, <code>client=&quot;site&quot;</code> and <code>$client = 0</code>.
+A lab manager's version of the same list, in the administrator's control
+panel, is a <em>second</em> module with its own directory and its own row — one
+module cannot serve both clients. If the two would share query code, put that
+code on the <code>Reservation</code> model where both can call it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Set <code>client=&quot;administrator&quot;</code> in the manifest but leave the
+migration's <code>$client</code> at its default of <code>0</code> and the module registers as a
+site module. It then never appears in the administrator's Module Manager,
+and the manifest that says otherwise is not consulted.</p>
+</aside>
 <h2 id="adding-more">Adding more</h2>
 <p>Nothing stops a module from carrying models, helpers, or a <code>views</code> directory,
 and a few core modules do. But a module that has grown a controller and
 several screens is a component wearing a disguise; see
-<a href="../../components/index.html">Components</a>.</p>
+<a href="../../components/index.html">Components</a>. <code>mod_upcoming_bookings</code> stays small
+precisely because everything it knows about a reservation lives in
+<code>com_bookings</code>: the module queries a model and renders a list.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../controllers/index.html" rel="next"><span>Next</span>Controllers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/02-structure.md">Edit this page on GitHub</a>

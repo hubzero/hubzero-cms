@@ -186,6 +186,18 @@ job whether the task returned, threw, or fataled — so a broken task does not
 wedge the job or stop the others in the run. An exception is caught, its
 message printed against the job, and the run recorded.
 
+Three guarantees are worth knowing before you write a task, because they
+decide how defensive it has to be.
+
+- **The claim is atomic**, so two runners on a short interval cannot take
+  the same job. You do not need your own lock.
+- **A job left claimed by a process that died is reclaimed** once its
+  process is gone, so a fatal in your task does not retire the job
+  permanently.
+- **A job whose recurrence cannot be parsed keeps its next run time and is
+  retried** rather than wedging, so a bad schedule is a job that never
+  fires rather than a runner that stops.
+
 Print nothing from a task. It may run inside a web request rather than on
 the command line, and output there lands in the page.
 

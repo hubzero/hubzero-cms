@@ -176,6 +176,38 @@
 <p>A macro is the <code>[[Name(arguments)]]</code> markup a page author writes to call PHP.
 A super group can add macros of its own and replace any of the ones the hub
 ships, by putting classes in the group's <code>macros/</code> directory.</p>
+<p>Reach for one when the group's own editors need something computed <em>inside</em>
+ordinary page text, and need it more than once. The Coastal Resilience
+Center's macro is <code>[[GaugeStatus(pier-7)]]</code>: it reads the latest reading for a
+named gauge and prints it. A communications officer with no PHP writes that
+line into any page, in the middle of a paragraph, and it stays right.</p>
+<p>The alternatives are worth knowing before you write one:</p>
+<table>
+<thead>
+<tr>
+<th>The group needs</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A snippet inside prose the editors maintain</td>
+<td>a macro</td>
+</tr>
+<tr>
+<td>A block in a template position</td>
+<td>a group module</td>
+</tr>
+<tr>
+<td>A whole page in code</td>
+<td>a <a href="../php-pages/index.html">PHP page</a></td>
+</tr>
+<tr>
+<td>Its own URLs and records</td>
+<td>a <a href="../components/index.html">component</a></td>
+</tr>
+</tbody>
+</table>
 <pre><code>app/site/groups/&lt;gidNumber&gt;/macros/
 </code></pre>
 <p>The directory is created with the rest of the group's skeleton, and is filled
@@ -194,7 +226,8 @@ parses it before its own <code>macros/</code> directory.</p>
 <p>So group macros work in group pages and group modules, and only for that one
 group. They do not apply to the group's wiki: the wiki runs through
 <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins/wiki/parserdefault"><code>wiki/parserdefault</code></a>, which has a
-fixed macro path and no group hook.</p>
+fixed macro path and no group hook. A macro that works on a group page and
+vanishes on the group's wiki page is not broken; it is out of scope.</p>
 <h2 id="writing-one">Writing one</h2>
 <p>The file name is the macro name, lowercased, plus <code>.php</code>. The class is the
 macro name in the <code>Plugins\Content\Formathtml\Macros</code> namespace, extending
@@ -241,12 +274,12 @@ class HelloWorld extends Macro
 </code></pre>
 <p>That is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/formathtml/macros/helloworld.php"><code>macros/helloworld.php</code></a>
 from core, which is the shortest working example in the tree. Copy it as a
-starting point.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Older documentation showed this header declaring LGPLv3. That is
-out of date: the CMS is MIT licensed. A group's own code carries whatever
+starting point: change the file name, the class name and <code>render()</code>, and you
+have the centre's <code>macros/gaugestatus.php</code>.</p>
+<p>The header above is the one this repository uses. The CMS is MIT licensed, and
+that is what the sample says. Older documentation showed the same header
+declaring LGPLv3; that is out of date. A group's own code carries whatever
 notice the group's owner chooses.</p>
-</aside>
 <h3 id="the-rules">The rules</h3>
 <ul>
 <li><strong><code>render()</code> is required.</strong> It returns the markup that replaces the macro
@@ -261,12 +294,25 @@ gives <code>getArguments()</code>, which splits it on commas and trims, and
 <code>render()</code>. In a group page <code>pagename</code> and <code>domain</code> are the group's alias
 and <code>filepath</code> is the group's <code>uploads</code> directory.</li>
 <li><strong><code>public $allowPartial = true</code></strong> lets the macro run during a partial parse
-as well. Without it, a partial parse renders
-<em>Macro &quot;Name&quot; not allowed.</em> instead.</li>
+as well. The base class defaults it to <code>false</code>, and without it a partial
+parse renders <em>Macro &quot;Name&quot; not allowed.</em> instead of your output.</li>
 <li>A macro name is matched case-insensitively and lowercased before the file is
-looked up, so <code>[[HelloWorld()]]</code>, <code>[[helloworld()]]</code> and <code>[[HELLOWORLD()]]</code>
-all load <code>helloworld.php</code>.</li>
+looked up, so <code>[[GaugeStatus()]]</code>, <code>[[gaugestatus()]]</code> and
+<code>[[GAUGESTATUS()]]</code> all load <code>gaugestatus.php</code>.</li>
 </ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A macro's output is inserted into the page after purification,
+so nothing strips it. Escape anything that came from the database or from
+<code>$this-&gt;args</code> before you print it. <code>[[GaugeStatus(&lt;script&gt;…)]]</code> is a stored
+cross-site scripting hole if <code>render()</code> echoes its argument raw.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If the exact file name is not found, the parser pluralises the
+last segment and tries again — <code>[[Resource()]]</code> finds <code>resources.php</code>. That
+is a compatibility shim for one renamed core macro, and it means a group
+macro named in the singular can be shadowed by a core macro named in the
+plural. Name yours so the two never meet.</p>
+</aside>
 <h3 id="macros-in-a-subdirectory">Macros in a subdirectory</h3>
 <p>A dot in the macro name is a directory separator. <code>[[Group.Members()]]</code> loads
 <code>group/members.php</code> and expects
@@ -284,19 +330,29 @@ searches the group directory first and stops at the first file it finds, so
 the group's copy is the one that is included; because both files declare the
 same class, changing the name would break every other reference to it.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> The override is per group, but the class is global to the
-request. The first group content parsed on a request fixes which version of
-the class is loaded. On a normal page that is the group being viewed, but if
-you render two groups' content in one request, expect the first one to win.</p>
+<p><strong>Warning:</strong> The override is per group, but the parser caches the macro
+<em>instance</em> in a static property keyed by macro name, for the whole request.
+The first group content parsed on a request fixes which version of the class
+is loaded and which object is reused. On a normal page that is the group
+being viewed, but if you render two groups' content in one request — a
+digest, a search result page, a module that pulls another group's text —
+expect the first one to win.</p>
 </aside>
 <h2 id="when-a-macro-does-not-appear">When a macro does not appear</h2>
 <p>A macro whose file cannot be found renders as nothing at all — no error, no
-placeholder, the markup simply vanishes. If a call disappears from the page,
-check the file name against the macro name, the namespace, and the class
-name in that order.</p>
+placeholder, the markup simply vanishes. So does one whose class name does not
+match what the parser expects, because the file is included and then
+<code>class_exists()</code> fails. If a call disappears from the page, check in this
+order:</p>
+<ol>
+<li>the file name against the macro name, lowercased, with <code>.php</code>;</li>
+<li>the namespace line, <code>Plugins\Content\Formathtml\Macros</code>;</li>
+<li>the class name, and its capitalisation;</li>
+<li>that you are looking at a group page or module, not the group's wiki.</li>
+</ol>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../page-templates/index.html" rel="prev"><span>Previous</span>Page templates</a><a class="pager__next" href="../php-pages/index.html" rel="next"><span>Next</span>PHP pages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/03-custom_macros.md">Edit this page on GitHub</a>

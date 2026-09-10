@@ -144,7 +144,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Components</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-want-one">When you want one</a></li>
 <li class="toc__item toc__item--l2"><a href="#turning-them-on">Turning them on</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-thing-that-works">The smallest thing that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#structure">Structure</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-it-is-reached">How it is reached</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-entry-file-gets">What the entry file gets</a></li>
@@ -176,9 +178,45 @@
         <div class="prose">
 <p>A super group can carry components of its own: MVC extensions that live in the
 group's directory, answer at a URL under the group, and never appear in the
-hub's extension manager. They are the right tool when a
-<a href="../php-pages/index.html">PHP page</a> has outgrown itself and you want controllers,
-views, models and a router.</p>
+hub's extension manager.</p>
+<h2 id="when-you-want-one">When you want one</h2>
+<p>The Coastal Resilience Center starts with a <a href="../php-pages/index.html">PHP page</a> for
+its tide-gauge status board, and that is the right size for one page. It
+outgrows it the moment the centre wants a page per gauge, at
+<code>/groups/coastal/gauges/pier-7</code>, with a list, a detail view, and a form for
+the technician who corrects a bad reading. That is a controller, a view per
+screen, a model and a router: a component.</p>
+<table>
+<thead>
+<tr>
+<th>The group needs</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One page, no URLs below it</td>
+<td>a <a href="../php-pages/index.html">PHP page</a></td>
+</tr>
+<tr>
+<td>A snippet inside editor-written prose</td>
+<td>a <a href="../custom-macros/index.html">macro</a></td>
+</tr>
+<tr>
+<td>Several screens, records, and its own URL space, for this group</td>
+<td>a super group component</td>
+</tr>
+<tr>
+<td>The same thing for the whole hub</td>
+<td>an ordinary <a href="../../components/index.html">component</a></td>
+</tr>
+</tbody>
+</table>
+<p>The last row is the one to think hardest about. A super group component is
+invisible to the hub: no entry in the extension manager, no <code>access.xml</code>, no
+configuration screen, no administrator face, and nothing else on the hub can
+link to it by option name. If a second group would want it, write a real
+component and let both groups link to it.</p>
 <h2 id="turning-them-on">Turning them on</h2>
 <p>Super group components are off by default. An administrator switches them on
 once for the whole hub:</p>
@@ -188,27 +226,37 @@ once for the whole hub:</p>
 <li>Select <strong>Save &amp; Close</strong>.</li>
 </ol>
 <p>With the option off, the group's <code>components/</code> directory is never looked at
-and requests fall through to PHP pages and group pages instead. The option is
-<code>super_components</code> in
+and requests fall through to PHP pages and group pages instead — silently, so
+a component that &quot;does not exist&quot; on a hub where it worked yesterday is worth
+checking here first. The option is <code>super_components</code> in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/config/config.xml"><code>config/config.xml</code></a>;
 see the <a href="../../../reference/configuration/components/groups/index.html">generated reference</a>.</p>
+<h2 id="the-smallest-thing-that-works">The smallest thing that works</h2>
+<p>Two files, no router, no model:</p>
+<pre><code>app/site/groups/1051/components/com_gauges/gauges.php
+</code></pre>
+<pre><code class="language-php">&lt;?php
+echo '&lt;h2&gt;Tide gauges&lt;/h2&gt;';
+</code></pre>
+<p>That answers at <code>/groups/coastal/gauges</code>. Add the router and the controllers
+once it renders.</p>
 <h2 id="structure">Structure</h2>
 <p>A super group component is the <code>site</code> half of a CMS component, flattened:</p>
-<pre><code>app/site/groups/1051/components/com_drwho/
-├── drwho.php            entry file, required
+<pre><code>app/site/groups/1051/components/com_gauges/
+├── gauges.php           entry file, required
 ├── router.php           optional
 ├── controllers/
-│   └── episodes.php
+│   └── readings.php
 ├── models/
-│   └── episode.php
+│   └── reading.php
 ├── helpers/
 ├── views/
-│   └── episodes/
+│   └── readings/
 │       └── tmpl/
 │           └── display.php
 ├── language/
 │   └── en-GB/
-│       └── en-GB.com_drwho.ini
+│       └── en-GB.com_gauges.ini
 └── assets/
     ├── css/
     └── js/
@@ -230,7 +278,7 @@ into a <code>site/</code> directory first.</p>
 </aside>
 <h2 id="how-it-is-reached">How it is reached</h2>
 <p>The second segment of the group URL becomes the component name:</p>
-<pre><code>/groups/mygroup/drwho          -&gt;  components/com_drwho/drwho.php
+<pre><code>/groups/coastal/gauges          -&gt;  components/com_gauges/gauges.php
 </code></pre>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>Components\Groups\Helpers\View::superGroupComponents()</code></a>
 checks for the directory and the entry file, and gives up quietly if either is
@@ -238,24 +286,30 @@ missing. It runs before PHP pages and before group pages, so a component
 shadows both.</p>
 <p>The same collisions apply as for <a href="../php-pages/index.html#when-a-php-page-is-reached">PHP pages</a>:
 a name that matches an enabled group plugin, or one of the segments the group
-router claims for itself, never reaches the component.</p>
+router claims for itself, never reaches the component. So <code>com_files</code>,
+<code>com_members</code>, <code>com_wiki</code> and <code>com_media</code> are all names a group cannot use:
+the segment is taken before the component is looked for.</p>
 <h2 id="what-the-entry-file-gets">What the entry file gets</h2>
 <p>The file is <code>include</code>d and everything it prints becomes the component's
 output. Before it runs, the hub defines:</p>
-<pre><code class="language-php">JPATH_GROUPCOMPONENT   // /path/to/app/site/groups/1051/components/com_drwho
+<pre><code class="language-php">JPATH_GROUPCOMPONENT   // /path/to/app/site/groups/1051/components/com_gauges
 </code></pre>
 <p><code>$group</code> and <code>$tab</code> are in scope, holding the <code>Hubzero\User\Group</code> and the
 active tab name.</p>
 <p>Class autoloading does <strong>not</strong> reach into a group directory — the autoloader
-maps <code>Components\Drwho\*</code> to <code>core/components/com_drwho</code> and
-<code>app/components/com_drwho</code>, neither of which exists. The entry file has to
+maps <code>Components\Gauges\*</code> to <code>core/components/com_gauges</code> and
+<code>app/components/com_gauges</code>, neither of which exists. The entry file has to
 require what it needs:</p>
 <pre><code class="language-php">&lt;?php
-require_once JPATH_GROUPCOMPONENT . DS . 'controllers' . DS . 'episodes.php';
+require_once JPATH_GROUPCOMPONENT . DS . 'controllers' . DS . 'readings.php';
 
-$controller = new \Components\Drwho\Controllers\Episodes();
+$controller = new \Components\Gauges\Controllers\Readings();
 $controller-&gt;execute();
 </code></pre>
+<p>Forget that <code>require_once</code> and you get <em>Class … not found</em> on a white page,
+with the group's own template gone as well, because the fatal happens while
+the group is still assembling its content. It is the first thing to check when
+a component that worked in one place fails in another.</p>
 <p>That constant is also what several parts of the framework key off:</p>
 <table>
 <thead>
@@ -284,18 +338,24 @@ $controller-&gt;execute();
 needs no configuration: it takes its base path from its own file, two levels
 up, which is the component directory. Views therefore resolve to
 <code>views/&lt;name&gt;/tmpl</code>, helpers to <code>helpers/</code>, and the component's language file
-is loaded from <code>language/en-GB/en-GB.com_&lt;name&gt;.ini</code> inside the component.</p>
+is loaded from <code>language/en-GB/en-GB.com_&lt;name&gt;.ini</code> inside the component.
+Move a controller one directory deeper and every one of those resolves one
+level wrong, which shows as <em>Layout &quot;display&quot; not found</em>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The group's own top-level <code>language/</code> directory is a different
 thing: it overrides the strings of the hub's <em>group plugins</em>, as described
 in <a href="../index.html">the section overview</a>. A component's
-strings belong inside the component.</p>
+strings belong inside the component. A key that renders as itself —
+<code>COM_GAUGES_TITLE</code> on the page — means the file is in the wrong one of the
+two.</p>
 </aside>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> <code>$this-&gt;database</code> on a <code>SiteController</code> is the <strong>hub's</strong>
 connection, not the group's. Call
 <code>\Hubzero\User\Group\Helper::getDbo()</code> when you mean the group's
-<a href="../databases/index.html">database</a>.</p>
+<a href="../databases/index.html">database</a>. The same applies to any model extending
+<code>Hubzero\Database\Relational</code>; see
+<a href="../databases/index.html#models-and-the-group-connection">Models and the group connection</a>.</p>
 </aside>
 <p>The component's output is then wrapped by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/site/views/pages/tmpl/_view_component.php"><code>site/views/pages/tmpl/_view_component.php</code></a>:</p>
@@ -312,14 +372,17 @@ that wrapper.</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/supergroup/supergroup.php"><code>core/plugins/system/supergroup</code></a>:</p>
 <ul>
 <li><strong>Building.</strong> A rule appended to the router turns
-<code>Route::url('index.php?option=com_drwho&amp;…')</code> into
-<code>/groups/mygroup/drwho/&lt;segments&gt;</code>, where the segments come from the
+<code>Route::url('index.php?option=com_gauges&amp;…')</code> into
+<code>/groups/coastal/gauges/&lt;segments&gt;</code>, where the segments come from the
 component's <code>router.php</code>. It only fires while the current request is already
 inside <code>/groups/…</code> and the option names a directory the group actually has.</li>
 <li><strong>Parsing.</strong> Before the component runs, the remainder of the path — what is
 left after <code>groups/&lt;alias&gt;/&lt;component&gt;</code> — is handed to the same router and
 every variable it returns is set on the request.</li>
 </ul>
+<p>That plugin is enabled on a stock install. If every link in your component
+comes back as <code>index.php?option=com_gauges&amp;…</code>, check that it still is before
+you look at your <code>router.php</code>.</p>
 <p><code>router.php</code> may provide either a class or a pair of functions:</p>
 <table>
 <thead>
@@ -355,6 +418,14 @@ two halves disagree about which wins: on parse the function's result
 replaces the class's, while on build the class is used and the function
 ignored. Define one or the other.</p>
 </aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The build rule reads the router of the component the request is
+<em>currently in</em>, and prefixes the result with that component's name — not
+with the option being built. Building a URL for a second group component
+from inside the first produces a path under the first. Two components in one
+group cannot link to each other through <code>Route::url()</code>; write those links by
+hand.</p>
+</aside>
 <h3 id="query-strings">Query strings</h3>
 <p>Query string parameters reaching a super group component are moved out of the
 way and put back: the group router copies every parameter to an <code>sg_</code>-prefixed
@@ -370,13 +441,13 @@ directory against <code>core/</code> rather than <code>app/</code>, so the files
 <code>core/site/groups/&lt;id&gt;/components/</code>, and the template it writes is a full CMS
 component with <code>admin/</code> and <code>site/</code> directories rather than the flat layout a
 group needs. The <code>@FIXME</code> on the path is in the source. Both problems are
-recorded in the project record.</p>
+recorded in the review findings.</p>
 <p>Build the directory by hand, or copy the <code>site/</code> directory of an existing
 component up one level and adjust. It is a small amount of typing compared
 with what the component itself will take.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../../supergroups-gitlab/index.html" rel="next"><span>Next</span>Super groups with GitLab</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/07-components.md">Edit this page on GitHub</a>

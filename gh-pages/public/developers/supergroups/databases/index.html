@@ -146,6 +146,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-config-file">The config file</a></li>
 <li class="toc__item toc__item--l2"><a href="#opening-it">Opening it</a></li>
 <li class="toc__item toc__item--l2"><a href="#using-it">Using it</a></li>
+<li class="toc__item toc__item--l3"><a href="#models-and-the-group-connection">Models and the group connection</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
@@ -174,6 +175,15 @@
 <p>A super group can have a database of its own, separate from the hub's. It is
 named after the group's alias, its credentials live in the group directory,
 and any code the group runs can open it.</p>
+<p>Use it for data that belongs to the group and to nothing else — the Coastal
+Resilience Center's tide-gauge readings, arriving hourly from instruments the
+hub knows nothing about. Two reasons to keep it out of the hub schema: the
+hub's migrations and upgrades never have to know the table exists, and the
+group's own developers can be given credentials to their database without
+being given the hub's.</p>
+<p>Data the hub already models — pages, members, files, citations, resources —
+does not belong here. Store those as hub records and let the group's code read
+them through the existing models.</p>
 <h2 id="how-the-group-gets-one">How the group gets one</h2>
 <p>Both halves are done when an administrator saves the group as a super group,
 in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>_handleSuperGroup()</code></a>:</p>
@@ -188,7 +198,9 @@ that file is missing, the save warns and no <code>config/db.php</code> is writte
 <p>Neither step overwrites an existing file, so re-saving the group is safe.</p>
 <p>Both of those are administrator territory; see
 <a href="../../../managers/users/supergroups/index.html#creating-a-super-group">Super Groups</a>
-in the managers book.</p>
+in the managers book. A developer's first move on a new super group is to
+check that <code>config/db.php</code> exists, because a save that failed either step
+still produced a working group and only a warning on screen.</p>
 <h2 id="the-config-file">The config file</h2>
 <pre><code>app/site/groups/&lt;gidNumber&gt;/config/db.php
 </code></pre>
@@ -199,7 +211,7 @@ in the managers book.</p>
 		'port'     =&gt; '',
 		'user'     =&gt; 'sgmanager',
 		'password' =&gt; 'xxxxx',
-		'database' =&gt; 'sg_mygroup',
+		'database' =&gt; 'sg_coastal',
 		'prefix'   =&gt; ''
 	);
 </code></pre>
@@ -211,10 +223,10 @@ string yourself.</p>
 <p><code>config/db.php</code> is excluded from the group's git repository by
 <code>gitlab_setup.sh</code>, along with <code>uploads/*</code>. Do not add it back.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> <code>prefix</code> is empty, so there is no <code>sg_mygroup</code> table prefix to
+<p><strong>Note:</strong> <code>prefix</code> is empty, so there is no <code>sg_coastal</code> table prefix to
 think about. <code>#__</code> in a query is replaced with the empty string: write
-<code>#__mytable</code> or <code>mytable</code>, whichever you find clearer, and expect the table
-to be called <code>mytable</code>.</p>
+<code>#__gauges</code> or <code>gauges</code>, whichever you find clearer, and expect the table
+to be called <code>gauges</code>.</p>
 </aside>
 <aside class="admonition admonition--caution">
 <p><strong>Caution:</strong> The MySQL driver appends <code>port</code> to the connection string
@@ -231,14 +243,15 @@ group from the <code>cn</code> request variable, checks that it is a super group
 so calling it repeatedly costs nothing.</p>
 <p>Outside a group request — in a command line script, say — pass the alias as
 the second argument, or the configuration array as the first:</p>
-<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo(array(), 'mygroup');
+<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo(array(), 'coastal');
 </code></pre>
 <p>The hub's own database is a separate object and stays available:</p>
 <pre><code class="language-php">$hub   = \App::get('db');
 $group = \Hubzero\User\Group\Helper::getDbo();
 </code></pre>
-<p>Keep them in two variables and use whichever you mean. <code>JFactory::getDBO()</code>,
-which older documentation used for the hub connection, no longer exists.</p>
+<p>Keep them in two variables and use whichever you mean. Older documentation
+reached for the hub connection through a legacy factory call that no longer
+exists in this tree; <code>App::get('db')</code> is the current way and the only one.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> <code>getDbo()</code> never fails loudly. If the group is not a super
 group, or <code>config/db.php</code> is missing, or the <code>cn</code> variable is not set on
@@ -248,24 +261,59 @@ the connection before you trust it — for example by comparing
 <code>$database-&gt;getPrefix()</code> with <code>\App::get('db')-&gt;getPrefix()</code>, or by asking
 for a table you know belongs to the group.</p>
 </aside>
+<p>That warning is the single most expensive thing on this page. The failure
+looks like success: the query runs, the page renders, and a <code>gauges</code> table
+appears in the hub schema where the next hub upgrade will not expect it. A
+command line script is the usual place it happens, because there is no <code>cn</code>
+on the request.</p>
 <h2 id="using-it">Using it</h2>
 <p>The driver is the same one the rest of the CMS uses, so everything in
 <a href="../../database/index.html">Database</a> applies:</p>
 <pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo();
 
-$database-&gt;setQuery(&quot;SELECT * FROM `#__widgets` WHERE `state` = 1&quot;);
+$database-&gt;setQuery(&quot;SELECT * FROM `#__gauges` WHERE `state` = 1&quot;);
 $rows = $database-&gt;loadObjectList();
 </code></pre>
-<p>Inside a <a href="../components/index.html">super group component</a> you usually do not need to
-ask. A model extending <code>Hubzero\Base\Model</code> whose file lives under the
-component directory gets the group connection automatically —
-<code>initDbo()</code> checks whether the class file sits below <code>JPATH_GROUPCOMPONENT</code>
-and returns the group database if it does.</p>
 <p>Create the tables with a <a href="../migrations/index.html">migration</a> rather than by hand, so
 the schema travels with the code.</p>
+<h3 id="models-and-the-group-connection">Models and the group connection</h3>
+<p>Which base class a model extends decides which database it talks to, and the
+two answers are opposite.</p>
+<table>
+<thead>
+<tr>
+<th>Base class</th>
+<th>Connection inside a super group component</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Hubzero\Base\Model</code> (the older base model)</td>
+<td>the <strong>group's</strong>, automatically</td>
+</tr>
+<tr>
+<td><code>Hubzero\Database\Relational</code> (current)</td>
+<td>the <strong>hub's</strong></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Model.php"><code>Hubzero\Base\Model::initDbo()</code></a>
+checks whether the class file sits below <code>JPATH_GROUPCOMPONENT</code> and returns
+the group database if it does. That is the old base class, kept for the
+components already written against it.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a>, the
+model layer everything new should use, has no such check: its query object
+defaults to <code>App::get('db')</code>. It can be pointed elsewhere, but only with
+<code>Relational::setDefaultConnection()</code>, which is <strong>static and global to the
+request</strong> — set it and every <code>Relational</code> model in that request, including the
+hub's own, follows it. Do not do it in a super group component.</p>
+<p>So in a group component either accept the older base class for models that
+must reach the group database, or use <code>Relational</code> for hub records and the
+driver directly, as above, for group tables. Mixing them in one model is where
+this goes wrong quietly.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../php-pages/index.html" rel="prev"><span>Previous</span>PHP pages</a><a class="pager__next" href="../migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/05-databases.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/elements
 source-id: 3516
@@ -12,6 +12,27 @@ modified: 2013-08-02
 The classes shared between the templates and the components. Component views
 emit this markup and expect your template to style it, so these are the ones
 you cannot rename.
+
+## Why this is a contract and not a suggestion
+
+A template is written once and then wraps markup written by other people, most
+of it years earlier. The only thing keeping those two halves compatible is this
+set of class names. `com_bookings` prints `<div class="col span4">` and
+`<p class="error">` without knowing which template will draw them; your template
+supplies the rules without knowing what will use them.
+
+That gives you two jobs and one prohibition:
+
+- **Style all of it.** A template that never defines `.aside` leaves every
+  component page without its sidebar. That failure is silent and looks like a
+  bug in the component.
+- **Restyle freely.** Colours, spacing, type — none of that is fixed.
+- **Do not rename any of it.** There is no alias layer. Renaming `.subject`
+  breaks every component at once.
+
+When you write markup of your own — in a layout, or in an
+[override](09-overrides.md) — use these classes rather than inventing new ones,
+so a later template can restyle your page along with everything else.
 
 The sources are in [`core/assets/less`](../../../core/assets/less), with compiled
 equivalents in [`core/assets/css`](../../../core/assets/css) for anything not

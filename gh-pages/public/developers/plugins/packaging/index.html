@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Packaging · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A plugin ships as its own directory, laid out exactly as it will sit on disk. Two manifests describe it: for the package manager, and for the CMS, which reads…">
+  <meta name="description" content="A plugin ships as its own directory, laid out exactly as it will sit on disk. Two manifests describe it: , which the CMS reads for the display name and the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/packaging/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -118,11 +118,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuration/index.html">Configuration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Packaging</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#there-is-no-package-installer">There is no package installer</a></li>
 <li class="toc__item toc__item--l2"><a href="#package-layout">Package layout</a></li>
-<li class="toc__item toc__item--l2"><a href="#the-composer-manifest">The Composer manifest</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-xml-manifest">The XML manifest</a></li>
 <li class="toc__item toc__item--l2"><a href="#naming-the-plugin-for-humans">Naming the plugin for humans</a></li>
-<li class="toc__item toc__item--l2"><a href="#installing">Installing</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-composer-manifest">The Composer manifest</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../loading/index.html">Loading</a></li>
 </ul></details></li>
@@ -173,58 +173,68 @@
         
         <div class="prose">
 <p>A plugin ships as its own directory, laid out exactly as it will sit on disk.
-Two manifests describe it: <code>composer.json</code> for the package manager, and
-<code>{name}.xml</code> for the CMS, which reads the display name and the parameter form
-from it.</p>
+Two manifests describe it: <code>{name}.xml</code>, which the CMS reads for the display
+name and the parameter form, and <code>composer.json</code>, which describes the package
+for a distribution mechanism this release does not itself run.</p>
+<p>Read the next section before you plan a release, because what a plugin
+&quot;package&quot; is here is probably not what you expect.</p>
+<h2 id="there-is-no-package-installer">There is no package installer</h2>
+<p>The <strong>Install</strong>, <strong>Update</strong>, <strong>Discover</strong> and <strong>Database</strong> tabs that the older
+documentation names do not exist in this release; only orphan language strings
+remain. You cannot upload a <code>.zip</code> and have it unpack itself. See the
+<a href="../../../managers/extensions/extension-manager/index.html">extension manager</a> for
+what the screen actually offers.</p>
+<p>A plugin therefore arrives one of two ways:</p>
+<ul>
+<li><strong>The git-backed Custom Extensions flow.</strong> The Extension Manager clones a
+repository into <code>app/</code> and updates it by fetching and merging. For a plugin,
+set the type to <code>plugin</code>, the alias to the plugin's own name — <code>notify</code>, not
+<code>plg_bookings_notify</code> — and <strong>Folder (Plugins Only)</strong> to the group, so the
+clone lands in <code>app/plugins/bookings/notify</code>. That folder value has to match
+the <code>folder</code> column your migration writes and the group prefix on the events
+you answer; see
+<a href="../structure/index.html#group-and-directory-must-match">Group and directory must match</a>.</li>
+<li><strong>By hand.</strong> Copy the directory into <code>app/plugins/{group}/</code> yourself. This is
+what you do while writing the plugin.</li>
+</ul>
+<p>Either way the plugin does nothing until its migration has run and written the
+<code>#__extensions</code> row — see <a href="../migrations/index.html">Migrations</a> — because
+<code>Hubzero\Plugin\Loader</code> builds its list from that table and never scans the
+filesystem. A hand copy does not run the migration; you do.</p>
+<p>The git flow does run it, by shelling out to
+<code>muse migration -d=up -f -i -r={the extension's directory}</code> — after the first
+clone, and again after <strong>Merge Code</strong> has brought new commits into the working
+tree. So a plugin installed that way registers itself, and a later release
+that adds a migration applies it at the merge.</p>
+<p>Full details of both routes are in
+<a href="../../extensions/deployext/index.html">Deploying extensions</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Registering a plugin is enough to make it run. Unlike a module,
+there is no second step: an enabled plugin whose access level the current
+user holds is imported with its group and bound to every event its public
+methods are named after. There is nothing to publish and no position to
+choose.</p>
+</aside>
 <h2 id="package-layout">Package layout</h2>
-<pre><code>plg_system_example/
-    assets/css/example.css
-    language/en-GB/en-GB.plg_system_example.ini
-    language/en-GB/en-GB.plg_system_example.sys.ini
-    migrations/Migration20260101000000PlgSystemExample.php
-    views/display/tmpl/default.php
+<pre><code>plg_bookings_notify/
+    language/en-GB/en-GB.plg_bookings_notify.ini
+    language/en-GB/en-GB.plg_bookings_notify.sys.ini
+    migrations/Migration20260210000000PlgBookingsNotify.php
+    views/email/tmpl/message.php
     composer.json
-    example.php
-    example.xml
     index.html
+    notify.php
+    notify.xml
 </code></pre>
 <p>The package directory is conventionally named <code>plg_{group}_{name}</code>, but what
 lands on disk is <code>plugins/{group}/{name}</code> — the group is not a directory
-inside the package, it is where the package is installed to.</p>
-<h2 id="the-composer-manifest">The Composer manifest</h2>
-<pre><code class="language-json">{
-	&quot;name&quot;: &quot;myorg/plg_system_example&quot;,
-	&quot;description&quot;: &quot;Example system plugin for the Hubzero CMS&quot;,
-	&quot;type&quot;: &quot;hubzero-plugin&quot;,
-	&quot;keywords&quot;: [&quot;hubzero&quot;],
-	&quot;homepage&quot;: &quot;https://example.org&quot;,
-	&quot;license&quot;: &quot;MIT&quot;,
-	&quot;require&quot;: {
-		&quot;php&quot;: &quot;^5.4&quot;
-	},
-	&quot;extra&quot;: {
-		&quot;install-directory&quot;: &quot;/plugins/system/example/&quot;
-	}
-}
-</code></pre>
-<p>The <code>type</code> must be <code>hubzero-plugin</code>; the recognised types are
-<code>hubzero-component</code>, <code>hubzero-module</code>, <code>hubzero-plugin</code>, and
-<code>hubzero-template</code>.</p>
-<aside class="admonition admonition--important">
-<p><strong>Important:</strong> <code>extra.install-directory</code> is required for a plugin and only
-for a plugin. Every other extension type can be placed from its package name
-alone, but a plugin's group cannot be inferred from <code>plg_system_example</code> —
-the group and the element are both in there, with nothing to say where one
-ends. <code>plg_members_blog</code> in <code>core/plugins</code> declares
-<code>&quot;/plugins/members/blog/&quot;</code>.</p>
-</aside>
-<p>A plugin that extends a component should require it, so the two cannot be
-installed apart. <code>plg_members_blog</code> requires both <code>hubzero/com_members</code> and
-<code>hubzero/com_blog</code>, because it renders a <code>com_blog</code> archive on a <code>com_members</code>
-profile page.</p>
+inside the package, it is where the package is installed to. A repository used
+with the Custom Extensions flow holds the <em>contents</em> of that directory at its
+top level, with <code>notify.xml</code> beside <code>notify.php</code>, not a <code>plg_bookings_notify</code>
+wrapper directory.</p>
 <h2 id="the-xml-manifest">The XML manifest</h2>
-<p>The XML manifest is what the CMS reads. It is named after the plugin —
-<code>example.php</code> is described by <code>example.xml</code> — and it is not listed in its own
+<p>The XML manifest is the one the CMS reads. It is named after the plugin —
+<code>notify.php</code> is described by <code>notify.xml</code> — and it is not listed in its own
 <code>&lt;files&gt;</code> block.</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;extension version=&quot;2.5&quot; type=&quot;plugin&quot; group=&quot;content&quot;&gt;
@@ -268,7 +278,7 @@ profile page.</p>
 </tr>
 <tr>
 <td><code>&lt;name&gt;</code></td>
-<td>Shown in the Plugin Manager. Either a language key, as here, or a readable string like <code>Groups - Forum</code>.</td>
+<td>Shown in the Plugin Manager. Either a language key, as here, or a readable string like <code>Bookings - Notify</code>.</td>
 </tr>
 <tr>
 <td><code>&lt;description&gt;</code></td>
@@ -290,38 +300,69 @@ profile page.</p>
 </table>
 <p>Subdirectories are declared with <code>&lt;folder&gt;</code>:</p>
 <pre><code class="language-xml">&lt;files&gt;
-	&lt;filename plugin=&quot;example&quot;&gt;example.php&lt;/filename&gt;
+	&lt;filename plugin=&quot;notify&quot;&gt;notify.php&lt;/filename&gt;
 	&lt;filename&gt;index.html&lt;/filename&gt;
 	&lt;folder&gt;views&lt;/folder&gt;
-	&lt;folder&gt;assets&lt;/folder&gt;
+	&lt;folder&gt;language&lt;/folder&gt;
 &lt;/files&gt;
 </code></pre>
 <h2 id="naming-the-plugin-for-humans">Naming the plugin for humans</h2>
 <p><code>&lt;name&gt;</code> is what an administrator sees in a list of dozens of plugins, so the
-convention is <code>Group - Name</code>: <code>Groups - Forum</code>, <code>Members - Blog</code>,
-<code>System - Test</code>. Using a language key instead, as <code>plg_content_formatwiki</code>
-does, gets the same string out of the <code>.sys.ini</code> and makes it translatable.</p>
-<h2 id="installing">Installing</h2>
-<p>There is no package installer. The <strong>Install</strong>, <strong>Update</strong>, <strong>Discover</strong> and
-<strong>Database</strong> tabs the older documentation names do not exist in this release;
-only orphan language strings remain. See the
-<a href="../../../managers/extensions/extension-manager/index.html">extension manager</a> for
-what the screen actually offers.</p>
-<p>A plugin therefore arrives one of two ways: through the git-backed
-<strong>Custom Extensions</strong> flow, or by copying the directory into
-<code>app/plugins/{group}/</code> by hand. Either way the plugin does nothing until its
-migration has run and written the <code>#__extensions</code> row — see <a href="../migrations/index.html">Migrations</a> — because
-<code>Hubzero\Plugin\Loader</code> builds its list from that table and never scans the
-filesystem.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Registering a plugin is enough to make it run. Unlike a module,
-there is no second step: an enabled plugin whose access level the current
-user holds is imported with its group and bound to every event its public
-methods are named after.</p>
+convention is <code>Group - Name</code>: <code>Bookings - Notify</code>, <code>Groups - Forum</code>,
+<code>Members - Blog</code>. Using a language key instead, as <code>plg_content_formatwiki</code>
+does, gets the same string out of the <code>.sys.ini</code> and makes it translatable.
+Prefer the key.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The Plugin Manager renders <code>Lang::txt()</code> against the value
+<em>stored in the extension row at registration</em>, not against the manifest as
+it stands today. Changing <code>&lt;name&gt;</code> in the XML after a hub has installed the
+plugin changes nothing on that hub. Two shipped plugins carry the same
+literal name for this reason.</p>
 </aside>
+<h2 id="the-composer-manifest">The Composer manifest</h2>
+<pre><code class="language-json">{
+	&quot;name&quot;: &quot;myorg/plg_bookings_notify&quot;,
+	&quot;description&quot;: &quot;Emails the lab manager when an instrument is reserved&quot;,
+	&quot;type&quot;: &quot;hubzero-plugin&quot;,
+	&quot;keywords&quot;: [&quot;hubzero&quot;],
+	&quot;homepage&quot;: &quot;https://example.org&quot;,
+	&quot;license&quot;: &quot;MIT&quot;,
+	&quot;require&quot;: {
+		&quot;php&quot;: &quot;^5.4&quot;,
+		&quot;hubzero/com_bookings&quot;: &quot;dev-master&quot;
+	},
+	&quot;extra&quot;: {
+		&quot;install-directory&quot;: &quot;/plugins/bookings/notify/&quot;
+	}
+}
+</code></pre>
+<p>The <code>type</code> must be <code>hubzero-plugin</code>; the recognised types are
+<code>hubzero-component</code>, <code>hubzero-module</code>, <code>hubzero-plugin</code>, and
+<code>hubzero-template</code>.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <code>extra.install-directory</code> is required for a plugin and only
+for a plugin. Every other extension type can be placed from its package name
+alone, but a plugin's group cannot be inferred from <code>plg_bookings_notify</code> —
+the group and the element are both in there, with nothing to say where one
+ends.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> No code in this release reads <code>type</code> or <code>extra.install-directory</code>.
+The Composer installer that consumed them is not part of the repository, and
+neither the Custom Extensions flow nor a hand copy looks at <code>composer.json</code>
+at all. Every shipped plugin still carries the file, and writing one keeps
+your package correct for whatever consumes it; just do not expect it to
+place anything. What actually decides where the code goes is the <strong>Folder</strong>
+field on the Custom Extensions form, or your own <code>cp</code>.</p>
+</aside>
+<p>A plugin that extends a component should still declare the dependency, so that
+a reader can see it. <code>plg_members_blog</code> requires both <code>hubzero/com_members</code>
+and <code>hubzero/com_blog</code>, because it renders a <code>com_blog</code> archive on a
+<code>com_members</code> profile page; <code>plg_bookings_notify</code> requires <code>com_bookings</code>,
+because without the component nothing ever triggers its event.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../configuration/index.html" rel="prev"><span>Previous</span>Configuration</a><a class="pager__next" href="../loading/index.html" rel="next"><span>Next</span>Loading</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/08-packaging.md">Edit this page on GitHub</a>

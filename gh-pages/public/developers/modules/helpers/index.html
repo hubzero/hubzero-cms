@@ -91,7 +91,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Helpers</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-base-class">The base class</a></li>
-<li class="toc__item toc__item--l2"><a href="#a-minimal-helper">A minimal helper</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-one-that-works">The smallest one that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#choosing-a-layout">Choosing a layout</a></li>
 <li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#caching">Caching</a></li>
@@ -177,6 +177,12 @@
 layout needs, exposes it as properties, and requires the layout. By convention
 it lives in <code>helper.php</code> beside the entry file and is named <code>Helper</code>, and it
 extends <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>.</p>
+<p>It exists for a reason that has nothing to do with tidiness. The loader
+<code>include</code>s the entry file once per <em>instance</em>, so anything declared at that
+file's top level is declared twice the second time the module appears on a
+page. Putting the class behind a <code>require_once</code> in a separate file is what
+makes a module safe to place more than once. See
+<a href="../controllers/index.html">Controllers</a>.</p>
 <h2 id="the-base-class">The base class</h2>
 <p><code>Hubzero\Module\Module</code> extends <code>Hubzero\Base\Obj</code> and mixes in two traits,
 <code>AssetAware</code> and <code>Escapable</code>. It is small enough to hold in your head:</p>
@@ -224,33 +230,66 @@ extends <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libra
 </table>
 <p>Because it extends <code>Obj</code>, the class also carries the error bag: <code>setError()</code>,
 <code>getError()</code>, <code>getErrors()</code>.</p>
-<h2 id="a-minimal-helper">A minimal helper</h2>
+<h2 id="the-smallest-one-that-works">The smallest one that works</h2>
+<p>The whole of <code>mod_upcoming_bookings/helper.php</code>:</p>
 <pre><code class="language-php">&lt;?php
 
-namespace Modules\Example;
+namespace Modules\UpcomingBookings;
 
 use Hubzero\Module\Module;
+use Components\Bookings\Models\Reservation;
+use Date;
 use User;
+
+defined('_HZEXEC_') or die();
 
 class Helper extends Module
 {
-    public function display()
-    {
-        $this-&gt;name = User::get('name');
+	public function display()
+	{
+		$query = Reservation::all()
+			-&gt;whereEquals('created_by', User::get('id'))
+			-&gt;whereEquals('state', 1)
+			-&gt;where('starts', '&gt;=', Date::of('now')-&gt;toSql());
 
-        require $this-&gt;getLayoutPath();
-    }
+		if ($instrument = intval($this-&gt;params-&gt;get('instrument_id', 0)))
+		{
+			$query-&gt;whereEquals('instrument_id', $instrument);
+		}
+
+		$this-&gt;reservations = $query
+			-&gt;order('starts', 'asc')
+			-&gt;limit(intval($this-&gt;params-&gt;get('limit', 5)))
+			-&gt;rows();
+
+		require $this-&gt;getLayoutPath();
+	}
 }
 </code></pre>
 <p>Properties set on <code>$this</code> before the <code>require</code> are visible to the layout,
 because the layout is included in the method's scope. There is no separate
 view object and no <code>assign()</code> step.</p>
+<p><code>Components\Bookings\Models\Reservation</code> needs no <code>require</code>: the class loader
+maps <code>Components\</code> namespaces to component directories on its own. Several
+shipped modules still write <code>include_once Component::path('com_groups') . DS . 'models' . DS . 'recent.php';</code> before naming the class. That is the older
+convention, from before the class loader covered extension namespaces; it is
+harmless but do not copy it. See
+<a href="../../foundation/autoloading/index.html">Autoloading</a>.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <code>use User;</code> is not optional. Inside <code>namespace Modules\Example</code>
-an unqualified <code>User</code> resolves to <code>Modules\Example\User</code>, which does not
-exist, and the call is a fatal error. Import every facade the file names —
-<code>App</code>, <code>Lang</code>, <code>Request</code>, <code>Route</code>, <code>User</code>, <code>Component</code>, <code>Plugin</code>. See
+<p><strong>Warning:</strong> <code>use User;</code> is not optional. Inside
+<code>namespace Modules\UpcomingBookings</code> an unqualified <code>User</code> resolves to
+<code>Modules\UpcomingBookings\User</code>, which does not exist, and the call is a
+fatal error — a white page, or an exception trace naming a class you never
+wrote. Import every facade the file names: <code>App</code>, <code>Lang</code>, <code>Request</code>,
+<code>Route</code>, <code>User</code>, <code>Component</code>, <code>Plugin</code>, <code>Date</code>. See
 <a href="../../foundation/facades/index.html">Facades</a>.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A module is rendered inside somebody else's page, so an
+uncaught exception in <code>display()</code> takes the whole page with it — not just
+the block. Nothing wraps the include in a <code>try</code>. A model call that can throw
+because the component is missing, or a table that does not exist yet, breaks
+every page the module is placed on.</p>
 </aside>
 <h2 id="choosing-a-layout">Choosing a layout</h2>
 <p><code>display()</code> on the base class requires the layout named by the <code>layout</code>
@@ -270,15 +309,27 @@ every field declared in the manifest's <code>&lt;config&gt;</code> block is read
 with a fallback for the case where an administrator never saved the form:</p>
 <pre><code class="language-php">$this-&gt;limit = intval($this-&gt;params-&gt;get('limit', 100));
 </code></pre>
-<p>Read parameters through <code>get()</code> with a default rather than assuming a value is
-present; a module instance created before you added a field will not have it.</p>
+<p>Parameters are what let one module serve two placements. <code>mod_upcoming_bookings</code>
+declares <code>limit</code> and <code>instrument_id</code>, so the same code renders &quot;your next five
+bookings, anywhere&quot; in the sidebar and &quot;your next booking on the confocal&quot; on
+the instrument's own page, without a second module.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Always pass the default to <code>get()</code>. The <code>default</code> attribute in
+the manifest is applied by the <em>form</em>, not by the Registry, so an instance
+saved before you added the field has no value for it and
+<code>$this-&gt;params-&gt;get('limit')</code> returns null. That is not an error anywhere
+down the stack: <code>limit(null)</code> becomes <code>limit(0)</code>, and the query builder
+emits <code>LIMIT 18446744073709551615</code>. Your five-item sidebar block quietly
+becomes every row in the table.</p>
+</aside>
 <h2 id="caching">Caching</h2>
-<p><code>getCacheContent()</code> gives a module an opt-in output cache keyed on the
-instance id. It returns an empty string — meaning &quot;no cached content, do the
-work&quot; — unless a cache store is configured, the instance's <code>cache</code> parameter
-is on, <code>cache_time</code> is non-zero, and the application is not in debug mode. On
-a miss it buffers a call to <code>run()</code>, appends an HTML comment recording when
-the copy was made, stores it, and returns it.</p>
+<p>Cache a module when the query behind it is expensive and its output is the
+same for everybody. <code>getCacheContent()</code> gives an opt-in output cache keyed on
+the instance id. It returns an empty string — meaning &quot;no cached content, do
+the work&quot; — unless a cache store is configured, the instance's <code>cache</code>
+parameter is on, <code>cache_time</code> is non-zero, and the application is not in debug
+mode. On a miss it buffers a call to <code>run()</code>, appends an HTML comment
+recording when the copy was made, stores it, and returns it.</p>
 <p>That contract splits the class in two: <code>run()</code> produces the output, and
 <code>display()</code> decides whether to reuse a stored copy. <code>mod_findresources</code> is the
 pattern in full:</p>
@@ -331,11 +382,17 @@ class Helper extends Module
 The base class does not: <code>getCacheContent()</code> calls <code>$this-&gt;run()</code>, and a
 module without one fatals the first time the cache misses.</p>
 </aside>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The cache key is <code>modules.{id}</code> and nothing else. It does not vary
-by user, view level, or menu item. Only cache a module whose output is the
-same for everyone who can see it — <code>mod_findresources</code> lists popular tags,
-<code>mod_mygroups</code> does not cache at all.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The cache key is <code>modules.{id}</code> and nothing else. It does not
+vary by user, view level, or menu item. Cache a per-user module and the
+first visitor's output is served to everyone else — <code>mod_upcoming_bookings</code>
+would show one researcher's reservations to the whole hub. That is a data
+leak, not a rendering bug, and nothing in the framework stops you: the
+<code>cache</code> parameter is on the instance, so an administrator can switch it on
+for a module you never intended to cache. Do not declare <code>cache</code> and
+<code>cache_time</code> fields in the manifest of a module whose output is per-user.
+<code>mod_findresources</code> lists popular tags and caches; <code>mod_mygroups</code> is
+per-user and does not.</p>
 </aside>
 <p><code>cache_time</code> is stored in seconds by the Module Manager but the cache store
 takes minutes, so <code>getCacheContent()</code> divides values above 120 by 60 and
@@ -347,9 +404,18 @@ seconds.</p>
 files under the module directory and <code>require_once</code> them from <code>helper.php</code>,
 keeping them in the module's namespace so they cannot collide with another
 extension's.</p>
+<p><code>require_once</code> them by path, not by name. The class loader resolves
+<code>Modules\…</code> by collapsing the namespace segment to one word, so a class in
+<code>mod_upcoming_bookings</code> is looked for under <code>mod_upcomingbookings</code> and never
+found — see <a href="../structure/index.html#namespaces-and-class-names">Structure</a> and
+<a href="../../foundation/autoloading/index.html#the-per-kind-details-that-catch-people">Autoloading</a>.</p>
+<p>Before you add the second class, ask whether it belongs in the component. A
+&quot;does this reservation clash&quot; method is the <code>Reservation</code> model's, and putting
+it in the module hides it from the administrator screens that need the same
+rule.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../controllers/index.html" rel="prev"><span>Previous</span>Controllers</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/04-helpers.md">Edit this page on GitHub</a>

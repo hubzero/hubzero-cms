@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Migrations · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Copying a template into place is not enough. The CMS only knows about a template that has a row in and a style in . A migration puts those rows there. Every…">
+  <meta name="description" content="Copying a template into place is not enough. The CMS only knows about a template that has a row in and a style in . A migration puts those rows there. Why this…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/migrations/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,9 +122,11 @@
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Migrations</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#registering-the-template">Registering the template</a></li>
+<li class="toc__item toc__item--l2"><a href="#why-this-exists">Why this exists</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-one-that-works">The smallest one that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#addtemplateentry">addTemplateEntry</a></li>
 <li class="toc__item toc__item--l2"><a href="#deletetemplateentry">deleteTemplateEntry</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-the-template-does-not-appear">When the template does not appear</a></li>
 <li class="toc__item toc__item--l2"><a href="#other-macros">Other macros</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
@@ -174,16 +176,28 @@
 <p>Copying a template into place is not enough. The CMS only knows about a
 template that has a row in <code>#__extensions</code> and a style in <code>#__template_styles</code>.
 A migration puts those rows there.</p>
+<h2 id="why-this-exists">Why this exists</h2>
+<p>Nothing scans the filesystem for templates. The administrator's template list
+is a query against <code>#__extensions</code>, and
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Loader.php"><code>Hubzero\Template\Loader</code></a>
+resolves a request to a directory by joining <code>#__template_styles</code> to that same
+table. A directory with no rows behind it is invisible: it does not appear in
+the administrator, it cannot be picked by a menu item, and <code>?templateStyle=</code>
+cannot reach it.</p>
+<p>The migration is how those rows get written on every hub that installs your
+template, in a form that can be reversed. Writing them by hand with SQL works
+once, on your own machine, and is forgotten the first time the template is
+deployed anywhere else.</p>
 <p>Every extension type can carry a <code>migrations</code> directory, and templates are no
 exception:</p>
-<pre><code>app/templates/mytemplate/
+<pre><code>app/templates/northgate/
     css/
     html/
     img/
     js/
     language/
     migrations/
-        Migration20260901102219TplMytemplate.php
+        Migration20260910102219TplNorthgate.php
     component.php
     error.php
     index.php
@@ -198,9 +212,39 @@ scans every directory under <code>core/templates</code> and <code>app/templates<
 <p><strong>Note:</strong> See the <a href="../../database/index.html#migrations">migrations chapter</a> for
 the file naming rules, the <code>up()</code>/<code>down()</code> contract and how to run them.</p>
 </aside>
-<h2 id="registering-the-template">Registering the template</h2>
+<h2 id="the-smallest-one-that-works">The smallest one that works</h2>
 <p>A template usually needs one migration, and it usually does one thing: call
-<code>addTemplateEntry()</code>. Here is the one <code>kimera</code> ships:</p>
+<code>addTemplateEntry()</code>. This is the whole of <code>northgate</code>'s:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * Migration script for the Northgate site template
+ */
+
+use Hubzero\Content\Migration\Base;
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+class Migration20260910102219TplNorthgate extends Base
+{
+	public function up()
+	{
+		// element, title, client (0 = site), enabled, home
+		$this-&gt;addTemplateEntry('northgate', 'Northgate University', 0, 1, 0);
+	}
+
+	public function down()
+	{
+		$this-&gt;deleteTemplateEntry('northgate', 0);
+	}
+}
+</code></pre>
+<p>Run it:</p>
+<pre><code class="language-bash">php core/bin/muse migration -f -e=tpl_northgate
+</code></pre>
+<p>The template now appears under <strong>Extensions → Templates</strong> and can be made the
+site's default style. Compare the shipped <code>kimera</code> one, which differs only in
+its arguments:</p>
 <pre><code class="language-php">&lt;?php
 /**
  * @package    hubzero-cms
@@ -287,6 +331,22 @@ exists, the style row too.</p>
 </tr>
 </tbody>
 </table>
+<p>Note the default client is the <strong>administrator</strong>. A site template must pass
+<code>0</code> explicitly. This is the mistake to expect:</p>
+<pre><code class="language-php">// Wrong: registers a site template as an administrator style
+$this-&gt;addTemplateEntry('northgate', 'Northgate University');
+</code></pre>
+<p>It fails quietly. The rows are written, the migration reports success, and the
+template never appears in the site template list — because
+<code>getTemplate()</code> filters on <code>client_id</code> in both tables. Filter the administrator
+template list by <strong>Administrator</strong> and there it is, alongside <code>kameleon</code>.</p>
+<p><code>installTemplateEntry()</code> is the same macro with <code>$enabled</code> and <code>$home</code> both
+forced to <code>1</code>:</p>
+<pre><code class="language-php">$this-&gt;installTemplateEntry($element, $name, $client, $styles, $protected);
+</code></pre>
+<p>Use it only when the template genuinely should take over the hub the moment it
+is installed. <code>northgate</code> uses <code>addTemplateEntry</code> with <code>$home = 0</code> so that
+someone chooses the switch-over.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The <code>$protected</code> argument is accepted but not used.
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration/Macros/AddTemplateEntry.php"><code>AddTemplateEntry</code></a>
@@ -295,22 +355,37 @@ shipped templates that pass <code>1</code> are registered unprotected. Templates
 CMS treats as protected are read from <code>core/templates</code>; unprotected ones
 from <code>app/templates</code>, so this matters for a template that lives in <code>core/</code>.</p>
 </aside>
-<p>Note the default client is the <strong>administrator</strong>. A site template must pass
-<code>0</code> explicitly:</p>
-<pre><code class="language-php">// Site template, enabled, not the default style
-$this-&gt;addTemplateEntry('mytemplate', 'My Template', 0, 1, 0);
-</code></pre>
-<p><code>installTemplateEntry()</code> is the same macro with <code>$enabled</code> and <code>$home</code> both
-forced to <code>1</code>:</p>
-<pre><code class="language-php">$this-&gt;installTemplateEntry($element, $name, $client, $styles, $protected);
-</code></pre>
 <h2 id="deletetemplateentry">deleteTemplateEntry</h2>
 <pre><code class="language-php">$this-&gt;deleteTemplateEntry($element, $client);
 </code></pre>
-<p><code>$client</code> defaults to <code>1</code>, so a site template's <code>down()</code> must pass <code>0</code>. The
-macro removes the extension row and every style row for that template, then —
-if it has just removed the client's default style — promotes the most recently
-added remaining style to <code>home</code> so the client is never left without one.</p>
+<p><code>$client</code> defaults to <code>1</code>, so a site template's <code>down()</code> must pass <code>0</code> — the
+same trap in reverse, and this one leaves the rows behind instead of removing
+them. The macro removes the extension row and every style row for that
+template, then — if it has just removed the client's default style — promotes
+the most recently added remaining style to <code>home</code> so the client is never left
+without one.</p>
+<h2 id="when-the-template-does-not-appear">When the template does not appear</h2>
+<p>Four things go wrong here, in rough order of frequency.</p>
+<p><strong>The migration never ran.</strong> <code>muse migration</code> without <code>-f</code> lists what is
+pending and changes nothing. Run it with <code>-f</code>.</p>
+<p><strong>The file name and the class name disagree.</strong> The runner takes the class name
+from the file name and skips the file with a warning —
+<code>Migration20260910102219TplNorthgate does not have a class of the same name</code> —
+rather than failing. A template copied from <code>kimera</code> keeps
+<code>Migration20170831000000TplKimera.php</code> and its class, so the file matches
+itself and runs <em>kimera's</em> registration a second time, or fatals on the
+duplicate class name if the shipped <code>kimera</code> is still installed. Rename both.</p>
+<p><strong>The list is cached.</strong> <code>Loader::getTemplate()</code> caches the whole template list
+per client under <code>com_templates.templates{client_id}</code> for the hub's <code>cachetime</code>
+— fifteen minutes by default. A freshly registered style can take that long to
+become selectable. Clear the cache rather than re-running the migration.</p>
+<p><strong>The row exists and the directory does not.</strong> These are independent. The
+install data ships <code>#__extensions</code> rows for <code>hubbasic</code>, <code>hubbasic2012</code>,
+<code>hubbasic2013</code> and <code>hubbasicadmin</code>, none of which are directories in this
+repository, and they are listed in the administrator all the same. A style
+whose directory has no <code>index.php</code> silently falls back to <code>core/templates/system</code>
+at render time. So a name in the template list is not evidence that a template
+is there.</p>
 <h2 id="other-macros">Other macros</h2>
 <p>The macros live in
 <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Content/Migration/Macros"><code>core/libraries/Hubzero/Content/Migration/Macros</code></a>
@@ -324,7 +399,7 @@ that directory is callable as <code>$this-&gt;methodName()</code>.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Templates</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/01-migrations.md">Edit this page on GitHub</a>

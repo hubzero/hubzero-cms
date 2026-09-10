@@ -102,6 +102,7 @@
 <li class="toc__item toc__item--l2"><a href="#chrome">Chrome</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-article-content">In article content</a></li>
 <li class="toc__item toc__item--l2"><a href="#assigning-a-module-to-a-position">Assigning a module to a position</a></li>
+<li class="toc__item toc__item--l2"><a href="#positions-belong-to-the-template">Positions belong to the template</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
@@ -179,6 +180,14 @@ component or plugin renders one inline, or an article contains a tag that
 expands into one. All three end at the same place —
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>,
 reachable through the <code>Module</code> facade.</p>
+<p>Almost always you want the first. A module placed by an administrator into a
+template position is the arrangement everything else is built around: the hub
+decides where it goes, on which pages, and who sees it, without touching code.
+Render a module from a component only when the component's own layout is the
+only place the block makes sense. Read this chapter mainly to know why your
+module is not appearing — the section on
+<a href="#positions-belong-to-the-template">positions</a> is the answer more often than
+not.</p>
 <h2 id="what-the-loader-knows">What the loader knows</h2>
 <p><code>Loader::all()</code> runs one query per request and caches the result. It returns
 the published instances that pass every one of these filters:</p>
@@ -193,6 +202,17 @@ the published instances that pass every one of these filters:</p>
 <p>An instance assigned negatively to the current menu item is then removed, and
 duplicates are collapsed. The result is ordered by position, then by
 <code>ordering</code>.</p>
+<p>Read that list as a checklist. Each line is a way for a published module to be
+absent from one page and present on another, and two of them catch people. A
+module assigned to a single menu item is invisible on every other page, which
+looks exactly like a broken module if you test on the wrong one. And a module
+whose access level is not Public disappears for the logged-out visitor you are
+probably testing as. <code>mod_upcoming_bookings</code> has nothing to show a guest
+anyway, so give it a Registered access level rather than letting it render an
+empty box.</p>
+<p>The result is cached under a key made from the menu item, the user's view
+levels, the client and the language tag, so a module that is right for one
+visitor is not served to another.</p>
 <h2 id="in-a-template">In a template</h2>
 <p>The template declares a position with a <code>jdoc</code> tag, which the document parser
 replaces with the rendered output of every module in that position:</p>
@@ -225,8 +245,10 @@ before the call, so the function receives <code>true</code>, counts a position n
 <code>1</code>, and returns zero every time. Write the whole expression as one string.</p>
 </aside>
 <h2 id="in-a-component-plugin-or-view">In a component, plugin, or view</h2>
-<p><code>Hubzero\Module\Helper</code> is a static wrapper over the same loader, and is what
-component views use:</p>
+<p>Sometimes the block has to sit inside a component's own markup rather than
+beside it — a note halfway down a booking form, where no template position
+reaches. <code>Hubzero\Module\Helper</code> is a static wrapper over the same loader, and
+is what component views use:</p>
 <table>
 <thead>
 <tr>
@@ -299,13 +321,60 @@ that renders a position where it stands:</p>
 <h2 id="assigning-a-module-to-a-position">Assigning a module to a position</h2>
 <p>None of this happens without an instance. In the administrative interface, go
 to the Module Manager, create a new instance of the module, give it a title,
-choose a position from the template's declared positions, set the access level
-and menu assignment, and publish it. The position name is arbitrary text: a
-position no template asks for renders nowhere, and a <code>jdoc</code> tag for a position
-with no modules renders as nothing.</p>
+choose a position, set the access level and menu assignment, and publish it.</p>
+<h2 id="positions-belong-to-the-template">Positions belong to the template</h2>
+<p>This is the one to read twice, because it is the most common reason a module
+that works is not on the page.</p>
+<p>Your module never declares a position. It does not know what positions exist,
+and it cannot create one. A position is a string that a template's <code>index.php</code>
+asks for:</p>
+<pre><code class="language-html">&lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
+</code></pre>
+<p>The loader returns the published instances whose <code>position</code> column holds that
+string. That is the entire contract. A position is a name two parties happen
+to agree on, and nothing checks that they do.</p>
+<p>So there are three ways for a correct module to render nothing, and none of
+them logs anything:</p>
+<table>
+<thead>
+<tr>
+<th>What you did</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assigned the instance to a position the active template's <code>index.php</code> never includes</td>
+<td>Nothing renders. The instance is published and looks fine in the Module Manager.</td>
+</tr>
+<tr>
+<td>Assigned it to a position the template declares in <code>templateDetails.xml</code> but never uses in <code>index.php</code></td>
+<td>Same. The <code>&lt;positions&gt;</code> block only fills the picker; it renders nothing by itself.</td>
+</tr>
+<tr>
+<td>Switched the site to a template with different position names</td>
+<td>Every module in a dropped position goes quiet at once.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>&lt;positions&gt;</code> block is documentation for the administrator, not a
+declaration to the framework. Templates in the tree already drift from it:
+<code>kimera</code> renders <code>breadcrumbs</code> and <code>endpage</code> without declaring them, and
+declares <code>banner</code> and <code>introblock</code> without rendering them.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> When a module will not appear, check the position before anything
+else. Open the active template's <code>index.php</code> and search for the position
+name. If it is not there, the module was never going to render, and no
+amount of checking the access level or the menu assignment will find it.</p>
+</aside>
+<p>Which position to put <code>mod_upcoming_bookings</code> in is therefore a question about
+the hub's template, not about your module. <code>right</code> and <code>left</code> are the two most
+widely shared names; both <code>kimera</code> and <code>lucent</code> render them. See
+<a href="../../templates/layouts/index.html#module-positions">Layouts</a> for the full list per
+shipped template.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="../../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/09-loading.md">Edit this page on GitHub</a>

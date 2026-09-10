@@ -131,6 +131,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Socicons</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-need-it">When you need it</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
 <li class="toc__item toc__item--l2"><a href="#using-it">Using it</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-is-in-the-font">What is in the font</a></li>
@@ -174,6 +175,18 @@
 <p>Socicons is a small webfont of logos for social and web services — Twitter,
 Facebook, LinkedIn, Google, Dropbox and a few dozen more. It ships with the
 CMS as font files only.</p>
+<h2 id="when-you-need-it">When you need it</h2>
+<p>Almost never, and the honest answer is <a href="#consider-not-using-it">at the bottom of this
+page</a>. Reach for Socicons in one case: you are styling
+a control whose icon must be a <strong>third-party brand mark</strong>, and you want it to
+match the share buttons the shipped plugins already draw. That is what the font
+is for and it is the only thing it is good at.</p>
+<p>For anything else — an edit pencil, a folder, an arrow — use the
+<a href="../fontcons/index.html#the-alternative-svg-icons">SVG icons</a>. They are overridable per
+template and need no codepoint table.</p>
+<p>The reason this page is longer than it should be is that Socicons ships with no
+stylesheet, so every consumer reimplements the same thirty lines. If you use
+it, you are writing those thirty lines too.</p>
 <h2 id="what-ships">What ships</h2>
 <p>Five files, and nothing else:</p>
 <pre><code>core/assets/css/fonts/socicons-webfont.eot
@@ -360,7 +373,7 @@ and no codepoint to look up. See <a href="../fontcons/index.html">Fontcons</a> f
 compare.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="../fontcons/index.html" rel="next"><span>Next</span>Fontcons</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/11-socicons.md">Edit this page on GitHub</a>
