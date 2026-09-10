@@ -674,25 +674,40 @@ def build_children_list(page: Page, output_path: Path, output_dir: Path,
     return '<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list">' + "\n".join(items) + "</ul></section>"
 
 
+MARK_PATH = (
+    "M32,0L8.4,7.9V40L32,48l23.6-8V7.9L32,0z M42,38.8l-6.7,0.7V26.1c0-1.3-0.3-2.2-0.9-2.9"
+    "c-0.6-0.6-1.4-1-2.4-1s-1.9,0.3-2.4,1c-0.6,0.6-0.9,1.6-0.9,2.9v12.6L22,39.5V9.2l6.7-0.7v9.9"
+    "c0.6-0.6,1.4-1.2,2.4-1.5s1.9-0.6,2.9-0.6c5.4,0,8.1,3.1,8.1,9.3V38.8z"
+)
+
+
 def build_book_cards(books: list[Book], config: dict) -> str:
+    """The books as a shelf: one cover apiece, coloured by book."""
+    series = f"Hubzero {config.get('version', '')}".strip()
     groups: dict[str, list[Book]] = {}
     for book in books:
         groups.setdefault(book.audience, []).append(book)
     blocks = []
     for audience, group in groups.items():
-        cards = []
+        covers = []
         for book in group:
             count = len(book.root.walk()) if book.root else 0
-            cards.append(
-                '<article class="book-card">'
-                f'<h3><a href="{escape(book.href)}">{escape(book.title)}</a></h3>'
-                f"<p>{escape(book.summary)}</p>"
-                f'<p class="book-card__meta">{count} page{"s" if count != 1 else ""}</p>'
-                "</article>"
+            covers.append(
+                f'<article class="cover cover--{escape(book.slug)}">'
+                '<span class="cover__spine" aria-hidden="true"></span>'
+                '<span class="cover__face">'
+                '<svg class="cover__mark" viewBox="0 0 64 48" aria-hidden="true" focusable="false">'
+                f'<path fill="currentColor" d="{MARK_PATH}"/></svg>'
+                f'<span class="cover__series">{escape(series)}</span>'
+                f'<h3 class="cover__title"><a href="{escape(book.href)}">{escape(book.title)}</a></h3>'
+                '<span class="cover__rule" aria-hidden="true"></span>'
+                f'<span class="cover__blurb">{escape(book.summary)}</span>'
+                f'<span class="cover__meta">{count} page{"s" if count != 1 else ""}</span>'
+                "</span></article>"
             )
         blocks.append(
-            f'<section class="book-group"><h2 class="book-group__title">{escape(audience)}</h2>'
-            f'<div class="book-grid">{"".join(cards)}</div></section>'
+            f'<section class="shelf"><h2 class="shelf__title">{escape(audience)}</h2>'
+            f'<div class="shelf__books">{"".join(covers)}</div></section>'
         )
     return "\n".join(blocks)
 
