@@ -3,6 +3,8 @@
 
 .page-head {
 	position: relative;
+	background: @colorHeaderBg;
+	border-bottom: 1px solid @colorHeaderBorder;
 
 	& > .inner {
 		// position: relative; -- this prevents flyouts
@@ -18,6 +20,34 @@
 				display: flex;
 				align-items: center; // vertical align
 				position: relative;
+			}
+
+			// Header logo
+			//
+			// A hub with a wordmark image drops it in and the sizing holds;
+			// with nothing but its name, the name is the wordmark.
+			.logo {
+				font-size: 1.4rem;
+				font-weight: 600;
+				line-height: 1;
+				letter-spacing: -0.01em;
+				white-space: nowrap;
+				margin-right: 2rem;
+				flex-shrink: 0;
+
+				a {
+					color: @colorBrand;
+
+					&:hover,
+					&:focus {
+						color: @colorBrandDarker;
+					}
+				}
+
+				img {
+					height: 2.5rem;
+					width: auto;
+				}
 			}
 		}
 	}
