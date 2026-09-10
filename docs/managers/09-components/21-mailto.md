@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -24,6 +24,12 @@ their own sharing links, and none of them route through Mailto.
 The component is enabled on a plain installation. An installation seeded with
 the sample data disables it outright, along with banners, contacts, weblinks
 and wrapper.
+
+Enabled with the icon showing is the shipped default, and on most hubs it is
+the wrong one — see [What it does](#what-it-does) for why. It is also close
+to harmless: on a hub that uses resources, publications and groups rather than
+articles, the icon appears on nothing and nobody ever reaches the form.
+Switching it off costs one setting and is entirely reversible.
 
 ## What it does
 

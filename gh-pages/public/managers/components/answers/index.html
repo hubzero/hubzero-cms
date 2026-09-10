@@ -82,10 +82,12 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Answers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#questions">Questions</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-question">Creating or editing a question</a></li>
 <li class="toc__item toc__item--l2"><a href="#answers-2">Answers</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-an-answer">Creating or editing an answer</a></li>
+<li class="toc__item toc__item--l2"><a href="#closing-out-a-question-that-has-gone-stale">Closing out a question that has gone stale</a></li>
 <li class="toc__item toc__item--l2"><a href="#comments">Comments</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#points-and-rewards">Points and rewards</a></li>
@@ -168,6 +170,38 @@ who asked picks the answer that helped. On the site it appears as
 <strong>Questions and Answers</strong> at <code>/answers</code>. This chapter covers the
 administrator's side; the <a href="../../../users/questions/index.html">Hub users</a> book covers
 asking and answering.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>Answers is for the question that has an answer. A member is stuck on
+something specific, someone who knows replies, and the reply is marked as
+<em>the</em> answer so the next person to hit the same wall finds it in one look.
+Enable it on a hub where members use tools or data they did not write and
+will get stuck on — a hub around a simulation code, an instrument, a shared
+dataset. On a hub that is really a project workspace, where every
+conversation happens inside a group, it will sit empty.</p>
+<p>The typical case: a paper cites your hub, a hundred new members arrive in a
+fortnight, and the same three questions about running the tool land in your
+inbox one at a time. Answers puts them somewhere public where the second
+person to ask finds the first person's reply.</p>
+<p>Against its siblings:</p>
+<ul>
+<li>Better than the <a href="../forum/index.html">Forum</a> at questions, because one reply gets
+marked accepted and floats to the top; a forum thread ends wherever it
+ends, and the reader has to read it all. Worse than the forum at
+discussion: replies to an answer are comments, three levels deep at most,
+and there is nothing to organise questions by except tags.</li>
+<li>Better than the <a href="../kb/index.html">Knowledge base</a> at questions nobody anticipated,
+because members write it and you do not. Worse at anything you want to
+stay correct: an accepted answer is one member's opinion on one day, and
+nothing ages it out. Hubs commonly run both, and promote a question that
+keeps recurring into a knowledge base article.</li>
+<li>It is the only one of the five that attaches to your catalogue. The
+<code>resources-questions</code> and <code>publications-questions</code> plugins put a
+<strong>Questions</strong> tab on each tool and publication page, so a question asked
+there is filed against the thing it is about.</li>
+</ul>
+<p><strong>What it is not:</strong> it is not a support queue. A question here is public,
+nobody owns it, and nothing chases it if no one replies. Anything with a
+member waiting on a person belongs in <a href="../support/index.html">Support</a>.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Answers</strong>. Two
 sub-menu links sit at the top left: <strong>Questions</strong>, the default list, and
 <strong>Answers</strong>, the responses posted to those questions.</p>
@@ -339,6 +373,33 @@ vote log for that answer, so members may vote on it again.</p>
 Unlike accepting on the site, it does not run the points distribution,
 so no bank transactions are created.</p>
 </aside>
+<h2 id="closing-out-a-question-that-has-gone-stale">Closing out a question that has gone stale</h2>
+<p>The one job this component regularly asks of a manager: a question from the
+wave of new members has three replies, one of them is plainly right, and the
+asker never came back to accept it. Left alone it stays open and the right
+reply stays buried.</p>
+<ol>
+<li>Go to <strong>Components &gt; Answers</strong>. Set <strong>Filter by:</strong> to <strong>Open Questions</strong>
+and sort by <strong>Created</strong> to bring the oldest to the top.</li>
+<li>Click the question's <strong>Answers</strong> count. The Answers list opens filtered
+to that question, with the vote totals in the <strong>Helpful</strong> column.</li>
+<li>Read the replies and decide which one is the answer. The <strong>Helpful</strong>
+totals are a hint, not a verdict.</li>
+<li>Click the <strong>Accepted</strong> icon on that row. The answer is marked as chosen,
+the mark is cleared from any other answer to the question, and the
+question closes.</li>
+<li>Go back to <strong>Questions</strong> to confirm the state icon now reads closed.</li>
+</ol>
+<p>Step 4 is reversible: click the icon again to un-accept, and toggle the
+question's state icon back to open. Nothing is mailed to anyone and no
+points move.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> If your hub has banking switched on, this is <em>not</em> the same
+as the asker accepting the answer on the site. Accepting here sets the
+state and nothing else — no points are distributed to the asker or the
+answerer. Where the reward matters, ask the member to accept it
+themselves rather than doing it for them.</p>
+</aside>
 <h2 id="comments">Comments</h2>
 <p>Members can reply to an answer, and reply to those replies, up to three
 levels deep. These comments live in the hub's shared item-comment table and
@@ -375,6 +436,21 @@ See <a href="../support/index.html">Support</a>.</p>
 </tr>
 </tbody>
 </table>
+<p>All four ship empty or disabled, and three of the four are sensible left
+alone. <strong>About points</strong> matters only when banking is on, and its default of
+<code>/kb/points</code> assumes a knowledge base article at that address; if you have
+no knowledge base, or no article there, every &quot;What are points?&quot; link on the
+hub leads to a not-found page. Either write the article or point the option
+somewhere real. <strong>Users notified on every activity</strong> is empty by design —
+filling it in mails a named person about every question and every answer on
+the hub, which is fine on a quiet hub and unbearable on a busy one.</p>
+<p>The two restriction settings are the ones to reach for after a spam wave. A
+new account cannot post until it is the given number of days old. Turn the
+restriction on, set <strong>Minimum number of days to post</strong> to something small
+like 3, and the drive-by accounts registered that morning are shut out while
+genuine new members are only delayed. Both changes take effect on the next
+page load and are undone by setting them back, so they are safe to try on a
+live hub.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The account-age restriction is checked when a member opens the
 new-question form and when they submit an answer, and again in the
@@ -419,7 +495,7 @@ creating, updating, and deleting questions; see the
 RSS feed of the newest questions at <code>/answers/latest.rss</code>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../activity/index.html" rel="prev"><span>Previous</span>Activity</a><a class="pager__next" href="../billboards/index.html" rel="next"><span>Next</span>Billboards</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/02-answers.md">Edit this page on GitHub</a>

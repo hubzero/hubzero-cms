@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/events
 -->
 # Events
@@ -12,6 +12,19 @@ registration that collects respondent details. Events appear on the site
 at `/events`. This chapter covers the administrator's side; the
 [Hub users](../../users/07-events.md) book covers browsing, submitting, and
 registering.
+
+A hub needs this if it runs things people turn up to: a weekly seminar, a
+summer school, a user meeting. The part that earns its keep is registration
+— set a **Register by** date and the event grows a form, the form collects
+whatever details you switch on, and you can download the list as a
+spreadsheet the week before. A hub whose events are announced in a mailing
+list and nowhere else does not need the component at all; leave it alone and
+`/events` simply shows an empty calendar.
+
+It is not the group calendar, and it is not a room booking system.
+**Where** is free text, there is no capacity limit on registration, and
+nothing checks for a clash: two events in the same room at the same hour
+both save without complaint.
 
 Open it in the administrator interface under **Components > Events**.
 Three sub-menu links sit at the top left: **Events**, the list below;
@@ -25,6 +38,10 @@ Events; and **Configuration**, the component's own settings screen.
 > group's calendar.
 
 ## Events
+
+The list is the whole calendar, past and future. Its most useful filter is
+the group drop-down, because a busy hub's calendar is mostly group events
+you did not create and cannot usefully edit here.
 
 The **Events Manager** screen lists every event. Above the list, filter
 by a search term (matched against titles), a category, or a group, then
@@ -57,6 +74,33 @@ The toolbar offers:
 - **Help** — the built-in help screen.
 
 ## Creating or editing an event
+
+Say the hub is starting a seminar series and you need next month's talk on
+the calendar, with sign-up, so the organiser knows how much coffee to order.
+
+1. Go to **Components > Events** and press **New**.
+2. Fill in **Title**, pick a **Category**, and write the talk description
+   into **Activity**.
+3. Put the room in **Where** and the organiser's address in **Contact**.
+   The contact text is shown above the registration form as well as on the
+   event page, so make it the address a registrant should write to.
+4. Under **Publishing**, set the **Start date** and **End date**, and set
+   **Time Zone** to the zone the talk is actually held in. Times are stored
+   in UTC and redisplayed in this zone, so a talk entered in the wrong zone
+   is shown at the wrong hour to everyone.
+5. Under **Registration**, set **Register by** to the Friday before. This is
+   the switch: leave it empty and the event has no Register tab at all.
+6. In **Registration Fields** on the right, turn on **Dietary needs** and
+   turn off everything the organiser will not read. Every field you leave on
+   is a field every attendee has to get past.
+7. Select **Save**.
+
+The event is live the moment you save it — there is no draft state on this
+form, and a new event is published immediately. If it is not ready, save it
+and then press **Unpublish** in the list.
+
+The week before, tick the event in the list and press **View Respondents**,
+then **Download CSV** to hand the organiser `eventrsvp.csv`.
 
 The edit screen is titled **Event: New** or **Event: Edit**, with
 **Save**, **Cancel** and **Help** in the toolbar. There is no Save &
@@ -108,6 +152,10 @@ dinner, abstract with its instruction text, and comments).
 
 ## Pages
 
+Pages are for the events that need more than a paragraph — a two-day
+workshop with an agenda, a directions page, and a list of speakers. A single
+seminar does not need any.
+
 An event can carry extra pages — an agenda, directions, a speaker list —
 which appear as tabs beside **Overview** on the event's page on the site.
 Reach them with **Add Page**, or by clicking the "*n* Page(s)" link in
@@ -121,6 +169,10 @@ shows the ordering and creation details beside it.
 
 ## Respondents
 
+This is the attendee list, and the CSV download is the point of it — see
+the seminar walkthrough under [Creating or editing an
+event](#creating-or-editing-an-event).
+
 **View Respondents** opens the registrations for the checked event. The
 list shows each respondent's **Name** (linking to the full submission),
 **Email**, **Registered** date, **Special needs** (dietary text and a
@@ -131,6 +183,17 @@ The toolbar has **Download CSV**, which returns `eventrsvp.csv` with the
 columns Name, Email, Telephone, Affiliation, Arrival, Departure,
 Disability, Dietary, Dinner and Registered; **Delete**, which permanently
 removes the checked registrations; and **Cancel**.
+
+> **Warning:** **Delete** here is permanent and there is no undo. It also
+> destroys the only record you have that someone signed up. Download the CSV
+> before you tidy a list.
+
+> **Caution:** The CSV and the per-respondent view carry dietary
+> requirements, disability contact requests, gender and racial background,
+> because those are fields the registration form can be told to collect.
+> That is personal data about identifiable people. Turn off the fields the
+> organiser will not use, and treat the download the way your institution
+> requires you to treat any other file of that kind.
 
 Clicking a name shows every field the respondent submitted, including
 affiliation, position, location, phone and fax, website, racial
@@ -143,6 +206,11 @@ listed.
 > and sorting on them fails. Sort on **Email** or **Registered** instead.
 
 ## Configuration
+
+This is the screen that actually works. Set anything you want to take effect
+here, not in [Options](#options). Half of its settings do nothing either,
+which the table below marks; the ones that do matter on a hub with a real
+calendar are **Start Page ?** and **First day**.
 
 The **Configuration** sub-menu link opens the component's own settings,
 stored separately from the Options form:

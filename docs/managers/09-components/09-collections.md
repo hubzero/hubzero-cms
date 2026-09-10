@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/collections
 source-id: 3376
@@ -16,6 +16,19 @@ own collections; the administrator interface exists to inspect and clean up
 what they have made, not to build collections for them. The user's side is
 described in the [Collections chapter](../../users/01-collections.md) of the Hub
 users book.
+
+Most hubs never need this screen. Collections is a member convenience: it
+gives people somewhere to keep the hub's content they want to come back to,
+and it gives a group a board it can point newcomers at. Nothing else depends
+on it, no catalogue is built from it, and turning it off breaks nothing. You
+will open the administrator screens for one reason — someone reported a
+post, or a member deleted an account and left a board nobody can reach — and
+then you will close them again.
+
+It is not curation and it is not the catalogue. A collection is one member's
+or one group's board; it does not decide what appears in
+[Resources](29-resources.md), what is featured, or what a search returns.
+Pinning something copies nothing and changes nothing about the original.
 
 Go to **Components → Collections**. Three submenu links sit at the top:
 
@@ -39,7 +52,17 @@ Deleting a collection deletes its posts. Deleting an item deletes every post
 of that item, along with its votes, comments and attached files. Deleting a
 post leaves the item alone.
 
+> **Warning:** Deleting an item reaches into other people's boards. The same
+> item can be posted to many collections, and removing it removes it from
+> all of them, with the comments and votes those members left. If a single
+> board is the problem, delete the post, not the item.
+
 ## Collections
+
+Use this screen to take a board off the site. Setting **State** to
+unpublished is the reversible way to do it, and it is what to reach for when
+a complaint arrives and you have not yet decided whether it is justified.
+**Delete** is not reversible and takes the posts with it.
 
 The list shows **ID**, **Title**, **State**, **Access**, **Owner**, and
 **Posts**, all sortable. Filters above it are a **Search** box, a **State**
@@ -90,6 +113,11 @@ mis-typed item; it is not a way to compose new content.
 
 ## Items
 
+Items are where a correction usually belongs. Suppose a member pinned a
+dataset and typed a description that names the wrong principal
+investigator: fixing it here fixes it in every board the item appears in,
+and leaves each member's board otherwise untouched.
+
 The list shows **ID**, **Description**, **Created**, **Creator**, **Type**,
 and **Posts**. Filters are a **Search** box and a **Filter by type**
 drop-down built from the types actually present in the table.
@@ -113,11 +141,17 @@ Users do not pin content from the administrator interface. They use the
 `mod_collect` module, which draws a **Collect** button on a content page and
 posts the page into one of the user's collections.
 
-To turn it on:
+The button is the only way anyone collects anything, so a hub that has
+enabled the component and sees no collections being made has usually not
+placed the module.
+
+The install enables the `mod_collect` extension but creates no module
+instance for it, so on a stock hub the button appears nowhere. To place it:
 
 1. Go to **Extensions → Modules**.
-2. Find **mod_collect**, tick it, and press **Enable**.
-3. Publish it to a template position that appears on content pages.
+2. Press **New** and choose **mod_collect**.
+3. Give it a **Position** that the template renders on content pages, set
+   **Status** to **Published**, and select **Save & Close**.
 
 The module renders nothing for a guest, and nothing on a page it has no
 adapter for. The nine content types it can collect are:
@@ -144,5 +178,9 @@ both listed in the
 [generated parameter reference](../../reference/configuration/components/collections.md):
 
 - **Upload path** — where files attached to items are stored. Default
-  `/site/collections`.
-- **Allow comments** — whether users may comment on posts. Default **Yes**.
+  `/site/collections`. Leave it alone unless you are moving the hub's file
+  storage; changing it does not move the files already there.
+- **Allow comments** — whether users may comment on posts. Default **Yes**,
+  which is sensible for a small hub and the first thing to turn off if
+  collections start attracting spam. Existing comments stay in the database;
+  they stop being displayed.

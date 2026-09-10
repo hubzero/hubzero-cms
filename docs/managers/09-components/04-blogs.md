@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/blogs
 source-id: 3373
 modified: 2016-07-12
@@ -16,6 +16,37 @@ place. The **site blog** lives at `/blog` and is written by hub staff. A
 or `group`) and a *scope ID* (0 for the site, the member's or group's ID
 otherwise), so the Blog Manager in the administrator interface reaches all
 of them. The [Hub users](../../users/05-blog.md) book covers writing posts.
+
+## Whether your hub needs it
+
+A blog post is dated, signed, and finished. It says what happened, on a day,
+and then it stops being current — a release note, a downtime notice, a write-up
+of a workshop. That is the whole of what this component is good at, and it is
+genuinely useful for it: a hub with no other way of saying "we upgraded the
+solver on Tuesday" ends up saying it in an email nobody keeps.
+
+The typical case: you are taking the hub down for four hours on Saturday to
+move it to new hardware. Write it as a site blog post, publish it, and every
+member and every group has one address to point at.
+
+Against its siblings, the line is time. A blog post is right when the date
+is part of the meaning. When it is not — when a reader a year from now still
+needs the information to be true — the [Knowledge base](19-kb.md) or the
+[Wiki](39-wiki.md) is the right place, because a blog post nobody has
+revisited is indistinguishable from one that is still accurate. Blogs do not
+compete with [Answers](02-answers.md) or the [Forum](17-forum.md) at all: a
+post has one author and comments underneath, not a conversation.
+
+**What it is not:** it is not the article manager. Articles in
+[Content](../08-content/README.md) build the hub's static pages — About, Policies,
+Contact. Blog posts are a dated stream with their own listing at `/blog` and
+their own feed. Managers reach for the wrong one about half the time.
+
+Most of a hub's blogging happens without a manager touching this screen at
+all. Member and group blogs are written by their owners; the Blog Manager
+exists mainly so you can find a post someone else wrote, unpublish something
+that should not be up, or delete a spam post from a member who has since been
+blocked.
 
 Open it under **Components > Blog**. Two sub-menu links sit at the top
 left: **Entries** and **Comments**.
@@ -121,6 +152,34 @@ Trashed, or **Flagged**. A flagged comment stays on the page but its text
 is replaced with a notice that it has been reported. Saving returns you to
 the comment list for that entry.
 
+## Unpublishing a post you did not write
+
+The job that brings a manager here: a member's blog post is spam, or a group
+post names someone it should not, and you need it off the site now.
+
+1. Go to **Components > Blog**. Press **Clear** first — the filters remember
+   themselves from your last visit and will hide the post you are looking for.
+2. Set **Scope** to Member or Group, whichever it is, and search the title.
+   The **Scope** column prints the scope and its ID, so `member (1042)` tells
+   you which member's blog it is on.
+3. Check the row and press **Unpublish**.
+
+The post is off the site immediately — its URL now refuses anyone without
+manage rights — and the row is untouched — the author's text, comments, and uploaded files all
+remain. Pressing **Publish** puts it back. That reversibility is why
+unpublishing is the right first move even when you are fairly sure the post
+should go.
+
+> **Warning:** Do not reach for **Delete** at step 3. It destroys the rows,
+> there is no trash to recover from, and if you have misjudged the post you
+> cannot restore it or show the author what you removed. Unpublish now,
+> decide later.
+
+If the member's account is the problem rather than the post, blocking the
+account handles the blog too: `plg_members_blog` trashes a member's posts
+when the account is blocked without approval, and deletes them when the
+account is deleted.
+
 ## Options
 
 The **Options** button opens the component's configuration, grouped into
@@ -134,6 +193,13 @@ for showing authors, allowing comments, and which date to print.
 full post or a 300-character excerpt. Every option is listed with its
 values in the
 [configuration reference](../../reference/configuration/components/blog.md).
+
+The one setting worth a decision is **Archive**: which posts the site blog
+at `/blog` pulls in. Pulling in member and group posts fills a quiet hub's
+front-page feed, but it also puts a member's personal writing on the hub's
+own blog, which they may not have expected. Site only is the default, the safer
+setting, and the one to keep unless you have told members otherwise. Changing it takes
+effect on the next page load and is undone by changing it back.
 
 The **Permissions** tab controls who may administer the component, manage
 it, and create, delete, edit, change the state of, or edit their own

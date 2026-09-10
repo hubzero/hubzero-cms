@@ -101,6 +101,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-administrator-screens">The administrator screens</a></li>
 <li class="toc__item toc__item--l3"><a href="#jobs-2">Jobs</a></li>
 <li class="toc__item toc__item--l3"><a href="#the-posting-form">The posting form</a></li>
+<li class="toc__item toc__item--l3"><a href="#approving-a-posting-that-is-waiting">Approving a posting that is waiting</a></li>
 <li class="toc__item toc__item--l3"><a href="#categories">Categories</a></li>
 <li class="toc__item toc__item--l3"><a href="#types">Types</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -176,6 +177,28 @@ item; if you do not, leave it alone — it costs nothing and creates nothing on
 its own. The one setting that has an effect either way is <strong>Enable this
 component?</strong>, which controls whether members see a <strong>Résumé</strong> tab on their
 profile.</p>
+<p>The realistic case for turning it on is a hub whose community is also a
+labour market — a domain hub where the groups posting research are also the
+groups hiring postdocs. A hub of a hundred members whose institution already
+has a jobs page does not need a second one.</p>
+<p>Whichever way you go, decide it in one sitting, because the board comes in
+two quite different shapes and the choice pulls in another component:</p>
+<ul>
+<li><strong>A noticeboard.</strong> Leave <strong>Allow user subscriptions?</strong> off. You and the
+<strong>Admin group</strong> post the openings; no member becomes an employer, no money
+changes hands, and <a href="../services/index.html">Services</a> stays empty. This is the
+simple version and most hubs that run a board at all want this one.</li>
+<li><strong>An employer marketplace.</strong> Turn <strong>Allow user subscriptions?</strong> on.
+Members can now become employers, which means taking out a paid
+subscription, which means you are also running
+<a href="../services/index.html">Services</a> — the component that holds those subscriptions
+and the only thing that reads it. It also opens résumé browsing and bulk
+résumé download to those employers. Read the warnings under
+<a href="#for-an-employer">For an employer</a> and in
+<a href="../services/index.html">Services</a> before you choose this.</li>
+</ul>
+<p>Neither shape has anything to do with <a href="../storefront/index.html">Storefront</a> or
+<a href="../cart/index.html">Cart</a>; the job board does not use the hub's store.</p>
 <h2 id="the-administrator-screens">The administrator screens</h2>
 <p><strong>Components → Jobs</strong> opens the job board manager. Every screen is headed
 <strong>Jobs Manager</strong>, and three tabs run along the top: <strong>Jobs</strong>, <strong>Categories</strong>
@@ -267,6 +290,29 @@ second visit.</p>
 <em>Failed to publish this ad because user is over the limit according to the
 terms of his/her subscription</em>. Postings the hub itself owns are allowed one
 active advertisement.</p>
+<h3 id="approving-a-posting-that-is-waiting">Approving a posting that is waiting</h3>
+<p>With <strong>Auto approve job postings</strong> off, an employer's posting sits at
+<strong>Pending approval</strong> until you look at it. That is the routine task on this
+component.</p>
+<ol>
+<li><strong>Components → Jobs</strong>. The list opens on <strong>Jobs</strong>; look down the
+<strong>Status</strong> column for <strong>Pending approval</strong>. There is no status filter, so
+on a busy board sort by <strong>Status</strong> to bring them together.</li>
+<li>Click the title to open the posting. Read the description and check the
+dates — <strong>Applications Due</strong> and <strong>Posting Expires</strong> are what the front
+end enforces, and an expiry already in the past publishes to nothing.</li>
+<li>If it needs changing, change it. You are editing the employer's advert,
+and they are not told what you altered.</li>
+<li>In <strong>Manage this Job</strong>, set <strong>Change Status / Take Action</strong> to <strong>Publish
+Ad</strong>. Add a line in <strong>Message to author</strong> if you want them to know why —
+whatever you type is mailed to them along with the status change.</li>
+<li>Save. If the employer is over their subscription quota the publish is
+refused with the message above; the fix is in
+<a href="../services/index.html">Services</a>, on their subscription, not here.</li>
+</ol>
+<p>To turn a posting down, use <strong>Unpublish Ad</strong> with a message, or <strong>Delete
+Ad</strong> if it should never have been submitted. Both keep the record. Do not
+use the toolbar's <strong>Delete</strong> for this — see the warning above.</p>
 <h3 id="categories">Categories</h3>
 <p>The category list, with <strong>ID</strong>, <strong>Order</strong> and <strong>Title</strong>. Each row's <strong>Order</strong>
 is an editable box; <strong>Save Order</strong> writes them all. The form has <strong>Title</strong>
@@ -387,7 +433,7 @@ an employer. Nothing renders it.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../forum/index.html" rel="prev"><span>Previous</span>Forum</a><a class="pager__next" href="../kb/index.html" rel="next"><span>Next</span>Knowledge base</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-jobs.md">Edit this page on GitHub</a>

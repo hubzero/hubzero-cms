@@ -125,6 +125,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Usage</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-administrator-screen">The administrator screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-is-on-usage">What is on /usage</a></li>
@@ -165,8 +166,32 @@
 reporting front end and nothing else: it collects no data, computes no
 totals, and stores nothing. Every figure it draws comes from tables filled in
 by the hub's metrics tooling, which is not part of this repository.</p>
-<p>Read this chapter before promising anyone a usage page. On a CMS installed
+<p>Read this chapter before promising anyone a usage page. On a hub installed
 from this repository and nothing else, most of <code>/usage</code> has nothing to show.</p>
+<p>This is the chapter to have open when somebody — a principal investigator, a
+funder's annual report, a departmental review — asks for the hub's numbers.
+The honest answer for a plain installation is that the hub is not collecting
+them. That is not a fault you can fix from the administrator interface, and
+the page will not tell you so: it will show zeros, empty tables, or a missing
+table error, all three of which look like a hub nobody uses rather than a hub
+nobody is measuring.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> A zero on <code>/usage</code> is not evidence of no activity. It is
+evidence of no collection. Do not report these figures to anyone until you
+have established that the metrics tooling is installed and writing to the
+database the component is pointed at.</p>
+</aside>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>Usage is not the hub's analytics, and it is not the per-member statistics a
+member sees on their own profile. It is a public page of institution-level
+totals — visits, downloads, simulation sessions, top tools, top countries —
+intended for a hub's own reporting. Two things people ask for are elsewhere:</p>
+<ul>
+<li>Traffic analytics for the site as a whole are not in this repository at
+all; hubs use an external analytics service for that.</li>
+<li>A member's own figures come from the <strong>Members - Usage</strong> plugin, covered at
+the end of this chapter.</li>
+</ul>
 <h2 id="the-administrator-screen">The administrator screen</h2>
 <p><strong>Components → Usage</strong> has one screen and it says so:</p>
 <blockquote>
@@ -183,7 +208,7 @@ screen at all needs <code>core.manage</code> on <code>com_usage</code>.</p>
 point the component at the database holding the collected metrics.</p>
 <aside class="admonition admonition--important">
 <p><strong>Important:</strong> When <strong>Username</strong>, <strong>Password</strong>, and <strong>Database</strong> are all
-empty, the component silently falls back to the CMS's own database. The
+empty, the component silently falls back to the hub's own database. The
 tables it wants are not there, so every screen that needs them reports
 <em>Missing table usage <code>tops</code></em> or similar. An empty configuration does not
 disable the page; it produces a broken one.</p>
@@ -262,7 +287,7 @@ chart over time.</li>
 <code>summary_simusage_vals</code> in the statistics database.</p>
 <h3 id="tools">Tools</h3>
 <p>A ranked table, chosen from a <strong>Show data for</strong> drop-down and a time period.
-The nine rankings shipped with the CMS are:</p>
+The nine rankings that ship with the hub are:</p>
 <ul>
 <li>Top Tools by Ranking</li>
 <li>Top Tools by Simulation Users</li>
@@ -274,7 +299,7 @@ The nine rankings shipped with the CMS are:</p>
 <li>Top Tools by Simulation Interaction Time</li>
 <li>Top Tools by Citations</li>
 </ul>
-<p>Unlike the other tabs, this one reads the CMS's own database —
+<p>Unlike the other tabs, this one reads the hub's own database —
 <code>#__stats_tops</code> for the list of rankings and <code>#__stats_topvals</code> for the
 figures. <code>#__stats_tops</code> is seeded at install; <code>#__stats_topvals</code> is not, and
 no code in this repository writes to it. Until the metrics tooling fills it,
@@ -284,7 +309,7 @@ the tab renders its drop-down and an empty table.</p>
 read <code>tops</code>, <code>topvals</code>, <code>classes</code>, <code>classvals</code>, <code>regions</code>, <code>regionvals</code> and
 <code>totalvals</code> in the statistics database, and each reports a missing table by
 name when it is not there.</p>
-<h3 id="maps"><a id="maps"></a>Maps</h3>
+<h3 id="maps">Maps</h3>
 <p>The Maps tab embeds a pre-rendered map in an iframe. The <code>type</code> parameter
 picks which: <code>online</code>, <code>us-maps</code>, <code>tools</code>, <code>web_all</code>, <code>web_gradient</code>,
 <code>animation</code>, and <code>whoisonline</code>. The default is <code>online</code>, a live map of
@@ -301,7 +326,7 @@ API, which needs a key with billing enabled on the Google account. Treat
 the Maps tab as unmaintained.</p>
 </aside>
 <h2 id="is-any-of-it-wired-up">Is any of it wired up?</h2>
-<p>Short answer: not by the CMS.</p>
+<p>Short answer: not by anything in this repository.</p>
 <ul>
 <li>Nothing in this repository writes <code>summary_user_vals</code>,
 <code>summary_simusage</code>, <code>summary_simusage_vals</code>, <code>tops</code>, <code>topvals</code>, <code>classes</code>,
@@ -309,9 +334,9 @@ the Maps tab as unmaintained.</p>
 They belong to a separate statistics database maintained by the hub's
 metrics tooling.</li>
 <li>Nothing in this repository writes <code>#__stats_topvals</code> or <code>#__xsession</code>
-either, even though both tables are part of the CMS schema.</li>
+either, even though both tables are part of the hub's own schema.</li>
 <li>The pre-rendered maps, plots and charts under the configured paths are
-produced outside the CMS as well.</li>
+produced outside the hub as well.</li>
 </ul>
 <p>So a hub gets a working <code>/usage</code> only when the metrics collection is
 installed and running alongside it, and the component's options point at the
@@ -322,11 +347,11 @@ empty report.</p>
 plugin on a member's profile and described in the
 <a href="../../../users/usage/index.html">Usage chapter</a> of the Hub users book. That plugin
 reads <code>#__resource_stats_tools</code>, <code>#__author_stats</code> and
-<code>#__metrics_author_cluster</code> in the CMS database — tables the CMS reads but
+<code>#__metrics_author_cluster</code> in the hub's own database — tables the hub reads but
 does not fill, so it has the same prerequisite.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="../whatsnew/index.html" rel="next"><span>Next</span>What&#x27;s New</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/37-usage.md">Edit this page on GitHub</a>

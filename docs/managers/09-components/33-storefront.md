@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/storefront
 -->
 # Storefront
@@ -13,10 +13,36 @@ belong to the [Cart](06-cart.md) component, which the storefront hands off to.
 This chapter covers the administrator's side; the
 [Hub users](../../users/26-storefront.md) book covers shopping.
 
+Most hubs never open this component. It is off out of the box — the row
+written at install time leaves both Storefront and Cart disabled — and a hub
+that publishes datasets, runs tools and hosts groups has no use for either.
+Turn it on only when the hub genuinely sells something: a licensed code that
+members download after paying, a paid workshop place, a piece of hardware.
+If you are here because you want to *give* members a file, that is
+[Resources](29-resources.md) or [Publications](27-publications.md), not this.
+
+## How these four components relate
+
+Four components in this book deal with money, and they are two unrelated
+pairs. Knowing which is which saves an afternoon.
+
+| If you want | You need | And also |
+|---|---|---|
+| To sell products to members | **Storefront** — the catalogue | **[Cart](06-cart.md)** — the basket, the checkout and the order record. Neither works alone; the storefront's product page calls into Cart to add an item, and Cart's screens read the catalogue back out of Storefront. Enable both or neither. |
+| To run a job board where employers pay | **[Jobs](18-jobs.md)** — the board | **[Services](32-services.md)** — the employer subscriptions the board sells. Services exists only for Jobs; nothing else reads it. |
+
+The two pairs share no code, no tables and no checkout. Storefront and Cart
+do not sell a job-board subscription, and Services cannot sell a product.
+Enabling the store does not give you the job board, and vice versa.
+
 Open it under **Components > Storefront**. Three sub-menu links sit at the
 top: **Products**, **Collections**, and **Option Groups**. Four more
 screens — SKUs, options, restrictions and serial numbers — are reached from
 inside those.
+
+> **Note:** If **Storefront** is not in the **Components** menu, it is still
+> disabled. Enable it — and Cart — under **Extensions > Extension Manager >
+> Manage** before anything on this page applies.
 
 Some vocabulary. A **product** is the thing you sell, with a description and
 an image. An **option group** is a choice a buyer makes (Platform, License
@@ -129,6 +155,47 @@ the first time that person logs in.
 
 **Manage whitelist** is the opposite: an address on it gets the SKU
 regardless of every other access control or restriction.
+
+## Putting one product on sale
+
+A lab wants to sell a licensed analysis code as a download, one price, no
+options. That is the smallest useful thing the store does, and it takes both
+halves of the component.
+
+1. Put the file on the server, in the download folder named in **Options**.
+   It is not uploaded through this interface, and a SKU that names a file
+   which is not there saves happily and fails at the download.
+2. **Components > Storefront > Products**, then **New**. Fill in **Title**,
+   **Tagline** and **Description** — all three are required — set **Type**
+   to *Software Download*, and press **Save**. Leave **State** at
+   *Unpublished* for now.
+3. Reopen the product. The image uploader and the type-related settings only
+   appear once the record exists. Add the picture, and open **Edit
+   type-related options** to set the EULA if the licence needs one.
+4. Set **Access Level**, or the group trees if the hub is in access-group
+   mode. This decides who can buy it, so get it right before publishing;
+   see [Access](#access).
+5. Tick the **Collections** the product belongs to. A product in no
+   collection is reachable by its URL and by search, but appears on no
+   browse page.
+6. Save, then follow the **SKUs (published)** link and create one SKU: a
+   **Title**, the **Price**, and under the software block the **Download
+   file** name. With no option groups on the product, this SKU is the only
+   one it can have.
+7. Publish the SKU, then publish the product. Then check the store page from
+   a test account or a private window rather than from your own session:
+   the catalogue is filtered by the viewer's access levels, and yours are
+   almost certainly wider than a member's.
+
+> **Warning:** Publishing is the moment the product becomes buyable, and
+> money is the one thing on a hub you cannot quietly undo. Do the access
+> level, the price and the EULA before step 7, not after. Unpublishing later
+> stops new sales but does not touch orders already placed, which live in
+> [Cart](06-cart.md) and cannot be reversed from there either.
+
+Adding options later — a platform choice, a licence term — means adding an
+option group, ticking it on the product, and giving every combination its own
+SKU. Existing orders are unaffected; the catalogue changes underneath them.
 
 ## Collections
 

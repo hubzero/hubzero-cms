@@ -160,6 +160,10 @@
 <p>&quot;What can I search for?&quot; The answer is: anything you have permission to see,
 of a content type whose component is in the <strong>Indexed</strong> state on the
 <strong>Searchable Components</strong> screen.</p>
+<p>Read this page before you move a hub to Solr, and read it again the first
+time a member says search cannot find something. It is the page that says
+what is not in the index, and most of the search complaints a manager fields
+come from that list rather than from anything being broken.</p>
 <h2 id="what-can-be-indexed">What can be indexed</h2>
 <p>A content type reaches the Solr index only if one of its models implements
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Search/Searchable.php"><code>Hubzero\Search\Searchable</code></a>.
@@ -222,6 +226,19 @@ Eleven components do in this tree:</p>
 forum posts, wiki pages, questions and answers, wishlists, events, or support
 tickets — those types have search plugins, but the plugins only serve the
 Basic engine. See <a href="../plugins/index.html">Plugins</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That gap is the single most common surprise on a Solr hub, and
+nothing on any screen announces it. A hub whose members live in the group
+forums and the wiki loses search over both the day it switches engines.
+Nobody files a bug, because search still works — it just never returns a
+forum post again. If you inherit a hub where &quot;search misses half the site&quot;,
+check <strong>Engine</strong> first; the fix is often to go back to
+<strong>Basic (default)</strong>, not to rebuild anything.</p>
+</aside>
+<p>Turning a component's row off has the same effect for that type, so a
+half-configured hub can be missing resources or publications too. The list
+below the search box is the honest answer to &quot;what is searchable here&quot;: if a
+type has no category on the results page, it is not in the index.</p>
 <p>A discovered component is not indexed until someone activates it, and an
 activated one can be emptied again, so the working list on any given hub is
 whatever <strong>Searchable Components</strong> shows in the <strong>Indexed</strong> state.</p>
@@ -246,9 +263,23 @@ which defaults to:</p>
 in the full text, a hit in the title five times. <strong>Phrase Fields</strong> does the
 same for multi-word phrases, and <strong>Phrase Slop</strong> (default <code>10</code>) says how many
 words may sit between the terms of a phrase and still count as a match.
-Changing these changes the ranking of every result on the hub; they are in
-the <a href="../../../../reference/configuration/components/search/index.html">configuration reference</a>
+The defaults are sensible and there is no reason to touch them on a new hub.
+Changing them changes the ranking of every result on the hub at once, with no
+preview and no way to compare before and after, so if you do change them,
+change one weight, note what it was, and search for a handful of things you
+know the right answer to. They are in the
+<a href="../../../../reference/configuration/components/search/index.html">configuration reference</a>
 with the rest.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Query Fields</strong>, <strong>Phrase Fields</strong>, <strong>Phrase Slop</strong> and every
+boost are applied in one block of code that is skipped entirely when the
+<strong>Tag Search Box</strong> option is on. Turn tag search on and the hub stops
+weighting titles and URLs above body text, as well as ignoring the
+<a href="../boosting/index.html">boosts</a> — results come back in Solr's own default order.
+<strong>Tag Search Box</strong> defaults to off, and that is the sensible setting unless
+you specifically want the tag filter and are willing to give up ranking
+control for it.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The site search box is not a Solr query box. Lucene's special
 characters — including <code>*</code>, <code>?</code>, <code>:</code>, <code>+</code>, <code>-</code>, quotes, and the words AND,
@@ -268,7 +299,7 @@ narrow it. That is the one place on the hub where a wildcard search is
 possible.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../admin/index.html" rel="prev"><span>Previous</span>Administration</a><a class="pager__next" href="../boosting/index.html" rel="next"><span>Next</span>Boosting</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/31-search/03-breadth.md">Edit this page on GitHub</a>

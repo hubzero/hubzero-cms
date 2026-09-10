@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -16,6 +16,26 @@ Both screens are under **Site → Maintenance** in the administrator menu:
 **Clear Cache** and **Purge Expired Cache**. Each carries the same
 sub-navigation across the top — **Checkin**, **Clear Cache**, **Purge Expired
 Cache** — so [Global Check-in](07-checkin.md) is one click away from either.
+
+Clearing the cache is the safest button in the administrator interface.
+Everything in the cache is a copy of something the hub can work out again, so
+the worst outcome is that the next few page loads are slower than usual. It
+is not confirmed and not undoable, and neither of those matters. Do not
+hesitate over it.
+
+> **Note:** This is not where caching is turned on or off, and it is not the
+> place to tune it. What gets cached, for how long, and by which backend is
+> set on the **System** tab of
+> [Global configuration](../05-configuring/01-hub.md), covered under
+> [Settings](#settings) below. These two screens only empty what is already
+> there.
+
+Do reach for it when a change you made in the administrator interface does
+not appear on the site — a module you moved, a menu item you renamed, an
+article you published. Do not reach for it when content is missing, when a
+member cannot log in, or when a permission is not taking effect. Those are
+not cache problems, and clearing the cache to see whether it helps costs you
+the time it takes to convince yourself it did not.
 
 ## What the hub caches
 
@@ -74,6 +94,24 @@ is a copy of something the hub can compute again.
 The toolbar also carries **Options**, for someone with `core.admin`, and
 **Help**. There is no button that clears everything; select all the rows
 instead.
+
+### Worked example: a template change that will not appear
+
+Say you have edited the site template's stylesheet and the site still serves
+the old one, on a hub where caching is on.
+
+1. Open **Site → Maintenance → Clear Cache**, tick every row, and press
+   **Delete**. If the change now appears, you are finished.
+2. It usually will not. The compiled stylesheet is `site.css` in
+   `app/cache/site/`, which sits outside any group, and this screen lists
+   groups only — so the button you just pressed could not have removed it.
+3. On the server, run `core/bin/muse cache clear`. That empties
+   `app/cache/` completely, compiled stylesheets included.
+4. Reload the site with a forced refresh, to rule out the browser's own copy.
+
+If it still will not appear after step 3, the hub's cache is not what is
+holding it: look at whatever sits in front of the hub — a web server cache,
+a proxy, a CDN — none of which these screens can touch.
 
 ## Purge Expired Cache
 
@@ -138,7 +176,7 @@ Purging can also be scheduled. The **Cron - Cache Handler** plugin offers
 **Trash expired cache data**, which is the Purge Expired button as a cron job;
 schedule it from [Cron](12-cron.md) on a hub whose cache needs regular
 trimming. Its sibling job, **Remove old system CSS files**, looks for files
-named `system-*.css` directly in `app/cache/` — a name the CMS no longer
+named `system-*.css` directly in `app/cache/` — a name the hub no longer
 writes — so it finds nothing to delete.
 
 Both screens also have REST equivalents — `GET /api/cache/list`,

@@ -162,6 +162,19 @@
 <p><strong>Components &gt; Search</strong> has four tabs when the engine is Solr: <strong>Overview</strong>,
 <strong>Searchable Components</strong>, <strong>Index Blacklist</strong>, and <strong>Boosts</strong>. Every tab
 carries an <strong>Options</strong> button that opens the same component configuration.</p>
+<p>You come here for one of three reasons: search is missing something and you
+want to know whether it is in the index, a new content type needs indexing,
+or the whole index needs rebuilding after a bulk import. Nothing on these
+screens has to be visited on a routine. A Solr hub that is behaving needs no
+attention here from one month to the next.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> These screens are not the search settings. Everything that
+changes how a query behaves — the engine, the Solr connection, the field
+weights, the batch size, the commit window, tag search — is behind the
+<strong>Options</strong> button, listed in the
+<a href="../../../../reference/configuration/components/search/index.html">configuration reference</a>.
+These four tabs only manage the contents of the index.</p>
+</aside>
 <h2 id="overview">Overview</h2>
 <p><em>Solr Search: Overview</em> is the landing screen. It reports:</p>
 <ul>
@@ -175,6 +188,10 @@ component configuration and the <code>hubzero-solr</code> service.</li>
 <p>The toolbar has one action beyond <strong>Options</strong>: <strong>Optimize Index</strong>, which asks
 Solr to defragment its index and reports success or failure. It is safe to
 run at any time and is not needed on a schedule.</p>
+<p><strong>Last Document Insert</strong> is the number to read. On a working hub it moves
+whenever anyone saves anything. If it reads <em>3 months ago</em> on a busy hub, the
+index has stopped being updated — go to the <strong>Search - Solr</strong> plugin first,
+as described in <a href="../index/index.html">Maintaining the index</a>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The status panel calls Solr on every page load. If Solr is down,
 the screen still renders, with the failure message in place of the check.</p>
@@ -215,6 +232,13 @@ listing for that type.</p>
 <strong>Not Indexed</strong> and <strong>Indexed</strong> — selecting it on a <strong>Not Indexed</strong> row starts
 the batch index. An <strong>Indexed</strong> row also carries a <strong>Rebuild Index</strong> button
 that runs the same batch pass again over existing documents.</p>
+<p>Of the four toolbar buttons, only <strong>Discover Searchable Components</strong> is
+harmless. <strong>Delete component(s) results</strong> and <strong>Remove component(s)</strong> both
+take a content type out of site search the moment you press them, with no
+confirmation, and both are recoverable only by indexing that type again from
+scratch — which on a large hub is an hour's work, not a click. Read the two
+rows above carefully before ticking anything; they sound alike and do
+different things.</p>
 <p>Selecting a component's title opens <em>Solr Search: Edit Searchable Component</em>,
 which has a <strong>Title</strong> (the label used in the site's category list), a
 <strong>Custom Query</strong> that replaces the default <code>hubtype:&lt;name&gt;</code> when this type's
@@ -237,9 +261,15 @@ depends on your platform packaging.</p>
 <p>The hub notices a restart on its own — the next request either reaches Solr
 or reports it as not responding. No hub-side action is needed afterwards.</p>
 <h2 id="cron-events">Cron events</h2>
+<p>Indexing on a Solr hub is immediate, not scheduled, so a healthy hub needs no
+cron job for search at all. The one worth adding is a periodic full re-index,
+as a safety net against records that were saved while Solr was down.</p>
 <p><strong>Cron - Search</strong> (<code>plg_cron_search</code>) contributes two events to
-<a href="../../cron/index.html">Cron</a>. Add either from <strong>Components &gt; Cron &gt; New</strong>, choosing
-it under <strong>Event</strong>:</p>
+<a href="../../cron/index.html">Cron</a>. A cron job is a row you create; enabling the plugin
+does not create one, and nothing runs at all unless the hub is being ticked —
+both explained in
+<a href="../../../maintenance/cron/index.html">Scheduled tasks</a>. Add either event from
+<strong>Components &gt; Cron &gt; New</strong>, choosing it under <strong>Event</strong>:</p>
 <table>
 <thead>
 <tr>
@@ -269,9 +299,18 @@ to <code>#__search_queue</code>, so the event runs, finds an empty queue, and re
 Scheduling it does nothing. Indexing is now immediate — see
 <a href="../index/index.html">Maintaining the index</a>.</p>
 </aside>
+<p>That dead queue is worth understanding, because it is the reason a plausible
+piece of the hub does nothing. Working the queue is the only thing in the
+tree that raises <code>search.onIndex</code>, and seventeen search plugins — including
+the forum, wiki, questions and wishlist ones — still implement a handler for
+it. Because the queue is never filled, none of those handlers is ever called.
+They look like Solr indexers in the plugin manager and in the source, and
+they are not: they are the remains of the old design. What actually indexes
+content is the pair of plugins described in
+<a href="../index/index.html#how-a-change-reaches-the-index">Maintaining the index</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../install/index.html" rel="prev"><span>Previous</span>Installation and first-time configuration</a><a class="pager__next" href="../breadth/index.html" rel="next"><span>Next</span>Breadth</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/31-search/02-admin.md">Edit this page on GitHub</a>

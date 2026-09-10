@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/courses
 source-id: 3377
@@ -15,6 +15,25 @@ of overview pages; an offering is one run of that course; a section is one
 cohort within an offering; and a section's content is a tree of units, asset
 groups and assets. Students enrol in a section.
 
+A hub needs this if it teaches: a summer school that runs every July, a
+training course new users have to take before they get a tool allowance, a
+semester class using the hub's simulation tools. If nothing on your hub has
+enrolment, a syllabus and a start date, you do not need the component and
+can stop here.
+
+It is not a place to put a set of lecture notes — a resource or a wiki page
+does that with none of this structure. What Courses adds is the machinery
+around teaching: cohorts, dates that differ per cohort, graded work,
+progress, and a certificate at the end. If nobody is enrolling and nothing
+is graded, the structure is overhead.
+
+Most of that machinery is only here, in the administrator interface. Units,
+asset groups, assets, offerings, sections, coupon codes, roles and
+certificates have no front-end equivalent, so setting up a course is
+back-office work that an instructor cannot do for themselves unless you give
+them administrator access. Budget for that: a hub running several courses
+will have someone in these screens every term.
+
 Go to **Components → Courses**. The submenu holds **Courses**, **Pages**,
 **Students**, **Roles**, and a **Plugins** link that jumps to the courses
 plugin group under **Extensions → Plugins**. Everything else — offerings,
@@ -23,11 +42,21 @@ drilling down from the course list.
 
 Every screen needs `core.manage` on `com_courses`.
 
-> **Note:** The gradebook is not in the administrator interface. Grading,
-> progress reports and the instructor's gradebook live on the course pages on
-> the site, in the `progress` courses plugin.
+> **Note:** The one exception runs the other way. The gradebook is *not* in
+> the administrator interface: grading, progress reports, the grading policy
+> and the instructor's gradebook all live on the course pages on the site, in
+> the `progress` courses plugin. So course *structure* is administrator work
+> and course *marking* is instructor work, and the two are done in different
+> places by different people.
 
 ## The hierarchy
+
+Get this right before you build anything, because moving content between
+levels afterwards means recreating it. The rule of thumb: a **course** is
+the thing that has a name in a prospectus, an **offering** is a year of it,
+and a **section** is a group of students who get their own dates. A course
+run once, for everyone, still needs all three — one offering and one
+section — because the enrolment setting and the dates live on the section.
 
 | Level | Reached from | Holds |
 |---|---|---|
@@ -42,6 +71,10 @@ Counts in the list are links. A count of zero shows a **[ + ]** or **Add**
 link instead, which goes straight to the new-item form at that level.
 
 ## The course list
+
+**Draft** is the state to know about here: it makes a course visible to its
+managers and to nobody else, so a course can be built over a month without
+anyone stumbling into a half-finished syllabus.
 
 Columns: **ID**, **Title**, **Alias**, **State**, **Cert.**, **Managers**,
 **Offerings**, and **Pages**. Filters above the table are a **Search** box and
@@ -59,6 +92,14 @@ certificate set**.
 
 ## Creating a course
 
+The scenario for the rest of this chapter: the group wants to run a
+three-day summer school in July, open only to the twenty people they invite,
+with a certificate for anyone who passes the exam. That is one course, one
+offering, one section with restricted enrolment, three units, and a
+certificate.
+
+Start with the course itself.
+
 1. Press **New**.
 2. Fill in the **Details** fieldset.
 3. Set **State** under **Publishing**.
@@ -67,6 +108,34 @@ certificate set**.
 5. Add managers in the **Managers** panel.
 6. Drop an image into the **Logo** panel.
 7. Press **Save & Close**.
+
+Set **State** to **Draft** at step 3 while you build the rest. A draft
+course is visible to its managers and to nobody else, so nothing you do
+next is visible to students until you publish it.
+
+Then work down the hierarchy, using the counts in each list as links:
+
+1. On the course row, click the **Offerings** count and press **New**. Call
+   it *2026* and give it the July start and end dates.
+2. On the offering row, click the **Sections** count. A default section
+   already exists; open it, set **Enrollment** to **Restricted (coupon code
+   is required)**, and save.
+3. On the section row, click the **Codes** cell, press **Generate**, ask for
+   20 codes and set an expiry date. Send those out with the invitations.
+4. On the offering row, click the **Units** count and create one unit per
+   day. Each unit gets the asset groups named by the **Default Asset
+   Groups** option — Lectures, Homework, Exam by default.
+5. Open a unit and add its content in the **Assets** panel.
+6. Back on the course list, click the **No certificate set** icon in the
+   **Cert.** column and follow [Creating a
+   certificate](#creating-a-certificate).
+7. On the section's **Recognition/Rewards** tab, set the certificate offer
+   to **Yes**.
+8. Publish the course.
+
+Read [Who can claim one](#who-can-claim-one) before step 7. If any of your
+lecture-day quizzes are marked graded and the grading policy gives quizzes a
+weight, every one of them becomes compulsory for the certificate.
 
 ### Details
 
@@ -155,6 +224,11 @@ progress bar:
 
 ## Sections
 
+The section is where enrolment is decided, which makes it the screen you
+will come back to. A course open to the world and a course open to twelve
+named people differ only in the section's **Enrollment** setting and whether
+you have generated coupon codes.
+
 The **Sections** count on an offering row opens the section list: **ID**,
 **Title**, **Alias**, **Default**, **State**, **Starts**, **Ends**,
 **Enrolled**, and **Codes**. **Enrolled** links to the students for that
@@ -212,6 +286,9 @@ a lecture, homework or exam becomes available in this section only.
 
 ### Recognition/Rewards
 
+Turning this on is not enough on its own — see
+[Certificates](#certificates) for what a student has to do to earn one.
+
 - **Offer a certificate for this seciton?** — **Yes** or **No**. This only
   does anything when the course has a certificate.
 - A **Badge** fieldset with the badge's enabled flag, image, provider and
@@ -233,6 +310,11 @@ and an **Enrolled** date. **Delete** unenrols the selected students.
 > `index.php?option=com_courses&controller=students&task=csv`.
 
 ## Coupon codes
+
+Codes are how you run a closed course without maintaining a list of
+usernames: generate fifty, send them out, and anyone with one can enrol
+themselves. Each code is single-use — the list shows when it was redeemed
+and by whom — so a code that leaks admits one extra person, not everyone.
 
 The **Codes** cell on a section row opens the coupon codes for that section:
 **ID**, **Code**, **Created**, **Expires**, **Redeemed**, and **Redeemed
@@ -278,8 +360,53 @@ Deleting an asset group deletes the assets in it.
 
 ## Certificates
 
+A certificate is the thing students ask about, and the thing that generates
+support mail when it does not appear. Set one up only if you intend the
+course to be assessed, because a certificate nobody can earn is worse than
+no certificate at all.
+
 A course has at most one certificate: a PDF with placeholders the hub fills
 in when a student claims it.
+
+### Who can claim one
+
+Three things must all be true before the download link appears on a
+student's progress page:
+
+1. The course has a certificate.
+2. The student's section says **Yes** on its **Recognition/Rewards** tab.
+3. The student is *eligible for recognition*, which is a stricter test than
+   most people expect.
+
+Eligibility is decided in
+[`gradebook.php:758`](../../../core/components/com_courses/models/gradebook.php).
+The section's grading policy gives each of the three grade categories —
+exam, quiz, homework — a weight. For **every category with a weight above
+zero**, the student must have a score or an override on **every published,
+graded asset** in that category. And their overall score must be at or above
+the policy's pass threshold. Categories weighted zero are ignored
+completely.
+
+The practical consequence: a single graded item in a weighted category that
+a student never opened blocks the certificate permanently, however well they
+did on everything else. It does not matter whether the item was worth
+anything, whether the instructor meant it to count, or whether the student
+scored a hundred on the rest. Nothing on any screen explains this to the
+student or to the instructor; the link simply does not appear.
+
+The shipped grading policy weights exams at 100%, quizzes and homework at
+zero, and sets the pass threshold at 70%. On a hub that has not changed it,
+that means: every graded exam asset attempted, and 70% overall. If your
+instructors want homework to count, they change the weights in the grading
+policy interface on the course pages on the site — and the moment homework
+carries a weight, every graded homework asset becomes compulsory for the
+certificate.
+
+> **Tip:** Before a course ends, unpublish any graded asset that was not
+> meant to be assessed. An unpublished asset is not counted, and that is the
+> only lever you have over this rule.
+
+### Creating a certificate
 
 To create one:
 
@@ -298,7 +425,9 @@ To remove one, open the certificate the same way — the **Cert.** column will
 read **Certificate set** — and press **Delete** in the toolbar.
 
 A section only offers the certificate when its **Recognition/Rewards** tab
-says **Yes, offer a certificate.**
+says **Yes, offer a certificate.** That switch decides whether the
+certificate is on offer; [Who can claim one](#who-can-claim-one) decides
+whether any given student gets it.
 
 ## Roles
 

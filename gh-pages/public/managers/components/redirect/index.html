@@ -108,11 +108,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Redirect</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-it-lives">Where it lives</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-two-lists">The two lists</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-404s-are-collected">How 404s are collected</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-link">Editing a link</a></li>
 <li class="toc__item toc__item--l2"><a href="#working-through-the-404-list">Working through the 404 list</a></li>
+<li class="toc__item toc__item--l3"><a href="#repointing-the-cited-address">Repointing the cited address</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-external-link-interstitial">The external-link interstitial</a></li>
 <li class="toc__item toc__item--l2"><a href="#see-also">See also</a></li>
 </ol></li>
@@ -166,10 +168,26 @@ and it collects the 404s the site serves so you can see which broken
 addresses people are actually asking for. Separately, it provides the
 interstitial page that warns a member before an external link takes them off
 the hub.</p>
-<p>The redirect list is the part a manager works in. <a href="../../content/urls/index.html">URLs</a>
-covers it in the context of how the hub addresses a page; this chapter is the
-component's own reference and goes further into the screens, the collection
-mechanism, and the options.</p>
+<p>The two halves have nothing to do with each other. The redirect list is about
+addresses on the hub that no longer resolve; the interstitial is about
+addresses on other people's sites. They share a component and an <strong>Options</strong>
+screen and nothing else, and this chapter keeps them apart: the list first,
+the interstitial at the end.</p>
+<p>The redirect list is the part a manager works in. Every hub earns one
+eventually. A paper is published citing <code>/resources/dataset-3</code>; six months
+later the group reorganises its resources and that address returns a 404 to
+everyone who follows the citation. You cannot edit the paper. You can make the
+old address work again, and this is where.</p>
+<p><a href="../../content/urls/index.html">URLs</a> covers it in the context of how the hub
+addresses a page; this chapter is the component's own reference and goes
+further into the screens, the collection mechanism, and the options.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>This is not the hub's URL routing, and it is not the place to decide what a
+page's address should be in the first place. Each component builds its own
+addresses, and a menu item can change one; see
+<a href="../../content/urls/index.html">URLs</a>. A managed redirect is for an address that used
+to work and no longer does. Nor is it a link checker: it records the broken
+addresses people actually request, not every broken link on the hub.</p>
 <h2 id="where-it-lives">Where it lives</h2>
 <p><strong>Site → Maintenance → Routes</strong>. It is deliberately not in the
 <strong>Components</strong> menu — the admin menu excludes it.</p>
@@ -214,8 +232,17 @@ count on the one that already exists.</li>
 <p>So the <strong>404s</strong> list fills itself, and nothing at all is recorded while the
 plugin is disabled. Two kinds of request are skipped on purpose: URLs
 containing <code>mosConfig_</code> or <code>=http://</code>, which are probe traffic.</p>
-<p>Enable the plugin under <strong>Extensions → Plugins</strong>, filtering on <code>system</code>. See
-<a href="../../extensions/plugins/index.html">Plugins</a>.</p>
+<p>A fresh install ships the plugin enabled, so a hub has been collecting 404s
+since the day it was built, and the <strong>404s</strong> list on a hub that has been
+running a while is usually long. If the foot of the screen says the plugin is
+disabled, someone turned it off; re-enable it under <strong>Extensions → Plugins</strong>,
+filtering on <code>system</code>. See <a href="../../extensions/plugins/index.html">Plugins</a>.</p>
+<p>Nothing trims the list. Rows accumulate until somebody trashes them, and the
+component has no scheduled task and no bulk purge beyond <strong>Empty trash</strong>. On a
+public hub most of what accumulates is probe traffic for software the hub does
+not run, which is why the hit count matters more than the row count: an
+address asked for once is noise, and an address asked for four hundred times
+is a link somebody published.</p>
 <h2 id="editing-a-link">Editing a link</h2>
 <p><strong>New</strong>, or select one and <strong>Edit</strong>.</p>
 <table>
@@ -262,17 +289,51 @@ is a 302 unless you say otherwise.</p>
 new URL</strong>. Tick several recorded 404s, type one <strong>Destination URL</strong> and
 optionally a <strong>Comment</strong>, and press <strong>Update Links</strong>: all of them get that
 destination, the same comment, and are enabled in one go. This is the fast
-way to retire a whole directory of moved pages.</p>
-<p>Links updated this way are stored as <strong>301 Moved Permanently</strong>, because the
-batch sets no response code and the correction above supplies one.</p>
+way to retire a whole directory of moved pages. Links updated this way are
+stored as <strong>301 Moved Permanently</strong>, because the batch sets no response code
+and the correction described above supplies one.</p>
+<h3 id="repointing-the-cited-address">Repointing the cited address</h3>
+<p>Following the example above — the dataset moved and a published paper still
+cites the old address:</p>
+<ol>
+<li>Go to <strong>Site → Maintenance → Routes</strong> and open <strong>404s</strong>.</li>
+<li>Sort on <strong>404 Hits</strong>, descending. The address people are actually asking
+for is at the top; if it is not there, nobody has followed the citation
+yet, and you can add the redirect by hand with <strong>New</strong> instead.</li>
+<li>Confirm it is the address you think it is. The <strong>Referring Page</strong> column
+often names where the traffic comes from.</li>
+<li>Tick the row, and any other addresses that should go to the same place.</li>
+<li>In <strong>Update selected links to the following new URL</strong>, type the new address
+and a <strong>Comment</strong> saying why — <em>dataset moved, cited in the 2025 paper</em>.
+Six months from now the comment is the only record of why the redirect
+exists.</li>
+<li>Press <strong>Update Links</strong>. The rows move to the <strong>Redirects</strong> list, enabled,
+as <strong>301 Moved Permanently</strong>.</li>
+<li>Open the old address in a browser and check where you land.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A 301 is the one part of this that visitors' browsers remember.
+Send an address to the wrong place with a 301, and the people who followed
+it keep going to the wrong place after you fix it, because their browser
+caches the answer rather than asking the hub again. Check step 7 before you
+tell anyone the link works. A 302 does not have this problem, which is a
+reason to use <strong>Edit</strong> and set <strong>302 Found</strong> on a destination you are not
+yet sure of.</p>
+</aside>
 <p>The rest of the toolbar is <strong>Enable</strong>, <strong>Disable</strong>, <strong>Archive</strong>, and
 <strong>Trash</strong>. Permanent deletion appears as <strong>Empty trash</strong> only when the status
 filter is set to <strong>Trashed</strong>. <strong>Options</strong> appears for <code>core.admin</code>.</p>
 <p>Archiving is the way to retire a recorded 404 you have decided not to
 redirect, without losing the record that it was asked for.</p>
 <h2 id="the-external-link-interstitial">The external-link interstitial</h2>
-<p>The second half of the component is unrelated to the redirect list. It
-rewrites links that point off the hub so that they go through
+<p>The second half of the component is unrelated to the redirect list, and
+nothing you do in one affects the other. Its job is to tell a member that they
+are about to leave the hub — the case it exists for is a hub whose members
+post links into questions and project descriptions, where an unannounced jump
+to somewhere else looks like the hub sent them there. It ships switched off,
+and switched off is the right setting unless somebody has asked for the
+warning.</p>
+<p>It rewrites links that point off the hub so that they go through
 <code>/redirect/{base64 of the target}</code> instead, and that address optionally shows
 a countdown page — <em>Redirecting Soon…</em> — before forwarding.</p>
 <p>Four places pass member-supplied text through the rewriter: the body of an
@@ -325,7 +386,7 @@ place, and why a redirect is a better answer than a menu item.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../publications/index.html" rel="prev"><span>Previous</span>Publications</a><a class="pager__next" href="../resources/index.html" rel="next"><span>Next</span>Resources</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/28-redirect.md">Edit this page on GitHub</a>

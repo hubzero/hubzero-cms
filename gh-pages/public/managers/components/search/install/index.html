@@ -117,6 +117,7 @@
 <li class="toc__item toc__item--l2"><a href="#what-the-first-visit-creates">What the first visit creates</a></li>
 <li class="toc__item toc__item--l2"><a href="#check-the-connection">Check the connection</a></li>
 <li class="toc__item toc__item--l2"><a href="#build-the-first-index">Build the first index</a></li>
+<li class="toc__item toc__item--l2"><a href="#you-are-done-when">You are done when</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../breadth/index.html">Breadth</a></li>
@@ -162,6 +163,22 @@
 service running somewhere the hub can reach, the connection settings that
 point the hub at it, and a first pass over the hub's content to fill the
 index.</p>
+<p>Do this on a hub that has outgrown Basic search — several thousand resources
+and publications, members complaining about ranking, a wish for counts by
+content type down the side of the results page. Do not do it because it
+sounds better. The whole sequence takes a server administrator, an hour or
+more of indexing, and it removes forum, wiki, questions, wishlist, event and
+ticket results from search permanently. If none of that is worth it, close
+this chapter and stay on Basic.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> There is no dry run. The moment you set <strong>Engine</strong> to
+<strong>Apache Solr</strong> and save, the site's search box starts answering from an
+empty Solr index — every member sees no results for everything — and it
+keeps doing so until the first index finishes. The change is reversible in
+one field, so if you are caught out, set <strong>Engine</strong> back to
+<strong>Basic (default)</strong> and members get working search back on the next
+request. Prefer to do the switch out of hours, or on a staging copy first.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Solr itself is not part of this repository. The hub ships only
 the client side — the Solarium 6.2 library from Composer and the two
@@ -275,6 +292,20 @@ green check and <em>The search engine is responding</em> means the hub reached S
 <p>If instead you see <em>The search engine is not responding</em>, the hub could not
 open the endpoint. Check the host, port, core, path, and context on the
 <strong>Solr</strong> tab, and check that the Solr service is running.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> A green check means the hub opened a connection to Solr. It
+does not mean the index has anything in it, and it does not mean saved
+content is reaching it. Those are the next two sections. Managers stop
+here, see the tick, and report search as working.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The site's search entry point can fall back to the Basic engine,
+but nothing in this tree ever sets the session flag that triggers it, so a
+hub whose Solr service dies does not quietly revert — its search page
+breaks. You can force Basic for one request by adding <code>?engine=basic</code> to
+the search URL, which is useful for checking whether a bad result is Solr's
+doing or the content's.</p>
+</aside>
 <h2 id="build-the-first-index">Build the first index</h2>
 <p>A fresh Solr core is empty; nothing is findable until the hub has pushed its
 content into it. Two things have to be enabled first, both under
@@ -311,9 +342,22 @@ ignore it.</p>
 <p>Once a component reads <strong>Indexed</strong>, saving a record of that type updates Solr
 without further action. <a href="../index/index.html">Maintaining the index</a> covers what
 happens after that.</p>
+<h2 id="you-are-done-when">You are done when</h2>
+<p>Check all five before telling anyone search is working:</p>
+<ol>
+<li><strong>Overview</strong> reads <em>The search engine is responding</em>.</li>
+<li><strong>Search - Solr</strong> shows as enabled in the plugin manager.</li>
+<li>Every content type you care about reads <strong>Indexed</strong> on <strong>Searchable
+Components</strong>, with a non-zero record count beside it.</li>
+<li>A search on the site for something you know exists returns it.</li>
+<li>You edit that record's title, wait out the <strong>CommitWithin</strong> window — five
+minutes by default — and search finds it under the new title.</li>
+</ol>
+<p>Step 5 is the one that catches a missing <strong>Search - Solr</strong> plugin, and it is
+the only check that proves the hub will keep the index current on its own.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Search</a><a class="pager__next" href="../admin/index.html" rel="next"><span>Next</span>Administration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/31-search/01-install.md">Edit this page on GitHub</a>

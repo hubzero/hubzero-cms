@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -13,10 +13,30 @@ addresses people are actually asking for. Separately, it provides the
 interstitial page that warns a member before an external link takes them off
 the hub.
 
-The redirect list is the part a manager works in. [URLs](../08-content/urls.md)
-covers it in the context of how the hub addresses a page; this chapter is the
-component's own reference and goes further into the screens, the collection
-mechanism, and the options.
+The two halves have nothing to do with each other. The redirect list is about
+addresses on the hub that no longer resolve; the interstitial is about
+addresses on other people's sites. They share a component and an **Options**
+screen and nothing else, and this chapter keeps them apart: the list first,
+the interstitial at the end.
+
+The redirect list is the part a manager works in. Every hub earns one
+eventually. A paper is published citing `/resources/dataset-3`; six months
+later the group reorganises its resources and that address returns a 404 to
+everyone who follows the citation. You cannot edit the paper. You can make the
+old address work again, and this is where.
+
+[URLs](../08-content/urls.md) covers it in the context of how the hub
+addresses a page; this chapter is the component's own reference and goes
+further into the screens, the collection mechanism, and the options.
+
+## What it is not
+
+This is not the hub's URL routing, and it is not the place to decide what a
+page's address should be in the first place. Each component builds its own
+addresses, and a menu item can change one; see
+[URLs](../08-content/urls.md). A managed redirect is for an address that used
+to work and no longer does. Nor is it a link checker: it records the broken
+addresses people actually request, not every broken link on the hub.
 
 ## Where it lives
 
@@ -70,8 +90,18 @@ So the **404s** list fills itself, and nothing at all is recorded while the
 plugin is disabled. Two kinds of request are skipped on purpose: URLs
 containing `mosConfig_` or `=http://`, which are probe traffic.
 
-Enable the plugin under **Extensions → Plugins**, filtering on `system`. See
-[Plugins](../10-extensions/03-plugins.md).
+A fresh install ships the plugin enabled, so a hub has been collecting 404s
+since the day it was built, and the **404s** list on a hub that has been
+running a while is usually long. If the foot of the screen says the plugin is
+disabled, someone turned it off; re-enable it under **Extensions → Plugins**,
+filtering on `system`. See [Plugins](../10-extensions/03-plugins.md).
+
+Nothing trims the list. Rows accumulate until somebody trashes them, and the
+component has no scheduled task and no bulk purge beyond **Empty trash**. On a
+public hub most of what accumulates is probe traffic for software the hub does
+not run, which is why the hit count matters more than the row count: an
+address asked for once is noise, and an address asked for four hundred times
+is a link somebody published.
 
 ## Editing a link
 
@@ -100,10 +130,37 @@ Below the list, once it has rows, is **Update selected links to the following
 new URL**. Tick several recorded 404s, type one **Destination URL** and
 optionally a **Comment**, and press **Update Links**: all of them get that
 destination, the same comment, and are enabled in one go. This is the fast
-way to retire a whole directory of moved pages.
+way to retire a whole directory of moved pages. Links updated this way are
+stored as **301 Moved Permanently**, because the batch sets no response code
+and the correction described above supplies one.
 
-Links updated this way are stored as **301 Moved Permanently**, because the
-batch sets no response code and the correction above supplies one.
+### Repointing the cited address
+
+Following the example above — the dataset moved and a published paper still
+cites the old address:
+
+1. Go to **Site → Maintenance → Routes** and open **404s**.
+2. Sort on **404 Hits**, descending. The address people are actually asking
+   for is at the top; if it is not there, nobody has followed the citation
+   yet, and you can add the redirect by hand with **New** instead.
+3. Confirm it is the address you think it is. The **Referring Page** column
+   often names where the traffic comes from.
+4. Tick the row, and any other addresses that should go to the same place.
+5. In **Update selected links to the following new URL**, type the new address
+   and a **Comment** saying why — *dataset moved, cited in the 2025 paper*.
+   Six months from now the comment is the only record of why the redirect
+   exists.
+6. Press **Update Links**. The rows move to the **Redirects** list, enabled,
+   as **301 Moved Permanently**.
+7. Open the old address in a browser and check where you land.
+
+> **Warning:** A 301 is the one part of this that visitors' browsers remember.
+> Send an address to the wrong place with a 301, and the people who followed
+> it keep going to the wrong place after you fix it, because their browser
+> caches the answer rather than asking the hub again. Check step 7 before you
+> tell anyone the link works. A 302 does not have this problem, which is a
+> reason to use **Edit** and set **302 Found** on a destination you are not
+> yet sure of.
 
 The rest of the toolbar is **Enable**, **Disable**, **Archive**, and
 **Trash**. Permanent deletion appears as **Empty trash** only when the status
@@ -114,8 +171,15 @@ redirect, without losing the record that it was asked for.
 
 ## The external-link interstitial
 
-The second half of the component is unrelated to the redirect list. It
-rewrites links that point off the hub so that they go through
+The second half of the component is unrelated to the redirect list, and
+nothing you do in one affects the other. Its job is to tell a member that they
+are about to leave the hub — the case it exists for is a hub whose members
+post links into questions and project descriptions, where an unannounced jump
+to somewhere else looks like the hub sent them there. It ships switched off,
+and switched off is the right setting unless somebody has asked for the
+warning.
+
+It rewrites links that point off the hub so that they go through
 `/redirect/{base64 of the target}` instead, and that address optionally shows
 a countdown page — *Redirecting Soon…* — before forwarding.
 

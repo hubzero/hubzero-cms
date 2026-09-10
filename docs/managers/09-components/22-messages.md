@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -9,6 +9,13 @@ screenshots: none
 Two unrelated things on a hub are called messaging, and this chapter is about
 the smaller and less useful of them. Read the next section before you go
 looking for a screen.
+
+No hub needs this component, and there is nothing here to set up. If you
+arrived looking for how members get notified — a reply on their support
+ticket, an invitation to a group — that is the other messaging, and the
+next section says where its settings are. If you arrived because something
+about it looks broken, it probably is; that is recorded below and it is not
+worth fixing, because nothing on the hub depends on it.
 
 ## Which messaging is which
 

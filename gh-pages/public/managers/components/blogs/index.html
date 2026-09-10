@@ -84,9 +84,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Blogs</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#entries">Entries</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-an-entry">Creating or editing an entry</a></li>
 <li class="toc__item toc__item--l2"><a href="#comments">Comments</a></li>
+<li class="toc__item toc__item--l2"><a href="#unpublishing-a-post-you-did-not-write">Unpublishing a post you did not write</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#member-and-group-blogs">Member and group blogs</a></li>
 <li class="toc__item toc__item--l2"><a href="#api">API</a></li>
@@ -167,6 +169,31 @@ place. The <strong>site blog</strong> lives at <code>/blog</code> and is written
 or <code>group</code>) and a <em>scope ID</em> (0 for the site, the member's or group's ID
 otherwise), so the Blog Manager in the administrator interface reaches all
 of them. The <a href="../../../users/blog/index.html">Hub users</a> book covers writing posts.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>A blog post is dated, signed, and finished. It says what happened, on a day,
+and then it stops being current — a release note, a downtime notice, a write-up
+of a workshop. That is the whole of what this component is good at, and it is
+genuinely useful for it: a hub with no other way of saying &quot;we upgraded the
+solver on Tuesday&quot; ends up saying it in an email nobody keeps.</p>
+<p>The typical case: you are taking the hub down for four hours on Saturday to
+move it to new hardware. Write it as a site blog post, publish it, and every
+member and every group has one address to point at.</p>
+<p>Against its siblings, the line is time. A blog post is right when the date
+is part of the meaning. When it is not — when a reader a year from now still
+needs the information to be true — the <a href="../kb/index.html">Knowledge base</a> or the
+<a href="../wiki/index.html">Wiki</a> is the right place, because a blog post nobody has
+revisited is indistinguishable from one that is still accurate. Blogs do not
+compete with <a href="../answers/index.html">Answers</a> or the <a href="../forum/index.html">Forum</a> at all: a
+post has one author and comments underneath, not a conversation.</p>
+<p><strong>What it is not:</strong> it is not the article manager. Articles in
+<a href="../../content/index.html">Content</a> build the hub's static pages — About, Policies,
+Contact. Blog posts are a dated stream with their own listing at <code>/blog</code> and
+their own feed. Managers reach for the wrong one about half the time.</p>
+<p>Most of a hub's blogging happens without a manager touching this screen at
+all. Member and group blogs are written by their owners; the Blog Manager
+exists mainly so you can find a post someone else wrote, unpublish something
+that should not be up, or delete a spam post from a member who has since been
+blocked.</p>
 <p>Open it under <strong>Components &gt; Blog</strong>. Two sub-menu links sit at the top
 left: <strong>Entries</strong> and <strong>Comments</strong>.</p>
 <h2 id="entries">Entries</h2>
@@ -309,6 +336,32 @@ belongs to, and lets you set the <strong>State</strong>: Unpublished, Published,
 Trashed, or <strong>Flagged</strong>. A flagged comment stays on the page but its text
 is replaced with a notice that it has been reported. Saving returns you to
 the comment list for that entry.</p>
+<h2 id="unpublishing-a-post-you-did-not-write">Unpublishing a post you did not write</h2>
+<p>The job that brings a manager here: a member's blog post is spam, or a group
+post names someone it should not, and you need it off the site now.</p>
+<ol>
+<li>Go to <strong>Components &gt; Blog</strong>. Press <strong>Clear</strong> first — the filters remember
+themselves from your last visit and will hide the post you are looking for.</li>
+<li>Set <strong>Scope</strong> to Member or Group, whichever it is, and search the title.
+The <strong>Scope</strong> column prints the scope and its ID, so <code>member (1042)</code> tells
+you which member's blog it is on.</li>
+<li>Check the row and press <strong>Unpublish</strong>.</li>
+</ol>
+<p>The post is off the site immediately — its URL now refuses anyone without
+manage rights — and the row is untouched — the author's text, comments, and uploaded files all
+remain. Pressing <strong>Publish</strong> puts it back. That reversibility is why
+unpublishing is the right first move even when you are fairly sure the post
+should go.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Do not reach for <strong>Delete</strong> at step 3. It destroys the rows,
+there is no trash to recover from, and if you have misjudged the post you
+cannot restore it or show the author what you removed. Unpublish now,
+decide later.</p>
+</aside>
+<p>If the member's account is the problem rather than the post, blocking the
+account handles the blog too: <code>plg_members_blog</code> trashes a member's posts
+when the account is blocked without approval, and deletes them when the
+account is deleted.</p>
 <h2 id="options">Options</h2>
 <p>The <strong>Options</strong> button opens the component's configuration, grouped into
 four tabs. <strong>Basic</strong> sets the blog's title and the upload path for files
@@ -321,6 +374,12 @@ for showing authors, allowing comments, and which date to print.
 full post or a 300-character excerpt. Every option is listed with its
 values in the
 <a href="../../../reference/configuration/components/blog/index.html">configuration reference</a>.</p>
+<p>The one setting worth a decision is <strong>Archive</strong>: which posts the site blog
+at <code>/blog</code> pulls in. Pulling in member and group posts fills a quiet hub's
+front-page feed, but it also puts a member's personal writing on the hub's
+own blog, which they may not have expected. Site only is the default, the safer
+setting, and the one to keep unless you have told members otherwise. Changing it takes
+effect on the next page load and is undone by changing it back.</p>
 <p>The <strong>Permissions</strong> tab controls who may administer the component, manage
 it, and create, delete, edit, change the state of, or edit their own
 entries and comments. The permission set is defined separately for the
@@ -357,7 +416,7 @@ deletes a group's posts when the group is deleted.</p>
 See the <a href="../../../reference/api/blog/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../billboards/index.html" rel="prev"><span>Previous</span>Billboards</a><a class="pager__next" href="../cache/index.html" rel="next"><span>Next</span>Cache</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/04-blogs.md">Edit this page on GitHub</a>

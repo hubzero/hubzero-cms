@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Plugins · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Twenty-six plugins ship in the search group, listed under Extensions Plug-ins with the filter Type: search . They do not all do the same thing, and which ones…">
+  <meta name="description" content="Twenty-six plugin directories ship in the search group. Twenty-four of them are registered at install and appear under Extensions Plug-ins with the filter…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/plugins/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,6 +120,8 @@
 <li class="toc__item toc__item--l2"><a href="#plugins-for-the-basic-engine">Plugins for the Basic engine</a></li>
 <li class="toc__item toc__item--l2"><a href="#plugins-that-shape-basic-ranking">Plugins that shape Basic ranking</a></li>
 <li class="toc__item toc__item--l2"><a href="#plugins-for-the-solr-engine">Plugins for the Solr engine</a></li>
+<li class="toc__item toc__item--l2"><a href="#two-plugins-that-are-not-installed">Two plugins that are not installed</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-plugins-that-look-like-indexers-and-are-not">The plugins that look like indexers and are not</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-system-plugin">The system plugin</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
@@ -157,13 +159,27 @@
         </header>
         
         <div class="prose">
-<p>Twenty-six plugins ship in the <strong>search</strong> group, listed under <strong>Extensions &gt;
-Plug-ins</strong> with the filter <strong>Type: search</strong>. They do not all do the same
-thing, and which ones matter depends on the engine the hub is running.</p>
+<p>Twenty-six plugin directories ship in the <strong>search</strong> group. Twenty-four of
+them are registered at install and appear under <strong>Extensions &gt; Plug-ins</strong>
+with the filter <strong>Type: search</strong>; the other two are not — see
+<a href="#two-plugins-that-are-not-installed">Two plugins that are not installed</a>.
+They do not all do the same thing, and which ones matter depends on the
+engine the hub is running.</p>
+<p>Read this page when a content type is missing from search results, or before
+disabling anything in this group. On a Basic hub each plugin is a content
+type, so turning one off is how you take a type out of search — the only way,
+in fact, since there is no per-type setting anywhere else. On a Solr hub
+almost none of them matter, and the two that do ship switched off.</p>
 <h2 id="plugins-for-the-basic-engine">Plugins for the Basic engine</h2>
 <p>These turn a query into results by searching the hub's own database. Each one
-is a content type; disabling one drops that type out of Basic search results.
-All of them are enabled on a new hub.</p>
+is a content type; disabling one drops that type out of Basic search results
+immediately, with no re-index and nothing to rebuild — re-enable it and the
+type comes back on the next query. All of them are enabled on a new hub.</p>
+<p>This is the lever to reach for when a hub has a content type it does not use.
+A hub with the forum switched off has no forum posts to find, so the plugin
+costs a pointless database query on every search; disabling it is safe. It is
+also the lever for a hub whose wiki is an internal scratchpad that should not
+surface in site search.</p>
 <table>
 <thead>
 <tr>
@@ -249,7 +265,13 @@ about the structure of the hub — rather than its content — can be answered
 with a hand-written link.</p>
 <h2 id="plugins-that-shape-basic-ranking">Plugins that shape Basic ranking</h2>
 <p>These contribute no results of their own. They adjust the terms or reorder
-what the content plugins returned, and are enabled by default.</p>
+what the content plugins returned. All are enabled on a new hub except
+<strong>Search - Weighttools</strong>, which ships disabled — enable it on a tool-centred
+hub where tools should outrank the presentations and datasets that mention
+them.</p>
+<p>They are the Basic engine's equivalent of <a href="../boosting/index.html">boosting</a>, and
+they are cruder: each is on or off, with no strength to set. Turning one off
+and running the same search again is the whole of the tuning available.</p>
 <table>
 <thead>
 <tr>
@@ -272,7 +294,7 @@ what the content plugins returned, and are enabled by default.</p>
 </tr>
 <tr>
 <td><strong>Search - Weighttools</strong></td>
-<td>Weights resources of the tool type.</td>
+<td>Weights resources of the tool type. <strong>Ships disabled.</strong></td>
 </tr>
 <tr>
 <td><strong>Search - Sortcourses</strong></td>
@@ -286,8 +308,8 @@ what the content plugins returned, and are enabled by default.</p>
 </table>
 <h2 id="plugins-for-the-solr-engine">Plugins for the Solr engine</h2>
 <p>Solr indexing does not go through the content plugins above. It goes through
-the models that implement <code>Hubzero\Search\Searchable</code>, driven by two plugins,
-both of which ship <strong>disabled</strong>:</p>
+the models that implement <code>Hubzero\Search\Searchable</code>, driven by a single
+plugin, which ships <strong>disabled</strong>:</p>
 <table>
 <thead>
 <tr>
@@ -302,25 +324,66 @@ both of which ship <strong>disabled</strong>:</p>
 <td><code>core/plugins/search/solr</code></td>
 <td>Handles <code>search.onAddIndex</code> and <code>search.onRemoveIndex</code>, converts the saved record to a Solr document, and writes it. This is the plugin that keeps the index current; a hub using Solr must enable it.</td>
 </tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Search - Solr</strong> ships <strong>disabled</strong>, and it is the only thing
+that keeps the index current after the first build. A hub that switched to
+Solr, built its index, and never enabled this plugin has a search that
+stopped at the moment of the switch and will never move again. Enable it
+before you build the first index, not after.</p>
+</aside>
+<p>Enabling it is safe on a hub that has not switched engines: with <strong>Engine</strong>
+set to <strong>Basic (default)</strong> it has nothing to do. The risk runs the other way.</p>
+<h2 id="two-plugins-that-are-not-installed">Two plugins that are not installed</h2>
+<p>Two directories in <code>core/plugins/search</code> have no extension row on a new hub,
+so they do not appear in the plugin manager at all and cannot be enabled from
+it. Nothing is missing as a result — neither is needed — but they are worth
+knowing about, because running <strong>Discover</strong> in the extension manager pulls
+them in and produces two confusing entries.</p>
+<table>
+<thead>
 <tr>
-<td><strong>Search - Solr</strong></td>
+<th>Directory</th>
+<th>Manifest name</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
 <td><code>core/plugins/search/remote</code></td>
-<td>Posts documents to a separate indexing service over HTTP, for a Solr instance shared by several hubs. It hears only the batch operations — a component index, rebuild, or clear — not individual saves. Its <strong>Connection Info</strong> parameters take that service's URL and access token. Leave it disabled unless the hub is part of such an arrangement.</td>
+<td><strong>Search - Solr</strong></td>
+<td>Posts documents to a separate indexing service over HTTP, for a Solr instance shared by several hubs. It hears only the batch operations — a component index, rebuild, or clear — not individual saves. Its <strong>Connection Info</strong> parameters take that service's URL and access token.</td>
+</tr>
+<tr>
+<td><code>core/plugins/search/tickets</code></td>
+<td><strong>Search - Resources</strong></td>
+<td>Contributes no Basic search results and no Solr documents; it answers only the type-list event used by the search API. Support tickets are not searchable from the site either way.</td>
 </tr>
 </tbody>
 </table>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Both of those plugins declare <code>Search - Solr</code> as their name, so
-the plugin manager shows that name twice. The one to enable for ordinary
-Solr indexing is the one whose element is <code>solr</code>; the duplicate is
-<code>remote</code>. The support-ticket plugin described below has the same problem
-— its manifest names it <code>Search - Resources</code>, so that name appears twice
-as well. Go by the element, not by the displayed name.</p>
+<p><strong>Warning:</strong> Both manifests are wrong about themselves. <code>remote.xml</code> names
+the plugin <strong>Search - Solr</strong> and declares its element as <code>solr</code>, colliding
+with the real Solr plugin; <code>tickets.xml</code> names it <strong>Search - Resources</strong>
+and points at a <code>resources.php</code> that is not in that directory. If you have
+run <strong>Discover</strong> and now see <strong>Search - Solr</strong> twice, the one to enable is
+the one whose element is <code>solr</code> and whose files are in <code>search/solr</code>. Do
+not enable the <code>remote</code> one unless the hub genuinely shares a Solr instance
+with other hubs; there is nothing for it to talk to otherwise.</p>
 </aside>
-<p>The remaining plugin is the one in <code>core/plugins/search/tickets</code>. It
-contributes no Basic search results and no Solr documents; it only answers
-the type-list event used by the search API. Support tickets are not
-searchable from the site.</p>
+<h2 id="the-plugins-that-look-like-indexers-and-are-not">The plugins that look like indexers and are not</h2>
+<p>Seventeen search plugins — every one in the first table except
+<strong>Search - Sitemap</strong>, plus the uninstalled <code>tickets</code> plugin — carry an
+<code>onIndex</code> method that turns a record into index data. It is easy to read
+that as Solr support for forum posts, wiki pages, questions and wishlists.
+It is not. The only thing in this tree that
+raises <code>search.onIndex</code> is the <strong>Process Queue</strong> cron event, and that event
+reads a queue table nothing ever writes to. None of those seventeen handlers
+has ever been called on a running hub.</p>
+<p>Take the practical point and ignore the archaeology: what is in the Solr
+index is decided by the eleven models listed in
+<a href="../breadth/index.html#what-can-be-indexed">Breadth</a>, and by nothing else.</p>
 <h2 id="the-system-plugin">The system plugin</h2>
 <p>Indexing also depends on one plugin outside the search group: <strong>System -
 HUBzero</strong> (<code>plg_system_content</code>) under <strong>Type: system</strong>, which raises the
@@ -329,7 +392,7 @@ content stops appearing in search, check that plugin and <strong>Search - Solr</
 before anything else.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index/index.html" rel="prev"><span>Previous</span>Maintaining the index</a><a class="pager__next" href="../blacklist/index.html" rel="next"><span>Next</span>Blacklist</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/31-search/06-plugins.md">Edit this page on GitHub</a>

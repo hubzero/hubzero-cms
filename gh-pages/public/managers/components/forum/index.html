@@ -97,10 +97,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Forum</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#scope">Scope</a></li>
 <li class="toc__item toc__item--l2"><a href="#sections">Sections</a></li>
 <li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
 <li class="toc__item toc__item--l2"><a href="#threads">Threads</a></li>
+<li class="toc__item toc__item--l2"><a href="#setting-up-the-site-forum">Setting up the site forum</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-section">Editing a section</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-category">Editing a category</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-post">Editing a post</a></li>
@@ -169,6 +171,40 @@
 an opening post and the replies to it. The site-wide forum lives at <code>/forum</code>.
 This chapter covers the administrator's side; the
 <a href="../../../users/forum/index.html">Hub users</a> book covers reading and posting.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>The forum is for the conversation that has no single right answer: a
+proposal being argued over, a shared problem nobody has solved yet, the
+running chatter of a working group. It is the only one of the hub's
+discussion components with a real hierarchy, so it is the one that scales
+past a few dozen threads without becoming a heap.</p>
+<p>The typical case: two labs on the hub are agreeing on a file format. That is
+not a question with an answer — it is three weeks of back-and-forth that
+needs to stay in one place and be readable afterwards by someone who joins
+in week two.</p>
+<p>Against its siblings:</p>
+<ul>
+<li>Better than <a href="../answers/index.html">Answers</a> at anything ongoing, because threads
+have depth, categories, attachments, and per-section permissions. Worse at
+questions: no reply is ever marked as the answer, so a reader has to read
+the whole thread to find out how it came out, and a question asked in a
+busy category slides off the front page unanswered.</li>
+<li>Better than the <a href="../wiki/index.html">Wiki</a> at the argument; worse at the
+conclusion, because nothing here produces a single current version of
+anything. Pairs well with the wiki inside a group: argue in the forum,
+record the outcome on a wiki page.</li>
+<li>Where a hub's real unit of organisation is the group, the site-wide forum
+at <code>/forum</code> is usually the one that stays empty while the per-group forums
+fill up. Look at your groups before you spend an afternoon building
+sections nobody will read.</li>
+</ul>
+<p><strong>What it is not:</strong> it is not a mailing list, and it does not chase anyone.
+The site forum has no notifications of its own; per-member email
+notifications exist only in group forums, through the Groups - Forum plugin.
+A site-wide forum on a hub whose members do not visit daily will be posted
+to and never replied to.</p>
+<p>Before you build anything here, decide whether you want a site forum at all.
+If your hub already runs <a href="../answers/index.html">Answers</a> for questions and groups
+for team talk, a third place to post is a third place to go unread.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Forum</strong>. Three
 sub-menu links sit at the top left — <strong>Sections</strong>, <strong>Categories</strong>, and
 <strong>Threads</strong> — one for each level of the hierarchy.</p>
@@ -218,6 +254,35 @@ than a name, and <strong>Created</strong> shows the raw database timestamp.</p>
 <strong>Scope</strong>, <strong>Creator</strong>, <strong>Created</strong> — with a <strong>Category</strong> filter and the same
 State and Access filters. A post saved without a title is given one built
 from the first 70 characters of its text.</p>
+<h2 id="setting-up-the-site-forum">Setting up the site forum</h2>
+<p>Building the two labs of the example above a place to work, end to end. This
+is the only setup task the component asks of a manager; everything after it
+is members posting.</p>
+<ol>
+<li>Go to <strong>Components &gt; Forum &gt; Sections</strong> and press <strong>New</strong>. Give it a
+<strong>Title</strong> — one section is enough to start with; sections are the top
+level and a hub with three threads does not need three of them. Leave
+<strong>Scope</strong> at <code>site</code> and <strong>Scope ID</strong> at <code>0</code>. Set <strong>State</strong> to Published
+and choose an <strong>Access</strong> level. <strong>Save &amp; Close</strong>.</li>
+<li>Go to <strong>Categories</strong> and press <strong>New</strong>. Pick your section from the
+<strong>Section</strong> menu, give the category a <strong>Title</strong> and a <strong>Description</strong> —
+the description is the only place you get to say what belongs in here, and
+it is shown under the title on the site, so use it. <strong>Save &amp; Close</strong>.</li>
+<li>Go back to <strong>Sections</strong> and click the section's category count to check
+the category landed in the right place.</li>
+<li>Open <strong>Options</strong> and set <strong>Threading</strong> to <strong>Nested threads</strong> unless you
+want flat threads. See the warning below: the shipped value is neither
+choice, and the effect is flat.</li>
+<li>Visit <code>/forum</code> as a member would and confirm the section and category are
+visible at the access level you set.</li>
+</ol>
+<p>Everything in steps 1 to 4 is reversible: unpublish a section and its
+categories vanish from the site with their content intact. What is not
+reversible is <strong>Delete</strong>, which is why the warning below matters more than
+anything else on this page.</p>
+<p>Add categories as topics actually appear, not in advance. Empty categories
+make a forum look abandoned, and a member faced with eight of them posts in
+the wrong one.</p>
 <h2 id="editing-a-section">Editing a section</h2>
 <table>
 <thead>
@@ -385,6 +450,14 @@ deep nesting may go. Every option is listed with its values in the
 which is not one of its two choices. Until you set it to <strong>Nested threads</strong>
 the forum renders flat, one-level threads.</p>
 </aside>
+<p>Of the rest, the one to think about is whether members may post anonymously,
+which ships <strong>enabled</strong>. Anonymous posting hides the name on the site but not
+in the database — you can still see the author on the post's edit form — and
+on a small hub where everyone knows everyone it mostly invites the kind of
+post you will later have to unpublish. Turning it off is worth considering
+unless you have a reason to keep it, such as a forum for reporting problems
+with a colleague's tool. Changing the setting does not retrospectively reveal
+anyone: posts already made anonymously stay anonymous.</p>
 <h2 id="permissions">Permissions</h2>
 <p>The <strong>Permissions</strong> tab of Options controls who may access, administer, and
 manage the component, and who may create, delete, edit, change the state of,
@@ -411,7 +484,7 @@ category subscriptions. See the
 <a href="../../../reference/api/forum/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../feedback/index.html" rel="prev"><span>Previous</span>Feedback</a><a class="pager__next" href="../jobs/index.html" rel="next"><span>Next</span>Jobs</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/17-forum.md">Edit this page on GitHub</a>

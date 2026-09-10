@@ -83,6 +83,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Billboards</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#collections">Collections</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-a-billboard">Creating a billboard</a></li>
 <li class="toc__item toc__item--l3"><a href="#content">Content</a></li>
@@ -166,6 +167,23 @@ carries a background image, a heading, a block of text, and an optional
 &quot;learn more&quot; link. Slides belong to a collection, and the <code>mod_billboards</code>
 module displays one collection as a carousel. Go to <strong>Components →
 Billboards</strong>.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>A billboard is the hub's shop window: the thing you want a visitor who has
+never been here to see in the first three seconds. Most hubs run three or
+four slides and change one of them a few times a year — a new tool, a paper,
+a workshop with places left.</p>
+<p>The typical case: your annual user meeting opens for registration and you
+want it on the front page for six weeks. That is one billboard, published
+now and unpublished when registration closes.</p>
+<p>This is a small component and there is not much to it. What makes it awkward
+is that it does nothing on its own: a published billboard appears nowhere
+until somebody places the <code>mod_billboards</code> module on a template position. If
+you have made a slide and cannot find it on the site, go straight to
+<a href="#displaying-a-carousel">Displaying a carousel</a>.</p>
+<p><strong>What it is not:</strong> it is not the front page. The hub's front page is a menu
+item and its layout comes from the template; billboards fill one band of it.
+And it is not the media manager — the image lives on the billboard, not in a
+library, and is deleted when you replace it.</p>
 <p>The component has two screens, reached from the submenu:</p>
 <ul>
 <li><strong>Billboards</strong> — the slides.</li>
@@ -312,10 +330,27 @@ toggle the slide on or off. Reorder slides by typing new numbers in the
 <p>The toolbar carries <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>New</strong>, <strong>Edit</strong>,
 <strong>Delete</strong>, and — for users with <code>core.admin</code> — <strong>Options</strong>.</p>
 <p>Only published billboards appear in a carousel.</p>
+<p>Unpublishing is how you retire the user-meeting slide when registration
+closes: the slide drops out of the carousel at once and everything about it
+survives, so next year you edit the dates and publish it again. <strong>Delete</strong>
+takes the record and its uploaded image with it. Given that a billboard is a
+few sentences and a picture, there is rarely a reason to delete rather than
+unpublish.</p>
+<p>A new billboard is created unpublished — the edit form has no published
+field at all, so the only way to put a slide on the front page is the
+<strong>Published</strong> toggle in the list. That is the right way round: write and
+save the slide, come back to the list, and toggle it on when you are
+satisfied. There is no preview, so the front page itself is the first place
+you see the slide rendered.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Once a slide is published, every subsequent save shows on the
+front page immediately. Editing a live slide means editing in public.
+Toggle it off, make the change, and toggle it back on.</p>
+</aside>
 <h2 id="displaying-a-carousel">Displaying a carousel</h2>
 <p>Slides are not shown by the component. They are shown by the
 <code>mod_billboards</code> module, which you publish to a template position from
-<strong>Extensions → Modules</strong>. Its options are:</p>
+<strong>Extensions → Module Manager</strong>. Its options are:</p>
 <table>
 <thead>
 <tr>
@@ -359,9 +394,21 @@ toggle the slide on or off. Reorder slides by typing new numbers in the
 </table>
 <p>Several instances of the module can run at once, each on its own collection
 and its own timing.</p>
+<p>Note the <strong>Billboard Collection</strong> default: collection <code>1</code>. On a hub that has
+never created a collection by hand, the first slide you save creates
+<em>Default Collection</em>, which is usually ID 1, and the module finds it. On a
+hub where somebody has since deleted or renumbered collections, a freshly
+placed module points at a collection that may not exist and shows nothing.
+If the carousel is empty, check the module's collection against the
+<strong>Collections</strong> screen before you look anywhere else.</p>
+<p><strong>Slide Time</strong> defaults to 5 seconds, which is too fast for a slide carrying
+a paragraph of text — a reader who has to finish a sentence will not. If your
+slides have more than a headline on them, 8 to 10 is kinder. This is a module
+setting and changing it affects only that module instance, so it is safe to
+try on a live hub and change back.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../answers/index.html" rel="prev"><span>Previous</span>Answers</a><a class="pager__next" href="../blogs/index.html" rel="next"><span>Next</span>Blogs</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/03-billboards.md">Edit this page on GitHub</a>

@@ -96,6 +96,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Feedback</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#collecting-a-story">Collecting a story</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-quotes-list">The Quotes list</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-story">Editing a story</a></li>
@@ -168,6 +169,30 @@ reads it, and the editor decides whether it is good enough to quote.</p>
 the several different ways of telling the hub something — a success story, a
 support ticket, a wish list entry, a poll — without owning any of them but the
 first.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>Almost every hub is funded by somebody who wants to know it was worth it.
+Feedback exists for that: a stock of members' own words about what the hub
+did for their work, which you can put on the front page, quote in a renewal,
+or hand to a communications office. If your hub does not have to justify
+itself to anyone, you can leave this component alone — it does nothing until
+someone submits a story.</p>
+<p>The typical case: an annual report is due in six weeks and you need three
+sentences from three different members saying the hub mattered. Mail the
+<code>/feedback/success_story</code> link to a handful of people whose work you know,
+and the stories arrive over the following fortnight.</p>
+<p>There is one thing to understand before you use it at all: <strong>the consent
+checkbox is recorded but never enforced.</strong> The author's answer to <em>&quot;I
+authorize … to use my quote&quot;</em> is stored on the row and shown in the list, and
+nothing in the site or the modules ever looks at it. Publishing is entirely
+in your hands, which means the check is yours to make. See
+<a href="#what-publishing-means">What publishing means</a>.</p>
+<p><strong>What it is not:</strong> it is not a survey and it does not collect structured
+answers — there is one free-text box and no questions. It is also not the
+place members complain: the <strong>Report a Problem</strong> card on <code>/feedback</code> goes to
+<a href="../support/index.html">Support</a>, and this component never sees it. And nothing here
+notifies anyone. A story sits in the list until a person opens the screen and
+reads it, so put a note in your calendar rather than expecting the hub to
+tell you.</p>
 <h2 id="collecting-a-story">Collecting a story</h2>
 <p>A logged-in member reaches the form at <code>/feedback/success_story</code>, from the
 <strong>Write a Success Story</strong> button on <code>/feedback</code>. Guests are sent to the login
@@ -337,6 +362,33 @@ it. Ticking <strong>Select for Notable Quotes page.</strong> on a story whose au
 not consent will publish it. Read the <strong>OK to Publish</strong> column before you
 tick anything.</p>
 </aside>
+<p>Which makes selecting a quote a two-step job rather than one. Following the
+annual-report example:</p>
+<ol>
+<li>Go to <strong>Components &gt; Feedback</strong>. The stories are listed newest first.</li>
+<li>Read the <strong>OK to Publish</strong> column <em>first</em>. A story marked anything but
+<strong>Yes</strong> is not publishable, whatever it says — the author read the same
+sentence you did and declined. Ignore it or write to the author and ask.</li>
+<li>Open a story whose column reads <strong>Yes</strong> and read the <strong>Full Quote</strong>.</li>
+<li>Write a <strong>Short Quote</strong> and a <strong>Mini Quote</strong> by hand. Left blank they are
+cut from the full quote at 270 and 150 characters, which usually stops
+mid-sentence. This is an edit of somebody's words for publication, so make
+it one they would recognise.</li>
+<li>Tick <strong>Select for Notable Quotes page.</strong> and save.</li>
+<li>Check <code>/feedback/quotes</code> and, if you run the modules, the front page.</li>
+</ol>
+<p>Step 5 is reversible — untick it and the quote comes off every page it was
+on. Step 2 is the one that is not, in the sense that matters: a quote
+published without consent has been published, and taking it down afterwards
+does not undo that. <strong>Delete</strong> is worse still, since it removes the record
+and its whole picture directory with no confirmation and no trash state, so
+the consent record goes with it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The author's two consent checkboxes are shown but disabled on the
+administrator's form once a story has been saved, so nobody can quietly
+flip a No to a Yes. That is deliberate and it is the only protection the
+flag has.</p>
+</aside>
 <p>The <strong>Random Quote</strong> module's <strong>Quote pool</strong> parameter offers <em>Flash
 rotation</em>, <em>Notable quotes</em> and <em>All</em>, but only <em>Notable quotes</em> selects
 anything sensible: the other two ask for stories that are <strong>not</strong> marked
@@ -374,7 +426,7 @@ reach its screens, and create, delete, edit or change the state of a quote.
 Reaching the screens at all requires Access Administration Interface.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../forum/index.html" rel="next"><span>Next</span>Forum</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/16-feedback.md">Edit this page on GitHub</a>

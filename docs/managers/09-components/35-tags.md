@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/tags
 -->
 # Tags
@@ -12,6 +12,25 @@ and that word becomes a link that gathers everything else carrying it. This
 chapter covers the administrator's side: the tag list, aliases, merging,
 tagged items, relationships and focus areas. The
 [Hub users](../../users/27-tags.md) book covers what members see at `/tags`.
+
+Almost nothing here is about creating tags. Members create them, in their
+hundreds, by typing; your job is to tidy up after them. A hub two years old
+has `machine-learning`, `machine learning`, `ML` and `Machine Learning` all
+in use, splitting the same body of work across four tag pages that each look
+half-empty. Merging those four into one is the characteristic task of this
+component, and the rest of the screens exist to support it.
+
+That makes tags different from categories elsewhere in the hub. A category
+is a list you define and content is filed into. A tag is whatever somebody
+typed. You cannot stop a member inventing a new one, and there is no
+approval step — so a tag vocabulary is curated after the fact or not at all.
+
+> **Warning:** The two things a manager does here — merging and deleting —
+> both reach out of this component and change every piece of content
+> carrying the tag, across every component, in one action. Neither can be
+> undone, and neither asks a second time beyond a plain confirmation. Read
+> [Merging](#merging) and the note on deleting before you use either on a
+> live hub.
 
 Open it under **Components > Tags**. Four sub-menu links sit at the top
 left: **Tags**, the list below; **Relationships**; **Focus Areas**; and
@@ -50,6 +69,16 @@ The toolbar offers:
   permanent.
 - **Help** — the built-in help screen.
 
+> **Warning:** Deleting a tag does not just remove a word from a list. It
+> unpicks the tag from every resource, group, wiki page, ticket and profile
+> that carried it, one row at a time, and those links are gone: the content
+> stays, the tag page stops existing, and nothing on the hub records which
+> items used to be tagged. The tag's own row is copied into the tag log
+> before it goes, so you can see *what* was deleted and by whom, but not
+> *what it was on*, so it cannot be rebuilt. If the tag is wrong rather than
+> worthless, [merge](#merging) it into the right one instead — that keeps
+> every association and moves it.
+
 > **Note:** The **# tagged** and **Aliases** counts are stored on the tag
 > row, not counted live. If they look wrong, check the tags and press
 > **Re-calculate # Tagged and Aliases**.
@@ -87,6 +116,11 @@ instead; the alias itself is never stored on the item.
 
 ## Merging
 
+Merging is how you fix a split vocabulary. It is the only action here that
+consolidates rather than destroys: everything tagged with any of the source
+tags comes out tagged with the destination, and the old spellings survive as
+aliases, so a member who types one of them still lands in the right place.
+
 Check two or more tags and press **Merge**. The next screen lists the
 tags you chose, each with the number of items using it, and asks for the
 tag to merge into. Type it into the **Tag** field — it may be an existing
@@ -96,6 +130,35 @@ created for you. Press **Save & Close** to finish.
 Merging moves every item association and every alias from the source tags
 onto the destination, adds each source tag's raw text as an alias of the
 destination, and then deletes the source tags. There is no undo.
+
+### Merging four spellings into one
+
+Taking the `machine learning` example from the top of the chapter:
+
+1. In **Components > Tags**, type `machine` into **Search (raw tag)** and
+   press **Go**. The variants appear together; the **# tagged** column
+   shows how much content each is holding.
+2. Decide which one wins. Prefer the one with the most items — the fewest
+   associations move, and the tag page most people already link to keeps
+   working.
+3. Tick the losing spellings. Leave the winner unticked; you do not have to
+   include it, and naming it as the destination is enough.
+4. Press **Merge**. Type the winning tag's text into the **Tag** field
+   exactly as it should read, and press **Save & Close**.
+5. Open the surviving tag and check its **Alias** field. The old spellings
+   are now aliases, which is what redirects the next member who types one.
+6. Look at **# tagged**. If it has not moved, tick the tag and press
+   **Re-calculate # Tagged and Aliases** — the count is stored, not
+   counted live.
+
+Everything that carried the old tags now carries the new one, on every
+component of the hub, and nobody was notified. That is normally what you
+want; it also means a mistake here is visible to members immediately and is
+not something you can put back.
+
+> **Tip:** If you are not sure a merge is right, [pierce](#piercing) first.
+> Piercing adds the destination tag to the same items without removing
+> anything, so you can look at the result and merge — or not — afterwards.
 
 ## Piercing
 

@@ -170,10 +170,26 @@ publication it references, formats it with a bibliographic style you
 choose, and offers it for download in BibTeX or EndNote. The catalogue is
 on the site at <code>/citations</code>; the <a href="../../../users/citations/index.html">Hub users</a>
 book covers browsing, submitting, and importing.</p>
+<p>The reason to run it is evidence. A hub funded by a grant is asked, once a
+year, what came of the money, and &quot;412 downloads&quot; is a weaker answer than a
+list of papers whose methods section names a dataset the hub holds. Citations
+is where that list lives, and the <strong>Stats</strong> screen turns it into the table
+that goes in the report. A hub that is never asked that question can leave
+the component alone: nothing else on the hub depends on it, and an empty
+<code>/citations</code> page does no harm.</p>
+<p>It is not a bibliography of what your members have written — that is
+<a href="../publications/index.html">Publications</a>, which produces the work. Citations
+records other people's works that point <em>back</em> at the hub. It is also not a
+reference manager: it stores one flat record per work with a formatted
+string, and it has no notion of a personal library.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Citations</strong>.
 Five sub-menu links sit at the top left: <strong>Citations</strong>, the list below,
 <strong>Stats</strong>, <strong>Types</strong>, <strong>Sponsors</strong>, and <strong>Format</strong>.</p>
 <h2 id="citations-2">Citations</h2>
+<p>The list is the whole catalogue, and it is where you go to fix what someone
+else entered — a member submits a citation from the site, an import run
+brings in a <code>.bib</code> file, and both land here unpublished or wrong as often as
+not.</p>
 <p>The list shows every citation on the hub, whatever its scope. Columns are
 <strong>ID</strong>, <strong>Type</strong>, <strong>Title</strong> / <strong>Author(s)</strong>, the published state, <strong>Year</strong>,
 <strong>Affiliated</strong>, <strong>Funded by</strong>, <strong>Scope</strong>, and <strong>Scope ID</strong>. Click a column
@@ -203,6 +219,27 @@ affiliation and funding toggles read <code>YES</code> and <code>NO</code> — be
 strings are not defined in the component's language file.</p>
 </aside>
 <h2 id="creating-or-editing-a-citation">Creating or editing a citation</h2>
+<p>Most citations arrive by import or from the site. You create one by hand
+when a colleague forwards a paper that cites a dataset the hub holds and you
+want it counted in this year's figures.</p>
+<p>To record that paper:</p>
+<ol>
+<li>Go to <strong>Components &gt; Citations</strong> and press <strong>New</strong>.</li>
+<li>Fill in <strong>Title/Chapter</strong> — it is the only required field — then the
+<strong>Author(s)</strong>, <strong>Journal</strong>, <strong>Year</strong>, <strong>Volume</strong>, <strong>Pages</strong> and <strong>DOI</strong>.
+Leave everything that does not apply blank.</li>
+<li>Set <strong>Type</strong> to <code>article</code>, so the site shows it with the right fields.</li>
+<li>In the <strong>Citation for</strong> panel on the right, add a row: <strong>Type</strong>
+<em>Publication</em>, the publication's numeric <strong>ID</strong>, and <strong>Context</strong>
+<em>References this citation</em>.</li>
+<li>In the <strong>Affiliation</strong> panel, tick <strong>Affiliated with your organization</strong>.
+That flag, and nothing else, is what puts the citation in the
+<strong>Affiliated</strong> column of the <a href="#stats">Stats</a> table.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>The citation is published straight away. If you were wrong about the
+affiliation, click the icon in the <strong>Affiliated</strong> column of the list to turn
+it off again; nothing about that is hard to undo.</p>
 <p>The edit screen has two columns. <strong>Save &amp; Close</strong> stores the citation and
 returns to the list, <strong>Cancel</strong> discards changes.</p>
 <p>The left column starts with <strong>Details</strong>, a long form in which you fill in
@@ -329,10 +366,15 @@ is displayed verbatim wherever the citation appears.</p>
 </tbody>
 </table>
 <h2 id="stats">Stats</h2>
+<p>This is the screen the annual report is copied from.</p>
 <p><strong>Stats</strong> is a read-only table of citations per <strong>Year</strong>, split into
 <strong>Affiliated</strong> and <strong>Non-affiliated</strong> counts with a <strong>Total</strong> column. The
 same figures appear on the public <code>/citations</code> page.</p>
 <h2 id="types">Types</h2>
+<p>A type decides which boxes a member sees when they submit a citation from
+the site, so it is worth trimming rather than extending: a type with forty
+fields gets forty fields' worth of blanks. Leave the shipped types alone
+unless your field cites something they do not cover.</p>
 <p>A type is a kind of cited work — article, book, thesis. The list shows
 <strong>ID</strong>, <strong>Alias</strong>, and <strong>Title</strong>; the toolbar has <strong>New</strong>, <strong>Edit</strong>,
 <strong>Delete</strong>, and <strong>Help</strong>.</p>
@@ -392,7 +434,8 @@ carries <strong>Edit</strong> and <strong>Delete</strong> links. The toolbar has
 </tbody>
 </table>
 <p>Sponsors appear on a citation only while the <strong>Citations Sponsors</strong> option
-is on.</p>
+is on, which it is on a stock hub. If you have defined no sponsors the
+option costs nothing, so there is no reason to turn it off.</p>
 <h2 id="format">Format</h2>
 <p><strong>Format</strong> controls how citations are rendered. Choose a <strong>Format Style</strong>
 from the styles in the database, and the <strong>Format String</strong> box fills with
@@ -405,7 +448,11 @@ that style's template in place. Choosing <strong>Custom Format</strong> and savi
 creates or overwrites the single style named <strong>Hub Custom</strong>.</p>
 </aside>
 <p>Which style citations actually use is set by the <strong>Default Format</strong> option,
-which takes a style name.</p>
+which takes a style name. The shipped install leaves it empty, and an empty
+value falls back to <strong>IEEE</strong>. That is a reasonable default for an
+engineering hub and the wrong one for most others, so if your field cites in
+APA, set it — the option is on the <strong>Basic</strong> tab of <a href="#options">Options</a>, and
+changing it restyles every citation on the site at once.</p>
 <h2 id="options">Options</h2>
 <p>The <strong>Options</strong> button opens the component's configuration. The <strong>Basic</strong>
 tab covers presentation: whether a citation's title links to its own page,
@@ -443,7 +490,7 @@ and appear here with their scope in the <strong>Scope</strong> column.</p>
 listing citations. See the <a href="../../../reference/api/citations/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../checkin/index.html" rel="prev"><span>Previous</span>Check-in</a><a class="pager__next" href="../collections/index.html" rel="next"><span>Next</span>Collections</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/08-citations.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/cart
 source-id: 3374
@@ -15,6 +15,25 @@ the shopper's basket, the checkout, and the order record; the catalogue of
 products and SKUs lives in the [Storefront](33-storefront.md) component. In the
 administrator interface Cart is a set of reports: what has been ordered, and
 what has been downloaded.
+
+Like Storefront, Cart is disabled on a new hub, and most hubs leave it that
+way. The two go together: the storefront's product pages call into Cart to
+add an item, and Cart's screens read the catalogue back out of Storefront, so
+enabling one without the other gives you a store nobody can buy from or a set
+of reports with nothing to report on. Enable both or neither, under
+**Extensions → Extension Manager → Manage**. See
+[Storefront](33-storefront.md) for how the hub's four money-handling
+components fit together.
+
+Two things bring a manager here once the store is running. A buyer says they
+have run out of downloads and wants another; or someone asks what was sold
+last quarter. Both are below.
+
+> **Note:** This is not an order management system. There is no order status,
+> no fulfilment step, no cancellation and no refund. A completed order is a
+> record you can correct, not a workflow you can advance. Anything that
+> should have been decided before the sale — who may buy, at what price —
+> belongs in [Storefront](33-storefront.md).
 
 Go to **Components → Shopping Cart**. Two submenu links sit at the top:
 
@@ -53,8 +72,20 @@ date filters and its own **Download CSV** button.
 
 ### Marking a download inactive
 
+This is the one repair Cart offers, and it is the reason most managers open
+the component. A member bought a code, downloaded it, lost the machine, and
+has hit the per-user download limit. Marking their old download record
+*Inactive* takes it out of the count and gives them the download back.
+
 Click the icon in a row's **Status** column to flip that record between
 *Active* and *Inactive*.
+
+Working through the example: filter the list by clicking the member's name
+in the table, widen the **From** date if the download is older than a month —
+the window defaults to the last month, so an old record simply is not
+there — find the row, and click its **Status**. The change takes effect on
+their next attempt; nothing is emailed and no order is altered. It is
+reversible: click the status again to make it active once more.
 
 > **Warning:** The **Publish** and **Unpublish** buttons in the toolbar do
 > not work. They post the tasks `publish` and `unpublish`, which the

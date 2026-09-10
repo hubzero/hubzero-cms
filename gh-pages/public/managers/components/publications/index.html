@@ -107,13 +107,19 @@
 <li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Publications</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-pipeline">The pipeline</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-find-it">Where to find it</a></li>
 <li class="toc__item toc__item--l2"><a href="#publications-2">Publications</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-publication">Editing a publication</a></li>
 <li class="toc__item toc__item--l2"><a href="#licenses">Licenses</a></li>
 <li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
 <li class="toc__item toc__item--l2"><a href="#master-types">Master Types</a></li>
 <li class="toc__item toc__item--l2"><a href="#batch-create">Batch Create</a></li>
-<li class="toc__item toc__item--l2"><a href="#curation-and-scheduled-jobs">Curation and scheduled jobs</a></li>
+<li class="toc__item toc__item--l2"><a href="#curation">Curation</a></li>
+<li class="toc__item toc__item--l3"><a href="#nothing-is-curated-until-you-change-a-setting">Nothing is curated until you change a setting</a></li>
+<li class="toc__item toc__item--l3"><a href="#turning-curation-on">Turning curation on</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-else-to-check">What else to check</a></li>
+<li class="toc__item toc__item--l2"><a href="#scheduled-jobs">Scheduled jobs</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#api">API</a></li>
 <li class="toc__item toc__item--l2"><a href="#doi-registration">DOI registration</a></li>
@@ -172,26 +178,81 @@
         <div class="prose">
 <p>Publications are versioned, citable releases of research output — datasets,
 papers, presentations, code. A member assembles one inside a project, a
-curator reviews it, and once approved it gets a DOI and a permanent page at
-<code>/publications/&lt;id&gt;</code>. This chapter covers the administrator's side. The
+curator reviews it if the hub is set up to require that, and on approval it
+gets a DOI and a permanent page at <code>/publications/&lt;id&gt;</code>. This chapter covers the administrator's side. The
 <a href="../../../users/publications/index.html">Hub users</a> book covers writing and
 curating one, and <a href="#doi-registration">DOI registration</a> covers the identifier
 service.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> On a stock hub nothing is curated. The shipped install turns
+auto-approve on, and a member's submission goes straight to published with
+no curator involved. If you believe review is happening, read
+<a href="#curation">Curation</a> before anything else on this page.</p>
+</aside>
+<h2 id="the-pipeline">The pipeline</h2>
+<p>This is the middle stage of three components that belong together.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Component</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Work</td>
+<td><a href="../projects/index.html">Projects</a></td>
+<td>The private team workspace the material comes out of.</td>
+</tr>
+<tr>
+<td>Release</td>
+<td><strong>Publications</strong></td>
+<td>A frozen, versioned, citable slice of that work, with a DOI.</td>
+</tr>
+<tr>
+<td>Catalogue</td>
+<td><a href="../resources/index.html">Resources</a></td>
+<td>The public shelf a visitor browses at <code>/resources</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>What you decide at this stage is <strong>what a release has to contain, whether
+anyone checks it before the world sees it, and whether it gets a DOI</strong>. Those
+are the three questions, and they map onto three screens: <a href="#master-types">Master
+Types</a> for the contents, <a href="#curation">Curation</a> for the check,
+and <a href="#doi-registration">DOI registration</a> for the identifier.</p>
+<p>A publication is not a resource. Nothing in the tree creates a resource
+record from a publication, and the two live in separate tables with separate
+browse pages. It is also not a file share: it is a fixed set of files, a
+citation, and a metadata record, and once published its files do not change
+without a new version.</p>
+<p>Publications need Projects. A publication is assembled inside a project's
+<strong>Publications</strong> tab, so if the <code>projects</code> Publications plugin is disabled
+nobody can make one, whatever this component's settings say.</p>
+<h2 id="where-to-find-it">Where to find it</h2>
 <p>Open it under <strong>Components &gt; Publications</strong>. Six sub-menu links sit at the
 top left: <strong>Publications</strong>, <strong>Licenses</strong>, <strong>Categories</strong>, <strong>Master Types</strong>,
 <strong>Batch Create</strong>, and <strong>Plugins</strong> — the last opens the Plugins component
 filtered to the <code>publications</code> folder, and only appears if you may manage
 plugins.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The component ships with <strong>Component ON/OFF</strong> set to Off, and the
-Publications list then shows the banner <em>This component is currently
+<p><strong>Note:</strong> <strong>Component ON/OFF</strong> does nothing. The manifest declares it Off
+and the shipped install row sets it On, and the stored row is what runs, so
+a hub installed from this release has it On. Setting it Off changes one
+thing: the Publications list grows the banner <em>This component is currently
 disabled and is inaccessible to end users.</em> The banner is all that is left
-of the option: the front-end code that redirected <code>/publications</code> to the
+of the option — the front-end code that redirected <code>/publications</code> to the
 Resources component is commented out, so the site works either way. What
-actually decides whether members can publish is the <code>projects</code> Publications
-plugin.</p>
+actually decides whether members can publish is the <code>projects</code>
+Publications plugin.</p>
 </aside>
 <h2 id="publications-2">Publications</h2>
+<p>You come here to fix or withdraw something, not to make one — there is no
+<strong>New</strong> button and there cannot be, because a publication is assembled in a
+project. The common errands are approving a submission when the curators
+are away, unpublishing a dataset that turned out to be wrong, and correcting
+a DOI.</p>
 <p>The <strong>Publication Manager</strong> lists every publication version. Columns are
 <strong>ID</strong>, <strong>Title</strong>, <strong>@v.</strong> (the version label), <strong>Status</strong>, <strong>Project</strong>,
 <strong>Releases</strong> (a link to that publication's version list), <strong>Master Type/
@@ -328,6 +389,11 @@ notes, metadata, and submitter. Values default to the master type's setting.</p>
 <p><strong>Releases</strong> in the list opens the <strong>Versions</strong> screen: one row per version
 with its ID, label, title, status, DOI, and a <strong>manage version »</strong> link.</p>
 <h2 id="licenses">Licenses</h2>
+<p>Whether your hub needs to touch this depends on your institution. The
+shipped list covers the usual open licences; add one when your legal office
+requires particular wording, or when data comes with terms of use a
+depositor must agree to. <strong>Agreement required</strong> is the setting that turns a
+licence into a click-through the depositor cannot skip.</p>
 <p>Licenses are the choices authors get when they license their work. The list
 shows <strong>ID</strong>, <strong>Name</strong>, <strong>Title</strong>, <strong>Status</strong>, <strong>Default</strong>, and <strong>Order</strong>,
 with a search box over titles. The toolbar adds <strong>New</strong>, <strong>Edit</strong>, <strong>Make
@@ -340,6 +406,11 @@ name is generated from the title if blank), a <strong>URL</strong> to the full t
 a choice for new publications), <strong>Customizable</strong> (authors may edit the text),
 <strong>Agreement required</strong>, and <strong>Allow Derivatives</strong>.</p>
 <h2 id="categories">Categories</h2>
+<p>Categories do two jobs that are easy to confuse. They group publications for
+browsing on the site, and each one carries the Dublin Core type that goes
+into the DOI metadata record as <code>resourceType</code> — so choosing the wrong
+<strong>dc:type</strong> misdescribes the work to every system that reads the DOI, not
+just to visitors.</p>
 <p>Categories group publications for browsing, and each carries a Dublin Core
 type used in exported metadata. The list shows <strong>ID</strong>, <strong>Name</strong> with its
 alias, URL alias and dc:type underneath, <strong>Contributable</strong>, and <strong>Status</strong>,
@@ -355,6 +426,16 @@ is offered when someone publishes that type. <strong>Plugins</strong> turns each
 gains or loses its extra tabs. <strong>Custom Fields</strong> defines extra metadata
 inputs, each with a name, input type, and required flag.</p>
 <h2 id="master-types">Master Types</h2>
+<p>This is where you decide what a release of a given kind has to contain
+before anyone can call it published: which panels the author fills in, what
+each panel accepts, how many files of what sort, and whether a DOI is
+required. A hub that publishes datasets and a hub that publishes teaching
+material want different answers, and a master type is how you give them.</p>
+<p>Editing a type is not a small change. Blocks and elements are read at
+submission time, so a block you make required starts blocking drafts that
+are already half-written, and <strong>[Delete]</strong> on a block removes everything
+authors have entered into it. Add a type and experiment on that rather than
+reworking one people are using.</p>
 <p>A master type is the blueprint for a kind of publication: which panels the
 author fills in, in what order, what each one accepts, and whether a DOI is
 required. The list shows <strong>ID</strong>, <strong>Name</strong>, <strong>Alias</strong>, <strong>Contributable</strong>, and
@@ -396,7 +477,7 @@ arrows in the last column.</p>
 </tr>
 <tr>
 <td>Auto Approve?</td>
-<td>Publish submissions of this type without review.</td>
+<td>Publish submissions of this type without review. On is enough on its own, whatever <strong>Options → Curation → Auto-approve</strong> says — see <a href="#curation">Curation</a>.</td>
 </tr>
 <tr>
 <td>Request review? (when set to auto approve)</td>
@@ -431,22 +512,99 @@ Files manifest.</p>
 <p><strong>Type supported?</strong> reports whether a <code>projects</code> plugin with the same alias
 is installed and enabled. A type marked off cannot actually be produced.</p>
 <h2 id="batch-create">Batch Create</h2>
+<p>Use this when a hub inherits a collection — a departmental data archive
+being moved onto the hub, say — and creating each publication by hand is not
+practical. For anything under a dozen records it is more work than doing it
+by hand, because the XML has to validate first.</p>
 <p><strong>Batch Create</strong> imports publications from an XML file. Choose the project
 and the master type, attach the file, and press <strong>Process data (you'll have a
 chance to review)</strong>. The file is validated against a schema you can download
 from the <strong>schema</strong> link; records are then shown for review — with missing
 licenses, unknown user IDs, and missing files flagged — before anything is
 written.</p>
-<h2 id="curation-and-scheduled-jobs">Curation and scheduled jobs</h2>
-<p>Curation is not an administrator screen. Members of the group named in the
-<strong>Name of Curators Group</strong> option review submissions at
-<code>/publications/curation</code> on the site — see
-<a href="../../../users/publications/index.html#curation">Curation</a>.</p>
+<h2 id="curation">Curation</h2>
+<h3 id="nothing-is-curated-until-you-change-a-setting">Nothing is curated until you change a setting</h3>
+<p>Start here. A hub installed from this release publishes every submission the
+moment its author presses the button. No curator sees it, no approval is
+recorded, and the DOI is minted and made findable. This is not a bug you
+will notice, because the publication appears and looks correct; it is only
+wrong if you believed someone was checking.</p>
+<p>Two switches cause it, and <strong>either one being on is enough</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>Where</th>
+<th>Manifest default</th>
+<th>What ships</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto-approve</strong></td>
+<td><strong>Options → Curation</strong></td>
+<td>No</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td><strong>Auto Approve?</strong></td>
+<td><a href="#master-types">Master Types</a> → a type's Curation Configuration</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>The component manifest declares <strong>Auto-approve</strong> off. The shipped install row
+sets it on, and the stored row is what runs, so the screen you have is set to
+Yes and the screen the documentation was written against was set to No. The
+submission code asks for either:</p>
+<pre><code class="language-php">if (!$review &amp;&amp; ($autoApprove || $this-&gt;_pubconfig-&gt;get('autoapprove') == 1))
+{
+	$state = 1;
+}
+</code></pre>
+<p>— <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php"><code>publications.php:2216</code></a>,
+where <code>$autoApprove</code> is the master type's own setting and <code>$review</code> is the
+author's own request for a review. <code>$state = 1</code> is published.</p>
+<p>There is a third bypass below it: <strong>Auto-approved Users</strong> on the same
+Options tab is a comma-separated list of usernames whose submissions publish
+without review even when both switches are off. It ships empty.</p>
+<h3 id="turning-curation-on">Turning curation on</h3>
+<p>Do this on a new hub before anyone publishes, because it does not
+retrospectively review what is already out.</p>
+<ol>
+<li>Create the group whose members will curate, and note its alias. A group
+with no members curates nothing, and there is no fallback to
+administrators.</li>
+<li>Go to <strong>Components &gt; Publications</strong> and select <strong>Options</strong>.</li>
+<li>On the <strong>Curation</strong> tab, set <strong>Auto-approve</strong> to <strong>No</strong>.</li>
+<li>Put the group's alias in <strong>Name of Curators Group</strong>. It ships empty.</li>
+<li>Set <strong>Reply Email Address</strong> to an address someone reads. Left blank, the
+messages come from the site's global <em>From email</em> address.</li>
+<li>Go to the <strong>Basic</strong> tab and set <strong>Email Notifications</strong> to <strong>On</strong>. Leave
+it Off and every curation message is silently dropped — see the note
+below.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Go to <strong>Master Types</strong>, open each type in turn, and check that <strong>Auto
+Approve?</strong> is <strong>No</strong>. One type left on Yes exempts every publication of
+that type.</li>
+</ol>
+<p>From then on a submission lands at <em>pending approval</em> and waits at
+<code>/publications/curation</code> on the site. Curation is not an administrator
+screen: it is a front-end screen the curators group reaches — see
+<a href="../../../users/publications/index.html#curation">Curation</a>. An administrator can
+still approve from <a href="#editing-a-publication">Editing a publication</a> with
+<strong>Approve and publish</strong>.</p>
+<p>Turning auto-approve back on is equally quick and equally undramatic:
+submissions already waiting stay waiting; only new ones skip the queue.</p>
+<h3 id="what-else-to-check">What else to check</h3>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Curation email — the note to a newly assigned curator, the
 approval and change-request notices to authors, the new-submission notice
 to curators — is only sent when <strong>Email Notifications</strong> is On. It is Off by
-default, and nothing warns you that the messages are being dropped.</p>
+default, and nothing warns you that the messages are being dropped. A hub
+that turns curation on and leaves this Off has a queue nobody is told
+about.</p>
 </aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A master type's own <strong>Curator Group</strong> narrows what its members
@@ -455,16 +613,31 @@ against group names when the review screen checks permission, so on its own
 it does not let them open a submission. Put type curators in the
 component-wide curators group, or assign them to individual publications.</p>
 </aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Grace Period for Changes</strong> on the same tab offers <em>None</em> or
+<em>One month</em>, and it does two things at once. It lets an author revert a
+published version to draft and change it within a month of approval, and
+it holds back the archival package: with no grace period the package is
+built at approval, and with one it waits for the <code>runMkAip</code> cron job. Turn
+it on and you must schedule that job, or nothing is ever archived.</p>
+</aside>
+<h2 id="scheduled-jobs">Scheduled jobs</h2>
 <p>Several background tasks belong to the component and have to be scheduled in
 <a href="../cron/index.html">Cron</a>: <code>runMkAip</code>, <code>issueMasterDoi</code>, <code>buildPublicationBundles</code>
 (needed when asynchronous bundling is on), <code>updateFtpLinks</code>,
-<code>sendAuthorStats</code>, and <code>rollUserStats</code>.</p>
+<code>sendAuthorStats</code>, and <code>rollUserStats</code>. None of them run unless you create
+the cron jobs; a hub that produces archival packages or master DOIs and has
+scheduled nothing simply never produces them.</p>
 <h2 id="options">Options</h2>
-<p><strong>Options</strong> opens the component-wide settings, on six tabs. <strong>Basic</strong> holds
-the on/off switch, decides whether members may publish without a project, and
-sets the default thumbnails and storage paths. <strong>Curation</strong> names the
-curators group, the reply address for curation email, the grace period, and
-the auto-approved users. <strong>DOI</strong> configures the identifier service — see
+<p><strong>Options</strong> opens the component-wide settings, on six tabs. Two of them
+change what the hub does; the rest change how it looks.</p>
+<p><strong>Basic</strong> holds the on/off switch, decides whether members may publish
+without a project, sets the default thumbnails and storage paths, and
+carries <strong>Email Notifications</strong> — which is Off by default and silently drops
+every curation message. <strong>Curation</strong> names the curators group, the reply
+address for curation email, the grace period, and the auto-approved users,
+and holds <strong>Auto-approve</strong>, which ships <strong>Yes</strong>: read
+<a href="#curation">Curation</a> before you leave that tab. <strong>DOI</strong> configures the identifier service — see
 <a href="#doi-registration">DOI registration</a>. <strong>Sections</strong> shows or hides parts of the
 public publication page, and <strong>AIP</strong> points at a trusted digital repository's
 archival storage. Every option is listed with its values in the
@@ -673,7 +846,7 @@ unlisted.</p>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../projects/index.html" rel="prev"><span>Previous</span>Projects</a><a class="pager__next" href="../redirect/index.html" rel="next"><span>Next</span>Redirect</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/27-publications.md">Edit this page on GitHub</a>

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -17,6 +17,19 @@ administrator screen, which draws a graph. Everything a manager actually
 controls — whether a member sees an activity feed, whether digests go out,
 who receives what — lives in the plugins described below, not in this
 component.
+
+There is nothing here to switch on: the log records itself from the day the
+hub opens. Two things bring a manager to this chapter. Either the feeds have
+gone quiet and you need to know why — the answer is nearly always the
+**System - Activity** plugin — or the database has grown and you want to
+know what `#__activity_logs` is and whether you may prune it. Both are
+covered below, and the second has no comfortable answer.
+
+> **Note:** This is not an audit log. It records what members did in the
+> parts of the hub that bother to report, for the purpose of filling feeds;
+> it is not a security record, it is not complete, and nothing in the
+> administrator interface lets you search it. If you need to know who
+> changed a setting or who logged in from where, this is the wrong table.
 
 ## The screen
 
@@ -141,11 +154,34 @@ one on the other cron mail jobs.
 ## Retention
 
 There is none. Nothing in the tree prunes `#__activity_logs`, nothing expires
-old rows, and the administrator screen offers no way to delete anything. The
-table grows for the life of the hub, and on a busy hub it becomes one of the
-largest tables in the database.
+old rows, and the administrator screen offers no way to delete anything. No
+setting exists to turn off — there is no retention period to shorten, because
+there is no retention period.
+
+What that means in practice is worth spelling out, because it is invisible
+until it is not. Every blog post, forum reply, group join, project file
+upload and tool session on the hub writes one row to `#__activity_logs`, and
+then *at least* one more row to `#__activity_recipients` — one per person or
+group named, plus one for every matching subscription. On a hub with active
+groups the recipient table is the larger of the two by a wide margin, because
+a single post in a group of sixty members can fan out to sixty rows. None of
+it is ever removed.
+
+Over one year on a quiet hub this is unremarkable. Over five years on a busy
+one, these two become among the largest tables in the database, and you meet
+them in three places: backups take longer and restores take longer still; the
+**Recent** chart above, which runs a query per day, gets slower; and a
+member's **Activity** tab, which searches and filters their own recipient
+rows, gets slower with it. Nothing breaks — it degrades.
 
 The only deletions that happen are cascades: deleting a log entry through the
 model removes its recipient rows and its child entries, which is what happens
 when the component that owns the subject deletes it. If you need to trim the
 log, it is a database job, and there is no supported procedure for it.
+
+> **Warning:** If you do prune the tables by hand, remember that the two are
+> related and that neither is the record of the content itself. Deleting log
+> rows without their recipient rows leaves orphans in every member's feed.
+> Take a backup first, do it on a copy, and do not do it because the hub feels
+> slow — measure which table is actually the problem before you touch this
+> one.

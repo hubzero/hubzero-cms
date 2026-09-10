@@ -88,6 +88,7 @@
 <li class="toc__item toc__item--l2"><a href="#what-the-hub-caches">What the hub caches</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-files-are">Where the files are</a></li>
 <li class="toc__item toc__item--l2"><a href="#clear-cache">Clear Cache</a></li>
+<li class="toc__item toc__item--l3"><a href="#worked-example-a-template-change-that-will-not-appear">Worked example: a template change that will not appear</a></li>
 <li class="toc__item toc__item--l2"><a href="#purge-expired-cache">Purge Expired Cache</a></li>
 <li class="toc__item toc__item--l2"><a href="#settings">Settings</a></li>
 <li class="toc__item toc__item--l2"><a href="#from-the-command-line">From the command line</a></li>
@@ -169,6 +170,25 @@ never otherwise.</p>
 <strong>Clear Cache</strong> and <strong>Purge Expired Cache</strong>. Each carries the same
 sub-navigation across the top — <strong>Checkin</strong>, <strong>Clear Cache</strong>, <strong>Purge Expired
 Cache</strong> — so <a href="../checkin/index.html">Global Check-in</a> is one click away from either.</p>
+<p>Clearing the cache is the safest button in the administrator interface.
+Everything in the cache is a copy of something the hub can work out again, so
+the worst outcome is that the next few page loads are slower than usual. It
+is not confirmed and not undoable, and neither of those matters. Do not
+hesitate over it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is not where caching is turned on or off, and it is not the
+place to tune it. What gets cached, for how long, and by which backend is
+set on the <strong>System</strong> tab of
+<a href="../../configuring/hub/index.html">Global configuration</a>, covered under
+<a href="#settings">Settings</a> below. These two screens only empty what is already
+there.</p>
+</aside>
+<p>Do reach for it when a change you made in the administrator interface does
+not appear on the site — a module you moved, a menu item you renamed, an
+article you published. Do not reach for it when content is missing, when a
+member cannot log in, or when a permission is not taking effect. Those are
+not cache problems, and clearing the cache to see whether it helps costs you
+the time it takes to convince yourself it did not.</p>
 <h2 id="what-the-hub-caches">What the hub caches</h2>
 <p>Caching is off in a default installation. The installer writes
 <code>app/config/cache.php</code> with <code>caching</code> set to <code>0</code>, and while it is off nothing
@@ -256,6 +276,22 @@ is a copy of something the hub can compute again.</p>
 <p>The toolbar also carries <strong>Options</strong>, for someone with <code>core.admin</code>, and
 <strong>Help</strong>. There is no button that clears everything; select all the rows
 instead.</p>
+<h3 id="worked-example-a-template-change-that-will-not-appear">Worked example: a template change that will not appear</h3>
+<p>Say you have edited the site template's stylesheet and the site still serves
+the old one, on a hub where caching is on.</p>
+<ol>
+<li>Open <strong>Site → Maintenance → Clear Cache</strong>, tick every row, and press
+<strong>Delete</strong>. If the change now appears, you are finished.</li>
+<li>It usually will not. The compiled stylesheet is <code>site.css</code> in
+<code>app/cache/site/</code>, which sits outside any group, and this screen lists
+groups only — so the button you just pressed could not have removed it.</li>
+<li>On the server, run <code>core/bin/muse cache clear</code>. That empties
+<code>app/cache/</code> completely, compiled stylesheets included.</li>
+<li>Reload the site with a forced refresh, to rule out the browser's own copy.</li>
+</ol>
+<p>If it still will not appear after step 3, the hub's cache is not what is
+holding it: look at whatever sits in front of the hub — a web server cache,
+a proxy, a CDN — none of which these screens can touch.</p>
 <h2 id="purge-expired-cache">Purge Expired Cache</h2>
 <p>Open <strong>Site → Maintenance → Purge Expired Cache</strong>. The screen is a paragraph
 of instructions and one toolbar button, <strong>Purge expired</strong>, which walks the
@@ -310,7 +346,7 @@ tasks.</p>
 <strong>Trash expired cache data</strong>, which is the Purge Expired button as a cron job;
 schedule it from <a href="../cron/index.html">Cron</a> on a hub whose cache needs regular
 trimming. Its sibling job, <strong>Remove old system CSS files</strong>, looks for files
-named <code>system-*.css</code> directly in <code>app/cache/</code> — a name the CMS no longer
+named <code>system-*.css</code> directly in <code>app/cache/</code> — a name the hub no longer
 writes — so it finds nothing to delete.</p>
 <p>Both screens also have REST equivalents — <code>GET /api/cache/list</code>,
 <code>DELETE /api/cache/clean</code>, <code>DELETE /api/cache/purge</code> — documented in the
@@ -330,7 +366,7 @@ is a database table refreshed from
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../blogs/index.html" rel="prev"><span>Previous</span>Blogs</a><a class="pager__next" href="../cart/index.html" rel="next"><span>Next</span>Cart</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/05-cache.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/newsletters
 -->
 # Newsletters
@@ -12,15 +12,67 @@ you mark public are also readable on the site at `/newsletter`. This chapter
 covers the administrator's side; the
 [Hub users](../../users/17-newsletters.md) book covers reading and subscribing.
 
+## Before you write anything: switch the sender on
+
+A newsletter is not sent by the browser request that presses **Send**. The
+component only queues one row per recipient; the actual mail goes out from
+the `newsletter` cron plugin's **Process Newsletter Mailings**
+(`processMailings`) job, in batches, on the hub's schedule.
+
+That job is created for you during installation and **it ships
+unpublished**, along with its companion **Process Newsletter Opens & Click
+IP Addresses** (`processIps`). The install seeds no jobs of its own; these two
+arrive from the cron plugin's migration with a state of 0. So on a new hub
+nothing sends. You can compose an issue, test it, send it to a thousand
+addresses and watch the Mailings screen sit at 0% forever, because there is
+nothing on the other end of the queue.
+
+Do this first, before you write a word:
+
+1. Go to **Components > Cron**.
+2. Find **Process Newsletter Mailings**. Its **State** reads **Unpublished**
+   and its **Last Run** is empty.
+3. Tick it and press **Publish**.
+4. Wait for a tick — the job runs every five minutes — and reload. **Last
+   Run** should carry a timestamp. If it does not, the hub's scheduler is not
+   running at all, and no scheduled feature on the hub works; see
+   [Scheduled tasks](../03-maintenance/05-cron.md).
+5. Publish **Process Newsletter Opens & Click IP Addresses** too if you want
+   the location figures on the tracking report. It is not needed to send
+   mail.
+
+Publishing a job is reversible: unpublish it and sending stops, with the
+queue left where it is. The Newsletters screen tells you when the job is
+missing or unpublished — it shows a warning and a **Check HUB cron jobs**
+link — but only that one check runs, so a hub with `processMailings`
+published and a broken scheduler shows no warning at all and still sends
+nothing.
+
+## Whether your hub needs it
+
+Newsletters is for the announcement that has to reach people who are not
+looking at the hub. Members who visit weekly will see a
+[blog](04-blogs.md) post; the ones you actually need to reach are the ones
+who registered eighteen months ago and have not been back. If your hub has
+no such audience — a hub of thirty people who all sit in the same building —
+a mailing list you already have will do the same job with less machinery.
+
+The typical case: a hub runs a training workshop twice a year and needs to
+tell every registered member it is open, including the ones who no longer
+visit. That is one issue, one mailing to the default list, twice a year.
+
+**What it is not:** it is not the hub's transactional mail. Account
+activation, group invitations, ticket replies and the like are sent by their
+own components and none of them come through here. It is also not a
+discussion list: recipients cannot reply to each other, and a reply to a
+newsletter goes to whatever **Reply-To Email** you set.
+
+The rest of this chapter is a reference. It is a large component with six
+screens and most hubs use two of them.
+
 Open it under **Components > Newsletters**. Six sub-menu links run across the
 top: **Newsletters**, **Mailings**, **Lists**, **Templates**, **Tools**, and
 **Campaigns**.
-
-> **Note:** Mail is not sent by the browser request that starts it. The
-> component queues recipients and the `newsletter` cron plugin's
-> **processMailings** job sends them in batches. If that job is missing or
-> disabled, the Newsletters screen shows a warning and a link to the Cron
-> component; nothing you send will ever leave the hub.
 
 ## Newsletters
 
@@ -95,6 +147,52 @@ sign-up list. The count of recipients appears under the menu as you choose.
 Pressing **Send** in the toolbar creates the mailing, queues one recipient
 row per address in batches of 10,000, and marks the newsletter as sent. The
 cron job takes it from there.
+
+### Sending the first issue
+
+The workshop announcement from the example above, end to end, assuming
+**Process Newsletter Mailings** is published.
+
+1. **Components > Newsletters > Newsletters**, press **New**. Fill in
+   **Name** — it becomes the subject line, so write it as one — pick a
+   **Format** and a **Template**, and **Save**. Nothing else is offered until
+   the newsletter has an ID.
+2. Fill in **Mailing Details**: **From Name**, **From Email**,
+   **Reply-To Name**, **Reply-To Email**. Left blank they fall back to the
+   component options, and those fall back to the site name and the request
+   host — which produces a from-address at whatever hostname the request came
+   in on, and is worth not leaving to chance on mail you are about to send to
+   a thousand people.
+3. Add the content: **Add Primary Story** for each item, with a **Title**, a
+   **Story** body, and a **Read More Link** back to the page on the hub.
+   Save.
+4. Check one newsletter in the list and press **Send Test**. Put in your own
+   address and one colleague's. Test mail goes out immediately, with
+   `[SENDING TEST] - ` in front of the subject, and it does not go through
+   the queue — so a test arriving is not proof the cron job is running.
+5. Read the test in a real mail client. This is the last point at which a
+   mistake costs nothing.
+6. Press **Send**. Choose **Send Now** or **Send Later**, pick the
+   **Mailing List**, and check the recipient count that appears under the
+   menu — it is the number of people who will get this. Press **Send** in the
+   toolbar.
+7. Go to **Mailings** and watch **% Complete** climb as the cron job works
+   through the queue. If it stays at 0% past two ticks, go back to
+   [switching the sender on](#before-you-write-anything-switch-the-sender-on).
+
+> **Warning:** Step 6 is the point of no return. Once the mailing is created
+> the recipient rows are queued and the newsletter is marked as sent. The
+> only way to stop it is **Stop/Cancel** on the Mailings screen, which drops
+> the rows still waiting — anything the cron job has already sent has gone,
+> and cannot be recalled. On a five-minute schedule with a batch limit, a
+> mistake caught quickly costs you a few hundred addresses rather than all of
+> them, but do not count on it.
+
+> **Note:** **Default List** is every hub member with an email preference set
+> who is not blocked, is approved and is activated, plus the guest sign-up
+> list. On a hub of any size that is the largest audience you can address and
+> the one people are least expecting mail from. Read the count in step 6
+> before pressing the button.
 
 ## Mailings
 

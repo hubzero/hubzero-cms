@@ -91,8 +91,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Control Panel</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-it-renders">What it renders</a></li>
 <li class="toc__item toc__item--l2"><a href="#changing-what-appears">Changing what appears</a></li>
+<li class="toc__item toc__item--l3"><a href="#putting-a-hub-s-own-notice-on-the-dashboard">Putting a hub&#x27;s own notice on the dashboard</a></li>
 <li class="toc__item toc__item--l3"><a href="#panel-headings">Panel headings</a></li>
 <li class="toc__item toc__item--l2"><a href="#permissions-and-options">Permissions and options</a></li>
 </ol></li>
@@ -162,9 +164,21 @@ The component behind it, <code>com_cpanel</code>, holds no data and has no setti
 draws a stack of collapsible panels, one for each administrator module
 published in the <strong>cpanel</strong> position, and nothing else. What your dashboard
 shows is therefore a question about modules, not about this component.</p>
+<p>That matters more than it sounds. A fresh install publishes exactly two
+modules in the <code>cpanel</code> position — <em>Popular Articles</em> and <em>Recently Added
+Articles</em>, both listing articles — so the first screen a new manager sees is
+two lists about a content type most hubs barely use. It is not broken and it
+is not hiding anything. It is simply the position's shipped contents, and you
+are free to replace them.</p>
 <p><a href="../../maintenance/index.html">Daily maintenance</a> describes the panels
 themselves — what each one counts and where its numbers link to. This chapter
 covers the component and how you change what appears.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>The Control Panel is not the hub's front page, and nothing published here is
+visible to a member. It is not a settings screen either: there is nothing on
+it to configure, and every number on it comes from a module that could be
+unpublished without affecting the hub. If your dashboard looks wrong, the
+thing to fix is a module.</p>
 <h2 id="what-it-renders">What it renders</h2>
 <p>The component has one screen and five files. Its layout,
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_cpanel/admin/views/cpanel/tmpl/default.php"><code>views/cpanel/tmpl/default.php</code></a>,
@@ -194,12 +208,33 @@ as the viewing level on its module.</li>
 <p>A module published in <code>cpanel</code> needs nothing special: any administrator module
 works there, including a Custom HTML module, which is the simplest way to put
 a hub's own notice or link list on the dashboard.</p>
+<h3 id="putting-a-hub-s-own-notice-on-the-dashboard">Putting a hub's own notice on the dashboard</h3>
+<p>Say the hub has three people who take turns in the administrator interface and
+you want the on-call number and the link to the ticket queue in front of them.
+That is a Custom HTML module:</p>
+<ol>
+<li><strong>Extensions → Module Manager</strong>, <strong>Client</strong> filter set to
+<strong>Administrator</strong>.</li>
+<li><strong>New</strong>, then choose <strong>Custom HTML</strong>.</li>
+<li>Give it a <strong>Title</strong> — this one is worth typing carefully, because Custom
+HTML has no automatic title, so what you type is the panel heading.</li>
+<li>Write the notice in the editor.</li>
+<li>Set <strong>Position</strong> to <code>cpanel</code>, <strong>Ordering</strong> to put it above or below the
+article panels, and <strong>Status</strong> to <strong>Published</strong>.</li>
+<li>Set <strong>Access</strong> to the viewing level every administrator holds. The two
+shipped panels use <strong>Special</strong>; matching them is the safe choice.</li>
+<li><strong>Save &amp; Close</strong>, then open <code>/administrator</code> to see it.</li>
+</ol>
+<p>Everything here is reversible. Unpublishing the module removes the panel and
+nothing else, and no member ever saw it either way.</p>
 <h3 id="panel-headings">Panel headings</h3>
 <p>The heading on a panel is the module's <strong>Title</strong> as you typed it in the Module
 Manager — unless the module's <strong>Automatic Title</strong> option is set, in which case
 the module supplies its own heading. Both modules a fresh install publishes
 here have that option set, so their headings read <em>Popular Articles</em> and
-<em>Recently Created Articles</em> whatever you call the modules.</p>
+<em>Recently Created Articles</em> whatever you call the modules. The second is worth
+knowing about before you go looking for a module named after the heading: the
+row is called <em>Recently Added Articles</em> in the Module Manager.</p>
 <h2 id="permissions-and-options">Permissions and options</h2>
 <p>There are none. The component ships no <code>config.xml</code> and no <code>access.xml</code>, so it
 has no <strong>Options</strong> button and no permission rules of its own, and its entry
@@ -216,7 +251,7 @@ which is not published to this site.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../courses/index.html" rel="prev"><span>Previous</span>Courses</a><a class="pager__next" href="../cron/index.html" rel="next"><span>Next</span>Cron</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/11-cpanel.md">Edit this page on GitHub</a>

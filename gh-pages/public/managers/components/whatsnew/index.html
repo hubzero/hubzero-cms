@@ -130,6 +130,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-page">The page</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-period">The period</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-manager-configures">What a manager configures</a></li>
+<li class="toc__item toc__item--l3"><a href="#setting-it-up">Setting it up</a></li>
 <li class="toc__item toc__item--l2"><a href="#feeds">Feeds</a></li>
 <li class="toc__item toc__item--l2"><a href="#api">API</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -171,6 +172,20 @@ no admin views, and its install migration deliberately removes it from the
 <strong>Components</strong> menu. Everything a manager decides about it is decided
 somewhere else — in the Plugin Manager, in a menu item, or in a module — and
 those three places are what this chapter covers.</p>
+<p>Almost every hub wants it, and it takes about five minutes: enable the
+plugins for the content types you publish, put a <strong>What's New</strong> menu item in
+the main menu, and optionally drop the module on the front page. A hub that
+publishes a handful of resources a month gets a page members and outside
+readers can subscribe to, without anybody writing a newsletter. If your hub
+publishes nothing on a regular cadence, skip it — an empty What's New page is
+worse than none.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> What's New is not an activity feed and not a news section. It
+lists only items <em>created</em> in the period, from six components, using each
+component's own publish state and access rules. It says nothing about
+edits, comments, sign-ups, forum replies or anything else a member did, and
+it is not somewhere you write announcements.</p>
+</aside>
 <h2 id="what-it-aggregates">What it aggregates</h2>
 <p>Six plugins, in the <code>whatsnew</code> folder of <strong>Extensions &gt; Plugins</strong>:</p>
 <table>
@@ -279,11 +294,15 @@ cannot be changed. So is the 2002 floor on the year lists.</p>
 <p>The period a visitor arrives on comes, in order, from the URL, then from the
 active menu item's setting, then from the built-in default of <code>month</code>.</p>
 <h2 id="what-a-manager-configures">What a manager configures</h2>
-<p>Three things, none of them in this component's own screens.</p>
+<p>Three things, none of them in this component's own screens. All three are
+reversible in a click, and none of them touches content: disabling a plugin
+hides a category, deleting the menu item hides the page, removing the module
+empties a template position. Nothing here can damage anything.</p>
 <p><strong>Which plugins run.</strong> <strong>Extensions &gt; Plugins</strong>, filtered to the <code>whatsnew</code>
 folder. See <a href="../../extensions/plugins/index.html">Plugins</a>.</p>
 <p><strong>A menu item.</strong> Create one of type <strong>What's New &gt; Display results</strong>; see
-<a href="../../menus/index.html">Menus</a>. Its <strong>Cat/Period</strong> field takes exactly the string
+<a href="../../menus/index.html">Menus</a>. Without one the page still answers at <code>/whatsnew</code>,
+but nothing on the hub links to it and nobody finds it. Its <strong>Cat/Period</strong> field takes exactly the string
 described above — <code>month</code>, <code>year</code>, <code>c_2023</code>, or a category prefix such as
 <code>resources:quarter</code> — and becomes the page's starting period. Leave it blank
 for the past month across all categories.</p>
@@ -323,8 +342,26 @@ a template position. Its parameters:</p>
 </tr>
 </tbody>
 </table>
-<p>Place it under <strong>Extensions &gt; Modules</strong>; see
+<p>Place it under <strong>Extensions</strong> &gt; <strong>Module Manager</strong>; see
 <a href="../../extensions/modules/index.html">Modules</a>.</p>
+<h3 id="setting-it-up">Setting it up</h3>
+<p>Say the hub publishes resources and the occasional knowledge base article,
+and you want a <em>What's New</em> entry in the main menu covering the past month.</p>
+<ol>
+<li>Go to <strong>Extensions &gt; Plugins</strong> and filter the folder to <code>whatsnew</code>.
+Disable the plugins for content types this hub does not publish — on this
+hub, Events and Wiki. Their categories and feeds disappear at once.</li>
+<li>Go to <strong>Menus</strong> and open the main menu.</li>
+<li>Select <strong>New</strong>, and for the type choose <strong>What's New &gt; Display results</strong>.</li>
+<li>Leave <strong>Cat/Period</strong> blank. That gives the past month across every enabled
+category, which is what you want; fill it in only to pin the page to one
+category or a fixed year.</li>
+<li>Save, then open <code>/whatsnew</code> on the site and check that the <strong>Category</strong>
+list holds only the types you left enabled, with sensible counts.</li>
+</ol>
+<p>If a category shows a count of zero, that component has published nothing in
+the period — try <strong>Time period</strong> set to a year before concluding anything is
+wrong.</p>
 <h2 id="feeds">Feeds</h2>
 <p>Every category heading on the page carries a <strong>feed</strong> link, and that link is
 the component's RSS output for that category over the current period:
@@ -345,7 +382,7 @@ and what appears on it is decided entirely by the plugins and by each item's
 own access rules.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../usage/index.html" rel="prev"><span>Previous</span>Usage</a><a class="pager__next" href="../wiki/index.html" rel="next"><span>Next</span>Wiki</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/38-whatsnew.md">Edit this page on GitHub</a>

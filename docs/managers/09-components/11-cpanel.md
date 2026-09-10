@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -12,9 +12,24 @@ draws a stack of collapsible panels, one for each administrator module
 published in the **cpanel** position, and nothing else. What your dashboard
 shows is therefore a question about modules, not about this component.
 
+That matters more than it sounds. A fresh install publishes exactly two
+modules in the `cpanel` position — *Popular Articles* and *Recently Added
+Articles*, both listing articles — so the first screen a new manager sees is
+two lists about a content type most hubs barely use. It is not broken and it
+is not hiding anything. It is simply the position's shipped contents, and you
+are free to replace them.
+
 [Daily maintenance](../03-maintenance/README.md) describes the panels
 themselves — what each one counts and where its numbers link to. This chapter
 covers the component and how you change what appears.
+
+## What it is not
+
+The Control Panel is not the hub's front page, and nothing published here is
+visible to a member. It is not a settings screen either: there is nothing on
+it to configure, and every number on it comes from a module that could be
+unpublished without affecting the hub. If your dashboard looks wrong, the
+thing to fix is a module.
 
 ## What it renders
 
@@ -51,13 +66,36 @@ A module published in `cpanel` needs nothing special: any administrator module
 works there, including a Custom HTML module, which is the simplest way to put
 a hub's own notice or link list on the dashboard.
 
+### Putting a hub's own notice on the dashboard
+
+Say the hub has three people who take turns in the administrator interface and
+you want the on-call number and the link to the ticket queue in front of them.
+That is a Custom HTML module:
+
+1. **Extensions → Module Manager**, **Client** filter set to
+   **Administrator**.
+2. **New**, then choose **Custom HTML**.
+3. Give it a **Title** — this one is worth typing carefully, because Custom
+   HTML has no automatic title, so what you type is the panel heading.
+4. Write the notice in the editor.
+5. Set **Position** to `cpanel`, **Ordering** to put it above or below the
+   article panels, and **Status** to **Published**.
+6. Set **Access** to the viewing level every administrator holds. The two
+   shipped panels use **Special**; matching them is the safe choice.
+7. **Save & Close**, then open `/administrator` to see it.
+
+Everything here is reversible. Unpublishing the module removes the panel and
+nothing else, and no member ever saw it either way.
+
 ### Panel headings
 
 The heading on a panel is the module's **Title** as you typed it in the Module
 Manager — unless the module's **Automatic Title** option is set, in which case
 the module supplies its own heading. Both modules a fresh install publishes
 here have that option set, so their headings read *Popular Articles* and
-*Recently Created Articles* whatever you call the modules.
+*Recently Created Articles* whatever you call the modules. The second is worth
+knowing about before you go looking for a module named after the heading: the
+row is called *Recently Added Articles* in the Module Manager.
 
 ## Permissions and options
 

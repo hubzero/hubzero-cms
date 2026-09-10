@@ -111,6 +111,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">SAML</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#what-a-manager-sets-up">What a manager sets up</a></li>
+<li class="toc__item toc__item--l3"><a href="#registering-a-service">Registering a service</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
 <li class="toc__item toc__item--l3"><a href="#overview">Overview</a></li>
 <li class="toc__item toc__item--l3"><a href="#service-providers">Service Providers</a></li>
@@ -177,6 +178,12 @@ a hub can do both, either, or neither.</p>
 That phrase usually means the service wants to <em>be</em> an SP against your
 campus IdP, which has nothing to do with the hub. This component is only for
 the case where the hub itself is the account authority.</p>
+<p>The hubs that want this have a service sitting next to them and no account
+system of their own. A group runs a small survey application on a departmental
+server and wants the hub's four hundred members to use it without a second
+password, and without the group keeping a password list. Registering that
+application here is the answer. A hub with no such service needs nothing on
+these screens.</p>
 <h2 id="what-a-manager-sets-up">What a manager sets up</h2>
 <ol>
 <li>Put an X.509 signing certificate and private key on the web server and
@@ -185,6 +192,43 @@ point <strong>Options</strong> at them.</li>
 importing its metadata.</li>
 <li>Give the service the hub's metadata URL so it can trust the hub back.</li>
 </ol>
+<p><strong>Enable IdP</strong> ships switched on, so a fresh hub nominally has an identity
+provider. Nothing is exposed by that. The endpoints return a 404 until a
+readable certificate and key are in place, and the trust store starts empty, so
+there is no service the hub would answer for. Putting the certificate in place
+is the point at which this component starts doing anything.</p>
+<h3 id="registering-a-service">Registering a service</h3>
+<p>Following the example above, with the survey application at
+<code>https://survey.example.edu</code>:</p>
+<ol>
+<li>Deal with the certificate first. Open <strong>Components → SAML</strong> and read the
+<strong>Overview</strong> screen: the <strong>Signing certificate</strong> row must say the files are
+readable, and the expiry must be in the future. Nothing below works until
+it does.</li>
+<li>Ask whoever runs the service for its SAML metadata — a URL or a file.
+Almost every service can produce one, and it saves you transcribing an
+entity ID and a certificate by hand.</li>
+<li>Go to <strong>Service Providers</strong> and press <strong>Import from metadata</strong>. Paste the
+XML or give the <code>https</code> URL. The form fills in with what the metadata
+claims; nothing is saved yet, so it is safe to do this just to look.</li>
+<li>Check the <strong>Assertion Consumer Service URL</strong>. This is the address signed
+responses are posted to, it must be <code>https</code>, and it is the one field where
+a mistake matters — the hub will only ever deliver an assertion there.</li>
+<li>Under <strong>NameID &amp; attribute policy</strong>, choose the <strong>NameID value</strong> the
+service expects to identify people by. Ask; do not guess. Changing it later
+makes the service treat returning members as new people.</li>
+<li>Decide <strong>Allowed groups</strong>. Left empty, every member of the hub can sign in
+to that service. If the survey is for one group, put that group's <code>cn</code> here.</li>
+<li>Save, with the state set to enabled.</li>
+<li>Give the service the hub's metadata URL from the <strong>Overview</strong> screen, and
+ask them to try a sign-on.</li>
+<li>If it fails, go to <strong>Sessions</strong>. A row means the hub answered and the
+problem is at the far end. No row means the hub rejected the request, and
+the error the member saw says why.</li>
+</ol>
+<p>Registering a service is reversible: disabling or deleting the registration
+stops that service working and changes nothing else on the hub. The <strong>NameID
+value</strong> is the one field to get right first time.</p>
 <h2 id="the-screens">The screens</h2>
 <p><strong>Components → SAML</strong>, gated on <code>core.manage</code> for <code>com_saml</code>. Three
 sub-navigation entries.</p>
@@ -302,10 +346,20 @@ are listed in
 <p><strong>Options</strong> on any of the three screens; visible with <code>core.admin</code>. Full
 parameter list in the
 <a href="../../../reference/configuration/components/saml/index.html">generated reference</a>.</p>
-<p><strong>Enable IdP</strong> is the master switch for all three endpoints. <strong>IdP Entity
-ID</strong> is what the hub asserts as, defaulting to the hub root URL. <strong>Enable
-metadata endpoint</strong> serves the metadata document; turn it off only if you
-intend to hand service providers a metadata file out of band.</p>
+<p><strong>Enable IdP</strong> is the master switch for all three endpoints, and it ships on.
+Turning it off is the fastest way to stop every registered service at once,
+which is what you want if a signing key is thought to have leaked. <strong>IdP
+Entity ID</strong> is what the hub asserts as, defaulting to the hub root URL.
+<strong>Enable metadata endpoint</strong> serves the metadata document and also ships on;
+turn it off only if you intend to hand service providers a metadata file out
+of band.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Changing <strong>IdP Entity ID</strong> on a hub with registered services
+breaks all of them at once. The entity ID is the name every service provider
+has recorded as the identity it trusts, so a hub that changes it has to have
+every service re-import the metadata. Set it before you register anything,
+or leave it alone.</p>
+</aside>
 <p><strong>Signing certificate file</strong> and <strong>Private key file</strong> are absolute paths on
 the web server — <code>/etc/saml/cert/saml.crt</code> and <code>/etc/saml/cert/saml.pem</code> by
 default — with <strong>Private key passphrase</strong> if the key has one. The web server
@@ -330,7 +384,7 @@ everyone else. <code>com_system</code> and <code>com_search</code> have the same
 recorded in the project record.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../resources/index.html" rel="prev"><span>Previous</span>Resources</a><a class="pager__next" href="../search/index.html" rel="next"><span>Next</span>Search</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/30-saml.md">Edit this page on GitHub</a>

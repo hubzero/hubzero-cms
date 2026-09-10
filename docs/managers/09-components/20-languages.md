@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -21,6 +21,28 @@ On most hubs only the third screen ever gets used. Hubzero ships one language,
 `en-GB`, so there is nothing to choose on the first screen and nothing to
 declare on the second; but every hub has wording it wants to change, and the
 override editor is the supported way to change it.
+
+That is the reason to remember this component exists. Somebody points at a
+label on the site — a heading that says *Knowledge Base* when the lab has
+always called it the user guide, a button whose wording confuses new members,
+a message that names a feature the hub does not use — and asks you to change
+it. The text is not in an article and not in a menu item. It is a string in a
+language file, and **Overrides** is where you replace it without editing a
+file the next upgrade will overwrite.
+
+## What it is not
+
+This is not a translation tool and not a content editor. An override replaces
+one string for one language; it does not translate anything, and it has no
+effect on articles, resources, group pages, or anything else a member typed.
+If the words you want to change appear inside a page a person wrote, edit that
+page. If they appear in the furniture around it — headings, buttons, notices,
+error messages — they come from a language file and belong here.
+
+The install ships `en-GB` as the default for both the site and the
+administrator interface, which is the only sensible setting on a hub with one
+language installed. Nothing on the first two screens needs your attention
+until a second language pack arrives.
 
 [Languages](../../developers/07-extensions/03-languages.md) in the developers
 book covers the other half of the subject: where an extension's INI files
@@ -109,6 +131,11 @@ language key, for one language and one half of the hub, without touching a
 shipped file — so it survives an upgrade, where editing
 `core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini` would not.
 
+Overrides are as safe as an administrative change gets. Each one is a line in
+a text file, it takes effect on the next page load, and deleting it puts the
+shipped wording straight back. Nothing is lost and nothing needs a rebuild, so
+this is a screen you can try things on.
+
 Open **Extensions → Language Manager → Overrides**. The drop-down at the top
 right picks which file you are editing, as a language and location pair —
 *English (United Kingdom) - Site*, *English (United Kingdom) - Administrator*,
@@ -132,6 +159,41 @@ the form. That search runs against a database table the screen fills the first
 time you use it, by reading every INI file under `core/` and `app/` for the
 selected language — expect a pause, and a *Please wait while the cache is
 recreated* notice, on the first search after a change of language or location.
+
+### Changing a piece of wording, start to finish
+
+The hub's knowledge base is headed *Knowledge Base*, and the group that runs
+the hub has called the same thing the user guide since before there was a hub.
+You do not know the key, only the words on the screen.
+
+1. Open **Extensions → Language Manager → Overrides**.
+2. Set the drop-down at the top right to *English (United Kingdom) - Site*.
+   The wording is on the public site, so it is the site file you want; the
+   administrator file is a different file and changing it would do nothing
+   here.
+3. Press **New**.
+4. In the search panel on the right, choose **Value**, type `Knowledge Base`,
+   and press **Search**. Wait through the *Please wait while the cache is
+   recreated* notice the first time.
+5. Look down the results for the constant whose value is exactly the words you
+   are replacing — `COM_KB` — and click it. The constant drops into
+   **Language Constant**.
+6. Type `User Guide` into **Text**.
+7. Select **Save & Close**.
+8. Load the knowledge base on the site and check the heading. It changes
+   immediately; there is no cache to clear.
+
+If it did not change, the words you saw came from a different constant. The
+value search often returns several near-identical strings, because the same
+phrase is defined by more than one extension. Go back, look for another
+candidate, and add a second override; a wrong override changes nothing you can
+see, and you can delete it.
+
+> **Warning:** Search on **Value** and you will find keys belonging to
+> extensions all over the hub. An override applies wherever its key is used,
+> not only on the page you were looking at. A word like *Delete* or *Groups*
+> is used in dozens of places, so overriding it changes all of them. Prefer
+> the most specific constant you can find.
 
 Overrides are written to a plain INI file per language and client:
 

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/forum
 -->
 # Forum
@@ -11,6 +11,45 @@ The forum is the hub's message board. Discussions are organised into
 an opening post and the replies to it. The site-wide forum lives at `/forum`.
 This chapter covers the administrator's side; the
 [Hub users](../../users/09-forum.md) book covers reading and posting.
+
+## Whether your hub needs it
+
+The forum is for the conversation that has no single right answer: a
+proposal being argued over, a shared problem nobody has solved yet, the
+running chatter of a working group. It is the only one of the hub's
+discussion components with a real hierarchy, so it is the one that scales
+past a few dozen threads without becoming a heap.
+
+The typical case: two labs on the hub are agreeing on a file format. That is
+not a question with an answer — it is three weeks of back-and-forth that
+needs to stay in one place and be readable afterwards by someone who joins
+in week two.
+
+Against its siblings:
+
+- Better than [Answers](02-answers.md) at anything ongoing, because threads
+  have depth, categories, attachments, and per-section permissions. Worse at
+  questions: no reply is ever marked as the answer, so a reader has to read
+  the whole thread to find out how it came out, and a question asked in a
+  busy category slides off the front page unanswered.
+- Better than the [Wiki](39-wiki.md) at the argument; worse at the
+  conclusion, because nothing here produces a single current version of
+  anything. Pairs well with the wiki inside a group: argue in the forum,
+  record the outcome on a wiki page.
+- Where a hub's real unit of organisation is the group, the site-wide forum
+  at `/forum` is usually the one that stays empty while the per-group forums
+  fill up. Look at your groups before you spend an afternoon building
+  sections nobody will read.
+
+**What it is not:** it is not a mailing list, and it does not chase anyone.
+The site forum has no notifications of its own; per-member email
+notifications exist only in group forums, through the Groups - Forum plugin.
+A site-wide forum on a hub whose members do not visit daily will be posted
+to and never replied to.
+
+Before you build anything here, decide whether you want a site forum at all.
+If your hub already runs [Answers](02-answers.md) for questions and groups
+for team talk, a third place to post is a third place to go unread.
 
 Open it in the administrator interface under **Components > Forum**. Three
 sub-menu links sit at the top left — **Sections**, **Categories**, and
@@ -72,6 +111,38 @@ Opening a thread shows the posts it contains — **ID**, **Title**, **State**,
 **Scope**, **Creator**, **Created** — with a **Category** filter and the same
 State and Access filters. A post saved without a title is given one built
 from the first 70 characters of its text.
+
+## Setting up the site forum
+
+Building the two labs of the example above a place to work, end to end. This
+is the only setup task the component asks of a manager; everything after it
+is members posting.
+
+1. Go to **Components > Forum > Sections** and press **New**. Give it a
+   **Title** — one section is enough to start with; sections are the top
+   level and a hub with three threads does not need three of them. Leave
+   **Scope** at `site` and **Scope ID** at `0`. Set **State** to Published
+   and choose an **Access** level. **Save & Close**.
+2. Go to **Categories** and press **New**. Pick your section from the
+   **Section** menu, give the category a **Title** and a **Description** —
+   the description is the only place you get to say what belongs in here, and
+   it is shown under the title on the site, so use it. **Save & Close**.
+3. Go back to **Sections** and click the section's category count to check
+   the category landed in the right place.
+4. Open **Options** and set **Threading** to **Nested threads** unless you
+   want flat threads. See the warning below: the shipped value is neither
+   choice, and the effect is flat.
+5. Visit `/forum` as a member would and confirm the section and category are
+   visible at the access level you set.
+
+Everything in steps 1 to 4 is reversible: unpublish a section and its
+categories vanish from the site with their content intact. What is not
+reversible is **Delete**, which is why the warning below matters more than
+anything else on this page.
+
+Add categories as topics actually appear, not in advance. Empty categories
+make a forum look abandoned, and a member faced with eight of them posts in
+the wrong one.
 
 ## Editing a section
 
@@ -148,6 +219,15 @@ deep nesting may go. Every option is listed with its values in the
 > **Note:** The **Threading** option ships with a stored default of `both`,
 > which is not one of its two choices. Until you set it to **Nested threads**
 > the forum renders flat, one-level threads.
+
+Of the rest, the one to think about is whether members may post anonymously,
+which ships **enabled**. Anonymous posting hides the name on the site but not
+in the database — you can still see the author on the post's edit form — and
+on a small hub where everyone knows everyone it mostly invites the kind of
+post you will later have to unpublish. Turning it off is worth considering
+unless you have a reason to keep it, such as a forum for reporting problems
+with a colleague's tool. Changing the setting does not retrospectively reveal
+anyone: posts already made anonymously stay anonymous.
 
 ## Permissions
 

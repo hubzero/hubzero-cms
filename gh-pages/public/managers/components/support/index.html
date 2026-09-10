@@ -122,8 +122,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Support</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#before-the-first-ticket-arrives">Before the first ticket arrives</a></li>
 <li class="toc__item toc__item--l2"><a href="#tickets">Tickets</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-and-answering-a-ticket">Reading and answering a ticket</a></li>
+<li class="toc__item toc__item--l3"><a href="#working-one-ticket-end-to-end">Working one ticket end to end</a></li>
 <li class="toc__item toc__item--l2"><a href="#queries">Queries</a></li>
 <li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
 <li class="toc__item toc__item--l2"><a href="#statuses">Statuses</a></li>
@@ -171,28 +173,99 @@ ticket's log. The component also collects the abuse reports that members
 file against comments and other content elsewhere on the hub. This chapter
 covers the administrator's side; the <a href="../../../users/support/index.html">Hub users</a>
 book covers submitting and tracking a ticket.</p>
+<p>Every hub needs this one. It is the route members take when something is
+wrong, and unlike the rest of the components in this book you do not choose
+whether to run it — you only choose whether anyone is watching it. A member
+whose tool session dies at midnight files a ticket whether or not you have
+configured a single thing, and the ticket sits in the queue until someone
+opens it. So the question this chapter answers is not &quot;should I turn this
+on&quot; but &quot;what has to be in place before the first ticket arrives, and how do
+I work the queue once they do&quot;.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is not the member messaging system. A reply on a ticket is
+<em>delivered</em> through that system, but tickets, statuses, assignment and the
+ACL described here have nothing to do with the <strong>Messages</strong> component or
+the <strong>Messages</strong> tab on a member's profile. See
+<a href="../messages/index.html">Messages</a> if that is what you are looking for.</p>
+</aside>
 <p>Open it under <strong>Components &gt; Support</strong>. Eight sub-menu links run across
 the top: <strong>Tickets</strong>, <strong>Categories</strong>, <strong>Queries</strong>, <strong>Messages</strong>,
 <strong>Statuses</strong>, <strong>Abuse</strong>, <strong>Stats</strong>, and <strong>ACL</strong>.</p>
+<h2 id="before-the-first-ticket-arrives">Before the first ticket arrives</h2>
+<p>A new hub ships with the ticket system working and almost nothing in it.
+<code>#__support_statuses</code>, <code>#__support_categories</code> and the three ACL tables are
+all empty on a fresh install, which means tickets arrive, but nobody except
+a super administrator can see them and the only statuses are the built-in
+<strong>New</strong> and <strong>Closed</strong>. Half an hour spent here saves a year of confusion.</p>
+<ol>
+<li><strong>Decide who answers tickets, and give them access in the
+<a href="#acl">ACL</a>.</strong> Until you do, the only people who can work the queue are
+super administrators, because the ACL check passes anyone holding
+<code>core.admin</code> and refuses everyone else. Adding a hub <em>group</em> rather than
+naming individuals is worth the extra minute: staff turnover then means
+changing the group, not revisiting this screen.</li>
+<li><strong>Set the address that hears about new tickets.</strong> <strong>Options &gt; Notify
+when ticket created</strong> ships as <code>{config.mailfrom}</code>, the hub's own From
+address, so notifications go somewhere real but probably to a mailbox
+nobody reads as a queue. Point it at whatever your staff actually watch.
+Leave it blank and no one is told a ticket exists.</li>
+<li><strong>Add the <a href="#statuses">statuses</a> you will actually use.</strong> With none, every
+ticket is either New or Closed, and you cannot tell &quot;waiting on the
+member&quot; from &quot;waiting on us&quot;.</li>
+<li><strong>Add a few <a href="#categories">categories</a></strong>, if you want tickets sorted by
+subject at all. This is optional and easy to add later.</li>
+<li><strong>Check the attachment settings</strong> under <strong>Options</strong>, so that a member
+sending you a screenshot is not turned away.</li>
+</ol>
+<p>Do all five before you advertise the support link, not after. Changing the
+ACL and the statuses later is safe — existing tickets keep whatever status
+they had, and a status you remove simply stops being offered — but until
+they exist, tickets accumulate that nobody has triaged.</p>
 <h2 id="tickets">Tickets</h2>
-<p>The Tickets screen is split into three panes. The left pane is your list
-of saved queries; the middle pane holds the tickets the selected query
-returns; the right pane shows a ticket you pick from the list.</p>
+<p>The Tickets screen is the queue, and it is where you will spend your time.
+It is split into three panes. The left pane is your list of saved queries;
+the middle pane holds the tickets the selected query returns; the right pane
+shows a ticket you pick from the list.</p>
+<p>The important idea is that the queue is not one list — it is whatever the
+selected query returns. A query is a saved filter, and the stock ones
+(<em>Open tickets</em>, <em>New tickets</em>, <em>Assigned to me</em>) are how most people work:
+open <em>New tickets</em>, triage what is there, assign it, and it leaves that list
+for someone else's.</p>
 <p>Above the queries sits <strong>Watch list</strong>, with <strong>Open tickets</strong> and
 <strong>Closed tickets</strong> counts for every ticket you are watching. Below that
 are your query folders. Each folder and each query carries <strong>Edit</strong> and
 <strong>Delete</strong> links, and the two controls at the bottom, <strong>Add custom query</strong>
 and <strong>Add folder</strong>, create new ones. Folders and queries can be dragged
 into a new order, which is saved as you drop them.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Watching and owning are different. <strong>Watch ticket</strong> puts a
+ticket on <em>your</em> watch list and tells you about changes; <strong>Assigned to</strong>
+says who is responsible for it. Watching someone else's ticket does not
+take it off them.</p>
+</aside>
 <p>The ticket list has a <strong>Sort results</strong> bar — <strong>Age</strong>, <strong>Status</strong>,
 <strong>Severity</strong>, <strong>Summary</strong>, <strong>Group</strong>, <strong>Assignee</strong> — and a <strong>Find</strong> box
 that searches within the current query. Each row shows the ticket number,
 its status (coloured with the status's own colour), the time of the last
 comment, any target date, the submitter, the summary, tags, group,
 assignee, and severity.</p>
-<p>The toolbar offers <strong>Options</strong>, <strong>New</strong>, <strong>Delete</strong>, and <strong>Help</strong>.
-Deleting removes the ticket and everything attached to it; there is no
-trash to recover from.</p>
+<p>The toolbar offers <strong>Options</strong>, <strong>New</strong>, <strong>Delete</strong>, and <strong>Help</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> removes the ticket and everything attached to
+it — its comments, its log and its files — and there is no trash to
+recover from. To take a ticket out of the queue without destroying it,
+set it to a closed status instead. Reserve <strong>Delete</strong> for spam.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> There is no way to act on many tickets at once. A batch
+screen exists in the code, but the link that reached it is commented out
+of the ticket list template, so nothing in the interface renders it, and
+the screen behind it has been partly disabled — it changes the fields and
+tells nobody, and the comment it writes to the ticket's log is empty.
+Treat it as gone. If a spam wave puts two hundred junk tickets in the
+queue, you close or delete them one at a time. Recorded in
+the project record.</p>
+</aside>
 <h2 id="reading-and-answering-a-ticket">Reading and answering a ticket</h2>
 <p>Clicking a ticket's summary opens it. The top of the screen shows the
 original report — which cannot be edited — with the submitter's name,
@@ -266,6 +339,13 @@ button.</p>
 </table>
 <p>Press <strong>Save</strong> or <strong>Save &amp; Close</strong>. Everything that changed is written to
 the ticket's log, along with who was notified.</p>
+<p>Two things about that form are easy to get wrong, and both are visible to
+the member if you do. <strong>Private</strong> is the only thing that keeps a comment off
+the submitter's screen and out of their mail — a status change or an
+internal note typed into a public comment goes straight to them. And a
+comment with the <strong>Ticket submitter</strong> box left ticked mails them, so a
+one-word note to a colleague becomes a support reply. Neither can be
+recalled once saved.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Posting a comment reopens a closed ticket. This is deliberate,
 so that a reply is never lost on a ticket nobody is watching.</p>
@@ -274,12 +354,45 @@ so that a reply is never lost on a ticket nobody is watching.</p>
 <p><strong>Note:</strong> If someone else commented while you had the form open, the save
 is refused and your text is handed back so you can review it first.</p>
 </aside>
+<h3 id="working-one-ticket-end-to-end">Working one ticket end to end</h3>
+<p>A member reports that a simulation tool will not start. The ticket arrives
+as <strong>New</strong>, unassigned. This is the sequence, and the rest of the chapter
+refers back to it.</p>
+<ol>
+<li>In <strong>Components &gt; Support &gt; Tickets</strong>, select the <strong>New tickets</strong>
+query in the left pane. The ticket is in the middle pane; click its
+summary.</li>
+<li>Read the report. The <strong>OS / Browser</strong>, <strong>Instances</strong> and user agent
+lines at the top were captured when it was submitted — you do not have
+to ask for them.</li>
+<li>Set <strong>Severity</strong>. This is the field the queue sorts by when several
+things are wrong at once, so it is worth being honest: <strong>Critical</strong> for
+something that stops everyone, <strong>Normal</strong> for one member blocked.</li>
+<li>Set <strong>Assigned to</strong> to the person who will look at it. Only people the
+<a href="#acl">ACL</a> knows about appear in that list; if the right person is not
+there, that is the screen to fix, not this one.</li>
+<li>Set <strong>Status</strong> to one of your open statuses — the one that means &quot;we
+have this&quot; rather than leaving it <strong>New</strong>, so that the next person
+opening the <em>New tickets</em> query does not triage it again.</li>
+<li>Type the reply to the member in <strong>Comments</strong>, leaving <strong>Private</strong>
+clear, and press <strong>Save</strong>. They get it by mail, and the ticket's log
+records the status, the assignment and who was notified.</li>
+<li>When the tool is fixed, reply again and set <strong>Status</strong> to a closed
+status, or to plain <strong>Closed</strong>. The closing time is recorded.</li>
+</ol>
+<p>If the member answers afterwards, their comment reopens the ticket and it
+comes back into the open queries — which is the behaviour you want, and the
+reason not to delete a ticket you think is finished.</p>
 <p><strong>New</strong> on the Tickets toolbar opens a shorter form for entering a ticket
 on someone's behalf: <strong>Login</strong>, <strong>Name</strong>, <strong>Email</strong>, <strong>Description</strong>,
-tags, group, assignee, severity, status, category, and CC.</p>
+tags, group, assignee, severity, status, category, and CC. Use it when a
+problem reaches you by mail or in a corridor and you want it in the queue
+where the rest of the record is.</p>
 <h2 id="queries">Queries</h2>
-<p>The Queries screen manages the default queries every user starts with.
-Each has a <strong>Type</strong>:</p>
+<p>The Queries screen manages the default queries every user starts with. It is
+worth visiting once, when you first set the hub up, and then rarely: what
+you change here shapes the queue every new staff member inherits.</p>
+<p>Each has a <strong>Type</strong>:</p>
 <ul>
 <li><strong>Common (in ACL)</strong> — a common query such as <em>Open tickets</em> or
 <em>New tickets</em>, given to users who hold support permissions.</li>
@@ -294,19 +407,35 @@ sees tickets they submitted, own, or that belong to one of their groups.</li>
 sort field, and a direction. Conditions can test the owner, group,
 submitter, ticket ID, report text, open/closed state, status, created and
 closed dates, tag, type, severity, and category.</p>
-<p>The toolbar adds <strong>Reset to defaults</strong>, which deletes every query and
-folder on the hub and rebuilds the stock set.</p>
+<p>The toolbar adds <strong>Reset to defaults</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Reset to defaults</strong> deletes every query and folder on the
+hub — everyone's, not just yours, including custom queries people built
+for themselves — and rebuilds the stock set. It cannot be undone and
+there is no confirmation of what will be lost.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Changes here only reach <em>new</em> users, the first time they open
-the support component. Existing users keep the copies they already have.</p>
+the support component. Existing users keep the copies they already have.
+That is why this screen is for the hub's first week: after that, a change
+reaches nobody who is already working the queue, and you have to tell them
+to build the query themselves.</p>
 </aside>
 <h2 id="categories">Categories</h2>
-<p>Categories organise tickets. The list shows <strong>ID</strong>, <strong>Title</strong>, and
-<strong>Alias</strong>; an entry has only those fields, with the alias generated from
-the title when you leave it blank.</p>
+<p>Categories organise tickets by subject — &quot;tool sessions&quot;, &quot;accounts&quot;,
+&quot;storage&quot; — so that a query can pick out one kind of problem and the stats
+screen can count them. They are optional; a hub that answers thirty tickets
+a month manages fine without any.</p>
+<p>The list shows <strong>ID</strong>, <strong>Title</strong>, and <strong>Alias</strong>; an entry has only those
+fields, with the alias generated from the title when you leave it blank.
+Nothing seeds the list, so it is empty until you add some.</p>
 <h2 id="statuses">Statuses</h2>
-<p>Statuses are the labels a ticket can carry. Filter the list by
-<strong>Status for</strong> — <em>all statuses</em>, <em>open</em>, or <em>closed</em>.</p>
+<p>Statuses are the labels a ticket can carry, and they are what makes a queue
+readable. The two that matter are the ones that distinguish <em>we are working
+on this</em> from <em>we are waiting for the member to answer</em> — without them, a
+ticket blocked on somebody else looks exactly like a ticket nobody has
+touched.</p>
+<p>Filter the list by <strong>Status for</strong> — <em>all statuses</em>, <em>open</em>, or <em>closed</em>.</p>
 <table>
 <thead>
 <tr>
@@ -337,18 +466,33 @@ the title when you leave it blank.</p>
 <p><strong>Note:</strong> A new hub starts with no statuses at all. Until you add some,
 the only choices on a ticket are the built-in <strong>New</strong> and <strong>Closed</strong>.</p>
 </aside>
+<p>Adding statuses is safe at any time and takes effect immediately. Deleting
+one is safe too, in the sense that no ticket is lost — but a ticket already
+carrying it keeps pointing at a status that is no longer offered, so retire
+a status by editing tickets off it first if the queue is large.</p>
 <h2 id="messages">Messages</h2>
 <p>Messages are canned responses that appear in the drop-down above the
-comment box. Each has a <strong>Summary</strong> — the name shown in that list — and
-the <strong>Message</strong> text. Four placeholders are substituted when the message
-is chosen: <code>{ticket#}</code> and <code>#XXX</code> become the ticket number, <code>{sitename}</code>
-the site name, and <code>{siteemail}</code> the site's from address.</p>
+comment box. They are the cheapest thing on this screen: three or four saved
+replies for the questions you answer every week — how to reset a password,
+why a tool session was reclaimed, where the storage quota is — turn a
+five-minute reply into a ten-second one, and make the answers consistent
+between staff.</p>
+<p>Each has a <strong>Summary</strong> — the name shown in that list — and the <strong>Message</strong>
+text. Four placeholders are substituted when the message is chosen:
+<code>{ticket#}</code> and <code>#XXX</code> become the ticket number, <code>{sitename}</code> the site name,
+and <code>{siteemail}</code> the site's from address.</p>
+<p>A saved message fills the comment box; it does not send anything on its own.
+You can edit the text before saving, which is the point.</p>
 <h2 id="abuse">Abuse</h2>
 <p>Abuse reports are filed by members against comments and other content
-across the hub. The list shows <strong>ID</strong>, <strong>Status</strong>, <strong>Reported Item</strong>,
-<strong>Reason</strong>, <strong>By</strong>, and <strong>Date</strong>, filtered by <strong>Show</strong>: <em>Outstanding</em>,
-<em>Released</em>, or <em>Deleted</em>. Opening a report shows the reported content and
-who reported it, with four choices:</p>
+across the hub — a spam post in a forum, an offensive comment on a
+resource. They arrive here rather than in the ticket queue, and they need
+watching for a different reason: a report sitting unread means content the
+community has already flagged is still on the site.</p>
+<p>The list shows <strong>ID</strong>, <strong>Status</strong>, <strong>Reported Item</strong>, <strong>Reason</strong>, <strong>By</strong>,
+and <strong>Date</strong>, filtered by <strong>Show</strong>: <em>Outstanding</em>, <em>Released</em>, or
+<em>Deleted</em>. Opening a report shows the reported content and who reported it,
+with four choices:</p>
 <ul>
 <li><strong>Release item</strong> — return the content to its normal state.</li>
 <li><strong>Remove as Spam</strong> — take the content down and train the enabled
@@ -359,8 +503,14 @@ antispam plugins on it.</li>
 <p>Releasing or removing marks the report reviewed. Removal e-mails the
 content's author, and — where banking is enabled — credits points to the
 member who filed the report.</p>
+<p>Prefer <strong>Remove as Spam</strong> to <strong>Delete item</strong> when the content really is
+spam: it is the only one of the two that teaches the antispam plugins, so it
+makes the next wave easier to catch. Use <strong>Delete item</strong> for content that is
+unwanted but not spam, where training the filter on it would do harm.</p>
 <p>The <strong>Spam Check</strong> link beside the list runs a block of sample text past
-every enabled antispam plugin and reports what each one made of it.</p>
+every enabled antispam plugin and reports what each one made of it. It
+changes nothing, so it is safe to run on a live hub; use it when spam is
+getting through and you want to know whether a filter is answering at all.</p>
 <h2 id="stats">Stats</h2>
 <p>Stats charts tickets opened against tickets closed by month, then breaks
 the totals down: opened and closed all time, average ticket lifetime,
@@ -368,7 +518,14 @@ unassigned tickets, tickets by severity, and tickets by resolution. Below
 that is a card for each person tickets are assigned to, ranked by how many
 they have closed, with their own chart and average lifetime. <strong>Show for
 group</strong> narrows everything to one group's tickets.</p>
+<p>The number to watch is <strong>unassigned tickets</strong>. Opened-against-closed
+drifting apart tells you the queue is growing; a rising unassigned count
+tells you why.</p>
 <h2 id="acl">ACL</h2>
+<p>This screen decides who can work the queue, and on a new hub it is empty —
+which is why nobody but a super administrator can see a ticket until you
+fill it in. It is the first screen to visit and the one to come back to
+whenever staff change.</p>
 <p>The ACL grants support permissions to individual users and to groups.
 Each row is a user or group with <strong>Read</strong>, <strong>Update</strong>, and <strong>Delete</strong> on
 tickets, <strong>Create</strong> and <strong>Read</strong> on comments, and <strong>Create</strong> and <strong>Read</strong>
@@ -379,10 +536,16 @@ table, choose <em>user</em> or <em>group</em>, tick the permissions, and press <
 to several groups the highest permission wins. A permission set on the
 user directly overrides everything the groups give them. Super
 administrators pass every check.</p>
+<p>The one to think about is <strong>Read</strong> on private comments. Private is where
+staff write what they would not say to the member — a guess about the
+cause, a note that this is the third time this person has broken the same
+thing. Anyone who can read those can read all of them, on every ticket.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Whatever the ACL says, a member always has read access to a
 ticket they submitted, own, or were copied on in the most recent comment.</p>
 </aside>
+<p>Changes here take effect on the next page load and are entirely reversible:
+untick a cell and that person loses the permission. Nothing is deleted.</p>
 <h2 id="options">Options</h2>
 <p><strong>Options</strong> on the Tickets toolbar opens the component-wide settings:
 the group to draw assignees from, whether replies can arrive by e-mail,
@@ -392,18 +555,46 @@ attachment upload path, size limit and allowed extensions, and the IP
 blacklist and bad-word list used to screen submissions. Every option is
 listed with its values in the
 <a href="../../../reference/configuration/components/support/index.html">configuration reference</a>.</p>
-<p>Setting <strong>Email Content</strong> to <em>Terse</em> strips ticket detail out of every
+<p>Four are worth knowing about before you touch them.</p>
+<p><strong>Notify when ticket created</strong> defaults to <code>{config.mailfrom}</code> — the hub's
+own From address. That is a sensible fallback rather than a sensible
+setting; change it to the mailbox your staff actually watch, and remember
+that emptying it means nobody is told at all.</p>
+<p><strong>Enable email interface</strong> lets a member reply to the notification mail and
+have the reply land on the ticket. The manifest's default is <em>No</em>, but the
+row written at install time sets it to <em>Yes</em>, and the stored row is what the
+hub runs with — so on a stock hub it is on. It is safe either way: the
+feature needs <code>/etc/hubmail_gw.conf</code> on the server, and when that file is
+absent the component quietly falls back to ordinary notifications. Setting
+<strong>Email Content</strong> to <em>Terse</em> also switches it off, because a terse mail
+carries no token to reply against.</p>
+<p><strong>Email Content</strong> set to <em>Terse</em> strips ticket detail out of every
 notification, which is what a hub bound by FISMA or HIPAA rules wants.
 When it is on, the <strong>Terse</strong> checkbox on the comment form is pre-checked;
 staff can clear it for a single comment.</p>
 <p><img src="../../media/support-supportprivacyemails.png" alt="The privacy setting on the Options screen" /></p>
+<p><strong>Max upload</strong> and <strong>Extensions</strong> are blank in the manifest but are given
+real values — 40 MB, and a long list of image, document, video and archive
+types — by the row written at install time. Blank is not &quot;no limit&quot;: with
+the stored values cleared, the component falls back to the Media Manager's,
+which are tighter — 10 MB, and a list with no archives and almost no video.
+That is the setting to check when a member says their screenshot or log
+bundle was refused.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The stored install row also sets a <strong>severities</strong> value of
+<code>critical, major, normal, minor, trivial</code>. Nothing reads it. The list of
+severities is fixed in code at Critical, High, Normal and Low, and the
+setting is passed to a function that ignores it, so <em>trivial</em> never
+appears on a ticket.</p>
+</aside>
 <p>The <strong>Permissions</strong> tab carries the actions from <code>access.xml</code>: the
 component-wide <em>Configure</em>, <em>Access Administration Interface</em>, <em>Create</em>,
 <em>Delete</em>, <em>Edit</em>, <em>Edit State</em>, and <em>Edit Own</em>, plus a per-object set for
 tickets (view, create, delete, edit, edit state, edit own) and for ticket
 comments and private ticket comments (view and create). These are the
 platform-wide access rules; the day-to-day permissions that decide who
-answers tickets live in the <a href="#acl">ACL</a> screen instead.</p>
+answers tickets live in the <a href="#acl">ACL</a> screen instead. If someone cannot
+see the queue, check the ACL first — that is nearly always the reason.</p>
 <h2 id="api">API</h2>
 <p>Support exposes a full REST API — tickets, comments, categories,
 statuses, messages, stats, and a report of tickets that breach a
@@ -411,7 +602,7 @@ service-level criterion. See the
 <a href="../../../reference/api/support/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../storefront/index.html" rel="prev"><span>Previous</span>Storefront</a><a class="pager__next" href="../tags/index.html" rel="next"><span>Next</span>Tags</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/34-support.md">Edit this page on GitHub</a>

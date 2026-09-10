@@ -104,6 +104,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">OAI-PMH</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-already-doing">What it is already doing</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-administrator-screens">The administrator screens</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-endpoint-answers">What the endpoint answers</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-records-come-from">Where the records come from</a></li>
@@ -167,6 +169,42 @@ harvester complains.</p>
 <p>The protocol it speaks is the Open Archives Initiative Protocol for Metadata
 Harvesting, version 2.0. A harvester asks the endpoint for a list of records
 and comes back later for whatever has changed; the hub answers in XML.</p>
+<p>The hubs that care are the ones whose work is meant to be found from outside.
+A group publishes datasets on the hub and the university library wants them in
+the institutional discovery service alongside everything else the department
+produces; the librarian asks for &quot;an OAI endpoint&quot; and a base URL. That is
+this component, and the answer is one URL and a few settings. A hub that
+publishes nothing, or whose publications are for its own members, can leave it
+alone.</p>
+<h2 id="what-it-is-already-doing">What it is already doing</h2>
+<p>It is not something you switch on. A fresh install enables the component and
+both of its content plugins, so the endpoint answers from the first day the
+hub is up, and anything that reaches it sees:</p>
+<ul>
+<li>every <strong>published</strong> version of every <a href="../publications/index.html">publication</a>, and</li>
+<li>every <strong>published</strong>, standalone <a href="../resources/index.html">resource</a>,</li>
+</ul>
+<p>as Dublin Core metadata — title, authors, description, date, subject tags,
+type, publisher and an identifier that resolves back to the record. No files
+are served: a harvester gets the catalogue entry and a link, and following the
+link puts it back in front of the hub's own access rules.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <em>Published</em> is the only test either plugin applies. Neither
+looks at a record's <strong>Access</strong> setting, so the metadata of a publication or
+resource that is published but restricted to registered members, or to one
+group, is served to any anonymous harvester: title, authors, abstract, tags
+and the record's address. The files behind it stay protected, but the
+catalogue entry does not. If the hub has restricted publications whose
+existence is itself sensitive, disable the plugins below. Recorded in
+the project record, which is not published to this site.</p>
+</aside>
+<p>If that is not wanted, disable the two <code>oaipmh</code> plugins under <strong>Extensions →
+Plugins</strong>. The endpoint keeps answering, but with nothing in it.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>This is not a search engine feed and not a sitemap; ordinary web crawlers do
+not read it. It is not a backup or an export of the hub's content either — it
+carries metadata, not files, and it has no import side. And it is not where
+DOIs are minted; the component reports the DOI a publication already has.</p>
 <h2 id="the-administrator-screens">The administrator screens</h2>
 <p><strong>Components → OAIPMH</strong> has two screens and a link out to a third.</p>
 <p><strong>About</strong> is the component's own help text — an explanation of the protocol,
@@ -246,9 +284,11 @@ group. It is only shown to someone who can manage plugins.</p>
 https://yourhub.org/oaipmh?verb=ListRecords&amp;metadataPrefix=oai_dc&amp;set=publications:datasets
 https://yourhub.org/oaipmh?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=https://yourhub.org/publications/42/1
 </code></pre>
-<p>A record's identifier is its own URL — <code>/publications/{id}/{version}</code> or
-<code>/resources/{id}</code> — and <code>GetRecord</code> also accepts the record's DOI, with or
-without the resolver prefix in front of it.</p>
+<p>A record's identifier is a resolvable address. Where the record has a DOI, it
+is the DOI with the resolver in front of it; where it does not, it is the
+record's own URL on the hub — <code>/publications/{id}/{version}</code> or
+<code>/resources/{id}</code>. <code>GetRecord</code> accepts either form, and accepts a DOI with or
+without the resolver prefix.</p>
 <p>Opening any of these in a browser shows a readable page rather than raw XML:
 the response carries an XSL stylesheet, served from <code>/oaipmh/stylesheet</code>,
 which the browser applies.</p>
@@ -299,15 +339,21 @@ guessed per request — set them explicitly if the hub answers on more than one
 hostname.</p>
 <p><strong>Earliest Datestamp</strong> is the date the repository claims nothing predates.
 It ships as <code>2012-02-12 00:00:00</code>, which is a placeholder, not a fact about
-your hub. Set it to something true; harvesters use it to decide how far back
-to ask.</p>
+your hub, and it is the one setting on this screen that is wrong by default on
+every hub. Set it to something true — the date of the hub's oldest published
+record will do. Harvesters use it to decide how far back to ask, and a date
+earlier than the truth only wastes their time.</p>
 <p><strong>Deleted Record</strong> declares whether the repository reports withdrawn records
 — <code>No</code>, <code>Transient</code>, or <code>Persistent</code>. The component never emits a deleted
 record, so the honest answer is <code>No</code>.</p>
 <p><strong>Harvesting Granularity</strong> picks the finest date resolution the endpoint
-accepts, either whole days or seconds.</p>
+accepts, either whole days or seconds. It ships on seconds, which is the more
+permissive of the two; leave it there unless a harvester asks otherwise.</p>
 <p><strong>Result Limit</strong> is how many records go into one page of a response before a
-<code>resumptionToken</code> is issued. The default is 50.</p>
+<code>resumptionToken</code> is issued. The default is 50, which is a sensible starting
+point: raising it makes each response slower to build and larger to send, and
+harvesters follow resumption tokens without help. Raise it only if one
+complains about the number of round trips.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <strong>Allow ORE</strong> does nothing. It is stored and passed to the
 response builder, which never reads it, and no ORE schema ships with the
@@ -319,10 +365,12 @@ this is set to.</p>
 tab in <strong>Options</strong>, but only <code>core.manage</code> and <code>core.admin</code> are ever tested:
 <code>core.manage</code> to open the component at all, <code>core.admin</code> to see the
 <strong>Options</strong> button. The endpoint itself is public and does no access check —
-it publishes what its plugins select, which is published content only.</p>
+it publishes whatever its plugins select, which is every published record
+whatever that record's own <strong>Access</strong> setting says. See the warning under
+<strong>What it is already doing</strong>, above.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="../poll/index.html" rel="next"><span>Next</span>Poll</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/24-oaipmh.md">Edit this page on GitHub</a>

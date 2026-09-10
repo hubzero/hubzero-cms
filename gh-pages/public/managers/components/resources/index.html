@@ -109,7 +109,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Resources</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-pipeline">The pipeline</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-find-it">Where to find it</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-resources-list">The Resources list</a></li>
+<li class="toc__item toc__item--l3"><a href="#reviewing-a-submission">Reviewing a submission</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-resource">Creating or editing a resource</a></li>
 <li class="toc__item toc__item--l2"><a href="#children-series-and-orphans">Children, series, and orphans</a></li>
 <li class="toc__item toc__item--l2"><a href="#types">Types</a></li>
@@ -170,11 +173,57 @@ contributors, attachments, tags, and a set of tabs supplied by plugins.
 Members submit them through a wizard at <code>/resources</code>; this chapter covers
 the administrator's side, and the
 <a href="../../../users/resources/index.html">Hub users</a> book covers contributing and browsing.</p>
+<h2 id="the-pipeline">The pipeline</h2>
+<p>This is the last of three components that belong together.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Component</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Work</td>
+<td><a href="../projects/index.html">Projects</a></td>
+<td>The private team workspace.</td>
+</tr>
+<tr>
+<td>Release</td>
+<td><a href="../publications/index.html">Publications</a></td>
+<td>A frozen, versioned, citable release with a DOI.</td>
+</tr>
+<tr>
+<td>Catalogue</td>
+<td><strong>Resources</strong></td>
+<td>The public shelf. What a visitor browses, searches and lands on from Google.</td>
+</tr>
+</tbody>
+</table>
+<p>What you decide at this stage is <strong>what kinds of thing the hub catalogues,
+what a contributor has to supply for each kind, and whether anybody checks a
+submission before it is public</strong>. Types answer the first two; the
+<strong>Auto-approve</strong> option answers the third.</p>
+<p>A resource is not a publication. Publishing a publication does not create a
+resource, and nothing in the tree links the two records: they are separate
+tables with separate browse pages and separate search plugins. A hub that
+wants a released dataset on the catalogue shelf as well has to have someone
+contribute it here. Nor is a resource a file store — the files belong to it,
+but the thing being catalogued may be a link, a tool, or a recorded seminar
+with no files at all.</p>
+<p>A hub that publishes nothing and hosts nothing still usually wants this
+component, because it is where seminars, teaching material and links to
+outside work go.</p>
+<h2 id="where-to-find-it">Where to find it</h2>
 <p>Open it under <strong>Components &gt; Resources</strong>. The sub-menu across the top has
 <strong>Resources</strong> (the list below), <strong>Orphans</strong>, <strong>Types</strong>, <strong>Licenses</strong>,
 <strong>Authors</strong>, <strong>Roles</strong>, <strong>Plugins</strong> (only if you may manage plugins),
 <strong>Import</strong>, and <strong>Import Hooks</strong>.</p>
 <h2 id="the-resources-list">The Resources list</h2>
+<p>This is the screen you live in. Its most useful setting is the <strong>Status</strong>
+filter set to <strong>Pending</strong>: those are the submissions members have made and
+nobody has looked at yet, and on a stock hub they sit there until you do.</p>
 <p>The list shows <em>standalone</em> resources only — the ones that appear in
 searches and listings. Child resources are reached through their parent, or
 through <strong>Orphans</strong>.</p>
@@ -200,6 +249,34 @@ Public, Registered, Special, Protected, and Private, and wraps around. The
 non-standalone children, its links to any parents, and its entire upload
 directory. To take a resource off the site without losing it, set its
 status to <strong>Unpublished</strong> or <strong>Trashed</strong> instead.</p>
+</aside>
+<h3 id="reviewing-a-submission">Reviewing a submission</h3>
+<p>A member has contributed a dataset through the wizard at <code>/resources</code>. On a
+stock hub — <strong>Auto-approve</strong> ships <strong>No</strong> — it was saved as <strong>Pending</strong> and
+is waiting for you. Nothing tells the member how long that takes, so the
+first hub-running habit worth forming is checking this filter.</p>
+<ol>
+<li>Go to <strong>Components &gt; Resources</strong>.</li>
+<li>Set <strong>Status</strong> to <strong>Pending</strong> and press <strong>Go</strong>.</li>
+<li>Select the resource's title to open it. This checks the record out; if
+you wander off, come back and press <strong>Cancel</strong> rather than closing the
+tab, or the record stays checked out and nobody else can edit it.</li>
+<li>Read the <strong>Abstract/Description</strong> and the <strong>Main Text</strong>, check the
+<strong>Type</strong> is right, and open the <strong>Files</strong> panel to see what was actually
+uploaded.</li>
+<li>If something needs changing, fix it and press <strong>Save</strong>. There is no Save
+&amp; Close on this form.</li>
+<li>When you are satisfied, set <strong>Status</strong> to <strong>Published</strong> in the
+<strong>Publishing</strong> panel and press <strong>Save</strong>. You can do the same from the
+list by clicking the <strong>Status</strong> cell.</li>
+</ol>
+<p>Publishing is reversible: set the status back to <strong>Unpublished</strong> and the
+resource leaves the site with everything intact.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The contributor is not told. <strong>Email When Published</strong> ships
+<strong>No</strong>, so approving a submission sends nothing. Turn it on in
+<a href="#options">Options</a> if you want contributors to hear back, or write to
+them yourself.</p>
 </aside>
 <h2 id="creating-or-editing-a-resource">Creating or editing a resource</h2>
 <p><strong>New</strong> and <strong>Edit</strong> open the same form. It saves with <strong>Save</strong>; <strong>Cancel</strong>
@@ -322,6 +399,16 @@ from its parent, which is how children end up in <strong>Orphans</strong> — th
 listing every non-standalone resource with no parent, so you can re-attach
 or delete them.</p>
 <h2 id="types">Types</h2>
+<p>A type is the most consequential thing on this page, because it decides what
+a contributor is asked for and what a visitor sees. Adding one is how you
+make the hub catalogue something it does not yet catalogue — a set of
+teaching notebooks, a series of instrument runs — and the <strong>Custom Fields</strong>
+table is how you make sure every contribution of that kind arrives with the
+metadata you will wish you had asked for.</p>
+<p>Adding a type is safe. Editing one that resources already use is not: a
+custom field renamed or removed does not migrate the values already stored
+in existing resources, because they live inside the main text as <code>&lt;nb:...&gt;</code>
+tags rather than in columns.</p>
 <p><strong>Types</strong> lists the resource types in one category at a time; the
 <strong>Category</strong> filter defaults to <strong>Main Types</strong>, the types members can
 contribute and browse. The other categories are <strong>Logical Type</strong>, <strong>Sub
@@ -352,6 +439,10 @@ order, and <strong>+ Add new row</strong> to add a field.</p>
 Series cannot be selected for deletion, and their alias is read-only.</p>
 </aside>
 <h2 id="licenses-authors-and-roles">Licenses, Authors, and Roles</h2>
+<p>Three small screens that only matter once contributors start arriving.
+Licenses decide what a contributor may choose on the last step of the
+wizard; Authors is how you fix a credit; Roles is how a hub distinguishes
+an author from, say, a data collector.</p>
 <p><strong>Licenses</strong> holds the licenses offered on the last step of the
 contribution wizard. Each has a <strong>Title</strong>, an <strong>Alias</strong>, an optional
 <strong>URL</strong>, and the license <strong>Content</strong> shown to the contributor.</p>
@@ -370,6 +461,10 @@ installed by default, so a new hub has only Author until you add some.</p>
 edit its parameters. A few add their own management screen, reached from the
 <strong>Manage</strong> column.</p>
 <h2 id="import">Import</h2>
+<p>This is for the hub that inherits a catalogue: a departmental listing being
+moved onto the hub, or a feed from a repository somewhere else. Loading a
+dozen resources by hand is quicker than writing the data file. Loading three
+hundred is not.</p>
 <p>The importer bulk-loads resources from a data file, creating the parent
 resource, its tags, its children, and its contributors. Each import has a
 <strong>Name</strong>, <strong>Notes</strong>, a <strong>Data File</strong>, and a <strong>Mode</strong> — <strong>UPDATE</strong>, which
@@ -391,12 +486,30 @@ exercises the hooks and settings but writes nothing. Do the dry run first.
 file is too large to upload through the browser, save the import first; the
 form then shows the file space path to copy the file into.</p>
 <h2 id="audit">Audit</h2>
+<p>A catalogue rots. Links to outside pages go dead and uploaded files get
+moved off the filesystem, and neither leaves a trace on the resource itself.
+Run this once a term on a hub with any external links in it.</p>
 <p><strong>Audit</strong> on the Resources toolbar runs a check over every resource and
 reports how many <strong>passed</strong>, <strong>failed</strong>, and were <strong>skipped</strong>. One test
 ships, <strong>Link Checker</strong>: it takes each resource's file or URL, requests
 external addresses and checks that uploaded files still exist under the
 upload path. Click a count to list the entries behind it.</p>
 <h2 id="options">Options</h2>
+<p>The one setting on this screen that changes how the hub behaves rather than
+how it looks is <strong>Auto-approve</strong> on the <strong>Creation</strong> tab. It ships <strong>No</strong>,
+in both the manifest and the shipped install row, and that is the sensible
+default: submissions wait as <strong>Pending</strong> until someone publishes them. Set
+it to <strong>Yes</strong> only if you know who is contributing and trust all of them,
+because there is no undo for what a stranger puts on your front page in the
+meantime. <strong>Auto-approved Users</strong> on the same tab is the middle course — a
+comma-separated list of usernames whose submissions publish immediately
+while everyone else's still waits.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The Publications component is set the other way round. Its
+auto-approve ships <strong>on</strong>, so a hub running both has a catalogue that
+queues submissions and a publication pipeline that does not — see
+<a href="../publications/index.html#curation">Curation</a>.</p>
+</aside>
 <p><strong>Options</strong> opens the component-wide settings, grouped as Basic, Files,
 Creation, Entry, and Import. They set the default resource picture and the
 default custom fields for new types; the upload paths and size limit;
@@ -426,7 +539,7 @@ titles, and fetch recent content; see the
 <a href="../../../reference/api/resources/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../redirect/index.html" rel="prev"><span>Previous</span>Redirect</a><a class="pager__next" href="../saml/index.html" rel="next"><span>Next</span>SAML</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/29-resources.md">Edit this page on GitHub</a>

@@ -107,6 +107,8 @@
 <li class="toc__item toc__item--l2"><a href="#coupon-codes">Coupon codes</a></li>
 <li class="toc__item toc__item--l2"><a href="#units-asset-groups-and-assets">Units, asset groups and assets</a></li>
 <li class="toc__item toc__item--l2"><a href="#certificates">Certificates</a></li>
+<li class="toc__item toc__item--l3"><a href="#who-can-claim-one">Who can claim one</a></li>
+<li class="toc__item toc__item--l3"><a href="#creating-a-certificate">Creating a certificate</a></li>
 <li class="toc__item toc__item--l2"><a href="#roles">Roles</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#presentations">Presentations</a></li>
@@ -177,6 +179,22 @@
 of overview pages; an offering is one run of that course; a section is one
 cohort within an offering; and a section's content is a tree of units, asset
 groups and assets. Students enrol in a section.</p>
+<p>A hub needs this if it teaches: a summer school that runs every July, a
+training course new users have to take before they get a tool allowance, a
+semester class using the hub's simulation tools. If nothing on your hub has
+enrolment, a syllabus and a start date, you do not need the component and
+can stop here.</p>
+<p>It is not a place to put a set of lecture notes — a resource or a wiki page
+does that with none of this structure. What Courses adds is the machinery
+around teaching: cohorts, dates that differ per cohort, graded work,
+progress, and a certificate at the end. If nobody is enrolling and nothing
+is graded, the structure is overhead.</p>
+<p>Most of that machinery is only here, in the administrator interface. Units,
+asset groups, assets, offerings, sections, coupon codes, roles and
+certificates have no front-end equivalent, so setting up a course is
+back-office work that an instructor cannot do for themselves unless you give
+them administrator access. Budget for that: a hub running several courses
+will have someone in these screens every term.</p>
 <p>Go to <strong>Components → Courses</strong>. The submenu holds <strong>Courses</strong>, <strong>Pages</strong>,
 <strong>Students</strong>, <strong>Roles</strong>, and a <strong>Plugins</strong> link that jumps to the courses
 plugin group under <strong>Extensions → Plugins</strong>. Everything else — offerings,
@@ -184,11 +202,20 @@ sections, units, asset groups, coupon codes, certificates — is reached by
 drilling down from the course list.</p>
 <p>Every screen needs <code>core.manage</code> on <code>com_courses</code>.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The gradebook is not in the administrator interface. Grading,
-progress reports and the instructor's gradebook live on the course pages on
-the site, in the <code>progress</code> courses plugin.</p>
+<p><strong>Note:</strong> The one exception runs the other way. The gradebook is <em>not</em> in
+the administrator interface: grading, progress reports, the grading policy
+and the instructor's gradebook all live on the course pages on the site, in
+the <code>progress</code> courses plugin. So course <em>structure</em> is administrator work
+and course <em>marking</em> is instructor work, and the two are done in different
+places by different people.</p>
 </aside>
 <h2 id="the-hierarchy">The hierarchy</h2>
+<p>Get this right before you build anything, because moving content between
+levels afterwards means recreating it. The rule of thumb: a <strong>course</strong> is
+the thing that has a name in a prospectus, an <strong>offering</strong> is a year of it,
+and a <strong>section</strong> is a group of students who get their own dates. A course
+run once, for everyone, still needs all three — one offering and one
+section — because the enrolment setting and the dates live on the section.</p>
 <table>
 <thead>
 <tr>
@@ -233,6 +260,9 @@ the site, in the <code>progress</code> courses plugin.</p>
 <p>Counts in the list are links. A count of zero shows a <strong>[ + ]</strong> or <strong>Add</strong>
 link instead, which goes straight to the new-item form at that level.</p>
 <h2 id="the-course-list">The course list</h2>
+<p><strong>Draft</strong> is the state to know about here: it makes a course visible to its
+managers and to nobody else, so a course can be built over a month without
+anyone stumbling into a half-finished syllabus.</p>
 <p>Columns: <strong>ID</strong>, <strong>Title</strong>, <strong>Alias</strong>, <strong>State</strong>, <strong>Cert.</strong>, <strong>Managers</strong>,
 <strong>Offerings</strong>, and <strong>Pages</strong>. Filters above the table are a <strong>Search</strong> box and
 a <strong>State</strong> drop-down (<em>All States</em>, Unpublished, Published, Draft, Trashed).</p>
@@ -244,6 +274,12 @@ certificate screen for that course, and says <strong>Certificate set</strong> or
 certificate set</strong>.</p>
 <p><img src="../../media/courses-210course.png" alt="The Cert. column showing a course with no certificate" /></p>
 <h2 id="creating-a-course">Creating a course</h2>
+<p>The scenario for the rest of this chapter: the group wants to run a
+three-day summer school in July, open only to the twenty people they invite,
+with a certificate for anyone who passes the exam. That is one course, one
+offering, one section with restricted enrolment, three units, and a
+certificate.</p>
+<p>Start with the course itself.</p>
 <ol>
 <li>Press <strong>New</strong>.</li>
 <li>Fill in the <strong>Details</strong> fieldset.</li>
@@ -254,6 +290,32 @@ exists — the form says so.</li>
 <li>Drop an image into the <strong>Logo</strong> panel.</li>
 <li>Press <strong>Save &amp; Close</strong>.</li>
 </ol>
+<p>Set <strong>State</strong> to <strong>Draft</strong> at step 3 while you build the rest. A draft
+course is visible to its managers and to nobody else, so nothing you do
+next is visible to students until you publish it.</p>
+<p>Then work down the hierarchy, using the counts in each list as links:</p>
+<ol>
+<li>On the course row, click the <strong>Offerings</strong> count and press <strong>New</strong>. Call
+it <em>2026</em> and give it the July start and end dates.</li>
+<li>On the offering row, click the <strong>Sections</strong> count. A default section
+already exists; open it, set <strong>Enrollment</strong> to <strong>Restricted (coupon code
+is required)</strong>, and save.</li>
+<li>On the section row, click the <strong>Codes</strong> cell, press <strong>Generate</strong>, ask for
+20 codes and set an expiry date. Send those out with the invitations.</li>
+<li>On the offering row, click the <strong>Units</strong> count and create one unit per
+day. Each unit gets the asset groups named by the <strong>Default Asset
+Groups</strong> option — Lectures, Homework, Exam by default.</li>
+<li>Open a unit and add its content in the <strong>Assets</strong> panel.</li>
+<li>Back on the course list, click the <strong>No certificate set</strong> icon in the
+<strong>Cert.</strong> column and follow <a href="#creating-a-certificate">Creating a
+certificate</a>.</li>
+<li>On the section's <strong>Recognition/Rewards</strong> tab, set the certificate offer
+to <strong>Yes</strong>.</li>
+<li>Publish the course.</li>
+</ol>
+<p>Read <a href="#who-can-claim-one">Who can claim one</a> before step 7. If any of your
+lecture-day quizzes are marked graded and the grading policy gives quizzes a
+weight, every one of them becomes compulsory for the certificate.</p>
 <h3 id="details">Details</h3>
 <table>
 <thead>
@@ -401,6 +463,10 @@ progress bar:</p>
 </tbody>
 </table>
 <h2 id="sections">Sections</h2>
+<p>The section is where enrolment is decided, which makes it the screen you
+will come back to. A course open to the world and a course open to twelve
+named people differ only in the section's <strong>Enrollment</strong> setting and whether
+you have generated coupon codes.</p>
 <p>The <strong>Sections</strong> count on an offering row opens the section list: <strong>ID</strong>,
 <strong>Title</strong>, <strong>Alias</strong>, <strong>Default</strong>, <strong>State</strong>, <strong>Starts</strong>, <strong>Ends</strong>,
 <strong>Enrolled</strong>, and <strong>Codes</strong>. <strong>Enrolled</strong> links to the students for that
@@ -473,6 +539,8 @@ are inherited from the default section for the offering, and a value set at
 one level is inherited by everything below it. Set a date here to change when
 a lecture, homework or exam becomes available in this section only.</p>
 <h3 id="recognition-rewards">Recognition/Rewards</h3>
+<p>Turning this on is not enough on its own — see
+<a href="#certificates">Certificates</a> for what a student has to do to earn one.</p>
 <ul>
 <li><strong>Offer a certificate for this seciton?</strong> — <strong>Yes</strong> or <strong>No</strong>. This only
 does anything when the course has a certificate.</li>
@@ -493,6 +561,10 @@ and an <strong>Enrolled</strong> date. <strong>Delete</strong> unenrols the sele
 <code>index.php?option=com_courses&amp;controller=students&amp;task=csv</code>.</p>
 </aside>
 <h2 id="coupon-codes">Coupon codes</h2>
+<p>Codes are how you run a closed course without maintaining a list of
+usernames: generate fifty, send them out, and anyone with one can enrol
+themselves. Each code is single-use — the list shows when it was redeemed
+and by whom — so a code that leaks admits one extra person, not everyone.</p>
 <p>The <strong>Codes</strong> cell on a section row opens the coupon codes for that section:
 <strong>ID</strong>, <strong>Code</strong>, <strong>Created</strong>, <strong>Expires</strong>, <strong>Redeemed</strong>, and <strong>Redeemed
 by</strong>.</p>
@@ -528,8 +600,48 @@ the asset from the <strong>Assets</strong> panel.</li>
 </ol>
 <p>Deleting an asset group deletes the assets in it.</p>
 <h2 id="certificates">Certificates</h2>
+<p>A certificate is the thing students ask about, and the thing that generates
+support mail when it does not appear. Set one up only if you intend the
+course to be assessed, because a certificate nobody can earn is worse than
+no certificate at all.</p>
 <p>A course has at most one certificate: a PDF with placeholders the hub fills
 in when a student claims it.</p>
+<h3 id="who-can-claim-one">Who can claim one</h3>
+<p>Three things must all be true before the download link appears on a
+student's progress page:</p>
+<ol>
+<li>The course has a certificate.</li>
+<li>The student's section says <strong>Yes</strong> on its <strong>Recognition/Rewards</strong> tab.</li>
+<li>The student is <em>eligible for recognition</em>, which is a stricter test than
+most people expect.</li>
+</ol>
+<p>Eligibility is decided in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_courses/models/gradebook.php"><code>gradebook.php:758</code></a>.
+The section's grading policy gives each of the three grade categories —
+exam, quiz, homework — a weight. For <strong>every category with a weight above
+zero</strong>, the student must have a score or an override on <strong>every published,
+graded asset</strong> in that category. And their overall score must be at or above
+the policy's pass threshold. Categories weighted zero are ignored
+completely.</p>
+<p>The practical consequence: a single graded item in a weighted category that
+a student never opened blocks the certificate permanently, however well they
+did on everything else. It does not matter whether the item was worth
+anything, whether the instructor meant it to count, or whether the student
+scored a hundred on the rest. Nothing on any screen explains this to the
+student or to the instructor; the link simply does not appear.</p>
+<p>The shipped grading policy weights exams at 100%, quizzes and homework at
+zero, and sets the pass threshold at 70%. On a hub that has not changed it,
+that means: every graded exam asset attempted, and 70% overall. If your
+instructors want homework to count, they change the weights in the grading
+policy interface on the course pages on the site — and the moment homework
+carries a weight, every graded homework asset becomes compulsory for the
+certificate.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Before a course ends, unpublish any graded asset that was not
+meant to be assessed. An unpublished asset is not counted, and that is the
+only lever you have over this rule.</p>
+</aside>
+<h3 id="creating-a-certificate">Creating a certificate</h3>
 <p>To create one:</p>
 <ol>
 <li>On the course list, click the <strong>No certificate set</strong> icon in the course's
@@ -546,7 +658,9 @@ it.</li>
 <p>To remove one, open the certificate the same way — the <strong>Cert.</strong> column will
 read <strong>Certificate set</strong> — and press <strong>Delete</strong> in the toolbar.</p>
 <p>A section only offers the certificate when its <strong>Recognition/Rewards</strong> tab
-says <strong>Yes, offer a certificate.</strong></p>
+says <strong>Yes, offer a certificate.</strong> That switch decides whether the
+certificate is on offer; <a href="#who-can-claim-one">Who can claim one</a> decides
+whether any given student gets it.</p>
 <h2 id="roles">Roles</h2>
 <p><strong>Components → Courses → Roles</strong> lists the roles a manager can hold:
 <strong>ID</strong>, <strong>Alias</strong>, <strong>Title</strong>, <strong>Offering</strong>, and <strong>Total</strong> — how many people
@@ -622,7 +736,7 @@ system and described by a <code>presentation.json</code> manifest. Nothing about
 configured in the Courses component.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../collections/index.html" rel="prev"><span>Previous</span>Collections</a><a class="pager__next" href="../cpanel/index.html" rel="next"><span>Next</span>Control Panel</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/10-courses.md">Edit this page on GitHub</a>

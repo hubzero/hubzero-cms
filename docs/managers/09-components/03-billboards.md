@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/components/billboards
 source-id: 3372
@@ -15,6 +15,28 @@ carries a background image, a heading, a block of text, and an optional
 "learn more" link. Slides belong to a collection, and the `mod_billboards`
 module displays one collection as a carousel. Go to **Components →
 Billboards**.
+
+## Whether your hub needs it
+
+A billboard is the hub's shop window: the thing you want a visitor who has
+never been here to see in the first three seconds. Most hubs run three or
+four slides and change one of them a few times a year — a new tool, a paper,
+a workshop with places left.
+
+The typical case: your annual user meeting opens for registration and you
+want it on the front page for six weeks. That is one billboard, published
+now and unpublished when registration closes.
+
+This is a small component and there is not much to it. What makes it awkward
+is that it does nothing on its own: a published billboard appears nowhere
+until somebody places the `mod_billboards` module on a template position. If
+you have made a slide and cannot find it on the site, go straight to
+[Displaying a carousel](#displaying-a-carousel).
+
+**What it is not:** it is not the front page. The hub's front page is a menu
+item and its layout comes from the template; billboards fill one band of it.
+And it is not the media manager — the image lives on the billboard, not in a
+library, and is deleted when you replace it.
 
 The component has two screens, reached from the submenu:
 
@@ -118,11 +140,29 @@ The toolbar carries **Publish**, **Unpublish**, **New**, **Edit**,
 
 Only published billboards appear in a carousel.
 
+Unpublishing is how you retire the user-meeting slide when registration
+closes: the slide drops out of the carousel at once and everything about it
+survives, so next year you edit the dates and publish it again. **Delete**
+takes the record and its uploaded image with it. Given that a billboard is a
+few sentences and a picture, there is rarely a reason to delete rather than
+unpublish.
+
+A new billboard is created unpublished — the edit form has no published
+field at all, so the only way to put a slide on the front page is the
+**Published** toggle in the list. That is the right way round: write and
+save the slide, come back to the list, and toggle it on when you are
+satisfied. There is no preview, so the front page itself is the first place
+you see the slide rendered.
+
+> **Warning:** Once a slide is published, every subsequent save shows on the
+> front page immediately. Editing a live slide means editing in public.
+> Toggle it off, make the change, and toggle it back on.
+
 ## Displaying a carousel
 
 Slides are not shown by the component. They are shown by the
 `mod_billboards` module, which you publish to a template position from
-**Extensions → Modules**. Its options are:
+**Extensions → Module Manager**. Its options are:
 
 | Option | Default | Notes |
 |---|---|---|
@@ -135,3 +175,17 @@ Slides are not shown by the component. They are shown by the
 
 Several instances of the module can run at once, each on its own collection
 and its own timing.
+
+Note the **Billboard Collection** default: collection `1`. On a hub that has
+never created a collection by hand, the first slide you save creates
+*Default Collection*, which is usually ID 1, and the module finds it. On a
+hub where somebody has since deleted or renumbered collections, a freshly
+placed module points at a collection that may not exist and shows nothing.
+If the carousel is empty, check the module's collection against the
+**Collections** screen before you look anywhere else.
+
+**Slide Time** defaults to 5 seconds, which is too fast for a slide carrying
+a paragraph of text — a reader who has to finish a sentence will not. If your
+slides have more than a headline on them, 8 to 10 is kinder. This is a module
+setting and changing it affects only that module instance, so it is safe to
+try on a live hub and change back.

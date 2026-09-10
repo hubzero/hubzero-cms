@@ -165,6 +165,17 @@ own collections; the administrator interface exists to inspect and clean up
 what they have made, not to build collections for them. The user's side is
 described in the <a href="../../../users/collections/index.html">Collections chapter</a> of the Hub
 users book.</p>
+<p>Most hubs never need this screen. Collections is a member convenience: it
+gives people somewhere to keep the hub's content they want to come back to,
+and it gives a group a board it can point newcomers at. Nothing else depends
+on it, no catalogue is built from it, and turning it off breaks nothing. You
+will open the administrator screens for one reason — someone reported a
+post, or a member deleted an account and left a board nobody can reach — and
+then you will close them again.</p>
+<p>It is not curation and it is not the catalogue. A collection is one member's
+or one group's board; it does not decide what appears in
+<a href="../resources/index.html">Resources</a>, what is featured, or what a search returns.
+Pinning something copies nothing and changes nothing about the original.</p>
 <p>Go to <strong>Components → Collections</strong>. Three submenu links sit at the top:</p>
 <ul>
 <li><strong>Collections</strong> — the scrapbooks themselves.</li>
@@ -199,7 +210,17 @@ users book.</p>
 <p>Deleting a collection deletes its posts. Deleting an item deletes every post
 of that item, along with its votes, comments and attached files. Deleting a
 post leaves the item alone.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Deleting an item reaches into other people's boards. The same
+item can be posted to many collections, and removing it removes it from
+all of them, with the comments and votes those members left. If a single
+board is the problem, delete the post, not the item.</p>
+</aside>
 <h2 id="collections-2">Collections</h2>
+<p>Use this screen to take a board off the site. Setting <strong>State</strong> to
+unpublished is the reversible way to do it, and it is what to reach for when
+a complaint arrives and you have not yet decided whether it is justified.
+<strong>Delete</strong> is not reversible and takes the posts with it.</p>
 <p>The list shows <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>, <strong>Access</strong>, <strong>Owner</strong>, and
 <strong>Posts</strong>, all sortable. Filters above it are a <strong>Search</strong> box, a <strong>State</strong>
 drop-down (<em>All States</em>, Unpublished, Published, Trashed) and an <strong>Access</strong>
@@ -267,6 +288,10 @@ numeric and both required — a <strong>Description</strong>, and, under <strong
 <strong>Original</strong> flag. Use it to move a post between collections or to correct a
 mis-typed item; it is not a way to compose new content.</p>
 <h2 id="items">Items</h2>
+<p>Items are where a correction usually belongs. Suppose a member pinned a
+dataset and typed a description that names the wrong principal
+investigator: fixing it here fixes it in every board the item appears in,
+and leaves each member's board otherwise untouched.</p>
 <p>The list shows <strong>ID</strong>, <strong>Description</strong>, <strong>Created</strong>, <strong>Creator</strong>, <strong>Type</strong>,
 and <strong>Posts</strong>. Filters are a <strong>Search</strong> box and a <strong>Filter by type</strong>
 drop-down built from the types actually present in the table.</p>
@@ -286,11 +311,16 @@ type ID, creator, created and modified dates, a <strong>Publishing</strong> fiel
 <p>Users do not pin content from the administrator interface. They use the
 <code>mod_collect</code> module, which draws a <strong>Collect</strong> button on a content page and
 posts the page into one of the user's collections.</p>
-<p>To turn it on:</p>
+<p>The button is the only way anyone collects anything, so a hub that has
+enabled the component and sees no collections being made has usually not
+placed the module.</p>
+<p>The install enables the <code>mod_collect</code> extension but creates no module
+instance for it, so on a stock hub the button appears nowhere. To place it:</p>
 <ol>
 <li>Go to <strong>Extensions → Modules</strong>.</li>
-<li>Find <strong>mod_collect</strong>, tick it, and press <strong>Enable</strong>.</li>
-<li>Publish it to a template position that appears on content pages.</li>
+<li>Press <strong>New</strong> and choose <strong>mod_collect</strong>.</li>
+<li>Give it a <strong>Position</strong> that the template renders on content pages, set
+<strong>Status</strong> to <strong>Published</strong>, and select <strong>Save &amp; Close</strong>.</li>
 </ol>
 <p>The module renders nothing for a guest, and nothing on a page it has no
 adapter for. The nine content types it can collect are:</p>
@@ -348,12 +378,16 @@ both listed in the
 <a href="../../../reference/configuration/components/collections/index.html">generated parameter reference</a>:</p>
 <ul>
 <li><strong>Upload path</strong> — where files attached to items are stored. Default
-<code>/site/collections</code>.</li>
-<li><strong>Allow comments</strong> — whether users may comment on posts. Default <strong>Yes</strong>.</li>
+<code>/site/collections</code>. Leave it alone unless you are moving the hub's file
+storage; changing it does not move the files already there.</li>
+<li><strong>Allow comments</strong> — whether users may comment on posts. Default <strong>Yes</strong>,
+which is sensible for a small hub and the first thing to turn off if
+collections start attracting spam. Existing comments stay in the database;
+they stop being displayed.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../citations/index.html" rel="prev"><span>Previous</span>Citations</a><a class="pager__next" href="../courses/index.html" rel="next"><span>Next</span>Courses</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/09-collections.md">Edit this page on GitHub</a>

@@ -127,6 +127,7 @@
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-tag">Creating or editing a tag</a></li>
 <li class="toc__item toc__item--l2"><a href="#aliases">Aliases</a></li>
 <li class="toc__item toc__item--l2"><a href="#merging">Merging</a></li>
+<li class="toc__item toc__item--l3"><a href="#merging-four-spellings-into-one">Merging four spellings into one</a></li>
 <li class="toc__item toc__item--l2"><a href="#piercing">Piercing</a></li>
 <li class="toc__item toc__item--l2"><a href="#tagged-items">Tagged Items</a></li>
 <li class="toc__item toc__item--l2"><a href="#relationships">Relationships</a></li>
@@ -170,6 +171,24 @@ and that word becomes a link that gathers everything else carrying it. This
 chapter covers the administrator's side: the tag list, aliases, merging,
 tagged items, relationships and focus areas. The
 <a href="../../../users/tags/index.html">Hub users</a> book covers what members see at <code>/tags</code>.</p>
+<p>Almost nothing here is about creating tags. Members create them, in their
+hundreds, by typing; your job is to tidy up after them. A hub two years old
+has <code>machine-learning</code>, <code>machine learning</code>, <code>ML</code> and <code>Machine Learning</code> all
+in use, splitting the same body of work across four tag pages that each look
+half-empty. Merging those four into one is the characteristic task of this
+component, and the rest of the screens exist to support it.</p>
+<p>That makes tags different from categories elsewhere in the hub. A category
+is a list you define and content is filed into. A tag is whatever somebody
+typed. You cannot stop a member inventing a new one, and there is no
+approval step — so a tag vocabulary is curated after the fact or not at all.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The two things a manager does here — merging and deleting —
+both reach out of this component and change every piece of content
+carrying the tag, across every component, in one action. Neither can be
+undone, and neither asks a second time beyond a plain confirmation. Read
+<a href="#merging">Merging</a> and the note on deleting before you use either on a
+live hub.</p>
+</aside>
 <p>Open it under <strong>Components &gt; Tags</strong>. Four sub-menu links sit at the top
 left: <strong>Tags</strong>, the list below; <strong>Relationships</strong>; <strong>Focus Areas</strong>; and
 <strong>Plugins</strong>, which opens the Plugin Manager filtered to the <code>tags</code> folder.
@@ -228,6 +247,17 @@ the tag, its aliases, and every association it has with content. It is
 permanent.</li>
 <li><strong>Help</strong> — the built-in help screen.</li>
 </ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Deleting a tag does not just remove a word from a list. It
+unpicks the tag from every resource, group, wiki page, ticket and profile
+that carried it, one row at a time, and those links are gone: the content
+stays, the tag page stops existing, and nothing on the hub records which
+items used to be tagged. The tag's own row is copied into the tag log
+before it goes, so you can see <em>what</em> was deleted and by whom, but not
+<em>what it was on</em>, so it cannot be rebuilt. If the tag is wrong rather than
+worthless, <a href="#merging">merge</a> it into the right one instead — that keeps
+every association and moves it.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The <strong># tagged</strong> and <strong>Aliases</strong> counts are stored on the tag
 row, not counted live. If they look wrong, check the tags and press
@@ -283,6 +313,10 @@ re-tagged with &quot;water&quot; and the &quot;aqua&quot; tag is deleted. This c
 undone.</p>
 </aside>
 <h2 id="merging">Merging</h2>
+<p>Merging is how you fix a split vocabulary. It is the only action here that
+consolidates rather than destroys: everything tagged with any of the source
+tags comes out tagged with the destination, and the old spellings survive as
+aliases, so a member who types one of them still lands in the right place.</p>
 <p>Check two or more tags and press <strong>Merge</strong>. The next screen lists the
 tags you chose, each with the number of items using it, and asks for the
 tag to merge into. Type it into the <strong>Tag</strong> field — it may be an existing
@@ -291,6 +325,34 @@ created for you. Press <strong>Save &amp; Close</strong> to finish.</p>
 <p>Merging moves every item association and every alias from the source tags
 onto the destination, adds each source tag's raw text as an alias of the
 destination, and then deletes the source tags. There is no undo.</p>
+<h3 id="merging-four-spellings-into-one">Merging four spellings into one</h3>
+<p>Taking the <code>machine learning</code> example from the top of the chapter:</p>
+<ol>
+<li>In <strong>Components &gt; Tags</strong>, type <code>machine</code> into <strong>Search (raw tag)</strong> and
+press <strong>Go</strong>. The variants appear together; the <strong># tagged</strong> column
+shows how much content each is holding.</li>
+<li>Decide which one wins. Prefer the one with the most items — the fewest
+associations move, and the tag page most people already link to keeps
+working.</li>
+<li>Tick the losing spellings. Leave the winner unticked; you do not have to
+include it, and naming it as the destination is enough.</li>
+<li>Press <strong>Merge</strong>. Type the winning tag's text into the <strong>Tag</strong> field
+exactly as it should read, and press <strong>Save &amp; Close</strong>.</li>
+<li>Open the surviving tag and check its <strong>Alias</strong> field. The old spellings
+are now aliases, which is what redirects the next member who types one.</li>
+<li>Look at <strong># tagged</strong>. If it has not moved, tick the tag and press
+<strong>Re-calculate # Tagged and Aliases</strong> — the count is stored, not
+counted live.</li>
+</ol>
+<p>Everything that carried the old tags now carries the new one, on every
+component of the hub, and nobody was notified. That is normally what you
+want; it also means a mistake here is visible to members immediately and is
+not something you can put back.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> If you are not sure a merge is right, <a href="#piercing">pierce</a> first.
+Piercing adds the destination tag to the same items without removing
+anything, so you can look at the result and merge — or not — afterwards.</p>
+</aside>
 <h2 id="piercing">Piercing</h2>
 <p>Piercing is the non-destructive relative of merging. Check the tags, press
 <strong>Pierce</strong>, and name a destination tag in the <strong>New Tag</strong> field. Every item
@@ -358,7 +420,7 @@ creating, updating and deleting tags, and for adding a tag to or removing
 it from an item. See the <a href="../../../reference/api/tags/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../support/index.html" rel="prev"><span>Previous</span>Support</a><a class="pager__next" href="../tools/index.html" rel="next"><span>Next</span>Tools</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/35-tags.md">Edit this page on GitHub</a>

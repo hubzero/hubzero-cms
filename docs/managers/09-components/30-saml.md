@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -25,6 +25,13 @@ That phrase usually means the service wants to *be* an SP against your
 campus IdP, which has nothing to do with the hub. This component is only for
 the case where the hub itself is the account authority.
 
+The hubs that want this have a service sitting next to them and no account
+system of their own. A group runs a small survey application on a departmental
+server and wants the hub's four hundred members to use it without a second
+password, and without the group keeping a password list. Registering that
+application here is the answer. A hub with no such service needs nothing on
+these screens.
+
 ## What a manager sets up
 
 1. Put an X.509 signing certificate and private key on the web server and
@@ -32,6 +39,46 @@ the case where the hub itself is the account authority.
 2. Register each service that will use hub accounts, either by hand or by
    importing its metadata.
 3. Give the service the hub's metadata URL so it can trust the hub back.
+
+**Enable IdP** ships switched on, so a fresh hub nominally has an identity
+provider. Nothing is exposed by that. The endpoints return a 404 until a
+readable certificate and key are in place, and the trust store starts empty, so
+there is no service the hub would answer for. Putting the certificate in place
+is the point at which this component starts doing anything.
+
+### Registering a service
+
+Following the example above, with the survey application at
+`https://survey.example.edu`:
+
+1. Deal with the certificate first. Open **Components → SAML** and read the
+   **Overview** screen: the **Signing certificate** row must say the files are
+   readable, and the expiry must be in the future. Nothing below works until
+   it does.
+2. Ask whoever runs the service for its SAML metadata — a URL or a file.
+   Almost every service can produce one, and it saves you transcribing an
+   entity ID and a certificate by hand.
+3. Go to **Service Providers** and press **Import from metadata**. Paste the
+   XML or give the `https` URL. The form fills in with what the metadata
+   claims; nothing is saved yet, so it is safe to do this just to look.
+4. Check the **Assertion Consumer Service URL**. This is the address signed
+   responses are posted to, it must be `https`, and it is the one field where
+   a mistake matters — the hub will only ever deliver an assertion there.
+5. Under **NameID & attribute policy**, choose the **NameID value** the
+   service expects to identify people by. Ask; do not guess. Changing it later
+   makes the service treat returning members as new people.
+6. Decide **Allowed groups**. Left empty, every member of the hub can sign in
+   to that service. If the survey is for one group, put that group's `cn` here.
+7. Save, with the state set to enabled.
+8. Give the service the hub's metadata URL from the **Overview** screen, and
+   ask them to try a sign-on.
+9. If it fails, go to **Sessions**. A row means the hub answered and the
+   problem is at the far end. No row means the hub rejected the request, and
+   the error the member saw says why.
+
+Registering a service is reversible: disabling or deleting the registration
+stops that service working and changes nothing else on the hub. The **NameID
+value** is the one field to get right first time.
 
 ## The screens
 
@@ -156,10 +203,19 @@ are listed in
 parameter list in the
 [generated reference](../../reference/configuration/components/saml.md).
 
-**Enable IdP** is the master switch for all three endpoints. **IdP Entity
-ID** is what the hub asserts as, defaulting to the hub root URL. **Enable
-metadata endpoint** serves the metadata document; turn it off only if you
-intend to hand service providers a metadata file out of band.
+**Enable IdP** is the master switch for all three endpoints, and it ships on.
+Turning it off is the fastest way to stop every registered service at once,
+which is what you want if a signing key is thought to have leaked. **IdP
+Entity ID** is what the hub asserts as, defaulting to the hub root URL.
+**Enable metadata endpoint** serves the metadata document and also ships on;
+turn it off only if you intend to hand service providers a metadata file out
+of band.
+
+> **Warning:** Changing **IdP Entity ID** on a hub with registered services
+> breaks all of them at once. The entity ID is the name every service provider
+> has recorded as the identity it trusts, so a hub that changes it has to have
+> every service re-import the metadata. Set it before you register anything,
+> or leave it alone.
 
 **Signing certificate file** and **Private key file** are absolute paths on
 the web server — `/etc/saml/cert/saml.crt` and `/etc/saml/cert/saml.pem` by

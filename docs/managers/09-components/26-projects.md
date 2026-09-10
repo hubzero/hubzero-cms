@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/projects
 source-id: 3385
@@ -10,13 +10,45 @@ imported: 2026-09-09
 -->
 # Projects
 
-A project is a private workspace for a small team: a versioned file
-repository, plus whatever other features the hub enables for it — notes, a
-to-do list, publications, databases, activity. Members create and run their
-own projects on the front end. In the administrator interface you set the
+A project is a private workspace for a small team: a shared file area, plus
+whatever other features the hub enables for it — notes, a to-do list,
+publications, databases, activity. Members create and run their own projects
+on the front end. The file area is meant to be versioned, and in this
+release it is not: see [Version tracking is
+off](#version-tracking-is-off) before you tell anyone their files are safe. In the administrator interface you set the
 policy every project follows, and you intervene in individual projects when
 something needs an administrator: a quota raised, a project archived, a
 member added, an activity entry removed.
+
+## The pipeline
+
+Projects is the first of three components that are meant to be configured
+together, or not at all.
+
+| Stage | Component | What it is |
+|---|---|---|
+| Work | **Projects** | A private team workspace. Files, notes, a to-do list, a team with roles. Nothing here is public. |
+| Release | [Publications](27-publications.md) | A frozen, versioned, citable slice of that work, with a DOI and — in principle — a curation step. |
+| Catalogue | [Resources](29-resources.md) | The shelf a visitor browses at `/resources`, where a release sits beside tools, seminars and teaching material. |
+
+What you decide at this stage is **who may start a project, how much space
+one gets, and which features a project has**. Everything else about a
+project is decided inside it by its own manager: you do not create projects,
+name them, or add their members as a matter of course.
+
+> **Note:** Nothing moves between the three stages by itself. Publishing a
+> publication does not create a resource, and no code in the tree links a
+> publication record to a resource record. They are three separate
+> catalogues, and a hub that wants a release to appear in `/resources` as
+> well has to have someone contribute it there.
+
+A hub that never has private team work — one that is a catalogue and a
+seminar calendar and nothing else — can leave this component and the next
+one alone. If you enable one, enable all three: a project with the
+Publications feature turned off gives a team nowhere to release its work,
+and a publication with no project behind it cannot be assembled.
+
+## Where to find it
 
 The component is `com_projects`, reached from **Components → Projects**. Its
 sub-navigation has two screens:
@@ -25,13 +57,20 @@ sub-navigation has two screens:
 
 ## The Projects list
 
+This is the screen you open when someone writes to you, which is how nearly
+all project administration starts: a team is out of space, a project owner
+has left the institution, or a project that should have gone live is stuck
+part-way through setup.
+
 The default screen lists every project on the hub. The filter bar has a
 **Search** box and four drop-downs — **Status**, **Privacy**, **Access**
 and **Quotas** — and the columns sort on ID, **Title**, **Owner**,
 **Featured**, **Status** and **Privacy**.
 
 **Status** is the project's lifecycle state, and it is the filter you will use
-most:
+most. **Setting up in progress** is the one to watch: a project in that state
+was started and abandoned, and its owner usually does not realise it is not
+a real project yet.
 
 | Status | Meaning |
 |---|---|
@@ -42,6 +81,14 @@ most:
 | Rejected | Refused at approval |
 | Deleted | Removed by its owner or by an administrator |
 
+> **Note:** The **Quotas** filter cannot tell the two tiers apart on a stock
+> hub. It calls a project *premium* when its quota is at or above **Premium
+> quota** and *regular* when it is at or below **Default quota**, and the
+> shipped install sets both to 1 GB — so every project matches both. Give
+> the two options different values before the filter means anything. The
+> component manifest declares 5 GB and 30 GB; the shipped row overrides both
+> with 1 GB, and the stored row is what runs.
+
 The toolbar carries **Archive** (with `core.edit.state`), **Edit** (with
 `core.edit`), and **Options** (with `core.admin`). A **Custom Description**
 button appears alongside them only when the component's **Use custom profile
@@ -49,6 +96,10 @@ description template?** option is set to `custom`; it opens the form builder
 for the project description fields.
 
 ## Editing a project
+
+Almost every reason to open this form is a request from a team: more space,
+a change of owner, a project put beyond further editing now the work is
+finished.
 
 Select a project's title to open it. The screen has two tabs, **Details** and
 **Image**, and the Details tab is divided into panels:
@@ -72,12 +123,43 @@ Select a project's title to open it. The screen has two tabs, **Details** and
 
 The Files panel also exposes two repository maintenance links: `git gc
 --aggressive`, which repacks the project's git repository and takes minutes to
-run, and **download sync log**, which also clears a stalled sync.
+run, and **download sync log**, which also clears a stalled sync. Neither
+does anything useful on a project created by this release — see [Version
+tracking is off](#version-tracking-is-off).
 
 > **Warning:** **Delete** and **Archive** act on the project's files as well
 > as its record. Neither is reversible from the front end.
 
+### Raising a project's quota
+
+A group writes to say their project is full. They have 1 GB, which is what
+every project gets on a stock hub, and their instrument produces 8 GB a
+week.
+
+1. Go to **Components → Projects**.
+2. Find the project. Search on its title, or set **Quotas** to narrow the
+   list.
+3. Select the project's title.
+4. Open the **Files** panel. **Files Quota** and **Publications Quota** are
+   in gigabytes, and the panel shows what the project is using now.
+5. Raise **Files Quota** to the figure you have agreed. Raise
+   **Publications Quota** as well only if they are publishing; it is a
+   separate allowance.
+6. Select **Save & Close**.
+
+The change takes effect immediately and is entirely reversible — until the
+team fills the new space. Lowering a quota below what a project already
+holds does not delete anything; it stops further uploads.
+
+If you find yourself doing this for every project, raise **Default quota**
+in [Options](#options) instead. That changes what *new* projects get, not
+what existing ones have.
+
 ## Team
+
+You edit a team for one reason: the person who owned the project is gone,
+and nobody left in it can add anyone. Everything else a team needs is done
+by its own managers on the front end.
 
 Opening a project's team from the list gives its own screen, with **New** to
 add a member and **Delete** to remove one. The table shows each member's role,
@@ -85,6 +167,9 @@ when they joined, when they last visited, and whether they were added
 individually or through a group.
 
 ## Activity
+
+Somebody's activity entry names a file, a person, or a message that should
+not be on the record. This screen is how you take it off.
 
 **Components → Projects → Activity** lists project activity entries across the
 hub. Filter by search text, by action, by starred, and by state (published,
@@ -107,6 +192,46 @@ that was recorded.
 Every parameter, with its default, is in the
 [configuration reference](../../reference/configuration/components/projects.md).
 
+Most of these are safe to change on a running hub. The two that are not are
+**Files Git repo path** and **Project group prefix**: both are used to
+build paths and group names for projects that already exist, and changing
+either after projects have been created leaves the existing ones pointing
+at the old value.
+
+### Do not turn off "Allow project settings editing?"
+
+The option is on the **Setup** tab, and its description — *Enable a screen
+to edit project settings after project setup* — describes a screen that is
+no longer built. What it actually controls is the **Team** section of the
+Edit Project screen, and it controls it by deletion:
+
+```php
+$sections = array('info', 'team');
+if ($this->config->get('edit_settings', 0) == 0)
+{
+	array_pop($sections);
+}
+$this->section = in_array($this->section, $sections) ? $this->section : 'info';
+```
+
+— [`setup.php:1092-1098`](../../../core/components/com_projects/site/controllers/setup.php).
+Set it to **No** and the route is removed, and both of the links that lead
+to the team editor go with it. The **Edit Team** button on a project's Team
+tab and the **Invite people** entry in the project's own options menu are
+still drawn, but following either now lands silently on the project
+description form, with no message and no clue that the screen it named has
+been taken away. A project's Team tab still lists the team and still lets a
+manager approve a membership request; what it stops doing is letting anyone
+add, remove or re-role a member. Nothing about the option's label tells you
+any of this.
+
+The component manifest declares it off. The shipped install row sets it on,
+and the stored row is what runs, so a hub installed from this release has it
+on and both links work. It is worth knowing which option did it if someone
+turns it off — and worth knowing that the only remaining way in is a
+hand-built `&active=team&action=edit` URL, on which the editor's controls
+render outside the form that would submit them.
+
 ### Collecting grant information
 
 If the hub runs grant-funded projects, the setup wizard can collect the grant
@@ -124,6 +249,13 @@ and budget. Those fields appear afterwards in the Parameters panel of the
 project's edit screen.
 
 ## Project features
+
+This is the decision that shapes what a project *is* on your hub. A hub for
+instrument data wants Files and little else; a hub whose projects lead to
+published datasets needs Publications and Links as well; a hub running
+human-subjects work needs the HIPAA checkbox. Every feature you enable is a
+tab on every project, so enabling all of them gives every team a row of tabs
+most of them will never open.
 
 Each feature a project offers is a plugin in the `projects` group, and it is a
 tab on the project's front-end page. They ship enabled or disabled according
@@ -177,20 +309,65 @@ Leaving it empty means no restriction, so every project gets the feature.
 No other project plugin has this parameter; the rest are on for every project
 once enabled.
 
+## Version tracking is off
+
+Read this before you promise a team anything about file history. It is the
+single most important thing to know about the component in this release, and
+nothing in the administrator interface says it.
+
+Every project created by this release has version tracking switched off. The
+setup controller writes `versionTracking` as `0` when the project record is
+first made and again when the project is activated
+([`setup.php:103`](../../../core/components/com_projects/site/controllers/setup.php),
+line 536), there is no option anywhere — component, plugin or project — that
+sets it to `1`, and no screen offers to change it.
+
+The value chooses the repository adapter. With it off, the project gets the
+`nogit` adapter instead of the `git` one
+([`repo.php:111-120`](../../../core/components/com_projects/models/repo.php)),
+and that adapter's `history()`, `diff()`, `restore()` and `getTrash()` are
+stubs that return `false`
+([`nogit.php:520-562`](../../../core/components/com_projects/models/adapters/nogit.php)).
+The project directory is a plain directory; no repository is created in it.
+
+What a member sees, in the project's **Files** tab:
+
+| Missing | Because |
+|---|---|
+| The timestamp beside a file is plain text, not a link | The per-file history link is drawn only when version tracking is on |
+| No **Show trash** link | Deleted files are not kept |
+| No **Sync** control and no sync status | Both are drawn only when version tracking is on |
+| No link to the connections view from the file browser | The connections panel is drawn only when version tracking is on — see [External file connections](#external-file-connections) |
+| The disk usage panel reports 0 for versions | There are no versions to measure |
+
+> **Warning:** Deleting a file in a project is permanent. The `nogit`
+> adapter's delete runs `rm` on the file and returns; there is no trash to
+> restore it from and no earlier revision to fall back on. Tell your project
+> teams this, because a member who has used a versioned workspace before
+> will reasonably assume otherwise.
+
+The two repository maintenance links on the admin **Files** panel — `git gc
+--aggressive` and **download sync log** — belong to the git adapter and have
+nothing to act on. **Git path** in [Options](#options) is likewise unused by
+projects created in this release. Set it anyway if you have projects
+carried over from a hub that did have version tracking; leaving it wrong
+costs nothing today and is one thing less to find later. (The manifest
+declares `/opt/local/bin/git`; the shipped row sets `/usr/bin/git`, which is
+where the binary usually is.)
+
 ## Files on disk
 
 Project files live outside the web root, under the path set by **File
 Repository and Quotas → Files Git repo path** — `/srv/projects` by default —
-as `/srv/projects/<alias>/files`. Each project is a git repository, which is
-what gives the front end its file history and version restore.
+as `/srv/projects/<alias>/files`.
 
 Because the files are a real directory on a real filesystem, a hub can also
 offer SFTP into them, which is the practical way to move data too large for a
 browser upload. That access is granted through the per-project system group
 (`pr-<alias>`) rather than through anything in this component: the hub's
 directory service has to publish those groups and the file server has to
-honour them. Files arriving that way are committed to the project's repository
-by the sync and show up in the file history with an `SFTP` origin. If SFTP is
+honour them. Files arriving that way appear in the project's file listing once the sync
+has run. If SFTP is
 available on your hub, the connection details and the local password a member
 needs are hub-specific; document them for your own users rather than assuming
 the defaults here.
@@ -199,7 +376,7 @@ the defaults here.
 
 A project's Files tab can point at storage the hub does not own — Google
 Drive, Dropbox, GitHub, an S3 bucket — instead of, or alongside, the hub's own
-repository. Setting that up needs an application registered with the provider
+storage. Setting that up needs an application registered with the provider
 and a plugin configured on the hub; see [Project file
 connectors](#project-file-connectors).
 ## Project file connectors
@@ -267,12 +444,17 @@ sign that the registered URI and the hub's actual address disagree.
    labelled **Credentials**, or **Google Drive Web Application Credentials** on
    that plugin — and select **Save & Close**. The AWS S3 plugin has nothing to
    set at this level; enabling it is enough.
-3. **Optionally make Files open on the connections view.** Open the **Projects
-   - Files** plugin and set **Default Action** to **Connections (view
+3. **Make Files open on the connections view.** Open the **Projects -
+   Files** plugin and set **Default Action** to **Connections (view
    available connections)**. The Files tab then lists the connections instead
-   of opening the local repository straight away. Leave it on **Browse (browse
-   local files)** if you would rather members reach connections through the
-   file browser.
+   of opening the local repository straight away.
+
+   This step is not optional on a hub running this release. The file
+   browser's own link to the connections panel is drawn only when a project
+   has version tracking on, and no project created by this release does (see
+   [Version tracking is off](#version-tracking-is-off)), so with **Default
+   Action** left on **Browse (browse local files)** project managers have no
+   way in and the connectors you configured are invisible to them.
 4. **Create the connection in a project.** This part is done by a project
    manager, on the front end, in the project's **Files** tab: pick the
    provider from the **New Connection** drop-down, give the connection a name,

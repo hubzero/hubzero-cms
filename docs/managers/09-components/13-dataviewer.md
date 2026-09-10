@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -21,7 +21,26 @@ elsewhere: the read-only MySQL account on the **Projects - Databases**
 plugin. Without it the DataViewer cannot read anything, and the Databases tab
 does not appear in projects at all.
 
+So the question this chapter answers is narrow. A project team asks to keep a
+few thousand rows of measurements on the hub and have people browse them
+rather than download a spreadsheet. That is what the DataViewer is for, and
+what it costs you is two MySQL accounts and one plugin. A hub whose projects
+only ever exchange files needs none of it, and can stop reading here.
+
+## What it is not
+
+The DataViewer is not a database manager, and it is not somewhere you put
+data. It never creates a table, has no import screen, and holds no rows of its
+own; a project team creates the data through the project's own Databases tab.
+It is also not a chart tool for arbitrary content — it draws exactly the
+tables another component hands it, and on this hub that means project
+databases and the publications built from them.
+
 ## What a manager has to configure
+
+Do this once, before the first project team asks. Both accounts go on one
+plugin, and getting the read-only one wrong is the fault you will spend an
+afternoon on, because the symptom appears in a project rather than here.
 
 Everything that makes the DataViewer work is on the Projects - Databases
 plugin, not on this component:

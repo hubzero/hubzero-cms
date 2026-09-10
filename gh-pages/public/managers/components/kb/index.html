@@ -99,9 +99,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Knowledge base</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#articles">Articles</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-an-article">Creating or editing an article</a></li>
 <li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-the-first-article">Writing the first article</a></li>
 <li class="toc__item toc__item--l2"><a href="#comments-and-votes">Comments and votes</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 <li class="toc__item toc__item--l2"><a href="#api">API</a></li>
@@ -165,6 +167,41 @@ grouped into categories, can be rated and commented on by members, and
 appear on the site at <code>/kb</code>. This chapter covers the administrator's side;
 the <a href="../../../users/knowledgebase/index.html">Hub users</a> book covers reading, rating,
 and commenting.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>The knowledge base holds the answers you already know. It is the one
+discussion-adjacent component members cannot write in: articles are created
+in the administrator interface and nowhere else — there is no create or edit
+task on the site side at all — so everything in it is something a manager or
+an editor decided was true. That is the point of it. It is the hub's own
+account of itself.</p>
+<p>Almost every hub needs one, and needs less of it than it expects. Six
+articles that are correct beat sixty that were correct in 2019. The
+articles that earn their place are the ones you would otherwise retype in an
+email once a month: how to get an account, how to ask for more storage, what
+the queue limits are, who to contact when a tool will not start.</p>
+<p>The typical case: a hub opens registration to a partner institution, and
+suddenly forty people a week need to be told the same thing about which
+account gets which access. That is one knowledge base article and a link in
+the welcome email, rather than forty replies.</p>
+<p>Against its siblings:</p>
+<ul>
+<li>Better than <a href="../answers/index.html">Answers</a> at anything you need to stay correct,
+because you own it and can change it. Worse at coverage: it only ever
+contains what somebody sat down and wrote. The two work well together —
+watch the Questions list, and when a question comes up a third time, write
+the article.</li>
+<li>Better than the <a href="../wiki/index.html">Wiki</a> at policy and instruction, because
+nobody else can edit it and it renders in a plain editor rather than wiki
+markup. Worse at anything collaborative: there is no revision history
+here, so an edit that loses a paragraph loses it for good.</li>
+<li>Not a substitute for <a href="../support/index.html">Support</a>. The knowledge base answers
+the question before it is asked; support handles the one that still gets
+asked.</li>
+</ul>
+<p><strong>What it is not:</strong> it is not member-authored. If you want members writing
+the documentation, you want the wiki. If you find yourself pasting a
+member's forum reply into an article, that is the system working, but the
+member gets no byline unless you give them one.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Knowledgebase</strong>.
 Two sub-menu links sit at the top left: <strong>Articles</strong>, the list below, and
 <strong>Categories</strong>, which opens the shared Categories component filtered to the
@@ -292,6 +329,39 @@ categories one level deep: a top-level category with sub-categories. An
 article always belongs to exactly one category.</p>
 <p>A category must be published for its articles to be reachable. Unpublishing
 a category hides every article in it without changing the articles.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Because the article's URL is built from its category's alias,
+moving an article to a different category changes its address, and the old
+address stops working. If the old address is in an email you sent to forty
+people, add a redirect; see <a href="../redirect/index.html">Redirect</a>.</p>
+</aside>
+<h2 id="writing-the-first-article">Writing the first article</h2>
+<p>Following the partner-institution example: the article that explains which
+account gets which access.</p>
+<ol>
+<li>Go to <strong>Components &gt; Knowledgebase &gt; Categories</strong> and check whether a
+category fits. If not, press <strong>New</strong>, give it a <strong>Title</strong> and leave the
+parent empty for a top-level category, set it Published, and save.
+Categories are nested one level deep at most; two or three top-level
+categories is enough for any hub.</li>
+<li>Go back to <strong>Articles</strong> and press <strong>New</strong>.</li>
+<li>Pick the <strong>Category</strong>, write the <strong>Title</strong>, and leave <strong>Alias</strong> blank
+unless you want a specific URL — a generated alias is fine, and a
+deliberate one is worth choosing when you are about to mail the link out,
+because changing the title later changes nothing but changing the alias
+breaks the link.</li>
+<li>Write the <strong>Body</strong>, and add <strong>Tags</strong> if the hub uses them; tags are what
+connect the article to site search and to related content.</li>
+<li>Leave <strong>Publish</strong> at Unpublished for now and press <strong>Save &amp; Close</strong>.</li>
+<li>Read it back in the list, open it again, set <strong>Publish</strong> to Published and
+<strong>Access level</strong> to Public, and <strong>Save &amp; Close</strong>.</li>
+<li>Visit <code>/kb</code> and confirm it appears under the right category.</li>
+</ol>
+<p>Steps 5 and 6 are the useful habit: an unpublished article returns a
+not-found page rather than a half-written one, and publishing is a single
+switch you can flip back the moment you spot a mistake. Nothing here is
+irreversible except <strong>Delete</strong>, which removes the article outright with no
+trash to recover from.</p>
 <h2 id="comments-and-votes">Comments and votes</h2>
 <p>Members rate each article helpful or not helpful and can comment on it
 when comments are allowed. There is no administrator screen for comments:
@@ -305,6 +375,25 @@ inherit: the date to show, whether comments are allowed and when they
 close, and whether comment feeds are enabled and how much of each comment
 they carry. Every option is listed with its values in the
 <a href="../../../reference/configuration/components/kb/index.html">configuration reference</a>.</p>
+<p>The shipped values suit most hubs and are worth leaving alone: the modified
+date is shown, comments are allowed, and they close a year after the article
+was last touched. The one decision is comments. An article that invites comments turns into a small
+discussion the moment anyone disagrees with it, and there is no
+administrator screen for knowledge base comments — the only way to deal with
+a bad one is through the support ticket a member files when they report it.
+On a hub with few staff, turning comments off component-wide and pointing
+readers at <a href="../answers/index.html">Answers</a> or <a href="../support/index.html">Support</a> instead is
+the quieter arrangement. <strong>Close Comments</strong> is the middle course, and the default already
+takes it: comments close a set time after the article was last modified, so
+an article you keep current keeps its comments open and one you have not
+touched in a year does not.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A setting on an individual article wins over the component
+option, permanently. An article whose <strong>Comments</strong> parameter has ever been
+set keeps its own value even after you change the option, so switching
+comments off component-wide does not switch them off on articles where
+somebody set the parameter by hand.</p>
+</aside>
 <p>The <strong>Permissions</strong> tab controls who may manage the component, and create,
 delete, edit, change the state of, or edit their own articles and
 categories. Permissions can be set for the whole component, for categories,
@@ -315,7 +404,7 @@ articles for the site's search indexer. It requires an administrator token;
 see the <a href="../../../reference/api/kb/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 71451a6ce0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jobs/index.html" rel="prev"><span>Previous</span>Jobs</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Language Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/19-kb.md">Edit this page on GitHub</a>
