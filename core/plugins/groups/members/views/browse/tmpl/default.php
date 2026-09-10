@@ -313,7 +313,7 @@ $option = 'com_groups';
 									</span>
 									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 									<?php if ($invited) { ?>
-										<span class="invited"><time datetime="<?php echo $invited; ?>"><?php echo Lang::txt('Invoted on %s', Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?></time></span><br />
+										<span class="invited"><time datetime="<?php echo $invited; ?>"><?php echo Lang::txt('Invited on %s', Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?></time></span><br />
 									<?php } ?>
 								<?php } else { ?>
 									<span class="name">
