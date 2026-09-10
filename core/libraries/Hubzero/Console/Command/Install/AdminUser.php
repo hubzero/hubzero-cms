@@ -518,20 +518,54 @@ class AdminUser
             // Generate password hash (using CRYPT_SHA512 format)
             $passhash = self::hashPassword($userData['password']);
 
+            $values = [
+                'name'         => $userData['name'],
+                'username'     => $userData['username'],
+                'email'        => $userData['email'],
+                'password'     => $passhash,
+                'usertype'     => 'Super Administrator',
+                'block'        => 0,
+                'approved'     => 2,
+                'sendEmail'    => 1,
+                'registerDate' => date('Y-m-d H:i:s'),
+                'params'       => '',
+            ];
+
+            // A hub keeps the parts of a name as well as the whole of it, and
+            // asks for none of them, or the shell fields, to be null. Which of
+            // them the table has depends on how far the migrations have run.
+            $parts = preg_split('/\s+/', trim($userData['name']), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+            $optional = [
+                'givenName'     => array_shift($parts) ?? '',
+                'surname'       => array_pop($parts) ?? '',
+                'middleName'    => implode(' ', $parts),
+                'homeDirectory' => '',
+                'loginShell'    => '',
+                'ftpShell'      => '',
+            ];
+
+            $present = self::getColumns($pdo, $prefix . 'users');
+
+            foreach ($optional as $column => $value) {
+                if (in_array($column, $present, true)) {
+                    $values[$column] = $value;
+                }
+            }
+
+            $columns      = array_keys($values);
+            $placeholders = [];
+
+            foreach ($columns as $column) {
+                $placeholders[] = ':' . $column;
+            }
+
             // Insert into users table
             $stmt = $pdo->prepare(
-                "INSERT INTO `{$prefix}users`
-                 (name, username, email, password, usertype, block, approved, sendEmail, registerDate, params)
-                 VALUES
-                 (:name, :username, :email, :password, 'Super Administrator', 0, 2, 1, :registerDate, '')"
+                "INSERT INTO `{$prefix}users` (`" . implode('`, `', $columns) . "`)"
+                . ' VALUES (' . implode(', ', $placeholders) . ')'
             );
-            $stmt->execute([
-                'name' => $userData['name'],
-                'username' => $userData['username'],
-                'email' => $userData['email'],
-                'password' => $passhash,
-                'registerDate' => date('Y-m-d H:i:s'),
-            ]);
+            $stmt->execute($values);
 
             $userId = $pdo->lastInsertId();
 
@@ -566,6 +600,24 @@ class AdminUser
         } catch (\PDOException $e) {
             $pdo->rollBack();
             return null;
+        }
+    }
+
+    /**
+     * The columns a table has
+     *
+     * @param   \PDO    $pdo    PDO connection
+     * @param   string  $table  The table to describe
+     * @return  array
+     **/
+    private static function getColumns($pdo, $table)
+    {
+        try {
+            $stmt = $pdo->query('SHOW COLUMNS FROM `' . $table . '`');
+
+            return $stmt ? $stmt->fetchAll(\PDO::FETCH_COLUMN, 0) : [];
+        } catch (\PDOException $e) {
+            return [];
         }
     }
 
