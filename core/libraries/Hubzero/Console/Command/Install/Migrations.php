@@ -9,6 +9,8 @@
 namespace Hubzero\Console\Command\Install;
 
 use Hubzero\Content\Migration;
+use Hubzero\Database\Driver;
+use Hubzero\Database\Relational;
 
 /**
  * Migrations helper class for installation
@@ -61,11 +63,73 @@ class Migrations
 
         // Try to use the Migration class directly if the app is bootstrapped
         if (class_exists('\\App') && is_callable(['\\App', 'get'])) {
+            if (!self::useConfiguredDatabase($ansi, $appPath)) {
+                return false;
+            }
+
             return self::runWithMigrationClass($ansi);
         }
 
         // Fall back to shelling out
         return self::runViaShell($ansi, $corePath, $rootPath);
+    }
+
+    /**
+     * Point the application at the database the install just configured
+     *
+     * The console reads its configuration when it starts, which on a fresh
+     * install is before there is any, so the connection it holds is to
+     * nothing. Build one from what the database step wrote and put it in
+     * place, so the migrations and everything after them reach the new hub.
+     *
+     * @param   bool    $ansi     Whether to use ANSI color output
+     * @param   string  $appPath  Path to the app directory
+     * @return  bool
+     */
+    private static function useConfiguredDatabase($ansi, $appPath)
+    {
+        $config = Database::readConfig($appPath);
+
+        if (!$config) {
+            return true;
+        }
+
+        $options = [
+            'driver'   => $config['dbtype'] ?? 'mysql',
+            'host'     => $config['host'] ?? 'localhost',
+            'user'     => $config['user'] ?? '',
+            'password' => $config['password'] ?? '',
+            'database' => $config['db'] ?? '',
+            'prefix'   => $config['dbprefix'] ?? 'jos_',
+        ];
+
+        if (!empty($config['port'])) {
+            $options['port'] = $config['port'];
+        }
+
+        if (!empty($config['socket'])) {
+            $options['socket'] = $config['socket'];
+        }
+
+        try {
+            $driver = Driver::getInstance($options);
+
+            if (!$driver->connected()) {
+                throw new \RuntimeException('the connection was refused');
+            }
+        } catch (\Exception $e) {
+            self::output("\n", $ansi, true);
+            self::output("\e[31mCould not reach the database: {$e->getMessage()}\e[39m\n", $ansi, true);
+            return false;
+        }
+
+        $app = \App::getRoot();
+        $app->forget('db');
+        $app->set('db', $driver);
+
+        Relational::setDefaultConnection($driver);
+
+        return true;
     }
 
     /**

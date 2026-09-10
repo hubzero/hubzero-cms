@@ -120,6 +120,29 @@ class Database
     }
 
     /**
+     * Read the database configuration from disk
+     *
+     * The console reads its configuration once, when it starts, which during
+     * a fresh install is before there is any. The steps that follow the
+     * database step ask here instead, so they see what it just wrote.
+     *
+     * @param   string  $appPath  Path to the app directory
+     * @return  array|null  The configuration, or null if there is none to read
+     */
+    public static function readConfig($appPath)
+    {
+        $path = $appPath . '/config/database.php';
+
+        if (!is_file($path)) {
+            return null;
+        }
+
+        $config = include $path;
+
+        return (is_array($config) && !empty($config['db'])) ? $config : null;
+    }
+
+    /**
      * Test existing database configuration
      *
      * @param   array  $existing  Existing configuration
