@@ -520,6 +520,9 @@ abstract class BaseSchemaGrammar
                 $default = $modifiers['default'];
                 if ($default === null) {
                     $parts[] = 'DEFAULT NULL';
+                } elseif ($default instanceof \Hubzero\Database\Expression) {
+                    // An expression is SQL in its own right, not a literal
+                    $parts[] = 'DEFAULT ' . $this->driver->buildExpression($default);
                 } elseif (is_bool($default)) {
                     $parts[] = 'DEFAULT ' . $this->driver->formatBooleanLiteral($default);
                 } elseif (is_numeric($default)) {
