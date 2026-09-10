@@ -829,6 +829,7 @@ abstract class BaseSqlDriver extends PdoDriver
         $this->transactionDepth++;
     }
 
+
     /**
      * Roll back nested transaction with savepoint support.
      *
@@ -848,8 +849,16 @@ abstract class BaseSqlDriver extends PdoDriver
 
         if ($this->transactionDepth == 0) {
             $this->setQuery($rollbackSql)->execute();
-        } else {
+            return;
+        }
+
+        try {
             $this->setQuery('ROLLBACK TO SAVEPOINT ' . $savepointPrefix . $this->transactionDepth)->execute();
+        } catch (\Exception $e) {
+            // A statement that commits on its own, such as most DDL, ends the
+            // transaction and takes its savepoints with it. There is then
+            // nothing left to undo, so give up the nesting and carry on.
+            $this->transactionDepth = 0;
         }
     }
 
@@ -878,7 +887,12 @@ abstract class BaseSqlDriver extends PdoDriver
         }
 
         if ($releaseNestedSavepoints) {
-            $this->setQuery('RELEASE SAVEPOINT ' . $savepointPrefix . $this->transactionDepth)->execute();
+            try {
+                $this->setQuery('RELEASE SAVEPOINT ' . $savepointPrefix . $this->transactionDepth)->execute();
+            } catch (\Exception $e) {
+                // The savepoint went with a transaction that committed itself
+                $this->transactionDepth = 0;
+            }
         }
     }
 
