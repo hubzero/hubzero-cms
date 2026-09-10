@@ -90,7 +90,7 @@ Request::checkToken();
 ```
 
 It looks in POST by default, delegates to the
-[session](../services/session.md), and aborts the request with a 403 when
+[session](../04-services/04-session.md), and aborts the request with a 403 when
 the token is missing or wrong. Pass `'get'` or a comma-separated list to
 look elsewhere. `Request::checkHoneypot()` is its companion for public
 forms: it validates the hidden field emitted by `Hubzero\Spam\Honeypot` and

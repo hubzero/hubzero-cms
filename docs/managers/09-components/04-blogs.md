@@ -15,7 +15,7 @@ place. The **site blog** lives at `/blog` and is written by hub staff. A
 `/groups/<cn>/blog`. Every post is a row with a *scope* (`site`, `member`,
 or `group`) and a *scope ID* (0 for the site, the member's or group's ID
 otherwise), so the Blog Manager in the administrator interface reaches all
-of them. The [Hub users](../../users/blog.md) book covers writing posts.
+of them. The [Hub users](../../users/05-blog.md) book covers writing posts.
 
 Open it under **Components > Blog**. Two sub-menu links sit at the top
 left: **Entries** and **Comments**.

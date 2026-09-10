@@ -10,7 +10,7 @@ Publications are versioned, citable releases of research output — datasets,
 papers, presentations, code. A member assembles one inside a project, a
 curator reviews it, and once approved it gets a DOI and a permanent page at
 `/publications/<id>`. This chapter covers the administrator's side. The
-[Hub users](../../../users/publications/README.md) book covers writing and
+[Hub users](../../../users/18-publications/README.md) book covers writing and
 curating one, and [DOI registration](datacite.md) covers the identifier
 service.
 
@@ -198,7 +198,7 @@ written.
 Curation is not an administrator screen. Members of the group named in the
 **Name of Curators Group** option review submissions at
 `/publications/curation` on the site — see
-[Curation](../../../users/publications/curation.md).
+[Curation](../../../users/18-publications/curation.md).
 
 > **Note:** Curation email — the note to a newly assigned curator, the
 > approval and change-request notices to authors, the new-submission notice
@@ -212,7 +212,7 @@ Curation is not an administrator screen. Members of the group named in the
 > component-wide curators group, or assign them to individual publications.
 
 Several background tasks belong to the component and have to be scheduled in
-[Cron](../cron.md): `runMkAip`, `issueMasterDoi`, `buildPublicationBundles`
+[Cron](../12-cron.md): `runMkAip`, `issueMasterDoi`, `buildPublicationBundles`
 (needed when asynchronous bundling is on), `updateFtpLinks`,
 `sendAuthorStats`, and `rollUserStats`.
 

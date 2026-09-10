@@ -43,7 +43,7 @@ still sent to the login screen if their access groups do not carry that
 permission. On a fresh install `core.login.admin` is granted to the
 **Manager** group and inherited by **Administrator** beneath it; **Super
 Users** hold `core.admin`, which grants everything. See
-[Access groups](../users/accessgroups.md) for how to change that.
+[Access groups](../06-users/06-accessgroups.md) for how to change that.
 
 The login screen itself is `com_login`, rendered through the admin template's
 `login.php` layout with the **Login Form** module (`mod_adminlogin`) in it.
@@ -87,7 +87,7 @@ for any administrator URL that names no component. It has no content of its
 own: it renders every administrator module published in the `cpanel` position,
 one collapsible panel per module. What your dashboard shows therefore depends
 entirely on which modules the hub publishes there. [Daily
-maintenance](../maintenance/README.md) describes the panels a working hub
+maintenance](../03-maintenance/README.md) describes the panels a working hub
 usually adds.
 
 ## The menus
@@ -135,10 +135,10 @@ back.
 
 ## Where to go next
 
-- [Advanced setup](../advancedsetup.md) — the site template, menus and
+- [Advanced setup](../02-advancedsetup.md) — the site template, menus and
   modules.
-- [Configuring](../configuring/README.md) — the global configuration and the
+- [Configuring](../05-configuring/README.md) — the global configuration and the
   per-extension options.
-- [Users](../users/README.md) — members, access groups, and access levels.
-- [Daily maintenance](../maintenance/README.md) — the work a running hub
+- [Users](../06-users/README.md) — members, access groups, and access levels.
+- [Daily maintenance](../03-maintenance/README.md) — the work a running hub
   needs every day.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Accesing your home directory · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview Accessing your home directory on the HUB is easy with the three methods described in this section. While sFTP is the most common, you will find which…">
+  <title>Accessing your home directory · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Your hub home directory holds the files your tool sessions read and write. This section covers the ways to reach it from your own computer, and what the hub…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,50 +46,50 @@
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Accesing your home directory</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#material-from-the-2-2-documentation">Material from the 2.2 documentation</a></li>
-<li class="toc__item toc__item--l2"><a href="#overview-2">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Accessing your home directory</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-the-files-are">Where the files are</a></li>
+<li class="toc__item toc__item--l2"><a href="#ways-in">Ways in</a></li>
+<li class="toc__item toc__item--l2"><a href="#managing-what-is-there">Managing what is there</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -103,30 +103,78 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Accesing your home directory</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Accessing your home directory</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Accesing your home directory</h1>
+          <h1>Accessing your home directory</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/accesshomedir">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Accessing your home directory on the HUB is easy with the three methods described in this section. While sFTP is the most common, you will find which method works best for you.</p>
-<h2 id="material-from-the-2-2-documentation">Material from the 2.2 documentation</h2>
+<p>Your hub home directory holds the files your tool sessions read and write. This
+section covers the ways to reach it from your own computer, and what the hub
+itself offers for managing what is in it.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.</p>
+<p><strong>Note:</strong> The home directory lives on the tool platform, which is separate
+software and is not in this repository. Nothing about the SFTP or WebDAV
+servers could be checked here, and those pages are labelled accordingly. The
+parts the CMS provides — the storage meter, the file manager and the SSH key
+form — were checked against the code.</p>
 </aside>
-<h2 id="overview-2">Overview</h2>
-<p>Accessing your home directory on the Hub is easy with the three methods described in this section. While sFTP is the most common, you will find which method works best for you.</p>
-<p>If you are developing tools or notebooks using Jupyter, you can use Jupyter's upload and download feature.</p>
-<p>Files uploaded in your home directory can not be moved into Groups or Projects.</p>
+<h2 id="where-the-files-are">Where the files are</h2>
+<p>In a tool session your home directory is <code>$HOME</code>, which takes the form
+<code>/home/&lt;hubname&gt;/&lt;username&gt;</code>. Session and results directories are created
+underneath it; see <a href="../toolpaths/index.html">Tool paths</a>.</p>
+<p>The web server reaches the same files through a separate mount. Both
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/site/controllers/storage.php"><code>com_tools</code></a>
+and the <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/members/account/account.php">Members - Account plugin</a>
+build their paths from <code>/webdav/home/&lt;username&gt;</code>. <code>com_tools</code> will take a
+different base from its undeclared <code>storagepath</code> parameter; the account plugin
+will not.</p>
+<h2 id="ways-in">Ways in</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="sftp/index.html">sFTP</a></td>
+<td>Everyday transfers from a desktop client or the command line. The most common choice.</td>
+</tr>
+<tr>
+<td><a href="webdav/index.html">WebDAV</a></td>
+<td>Mounting your hub storage as a drive or network location.</td>
+</tr>
+<tr>
+<td><a href="filexfer/index.html">filexfer</a></td>
+<td>Moving a file in or out while a tool session is running.</td>
+</tr>
+</tbody>
+</table>
+<p>If you develop with Jupyter, its own upload and download controls reach the same
+home directory. See <a href="../jupyter-notebooks/index.html">Jupyter Notebooks</a>.</p>
+<h2 id="managing-what-is-there">Managing what is there</h2>
+<p>The hub's storage manager is part of the CMS. Signed in, open <code>/tools/storage</code>.
+It shows how much of your quota you have used, lists the files under your home
+directory, and lets you delete files and folders. A <strong>Purge</strong> control for old
+session data appears only when the hub has set the <strong>Storage Host</strong> option on
+<code>com_tools</code>; without it the control redirects instead of doing anything.</p>
+<p>The <strong>My Sessions</strong> module carries the same figure with a <strong>Manage</strong> link back
+to the storage manager. The meter is drawn only when the <strong>Show Storage</strong>
+option is on.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Your home directory is separate from group and project file areas.
+Uploading a file here does not put it in a group or a project.</p>
+</aside>
 <section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="sftp/index.html">sFTP</a></li>
 <li><a href="webdav/index.html">WebDAV</a></li>
-<li><a href="filexfer/index.html">filexfer (in Workspace tool)</a></li></ul></section>
+<li><a href="filexfer/index.html">filexfer</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../grid/jupyter-submit/index.html" rel="prev"><span>Previous</span>Jupyter Integration with Submit</a><a class="pager__next" href="sftp/index.html" rel="next"><span>Next</span>sFTP</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../grid/jupyter-submit/index.html" rel="prev"><span>Previous</span>Submitting from a Jupyter notebook</a><a class="pager__next" href="sftp/index.html" rel="next"><span>Next</span>sFTP</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/06-accesshomedir/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

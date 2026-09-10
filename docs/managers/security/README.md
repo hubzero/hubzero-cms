@@ -31,7 +31,7 @@ says plainly which is which.
   how the login thresholds under **Users** > **Members** > **Options** work,
   and how the CMS hands an address to Fail2Ban.
 
-Spam has its own chapter: [Spam](../spam.md).
+Spam has its own chapter: [Spam](../11-spam.md).
 
 ## What the CMS gives you
 

@@ -142,5 +142,5 @@ as on a member blog. Writing to it needs a permission that ordinary
 members do not have; if your account has it, a **New entry** button appears
 there and the form works the same way.
 
-See the [Blogs](../managers/09-components/03-blogs.md) chapter in the
+See the [Blogs](../managers/09-components/04-blogs.md) chapter in the
 managers book for how a hub administrator configures all three.

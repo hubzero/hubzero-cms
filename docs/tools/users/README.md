@@ -1,58 +1,74 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: stale
 source: https://help.hubzero.org/documentation/platform_2_4/users
 source-id: 3751
 modified: 2017-02-09
 imported: 2026-09-09
 -->
-# Hub Users
+# Tool users
 
-A hub is a single community place for your colleagues, peers, and collaborators. Your community will interact with the HUBzero® platform through the user interface, enabling access to analytical tools, publishing data, sharing resources, collaborating, and building community spaces.
+Everything a hub member needs in order to run a tool is written up in the
+users book, which covers the whole hub rather than the tool platform alone.
+This page says which chapter to read for what. The rest of this book is for
+the people who build tools and the people who run the hub.
 
-- [How to create an account on a hub](../../users/20-registration.md)
-- [Filling out your member profile](../../users/15-profile.md)
-- [Customizing your member dashboard](../../users/14-dashboard.md)
+> **Note:** The chapters linked below have been checked against the CMS in
+> this repository. What happens once a session starts belongs to the tool
+> execution platform, which is separate software and is not in this
+> repository; each chapter marks where that line falls.
 
-## Every HUBzero® platform offers the following core features.
+## Running a tool
 
-## [Run Applications](../../users/22-tools.md)
+[Tools](../../users/22-tools.md) is the chapter to read. It covers:
 
-Every instance of HUBzero® has the ability for online applications, otherwise known as "tools," to be hosted on the hub. These interactive computations and analytical tools can use Linux, Jupyter, RStudio, and other Web Applications.
+- [Launching a session](../../users/22-tools.md#running-a-tool) from a tool's
+  page, and what the controls across the top of the session page do — keeping
+  a session for later, terminating it, renaming it, and choosing a viewer.
+- [Your files](../../users/22-tools.md#your-files): a session sees your home
+  directory on the hub, not your own computer.
+- [Sharing a session](../../users/22-tools.md#sharing-a-session) with other
+  members or with a group, read-only or not.
 
-The process starts with a member filling out a web form to register their intent to submit a tool. The member then uploads code into a subversion source code repository and develops the code within a workspace. The member can work alone or with their team to build the tool and design a graphical user interface. With a little help from the managers of the hub, tools can be installed and published for either a limited group of colleagues or for the entire community.
+![A tool session running in a browser](../media/users-tools2.gif)
 
-![Animation of a simulation](../media/users-tools2.gif)
+The animation shows a tool session in an older hub interface; the surrounding
+page looks different now, but the arrangement — the tool in a frame, its
+controls above it, the storage meter below — is the same.
 
-## Collaborate
+New to the hub altogether? Start with
+[Getting started](../../users/30-gettingstarted.md), which walks through
+registering and finding your way around, and
+[Introduction](../../users/04-introduction.md), which explains how the member
+area is laid out.
 
-HUBzero<sup>®</sup> instances provide multiple spaces for research teams and collaborators to discuss data concepts, track progress and share files by using the services you already know, such as [Google Drive](https://www.google.com/drive/), [GitHub](https://github.com), or [Dropbox](https://dropbox.com).
+## Usage figures
 
-## [Groups](../../users/11-groups/README.md)
+- [Usage](../../users/28-usage.md) — the **Usage** tab on your own profile,
+  which of its figures are computed live, and which need statistics collection
+  the hub has to set up separately.
+- [Simulation usage definitions](../../users/25-simusagedefinitions.md) — what
+  each figure on the hub-wide usage pages counts.
 
-Groups are an easy way to share content and conversation, either privately or with the world. Each group comes with the ability to create group-specific content pages, invite and manage group membership, send announcements, publish a blog, add events through a calendar, share ideas through collections, discuss methods through forums, work on tasks through projects, share information through wikis, manage files, and much more.
+## Contributing a tool of your own
 
-## [Projects](../../users/16-projects/README.md)
+[Contributing a tool](../../users/22-tools.md#contributing-a-tool) describes
+what can be hosted and walks the contribution pipeline from registration to a
+published tool page. Note that the Rappture toolkit, long the usual way to put
+an interface on a command-line program, is deprecated; a Jupyter notebook is
+the current path on most hubs.
 
-Whether working on a new funding proposal, research paper or developing an application, projects are a great way to manage your data, workflow, and communication. Each project space comes with a wiki area, to-do list management, the ability to connect to Google Drive, Dropbox and other file management systems, and publishing data straight from a project space.
+Once you have registered a tool, the detail lives elsewhere in this book:
 
-## [Wiki](../../users/23-wiki.md)
+- [Tool developers](../developers/README.md) — repository layout, invoke
+  scripts, tool paths and environment variables, moving files in and out of a
+  session, the `submit` command for cluster jobs, and
+  [Jupyter notebooks as tools](../developers/10-jupyter-notebooks/README.md).
+- [Tool administrators](../administrators/README.md) — what the hub's staff do
+  on their side: tool dependencies, the directory parameter whitelist, and the
+  Anaconda environments behind Jupyter kernels.
 
-Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create new articles, and there can be multiple articles on the same wiki, each written by a different author. Any member can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
-
-## [Collections](../../users/01-collections.md)
-
-A quick and easy way to share, favorite, and organize information on a hub. Start with an image, link, or file you would like to share with your community. Share the collected content in a post by uploading the materials or collecting the materials from around the hub. Fellow community members can collect and follow your collections and individual posts, which allows for any updates to appear in their collection feed.
-
-## Publish
-
-HUBzero<sup>®</sup> offers several ways to publish information on a hub. Step–by–step guided systems walk you through publishing research products, including datasets and white papers. All research can be published with a minted DOI, a license, and an opportunity for peer review.
-
-While most publishing features come with predefined categories, administrators can manage categories and master types through a configuration interface along with adding new licenses, batch creates materials, and administer all drafted to published versions of data.
-
-## [Publications](../../users/18-publications/README.md)
-
-Contributors are guided through the publishing process in easy, manageable steps. Whether uploading files, writing an abstract, or managing authorship, the member is always kept up-to-date on what has been done and what's left to do. Every step can be re-visited at a later time, allowing members to work at their own pace.
-
-## [Curation](../../users/18-publications/curation.md)
-
-Site members can be designated as curators to ensure quality content before final publishing. Curators can review all the parts of the publication and make notes on areas of improvement before the publication is officially published. Curation helps ensure your visitors are treated to the highest caliber content.
+Hub staff running the pipeline should read
+[Tools](../../managers/03-maintenance/02-tools.md) in the hub managers book.

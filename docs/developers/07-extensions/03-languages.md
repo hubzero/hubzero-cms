@@ -12,7 +12,7 @@ source-state: unpublished
 
 Every string an extension shows comes out of an INI file, looked up by key.
 This page covers what an extension has to ship: which files, where, named
-what, with keys named how. [Languages](../basics/languages.md) covers the
+what, with keys named how. [Languages](../05-basics/04-languages.md) covers the
 `Lang` API — `txt()`, `txts()`, plurals, overrides — and is the page to read
 before writing view code.
 

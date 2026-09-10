@@ -1,104 +1,105 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/pyton-from-jupyter
 source-id: 3559
 modified: 2022-11-22
 imported: 2026-09-09
 -->
-# Using Python packages from Jupyter Notebooks
+# Using Python packages from Jupyter notebooks
 
-## Using Python packages from Jupyter Notebooks
+Which Python packages a notebook can import depends on the kernel it runs
+under. A kernel is a prepared environment installed on the hub, and a notebook
+remembers the one you choose, so the choice travels with the notebook when it
+becomes a tool.
 
-The [Jupyter tool](https://help.hubzero.org/resources/jupyter) is a useful place to develop Python, R, or Octave code and analyses in a notebook style. Hub users can easily share their notebooks with other users by *publishing* notebooks as tools. A published Jupyter notebook enables other users to interact with the notebook, stepping through its cells and even changing them. When users run your published notebook, any changes they make to it will not persist.
+> **Important:** Kernels, conda environments and the packages in them all live
+> on the tool execution platform, which is separate software and is **not in
+> this repository**. Nothing on this page could be checked against code here.
+> It is the written record carried over from the platform documentation,
+> corrected where it named software versions that are long gone.
 
-Here we assume you are running: anaconda-7; debian10 container.
+## Kernels
 
-### Python packages
+The hub installs Python packages into conda environments and registers each
+environment as a Jupyter kernel. Selecting a kernel points the notebook at
+that environment, and its packages become importable.
 
-Python has been extended to work with hundreds of specialized packages. For example, see the [Anaconda package repo](https://anaconda.org/anaconda/repo). A number of scientific Python packages are installed and accessible on the hub.
+You cannot install a kernel yourself: creating an environment and registering
+it is an administrator's job, done on the execution hosts. If the packages you
+need are not in any kernel, open a support ticket on your hub and ask for
+them. Say which packages, which versions if it matters, and what you are
+building. The procedure the administrator follows is
+[Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the
+administrators section; reading it tells you what you are asking for, and why
+adding a package to a shared environment is not always the answer.
 
-The hub uses Jupyter kernels to safely load needed Python packages. You can select a Jupyter kernel to set paths to a self-contained installation of specified packages, making them available in your notebook. This page will show you how to set access to Python packages from Jupyter Notebooks.
+> **Note:** A kernel is not a substitute for declaring your tool's
+> dependencies. A tool that will be installed on the hub still needs its
+> requirements agreed with the hub's staff — see
+> [Installing tool dependencies](../../administrators/installing-tool-dependencies.md).
 
-Note that we must install packages on the hub to make them available as a kernel. Submit a ticket to request new packages or a new kernel.
+## Selecting a kernel
 
-### Selecting a kernel
+For a new notebook, pick the kernel when you create the notebook: the launcher
+lists one entry per kernel the hub has installed. Save the notebook afterwards,
+so the choice is recorded in it.
 
-#### New notebook
+For a notebook that already exists:
 
-To select the kernel for a new notebook, start a Jupyter tool. In the upper right, select 'New', then the kernel you want from the kernel menu. You can now import and use the kernel's packages in your notebook.
+1. Open it in the hub's Jupyter tool.
+2. Shut the running kernel down first — **Kernel > Shutdown**.
+3. Choose **Kernel > Change kernel** and pick the one you want.
+4. Check the kernel name shown in the notebook's corner. It should be the one
+   you chose.
+5. Save the notebook.
 
-Be sure to save the notebook after changing the kernel.
+The exact menu wording follows whichever Jupyter version your hub deploys.
 
-#### Existing notebook
+## Finding out what a kernel contains
 
-If you need to change the kernel for an existing notebook, first open the notebook in a Jupyter tool.
+Two ways: read the environment file the administrator built the kernel from,
+or ask conda directly. For the second, start the hub's workspace tool, open a
+terminal, and put the hub's Anaconda installation on your path:
 
-1. If the notebook is already running, you must first shut it down by selecting Kernel: Shutdown from the menus.
-2. Then, you can select the kernel of your choice using the menu Kernel: Change Kernel: *somekernel*. After you have made the selection, check the displayed kernel name on the upper right of the notebook. It should match what you just selected.
-3. Finally, save the notebook, and your kernel choice will be saved along with it.
-
-### Kernel availability
-
-How do we know what packages are available in what kernels?
-
-1. Check the conda env specification file associated with the kernel.
-2. Run conda commands to interrogate the packages. Read the next section for further information.
-
-#### Using conda to list installed packages
-
-The kernels we have created to support different sets of Python packages are based on conda environments ("envs"). You can interrogate these conda envs to list the packages a given kernel supports. This is general to Anaconda package manager (more is available [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)). Below are a few tips.
-
-Note that creating a conda env is an administrator action. If you need a new env or additional packages, enter a ticket to request them.
-
-### Example
-
-The kernel named modgrnld-python3 contains the following packages and their dependencies:
-
-- matplotlib
-- rasterio
-- georaster
-- hublib
-- python 3.7
-- netCDF4
-- numpy
-- pyproj
-- scipy
-
-### What envs are available?
-
-To access a conda env, first start a Workspace10 tool. On the command line, type the following command to set the anaconda installation in your path:
-
-```
-use anaconda-7
+```bash
+use anaconda-X
 ```
 
-Now, to show the names of available envs:
+`X` is the version your hub deploys; `use |& grep anaconda` lists what is
+installed. Then list the environments:
 
-```
+```bash
 conda info --envs
 ```
 
-> **Note:** that we may not have created kernels for all the available envs.
+> **Note:** Not every environment has a kernel registered for it. An
+> environment missing from the notebook's kernel list is one to ask about
+> rather than one to assume is broken.
 
-### What packages are in this env?
+List the packages in the environment currently active:
 
-If you have an env enabled currently, to list packages there, type:
-
-```
+```bash
 conda list
 ```
 
-Or for an arbitrary env, someenv:
+Or in any other environment:
 
+```bash
+conda list -n <envname>
 ```
-conda list -n <someenv>
-```
 
-### Export current conda env
+To capture an environment as a file — useful for a ticket, or for recording
+what your tool was built against:
 
-To export a list of the packages and versions installed in the env to a text-based .yml file:
-
-```
+```bash
 conda activate <envname>
-conda env export > <filename>.yml
+conda env export > <envname>.yml
 ```
+
+## Further reading
+
+- [Managing conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+- [The Anaconda package repository](https://anaconda.org/anaconda/repo)

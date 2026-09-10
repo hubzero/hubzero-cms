@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Environment Variables · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Environment variables A number of environment variables are available in a hub tool session. A few are discussed here. A full list can be viewed by running the…">
+  <title>Environment variables in a notebook · Tools · Hubzero Documentation</title>
+  <meta name="description" content="A notebook running as a tool is a tool session like any other, so the session environment variables are there to be read. This page covers only what is…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/environment-variables/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,49 +46,51 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Environment Variables</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#environment-variables-2">Environment variables</a></li>
-<li class="toc__item toc__item--l3"><a href="#accessing-environment-variables-on-a-hub">Accessing environment variables on a hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Environment variables in a notebook</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#reading-them-from-a-cell">Reading them from a cell</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-write">Where to write</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-does-not-persist">What does not persist</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-session-number">The session number</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -102,57 +104,90 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Jupyter Notebooks</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Environment Variables</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Jupyter notebooks</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Environment variables in a notebook</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Environment Variables</h1>
+          <h1>Environment variables in a notebook</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/environment-variables">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2022.</aside>
+        
         <div class="prose">
-<h2 id="environment-variables-2">Environment variables</h2>
-<p>A number of environment variables are available in a hub tool session. A few are discussed here. A full list can be viewed by running the <em>env</em> command from a terminal in the Workspace tool, the noVNC Desktop, or the Terminal.</p>
-<p>Remember: tools are invoked by the current user's account and all permissions are set accordingly. Therefore, a tool can save files to a user's home directory, <em>because the tool runs as that user.</em></p>
-<h4 id="session">SESSION</h4>
-<p>This variable stores the session ID or session number of the currently running tool. It's the ID of the session you are currently using. You can assume it's unique.</p>
-<p>Notice that your current SESSION number is visible in your browser URL when you are running a tool. Here's an example:</p>
-<p>https://proxy.yourhub.org/weber/20064/...</p>
-<h4 id="user">USER</h4>
-<p>The USER variable stores the username of the user running the current tool.</p>
-<h4 id="sessiondir">SESSIONDIR</h4>
-<p>The SESSIONDIR variable stores the current session directory of the current tool run. A separate directory is created for each new tool session. Since it is created in the current user's home directory, the tool can write to this directory.</p>
-<p>This is the recommended location for writing temporary files generated by your tool. Be mindful of the user's quota limits when writing temporary results. It's wise to delete these once the run is complete.</p>
-<p>Session directories take the form:</p>
-<pre><code>/home/HUBNAME/USER/data/sessions/SESSION
+<p>A notebook running as a tool is a tool session like any other, so the session
+environment variables are there to be read. This page covers only what is
+particular to reading them from a notebook, and where a notebook should write
+its files.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Session environment variables are set by the tool execution
+platform, which is separate software and is <strong>not in this repository</strong>.
+Nothing here could be checked against code in this repository.</p>
+</aside>
+<p>The variables themselves — <code>SESSION</code>, <code>SESSIONDIR</code>, <code>RESULTSDIR</code>, <code>USER</code>,
+<code>HOME</code>, <code>PWD</code> and the rest — are described once, for all tools, in
+<a href="../../toolpaths/toolenvvars/index.html">Environment variables</a>. Read that first.</p>
+<h2 id="reading-them-from-a-cell">Reading them from a cell</h2>
+<p>From a Python kernel, the environment is a dictionary:</p>
+<pre><code class="language-python">import os
+
+session = os.environ['SESSION']
+sessiondir = os.environ['SESSIONDIR']
 </code></pre>
-<h4 id="resultsdir">RESULTSDIR</h4>
-<p>The RESULTSDIR variable stores the results directory for the current tool run. It is located in the user's home directory. This is a good place to place simulation results and output for the user to access later.</p>
-<p>Be mindful of the user's quota limits when writing results.</p>
-<p>Results directories take the form:</p>
-<pre><code>/home/HUBNAME/USER/data/results/SESSION
+<p>Use <code>os.environ.get('SESSION')</code> where the variable may be absent, so that the
+notebook still runs when you are developing it outside a tool session.</p>
+<p>A shell escape works too, for a quick look:</p>
+<pre><code class="language-python">!echo $SESSION
 </code></pre>
-<h4 id="pwd">PWD</h4>
-<p>This variable stores the present working directory.</p>
-<h4 id="home">HOME</h4>
-<p>This variable stores the full path to the user's home directory. This can be useful if a tool provides an option to save the user's current work. Tool developers should create a directory for the tool to save files relative to HOME, to prevent cluttering the user's home directory. For example, &quot;$HOME/data/<em>toolname</em>&quot;.</p>
-<p>Note that unlike the RESULTSDIR and SESSIONDIR described above, &quot;$HOME/data/<em>toolname</em>&quot; will not be created for each tool run.</p>
-<p>Home directories take the form:</p>
-<pre><code>/home/HUBNAME/USER
+<pre><code class="language-python">!printenv
 </code></pre>
-<h3 id="accessing-environment-variables-on-a-hub">Accessing environment variables on a hub</h3>
-<p>For a full list of environment variables, type this in a Workspace terminal:</p>
-<pre><code>printenv
+<p><code>%env</code> lists the environment as IPython sees it. Note that <code>!</code> runs each
+command in a fresh shell, so <code>!cd somewhere</code> does not move the kernel; use
+<code>os.chdir</code> or the <code>%cd</code> magic for that.</p>
+<h2 id="where-to-write">Where to write</h2>
+<p>Three destinations, and the difference matters more for a notebook than for a
+tool with its own file dialogue, because a notebook makes it so easy to write
+into the current directory:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SESSIONDIR</code></td>
+<td>Scratch files for this run. Goes away with the session.</td>
+</tr>
+<tr>
+<td><code>RESULTSDIR</code></td>
+<td>Output the user should still have tomorrow.</td>
+</tr>
+<tr>
+<td><code>HOME</code></td>
+<td>Files the tool keeps between runs, under <code>$HOME/data/toolname</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Build paths from the variables rather than assuming the working directory:</p>
+<pre><code class="language-python">import os
+
+out = os.path.join(os.environ['RESULTSDIR'], 'run.csv')
 </code></pre>
-<p>To view the value of an environment variable from the Workspace terminal (sh or bash shell, e.g.):</p>
-<pre><code>echo $SESSION
-</code></pre>
-<p>From Jupyter's Python kernel, for example, use the shell escape:</p>
-<pre><code>!echo $SESSION
-</code></pre>
+<p>Everything a notebook writes counts against the user's disk quota. Clean up
+scratch files when the run finishes.</p>
+<h2 id="what-does-not-persist">What does not persist</h2>
+<p>Changes a user makes to a published notebook are not saved back to the tool.
+Each launch starts from the notebook as it was deployed, so a notebook cannot
+use its own cells to remember anything between sessions. Write to
+<code>RESULTSDIR</code>, or under <code>HOME</code>, or nothing survives.</p>
+<h2 id="the-session-number">The session number</h2>
+<p><code>SESSION</code> is the session's own number, and it also appears in the URL of a
+running Jupyter tool, under the hub's session proxy. That is a useful thing to
+quote in a support ticket, since it lets an administrator find the session's
+logs.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../testing-jupyter/index.html" rel="prev"><span>Previous</span>Testing Jupyter-based tools</a><a class="pager__next" href="../invoke-jupyter/index.html" rel="next"><span>Next</span>Invoke scripts for Jupyter notebooks</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../testing-jupyter/index.html" rel="prev"><span>Previous</span>Testing a Jupyter tool</a><a class="pager__next" href="../invoke-jupyter/index.html" rel="next"><span>Next</span>Invoke scripts for Jupyter notebooks</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/10-jupyter-notebooks/04-environment-variables.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

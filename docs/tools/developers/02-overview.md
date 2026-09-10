@@ -1,124 +1,130 @@
 <!--
-status: merged
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/overview
 source-id: 3536
 modified: 2009-10-13
 imported: 2026-09-09
 merged-from: 2.2
 -->
-# Overview
+# What you can publish as a tool
 
-## Tool Development Process
+The kinds of program a hub can run in a tool session, and what each one costs
+you to build. For the pipeline that publishes them, see
+[The contribution process](process.md).
 
-Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a source code repository, and typically develops the code within a workspace or Jupyter Notebook. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the "published" state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.
+> **Note:** What runs in a session is decided by the tool platform, which is
+> separate software from the CMS in this repository and could not be checked
+> here. The list below is the platform's, carried over from
+> help.hubzero.org. The one part checked here is the **Publishing Option** on
+> the registration form, which is where you declare which kind of tool you are
+> contributing.
 
-The complete process is explained in the [tool maintenance documentation for hub managers](../../managers/03-maintenance/02-tools.md). Additional details about this process can be found in the following seminars:
+## The three publishing options
 
-- [Bootcamp Course for New Developers](https://nanohub.org/resources/14671)
-- [Overview of Tool Development Process](https://nanohub.org/resources/14668)
-- [Using Workspaces](http://nanohub.org/resources/3081)
-- [Using Subversion for Source Code Control](https://nanohub.org/resources/14669)
+The registration form offers three:
 
-The tool contribution process currently supports use of [Subversion](https://svnbook.red-bean.com/) and [Git](https://git-scm.com) repositories.
+| Option | Label on screen | Covers |
+|---|---|---|
+| `standard` | Rappture or Linux-GUI based tool | Anything with an X11 GUI, including Rappture |
+| `jupyter` | Web application (Jupyter, Rstudio, ...) | Notebooks, Shiny, Dash, plain web applications |
+| `simtool` | Sim2L | A notebook published as a callable simulation |
 
-## Creating Graphical User Interfaces
+The last two appear only where the hub has turned the matching options on.
+The choice decides the starter invoke script the hub writes for you; see
+[Tool repository structure](01-toolrepostructure.md).
+*(Verified against `com_tools`.)*
 
-If a tool already has a graphical user interface that runs under Linux/X11, then it can be published as-is, usually in a matter of hours. There are two caveats:
+## Linux GUI applications
 
-- **If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.** Our containers run in cluster nodes without graphics cards, and are therefore configured with MESA for software emulation of OpenGL. This has much poorer performance than ordinary desktop computers with a decent graphics card, so frame rates are much lower. Also, all graphics are transmitted to the user's web browser after rendering, again lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below 100 frames/sec that you would normally see on a desktop computer.
-- **Tools running within the hub have access to the hub's local file system--not the user's desktop.** Many tools have a *File* menu with an *Open* option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's `importfile` command.
+A tool that already has a graphical interface under Linux/X11 can usually be
+published as it stands. Qt, GTK, wxWidgets, Tcl/Tk, Java, and MATLAB
+interfaces all work. The X output is rendered on the execution host and shown
+in the member's browser.
 
-The graphical user interface for any tool published in the hub environment can be created using standard toolkits for desktop applications--including Java, Matlab, Python/QT, etc.
+Two caveats come with that:
 
-If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the [Rappture Toolkit](http://rappture.org) that is included as part of HUBzero. Rappture reads a simple XML-based description of a tool and generates a graphical user interface automatically. It interfaces naturally with many programming languages, including C/C++, Fortran, Matlab, Python, Perl, Tcl/Tk, and Ruby. It creates tools that look something like the following:
+- **Graphics-heavy tools do not perform well.** Execution containers run on
+  cluster nodes without graphics cards, so OpenGL is emulated in software, and
+  everything rendered is then transmitted to the browser as images. Expect a
+  few frames per second: enough to view and interact with data, nowhere near a
+  desktop machine with a graphics card.
+- **The tool sees the hub's file system, not the member's desktop.** A
+  *File > Open* dialog inside a tool lists the member's home directory on the
+  hub. Files from their own machine have to get there first, by `sftp`,
+  WebDAV, or the hub's `importfile` command. See
+  [Accessing your home directory](06-accesshomedir/README.md) and
+  [Importing and exporting user files](08-fileinout/README.md).
 
-![example of a Rappture-based tool](../media/overview-rappture-01.png)
+## Rappture
 
-Rappture was designed for the hub environment and therefore addresses the caveats listed above. All Rappture-based tools have integrated visualization capabilities that take advantage of hardware-accelerated rendering available on the HUBzero rendering farm. Rappture-based tools also include options to upload/download data from the end user's desktop via the `importfile`/`exportfile` commands available within HUBzero.
+> **Warning:** Rappture is deprecated. `rappture.org` and the Rappture wiki no
+> longer serve public documentation, and no new Rappture material is being
+> written. Hubs still run Rappture tools and the platform still supports them,
+> so this section stays for the tools that exist. For a new tool, a Jupyter
+> notebook is the current path on most hubs.
 
-For more details about Rappture, see the following links:
+Rappture generates a graphical interface from an XML description of a tool's
+inputs and outputs. You write `rappture/tool.xml`, and the toolkit builds the
+form, the *Simulate* button, and the result plots. It binds to C/C++, Fortran,
+MATLAB, Python, Perl, Tcl/Tk, and Ruby, so it suits a legacy solver or a
+simple modelling code that has no interface of its own.
 
-- [Rappture Quick Overview](https://nanohub.org/infrastructure/rappture/wiki/whatIsRappture)
-- [Developing Scientific Tools for the HUBzero Platform](https://help.hubzero.org/resources/tooldev) (introductory course with 7 lectures)
-- [Rappture Reference Manual](https://nanohub.org/infrastructure/rappture/wiki/Documentation)
+![A Rappture-based tool: an input form on the left and a result plot on the right](../media/overview-rappture-01.png)
 
-## Learn more about HUBzero Tools
+Rappture was written for the hub environment, so it addresses both caveats
+above: its visualisation uses the hub's rendering hosts, and it has
+`importfile` and `exportfile` built in for moving files to and from the
+member's desktop.
 
-Discover the power of HUBzero tools and how easy it is to visualize research using the HUBzero platform.
+The introductory course
+[Developing Scientific Tools for the HUBzero Platform](https://help.hubzero.org/resources/tooldev)
+is still online and is the most complete Rappture material left. It spells the
+product name the way it was spelled at the time.
 
-Jupyter Notebooks:
+## Jupyter notebooks
 
-RStudio:
+Notebooks suit teaching, documented workflows, and exploratory work. Hub
+notebooks are usually Python, R, or Octave; other kernels can be installed. A
+notebook can also drive an external program in any language: prepare input in
+Python, run the solver, post-process the output.
 
-## Material from the 2.2 documentation
+Published as a **Jupyter tool**, the notebook runs automatically and only its
+graphical output — widgets, plots — is shown. The editing interface is hidden
+and cannot be reached, so the member sees an application rather than a
+notebook. Python is the easier language for this, because of the widget
+libraries, and a notebook written in another language can still have its
+interface written in Python.
 
-> **Note:** The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.
+[Jupyter notebooks](10-jupyter-notebooks/README.md) covers deployment styles
+and the invoke script that selects them.
 
-## Tool Development Process
+## Sim2L
 
-Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a [Subversion](https://subversion.apache.org) or github source code repository, and develops the code within a workspace or using Jupyter or RStudio. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the "published" state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.
+A Sim2L tool is a notebook published as a callable simulation, with declared
+inputs and outputs so that other notebooks can run it and reuse its results.
+Register it with the **Sim2L** publishing option, which puts a `simtool`
+directory in the repository skeleton and writes an invoke script that starts
+the notebook headless.
 
-## What is Publishing?
+Sim2L is the platform's own material and is not documented in this repository
+beyond the repository layout and the invoke template.
 
-Publishing a notebook is similar to publishing anything on the hub platform. By publishing your work you will:
+## R Shiny, Dash, and web applications
 
-- Make your work available to others.
-- Allow others to cite your work.
+The `jupyter` publishing option covers web applications generally, not only
+notebooks:
 
-To do this, you will have to go to <https://help.hubzero.org/tools/create> (on other hubs, use the appropriate hubname) and follow the process described there.
+- **R and Shiny** — R developers can publish a [Shiny](https://shiny.rstudio.com/)
+  application.
+- **Plotly Dash** — [Dash](https://plot.ly/products/dash/) builds analytical
+  web applications in Python, with no JavaScript, over Plotly.js, React, and
+  Flask.
+- **Plain web applications** — anything that runs on Linux and serves HTML,
+  CSS, and JavaScript can be published as a tool.
 
-## What Kinds of Content Can You Publish?
-
-Previously, HUBzero was limited to publishing Rappture Tools. However, you can now publish many different types of computational content on HUBzero.
-
-## Rappture Tools
-
-If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the [Rappture Toolkit](http://rappture.org) that is included as part of HUBzero. It works well for tools with simple inputs and outputs. You document the inputs and outputs in an XML file and the GUI is generated for you. When you run the tool, you simply set the inputs and click "Simulate".
-
-It works with many programming languages, including C/C++, Fortran, Matlab, Python, Tcl/Tk, and Ruby. It creates tools that look something like the following:
-
-![example of a Rappture-based tool](../media/overview-rappture-01.png)
-
-## Traditional Desktop Applications
-
-If you have a traditional desktop application running under Linux/X11, you can publish it and have the X output appear in a VNC window on the users browser. There are two caveats:
-
-- **If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.** All graphics are transmitted as images to the user's web browser after rendering, lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below what you would normally see on a desktop computer.
-- **Tools running within the hub have access to the hub's local file system--not the user's desktop.** Many tools have a *File* menu with an *Open* option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's `importfile` command.
-
-## Jupyter Notebooks
-
-Notebooks work best for education, documenting workflows, and highly-interactive or exploratory work. Jupyter notebooks on the hubs can be written in Python, R, and Octave/Matlab. Other languages can be installed if required. And notebooks can run external programs written in any language. So some Python code in a notebook can prepare input, send it to a simulation, and then postprocess the ouputs.
-
-## Jupyter Tools
-
-Jupyter tools are Jupyter notebooks. When published, only the graphical components (UI widgets, visualizations, etc) are displayed. The notebook is automatically run and the IDE is hidden and cannot be accessed. Jupyter tools will be easier to write in Python due to the large collection of available widgets. If necessary, just the GUI can be written in Python.
-
-## R Studio and Shiny
-
-HUBzero also supports R Shiny tools for R developers. https://shiny.rstudio.com/
-
-## Plotly Dash
-
-Dash is a Python framework for building analytical web applications. No JavaScript required. Built on top of Plotly.js, React, and Flask, Dash ties modern UI elements like dropdowns, sliders, and graphs to your analytical Python code.
-
-<https://plot.ly/products/dash/>
-<https://plot.ly/dash/gallery>
-
-## Web Applications and Pages (HTML, CSS, and Javascript)
-
-If you have a web application that runs on Linux or just some web pages and javascript, then you can publish them as a tool on HUBzero.
-
----
-
-Discover different ways the HUBzero team has incorporated new tool creation systems such as Jupyter Notebooks and RStudio.
-
-Jupyter Notebooks:
-
-RStudio:
-
-## HUBzero Development Team: Custom Software & Tool Projects
-
-Check out custom software and tool projects the HUBzero development team has helped design and implement on sites using the HUBzero platform.
-
-REMEDI Central:
+All of these are served through the session in the member's browser in the
+same way, and all of them are started by the tool's
+[invoke script](03-invoke.md).

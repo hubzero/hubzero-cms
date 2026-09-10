@@ -34,7 +34,7 @@ So if your project has no **Databases** tab, one of three things is true:
 the plugin is disabled, the hub has restricted it to a list of projects that
 does not include yours, or its database accounts are not configured. All
 three are for an administrator to fix; see
-[Projects](../../managers/09-components/15-projects/README.md#enabling-a-project-feature)
+[Projects](../../managers/09-components/26-projects/README.md#enabling-a-project-feature)
 in the managers book, and ask the hub's support staff.
 
 A configured tab can still fail at the last step. If the databases list

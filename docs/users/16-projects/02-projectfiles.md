@@ -168,7 +168,7 @@ as they do in the project's own file area.
 > never see a connections view or a **New Connection** drop-down, the hub has
 > not enabled it. An administrator controls that with the Projects - Files
 > plugin's **Default Action** setting; see
-> [Project file connectors](../../managers/09-components/15-projects/projectfileconnect.md).
+> [Project file connectors](../../managers/09-components/26-projects/projectfileconnect.md).
 
 Only a project manager can authorise a connection, and only with their own
 provider account. A hub administrator cannot do it for you: the handshake

@@ -40,16 +40,16 @@ around those screens.
 
 ## Then
 
-- If the hub is new, go on to [Advanced setup](../advancedsetup.md) and
-  [Configuring](../configuring/README.md). Between them they cover the global
+- If the hub is new, go on to [Advanced setup](../02-advancedsetup.md) and
+  [Configuring](../05-configuring/README.md). Between them they cover the global
   configuration, the site template, the menus, and registration — the choices
   that are hardest to change once members have started using the hub.
 - If you are taking over a hub that is already running, go to
-  [Daily maintenance](../maintenance/README.md) and
-  [Users](../users/README.md).
+  [Daily maintenance](../03-maintenance/README.md) and
+  [Users](../06-users/README.md).
 - If you are looking for one particular screen, the
-  [Components](../components/README.md) and
-  [Extensions](../extensions/README.md) chapters are organised the same way
+  [Components](../09-components/README.md) and
+  [Extensions](../10-extensions/README.md) chapters are organised the same way
   the **Components** and **Extensions** menus are.
 
 Every setting the interface offers is also listed, component by component, in

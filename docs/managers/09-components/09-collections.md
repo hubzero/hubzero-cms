@@ -14,7 +14,7 @@ Collections are a Pinterest-style scrapbook. A hub user makes a collection,
 then pins content from around the hub into it as posts. Members and groups
 own collections; the administrator interface exists to inspect and clean up
 what they have made, not to build collections for them. The user's side is
-described in the [Collections chapter](../../users/collections.md) of the Hub
+described in the [Collections chapter](../../users/01-collections.md) of the Hub
 users book.
 
 Go to **Components → Collections**. Three submenu links sit at the top:

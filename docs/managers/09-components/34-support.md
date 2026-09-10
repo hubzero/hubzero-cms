@@ -11,7 +11,7 @@ Support is the hub's ticket tracking system. Members report a problem at
 reassign it, tag it, and close it — with every change recorded in the
 ticket's log. The component also collects the abuse reports that members
 file against comments and other content elsewhere on the hub. This chapter
-covers the administrator's side; the [Hub users](../../users/support.md)
+covers the administrator's side; the [Hub users](../../users/12-support.md)
 book covers submitting and tracking a ticket.
 
 Open it under **Components > Support**. Eight sub-menu links run across

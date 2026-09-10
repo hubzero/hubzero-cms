@@ -10,7 +10,7 @@ The newsletter component composes HTML or plain-text newsletters, mails them
 to a list of addresses, and tracks what recipients do with them. Newsletters
 you mark public are also readable on the site at `/newsletter`. This chapter
 covers the administrator's side; the
-[Hub users](../../users/newsletters.md) book covers reading and subscribing.
+[Hub users](../../users/17-newsletters.md) book covers reading and subscribing.
 
 Open it under **Components > Newsletters**. Six sub-menu links run across the
 top: **Newsletters**, **Mailings**, **Lists**, **Templates**, **Tools**, and

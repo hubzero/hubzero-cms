@@ -155,7 +155,7 @@ empty report.
 
 Per-user figures are a different feature, served by the **Members - Usage**
 plugin on a member's profile and described in the
-[Usage chapter](../../users/usage.md) of the Hub users book. That plugin
+[Usage chapter](../../users/28-usage.md) of the Hub users book. That plugin
 reads `#__resource_stats_tools`, `#__author_stats` and
 `#__metrics_author_cluster` in the CMS database — tables the CMS reads but
 does not fill, so it has the same prerequisite.

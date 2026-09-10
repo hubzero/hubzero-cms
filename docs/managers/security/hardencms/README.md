@@ -131,7 +131,7 @@ set by the CMS. Add them at the web server.
 ## Spam
 
 The `antispam` plugin group and the **Content - Antispam** plugin that
-drives it have their own chapter: [Spam](../../spam.md).
+drives it have their own chapter: [Spam](../../11-spam.md).
 
 ## Rate limiting
 

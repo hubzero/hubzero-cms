@@ -11,7 +11,7 @@ documents, and anything else worth putting on a shelf. Each has a type,
 contributors, attachments, tags, and a set of tabs supplied by plugins.
 Members submit them through a wizard at `/resources`; this chapter covers
 the administrator's side, and the
-[Hub users](../../users/resources.md) book covers contributing and browsing.
+[Hub users](../../users/21-resources.md) book covers contributing and browsing.
 
 Open it under **Components > Resources**. The sub-menu across the top has
 **Resources** (the list below), **Orphans**, **Types**, **Licenses**,

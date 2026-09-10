@@ -39,7 +39,7 @@ why the message survives the redirect. On a client with no notification
 service — the API, the command line — the message is dropped and only the
 redirect happens.
 
-The types match the [`Notify`](../foundation/facades.md) facade's methods,
+The types match the [`Notify`](../03-foundation/04-facades.md) facade's methods,
 so these two are equivalent:
 
 ```php

@@ -1,18 +1,36 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: stale
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/accesshomedir/filexfer
 source-id: 3547
 modified: 2014-02-28
 imported: 2026-09-09
 -->
-# filexfer (in Workspace tool)
+# filexfer
 
-## Accessing your home directory files via filexfer (in Workspace tool)
+`filexfer` moves a file between your computer and a running tool session,
+without going through sFTP or WebDAV first.
 
-Filexfer, short for 'file transfer', is a utility that you can call from within the workspace tool to transfer a file into your home directory from your local machine or download a file from your home directory. Type 'filexfer' in the xterm provided to you when you start the workspace tool. You should now see the filexfer GUI as it appears in the image below.
+> **Note:** `filexfer` belongs to the tool platform, which is separate software
+> and is not in this repository. Searching `com_tools` and the rest of the CMS
+> finds no trace of it, so the CMS neither provides nor configures it and
+> nothing below could be checked here.
 
-![](../../media/filexfer-2014-02-28-05-49-22-pm.jpg)
+## Using it
 
-Click on "Upload" or "Download" for the desired action. Please note, that you must enable pop-ups in your browser to proceed. The pop-up windows that appear allow you to browse or download per your selected action.
+Start the Workspace tool and type `filexfer` at the terminal prompt. The
+interface offers **Upload** and **Download**. Choosing either opens a browser
+window for the transfer, so your browser must allow pop-ups from the hub.
 
-filexfer may also be included by other contributed tools as a secondary application. This provides a consistent and reliable method for exchanging files with tool sessions.
+![The filexfer window, offering Upload and Download](../../media/filexfer-2014-02-28-05-49-22-pm.jpg)
+
+Other tools can include `filexfer` as a secondary application, which gives their
+users the same way of exchanging files with a session.
+
+## From inside a tool
+
+A tool does not call `filexfer` itself. It calls the two commands that ship with
+it, `importfile` and `exportfile`. See
+[Importing and exporting user files](../08-fileinout/README.md).

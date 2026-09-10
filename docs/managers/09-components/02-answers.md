@@ -10,7 +10,7 @@ Answers is the hub's question-and-answer forum. Members post a question,
 other members answer it, everyone votes answers up or down, and the person
 who asked picks the answer that helped. On the site it appears as
 **Questions and Answers** at `/answers`. This chapter covers the
-administrator's side; the [Hub users](../../users/questions.md) book covers
+administrator's side; the [Hub users](../../users/19-questions.md) book covers
 asking and answering.
 
 Open it in the administrator interface under **Components > Answers**. Two

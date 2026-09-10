@@ -12,7 +12,7 @@ list owners rank each wish by importance and effort, accept or reject it,
 and write an implementation plan. The hub has one general list at
 `/wishlist`, and a resource, a group, or a member profile can each have a
 list of its own. This chapter covers the administrator interface; the
-[Hub users](../../users/wishlist.md) book covers posting and voting.
+[Hub users](../../users/29-wishlist.md) book covers posting and voting.
 
 Open it under **Components > Wishlists**. Three sub-menu links sit at the
 top left: **Lists**, **Wishes**, and **Comments**. You need the

@@ -10,7 +10,7 @@ The wiki is a set of community-editable pages written in wiki markup. Every
 page keeps a full revision history, can carry comments and file attachments,
 and can be tagged. The site wiki lives at `/wiki`; groups get their own wiki
 under `/groups/<group>/wiki`. This chapter covers the administrator's side;
-the [Hub users](../../users/wiki.md) book covers writing and editing pages.
+the [Hub users](../../users/23-wiki.md) book covers writing and editing pages.
 
 Open it in the administrator interface under **Components > Wiki**. Two
 sub-menu links sit at the top left: **Wiki Pages**, the list below, and

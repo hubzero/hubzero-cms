@@ -55,6 +55,6 @@ by tag, and sorts by **Title**, **Alias** or **Popularity**.
   outline, tracking your progress, and claiming a certificate or badge.
 - [Course manager features](course_manager_features.md) — what an
   instructor can do from the course pages themselves.
-- The [Courses chapter](../../managers/09-components/07-courses.md) in the
+- The [Courses chapter](../../managers/09-components/10-courses.md) in the
   Hub managers book covers everything an administrator does in the back end,
   including sections, coupon codes, certificates and roles.

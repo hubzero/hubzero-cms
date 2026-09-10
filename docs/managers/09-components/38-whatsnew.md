@@ -11,7 +11,7 @@ by asking each of its plugins for the items in their component created inside
 a time period, then listing them by category at `/whatsnew`. It also publishes
 each of those categories as an RSS feed, which is where the **Feed** buttons a
 visitor sees actually lead. The visitor's side is described in
-[Search](../../users/search.md#what-is-this-feed-button).
+[Search](../../users/24-search.md#what-is-this-feed-button).
 
 There is no administrator screen. The component ships no admin controllers and
 no admin views, and its install migration deliberately removes it from the
@@ -87,10 +87,10 @@ active menu item's setting, then from the built-in default of `month`.
 Three things, none of them in this component's own screens.
 
 **Which plugins run.** **Extensions > Plugins**, filtered to the `whatsnew`
-folder. See [Plugins](../extensions/plugins.md).
+folder. See [Plugins](../10-extensions/03-plugins.md).
 
 **A menu item.** Create one of type **What's New > Display results**; see
-[Menus](../menus.md). Its **Cat/Period** field takes exactly the string
+[Menus](../07-menus.md). Its **Cat/Period** field takes exactly the string
 described above — `month`, `year`, `c_2023`, or a category prefix such as
 `resources:quarter` — and becomes the page's starting period. Leave it blank
 for the past month across all categories.
@@ -108,7 +108,7 @@ a template position. Its parameters:
 | Cache, Cache time | Off by default; cache time is in minutes. |
 
 Place it under **Extensions > Modules**; see
-[Modules](../extensions/modules.md).
+[Modules](../10-extensions/01-modules.md).
 
 ## Feeds
 

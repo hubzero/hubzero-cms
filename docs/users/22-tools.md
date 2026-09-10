@@ -92,7 +92,7 @@ practical:
   site now redirects to a page that says so, and that page is not public.
   Ask the hub what it recommends before starting a new interface. A Jupyter
   notebook is the current path on most hubs. Work that needs a cluster is
-  dispatched with the [submit](../tools/developers/grid/submitcmd.md)
+  dispatched with the [submit](../tools/developers/05-grid/01-submitcmd.md)
   command.
 - **Windows and macOS programs** cannot be hosted. Some Windows programs run
   under [Wine](http://www.winehq.org/), which is worth trying, but everything

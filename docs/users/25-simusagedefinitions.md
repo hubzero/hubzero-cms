@@ -24,7 +24,7 @@ them to that month.
 > They are produced by the hub's metrics tooling, which is separate software.
 > On a hub where that tooling is not installed and running, the simulation
 > section of `/usage` reports a missing table rather than zeroes. See
-> [Usage](../managers/components/usage.md) in the Hub managers book.
+> [Usage](../managers/09-components/37-usage.md) in the Hub managers book.
 
 ## The vocabulary
 

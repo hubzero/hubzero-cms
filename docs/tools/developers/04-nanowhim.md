@@ -1,47 +1,72 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: stale
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/nanowhim
 source-id: 3538
 modified: 2010-05-13
 imported: 2026-09-09
 -->
-# Combining Tools
+# Combining tools in one session
 
-## Overview
+Some tools are really a small workbench: three to five programs on one session
+desktop, with a way to switch between them. **nanoWhim** is the window manager
+that does the switching.
 
-Some of the tools on any hub are really a collection of 3-5 programs acting like a "workbench" for a particular application. [Berkeley Computational Nanoscience Class Tools](http://www.nanohub.org/tools/ucb_compnano/) is one such example. It is really a collection of several separate [Rappture](http://rappture.org)-based applications, all running on the same desktop, in the same tool session.
+> **Warning:** This page is entirely tool platform material and none of it
+> could be verified. The CMS in this repository knows nothing about nanoWhim —
+> it launches one invoke script per session and does not care what that script
+> starts, and the string `nanowhim` appears nowhere in the CMS. *(Checked.)*
+> The material below was written in 2010, its upstream project's site is gone,
+> and the only current trace of it is the `-n` option on the platform's
+> `invoke_app`. Check with your hub's administrators that nanoWhim is still
+> installed before designing a tool around it.
 
-We've created a simple window manager called **nanoWhim** that makes it easy to switch back and forth between several applications on a desktop--without all of the fuss and bother associated with a typical window manager. A tool using nanoWhim looks like this:
+## What it does
 
-![parts of a composite tool](../media/nanowhim-nanowhim-01.png)
+nanoWhim puts a combobox at the top of the session desktop. Each entry in it
+is a separate application; picking one brings it up. Windows an application
+opens are managed as tabs, so a popup does not obscure the window it came
+from.
 
-The combobox at the top lets users switch between applications. Each window that pops up within an application is managed by a set of tabs.
+![The nanoWhim desktop: an application combobox across the top and a tabbed application window below it](../media/nanowhim-nanowhim-01.png)
 
-nanoWhim is based on the [Whim](http://whim.linuxsys.net/site/0) window manager written in Tcl/Tk. We needed something like this for nanoHUB to create a very simple tabbed interface, so users could easily switch between a couple of tools within the same tool session. A more comprehensive workflow interface is under development, but this simple solution is sometimes useful.
+It was written for nanoHUB, to let a few related applications share one tool
+session without a full window manager's furniture. It is based on the Whim
+window manager, written in Tcl/Tk; Whim's own site is no longer online.
 
-## Flipping between tools
+[Berkeley Computational Nanoscience Class Tools](https://nanohub.org/tools/ucb_compnano/)
+on nanoHUB is the example the original documentation used: several separate
+Rappture applications on one desktop.
 
-The following example shows a [Rappture](http://rappture.org)-based application that popped up a separate [Jmol](http://jmol.sourceforge.net/) application for molecular visualization. Jmol pops up in its own tab, and you can easily switch back and forth between the original application and the Jmol popup by clicking on the tabs, as shown below:
+## Switching between applications
 
-![screen shot of main app](../media/nanowhim-nanowhim-ucb-01.png) ![screen shot of Jmol tab](../media/nanowhim-nanowhim-ucb-02.png)
+The example below is a Rappture application that opened a separate
+[Jmol](https://jmol.sourceforge.net/) window for molecular visualisation. Jmol
+gets its own tab, and the tabs switch between them. The **x** on a tab closes
+that application.
 
-You can click on the **x** on the Jmol tab to close that application.
+![The main application in its own tab](../media/nanowhim-nanowhim-ucb-01.png) ![The Jmol popup in a second tab](../media/nanowhim-nanowhim-ucb-02.png)
 
-You can select another application by using the combobox at the very top of the window. That brings up another [Rappture](http://rappture.org)-based application, with a different set of inputs and outputs.
+The combobox at the very top switches to a different application altogether,
+with its own inputs and outputs.
 
-![another app within the tool](../media/nanowhim-nanowhim-ucb-03.png)
+![A second application selected from the combobox](../media/nanowhim-nanowhim-ucb-03.png)
 
-You can run each program independently, and the outputs stay separate. If you flip back to the previous application, it will be sitting just the way you left it.
+Each program runs independently and their outputs stay separate. Coming back
+to one finds it as you left it.
 
-## Configuring nanoWhim
+## Configuring it
 
-To use nanoWhim, you'll need to create two files in the "middleware" directory for your tool: **nanowhimrc** and **invoke**.
+nanoWhim needs two files in the tool's `middleware` directory: `nanowhimrc`
+and `invoke`.
 
-### The nanowhimrc File
+### nanowhimrc
 
-This file configures the various applications that pop up within the tool session. Here's a very simple example:
+This file lists the applications. A minimal one:
 
-```
+```text
 # set an icon
 set.config controls_icon header.gif
 
@@ -52,15 +77,19 @@ start.app "Terminal Window" xterm
 start.app "Web Browser" firefox
 ```
 
-Any line that starts with a pound sign (`#`) is treated as a comment.
+Lines beginning with `#` are comments.
 
-The `set.config` command configures various aspects of the window manager. Right now, the only useful option is `controls_icon`, which sets the icon shown in the top-left corner of the window. Note that a relative file name is interpreted with respect to the location of the `nanowhimrc` file itself. In this case, we've assumed that the image `header.gif` is sitting in the same directory as `nanowhimrc`.
+`set.config controls_icon` sets the icon in the top-left corner of the window.
+A relative filename is resolved against the location of `nanowhimrc` itself, so
+`header.gif` here means one sitting beside it in `middleware`.
 
-The rest of the file contains a series of `start.app` commands for each application that you want to offer. In this case, the first application is called "Terminal Window" and is just an xterm application. The second application is the Firefox web browser, which we label "Web Browser".
+Each `start.app` line adds an application. The quoted first argument is the
+label in the combobox; the rest is the Unix command that starts it. `$dir`
+stands for the directory holding `nanowhimrc`.
 
-Here's a more realistic example:
+A fuller example, from a tool made of several Rappture applications:
 
-```
+```text
 #
 # Customize the nanoWhim window manager
 #
@@ -76,28 +105,44 @@ start.app "Molecular Dynamics (LAMMPS)" \
   /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/lammps -u lammps-12Feb07
 
 start.app "Monte Carlo (Hard Sphere)" \
-  /usr/bin/invoke_app -t ucb_compnano -T $dir/../rappture/hsmc
-
-start.app "Ising Simulations" \
   /usr/bin/invoke_app -t ucb_compnano -C "java -jar $dir/../bin/ising-1.0.jar"
 ```
 
-Each `start.app` command starts a different Rappture-based application. The first argument in quotes is the title of the application, which is displayed in the combobox at the top of the window. The remaining arguments are treated as the Unix command that is invoked to start the application.
+Each line calls [`invoke_app`](03-invoke.md) with `-t` naming the tool and `-T`
+naming the directory holding that application's `tool.xml`. The `-u` in the
+LAMMPS line loads an environment package; the version there is from 2007 and
+is an example of the form, not a package to copy.
 
-The commands shown here all use the `/usr/bin/invoke_app` script to invoke a Rappture-based application. The `-t` argument for that script indicates the toolname. The `-T` argument indicates which directory contains the Rappture tool.xml file. You can use `$dir` here to locate the directory relative to the `nanowhimrc` file.
+### The invoke script
 
-### The invoke File
+`nanowhimrc` configures the window manager; `middleware/invoke` starts it. The
+original documentation gave this form:
 
-The `nanowhimrc` file configures the window manager, but the `middleware/invoke` script actually invokes it. Every tool on nanoHUB has its own `invoke` script sitting in the middleware directory. Your invoke script should look like this if you want to use nanoWhim:
-
-```
+```sh
 #!/bin/sh
 
 /apps/share/nanowhim/invoke_app "$@" -t ucb_compnano
 ```
 
-This script invokes the nanoWhim window manager for the tool specified by the `-t` argument. This is the short name that you gave when you registered your tool. This script looks for the `middleware/nanowhimrc` file within your source code, and launches nanoWhim with that configuration.
+`-t` is the tool alias you registered. The script finds
+`middleware/nanowhimrc` in the tool's own directory and launches nanoWhim with
+it.
 
-### Testing Your Tool
+> **Note:** That path is from 2010. Current hubs document a `-n` option on the
+> ordinary `/usr/bin/invoke_app` for selecting a nanoWhim version, which
+> suggests the separate wrapper is no longer how it is called. Ask your hub's
+> administrators which form works there. Do not assume either one.
 
-Normally, you develop and test tools within a workspace in your hub. If you're using nanoWhim, that's still true for the individual applications. In other words, you can test each application individually within a workspace. But to get the full effect of the nanoWhim manager running all applications at once, you'll have to get your tool to "installed" status, and then launch the application in test mode. For details about doing this, see the [tool maintenance documentation for hub managers](../../managers/03-maintenance/02-tools.md) or the lecture on [Uploading and Publishing New Tools](https://help.hubzero.org/resources/173). Look at the tool status page for your own tool project and find the *Launch Tool* button. This is what you would normally do to test any tool before approving it. Once you're in the "installed" stage and you're able to click *Launch Tool*, the nanoWhim configuration should take effect and you'll be able to test the overall combined tool.
+## Testing
+
+Individual applications can be tested one at a time in a workspace, the way
+any tool is. The combined desktop cannot: nanoWhim only comes together once
+the tool is installed on the hub.
+
+So get the contribution to the **Installed** state, then use the **Launch
+tool** button on the tool's status page — the same button you would use to
+test any tool before approving it. See
+[The contribution process](process.md) for the states, the
+[hub managers' walkthrough](../../managers/03-maintenance/02-tools.md) for the
+administrator's side, and the lecture on
+[uploading and publishing new tools](https://help.hubzero.org/resources/173).

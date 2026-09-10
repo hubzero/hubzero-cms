@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/invoke
 source-id: 3537
 modified: 2011-03-07
@@ -7,212 +10,293 @@ imported: 2026-09-09
 -->
 # Launching tools with invoke scripts
 
-## Overview
+The invoke script is the handover point between the hub and your tool. The CMS
+asks the middleware to start a session; the middleware runs your
+`middleware/invoke`; your invoke script sets the container up and starts the
+program.
 
-Invoke scripts are small programs, usually written in sh or bash, used to setup the application container environment so the tool can run properly. More specifically, invoke scripts are responsible for:
+> **Important:** Only the hub's half of that handover is in this repository.
+> The first section below is CMS-side and was checked against `com_tools`. The
+> rest describes `invoke_app`, the platform's own invocation script, which is
+> installed on the execution hosts and is not in this repository. Its options
+> are carried over from help.hubzero.org and could not be verified. Run
+> `invoke_app -h` on your hub, or read the script itself, before relying on a
+> detail here.
 
-- Locating tool.xml for Rappture applications
-- Setting up the PATH and other optional environment variables
-- Starting the window manager
-- Starting optional subprograms, like filexfer
-- Starting the application
+## What the CMS hands over
 
-For most applications, the invoke script is a single command that calls the default HUBzero invoke script, named invoke_app, with a few options set. In some rare situations, the tool needs the application container setup in a manner that invoke_app cannot handle. In these cases, the tool developer can modify the tool's invoke script to appropriately setup the application container.
+### The launch URL
 
-The sections below list out details regarding the options of invoke_app, how to launch Rappture tools using an invoke script that calls invoke_app, and how to launch non-Rappture tools using an invoke script that calls invoke_app.
+A tool is launched at
 
-## invoke_app and its options
-
-HUBZero's default tool invocation script is called invoke_app. It is a bash script, usually located in /usr/bin. When called with no options, the script tries to automatically find the needed information to start the applications. There are a number of options that can be provided to alter the script's behavior.
-
-invoke_app accepts the following options:
-
-```
- -A tool arguments
- -c execute command in background
- -C command to execute for starting the tool
- -d working directory
- -e environment variable (${VERSION} substituted with $TOOL_VERSION)
- -f No FULLSCREEN
- -S No submit
- -n nanowhim version
- -p add to path          (${VERSION} substituted with $TOOL_VERSION)
- -r rappture version
- -t tool name
- -T tool root directory
- -u use environment packages
- -w specify alternate window manager
+```text
+/tools/<alias>/invoke
+/tools/<alias>/invoke/<version>
 ```
 
-Here is a detailed description of the options:
+The third segment is a version selector, and the CMS turns it into the name of
+an installed instance:
 
-<table>
-<tbody>
-<tr>
-<td>-A</td>
-<td>Pass the provided enquoted arguments onto the tool.
-			<p>Example usage:</p>
-<pre>
--A "-q blah1 -w blah2"</pre>
-			The options -q and -w are not parsed by invoke_app, but are passed on to the tool</td>
-</tr>
-<tr>
-<td>-c</td>
-<td>Commands to run in the background before the tool launches.
-			<p>Example usage:</p>
-<pre>
--c "echo hi" -c "filexfer"</pre>
-			This prints "hi" to stdout and starts filexfer</td>
-</tr>
-<tr>
-<td>-C</td>
-<td>Command to execute for starting tool. Tool's command line arguments can be included in this option, or can be placed in the -A option.
-			<p>Example usage:</p>
-<p>Call a program, named myprog, located in the tool's bin directory:</p>
-<pre>
--C @tool/bin/myprog</pre>
-<p>Call a program, named myprog, located in the tool's bin directory, with program arguments "-e val1" and "-b val2":</p>
-<pre>
--C "@tool/bin/myprog -e val1 -b val2"</pre>
-<p>Call a program, named myprog, located in the tool's bin directory with arguments -e val1 and -b val2, used in conjunction with invoke_app's -A option:</p>
-<pre>
--C @tool/bin/myprog -A "-e val1 -b val2"</pre>
-<p>Call a program, named myprog, located in the tool's bin directory. We can omit the path of the program if it is an executable and located in the tool's bin directory because the tool's bin directory is added to the PATH environment variable. This would not work for calling a Perl script in a fashion similar to <b>perl myscript.pl</b> because in this case, <b>perl</b> is executable and <b>myscript.pl</b> is the argument.:</p>
-<pre>
--C myprog</pre>
-<p>Call simsim with no arguments:</p>
-<pre>
--C simsim</pre>
-<p>Call simsim with the options -tool and -values, to be parsed by simsim:</p>
-<pre>
--C "simsim -tool driver.xml -values random"</pre>
-<p>Call simsim with the options -tool and -values, to be parsed by simsim:</p>
-<pre>
--C simsim -A "-tool driver.xml -values random"</pre>
-</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>Change to this working directory. By default change to session directory.</td>
-</tr>
-<tr>
-<td>-e</td>
-<td>Set an environment variable.
-			<p>Example usage:</p>
-<pre>
--e LD_LIBRARY_PATH=@tool/../${VERSION}/lib:${LD_LIBRARY_PATH}</pre>
-			Within the value part of this option's argument, the text ${VERSION} is automatically substituted with the value of the variable ${TOOL_VERSION}. Similarly, the text @tool is substituted with the value of ${TOOLDIR}. By setting the environment variable, you are overwritting its previous value.</td>
-</tr>
-<tr>
-<td>-f</td>
-<td>no full screen - disable FULLSCREEN environment variable, used by Rappture, to expand the window to the full available size of the screen.</td>
-</tr>
-<tr>
-<td>-p</td>
-<td>Prepend to the PATH environment variable.
-			<p>Example usage:</p>
-<pre>
--p @tool/../${VERSION}/bin</pre>
-<p>Within the value part of this option's argument, the text ${VERSION} is automatically substituted with the value of the variable ${TOOL_VERSION}. Similarly, the text @tool is substituted with the value of ${TOOLDIR}. By setting this option the PATH environment variable is adjusted, but not overwritten.  The directory @tool/bin is automatically added to the PATH environment variable.</p>
-</td>
-</tr>
-<tr>
-<td>-r</td>
-<td>Sets ${rappture_version} which dictates which version of Rappture is used. If left blank the version will default to the special keyword "system", which represents whichever version is pointed to by the default Rappture environment in "use". A "use -e -r rappture" will be performed to figure out where Rappture is installed.
-			<p>If set to the special keyword "none", searching for Rappture executables (rappture, simsim, about) will be skipped and use of these executables will be disabled.</p>
-<p>This flag works well on hubs where multiple versions of rappture are installed. Users can specify their own version of Rappture to use by updating the PATH environment variable to include the directory where the "rappture" executable is installed.</p>
-</td>
-</tr>
-<tr>
-<td>-S</td>
-<td>Disable submit client and run job locally. This flag takes no arguments and is used for debugging. It disables the use of submit client from the -C command that will be executed. The default behavior, when the flag is not given, is to run the command through the submit client unless the command is "rappture", "simsim", "getrappturexml", or "nanowhim", none of which are run through the submit client. Setting the flag on the command line will add your command to the list of commands that do not run with the submit client.</td>
-</tr>
-<tr>
-<td>-t</td>
-<td>sets ${toolname} which is used while setting up tool paths for TOOLDIR and TOOLXML. ${toolname} is the short name (or project name) of the tool. It is the same as the name used in the source code repository. With respect to the tool contribution process, it is the "toolname" in the path /apps/toolname/version/rappture/tool.xml. Setting this option will change the paths searched while trying to locate tool.xml and the bin directory.</td>
-</tr>
-<tr>
-<td>-T</td>
-<td>Tool root directory. This is the directory holding a checked out version of the code from the source code repository. It typically has the src, bin, middleware, rappture, docs, data, and examples directories underneath it. With respect to the tool contribution process, it is the "/apps/toolname/version" in the path /apps/toolname/version/rappture/tool.xml. Setting this option will change the paths searched while trying to locate tool.xml and the bin directory. Typically when testing this option is used to specify where the tool directory is. In this case, its the present working directory:
-			<pre>
--T $PWD</pre>
-</td>
-</tr>
-<tr>
-<td>-u</td>
-<td>Set use scripts to invoke before running the tool.
-			<p>Example usage:</p>
-<pre>
--u octave-3.2.4 -u petsc-3.1-real-gnu</pre>
-			These would setup octave-3.2.4 and petsc-3.1 in the environment that your tool would launch in.</td>
-</tr>
-<tr>
-<td>-w</td>
-<td>Set the window manager. The default value is to use the ratpoison window manager if it exists. If ratpoison is not installed on the system, look for the icewm captive window manager setup. Use this flag to choose an alternative window manager. If your application does not require a window manager specify headless. The possible options are headless, ratpoison, captive, and icewm. If multiple options are specified the first one listed is selected.
-			<p>Examples:</p>
-<p>Use the icewm captive window manager.</p>
-<pre>
--w captive</pre>
-<p>Use no window manager.</p>
-<pre>
--w headless</pre>
-</td>
-</tr>
-</tbody>
-</table>
+| Segment | Instance launched |
+|---|---|
+| omitted, `default`, `current`, `1` | The current published version |
+| `test`, `dev` | `<alias>_dev`, the development version |
+| a revision number | `<alias>_r<number>` |
 
-invoke_app is called from within a tool's invoke script. The invoke script is stored in the middleware directory of the tool's source code repository.
+`/tools/<alias>/reinvoke` restarts an existing session, and
+`/tools/<alias>/session/<number>` shows a running one. A guest who follows a
+launch URL is sent to sign in first.
 
-## Using invoke_app with Rappture tools
+Two query arguments matter to a tool developer:
 
-Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a Rappture application looks similar to this:
+- `params` — values to hand to the tool, described below.
+- `return` — where to send the member when the session ends.
 
+### Parameters in the URL
+
+`params` carries a list of values, one per line, each `type:value` or
+`type(name):value`, with `directory`, `file`, and `int` as the three types:
+
+```text
+directory:/home/hubname/username/mycase
+file(input):/home/hubname/username/mycase/run.xml
+int(runs):20
 ```
+
+The CMS validates every line before it starts anything. Path values are
+expanded from `~/`, required to be absolute, normalised, checked for control
+characters, and then required to sit under one of the directories in the
+component's **Directory Parameter Whitelist**. One bad line rejects the whole
+launch, and the member gets the **Bad Parameters** page instead of a session.
+
+If every line passes, the CMS forwards the `params` text **exactly as it
+arrived**, URL-encoded — not the expanded and normalised form the check ran
+on. Your tool therefore receives `~/` and `..` unresolved and has to expand
+them itself, and it has to agree with the whitelist about what those resolve
+to. The parameters stored with a session are re-sent when the session is
+resumed, without being checked again.
+
+[Directory parameter whitelist](../administrators/whitelistdirectories.md)
+documents the validation rule by rule and how an administrator sets the list.
+
+### What the middleware is asked for
+
+The CMS does not run your invoke script. It sends the middleware a `start`
+command built from the member's username, their IP address, the instance name,
+the version, the URL-encoded `params`, and, on a hub with zones, the zone the
+member was assigned to. The middleware replies with a session number, which
+the CMS stores and uses in the session URL.
+
+The launch command the middleware runs is recorded per version by the CMS as
+
+```text
+<invoke script dir>/<toolname>/<version dir>/middleware/invoke -T <version dir>
+```
+
+with the version directory `dev` or `r<revision>`, and the invoke script
+directory taken from the component's **Invoke Script Dir** option, `/apps` by
+default. That is the whole of the CMS's knowledge of your invoke script: where
+it lives, and that it is given `-T`. Everything else — the options below, the
+window manager, the environment — is between your script and `invoke_app`.
+
+*(All of the above verified against `com_tools`: the router, the session
+controller, and the version records the pipeline writes.)*
+
+## invoke_app
+
+Everything from here on describes the tool platform and was not verified.
+
+`invoke_app` is the hub's own invocation script, a bash script normally at
+`/usr/bin/invoke_app`. It works out where the tool is installed, sets up the
+environment and the window manager, starts any helper programs, and then
+starts the tool. For nearly every tool, `middleware/invoke` is one call to it:
+
+```sh
 #!/bin/sh
 
 /usr/bin/invoke_app "$@" -t calc \
-                         -C rappture
+                         -C calc
 ```
 
-In the invoke script above, invoke_app, located in the directory /usr/bin, is called with "$@" , "-t calc", and "-C rappture". "$@" represents all options that the invoke script itself received. "-t calc" tells invoke_app that the toolname is "calc". "-C rappture" tell invoke_app to execute the rappture command. This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed.
+`"$@"` passes on whatever the invoke script itself was given, which is how the
+`-T` from the hub reaches `invoke_app`. `-t` names the tool and `-C` gives the
+command that starts it.
 
-For most Rappture applications, the invoke script is very simple. The above is enough for invoke_app to start looking for a tool.xml file. invoke_app looks for the file named tool.xml. It uses the TOOLDIR variable to help decide where to look. If the tool.xml file is not found in the ${TOOLDIR}/rappture directory, invoke_app will exit explaining that it could not find the tool.xml file. The TOOLDIR variable can be set from the command line using the -T flag:
+A tool that needs the container set up in a way `invoke_app` cannot manage can
+do that work in its own invoke script instead, but this is rare.
 
+### Options
+
+| Option | Purpose |
+|---|---|
+| `-A` | Arguments to pass on to the tool |
+| `-c` | Command to run in the background before the tool starts |
+| `-C` | Command that starts the tool |
+| `-d` | Working directory. Defaults to the session directory |
+| `-e` | Set an environment variable |
+| `-f` | Do not set `FULLSCREEN` |
+| `-n` | nanoWhim version |
+| `-p` | Prepend to `PATH` |
+| `-r` | Rappture version |
+| `-S` | Do not run the command through the submit client |
+| `-t` | Tool name |
+| `-T` | Tool root directory |
+| `-u` | Environment packages to load |
+| `-w` | Window manager |
+
+In the values of `-e` and `-p`, `${VERSION}` is replaced with `$TOOL_VERSION`
+and `@tool` with `$TOOLDIR`.
+
+### The options in detail
+
+#### -A, arguments for the tool
+
+Passed to the tool untouched; `invoke_app` does not read them.
+
+```sh
+-A "-q blah1 -w blah2"
 ```
-/usr/bin/invoke_app "$@" -t calc \
-                         -C rappture \
-                         -T ${PWD}
+
+#### -c, background command
+
+Runs before the tool starts. Repeatable.
+
+```sh
+-c "echo hi" -c "filexfer"
 ```
 
-Actually, it is more common to see the -T flag provided to a tool's invoke script, and the option is forwarded to invoke_app by "$@":
+#### -C, the command that starts the tool
 
+The tool's own arguments can go here or in `-A`. `@tool` stands for the tool's
+root directory, and the tool's `bin` directory is already on `PATH`, so a
+program in `bin` can be named on its own:
+
+```sh
+-C @tool/bin/myprog
+-C "@tool/bin/myprog -e val1 -b val2"
+-C @tool/bin/myprog -A "-e val1 -b val2"
+-C myprog
 ```
-./middleware/invoke -T ${PWD}
+
+The shortcut works only when the program itself is the executable. Running a
+script through an interpreter — `perl myscript.pl` — needs the full command,
+because `perl` is the executable and the script is an argument.
+
+#### -d, working directory
+
+Changes to this directory before starting the tool. The default is the session
+directory, `$SESSIONDIR`.
+
+#### -e, environment variable
+
+Sets the variable, replacing any previous value.
+
+```sh
+-e LD_LIBRARY_PATH=@tool/../${VERSION}/lib:${LD_LIBRARY_PATH}
 ```
 
-In the above example, the TOOLDIR variable is set to the present working directory, which is stored in the variable PWD. Specifying the -T option is usually not needed, but can help when invoke_app is confused on what it is supposed to be launching.
+#### -f, no full screen
 
-## Using invoke_app with Jupyter Notebook tools
+Disables the `FULLSCREEN` environment variable, which Rappture uses to expand
+its window to the whole screen.
 
-Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a Jupyter Notebook application looks similar to this:
+#### -p, add to PATH
 
+Prepends to `PATH` rather than replacing it. `@tool/bin` is added
+automatically, so this is for extra directories.
+
+```sh
+-p @tool/../${VERSION}/bin
 ```
+
+#### -r, Rappture version
+
+Sets which Rappture the tool runs against. Left out, it defaults to `system`,
+the version the default Rappture environment package points at. Set to `none`,
+`invoke_app` skips looking for the `rappture`, `simsim`, and `about`
+executables and disables them — which is what a non-Rappture tool wants:
+
+```sh
+-r none
+```
+
+On a hub with several Rappture versions installed, a tool can also pick one by
+putting the directory holding its `rappture` executable on `PATH`.
+
+#### -S, no submit
+
+Takes no argument. By default `invoke_app` runs the `-C` command through the
+`submit` client, except for the commands `rappture`, `simsim`,
+`getrappturexml`, and `nanowhim`. `-S` adds your command to that list, so it
+runs locally. It is a debugging flag.
+
+#### -t, tool name
+
+The tool's short name, the same one used for the source repository and the
+tool alias. It decides where `invoke_app` looks for `tool.xml` and for the
+`bin` directory — `/apps/<toolname>/<version>/...`.
+
+#### -T, tool root directory
+
+The directory holding the checked-out or installed tool: the one with `src`,
+`bin`, `middleware`, `rappture`, `doc`, `data`, and `examples` under it. The
+hub supplies this when it launches a session. Supply it yourself when testing
+from a working copy:
+
+```console
+$ ./middleware/invoke -T $PWD
+```
+
+`"$@"` in the invoke script is what forwards it to `invoke_app`.
+
+#### -u, environment packages
+
+Names `use` scripts to source before the tool runs, from the hub's
+`/apps/environ` directory. Repeatable.
+
+```sh
+-u octave-3.2.4 -u petsc-3.1-real-gnu
+```
+
+Package names and versions differ from hub to hub. Look in `/apps/environ` on
+your own hub rather than copying a version from documentation.
+
+#### -w, window manager
+
+One of `headless`, `ratpoison`, `captive`, or `icewm`. The default is
+`ratpoison` where it is installed, otherwise the `icewm` captive setup. Use
+`headless` for a tool that needs no window manager at all, such as a Jupyter
+tool. Where several are given, the first wins.
+
+```sh
+-w captive
+-w headless
+```
+
+## Examples
+
+### A Jupyter notebook tool
+
+```sh
 #!/bin/sh
 
 /usr/bin/invoke_app "$@" -t calc \
                          -C "start_jupyter -t -A -T @tool/bin calc.ipynb" \
-                         -u anaconda-7 \
+                         -u anaconda-X \
                          -r none \
                          -w headless
 ```
 
-In the invoke script above, invoke_app, located in the directory /usr/bin, is called with "$@", "-t calc", "-C start_jupyter ...", "-c filexfer", "-w captive". "$@" represents all options that the invoke script itself received. "-t calc" tells invoke_app that the toolname is "calc". This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed. "-C start_jupyter ..." tells invoke_app that the command to run to start the tool is "start_jupyter". "start_jupyter has several typical arguments as shown. "-r none" tells invoke_app that Rappture is not required. "-w headless" tells invoke_app not to start a window manager.
+`-C` starts the notebook through `start_jupyter`; `-r none` says the tool does
+not use Rappture; `-w headless` says it needs no window manager, since the
+notebook is served to the browser rather than drawn on an X display.
+`anaconda-X` stands for whichever Anaconda environment package your hub
+provides. [Jupyter notebooks](10-jupyter-notebooks/README.md) covers
+`start_jupyter` and its display modes.
 
-## Using invoke_app with GUI tools
+### A Linux GUI tool
 
-Invoke scripts should be placed in the middleware directory of the tool's source code repository. A typical invoke script for a non-Rappture GUI application looks similar to this:
-
-```
+```sh
 #!/bin/sh
 
 /usr/bin/invoke_app "$@" -t calc \
@@ -221,24 +305,53 @@ Invoke scripts should be placed in the middleware directory of the tool's source
                          -w captive
 ```
 
-In the invoke script above, invoke_app, located in the directory /usr/bin, is called with "$@", "-t calc", "-C calc", "-c filexfer", "-w captive". "$@" represents all options that the invoke script itself received. "-t calc" tells invoke_app that the toolname is "calc". This information is used by invoke_app to figure out which tool it is supposed to be launching and where that tool is installed. "-C calc" tells invoke_app that the command to run to start the tool is "calc". In this case calc is UI program built using something other than Rappture. Possible GUI builders include but are not limited to PyQt and MATLAB. "-c filexfer" tells invoke_app to start up the filexfer program before starting the tool's graphical user interface. "-w captive" tells invoke_app to use the icewm captive window manager. For non-rappture applications the icewm captive window manager may be preferred over the ratpoison window manager if there are multiple graphical user interface windows that could popup.
+Here `calc` is a GUI built with something other than Rappture — PyQt, MATLAB,
+or anything else. `-c filexfer` starts the file transfer helper before the GUI,
+so the member can move files in and out of the session. `-w captive` uses the
+icewm captive window manager, which suits a tool that opens more than one
+window; a single-window tool can leave the option out and get the default.
 
-The invoke script above could be made more svelte if the we did not want to start filexfer and we wanted to use the ratpoison window manager. After all, not all applications require files from the user, so they don't need the filexfer program. Here's an example of the tool named calc (the "-t calc" option), that is started by the executable named calc (the "-C calc" option), and uses the default window manager which is ratpoison.
+Without the file transfer helper, the same tool is two lines of options:
 
-```
+```sh
 #!/bin/sh
 
 /usr/bin/invoke_app "$@" -t calc \
                          -C calc
 ```
 
-## Other invoke script examples
+### A Rappture tool
 
-Here are a few common invoke scripts examples that demonstrate using invoke_app options.
+> **Note:** [Rappture is deprecated](02-overview.md#rappture). This is here for
+> the tools that already use it.
 
-Use the -u option to setup Octave-3.2.4 in the path before starting the tool's graphical user interface. The -u option sources a "use" script (octave-3.2.4 in this example) from the /apps/environ directory.
+```sh
+#!/bin/sh
 
+/usr/bin/invoke_app "$@" -t calc \
+                         -C rappture
 ```
+
+`-C rappture` starts the Rappture interface, which then looks for
+`${TOOLDIR}/rappture/tool.xml` and stops with an error if it is not there.
+The same two lines cover a Rappture tool whatever the solver is written in —
+MATLAB, Python, Java, Fortran — because Rappture, not the solver, is what
+`invoke_app` starts.
+
+`-T` can be added to say where the tool root is, though the hub normally
+supplies it:
+
+```sh
+/usr/bin/invoke_app "$@" -t calc \
+                         -C rappture \
+                         -T ${PWD}
+```
+
+### Extra environment and arguments
+
+Load an environment package before starting the tool:
+
+```sh
 #!/bin/sh
 
 /usr/bin/invoke_app "$@" -t calc \
@@ -246,48 +359,20 @@ Use the -u option to setup Octave-3.2.4 in the path before starting the tool's g
                          -u octave-3.2.4
 ```
 
-Use the -A option to send additional arguments to the command to be executed:
+Pass arguments to the tool, either through `-A` or inside `-C`:
 
-```
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -t calc \
-                         -C calc \
-                         -A "-value 13 -value 5 -op add"
+```sh
+/usr/bin/invoke_app "$@" -t calc -C calc -A "-value 13 -value 5 -op add"
+/usr/bin/invoke_app "$@" -t calc -C "calc -value 13 -value 5 -op add"
 ```
 
-Or:
+## See also
 
-```
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -t calc \
-                         -C "calc -value 13 -value 5 -op add"
-```
-
-Launching a Matlab tool (named app-fermi) with a Rappture graphical user interface:
-
-```
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -t app-fermi \
-                         -C rappture
-```
-
-Launching a Python tool (named app-fermi) with a Rappture graphical user interface:
-
-```
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -t app-fermi \
-                         -C rappture
-```
-
-Launching a Java tool (named app-fermi) with a Rappture graphical user interface:
-
-```
-#!/bin/sh
-
-/usr/bin/invoke_app "$@" -t app-fermi \
-                         -C rappture
-```
+- [Tool repository structure](01-toolrepostructure.md) — where the invoke
+  script lives and what the hub seeds it with.
+- [Passing path variables with the invoke script](07-toolpaths/02-toolpathsinvoke.md) —
+  getting `@tool` and other paths through to the tool.
+- [Invoke scripts for Jupyter notebooks](10-jupyter-notebooks/05-invoke-jupyter.md) —
+  `start_jupyter` and the notebook, App, and Tool display modes.
+- [Directory parameter whitelist](../administrators/whitelistdirectories.md) —
+  what the CMS accepts in `params`.

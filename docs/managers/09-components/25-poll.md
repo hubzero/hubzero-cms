@@ -120,7 +120,7 @@ unpublished until you place them:
   think.** by default, meant to sit above the poll module.
 
 Place them under **Extensions > Modules**; see
-[Modules](../extensions/modules.md).
+[Modules](../10-extensions/01-modules.md).
 
 ## Options
 

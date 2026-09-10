@@ -15,7 +15,7 @@ You declare them in XML; the CMS builds a form from the declaration, stores
 what was entered as JSON in the extension's `#__extensions` row, and hands
 them back to you as a `Registry`.
 
-This page is about declaring them. [Config](../basics/config.md) covers
+This page is about declaring them. [Config](../05-basics/03-config.md) covers
 reading them at runtime — `Component::params()`, `$this->params`, and the
 `Registry` methods. Every parameter the shipped extensions declare is listed
 in the [configuration reference](../../reference/configuration/README.md).
@@ -165,7 +165,7 @@ of `type="rules"`, pointing at a section of that file:
 	component="com_answers" section="component" />
 ```
 
-See [Users](../basics/user.md) for how a controller then checks an action.
+See [Users](../05-basics/05-user.md) for how a controller then checks an action.
 
 ## Where the values end up
 

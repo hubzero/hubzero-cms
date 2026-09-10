@@ -27,7 +27,7 @@ the file, and by the time it returns `true` the response body is already
 written, so nothing may be echoed afterwards.
 
 > **Note:** `Server` writes headers and content itself rather than going
-> through the [response object](../basics/responses.md). Any output already
+> through the [response object](../05-basics/02-responses.md). Any output already
 > buffered will be sent ahead of the file and corrupt it, and any output
 > after it appends to the download. End the request immediately.
 

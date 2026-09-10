@@ -14,7 +14,7 @@ Collections are a scrapbook. You make a collection, then pin images, files
 and links into it as posts. You can follow other people's collections, collect
 their posts into your own, like them and comment on them. Administrators
 manage the same content from the
-[Collections chapter](../managers/09-components/06-collections.md) of the Hub
+[Collections chapter](../managers/09-components/09-collections.md) of the Hub
 managers book.
 
 > **Note:** You must be logged in to do anything but browse public
@@ -261,4 +261,4 @@ appears on content pages across the hub and posts that page straight into one
 of your collections. It works on blog entries, articles, courses, forum
 threads, knowledge base articles, publications, resources, wiki pages and
 wishes — the nine content types listed in the
-[managers' Collections chapter](../managers/09-components/06-collections.md#the-collect-button).
+[managers' Collections chapter](../managers/09-components/09-collections.md#the-collect-button).

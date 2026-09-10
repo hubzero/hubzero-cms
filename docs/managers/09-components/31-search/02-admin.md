@@ -84,7 +84,7 @@ or reports it as not responding. No hub-side action is needed afterwards.
 ## Cron events
 
 **Cron - Search** (`plg_cron_search`) contributes two events to
-[Cron](../08-cron.md). Add either from **Components > Cron > New**, choosing
+[Cron](../12-cron.md). Add either from **Components > Cron > New**, choosing
 it under **Event**:
 
 | Event | What it does |

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pegasus Workflow Submission · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview Functionality has been included in submit to support workflow management using Pegasus . Two use cases are available: automatic workflow generation…">
+  <title>Pegasus workflow submission · Tools · Hubzero Documentation</title>
+  <meta name="description" content="can run a workflow through Pegasus . Two cases are supported: workflows generates for you from a parameter sweep, and workflows you build yourself. In both,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/grid/pegasuswf/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,50 +46,49 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Pegasus Workflow Submission</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#parametric-sweeps">Parametric Sweeps</a></li>
-<li class="toc__item toc__item--l2"><a href="#user-constructed-workflows">User Constructed Workflows</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Pegasus workflow submission</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#parameter-sweeps">Parameter sweeps</a></li>
+<li class="toc__item toc__item--l2"><a href="#workflows-you-build-yourself">Workflows you build yourself</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -103,34 +102,69 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing Outside Computing Resources</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Pegasus Workflow Submission</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing outside computing resources</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Pegasus workflow submission</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Pegasus Workflow Submission</h1>
+          <h1>Pegasus workflow submission</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/pegasuswf">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2012.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Functionality has been included in submit to support workflow management using <a href="http://pegasus.isi.edu">Pegasus</a>. Two use cases are available: automatic workflow generation for parametric sweeps on one or more variables, or user constructed workflows. In both instances submit is used to configure access to one or more computational resources eliminating the need for a user to supply a site catalog thereby simplifying use of the workflow management system.</p>
-<h2 id="parametric-sweeps">Parametric Sweeps</h2>
-<p>submit command options -p/--parameters and -d/--data provide support for specifying parameter sweeps in a compact general way. The user is relieved of the chore of generating entire sets of input files and command arguments comprising a parameter sweep. Substitutable parameters are declared on the submit command line. Values of these parameters can then be systematically substituted into data files or application command line parameters. submit performs the necessary substitutions to cover all parameter combinations. Each combination of parameters is abstractly represented as a node in a workflow and concretely executed as a job on the designated computational resource. A simple curses interface is provided to monitor progress of the simulation run.</p>
-<h2 id="user-constructed-workflows">User Constructed Workflows</h2>
-<p>Parameter sweeps are represented as a simple workflow consisting of many individual independent nodes. That is data is not shared between nodes or jobs in the run. There are cases where this simple approach is not sufficient to describe a workflow required to achieve a developer's or user's objective. Under these circumstances a developer may create a workflow and build an application around it where the user supplies values for selected inputs. In such cases the <a href="http://pegasus.isi.edu/documentation">Pegasus API's</a> may be used to generate the abstract workflow description in the form of a dax file. The dax file can then executed by a simple submit command.</p>
-<pre><code>submit pegasus-plan --dax daxFile
+<p><code>submit</code> can run a workflow through
+<a href="https://pegasus.isi.edu">Pegasus</a>. Two cases are supported: workflows
+<code>submit</code> generates for you from a parameter sweep, and workflows you build
+yourself. In both, <code>submit</code> configures access to the computational
+resources, so you do not have to supply a site catalog.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>submit</code> and its Pegasus integration belong to the tool
+execution platform, which is separate software and is <strong>not in this
+repository</strong>. Nothing here could be checked against the code, and the
+Pegasus release a hub runs could not be established either. Pegasus has
+changed how workflows are described and planned since this material was
+written, so check <code>pegasus-plan --help</code> and the Pegasus documentation for
+your hub's version before writing a workflow against the syntax below.</p>
+</aside>
+<h2 id="parameter-sweeps">Parameter sweeps</h2>
+<p>The <code>-p</code>/<code>--parameters</code> and <code>-d</code>/<code>--data</code> options describe a sweep
+compactly, so you do not have to generate the whole set of input files and
+command lines yourself. You declare substitutable parameters on the
+<code>submit</code> command line, and <code>submit</code> substitutes their values into data
+files and command arguments, covering every combination.</p>
+<p>Each combination is a node in a workflow and a job on the chosen resource.
+A curses interface shows the run's progress. The syntax is described under
+<a href="../submitcmd/index.html#parameter-sweeps">parameter sweeps</a>.</p>
+<h2 id="workflows-you-build-yourself">Workflows you build yourself</h2>
+<p>A sweep is a workflow of independent nodes: no data passes between them.
+When that is not enough, build the workflow yourself and wrap an
+application around it, letting the user supply the values that matter.</p>
+<p>Generate the abstract workflow description with one of the
+<a href="https://pegasus.isi.edu">Pegasus APIs</a>, then hand the resulting file to
+<code>submit</code>:</p>
+<pre><code class="language-text">submit pegasus-plan --dax daxFile
 </code></pre>
-<p>In cases where more than one venue is capable of executing Pegasus runs a specific venue can be requested on the command line, otherwise submit will choose a venue at random.</p>
-<pre><code>submit -v DiaGrid pegasus-plan --dax daxFile
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>--dax</code> names the XML workflow description used by the
+Pegasus releases this page was written for. Later Pegasus releases
+changed both the workflow format and this option. Confirm what your
+hub's <code>pegasus-plan</code> accepts rather than copying the line as it stands.</p>
+</aside>
+<p>Where more than one venue can run Pegasus workflows, name the one you want;
+otherwise <code>submit</code> picks one at random.</p>
+<pre><code class="language-text">submit -v venueName pegasus-plan --dax daxFile
 </code></pre>
-<p>There are several additional options to pegasus-plan command that are supplied by submit. A few of the command options may be provided on the command line. submit reserves the option to silently ignore options as it sees fit.</p>
-<p>In addition to remote execution of Pegasus runs it is also possible to do the execution locally with in the tool session. Simply use the submit -l/--local option.</p>
-<pre><code>submit --local pegasus-plan --dax daxFile
+<p><code>submit --help venues</code> lists the venues you may use. <code>submit</code> supplies
+several other <code>pegasus-plan</code> options itself, and reserves the right to
+ignore options you pass silently.</p>
+<p>A workflow can also run in the tool session itself, with <code>-l</code>/<code>--local</code>:</p>
+<pre><code class="language-text">submit --local pegasus-plan --dax daxFile
 </code></pre>
-<p>The use command can be employed to put pegasus-plan and all other Pegasus commands in the PATH environment variable. In additional to setting PATH, other environment variables are set allowing use of the Python and java dax generation API's.</p>
+<p>The hub's <code>use</code> command puts <code>pegasus-plan</code> and the other Pegasus commands
+on your <code>PATH</code>, and sets the other environment variables the Python and
+Java workflow APIs need.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../submitcmd/index.html" rel="prev"><span>Previous</span>Submit Command</a><a class="pager__next" href="../rappture-submit/index.html" rel="next"><span>Next</span>Rappture Integration with Submit</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../submitcmd/index.html" rel="prev"><span>Previous</span>Submit command</a><a class="pager__next" href="../rappture-submit/index.html" rel="next"><span>Next</span>Submitting from a Rappture tool</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/05-grid/02-pegasuswf.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -10,7 +10,7 @@ The forum is the hub's message board. Discussions are organised into
 **sections**, which hold **categories**, which hold **threads**; a thread is
 an opening post and the replies to it. The site-wide forum lives at `/forum`.
 This chapter covers the administrator's side; the
-[Hub users](../../users/forum.md) book covers reading and posting.
+[Hub users](../../users/09-forum.md) book covers reading and posting.
 
 Open it in the administrator interface under **Components > Forum**. Three
 sub-menu links sit at the top left — **Sections**, **Categories**, and
@@ -170,7 +170,7 @@ default access level for the tab and the display limit; a group's own managers
 set threading, default sort order, and anonymous posting from the forum's
 **Settings** page inside the group. Group forums also offer per-member email
 notifications, described in
-[Group forum](../../users/groups/groupforum.md).
+[Group forum](../../users/11-groups/05-groupforum.md).
 
 ## API
 

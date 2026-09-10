@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tool Repository Structure · Tools · Hubzero Documentation</title>
-  <meta name="description" content="The directory structure for tool repositories should start from the following: The .keep files are present to force git to track initially empty directories.…">
+  <title>Tool repository structure · Tools · Hubzero Documentation</title>
+  <meta name="description" content="The directory layout a hub expects inside a tool&#x27;s source repository, and the starter invoke script that comes with each publishing option. Note: The layout is…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/toolrepostructure/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,51 +46,53 @@
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tool Repository Structure</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#invoke-script-template">Invoke script template</a></li>
-<li class="toc__item toc__item--l2"><a href="#sim2l">Sim2L</a></li>
-<li class="toc__item toc__item--l2"><a href="#jupyter-notebook">Jupyter Notebook</a></li>
-<li class="toc__item toc__item--l2"><a href="#rappture-linux-gui">Rappture/Linux GUI</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tool repository structure</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-layout">The layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-invoke-script">The invoke script</a></li>
+<li class="toc__item toc__item--l2"><a href="#starter-invoke-scripts">Starter invoke scripts</a></li>
+<li class="toc__item toc__item--l3"><a href="#sim2l">Sim2L</a></li>
+<li class="toc__item toc__item--l3"><a href="#jupyter-notebook">Jupyter notebook</a></li>
+<li class="toc__item toc__item--l3"><a href="#rappture-or-linux-gui">Rappture or Linux GUI</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -104,38 +106,122 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Tool Repository Structure</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Tool repository structure</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Tool Repository Structure</h1>
+          <h1>Tool repository structure</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/toolrepostructure">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2022.</aside>
+        
         <div class="prose">
-<p>The directory structure for tool repositories should start from the following:</p>
-<pre><code>      toolname/
-         bin/
-            .keep
-         data/
-            .keep
-         doc/
-            .keep
-         examples/
-            .keep
-         middleware/
-            invoke
-         rappture/
-            .keep
-         simtool/
-            TOOLNAME.ipynb
-         src/
-            Makefile
+<p>The directory layout a hub expects inside a tool's source repository, and the
+starter invoke script that comes with each publishing option.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The layout is the tool platform's convention, and the platform is
+separate software from the CMS in this repository, so it could not be
+checked here. Two things on this page were: that the hub records the tool's
+invoke script as <code>middleware/invoke</code> inside the installed version directory,
+and that the starter invoke scripts come from templates on the hub rather
+than from the CMS.</p>
+</aside>
+<h2 id="the-layout">The layout</h2>
+<p>A new tool repository starts like this:</p>
+<pre><code class="language-text">toolname/
+   bin/
+      .keep
+   data/
+      .keep
+   doc/
+      .keep
+   examples/
+      .keep
+   middleware/
+      invoke
+   rappture/
+      .keep
+   simtool/
+      TOOLNAME.ipynb
+   src/
+      Makefile
 </code></pre>
-<p>The .keep files are present to force git to track initially empty directories. Should the directories become populated the .keep file can be removed. The <code>simtool</code> directory should be present only if the tool was registered with the publication option = Sim2L. The <code>rappture</code> directory is only required for tools actually using Rappture. The <code>src</code> directory should contain any source code that needs to be compiled and a <code>Makefile</code> to direct building of executables. The <code>Makefile</code> must have the <code>install</code>, <code>clean</code>, and <code>distclean</code> targets. The <code>bin</code> directory should contain any executables created by issuing the <code>make install</code> command in the <code>src</code> directory. The <code>bin</code> directory is automatically added to the PATH environment variable used to search for executable files. It is common practice to put Jupyter notebook files in either the top level or <code>bin</code> directories. It is also permissible to create additional directories as deemed necessary.</p>
-<h2 id="invoke-script-template">Invoke script template</h2>
-<p>All tools require that the executable file middleware/invoke be present. The specifics of the invoke file depend on the tool publication classification. Templates for the three categories of tools are shown here. For tools where the repository is maintained on the HUB known values such as tool name are substituted in the template to provide an initial invoke file.</p>
-<h2 id="sim2l">Sim2L</h2>
-<pre><code>#!/bin/sh
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>What goes in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bin</code></td>
+<td>Executables and scripts the tool runs. Added to <code>PATH</code> automatically</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Static data files the tool reads</td>
+</tr>
+<tr>
+<td><code>doc</code></td>
+<td>Documentation</td>
+</tr>
+<tr>
+<td><code>examples</code></td>
+<td>Example inputs for members to start from</td>
+</tr>
+<tr>
+<td><code>middleware</code></td>
+<td>The <code>invoke</code> script. Required</td>
+</tr>
+<tr>
+<td><code>rappture</code></td>
+<td><code>tool.xml</code>, for tools that use Rappture. Otherwise leave it empty or drop it</td>
+</tr>
+<tr>
+<td><code>simtool</code></td>
+<td>The notebook, for tools registered with the Sim2L publishing option only</td>
+</tr>
+<tr>
+<td><code>src</code></td>
+<td>Source code and a <code>Makefile</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>.keep</code> files exist only so that Git tracks the empty directories. Delete
+one once its directory has real content in it. Extra directories are fine.</p>
+<p><code>src/Makefile</code> must have <code>install</code>, <code>clean</code>, and <code>distclean</code> targets. <code>install</code>
+puts what it builds into <code>bin</code>. <code>distclean</code> has to undo <code>install</code>, so that
+running it leaves the working copy as checked out; that is how you avoid
+committing build products, which cause compatibility trouble later even when
+they claim to be platform independent. Commit source and binary <em>data</em>, never
+compiled output.</p>
+<p>Jupyter notebooks are commonly kept at the top level or in <code>bin</code>.</p>
+<h2 id="the-invoke-script">The invoke script</h2>
+<p>Every tool needs an executable file at <code>middleware/invoke</code>. It is what the
+hub runs to start a session: the CMS records the launch command for each
+installed version as</p>
+<pre><code class="language-text">&lt;invoke script dir&gt;/&lt;toolname&gt;/&lt;version dir&gt;/middleware/invoke -T &lt;version dir&gt;
+</code></pre>
+<p>where the version directory is <code>dev</code> for the development version and
+<code>r&lt;revision&gt;</code> for a published revision, and the invoke script directory is the
+component's <strong>Invoke Script Dir</strong> option, <code>/apps</code> by default. So the path and
+the name are not negotiable, and <code>-T</code> always arrives naming the installed
+version's root directory. <em>(Verified against <code>com_tools</code>.)</em></p>
+<p><a href="../invoke/index.html">Launching tools with invoke scripts</a> explains what goes inside
+it.</p>
+<p>Make it executable before you commit it:</p>
+<pre><code class="language-console">$ chmod 755 middleware/invoke
+</code></pre>
+<h2 id="starter-invoke-scripts">Starter invoke scripts</h2>
+<p>When the hub creates the repository it seeds <code>middleware/invoke</code> from a
+template chosen by the tool's publishing option, substituting known values
+such as the tool name. The templates live with the hub's forge software, not
+in the CMS; the CMS only passes the publishing option along when it asks the
+host to create the repository, and only when those templates are installed.
+<em>(Verified against <code>com_tools</code>; the templates themselves could not be
+checked.)</em></p>
+<p>The three templates, as documented by the platform:</p>
+<h3 id="sim2l">Sim2L</h3>
+<pre><code class="language-sh">#!/bin/sh
 
 #
 # Sim2L
@@ -146,8 +232,8 @@
                          -r none \
                          -w headless
 </code></pre>
-<h2 id="jupyter-notebook">Jupyter Notebook</h2>
-<pre><code>#!/bin/sh
+<h3 id="jupyter-notebook">Jupyter notebook</h3>
+<pre><code class="language-sh">#!/bin/sh
 
 #
 # jupyter tool
@@ -158,8 +244,8 @@
                          -r none \
                          -w headless
 </code></pre>
-<h2 id="rappture-linux-gui">Rappture/Linux GUI</h2>
-<pre><code>#!/bin/sh
+<h3 id="rappture-or-linux-gui">Rappture or Linux GUI</h3>
+<pre><code class="language-sh">#!/bin/sh
 
 #
 # standard tool
@@ -167,10 +253,18 @@
 /usr/bin/invoke_app &quot;$@&quot; -t @TOOLNAME@ \
                          -C rappture
 </code></pre>
+<p><code>@TOOLNAME@</code> is replaced with your tool alias. <code>anaconda-X</code> is a placeholder
+for whichever Anaconda environment package your hub provides — check the hub's
+<code>/apps/environ</code> directory, or ask its administrators, rather than copying a
+version number from this page.</p>
+<p>The <code>standard</code> template calls <code>rappture</code>, which is only right for a Rappture
+tool. A Linux GUI tool replaces that with the command that starts its own
+interface. <a href="../overview/index.html#rappture">Rappture is deprecated</a>; a new tool is
+more likely to use one of the other two templates.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tool Developers</a><a class="pager__next" href="../overview/index.html" rel="next"><span>Next</span>Overview</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tool developers</a><a class="pager__next" href="../overview/index.html" rel="next"><span>Next</span>What you can publish as a tool</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/01-toolrepostructure.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
