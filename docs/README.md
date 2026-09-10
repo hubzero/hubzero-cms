@@ -13,8 +13,8 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 
 ## Run a hub
 
-- [Installation](installation/README.md) — requirements, installing from
-  packages, first-run configuration, and upgrades.
+- [Installation](installation/README.md) — being rewritten for the new web
+  installer.
 - [Hub managers](managers/README.md) — administering a hub: configuration,
   users and access, content, extensions, maintenance, and every component's
   administrative side.

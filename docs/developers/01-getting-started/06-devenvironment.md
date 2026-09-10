@@ -62,15 +62,15 @@ pre-flight result without installing anything.
 Three routes, none of them in this repository:
 
 **Install from packages.** The supported path. Enterprise Linux 8 or a
-compatible rebuild, the Hubzero packages, and the `hzcms` command. See the
-[Installation](../../installation/README.md) book. This is what a production
-hub is, so a development hub built this way behaves the same.
+compatible rebuild, the Hubzero packages, and the `hzcms` command. That
+process is being replaced by a web installer and is not documented here at
+present; see [Installation](../../installation/README.md).
 
 **Autohub.** A script that provisions a hub in a virtual machine using
 VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a
 **separate repository**, [hubzero/autohub](https://github.com/hubzero/autohub),
-not here; nothing in this tree calls it or knows about it. See
-[Autohub](../../installation/autohub.md).
+not here; nothing in this tree calls it or knows about it, and its own
+README is the only current description of it.
 
 **`muse install` on your own LAMP stack.** If you already have PHP 8.2+, a
 web server, and MySQL or MariaDB, the console can take a checkout of this
