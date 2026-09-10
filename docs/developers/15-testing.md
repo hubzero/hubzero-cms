@@ -33,7 +33,8 @@ from failures. Six tests skip themselves when what they need is absent.
 | `tools/lint/missing-facade-imports.php` | | Finds unqualified facade calls in namespaced files |
 | `tools/lint/undefined-language-keys.php` | | Finds language keys nothing defines |
 | `core/bin/php_tests.sh` | | PSR-12 style plus a syntax check, over a list of files |
-| `.github/workflows/php-lint.yml` | | CI: `php -l` over `core` and `app`, then the facade linter |
+| `.github/workflows/php-lint.yml` | | CI: `php -l` over `core` and `app`, the facade linter, and the language-key ceiling |
+| `.github/workflows/tests.yml` | | CI: the PHPUnit suite |
 
 Tests are named `*Test.php` and live in a `Tests` or `tests` directory
 inside the thing they test:
@@ -206,15 +207,23 @@ request, so a key defined in some other extension may still fail at runtime.
 Keys built at runtime (`'COM_X_' . strtoupper($type)`) cannot be checked and
 are skipped, so a clean run does not prove every string resolves.
 
-**This one is not in CI.** Run it yourself before sending a change.
+It runs in CI against a ceiling rather than against zero. 444 keys are
+undefined today, so `--max=444` in the workflow lets the check pass while
+refusing to let the number grow. Define the keys your change asks for, and
+when you have fixed some, lower the ceiling so the count cannot creep back
+up.
 
 ## Continuous integration
 
-Two workflows run on GitHub:
+Three workflows run on GitHub:
 
 - **`php-lint.yml`** — on every push to `2.4-main` and on pull requests
   touching any `.php` file. It runs `php -l` over every PHP file in `core`
-  and `app` outside `vendor`, then the facade linter.
+  and `app` outside `vendor`, then the facade linter, then the language-key
+  linter against its ceiling.
+- **`tests.yml`** — the PHPUnit suite, on the same events, for changes under
+  `core`. It installs the Composer dependencies, caching them against
+  `composer.lock`, and runs `vendor/bin/phpunit -c phpunit.xml.dist`.
 - **`pages.yml`** — builds this documentation, runs the builder's own Python
   tests, regenerates the references and fails if the committed copy is
   stale, and checks every internal link.
@@ -222,8 +231,8 @@ Two workflows run on GitHub:
 A third, `dev-push.yml`, deploys to a Purdue development host and is
 disabled (`if: false`).
 
-> **Warning:** **No CI job runs PHPUnit.** The suite passes today, and
-> nothing enforces that it keeps passing. Run it before you send a change.
+Run the suite before sending a change anyway; CI is the backstop, not the
+first line.
 
 ## What the old page claimed that is not true
 
