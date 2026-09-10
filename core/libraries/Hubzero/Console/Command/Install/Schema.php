@@ -36,6 +36,13 @@ class Schema
     private const SQL_PATH = 'bootstrap/Install/sql/mysql';
 
     /**
+     * The set of starting content a hub gets when nothing else is asked for
+     *
+     * @var  string
+     */
+    public const DEFAULT_DATA_SET = 'starter';
+
+    /**
      * Load the database schema
      *
      * @param   bool    $ansi      Whether to use ANSI color output
@@ -168,7 +175,9 @@ class Schema
     }
 
     /**
-     * Load sample data into the database (optional)
+     * Load the default set of starting content
+     *
+     * Kept for callers that predate named sets, the web installer among them.
      *
      * @param   bool    $ansi      Whether to use ANSI color output
      * @param   string  $appPath   Path to the app directory
@@ -176,6 +185,23 @@ class Schema
      * @return  bool    True on success, false on failure
      */
     public static function loadSampleData($ansi = true, $appPath = null, $corePath = null)
+    {
+        return self::loadDataSet(self::DEFAULT_DATA_SET, $ansi, $appPath, $corePath);
+    }
+
+    /**
+     * Load a named set of starting content
+     *
+     * A hub can start empty, on the base data alone, or with a set of content
+     * on top of it. Each set is a SQL file named after it.
+     *
+     * @param   string  $set       The name of the set to load
+     * @param   bool    $ansi      Whether to use ANSI color output
+     * @param   string  $appPath   Path to the app directory
+     * @param   string  $corePath  Path to the core directory
+     * @return  bool    True on success, false on failure
+     */
+    public static function loadDataSet($set, $ansi = true, $appPath = null, $corePath = null)
     {
         if ($appPath === null) {
             $appPath = defined('PATH_APP')
@@ -190,8 +216,14 @@ class Schema
         }
 
         self::output("\n", $ansi);
-        self::output("\e[33mLoading Sample Data\e[39m\n", $ansi);
-        self::output("-------------------\n", $ansi);
+        self::output("\e[33mLoading the " . $set . " Data\e[39m\n", $ansi);
+        self::output("--------------" . str_repeat('-', strlen($set)) . "\n", $ansi);
+
+        if (!preg_match('/^[a-z][a-z0-9_-]*$/', (string) $set)) {
+            self::output("\n", $ansi, true);
+            self::output("\e[31mNot a usable name for a data set: {$set}\e[39m\n", $ansi, true);
+            return false;
+        }
 
         // Prefer what the database step wrote over the configuration the
         // console read at startup, which a fresh install predates.
@@ -212,22 +244,28 @@ class Schema
         // Get table prefix
         $prefix = $dbConfig['dbprefix'] ?? self::DEFAULT_PREFIX;
 
-        // Check if sample data is already loaded
-        if (self::isSampleDataLoaded($pdo, $prefix)) {
+        if (self::isDataSetLoaded($pdo, $prefix)) {
             self::output("\n", $ansi);
-            self::output("\e[32m[OK]\e[39m Sample data already loaded.\n", $ansi);
-            self::output("Skipping sample data loading.\n", $ansi);
+            self::output("\e[32m[OK]\e[39m A set of content is already loaded.\n", $ansi);
+            self::output("Skipping.\n", $ansi);
             return true;
         }
 
-        // Load sample.sql
-        $samplePath = $corePath . '/' . self::SQL_PATH . '/sample.sql';
-        if (!self::loadSqlFile($pdo, $samplePath, $prefix, $ansi, 'sample')) {
+        $path = $corePath . '/' . self::SQL_PATH . '/' . $set . '.sql';
+
+        if (!is_file($path)) {
+            self::output("\n", $ansi, true);
+            self::output("\e[31mThere is no data set named {$set}.\e[39m\n", $ansi, true);
+            self::output("Looked for {$path}\n", $ansi, true);
+            return false;
+        }
+
+        if (!self::loadSqlFile($pdo, $path, $prefix, $ansi, $set)) {
             return false;
         }
 
         self::output("\n", $ansi);
-        self::output("\e[32mSample data loaded successfully!\e[39m\n", $ansi);
+        self::output("\e[32mThe {$set} data loaded successfully!\e[39m\n", $ansi);
 
         return true;
     }
@@ -348,7 +386,7 @@ class Schema
      * @param   string  $path     Path to SQL file
      * @param   string  $prefix   Table prefix to use
      * @param   bool    $ansi     Whether to use ANSI colors
-     * @param   string  $type     Type of file (schema, data, sample) for messaging
+     * @param   string  $type     What the file holds, for messaging
      * @return  bool    True on success, false on failure
      **/
     private static function loadSqlFile($pdo, $path, $prefix, $ansi, $type)
@@ -531,27 +569,21 @@ class Schema
     }
 
     /**
-     * Check if sample data has been loaded
-     *
-     * Checks for records that would only be present after sample.sql is loaded.
+     * Check whether a set of starting content has been loaded
      *
      * @param   \PDO    $pdo     PDO connection
      * @param   string  $prefix  Table prefix
-     * @return  bool    True if sample data appears to be loaded
+     * @return  bool    True if a set appears to be loaded
      **/
-    private static function isSampleDataLoaded($pdo, $prefix)
+    private static function isDataSetLoaded($pdo, $prefix)
     {
         try {
-            // Check for sample content - look for articles or categories with sample data
-            // Sample data typically includes demo articles, categories, or menu items
+            // Every set brings articles with it, and the base data brings none
             $stmt = $pdo->prepare(
                 "SELECT COUNT(*) FROM `{$prefix}content` WHERE state >= 0"
             );
             $stmt->execute();
-            $articleCount = (int) $stmt->fetchColumn();
-
-            // If there are any articles, sample data is likely loaded
-            return $articleCount > 0;
+            return (int) $stmt->fetchColumn() > 0;
         } catch (\PDOException $e) {
             // Table doesn't exist or other error
             return false;
