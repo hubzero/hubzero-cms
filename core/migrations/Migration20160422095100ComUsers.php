@@ -51,15 +51,15 @@ class Migration20160422095100ComUsers extends Base
                 }
 
                 $this->db->getQuery(true)
-                    ->update('#__users')
-                    ->leftJoin('#__xprofiles', 'u.id', 'x.uidNumber')
+                    ->update('#__users', 'u')
+                    ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $public])
                     ->where('x.public', '=', 1)
                     ->execute();
 
                 $this->db->getQuery(true)
-                    ->update('#__users')
-                    ->leftJoin('#__xprofiles', 'u.id', 'x.uidNumber')
+                    ->update('#__users', 'u')
+                    ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $private])
                     ->where('x.public', '=', 0)
                     ->execute();
@@ -75,8 +75,8 @@ class Migration20160422095100ComUsers extends Base
 
             if ($schema->tableExists('#__xprofiles') && $schema->hasColumn('#__xprofiles', 'regIP')) {
                 $this->db->getQuery(true)
-                    ->update('#__users')
-                    ->leftJoin('#__xprofiles', 'u.id', 'x.uidNumber')
+                    ->update('#__users', 'u')
+                    ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->setColumn('u.registerIP', 'x.regIP')
                     ->execute();
             }
@@ -87,8 +87,8 @@ class Migration20160422095100ComUsers extends Base
             && $schema->hasColumn('#__xprofiles', 'mailPreferenceOption')
         ) {
             $this->db->getQuery(true)
-                ->update('#__users')
-                ->leftJoin('#__xprofiles', 'u.id', 'x.uidNumber')
+                ->update('#__users', 'u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.sendEmail', 'x.mailPreferenceOption')
                 ->execute();
         }

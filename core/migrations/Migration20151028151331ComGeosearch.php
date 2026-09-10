@@ -33,6 +33,7 @@ class Migration20151028151331ComGeosearch extends Base
                 ->integer()
                 ->notNull()
                 ->autoIncrement()
+                ->addPrimaryKey('id')
                 ->execute();
         }
     }
