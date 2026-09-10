@@ -217,7 +217,7 @@ class Select
                     $noGroup = false;
                 }
             } else {
-                throw new \Exception('Invalid group contents.', 1, E_WARNING);
+                throw new \Exception('Invalid group contents.', 1);
             }
 
             if ($noGroup) {
