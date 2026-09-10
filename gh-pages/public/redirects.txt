@@ -9,6 +9,7 @@
 /documentation/22/security_considerations https://hubzero.github.io/hubzero-cms/managers/security/
 /documentation/22/security_considerations/faqs https://hubzero.github.io/hubzero-cms/managers/security/#security-questions
 /documentation/22/security_considerations/hardencms https://hubzero.github.io/hubzero-cms/managers/security/#hardening-the-cms
+/documentation/22/security_considerations/hardencms/cmscontrolled_fail2ban_jail https://hubzero.github.io/hubzero-cms/managers/security/#cms-controlled-fail2ban-jail
 /documentation/22/security_considerations/hardeningguide https://hubzero.github.io/hubzero-cms/managers/security/#operating-system-hardening
 /documentation/22/toolsnewdocs/prerequisites https://hubzero.github.io/hubzero-cms/tools/developers/prerequisites/
 /documentation/22/toolsnewdocs/prerequisites/environment https://hubzero.github.io/hubzero-cms/tools/developers/prerequisites/#environment
@@ -130,6 +131,8 @@
 /documentation/240/users/citations/membercitations https://hubzero.github.io/hubzero-cms/users/citations/
 /documentation/240/users/collections https://hubzero.github.io/hubzero-cms/users/collections/
 /documentation/240/users/courses https://hubzero.github.io/hubzero-cms/users/courses/
+/documentation/240/users/courses/course_manager_features https://hubzero.github.io/hubzero-cms/users/courses/#course-manager-features
+/documentation/240/users/courses/student_features https://hubzero.github.io/hubzero-cms/users/courses/#student-features
 /documentation/240/users/dashboard https://hubzero.github.io/hubzero-cms/users/dashboard/
 /documentation/240/users/events https://hubzero.github.io/hubzero-cms/users/events/
 /documentation/240/users/feedaggregator https://hubzero.github.io/hubzero-cms/users/
@@ -264,6 +267,7 @@
 /documentation/240/webdevs/supergroups_gitlab https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/
 /documentation/240/webdevs/supergroups_gitlab/developing https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/#developing
 /documentation/240/webdevs/supergroups_gitlab/setup https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/#setup
+/documentation/240/webdevs/supergroups_gitlab/why_gitlab https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/#why-gitlab
 /documentation/240/webdevs/templates https://hubzero.github.io/hubzero-cms/developers/templates/
 /documentation/240/webdevs/templates/css https://hubzero.github.io/hubzero-cms/developers/templates/css/
 /documentation/240/webdevs/templates/designing https://hubzero.github.io/hubzero-cms/developers/templates/designing/

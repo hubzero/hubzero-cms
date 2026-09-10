@@ -660,10 +660,17 @@ def build_children_list(page: Page, output_path: Path, output_dir: Path,
     if 'id="in-this-section"' in content_html:
         return ""
     items = []
+    hrefs = []
     for child in page.children:
         href = relative_href(output_path, output_dir / child.output)
+        hrefs.append(href)
         summary = f'<p>{escape(child.summary)}</p>' if child.summary else ""
         items.append(f'<li><a href="{escape(href)}">{escape(child.title)}</a>{summary}</li>')
+    # A landing page that already links to every one of its children has said
+    # this itself, usually with better wording and its own grouping. Repeating
+    # the list under a second heading only makes the page longer.
+    if content_html and all(f'href="{escape(h)}"' in content_html for h in hrefs):
+        return ""
     return '<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list">' + "\n".join(items) + "</ul></section>"
 
 

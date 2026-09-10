@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Enterprise Linux 8 (RHEL/CentOS/Rocky/etc) · Installation · Hubzero Documentation</title>
-  <meta name="description" content="The HUBzero Platform Installation instructions for Enterprise Linux 8 (Redhat/CentOS/Rocky/etc). The Hubzero tools infrastructure is not available at this…">
+  <meta name="description" content="The Hubzero Platform Installation instructions for Enterprise Linux 8 (Redhat/CentOS/Rocky/etc). The Hubzero tools infrastructure is not available at this…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/installation/el8/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../assets/site.css?v=f51137af">
+  <link rel="stylesheet" href="../../assets/site.css?v=a438325d">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -43,14 +43,10 @@
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../autohub/index.html">Autohub</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Enterprise Linux 8 (RHEL/CentOS/Rocky/etc)</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#the-hubzero-platform">The HUBzero Platform</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-hubzero-platform">The Hubzero Platform</a></li>
 <li class="toc__item toc__item--l2"><a href="#target-audience">Target Audience</a></li>
 <li class="toc__item toc__item--l2"><a href="#minimum-system-requirements">Minimum System Requirements</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-architecture">System Architecture</a></li>
-<li class="toc__item toc__item--l2"><a href="#material-from-the-2-2-documentation">Material from the 2.2 documentation</a></li>
-<li class="toc__item toc__item--l2"><a href="#target-audience-2">Target Audience</a></li>
-<li class="toc__item toc__item--l2"><a href="#minimum-system-requirements-2">Minimum System Requirements</a></li>
-<li class="toc__item toc__item--l2"><a href="#system-architecture-2">System Architecture</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="linux/index.html">Linux</a></li>
 <li class="tree__leaf"><a class="tree__link" href="webserver/index.html">Apache HTTP Server</a></li>
@@ -88,29 +84,16 @@
         </header>
         <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/installation/el8">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016. It exists only in the 2.2 documentation and was merged in from there.</aside>
         <div class="prose">
-<h2 id="the-hubzero-platform">The HUBzero Platform</h2>
+<h2 id="the-hubzero-platform">The Hubzero Platform</h2>
 <p>Installation instructions for Enterprise Linux 8 (Redhat/CentOS/Rocky/etc). The Hubzero tools infrastructure is not available at this time. If you are interested in running tools then see about our hosted solution at https://hubzero.org.</p>
 <p>Please use the side menu to navigate this documentation.</p>
 <h2 id="target-audience">Target Audience</h2>
-<p>This document and the installation and maintenance of a HUBzero system has a target audience of <strong>experienced</strong> Linux administrators (preferably experienced with Enterprise Linux (RedHat/CentOS/Rocky/etc distributions).</p>
+<p>This document and the installation and maintenance of a Hubzero system has a target audience of <strong>experienced</strong> Linux administrators (preferably experienced with Enterprise Linux (RedHat/CentOS/Rocky/etc distributions).</p>
 <h2 id="minimum-system-requirements">Minimum System Requirements</h2>
-<p>HUBzero (EL) installations require one or more dedicated hosts running Enterprise Linux 8 (RedHat/CentOS/Rocky). Rocky 8 is currently the preferred distribution.</p>
-<p>A typical starter HUBzero installation might consist of a single physical server with dual 64-bit quad-core CPUs, 24 Gigabytes of RAM and a terabyte of disk.</p>
-<p>Production systems should try to not limit hardware resources, HUBzero is designed to run on systems with many CPU cores and lots of RAM. If you are looking for a system to run a small site with limited physical or virtual resources this is probably not the system for you. However, for demonstration or development purposes we often create VM images with less than a gigabyte of RAM and 5 gigabytes of disk. While fully functional, these virtual machines would only be suitable for a single user doing development or testing.</p>
+<p>Hubzero (EL) installations require one or more dedicated hosts running Enterprise Linux 8 (RedHat/CentOS/Rocky). Rocky 8 is currently the preferred distribution.</p>
+<p>A typical starter Hubzero installation might consist of a single physical server with dual 64-bit quad-core CPUs, 24 Gigabytes of RAM and a terabyte of disk.</p>
+<p>Production systems should try to not limit hardware resources, Hubzero is designed to run on systems with many CPU cores and lots of RAM. If you are looking for a system to run a small site with limited physical or virtual resources this is probably not the system for you. However, for demonstration or development purposes we often create VM images with less than a gigabyte of RAM and 5 gigabytes of disk. While fully functional, these virtual machines would only be suitable for a single user doing development or testing.</p>
 <h2 id="system-architecture">System Architecture</h2>
-<p>All hardware, filesystem partitions, RAID configurations, backup models, security models, etc. and base configurations of the hosts email server, SSH server, network, etc. are the responsibility of the system administrator managing the host.</p>
-<p>The Hubzero software expects to be installed on a headless server from a minimal ISO.</p>
-<h2 id="material-from-the-2-2-documentation">Material from the 2.2 documentation</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.</p>
-</aside>
-<h2 id="target-audience-2">Target Audience</h2>
-<p>This document and the installation and maintenance of a HUBzero system has a target audience of <strong>experienced</strong> Linux administrators (preferably experienced with Enterprise Linux (RedHat/CentOS/Rocky/etc distributions).</p>
-<h2 id="minimum-system-requirements-2">Minimum System Requirements</h2>
-<p>HUBzero (EL) installations require one or more dedicated hosts running Enterprise Linux 8 (RedHat/CentOS/Rocky). Rocky 8 is currently the preferred distribution.</p>
-<p>A typical starter HUBzero installation might consist of a single physical server with dual 64-bit quad-core CPUs, 24 Gigabytes of RAM and a terabyte of disk.</p>
-<p>Production systems should try to not limit hardware resources, HUBzero is designed to run on systems with many CPU cores and lots of RAM. If you are looking for a system to run a small site with limited physical or virtual resources this is probably not the system for you. However, for demonstration or development purposes we often create VM images with less than a gigabyte of RAM and 5 gigabytes of disk. While fully functional, these virtual machines would only be suitable for a single user doing development or testing.</p>
-<h2 id="system-architecture-2">System Architecture</h2>
 <p>All hardware, filesystem partitions, RAID configurations, backup models, security models, etc. and base configurations of the hosts email server, SSH server, network, etc. are the responsibility of the system administrator managing the host.</p>
 <p>The Hubzero software expects to be installed on a headless server from a minimal ISO.</p>
 <section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="linux/index.html">Linux</a></li>
@@ -144,6 +127,6 @@
     <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../assets/search.js?v=f51137af" defer></script>
+  <script src="../../assets/search.js?v=a438325d" defer></script>
 </body>
 </html>

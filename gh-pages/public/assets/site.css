@@ -300,27 +300,37 @@ img { max-width: 100%; height: auto; }
   font-weight: 600;
 }
 
+/* A section row is a label plus a separate disclosure control. The label is a
+   link like every other label in the rail; only the chevron toggles, and both
+   line up with the leaf labels above and below. */
 .tree details > summary {
   display: flex;
   align-items: center;
-  gap: .25rem;
-  cursor: pointer;
+  cursor: default;
   list-style: none;
 }
 .tree details > summary::-webkit-details-marker { display: none; }
 .tree details > summary::before {
   content: "";
+  box-sizing: content-box;
   flex: 0 0 auto;
-  width: .5rem;
-  height: .5rem;
-  margin-left: .15rem;
+  width: .4rem;
+  height: .4rem;
+  padding: .35rem;
+  margin-right: .1rem;
+  cursor: pointer;
   border-right: 1.5px solid var(--ink-3);
   border-bottom: 1.5px solid var(--ink-3);
   transform: rotate(-45deg);
+  transform-origin: 55% 45%;
   transition: transform .15s ease;
 }
 .tree details[open] > summary::before { transform: rotate(45deg); }
 .tree details > summary .tree__link { flex: 1 1 auto; }
+
+/* Leaves carry the chevron's footprint as padding, so every label in the rail
+   starts on the same vertical line. */
+.tree__leaf > .tree__link { padding-left: calc(.6rem + 1.2rem); }
 
 /* the current page's own headings, nested beneath it in the rail */
 .tree .toc {

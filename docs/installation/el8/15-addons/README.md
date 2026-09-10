@@ -10,4 +10,16 @@ source-state: unpublished
 
 ## Introduction
 
-Add-ons for HUBzero are available here. Currently these consist of a couple projects that have not yet been fully integrated into the the HUBzero packaging and installation process.
+Add-ons are pieces a hub adds after the base install, because they are not
+part of the packaging. Each has its own chapter:
+
+- [Solr](01-solr.md) — the search index the hub queries.
+- [Shibboleth](02-shibboleth.md) — federated sign-in through a campus
+  identity provider.
+- [InCommon](03-incommon.md) — joining the InCommon federation so other
+  institutions' accounts can sign in.
+
+> **Note:** This book documents installing from packages onto Enterprise
+> Linux 8 and is being replaced by a self-hosting web installer. The Solr
+> and federated sign-in material below outlives that change; the packaging
+> steps around it do not.
